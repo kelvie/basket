@@ -1,0 +1,126 @@
+/***************************************************************************
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   slaout@linux62.org                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#ifndef VARIOUSWIDGETS_H
+#define VARIOUSWIDGETS_H
+
+#include <qwidget.h>
+#include <qcombobox.h>
+#include <qdialog.h>
+#include <kurllabel.h>
+#include <qstring.h>
+#include <kdialogbase.h>
+
+class QLineEdit;
+class KIconViewItem;
+class QIconViewItem;
+
+class Basket;
+
+/** A widget to select a command to run,
+  * with a QLineEdit and a QPushButton.
+  * @author Sébastien Laoût
+  */
+class RunCommandRequester : public QWidget
+{
+  Q_OBJECT
+  public:
+	RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent = 0, const char *name = 0);
+	~RunCommandRequester();
+	QString runCommand();
+	void setRunCommand(const QString &runCommand);
+	QLineEdit *lineEdit() { return m_runCommand; }
+  private slots:
+	void slotSelCommand();
+  private:
+	QLineEdit *m_runCommand;
+	QString    m_message;
+};
+
+/** QComboBox to ask icon size
+  * @author Sébastien Laoût
+  */
+class IconSizeCombo : public QComboBox
+{
+  Q_OBJECT
+  public:
+	IconSizeCombo(bool rw, QWidget *parent = 0, const char *name = 0);
+	~IconSizeCombo();
+	int iconSize();
+	void setSize(int size);
+};
+
+/** A window that the user resize to graphically choose a new image size
+  * TODO: Create a SizePushButton or even SizeWidget
+  * @author Sébastien Laoût
+  */
+class ViewSizeDialog : public QDialog
+{
+  Q_OBJECT
+  public:
+	ViewSizeDialog(QWidget *parent, int w, int h);
+	~ViewSizeDialog();
+  private:
+	virtual void resizeEvent(QResizeEvent *);
+	QWidget *m_sizeGrip;
+};
+
+/** A label displaying a link that, once clicked, offer a What's This messageBox to help users.
+  * @author Sébastien Laoût
+  */
+class HelpLabel : public KURLLabel
+{
+  Q_OBJECT
+  public:
+	HelpLabel(const QString &text, const QString &message, QWidget *parent);
+	~HelpLabel();
+	QString message()                       { return m_message;    }
+  public slots:
+	void setMessage(const QString &message) { m_message = message; }
+	void showMessage();
+  private:
+	QString m_message;
+};
+
+/** A dialog to choose the size of an icon.
+  * @author Sébastien Laoût
+  */
+class IconSizeDialog : public KDialogBase
+{
+  Q_OBJECT
+  public:
+	IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent);
+	~IconSizeDialog();
+	int iconSize() { return m_iconSize; } /// << @return the choosen icon size (16, 32, ...) or -1 if canceled!
+  protected slots:
+	void slotCancel();
+	void slotSelectionChanged();
+	void choose(QIconViewItem*);
+  private:
+	KIconViewItem *m_size16;
+	KIconViewItem *m_size22;
+	KIconViewItem *m_size32;
+	KIconViewItem *m_size48;
+	KIconViewItem *m_size64;
+	KIconViewItem *m_size128;
+	int m_iconSize;
+};
+
+#endif // VARIOUSWIDGETS_H

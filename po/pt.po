@@ -1,0 +1,2239 @@
+# translation of pt.po to Português
+# translation of pt.po to Portuguese
+# translation of basket.pot to Portuguese
+# Nuno J. Silva <nunojsg@gmail.com>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pt\n"
+"POT-Creation-Date: 2006-03-21 18:25+0100\n"
+"PO-Revision-Date: 2006-05-09 22:36+0100\n"
+"Last-Translator: Nuno J. Silva <nunojsg@gmail.com>\n"
+"Language-Team: Português <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+
+#: basket.cpp:506
+msgid "The new note does not match the filter and is hidden."
+msgstr "A nova anotação não coincide com o filtro e por isso não está visível."
+
+#: basket.cpp:507
+msgid "A new note does not match the filter and is hidden."
+msgstr "Uma nova anotação não coincide com o filtro e por isso não está visível."
+
+#: basket.cpp:508
+msgid "Some new notes do not match the filter and are hidden."
+msgstr "Algumas anotações recentemente criadas não coincidem com o filtro e por isso não estão visíveis."
+
+#: basket.cpp:509
+msgid "The new notes do not match the filter and are hidden."
+msgstr "As novas anotações não coincidem com o filtro e por isso não estão visíveis."
+
+#: basket.cpp:1398
+msgid ""
+"_: The verb (Group New Note)\n"
+"Group"
+msgstr "Agrupar"
+
+#: basket.cpp:1398
+msgid ""
+"_: The verb (Insert New Note)\n"
+"Insert"
+msgstr "Inserir"
+
+#: basket.cpp:1989
+msgid ""
+"This message should never appear. If it's the case, this program is buggy! "
+"Please report the bug to the developer."
+msgstr "Esta mensagem não devia ter aparecido. Se está a vê-la, é porque o programa tem falhas! Por favor informe o programador sobre a falha."
+
+#: basket.cpp:2400
+msgid "Confirm note changes"
+msgstr "Confirmar alterações da anotação"
+
+#: basket.cpp:2410 basket.cpp:2455 basket.cpp:2458
+msgid ""
+"Insert note here\n"
+"Right click for more options"
+msgstr ""
+"Introduza aqui a anotação\n"
+"Clique com o botão direito para mais opções"
+
+#: basket.cpp:2428
+msgid "Resize those columns"
+msgstr "Alterar a largura destas colunas"
+
+#: basket.cpp:2430
+msgid "Resize this group"
+msgstr "Redimensionar este grupo"
+
+#: basket.cpp:2431
+msgid "Resize this note"
+msgstr "Redimensionar esta anotação"
+
+#: basket.cpp:2432
+msgid "Select or move this note"
+msgstr "Seleccionar ou mover esta anotação"
+
+#: basket.cpp:2433
+msgid "Select or move this group"
+msgstr "Seleccionar ou mover este grupo"
+
+#: basket.cpp:2434
+msgid "Assign or remove tags from this note"
+msgstr "Adicionar ou remover classificações da anotação"
+
+#: basket.cpp:2436
+#, c-format
+msgid "<b>Assigned Tags</b>: %1"
+msgstr "<b>Classificações associadas</b>: %1"
+
+#: basket.cpp:2443
+msgid "%1, %2"
+msgstr "%1, %2"
+
+#: basket.cpp:2450
+msgid "Expand this group"
+msgstr "Expandir este grupo"
+
+#: basket.cpp:2451
+msgid "Collapse this group"
+msgstr "Fechar este grupo"
+
+#: basket.cpp:2456
+msgid ""
+"Group note with the one below\n"
+"Right click for more options"
+msgstr ""
+"Agrupar esta anotação com a seguinte\n"
+"Clique com o botão direito para mais opções"
+
+#: basket.cpp:2457
+msgid ""
+"Group note with the one above\n"
+"Right click for more options"
+msgstr ""
+"Agrupar esta anotação com a anterior\n"
+"Clique com o botão direito para mais opções"
+
+#: basket.cpp:2473
+msgid "Added"
+msgstr "Adicionado"
+
+#: basket.cpp:2474
+msgid "Last Modification"
+msgstr "Última modificação"
+
+#: basket.cpp:2482
+msgid ""
+"_: of the form 'key: value'\n"
+"<b>%1</b>: %2"
+msgstr "<b>%1</b>: %2"
+
+#: basket.cpp:2485
+msgid "Click on the right to group instead of insert"
+msgstr "Clique na direita para agrupar em vez de inserir"
+
+#: basket.cpp:2487
+msgid "Click on the left to insert instead of group"
+msgstr "Clique na esquerda para inserir em vez de agrupar"
+
+#: basket.cpp:2615
+msgid "Loading..."
+msgstr "A carregar..."
+
+#: basket.cpp:2856 basket.cpp:2877 basket.cpp:2990
+msgid "&Customize..."
+msgstr "&Personalizar..."
+
+#: basket.cpp:2858 basket.cpp:2879
+msgid "&Filter by this Tag"
+msgstr "&Filtrar itens com esta classificação"
+
+#: basket.cpp:2880
+msgid "Filter by this &State"
+msgstr "Filtrar por este E&stado"
+
+#: basket.cpp:2964
+msgid "Tags"
+msgstr "Classificações"
+
+#: basket.cpp:2988
+msgid "&Assign new Tag..."
+msgstr "&Associar nova classificação..."
+
+#: basket.cpp:2989
+msgid "&Remove All"
+msgstr "&Remover todas"
+
+#: basket.cpp:3491
+#, c-format
+msgid ""
+"_n: <qt>Do you really want to delete this note?</qt>\n"
+"<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
+msgstr ""
+"<qt>Deseja mesmo apagar esta anotação?</qt>\n"
+"<qt>Deseja mesmo apagar estas  <b>%n</b> anotações?</qt>"
+
+#: basket.cpp:3493
+msgid ""
+"_n: Delete Note\n"
+"Delete Notes"
+msgstr ""
+"Apagar anotação\n"
+"Apagar anotações"
+
+#: basket.cpp:3572
+msgid ""
+"_n: Copied note to clipboard.\n"
+"Copied notes to clipboard."
+msgstr ""
+"Nota copiada para a área de transferência.\n"
+"Notas copiada para a área de transferência."
+
+#: basket.cpp:3573
+msgid ""
+"_n: Cut note to clipboard.\n"
+"Cut notes to clipboard."
+msgstr ""
+"Mover anotação para a área de transferência.\n"
+"Mover anotações para a área de transferência."
+
+#: basket.cpp:3574
+msgid ""
+"_n: Copied note to selection.\n"
+"Copied notes to selection."
+msgstr ""
+"Anotação copiada para a selecção.\n"
+"Anotações copiadas para a selecção."
+
+#: basket.cpp:3620 basket.cpp:3669
+msgid "Unable to open this note."
+msgstr "Incapaz de abrir anotação."
+
+#: basket.cpp:3644
+msgid "You are not authorized to open this file."
+msgstr "Não está autorizado a abir este ficheiro."
+
+#: basket.cpp:3686
+msgid "Save to File"
+msgstr "Guardar para ficheiro"
+
+#: basket.cpp:3917 basket.cpp:3918
+msgid ""
+"_: HTML export folder (files)\n"
+"%1_files"
+msgstr "%1_ficheiros"
+
+#: basket.cpp:3924 basket.cpp:3925
+msgid ""
+"_: HTML export folder (icons)\n"
+"icons"
+msgstr "ícones"
+
+#: basket.cpp:3926 basket.cpp:3927
+msgid ""
+"_: HTML export folder (images)\n"
+"images"
+msgstr "imagens"
+
+#: basket.cpp:3928 basket.cpp:3929
+msgid ""
+"_: HTML export folder (data)\n"
+"data"
+msgstr "dados"
+
+#: basket.cpp:4052
+msgid "Notes matching the filter &quot;%1&quot;:"
+msgstr "Anotações que coincidem com o filtro &quot;%1&quot;:"
+
+#: basket.cpp:4089
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr "Feito com o %1, uma ferramenta KDE para registar apontamentos e ter toda a informação de que precisa sempre acessível."
+
+#: basketfactory.cpp:60
+msgid "Sorry, but the folder creation for this new basket has failed."
+msgstr "Desculpe, mas a criação da pasta para este novo cesto falhou."
+
+#: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:105
+msgid "Basket Creation Failed"
+msgstr "Criação do Cesto Falhou"
+
+#: basketfactory.cpp:90
+msgid "Sorry, but the template copying for this new basket has failed."
+msgstr "Desculpe, mas o processo de cópia do modelo para este novo cesto falhou."
+
+#: basketfactory.cpp:105
+msgid "Sorry, but the template customization for this new basket has failed."
+msgstr "Desculpe, mas a personalização do modelo para este novo cesto falhou."
+
+#: basketproperties.cpp:46
+msgid "Basket Properties"
+msgstr "Propriedades do cesto"
+
+#: basketproperties.cpp:61 main.cpp:81 newbasketdialog.cpp:88
+msgid "Icon"
+msgstr "Ícone"
+
+#: basketproperties.cpp:64 newbasketdialog.cpp:91
+msgid "Name"
+msgstr "Nome"
+
+#: basketproperties.cpp:76
+msgid "Background &Image:"
+msgstr "&Imagem de fundo:"
+
+#: basketproperties.cpp:77
+msgid "&Background Color:"
+msgstr "&Cor de fundo:"
+
+#: basketproperties.cpp:78
+msgid "&Text Color:"
+msgstr "Cor do &texto:"
+
+#: basketproperties.cpp:87
+msgid "(None)"
+msgstr "(Nenhuma)"
+
+#: basketproperties.cpp:101 kcolorcombo2.cpp:138
+msgid "Other..."
+msgstr "Outra..."
+
+#: basketproperties.cpp:107
+msgid "Disposition"
+msgstr "Disposição"
+
+#: basketproperties.cpp:110
+msgid "Col&umns:"
+msgstr "Col&unas:"
+
+#: basketproperties.cpp:118
+msgid "&Free-form"
+msgstr "Liv&re"
+
+#: basketproperties.cpp:119
+msgid "&Mind map"
+msgstr "&Mapa mental"
+
+#: basketproperties.cpp:128
+msgid "&Keyboard Shortcut"
+msgstr "&Atalho de teclado"
+
+#: basketproperties.cpp:133
+msgid "Learn some tips..."
+msgstr "Leia alguns conselhos..."
+
+#: basketproperties.cpp:134
+msgid ""
+"<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
+"option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
+"will underline that letter in the basket tree.<br>For instance, if you are "
+"assigning the shortcut <i>Alt+T</i> to a basket named <i>Tips</i>, the "
+"basket will be displayed as <i><u>T</u>ips</i> in the tree. It helps you "
+"visualize the shortcuts to remember them more quickly.</p><p><strong>Local "
+"vs Global</strong>:<br>The first option allows to show the basket while the "
+"main window is active. Global shortcuts are valid from anywhere, even if the "
+"window is hidden.</p><p><strong>Show vs Switch</strong>:<br>The last option "
+"make this basket the current one without opening the main window. It is "
+"useful in addition to the configurable global shortcuts to eg. paste the "
+"clipboard or the selection into the current basket from anywhere.</p>"
+msgstr ""
+"<p><strong>Lembre-se dos seus atalhos</strong>:<br>Com a primeira opção, ao dar ao cesto um atalho do tipo <strong>Alt+Letra</strong> irá sublinhar essa letra na árvore de cestos.<br>Por exemplo, se associar o atalho <i>Alt+I</i> a um cesto chamado <i>Ideias</i>, o cesto irá aparecer na árvore como <i><u>I</u>deias</i>. Isto ajuda-o a ver os atalhos e a decorá-los facilmente.</p><p><strong>Local "
+"vs Global</strong>:<br>A primeira opção permite abrir o cesto quando a janela principal está aberta. Os atalhos globais funcionam em qualquer altura, mesmo se a janela estiver ocultada.</p><p><strong>Mostar vs Mudar</strong>:<br>A última opção faz com que este seja o cesto activo sem abrir a janela principal. Esta função é útil em conjunto com os atalhos globais para, por exemplo, colar o conteúdo da área-de-transferência no cesto activo em qualquer altura.</p>"
+
+#: basketproperties.cpp:149
+msgid "S&how this basket"
+msgstr "&Mostrar este cesto"
+
+#: basketproperties.cpp:150
+msgid "Show this basket (&global shortcut)"
+msgstr "Mostrar este cesto (atalho &global)"
+
+#: basketproperties.cpp:151
+msgid "S&witch to this basket (global shortcut)"
+msgstr "Mu&dar para este cesto (atalho global)"
+
+#: container.cpp:373
+msgid "%1+%2+"
+msgstr "%1+%2+"
+
+#: container.cpp:375
+msgid "%1+"
+msgstr "%1+"
+
+#: container.cpp:378
+msgid "%1+%2"
+msgstr "%1+%2"
+
+#: container.cpp:710
+msgid "Baskets"
+msgstr "Cestos"
+
+#: container.cpp:749
+msgid ""
+"<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
+"data by putting them in different baskets. You can group baskets by subject "
+"by creating new baskets inside others. You can browse between them by "
+"clicking a basket to open it, or reorganize them using drag and drop."
+msgstr "<h2>Árvore de Cestos</h2>Esta é a lista dos seus cestos. Pode organizar os dados arrumando-os em cestos diferentes. Pode agrupar cestos por assuntos, criando novos cestos dentro de outros. Pode navegar entre eles clicando num cesto para o abrir, ou reorganizá-los usando arrastar-e-largar."
+
+#: container.cpp:1253 container.cpp:2074 settings.cpp:325
+msgid "General"
+msgstr "Geral"
+
+#: container.cpp:1512
+msgid ""
+"<p>Closing the main window will keep %1 running in the system tray. Use "
+"<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
+msgstr "<p>Mesmo que feche a janela principal, o %1 vai continuar a correr no tabuleiro-de-sistema. Use a opção <b>Sair</b> do menu <b>Cesto</b> para encerrar a aplicação.</p>"
+
+#: container.cpp:1558 container.cpp:1563
+msgid "Docking in System Tray"
+msgstr "Ancorar no Tabuleiro de Sistema"
+
+#: container.cpp:1609
+msgid "Pasted selection (%1) to basket <i>%2</i>"
+msgstr "A selecção (%1) foi colada no cesto <i>%2</i>"
+
+#: container.cpp:1641
+msgid "&Minimize"
+msgstr "&Minimizar"
+
+#: container.cpp:1643
+msgid "&Restore"
+msgstr "&Restaurar"
+
+#: container.cpp:1698
+msgid "Dropped (%1) to basket <i>%2</i>"
+msgstr "(%1) largado no cesto <i>%2</i>"
+
+#: container.cpp:1792
+msgid "%1 (Locked)"
+msgstr "%1 (Bloqueado)"
+
+#: container.cpp:2126
+msgid "&New..."
+msgstr "&Novo..."
+
+#: container.cpp:2128
+msgid "New &Sub-basket..."
+msgstr "Novo sub-&cesto..."
+
+#: container.cpp:2133
+msgid ""
+"_: Remove Basket\n"
+"&Remove"
+msgstr "&Remover"
+
+#: container.cpp:2136
+msgid "&Export to HTML..."
+msgstr "&Exportar para HTML"
+
+#: container.cpp:2138
+msgid "&KNotes"
+msgstr "&KNotes"
+
+#: container.cpp:2140
+msgid "K&Jots"
+msgstr "K&Jots"
+
+#: container.cpp:2142
+msgid "&Sticky Notes"
+msgstr "&Sticky Notes"
+
+#: container.cpp:2144
+msgid "&Tomboy"
+msgstr "&Tomboy"
+
+#: container.cpp:2147
+msgid "&Hide Window"
+msgstr "&Ocultar janela"
+
+#: container.cpp:2166
+msgid "D&elete"
+msgstr "&Eliminar"
+
+#: container.cpp:2170
+msgid "Selects all notes"
+msgstr "Selecciona todas as anotações"
+
+#: container.cpp:2171
+msgid "U&nselect All"
+msgstr "Desselecio&nar Tudo"
+
+#: container.cpp:2173
+msgid "Unselects all selected notes"
+msgstr "Desselecciona todas as notas seleccionadas"
+
+#: container.cpp:2174
+msgid "&Invert Selection"
+msgstr "&Inverter selecção"
+
+#: container.cpp:2177
+msgid "Inverts the current selection of notes"
+msgstr "Inverte a selecção actual de anotações"
+
+#: container.cpp:2179
+msgid "&Filter"
+msgstr "&Filtrar"
+
+#: container.cpp:2183
+msgid "Filter &all Baskets"
+msgstr "Filtr&ar todos os cestos"
+
+#: container.cpp:2187
+msgid "&Reset Filter"
+msgstr "&Reiniciar filtro"
+
+#: container.cpp:2192
+msgid "&Previous Basket"
+msgstr "&Cesto anterior"
+
+#: container.cpp:2194
+msgid "&Next Basket"
+msgstr "Cesto segui&nte"
+
+#: container.cpp:2196
+msgid "&Fold Basket"
+msgstr "&Fechar cesto"
+
+#: container.cpp:2198
+msgid "&Expand Basket"
+msgstr "&Expandir Cesto"
+
+#: container.cpp:2203
+msgid ""
+"_: Verb; not Menu\n"
+"&Edit..."
+msgstr "&Editar..."
+
+#: container.cpp:2208
+msgid "&Open"
+msgstr "&Abrir"
+
+#: container.cpp:2211
+msgid "Open &With..."
+msgstr "Abrir &com..."
+
+#: container.cpp:2215
+msgid "&Save to File..."
+msgstr "&Guardar para ficheiro"
+
+#: container.cpp:2218
+msgid "&Group"
+msgstr "Ag&rupar"
+
+#: container.cpp:2220
+msgid "U&ngroup"
+msgstr "&Desagrupar"
+
+#: container.cpp:2223
+msgid "Move on &Top"
+msgstr "Mover para o &Topo"
+
+#: container.cpp:2225
+msgid "Move &Up"
+msgstr "Mover para Ci&ma"
+
+#: container.cpp:2227
+msgid "Move &Down"
+msgstr "Mover para &Baixo"
+
+#: container.cpp:2229
+msgid "Move on &Bottom"
+msgstr "Mover para o &Fim"
+
+#: container.cpp:2239 settings.cpp:408
+msgid "&Text"
+msgstr "&Texto"
+
+#: container.cpp:2240
+msgid "&Rich Text"
+msgstr "Texto fo&rmatado"
+
+#: container.cpp:2241
+msgid "&Link"
+msgstr "&Ligação"
+
+#: container.cpp:2242
+msgid "&Image"
+msgstr "&Imagem"
+
+#: container.cpp:2243
+msgid "&Color"
+msgstr "&Cor"
+
+#: container.cpp:2244
+msgid "L&auncher"
+msgstr "L&ançador"
+
+#: container.cpp:2246
+msgid "Import Launcher from &KDE Menu..."
+msgstr "Importar lançador do menu do &KDE..."
+
+#: container.cpp:2247
+msgid "Im&port Icon..."
+msgstr "Im&portar ícone..."
+
+#: container.cpp:2248
+msgid "Load From &File..."
+msgstr "Carregar do &Ficheiro..."
+
+#: container.cpp:2271
+msgid "C&olor from Screen"
+msgstr "C&or a partir do Ecrã"
+
+#: container.cpp:2276
+msgid "&Grab Screen Zone"
+msgstr "Foto&grafar Zona do Ecrã"
+
+#: container.cpp:2298
+msgid "Hide &Toolbar"
+msgstr "Ocul&tar a Barra de Ferramentas"
+
+#: container.cpp:2304
+msgid "Configure &Global Shortcuts..."
+msgstr "Configurar os Atalhos &Globais..."
+
+#: container.cpp:2322
+msgid ""
+"<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
+"run without it and will stop.</b></p><p>Please check your installation of "
+"%2.</p><p>If you haven't administrator access to install the application "
+"system wide, you can copy the file basketui.rc from the installation archive "
+"to the folder <a href='file://%3'>%4</a>.</p><p>In last ressort, if you are "
+"sure the application is well installed but you had a preview version of it, "
+"try to remove the file %5basketui.rc</p>"
+msgstr ""
+"<p><b>O ficheiro basketui.rc parece não existir ou é demasiado antigo.<br>O %1 não pode correr sem o mesmo e irá parar.</b></p><p>Por favor verifique a sua instalação do "
+"%2.</p><p>Se não tiver direitos de administrador oara instalar a aplicação ao nível do sistema, pode copiar o ficheiro basketui.rc do arquivo de instalação para a pasta <a href='file://%3'>%4</a>.</p><p>Como último recurso, se tem a certeza de que a aplicação está bem instalada, mas tinha uma versão de teste da mesma, experimente remover o ficheiro %5basketui.rc</p>"
+
+#: container.cpp:2333
+msgid "Ressource not Found"
+msgstr "Recurso não Encontrado"
+
+#: container.cpp:2377 container.cpp:2386
+msgid "Cannot add note."
+msgstr "Impossível adicionar anotação."
+
+#: container.cpp:2433
+msgid "Grabbed screen zone to basket <i>%1</i>"
+msgstr "Zona do ecrã fotografada para o cesto <i>%1</i>"
+
+#: container.cpp:2475
+msgid "Picked color to basket <i>%1</i>"
+msgstr "A cor escolhida foi guardada no cesto <i>%1</i>"
+
+#: container.cpp:2545
+msgid "Editing. Press Escape, Return or click outside to confirm."
+msgstr "A editar. Pressione Escape, Return ou clique numa zona exterior para aplicar as alterações."
+
+#: container.cpp:2547
+msgid "Editing. Press Escape or click outside to confirm."
+msgstr "A editar. Pressione Escape ou clique numa zona exterior para aplicar as alterações."
+
+#: container.cpp:2549
+msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
+msgstr "Ctrl+arrastar: copia, Shift+arrastar: move, Shift+Ctrl+arrastar: cria uma ligação."
+
+#: container.cpp:2589
+msgid ""
+"<p>%1 let you to collect a wide variety of objects and keep them all in one "
+"place.</p><p>You can group things for different purposes in tabs by creating "
+"as many baskets as you want.<br>Notes can be re-arranged, tags can be "
+"associated to, and you can drag them back to other applications when "
+"needed.</p><p>You can use baskets to take notes, clean up your desktop, "
+"replace your bookmarks, store links to applications you often use, create "
+"shop-lists...</p>"
+msgstr "<p>O %1 permite-lhe agrupar inúmeros objectos de diferentes formatos e tê-los todos no mesmo local.</p><p>Pode agrupar os objectos por assuntos/objectivos criando vários cestos<br>As anotações podem ser movidas, as classificações podem ser-lhes associadas, e pode arrastá-las de volta para outras aplicações quando tal for necessário.</p><p>Pode usar cestos para arrumar anotações, limpar o seu local de trabalho, substituir os seus marcadores, guardar links para aplicações que costuma usar, criar listas de compras...</p>"
+
+#: container.cpp:2656
+msgid "Delete Basket"
+msgstr "Apagar Cesto"
+
+#: container.cpp:2659
+msgid "Delete Only that Basket"
+msgstr "Apagar Apenas este Cesto"
+
+#: container.cpp:2660
+msgid "Delete With its Childs"
+msgstr "Remover Com os seus Sub-cestos"
+
+#: container.cpp:2668 container.cpp:2674
+msgid "<qt>Do you really want to remove <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Deseja realmente remover <b>%1</b> e os seus conteúdos?</qt>"
+
+#: container.cpp:2676
+msgid "Remove Basket"
+msgstr "Remover cesto"
+
+#: container.cpp:2678
+msgid "&Remove Basket"
+msgstr "&Remover cesto"
+
+#: container.cpp:2689
+msgid ""
+"<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
+"them too?</qt>"
+msgstr "<qt><b>%1</b> tem os seguintes sub-cestos.<br>Deseja removê-los também?</qt>"
+
+#: container.cpp:2692
+msgid "Remove Child Baskets"
+msgstr "Remover Sub-cestos"
+
+#: container.cpp:2694
+msgid "&Remove Child Baskets"
+msgstr "&Remover Sub-cestos"
+
+#: container.cpp:2793
+msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
+msgstr "<p>Este cesto está <b>bloqueado</b>.<br>Clique aqui para o desbloquear.</p>"
+
+#: container.cpp:2798
+msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
+msgstr "<p>Este cesto está <b>desbloqueado</b>.<br>Clique aqui para o bloquear.</p>"
+
+#: container.cpp:2814
+msgid "No notes"
+msgstr "Sem anotações"
+
+#: container.cpp:2816
+#, c-format
+msgid ""
+"_n: %n note\n"
+"%n notes"
+msgstr ""
+"%n anotação\n"
+"%n anotações"
+
+#: container.cpp:2817
+#, c-format
+msgid ""
+"_n: %n selected\n"
+"%n selected"
+msgstr ""
+"%n seleccionada\n"
+"%n seleccionadas"
+
+#: container.cpp:2818
+msgid "all matches"
+msgstr "todas as correspondências"
+
+#: container.cpp:2818
+msgid "no filter"
+msgstr "sem filtro"
+
+#: container.cpp:2820
+#, c-format
+msgid ""
+"_n: %n match\n"
+"%n matches"
+msgstr ""
+"%n correspondência\n"
+"%n correspondências"
+
+#: container.cpp:2822
+msgid ""
+"_: e.g. '18 notes, 10 matches, 5 selected'\n"
+"%1, %2, %3"
+msgstr "%1, %2, %3"
+
+#: container.cpp:3030
+msgid "<p>Do you really want to quit %1?</p>"
+msgstr "<p>Deseja mesmo sair do %1?</p>"
+
+#: container.cpp:3032
+msgid ""
+"<p>Notice that you do not have to quit the application before ending your "
+"KDE session: it will be reloaded the next time you log in.</p>"
+msgstr "<p>Não necessita de sair do programa antes de terminar a sua sessão do KDE: ele será iniciado automaticamente da próxima vez que iniciar sessão.</p>"
+
+#: container.cpp:3035
+msgid "Quit Confirm"
+msgstr "Confirmar Saída"
+
+#: container.cpp:3071 newbasketdialog.cpp:89
+msgid "Basket"
+msgstr "Cesto"
+
+#: container.cpp:3161
+msgid "Clipboard content (%1) pasted to basket <i>%2</i>"
+msgstr "O conteúdo da área de transferência (%1) foi colado no cesto <i>%2</i>"
+
+#: container.cpp:3169
+msgid "Selection (%1) pasted to basket <i>%2</i>"
+msgstr "Selecção (%1) colada no cesto <i>%2</i>"
+
+#: container.cpp:3180
+msgid "No note was added."
+msgstr "Não foi adicionada nenhuma anotação."
+
+#: container.cpp:3206
+msgid "Basket <i>%1</i> is locked"
+msgstr "O cesto <i>%1</i> está bloqueado"
+
+#: container.cpp:3223
+msgid "(Locked)"
+msgstr "(Bloqueado)"
+
+#: debugwindow.cpp:34
+msgid "Debug Window"
+msgstr "Janela de Depuração"
+
+#: exporterdialog.cpp:37
+msgid "Export Basket to HTML"
+msgstr "Exportar cesto como HTML"
+
+#: exporterdialog.cpp:46
+msgid "HTML Page Filename"
+msgstr "Nome da Página HTML"
+
+#: exporterdialog.cpp:49
+msgid "&Filename:"
+msgstr "Nome do &Ficheiro:"
+
+#: exporterdialog.cpp:52
+msgid "&Embed linked local files"
+msgstr "Embutir ficheiros que são destino de &ligações locais"
+
+#: exporterdialog.cpp:53
+msgid "Embed &linked local folders"
+msgstr "Embutir pastas que são destino de &ligações locais"
+
+#: exporterdialog.cpp:54
+msgid "Erase &previous files in target folder"
+msgstr "A&pagar ficheiros antigos na pasta de destino"
+
+#: exporterdialog.cpp:55
+msgid "For&mat for impression"
+msgstr "For&matar para impressão"
+
+#: filter.cpp:59
+msgid "Reset Filter"
+msgstr "Reiniciar Filtro"
+
+#: filter.cpp:63
+msgid "&Filter: "
+msgstr "&Filtro: "
+
+#: filter.cpp:65
+msgid "&Tag: "
+msgstr "C&lassificação:"
+
+#: filter.cpp:68
+msgid "Filter all Baskets"
+msgstr "Filtrar todos os Cestos"
+
+#: filter.cpp:140
+msgid "(Not tagged)"
+msgstr "(Sem classificação)"
+
+#: filter.cpp:141
+msgid "(Tagged)"
+msgstr "(Classificado)"
+
+#: focusedwidgets.cpp:94
+msgid "Check Spelling..."
+msgstr "Verificar ortografia..."
+
+#: focusedwidgets.cpp:97
+msgid "Auto Spell Check"
+msgstr "Verificação ortográfica automática"
+
+#: focusedwidgets.cpp:100
+msgid "Allow Tabulations"
+msgstr "Permitir Tabulações"
+
+#: formatimporter.cpp:123
+msgid ""
+"<p>Folder mirroring is not possible anymore (see <a "
+"href='http://basket.kde.org/'>basket.kde.org</a> for more "
+"information).</p><p>The folder <b>%1</b> has been copied for the basket "
+"needs. You can either delete this folder or delete the basket, or use both. "
+"But remember that modifying one will not modify the other anymore as they "
+"are now separate entities.</p>"
+msgstr ""
+"<p>O espelhamento de pastas já não é possível (consulte <a "
+"href='http://basket.kde.org/'>basket.kde.org</a> para mais informações).</p><p>A pasta <b>%1</b> foi copiada para o cesto. Pode apagar a pasta ou o cesto, ou usar ambos. Mas lembre-se de que modificar um já não irá modificar o outro, uma vez que agora são duas entidades separadas.</p>"
+
+#: formatimporter.cpp:125
+msgid "Folder Mirror Import"
+msgstr "Importação de Espelhamento de Pasta"
+
+#: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
+msgid "(Default)"
+msgstr "(Pré-definida)"
+
+#: linklabel.cpp:560
+msgid "I&talic"
+msgstr "I&tálico"
+
+#: linklabel.cpp:564
+msgid "&Bold"
+msgstr "N&egrito"
+
+#: linklabel.cpp:572
+msgid "Always"
+msgstr "Sempre"
+
+#: linklabel.cpp:573
+msgid "Never"
+msgstr "Nunca"
+
+#: linklabel.cpp:574
+msgid "On mouse hovering"
+msgstr "Quando está debaixo do apontador"
+
+#: linklabel.cpp:575
+msgid "When mouse is outside"
+msgstr "Quando não está debaixo do apontador"
+
+#: linklabel.cpp:577
+msgid "&Underline:"
+msgstr "S&ublinhado:"
+
+#: linklabel.cpp:582
+msgid "Colo&r:"
+msgstr "Co&r:"
+
+#: linklabel.cpp:587
+msgid "&Mouse hover color:"
+msgstr "Cor quando o apontador \nestá em ci&ma:"
+
+#: linklabel.cpp:595
+msgid "&Icon size:"
+msgstr "Tamanho do &ícone:"
+
+#: linklabel.cpp:600
+msgid "None"
+msgstr "Nenhuma"
+
+#: linklabel.cpp:601
+msgid "Icon size"
+msgstr "Tamanho do ícone"
+
+#: linklabel.cpp:602
+msgid "Twice the icon size"
+msgstr "O dobro do tamanho do ícone"
+
+#: linklabel.cpp:603
+msgid "Three times the icon size"
+msgstr "O triplo do tamanho do ícone"
+
+#: linklabel.cpp:605
+msgid "&Preview:"
+msgstr "&Pré-visualização:"
+
+#: linklabel.cpp:607
+msgid "You disabled preview but still see images?"
+msgstr "Desactivou a pré-visualização mas continua a ver imagens?"
+
+#: linklabel.cpp:608
+msgid ""
+"<p>This is normal because there are several type of notes.<br>This setting "
+"applies only to file and local link notes.<br>And the images you see are "
+"image notes, not file notes.<br>File notes are generic documents, whereas "
+"image notes are pictures you can draw in.</p><p>When dropping files to "
+"baskets, %1 detects theire type and show you the content of the "
+"files.<br>For instance, when dropping image or text files, image and text "
+"notes are created for them.<br>For type of files %2 does not understand, "
+"they are shown as generic file notes with just an icon or file preview and a "
+"filename.</p><p>If you do not want the application to create notes depending "
+"on the content of the files you drop, go to the \"General\" page and uncheck "
+"\"Image or animation\" in the \"View Content of Added Files for the "
+"Following Types\" group.</p>"
+msgstr ""
+"<p>Isto é normar porque existem vários tipos de anotações.<br>Esta definição aplica-se apenas às anotações com ficheiros e ligações locais.<br>E as imagens que vê são anotações com imagens, e não anotações com ficheiros.<br>Anotações com ficheiros são documentos genéricos, enquanto que as anotações com imagens são desenhos que você pode alterar.</p><p>Ao largar ficheiros em cestos, o %1 detecta o seu tipo e mostra-lhe o conteúdo dos ficheiros.<br>De momento, ao largar ficheiros de imagem ou texto, são criadas anotações com imagem e com texto para esses ficheiros.<br>Os tipos de ficheiro que o %2 não entende, são apresentados como anotações com ficheiros genéricos, com apenas um ícone ou uma pré-visualização do ficheiro e um nome de ficheiro.</p><p>Se não quer que a aplicação crie notas com base nos conteúdos dos ficheiros largados, vá à página \"Geral\" e desseleccione "
+"\"Imagem ou animação\" no grupo \"Ver o Conteúdo dos Ficheiros Adicionados para os Seguintes Tipos\".</p>"
+
+#: linklabel.cpp:630
+msgid "Example"
+msgstr "Exemplo"
+
+#: main.cpp:66
+msgid "A set of baskets to keep a full range of data on hand."
+msgstr "Um conjunto de cestos para registar apontamentos \ne ter toda a informação de que precisa sempre acessível."
+
+#: main.cpp:70
+msgid "Show the debug window"
+msgstr "Mostrar a janela de depuração"
+
+#: main.cpp:72
+msgid "Hide the main window in the system tray icon on startup"
+msgstr "Esconder a janela principal no ícone do tabuleiro de sistema ao arrancar"
+
+#: main.cpp:75
+msgid "BasKet Note Pads"
+msgstr "Bloco de Notas BasKet"
+
+#: main.cpp:80
+msgid "Author, maintainer"
+msgstr "Autoria e manutenção"
+
+#: main.cpp:159
+msgid "Show/hide main window"
+msgstr "Mostar/ocultar a janela principal"
+
+#: main.cpp:160
+msgid ""
+"Allows you to show main Window if it is hidden, and to hide it if it is "
+"shown."
+msgstr "Permite-lhe abrir a janela principal se esta estiver ocultada, e ocultá-la se esta estiver aberta."
+
+#: main.cpp:163
+msgid "Paste clipboard contents in current basket"
+msgstr "Colar o conteúdo da área-de-transferência no cesto actual"
+
+#: main.cpp:164
+msgid ""
+"Allows you to paste clipboard contents in the current basket without having "
+"to open main window."
+msgstr "Permite-lhe colar os conteúdos da área de transferência no cesto activo sem ter de abrir a janela principal."
+
+#: main.cpp:167
+msgid "Show current basket name"
+msgstr "Mostrar o nome do cesto activo"
+
+#: main.cpp:168
+msgid "Allows you to know basket is current without opening the main window."
+msgstr "Permite-lhe saber qual é o cesto activo sem abrir a janela principal."
+
+#: main.cpp:171
+msgid "Paste selection in current basket"
+msgstr "Colar selecção no cesto actual"
+
+#: main.cpp:172
+msgid ""
+"Allows you to paste clipboard selection in the current basket without having "
+"to open main window."
+msgstr "Permite-lhe colar a selecção que está na área-de-transferência para o cesto activo sem ter de abrir a janela principal."
+
+#: main.cpp:175
+msgid "Create a new basket"
+msgstr "Criar um novo cesto"
+
+#: main.cpp:176
+msgid ""
+"Allows you to create a new basket without having to open main window (you "
+"then can use the other global shortcuts to add a note, paste clipboard or "
+"paste selection in this new basket)."
+msgstr "Permite-lhe criar um novo cesto sem ter de abrir a janela principal (depois pode usar os atalhos globais para adicionar uma anotação, colar o conteúdo da área de transferência ou colar a selecção no novo cesto)."
+
+#: main.cpp:179
+msgid "Go to previous basket"
+msgstr "Ir para o cesto anterior"
+
+#: main.cpp:180
+msgid ""
+"Allows you to change current basket to the previous one without having to "
+"open main window."
+msgstr "Permite-lhe mudar o cesto activo sem ter de abrir a janela principal."
+
+#: main.cpp:183
+msgid "Go to next basket"
+msgstr "Ir para o cesto seguinte"
+
+#: main.cpp:184
+msgid ""
+"Allows you to change current basket to the next one without having to open "
+"main window."
+msgstr "Permite-lhe mudar o cesto activo para o cesto seguinte sem ter de abrir a janela principal."
+
+#: main.cpp:189 settings.cpp:628 settings.cpp:643 settings.cpp:654
+msgid "Insert text note"
+msgstr "Inserir anotação com texto"
+
+#: main.cpp:190
+msgid "Add a text note to the current basket without having to open main window."
+msgstr "Adiciona uma anotação com texto ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:193 settings.cpp:629 settings.cpp:644 settings.cpp:655
+msgid "Insert rich text note"
+msgstr "Inserir anotação com texto formatado"
+
+#: main.cpp:194
+msgid ""
+"Add a rich text note to the current basket without having to open main "
+"window."
+msgstr "Adiciona uma anotação com texto formatado ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:197 settings.cpp:630
+msgid "Insert image note"
+msgstr "Inserir anotação com imagem"
+
+#: main.cpp:198
+msgid "Add an image note to the current basket without having to open main window."
+msgstr "Adiciona uma anotação com imagem ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:201 settings.cpp:631 settings.cpp:645 settings.cpp:656
+msgid "Insert link note"
+msgstr "Inserir anotação com ligação"
+
+#: main.cpp:202
+msgid "Add a link note to the current basket without having to open main window."
+msgstr "Adiciona uma anotação com ligação ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:205 settings.cpp:633
+msgid "Insert color note"
+msgstr "Inserir anotação com cor"
+
+#: main.cpp:206
+msgid "Add a color note to the current basket without having to open main window."
+msgstr "Adiciona uma anotação com cor ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:209
+msgid "Pick color from screen"
+msgstr "Escolher cor a partir do ecrã"
+
+#: main.cpp:210
+msgid ""
+"Add a color note picked from one pixel on screen to the current basket "
+"without having to open main window."
+msgstr "Adiciona uma anotação com uma cor escolhida do ecrã ao cesto activo sem ser necessário abrir a janela principal."
+
+#: main.cpp:214
+msgid "Grab screen zone"
+msgstr "Fotografar zona do ecrã"
+
+#: main.cpp:215
+msgid ""
+"Grab a screen zone as an image in the current basket without having to open "
+"main window."
+msgstr "Fotografa uma zona no ecrã e guarda-a como uma imagem no cesto activo sem ter de abrir a janela principal."
+
+#: newbasketdialog.cpp:74
+msgid "New Basket"
+msgstr "Novo Cesto"
+
+#: newbasketdialog.cpp:93
+msgid "Background color"
+msgstr "Cor de fundo"
+
+#: newbasketdialog.cpp:100
+msgid "&Manage Templates..."
+msgstr "Gerir &Modelos"
+
+#: newbasketdialog.cpp:122 newbasketdialog.cpp:246
+msgid "One column"
+msgstr "Uma coluna"
+
+#: newbasketdialog.cpp:130 newbasketdialog.cpp:248
+msgid "Two columns"
+msgstr "Duas colunas"
+
+#: newbasketdialog.cpp:138 newbasketdialog.cpp:250
+msgid "Three columns"
+msgstr "Três colunas"
+
+#: newbasketdialog.cpp:144 newbasketdialog.cpp:252
+msgid "Free"
+msgstr "Livre"
+
+#: newbasketdialog.cpp:154
+msgid "&Template:"
+msgstr "Mod&elo:"
+
+#: newbasketdialog.cpp:163
+msgid "(Baskets)"
+msgstr "(Cestos)"
+
+#: newbasketdialog.cpp:164
+msgid "C&reate in:"
+msgstr "C&riar em:"
+
+#: newbasketdialog.cpp:165
+msgid "How is it useful?"
+msgstr "Qual a utilidade disto?"
+
+#: newbasketdialog.cpp:166
+msgid ""
+"<p>Creating baskets inside of other baskets to form a hierarchy allows you "
+"to be more organized by eg.:</p><ul><li>Groupping baskets by themes or "
+"topics;</li><li>Groupping baskets in folders for different "
+"projects;</li><li>Making sections with sub-baskets representing chapters or "
+"pages;</li><li>Making group of baskets to export together (to eg. email them "
+"to people).</li></ul>"
+msgstr "<p>Criar cestos dentro de outros cestos de forma a criar uma hierarquia permite uma melhor organização. Pode, por exemplo:</p><ul><li>Agrupar cestos por temas ou tópicos;</li><li>Agrupar cestos em pastas para projectos diferentes;</li><li>Criar secções com sub-cestos que representam capítulos ou páginas;</li><li>Agrupar cestos para exportá-los em conjunto (para, por exemplo, enviá-los por e-mail).</li></ul>"
+
+#: newbasketdialog.cpp:254
+msgid "Mind map"
+msgstr "Mapa mental"
+
+#: notecontent.cpp:196
+msgid "Text"
+msgstr "Texto"
+
+#: notecontent.cpp:197
+msgid "Rich Text"
+msgstr "Texto Formatado"
+
+#: notecontent.cpp:198
+msgid "Image"
+msgstr "Imagem"
+
+#: notecontent.cpp:199
+msgid "Animation"
+msgstr "Animação"
+
+#: notecontent.cpp:200
+msgid "Sound"
+msgstr "Som"
+
+#: notecontent.cpp:202
+msgid "Link"
+msgstr "Ligação"
+
+#: notecontent.cpp:203
+msgid "Launcher"
+msgstr "Lançador"
+
+#: notecontent.cpp:204 noteedit.cpp:784
+msgid "Color"
+msgstr "Cor"
+
+#: notecontent.cpp:205
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: notecontent.cpp:346
+msgid "Edit this text"
+msgstr "Editar este texto"
+
+#: notecontent.cpp:347
+msgid "Edit this rich text"
+msgstr "Editar este texto formatado"
+
+#: notecontent.cpp:348
+msgid "Edit this image"
+msgstr "Editar esta imagem"
+
+#: notecontent.cpp:349
+msgid "Edit this animation"
+msgstr "Editar esta animação"
+
+#: notecontent.cpp:350
+msgid "Edit the file name of this sound"
+msgstr "Editar o nome do ficheiro deste som"
+
+#: notecontent.cpp:351
+msgid "Edit the name of this file"
+msgstr "Editar o nome deste ficheiro"
+
+#: notecontent.cpp:352
+msgid "Edit this link"
+msgstr "Editar esta ligação"
+
+#: notecontent.cpp:353
+msgid "Edit this launcher"
+msgstr "Editar este lançador"
+
+#: notecontent.cpp:354
+msgid "Edit this color"
+msgstr "Editar esta cor"
+
+#: notecontent.cpp:355
+msgid "Edit this unknown object"
+msgstr "Editar este objecto desconhecido"
+
+#: notecontent.cpp:568
+msgid "Opening text..."
+msgstr "A abrir texto..."
+
+#: notecontent.cpp:569
+msgid "Opening texts..."
+msgstr "A abrir textos..."
+
+#: notecontent.cpp:570
+msgid "Opening text with..."
+msgstr "A abrir texto com..."
+
+#: notecontent.cpp:571
+msgid "Opening texts with..."
+msgstr "A abrir textos com..."
+
+#: notecontent.cpp:572
+msgid "Open text with:"
+msgstr "Abrir texto com:"
+
+#: notecontent.cpp:573
+msgid "Open texts with:"
+msgstr "Abrir textos com:"
+
+#: notecontent.cpp:646
+msgid "Opening rich text..."
+msgstr "A abrir texto formatado..."
+
+#: notecontent.cpp:647
+msgid "Opening rich texts..."
+msgstr "A abrir textos formatados..."
+
+#: notecontent.cpp:648
+msgid "Opening rich text with..."
+msgstr "A abrir texto formatado com..."
+
+#: notecontent.cpp:649
+msgid "Opening rich texts with..."
+msgstr "A abrir textos formatados com..."
+
+#: notecontent.cpp:650
+msgid "Open rich text with:"
+msgstr "Abrir texto formatado com:"
+
+#: notecontent.cpp:651
+msgid "Open rich texts with:"
+msgstr "Abrir textos formatados com:"
+
+#: notecontent.cpp:733 notecontent.cpp:930
+msgid "Size"
+msgstr "Tamanho"
+
+#: notecontent.cpp:734 variouswidgets.cpp:146
+msgid "%1 by %2 pixels"
+msgstr "%1 por %2 pixels"
+
+#: notecontent.cpp:740
+msgid "Opening image..."
+msgstr "A abir imagem..."
+
+#: notecontent.cpp:741
+msgid "Opening images..."
+msgstr "A abrir imagens..."
+
+#: notecontent.cpp:742
+msgid "Opening image with..."
+msgstr "A abrir imagem com..."
+
+#: notecontent.cpp:743
+msgid "Opening images with..."
+msgstr "A abrir imagens com..."
+
+#: notecontent.cpp:744
+msgid "Open image with:"
+msgstr "Abrir imagem com:"
+
+#: notecontent.cpp:745
+msgid "Open images with:"
+msgstr "Abrir imagens com:"
+
+#: notecontent.cpp:769
+msgid "Click for full size view"
+msgstr "Clique para ver no tamanho normal"
+
+#: notecontent.cpp:823
+msgid "Opening animation..."
+msgstr "A abrir animação..."
+
+#: notecontent.cpp:824
+msgid "Opening animations..."
+msgstr "A abrir animações..."
+
+#: notecontent.cpp:825
+msgid "Opening animation with..."
+msgstr "A abrir animação com..."
+
+#: notecontent.cpp:826
+msgid "Opening animations with..."
+msgstr "A abrir animações com..."
+
+#: notecontent.cpp:827
+msgid "Open animation with:"
+msgstr "Abrir animação com:"
+
+#: notecontent.cpp:828
+msgid "Open animations with:"
+msgstr "Abrir animações com:"
+
+#: notecontent.cpp:935
+msgid "Type"
+msgstr "Tipo"
+
+#: notecontent.cpp:973
+msgid "Open this file"
+msgstr "Abrir este ficheiro"
+
+#: notecontent.cpp:992
+msgid "Opening file..."
+msgstr "A abrir ficheiro..."
+
+#: notecontent.cpp:993
+msgid "Opening files..."
+msgstr "A abrir ficheiros..."
+
+#: notecontent.cpp:994
+msgid "Opening file with..."
+msgstr "A abrir ficheiro com..."
+
+#: notecontent.cpp:995
+msgid "Opening files with..."
+msgstr "A abrir ficheiros com..."
+
+#: notecontent.cpp:996
+msgid "Open file with:"
+msgstr "Abrir ficheiro com:"
+
+#: notecontent.cpp:997
+msgid "Open files with:"
+msgstr "Abrir ficheiros com:"
+
+#: notecontent.cpp:1068
+msgid "Open this sound"
+msgstr "Abrir este som"
+
+#: notecontent.cpp:1105
+msgid "Opening sound..."
+msgstr "A abrir som..."
+
+#: notecontent.cpp:1106
+msgid "Opening sounds..."
+msgstr "A abrir sons..."
+
+#: notecontent.cpp:1107
+msgid "Opening sound with..."
+msgstr "A abrir som com..."
+
+#: notecontent.cpp:1108
+msgid "Opening sounds with..."
+msgstr "A abrir sons com..."
+
+#: notecontent.cpp:1109
+msgid "Open sound with:"
+msgstr "Abrir som com:"
+
+#: notecontent.cpp:1110
+msgid "Open sounds with:"
+msgstr "Abrir sons com:"
+
+#: notecontent.cpp:1148
+msgid "Target"
+msgstr "Destino"
+
+#: notecontent.cpp:1171
+msgid "Open this link"
+msgstr "Abrir esta ligação"
+
+#: notecontent.cpp:1197
+msgid "Link have no URL to open."
+msgstr "A ligação não tem nenhum URL para abrir."
+
+#: notecontent.cpp:1200
+msgid "Opening link target..."
+msgstr "A abrir o destino da ligação..."
+
+#: notecontent.cpp:1201
+msgid "Opening link targets..."
+msgstr "A abrir os destinos da ligação..."
+
+#: notecontent.cpp:1202
+msgid "Opening link target with..."
+msgstr "A abrir o destino da ligação com..."
+
+#: notecontent.cpp:1203
+msgid "Opening link targets with..."
+msgstr "A abrir dos destinos da ligação com..."
+
+#: notecontent.cpp:1204
+msgid "Open link target with:"
+msgstr "Abrir destino da ligação com:"
+
+#: notecontent.cpp:1205
+msgid "Open link targets with:"
+msgstr "Abrir destinos da ligação com:"
+
+#: notecontent.cpp:1329
+msgid "%1 <i>(run in terminal)</i>"
+msgstr "%1 <i>(correr no terminal)</i>"
+
+#: notecontent.cpp:1332
+msgid "Comment"
+msgstr "Comentário"
+
+#: notecontent.cpp:1336
+msgid "Command"
+msgstr "Comando"
+
+#: notecontent.cpp:1359
+msgid "Launch this application"
+msgstr "Executar esta aplicação"
+
+#: notecontent.cpp:1380
+msgid "The launcher have no command to run."
+msgstr "O lançador não tem nenhum comando para executar."
+
+#: notecontent.cpp:1383
+msgid "Launching application..."
+msgstr "A lançar aplicação..."
+
+#: notecontent.cpp:1384
+msgid "Launching applications..."
+msgstr "A lançar aplicações..."
+
+#: notecontent.cpp:1471
+msgid ""
+"_: RGB Colorspace: Red/Green/Blue\n"
+"RGB"
+msgstr "RGB"
+
+#: notecontent.cpp:1472
+msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
+msgstr "<i>Vermelho (R)</i>: %1, <i>Verde (G)</i>: %2, <i>Azul (B)</i>: %3,"
+
+#: notecontent.cpp:1474
+msgid ""
+"_: HSV Colorspace: Hue/Saturation/Value\n"
+"HSV"
+msgstr "HSV"
+
+#: notecontent.cpp:1475
+msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
+msgstr "<i>Matiz</i>: %1, <i>Saturação</i>: %2, <i>Valor</i>: %3,"
+
+#: notecontent.cpp:1628
+msgid "CSS Color Name"
+msgstr "Nome de cor CSS"
+
+#: notecontent.cpp:1638
+msgid "CSS Extended Color Name"
+msgstr "Nome Estendido de Cor CSS"
+
+#: notecontent.cpp:1644
+msgid "Is Web Color"
+msgstr "É uma Cor Web"
+
+#: note.cpp:2750
+msgid "(Image)"
+msgstr "(Imagem)"
+
+#: noteedit.cpp:381
+msgid ""
+"Images can not be edited here at the moment (the next version of BasKet Note "
+"Pads will include an image editor).\n"
+"Do you want to open it with an application that understands it?"
+msgstr ""
+"De momento, não é possível editar imagens aqui (a próxima versão do Bloco de Notas BasKet incluirá um editor de imagens).\n"
+"Deseja abrir a imagem com uma aplicação capaz de a editar?"
+
+#: noteedit.cpp:383
+msgid "Edit Image Note"
+msgstr "Editar Anotação com Imagem"
+
+#: noteedit.cpp:397
+msgid ""
+"This animated image can not be edited here.\n"
+"Do you want to open it with an application that understands it?"
+msgstr ""
+"Esta imagem animada não pode ser editada aqui.\n"
+"Deseja abri-la com uma aplicação que suporte imagens animadas?"
+
+#: noteedit.cpp:399
+msgid "Edit Animation Note"
+msgstr "Editar Anotação com Animação"
+
+#: noteedit.cpp:475
+msgid "Edit Color Note"
+msgstr "Editar anotação com cor"
+
+#: noteedit.cpp:498
+msgid ""
+"The type of this note is unknown and can not be edited here.\n"
+"You however can drag or copy the note into an application that understands "
+"it."
+msgstr "Os dados desta nota estão num formato que não é suportado e, consequentemente, não pode ser editado neste programa.\nNo entanto pode arrastar os mesmos para uma aplicação que compreenda este formato."
+
+#: noteedit.cpp:500
+msgid "Edit Unknown Note"
+msgstr "Editar Anotação Desconhecida"
+
+#: noteedit.cpp:508
+msgid "Edit Link Note"
+msgstr "Editar Anotação com Lançador"
+
+#: noteedit.cpp:520 noteedit.cpp:533
+msgid "Auto"
+msgstr "Automático"
+
+#: noteedit.cpp:529 noteedit.cpp:682
+msgid "&Icon:"
+msgstr "&Ícone:"
+
+#: noteedit.cpp:553
+msgid "Ta&rget:"
+msgstr "&Destino:"
+
+#: noteedit.cpp:554
+msgid "&Title:"
+msgstr "&Título:"
+
+#: noteedit.cpp:667
+msgid "Edit Launcher Note"
+msgstr "Editar Anotação com Lançador"
+
+#: noteedit.cpp:676
+msgid "Choose a command to run:"
+msgstr "Escolha um comando a executar:"
+
+#: noteedit.cpp:685
+msgid "&Guess"
+msgstr "&Adivinhar"
+
+#: noteedit.cpp:701
+msgid "Comman&d:"
+msgstr "Coman&do:"
+
+#: noteedit.cpp:702
+msgid "&Name:"
+msgstr "&Nome:"
+
+#: noteedit.cpp:786
+msgid "Bold"
+msgstr "Negrito"
+
+#: noteedit.cpp:788
+msgid "Underline"
+msgstr "Sublinhado"
+
+#: noteedit.cpp:793
+msgid "Align Left"
+msgstr "Alinhar à esquerda"
+
+#: noteedit.cpp:794
+msgid "Centered"
+msgstr "Centrado"
+
+#: noteedit.cpp:795
+msgid "Align Right"
+msgstr "Alinhar à direita"
+
+#: noteedit.cpp:796
+msgid "Justified"
+msgstr "Justificado"
+
+#: notefactory.cpp:438
+msgid ""
+"<p>%1 doesn't support the data you've dropped.<br>It however created a "
+"generic note, allowing you to drag or copy it to an application that "
+"understand it.</p><p>If you want the support of these data, please contact "
+"developer or visit the <a href=\"http://basket.kde.org/dropdb.php\">BasKet "
+"Drop Database</a>.</p>"
+msgstr ""
+"<p>O %1 não suporta os dados que introduziu.<br>No entanto, criou uma nota genérica com os mesmos, de forma a permitir que os copie para uma aplicação que os compreenda.</p><p>Se deseja que este tipo de dados seja suportado, por favor contacte o programador ou visite a <a href=\"http://basket.kde.org/dropdb.php\">\"BasKet "
+"Drop Database\"</a>.</p>"
+
+#: notefactory.cpp:442
+msgid "Unsupported MIME Type(s)"
+msgstr "Tipo(s) MIME não suportado(s)"
+
+#: notefactory.cpp:496
+msgid "&Move Here\tShift"
+msgstr "&Mover para aqui\tShift"
+
+#: notefactory.cpp:497
+msgid "&Copy Here\tCtrl"
+msgstr "&Copiar para aqui\tCtrl"
+
+#: notefactory.cpp:498
+msgid "&Link Here\tCtrl+Shift"
+msgstr "Criar uma &Ligação Aqui\tCtrl+Shift"
+
+#: notefactory.cpp:500
+msgid "C&ancel\tEscape"
+msgstr "C&ancelar\tEscape"
+
+#: notefactory.cpp:948
+msgid "Import Icon as Image"
+msgstr "Importar Ícone como Imagem"
+
+#: notefactory.cpp:948
+msgid "Choose the size of the icon to import as an image:"
+msgstr "Escolha o tamanho do ícone a importar como imagem:"
+
+#: notefactory.cpp:961
+msgid "Load File Content into a Note"
+msgstr "Carregar Conteúdodo Ficheiro para a Nota"
+
+#. i18n: file basketui.rc line 5
+#: rc.cpp:3
+#, no-c-format
+msgid "&Basket"
+msgstr "Ce&sto"
+
+#. i18n: file basketui.rc line 14
+#: rc.cpp:6
+#, no-c-format
+msgid "&Import"
+msgstr "&Importar"
+
+#. i18n: file basketui.rc line 40
+#: rc.cpp:12
+#, no-c-format
+msgid "&Go"
+msgstr "I&r"
+
+#. i18n: file basketui.rc line 47
+#: rc.cpp:15
+#, no-c-format
+msgid "&Note"
+msgstr "A&notação"
+
+#. i18n: file basketui.rc line 113
+#: rc.cpp:30
+#, no-c-format
+msgid "Rich Text Edit Toolbar"
+msgstr "Barra de ferramentas do Editor de Texto Formatado"
+
+#: settings.cpp:326
+msgid "Notes Look"
+msgstr "Aspecto das Anotações"
+
+#: settings.cpp:327
+msgid "Applications"
+msgstr "Aplicações"
+
+#: settings.cpp:328
+msgid "Addictive Features"
+msgstr "Funções viciantes"
+
+#: settings.cpp:335
+msgid "Doc&k in system tray"
+msgstr "Ancorar no ta&buleiro de sistema"
+
+#: settings.cpp:339
+msgid "&Use balloons to report results of global actions"
+msgstr "&Usar balões para relatar os resultados de acções globais"
+
+#: settings.cpp:343
+msgid "Ani&mate changes in baskets"
+msgstr "Animar a&lterações nos cestos"
+
+#: settings.cpp:347
+msgid "Sho&w tooltips in baskets"
+msgstr "Mostrar dicas nos cestos."
+
+#: settings.cpp:351
+msgid "Bi&g notes"
+msgstr "Anotações &grandes"
+
+#: settings.cpp:356
+msgid "E&xport tags in texts"
+msgstr "E&xportar classificações com o texto"
+
+#: settings.cpp:359
+msgid "When does this apply?"
+msgstr "Quando é que isto se aplica?"
+
+#: settings.cpp:360
+msgid ""
+"<p>It does apply when you copy and paste, or drag and drop notes to a text "
+"editor.</p><p>If enabled, this property allows you to paste the tags as "
+"textual equivalents.<br>For instance, a list of notes with the <b>To Do</b> "
+"and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or "
+"<b>[x]</b>, representing an empty  checkbox and a checked box.</p>"
+msgstr "<p>Aplica-se quando você copia e cola, ou arrasta e larga itens para um editor de texto.</p><p>Se activada, esta propriedade permite-lhe colar as classificações sob a forma de texto.<br>Por exemplo, uma lista de itens com as classificações <b>A Fazer</b> e <b>Feito</b> são exportadas como linhas que começam com <b>[ ]</b> ou com <b>[x]</b>, o que representa, respectivamente, uma caixa-de-verificação não assinalada e uma caixa-de-verificação assinalada.</p>"
+
+#: settings.cpp:375
+msgid "On left"
+msgstr "À esquerda"
+
+#: settings.cpp:376
+msgid "On right"
+msgstr "À direita"
+
+#: settings.cpp:378
+msgid "Bask&ets tree position:"
+msgstr "Posição da árvor&e de cestos:"
+
+#: settings.cpp:384 settings.cpp:395
+msgid "On top"
+msgstr "No topo"
+
+#: settings.cpp:385 settings.cpp:396
+msgid "On bottom"
+msgstr "No fundo"
+
+#: settings.cpp:387
+msgid "&Filter bar position:"
+msgstr "Posição da barra de &filtragem:"
+
+#: settings.cpp:394
+msgid "New notes &place:"
+msgstr "&Posição das novas anotações:"
+
+#: settings.cpp:397
+msgid "At current note"
+msgstr "Na anotação actual"
+
+#: settings.cpp:407
+msgid "View Content of Added Files for the Following Types"
+msgstr "Ver o Conteúdo dos Ficheiros Adicionados para os Seguintes Tipos"
+
+#: settings.cpp:409
+msgid "&HTML page"
+msgstr "Página &HTML"
+
+#: settings.cpp:410
+msgid "&Image or animation"
+msgstr "&Imagem ou animação"
+
+#: settings.cpp:411
+msgid "So&und"
+msgstr "So&m"
+
+#: settings.cpp:424
+msgid "&New images size:"
+msgstr "Tamanho das &novas imagens:"
+
+#: settings.cpp:431
+msgid "&by"
+msgstr "po&r"
+
+#: settings.cpp:434
+msgid "pixels"
+msgstr "pixels"
+
+#: settings.cpp:436
+msgid "&Visualize..."
+msgstr "&Visualize..."
+
+#: settings.cpp:448
+msgid "Customize look of file, sound, link and launcher notes:"
+msgstr "Personalize o aspecto das anotações com ficheiros, sons, ligações e lançadores:"
+
+#: settings.cpp:453
+msgid "Conference audio record"
+msgstr "Gravação áudio da conferência"
+
+#: settings.cpp:454
+msgid "Annual report"
+msgstr "Relatório anual"
+
+#: settings.cpp:455
+msgid "Home folder"
+msgstr "Directoria pessoal"
+
+#: settings.cpp:457
+#, c-format
+msgid "Launch %1"
+msgstr "Lançar %1"
+
+#: settings.cpp:458
+msgid "&Sounds"
+msgstr "&Sons"
+
+#: settings.cpp:459
+msgid "&Files"
+msgstr "&Ficheiros"
+
+#: settings.cpp:460
+msgid "&Local Links"
+msgstr "Ligações &Locais"
+
+#: settings.cpp:461
+msgid "&Network Links"
+msgstr "L&igações de Rede"
+
+#: settings.cpp:462
+msgid "Launc&hers"
+msgstr "Lança&dores"
+
+#: settings.cpp:467
+msgid "Open &text notes with a custom application:"
+msgstr "Abrir anotações com &texto numa aplicação diferente:"
+
+#: settings.cpp:468
+msgid "Open text notes with:"
+msgstr "Abrir anotações com texto com:"
+
+#: settings.cpp:475
+msgid "Open &rich text notes with a custom application:"
+msgstr "Abrir anotações com texto fo&rmatado numa aplicação diferente:"
+
+#: settings.cpp:476
+msgid "Open rich text notes with:"
+msgstr "Abrir anotações com texto formatado com:"
+
+#: settings.cpp:483
+msgid "Open &image notes with a custom application:"
+msgstr "Abrir anotações com &imagens numa aplicação diferente:"
+
+#: settings.cpp:484
+msgid "Open image notes with:"
+msgstr "Abrir anotações com imagens com:"
+
+#: settings.cpp:491
+msgid "Open a&nimation notes with a custom application:"
+msgstr "Abrir anotações com a&nimações numa aplicação diferente:"
+
+#: settings.cpp:492
+msgid "Open animation notes with:"
+msgstr "Abrir anotações com animações com:"
+
+#: settings.cpp:499
+msgid "Open so&und notes with a custom application:"
+msgstr "Abir anotações com som n&uma aplicação diferente:"
+
+#: settings.cpp:500
+msgid "Open sound notes with:"
+msgstr "Abrir anotações com sons com:"
+
+#: settings.cpp:508
+msgid ""
+"<p>If checked, the application defined below will be used when opening that "
+"type of note.</p><p>Otherwise, the application you've configured to in "
+"Konqueror will be used.</p>"
+msgstr "<p>Se estiver seleccionado, a aplicação definida de seguida será usada para abrir anotações desse tipo.</p><p>Caso contrário, será usada a aplicação que foi configurada no Konqueror.</p>"
+
+#: settings.cpp:518
+msgid ""
+"<p>Define the application to use for opening that type of note instead of "
+"the application configured in Konqueror.</p>"
+msgstr "<p>Defina a aplicação a usar para abrir anotações deste tipo, em vez da aplicação configurada do Konqueror.</p>"
+
+#: settings.cpp:542
+msgid "How to change the application used to open Web links?"
+msgstr "Como mudar as aplicações usadas para abrir ligações para a Web?"
+
+#: settings.cpp:543
+msgid ""
+"<p>When opening Web links, they are opened in different applications, "
+"depending on the content of the link (a Web page, an image, a PDF "
+"document...), like if they were files on your computer.</p><p>Here is how to "
+"do if you want every Web addresses to be opened in your Web browser. It is "
+"useful if you are not using KDE (if you are using eg. GNOME, "
+"XFCE...).</p><ul><li>Open the KDE Control Center (if it is not available, "
+"try to type \"kcontrol\" in a command line terminal);</li><li>Go to the "
+"\"KDE Components\" and then \"Components Selector\" section;</li><li>Choose "
+"\"Web Browser\", check \"In the following browser:\" and enter the name of "
+"your Web browser (like \"firefox\" or \"epiphany\").</li></ul><p>Now, when "
+"you click <i>any</i> link that start with \"http://...\", it will be opened "
+"in your Web browser (eg. Mozilla Firefox or Epiphany or...).</p><p>For a "
+"more fine-grained configuration (like openning only Web pages in your Web "
+"browser), read the second help link.</p>"
+msgstr ""
+"<p>Ao abrir ligações para a Web, elas são abertas em aplicações diferentes, de acordo com o conteúdo da ligação (uma página Web, uma imagem, um documento PDF,...), tal como se fossem ficheiros armazenados no seu computador.</p><p>Eis como fazer se quiser abrir todos os endereços Web no seu navegador Web. Isto é útil se não estiver a usar o KDE (se estiver a usar, por exemplo, GNOME, XFCE, ...).</p><ul><li>Abra o Centro de Controlo do KDE (se não estiver disponível, experimente escrever \"kcontrol\" num terminal de linha de comandos);</li><li>Vá a \"Componentes do KDE\" e depois à secção \"Selector de Componentes\";</li><li>Escolha "
+"\"Navegação Web\", escolha \"no seguinte nagevador:\" e introduza o nome do seu navegador Web (algo como \"firefox\" ou \"epiphany\").</li></ul><p>Agora, quando clicar em <i>qualquer</i> ligação que comece por \"http://...\", ela será aberta no seu navegador Web (p. ex., Mozilla Firefox ou Epiphany ou...).</p><p>Para uma configuração mais pormenorizada (por exemplo, abrir apenas as páginas Web no seu navegador Web), leia a segunda ligação de ajuda.</p>"
+
+#: settings.cpp:561
+msgid "How to change the applications used to open files and links?"
+msgstr "Como mudar as aplicações usadas para abrir ficheiros e ligações?"
+
+#: settings.cpp:562
+msgid ""
+"<p>Here is how to set the application to be used for each type of file. This "
+"also applys to Web links if you choose not to open them systematically in a "
+"Web browser (see the first help link). The default settings should be good "
+"enough for you, but this tip is useful if you are using GNOME, XFCE, or "
+"another environment than KDE.</p><p>This is an exemple how to open HTML "
+"pages in your Web browser (and keep using the other applications for other "
+"addresses or files). Repeat those steps for each type of file you want to "
+"open in a specific application.</p><ul><li>Open the KDE Control Center (if "
+"it is not available, try to type \"kcontrol\" in a command line "
+"terminal);</li><li>Go to the \"KDE Components\" and then \"File "
+"Associations\" section;</li><li>In the tree, expand \"text\" and click "
+"\"html\";</li><li>In the applications list, add your Web browser as the "
+"first entry;</li><li>Do the same for the type \"application -> "
+"xhtml+xml\".</li></ul>"
+msgstr ""
+"<p>Eis como definir a aplicação a usar para cada tipo de ficheiro. Isto também se aplica a ligações Web se optar por não as abrir todas num navegador web (ver primeira ligação de ajuda).As definições padrão deverão servir, mas esta dica é útil caso esteja a usar GNOME, XFCE, ou outro ambiente em vez do KDE.</p><p>Este é um exemplo para abrir páginas HTML no seu navegador Web (e continuar a usar outras aplicações para outros endereços ou ficheiros). Repita estes passos para cada tipo de ficheiro que quiser abrir numa aplicação específica.</p><ul><li>Abra o Centro de Controlo do KDE (se não estiver disponível, experimente escrever \"kcontrol\" num terminal de linha de comandos);</li><li>Vá a \"Componentes do KDE\" e à secção \"Associação de Ficheiros\";</li><li>Na árvore, abra \"text\" e clique em"
+" \"html\";</li><li>Na lista de aplicações, adicione o seu navegador Web como primeira entrada;</li><li>Faça a mesma coisa para o tipo \"application -> "
+"xhtml+xml\".</li></ul>"
+
+#: settings.cpp:589
+msgid ""
+"This page groups non-standard options that, once learned,\n"
+"can be very powerful and time saving in the context of %1:"
+msgstr "Esta página agrupa opções fora do normal que, após aprendidas,\npodem ser bastante poderosas e ajudá-lo a poupar tempo no %1:"
+
+#: settings.cpp:595
+msgid "Co&nfirm changes with the Enter key in text editors"
+msgstr "Co&nfirmar as alterações nos editores de texto com a tecla Enter"
+
+#: settings.cpp:597
+msgid "How to insert new lines?"
+msgstr "Como inserir novas linhas?"
+
+#: settings.cpp:598
+msgid ""
+"<p>If you choose to confirm changes with the Enter (Return) key, you still "
+"can insert new lines by pressing Ctrl+Return in text editors.</p><p>Notice "
+"that new paragraphs in rich text editors are inserted with Shift+Return.</p>"
+msgstr "<p>Se activar a validação com a tecla Return, continua a poder inserir novas linhas, usando a combinação de teclas Ctrl+Return enquanto está a editar o item de texto.</p><p>Tenha em atenção que nos editores de texto formatado, os novos parágrafos são inseridos com Shift+Return.</p>"
+
+#: settings.cpp:607
+msgid "&Group a new note when clicking on the right of the insertion line"
+msgstr "A&grupar uma nova anotação ao clicar na direita da linha de inserção"
+
+#: settings.cpp:611
+msgid "How to group a new note?"
+msgstr "Como agrupar uma nova anotação?"
+
+#: settings.cpp:612
+msgid ""
+"<p>When this option is enabled, the insertion-line not only allows you to "
+"insert notes at the cursor position, but also allows you to group a new note "
+"with the one under the cursor:</p>"
+msgstr "<p>Quando esta opção está activada, a linha de inserção não só lhe permite inserir notas na posição actual do cursor como também lhe permite agrupar uma nova nota com a que se encontra sob o cursor:</p>"
+
+#: settings.cpp:614
+msgid ""
+"<p>Place your mouse between notes, where you want to add a new one.<br>Click "
+"on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
+"note.<br>Click on the <b>right</b> to <b>group</b> a note, with the one "
+"<b>below or above</b>, depending on where your mouse is.</p>"
+msgstr ""
+"<p>Coloque o apontador entre duas anotações, onde quer acrescentar uma nova anotação.<br>Clique na <b>esquerda</b> da linha de inserção para <b>inserir</b> uma anotação.<br>Clique na <b>direita</b> para <b>agrupar</b> uma anotação com a que estiver"
+" <b>abaixo ou acima</b>, dependendo do local onde se encontra o seu apontador.</p>"
+
+#: settings.cpp:626 settings.cpp:641
+msgid "Do nothing"
+msgstr "Não fazer nada"
+
+#: settings.cpp:627
+msgid "Paste clipboard"
+msgstr "Colar o conteúdo da área de transferência"
+
+#: settings.cpp:632
+msgid "Insert launcher note"
+msgstr "Inserir anotação com lançador"
+
+#: settings.cpp:635
+msgid "&Shift+middle-click:"
+msgstr "&Shift+botão-do-meio"
+
+#: settings.cpp:638
+msgid "at cursor position"
+msgstr "na posição do cursor"
+
+#: settings.cpp:642 settings.cpp:653
+msgid "Filter"
+msgstr "Filtrar"
+
+#: settings.cpp:647
+msgid "&When writing in a basket:"
+msgstr "Ao escre&ver num cesto:"
+
+#: settings.cpp:652
+msgid "Do the same"
+msgstr "Fazer o mesmo"
+
+#: settings.cpp:658
+msgid "&But begin writing with a comma (,):"
+msgstr "Mas ao com&eçar a escrever \ncom uma vírgula (,)"
+
+#: settings.cpp:662
+msgid "System Tray Icon"
+msgstr "Ícone do Tabuleiro de Sistema"
+
+#: settings.cpp:668
+msgid "Show c&urrent basket icon in system tray icon"
+msgstr "Mostrar o ícone no cesto act&ual no ícone do tabuleiro do sistema"
+
+#: settings.cpp:674
+msgid "H&ide main window when mouse goes out of it for"
+msgstr "Ocultar a janela pr&incipal quando o apontador está fora dela há"
+
+#: settings.cpp:677 settings.cpp:684
+msgid " tenths of seconds"
+msgstr " décimas de segundo"
+
+#: settings.cpp:681
+msgid "Show &main window when mouse hovers over the system tray icon for"
+msgstr "&Mostrar a janela principal quando o apontador \nestá sobre o ícone do tabuleiro de sistema durante"
+
+#: softwareimporters.cpp:139
+msgid "From KJots"
+msgstr "Do KJots"
+
+#: softwareimporters.cpp:227
+msgid "From KNotes"
+msgstr "Do KNotes"
+
+#: softwareimporters.cpp:298
+msgid "From Sticky Notes"
+msgstr "Do Sticky Notes"
+
+#: softwareimporters.cpp:348
+msgid "From Tomboy"
+msgstr "Do Tomboy"
+
+#: tag.cpp:80
+msgid "%1: %2"
+msgstr "%1: %2"
+
+#: tag.cpp:363
+msgid "To Do"
+msgstr "A Fazer"
+
+#: tag.cpp:363
+msgid "Unchecked"
+msgstr "Não assinalado"
+
+#: tag.cpp:363
+msgid "Done"
+msgstr "Feito"
+
+#: tag.cpp:364
+msgid "Progress"
+msgstr "Progresso"
+
+#: tag.cpp:364
+#, c-format
+msgid "0 %"
+msgstr "0 %"
+
+#: tag.cpp:364
+#, c-format
+msgid "25 %"
+msgstr "25 %"
+
+#: tag.cpp:365
+#, c-format
+msgid "50 %"
+msgstr "50 %"
+
+#: tag.cpp:365
+#, c-format
+msgid "75 %"
+msgstr "75 %"
+
+#: tag.cpp:365
+#, c-format
+msgid "100 %"
+msgstr "100 %"
+
+#: tag.cpp:418
+msgid "Priority"
+msgstr "Prioridade"
+
+#: tag.cpp:418
+msgid "Low"
+msgstr "Baixa"
+
+#: tag.cpp:418
+msgid "Medium"
+msgstr "Média"
+
+#: tag.cpp:419
+msgid "High"
+msgstr "Alta"
+
+#: tag.cpp:419
+msgid "Preference"
+msgstr "Preferência"
+
+#: tag.cpp:419
+msgid "Bad"
+msgstr "Má"
+
+#: tag.cpp:420
+msgid "Good"
+msgstr "Boa"
+
+#: tag.cpp:420
+msgid "Excelent"
+msgstr "Excelente"
+
+#: tag.cpp:420
+msgid "Highlight"
+msgstr "Interessante"
+
+#: tag.cpp:487
+msgid "Important"
+msgstr "Importante"
+
+#: tag.cpp:487
+msgid "Very Important"
+msgstr "Altamente Importante"
+
+#: tag.cpp:488
+msgid "Idea"
+msgstr "Ideia"
+
+#: tag.cpp:488
+msgid ""
+"_: The initial of 'Idea'\n"
+"I."
+msgstr "I"
+
+#: tag.cpp:488
+msgid "Title"
+msgstr "Título"
+
+#: tag.cpp:489
+msgid "Code"
+msgstr "Código"
+
+#: tag.cpp:489
+msgid "Work"
+msgstr "Trabalho"
+
+#: tag.cpp:489
+msgid ""
+"_: The initial of 'Work'\n"
+"W."
+msgstr "T"
+
+#: tag.cpp:507
+msgid "Personal"
+msgstr "Pessoal"
+
+#: tag.cpp:507
+msgid ""
+"_: The initial of 'Personal'\n"
+"P."
+msgstr "P"
+
+#: tag.cpp:507
+msgid "Funny"
+msgstr "Divertido"
+
+#: tagsedit.cpp:26
+msgid "Customize Tags"
+msgstr "Personalizar Classificações"
+
+#: _translatorinfo.cpp:1
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr "Nuno J. Silva"
+
+#: _translatorinfo.cpp:3
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr "nunojsg@gmail.com"
+
+#: variouswidgets.cpp:46
+msgid "..."
+msgstr "..."
+
+#: variouswidgets.cpp:83 variouswidgets.cpp:191
+msgid "16 by 16 pixels"
+msgstr "16 por 16 pixels"
+
+#: variouswidgets.cpp:84 variouswidgets.cpp:192
+msgid "22 by 22 pixels"
+msgstr "22 por 22 pixels"
+
+#: variouswidgets.cpp:85 variouswidgets.cpp:193
+msgid "32 by 32 pixels"
+msgstr "32 por 32 pixels"
+
+#: variouswidgets.cpp:86 variouswidgets.cpp:194
+msgid "48 by 48 pixels"
+msgstr "48 por 48 pixels"
+
+#: variouswidgets.cpp:87 variouswidgets.cpp:195
+msgid "64 by 64 pixels"
+msgstr "64 por 64 pixels"
+
+#: variouswidgets.cpp:88 variouswidgets.cpp:196
+msgid "128 by 128 pixels"
+msgstr "128 por 128 pixels"
+
+#: variouswidgets.cpp:128
+msgid ""
+"Resize the window to select the image size\n"
+"and close it or press Escape to accept changes."
+msgstr "Redimensione a janela para escolher o tamanho da imagem\ne feche-a ou pressione Escape para aceitar as modificações."
+

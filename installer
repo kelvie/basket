@@ -1,0 +1,211 @@
+#!/bin/bash
+
+function error
+{
+  echo ""
+  echo "    ========================================================================  "
+  echo "  ((                      An Error has Been Encountered                     ))"
+  echo "    ========================================================================  "
+  echo ""
+  echo ""
+  echo "        In the most cases, some libraries are missing or cannot be found."
+  echo "      Think to install the *-dev or *-devel packages of your distribution."
+  echo "                     For example, if libmng cannot be found,"
+  echo " please verify if libmng AND libmng-devel packages are installed on your system."
+  echo "      See the reported errors to know which librarie need to be installed."
+  echo ""
+  echo $'\a' # Beep to avert user of the error
+  exit 1
+}
+
+##echo "  ((                      An error has been encountered                     ))"
+##echo "  ((654321 987654321 987654321 98765432  23456789 123456789 123456789 123456))"
+##echo" ((654321 987654321 987654321 98765432  23456789 123456789 123456789 123456))"
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                    BasKet Note Pads Quick Installer                    ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+echo "                Welcome to the BasKet Note Pads installer script."
+echo "            It will configure, compile and install BasKet Note Pads."
+echo ""
+echo ""
+echo "                             What do you want to do?"
+echo ""
+echo "  1/ Install BasKet Note Pads system wide (you will need the root password)"
+echo "  2/ Install BasKet Note Pads in your home directory"
+#echo "  3/ Uninstall BasKet Note Pads (you should not: it is so fantastic ;-) )"
+echo ""
+
+echo -n "Your choice (default is 1): "
+read -n 1 WHAT_TO_DO
+echo ""
+
+if [ "_$WHAT_TO_DO" == "_2" ]; then
+  SYS_WIDE=0
+  WHAT_TO_DO=2 # To transform it from string to int
+else
+#  if [ $WHAT_TO_DO == 3 ]; then
+#    SYS_WIDE=1
+#  else  # [ WHAT_TO_DO == 1 ] or default
+    SYS_WIDE=1
+    WHAT_TO_DO=1 # If user entered another number than those he should
+#  fi
+fi
+
+if [ $SYS_WIDE == 0 ]; then
+  prefix=`kde-config --localprefix --expandvars`
+else
+  prefix=`kde-config --prefix --expandvars`
+fi
+
+# Uninstall of BasKet:
+if [ $WHAT_TO_DO == 3 ]; then
+  # Search installed basket:
+  prefix=`kde-config --localprefix --expandvars` # First loacally
+  if [ -f $prefix/bin/basket ]; then
+    SYS_WIDE=0
+  else
+    prefix=`kde-config --prefix --expandvars`    # And then system wide
+    if [ -f $prefix/bin/basket ]; then
+      SYS_WIDE=1
+    else
+      echo "BasKet Note Pads does not seem to be installed."
+      exit 1
+    fi
+  fi
+  # At this stage, SYS_WIDE and prefix are set and uninstall can begin:
+  if [ SYS_WIDE == 1 ]; then
+    su
+    make uninstall || ./configure --prefix=$prefix && make uninstall
+    logout
+  else
+    make uninstall || ./configure --prefix=$prefix && make uninstall
+  fi
+  exit 0
+fi
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                    BasKet Note Pads Quick Installer                    ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+echo ""
+echo ""
+echo "       If you don't know what they are, you can ignore errors or warnings."
+echo ""
+echo "                      The process can take several minutes."
+echo "                  A beep will notify you when it will be done."
+echo "                              Press ENTER to start."
+echo ""
+echo ""
+
+read -s -n 1 # read 1 character without echo, ended by ENTER
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                       Step 1 / 3 : Configuration                       ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+
+echo "./configure --prefix=$prefix"
+./configure --prefix=$prefix || error
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                        Step 2 / 3 : Compilation                        ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+
+echo "make"
+make || (echo "======== ERROR: Recompiling Without Fam Support ========" && echo "" > src/have_fam.h && make) || error
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                        Step 3 / 3 : Installation                       ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+echo "                 The application has successfuly been compiled."
+echo ""
+echo ""
+
+echo $'\a' # Beep to avert user the configuration/compilation is ended and he must act to enter the apssword
+
+if [ `echo "$SYS_WIDE"` == "n" ]; then
+  # First make the bin directory to not copy basket file to bon file if bin/ doesn't exist
+  mkdir $prefix/bin
+  make install
+else
+  echo "            Please now enter the root password in order to install "
+  echo "                        BasKet Note Pads on the system."
+  echo ""
+  su -c "make install" || exit 1
+  echo ""
+  echo ""
+fi
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((                  End of BasKet Note Pads Installation                  ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+echo "                    Do you want to run BasKet Note Pads now?"
+echo "       If an older version is currently running it will be exited before."
+echo ""
+echo "   Notice that you willn't have to exit BasKet : it will be restored each time"
+echo "                               you log in to KDE."
+echo ""
+echo ""
+
+echo -n "Start or restart BasKet Note Pads? [y/n] (default is y): "
+read -n 1 RESTART
+if [ "_$RESTART" != "_" ]; then # If pressed Enter, a new line was already print
+  echo ""
+fi
+
+if [ "_$RESTART" != "_n" ]; then
+  # Get the pid of the process basket, if currently running
+  pid=`ps aux | awk '$11 == "basket" { print $2 }'`
+  if [ "_$pid" == "_" ]; then
+    foo=0
+  else
+    kill -s SIGTERM $pid
+  fi
+
+  if [ "_$SYS_WIDE" == "_n" ]; then
+    echo "$prefix/bin/basket"
+    $prefix/bin/basket
+  else
+    echo "basket"
+    basket
+  fi
+fi
+
+clear
+echo ""
+echo "    ========================================================================  "
+echo "  ((   Congratulation: BasKet Note Pads is now Installed onto your System   ))"
+echo "    ========================================================================  "
+echo ""
+echo ""
+echo "   In the future, if you want to uninstall BasKet Note Pads, you will have to"
+if [ `echo "$SYS_WIDE"` == "n" ]; then
+  echo "               enter the command make uninstall in this directory."
+else
+  echo "           enter the command su -c 'make uninstall' in this directory."
+fi
+echo ""
+echo ""

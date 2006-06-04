@@ -1,0 +1,19 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=BasKet Note Pads
+Name[de]=BasKet Notizblätter
+Name[fr]=Blocs notes BasKet
+Name[xx]=xxBasKetxx
+Exec=basket
+Icon=basket
+Type=Application
+Comment=A set of baskets to keep a full range of data on hand.
+Comment[de]=Ein KDE-Programm zur Organisation Ihrer Daten mit Hilfe von virtuellen Körben.
+Comment[es]=
+Comment[fr]=Des paniers pour garder une grande variété de données sous la main.
+Comment[hu]=
+Comment[pt]=
+Comment[pt_BR]=
+Comment[sl]=
+Comment[sv]=
+Comment[xx]=xxA set of baskets to keep a full range of data on hand.xx

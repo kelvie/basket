@@ -1,0 +1,42 @@
+    ********************
+    * BasKet Note Pads *
+    ********************
+
+  Purpose:
+************
+
+   This application provide as many baskets as you wish, and you
+can drag and drop various objects (text, URLs, images, sounds...)
+into its.
+   Objects can be edited, copied, dragged... So, you can arrange them as
+you want !
+   It's a DropDrawers clone
+(http://www.sigsoftware.com/dropdrawers/index.html) for KDE 3.
+
+   If you want to contact me, please mail me at slaout@linux62.org
+(I'm a french guy, if you prefer to speak french to me).
+
+  Project Status:
+*******************
+
+   Visit the BasKet Note Pads website at :
+http://basket.kde.org/
+   You can find screenshots of it at :
+http://basket.kde.org/screenshots.php
+   For project status, please see the TODO file of this project at :
+http://basket.kde.org/todo.php
+   You also can see the project roadmap for near versions planned
+   features at :
+http://basket.kde.org/roadmap.php
+   See changes log at :
+http://basket.kde.org/changelog.php
+   And finaly, new versions will be announced here :
+http://basket.kde.org/news.php
+   If you want to be noticed of new versions, subscribe to the RSS feed,
+   available with explanations here:
+http://basket.kde.org/rss.php
+
+  Install:
+************
+
+   Please see the INSTALL file.

@@ -1,0 +1,175 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui version="0.6.0-Alpha1HPrivate" name="basket" >
+ <MenuBar noMerge="1" >
+  <Menu name="basket" >
+   <text>&amp;Basket</text>
+   <Action name="basket_new" />
+   <Action name="basket_new_sub" />
+   <Separator/>
+   <Action name="basket_properties" />
+   <Action name="basket_export_html" />
+   <Action name="basket_remove" />
+   <Separator/>
+   <Menu icon="fileimport" >
+    <text>&amp;Import</text>
+    <Action name="basket_import_knotes" />
+    <Action name="basket_import_kjots" />
+    <Action name="basket_import_knowit" />
+    <Separator/>
+    <Action name="basket_import_sticky_notes" />
+    <Action name="basket_import_tomboy" />
+   </Menu>
+   <Separator/>
+   <Action name="window_hide" />
+   <Action name="file_quit" />
+  </Menu>
+  <Menu name="edit" >
+   <text>&amp;Edit</text>
+   <Action name="edit_cut" />
+   <Action name="edit_copy" />
+   <Action name="edit_paste" />
+   <Action name="edit_delete" />
+   <Separator/>
+   <Action name="edit_select_all" />
+   <Action name="edit_unselect_all" />
+   <Action name="edit_invert_selection" />
+   <Separator/>
+   <Action name="edit_filter" />
+   <Action name="edit_filter_all_baskets" />
+   <Action name="edit_filter_reset" />
+  </Menu>
+  <Menu name="go" >
+   <text>&amp;Go</text>
+   <Action name="go_basket_previous" />
+   <Action name="go_basket_next" />
+   <Action name="go_basket_fold" />
+   <Action name="go_basket_expand" />
+  </Menu>
+  <Menu name="note" >
+   <text>&amp;Note</text>
+   <Action name="note_edit" />
+   <Action name="note_open" />
+   <Action name="note_open_with" />
+   <Action name="note_save_to_file" />
+   <Separator/>
+   <Action name="note_group" />
+   <Action name="note_ungroup" />
+   <Separator/>
+   <Action name="note_move_top" />
+   <Action name="note_move_up" />
+   <Action name="note_move_down" />
+   <Action name="note_move_bottom" />
+  </Menu>
+  <Menu name="insert" >
+   <text>&amp;Insert</text>
+   <Action name="insert_text" />
+   <Action name="insert_html" />
+   <Action name="insert_image" />
+   <Action name="insert_link" />
+   <Action name="insert_launcher" />
+   <Action name="insert_color" />
+   <Separator/>
+   <Action name="insert_screen_capture" />
+   <Action name="insert_screen_color" />
+   <Separator/>
+   <Action name="insert_from_file" />
+   <Action name="insert_kmenu" />
+   <Action name="insert_icon" />
+  </Menu>
+  <Menu name="settings" >
+   <text>&amp;Settings</text>
+   <Action name="options_show_toolbar" />
+   <Action name="options_show_statusbar" />
+   <Separator/>
+   <Action name="options_configure_keybinding" />
+   <Action name="options_configure_global_keybinding" />
+   <Action name="options_configure_toolbars" />
+   <Action name="options_configure_notifications" />
+   <Action name="options_configure" />
+  </Menu>
+  <Menu name="help" >
+   <text>&amp;Help</text>
+   <Action name="help_contents" />
+   <Action name="help_plugins_contents" />
+   <Action name="help_whats_this" />
+   <Action name="help_show_tip" />
+   <Separator/>
+   <Action name="help_report_bug" />
+   <Separator/>
+   <Action name="help_about_app" />
+   <Action name="help_about_kde" />
+  </Menu>
+ </MenuBar>
+ <ToolBar newline="false" position="Top" noMerge="1" name="mainToolBar" fullWidth="true" >
+  <text>Main Toolbar</text>
+  <Action name="basket_new" />
+  <Action name="basket_properties" />
+  <Separator lineSeparator="true" name="separator_1" />
+  <Action name="edit_cut" />
+  <Action name="edit_copy" />
+  <Action name="edit_paste" />
+  <Action name="edit_delete" />
+  <Separator lineSeparator="true" name="separator_2" />
+  <Action name="note_group" />
+ </ToolBar>
+ <ToolBar newline="false" position="Bottom" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
+  <text>Rich Text Edit Toolbar</text>
+  <Action name="richtext_font" />
+  <Action name="richtext_color" />
+  <Separator lineSeparator="true" name="separator_1" />
+  <Action name="richtext_bold" />
+  <Action name="richtext_italic" />
+  <Action name="richtext_underline" />
+<!--
+  <Separator lineSeparator="true" name="separator_2" />
+  <Action name="richtext_super" />
+  <Action name="richtext_sub" />
+-->
+  <Separator lineSeparator="true" name="separator_3" />
+  <Action name="richtext_left" />
+  <Action name="richtext_center" />
+  <Action name="richtext_right" />
+  <Action name="richtext_block" />
+ </ToolBar>
+ <Menu name="basket_popup" >
+  <Action name="basket_properties" />
+  <Action name="basket_export_html" />
+  <Action name="basket_remove" />
+  <Separator/>
+  <Action name="basket_new" />
+  <Action name="basket_new_sub" />
+ </Menu>
+ <Menu name="tab_bar_popup" >
+  <Action name="basket_new" />
+ </Menu>
+ <Menu noMerge="1" name="note_popup" >
+  <Action name="note_edit" />
+  <Action name="note_open" />
+  <Action name="note_open_with" />
+  <Action name="note_save_to_file" />
+  <Separator/>
+  <Action name="note_group" />
+  <Action name="note_ungroup" />
+  <Separator/>
+  <Action name="edit_cut" />
+  <Action name="edit_copy" />
+  <Action name="edit_delete" />
+ </Menu>
+ <Menu noMerge="1" name="insert_popup" >
+  <Action name="insert_text" />
+  <Action name="insert_html" />
+  <Action name="insert_image" />
+  <Action name="insert_link" />
+  <Action name="insert_launcher" />
+  <Action name="insert_color" />
+  <Separator/>
+  <Action name="insert_screen_capture" />
+  <Action name="insert_screen_color" />
+  <Separator/>
+  <Action name="insert_from_file" />
+  <Action name="insert_kmenu" />
+  <Action name="insert_icon" />
+  <Separator/>
+  <Action name="edit_paste" />
+ </Menu>
+</kpartgui>
