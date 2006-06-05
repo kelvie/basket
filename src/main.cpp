@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 	globalAccel->insert( "global_paste", i18n("Paste clipboard contents in current basket"),
 	                     i18n("Allows you to paste clipboard contents in the current basket without having to open main window."),
 	                     Qt::CTRL+Qt::ALT+Qt::Key_V, Qt::CTRL+Qt::ALT+Qt::Key_V,
-	                     Global::mainContainer, SLOT(pasteInCurrentBasket()),     true, true );
+	                     Global::mainContainer, SLOT(globalPasteInCurrentBasket()), true, true );
 	globalAccel->insert( "global_show_current_basket", i18n("Show current basket name"),
 	                     i18n("Allows you to know basket is current without opening the main window."),
 	                     "", "",

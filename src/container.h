@@ -398,6 +398,7 @@ class Container : public KMainWindow
 	void redo();
 	void cutNote();
 	void copyNote();
+	void globalPasteInCurrentBasket();
 	void pasteInCurrentBasket();
 	void pasteSelInCurrentBasket();
 	void pasteToBasket(int index, QClipboard::Mode mode = QClipboard::Clipboard);
@@ -496,6 +497,7 @@ class Container : public KMainWindow
 	KAction       *actNewSubBasket;
 	KAction       *m_actHideWindow;
 	KAction       *actQuit;
+	KAction       *m_actPaste;
 	KToggleAction *m_actFilterAllBaskets;
 	KAction       *m_actEditNote;
 	KAction       *m_actOpenNote;
@@ -515,7 +517,6 @@ class Container : public KMainWindow
 	KAction       *m_actRedo;
 	KAction       *m_actCutNote;
 	KAction       *m_actCopyNote;
-	KAction       *m_actPaste;
 	KAction       *m_actDelNote;
 	KAction       *m_actSelectAll;
 	KAction       *m_actUnselectAll;

@@ -1634,6 +1634,7 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 		m_parentContainer->actNewBasket->plug(&menu);
 		m_parentContainer->actNewSubBasket->plug(&menu);
 		menu.insertSeparator();
+		m_parentContainer->m_actPaste->plug(&menu);
 		m_parentContainer->m_actGrabScreenshot->plug(&menu);
 		m_parentContainer->m_actColorPicker->plug(&menu);
 		menu.insertSeparator();
@@ -1651,6 +1652,8 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 
 		m_parentContainer->actQuit->plug(&menu);
 
+		Global::basketTree->currentBasket()->setInsertPopupMenu();
+		connect( &menu, SIGNAL(aboutToHide()), Global::basketTree->currentBasket(), SLOT(delayedCancelInsertPopupMenu()) );
 		menu.exec(event->globalPos());
 		event->accept();
 	} else
@@ -3163,6 +3166,13 @@ void Container::timeoutHide()
 	if (Settings::useSystray() && Settings::hideOnMouseOut())
 		setActive(false);
 	m_tryHideTimer->stop();
+}
+
+void Container::globalPasteInCurrentBasket()
+{
+	currentBasket()->setInsertPopupMenu();
+	pasteInCurrentBasket();
+	currentBasket()->cancelInsertPopupMenu();
 }
 
 void Container::pasteInCurrentBasket()

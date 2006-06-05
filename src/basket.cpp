@@ -1453,7 +1453,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeItem(/*id=*/120);
 		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18n("The verb (Group New Note)", "Group") : i18n("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
-		m_isInsertPopupMenu = true;
+		setInsertPopupMenu();
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())             );
@@ -1519,18 +1519,13 @@ void Basket::delayedCancelInsertPopupMenu()
 	QTimer::singleShot( 0, this, SLOT(cancelInsertPopupMenu()) );
 }
 
-void Basket::cancelInsertPopupMenu()
-{
-	m_isInsertPopupMenu = false;
-}
-
 void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 {
 	if (event->reason() == QContextMenuEvent::Keyboard) {
 		if (countFounds/*countShown*/() == 0) { // TODO: Count shown!!
 			QRect basketRect( mapToGlobal(QPoint(0,0)), size() );
 			QPopupMenu *menu = Global::mainContainer->popupMenu("insert_popup");
-			m_isInsertPopupMenu = true;
+			setInsertPopupMenu();
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())             );
@@ -1850,6 +1845,8 @@ void Basket::pasteNote(QClipboard::Mode mode)
 		else if (m_editor->lineEdit())
 			m_editor->lineEdit()->paste();
 	} else {
+		closeEditor();
+		unselectAll();
 		Note *note = NoteFactory::dropNote(KApplication::clipboard()->data(mode), this);
 		if (note) {
 			insertCreatedNote(note);

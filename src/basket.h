@@ -230,7 +230,8 @@ class Basket : public QScrollView, public QToolTip
 	void insertImage(const QPixmap &image);
 	void pasteNote(QClipboard::Mode mode = QClipboard::Clipboard);
 	void delayedCancelInsertPopupMenu();
-	void cancelInsertPopupMenu();
+	void setInsertPopupMenu()    { m_isInsertPopupMenu = true;  }
+	void cancelInsertPopupMenu() { m_isInsertPopupMenu = false; }
   private slots:
 	void hideInsertPopupMenu();
 	void timeoutHideInsertPopupMenu();
