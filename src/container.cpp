@@ -78,6 +78,7 @@
 #include "xmlwork.h"
 #include "debugwindow.h"
 #include "notefactory.h"
+#include "notedrag.h"
 #include "tools.h"
 #include "tag.h"
 #include "formatimporter.h"
@@ -1009,6 +1010,9 @@ void BasketTree::goToPreviousBasket()
 
 	if (toSwitch)
 		setCurrentBasket(toSwitch->basket());
+
+	if (Settings::usePassivePopup())
+		Global::mainContainer->showPassiveContent();
 }
 
 void BasketTree::goToNextBasket()
@@ -1023,6 +1027,9 @@ void BasketTree::goToNextBasket()
 
 	if (toSwitch)
 		setCurrentBasket(toSwitch->basket());
+
+	if (Settings::usePassivePopup())
+		Global::mainContainer->showPassiveContent();
 }
 
 void BasketTree::foldBasket()
@@ -1605,7 +1612,7 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 	} else if (event->button() & Qt::MidButton) {    // Paste
 		m_parentContainer->currentBasket()->pasteNote(QClipboard::Selection);
 		if (Settings::usePassivePopup())
-			Global::mainContainer->showPassiveDropped(i18n("Pasted selection (%1) to basket <i>%2</i>"));
+			Global::mainContainer->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
 		event->accept();
 	} else if (event->button() & Qt::RightButton) { // Popup menu
 		KPopupMenu menu(this);
@@ -1694,7 +1701,7 @@ void ContainerSystemTray::dropEvent(QDropEvent *event)
 	m_parentContainer->currentBasket()->dropEvent(event);
 
 	if (Settings::usePassivePopup())
-		Global::mainContainer->showPassiveDropped(i18n("Dropped (%1) to basket <i>%2</i>"));
+		Global::mainContainer->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));
 }
 
 void ContainerSystemTray::showBasket(int index)
@@ -1801,6 +1808,9 @@ void ContainerSystemTray::wheelEvent(QWheelEvent *event)
 		Global::basketTree->goToPreviousBasket();
 	else
 		Global::basketTree->goToNextBasket();
+
+	if (Settings::usePassivePopup())
+		Global::mainContainer->showPassiveContent();
 }
 
 void ContainerSystemTray::enterEvent(QEvent*)
@@ -2442,16 +2452,12 @@ void Container::screenshotGrabbed(const QPixmap &pixmap)
 	}
 
 	currentBasket()->insertImage(pixmap);
-/*	Note *note = NoteFactory::createNoteColor(color, currentBasket());
-	currentBasket()->ensureNoteVisible(note);
-	currentBasket()->unselectAllBut(note);
-	currentBasket()->setFocusedNote(note);*/
 
 	if (m_colorPickWasShown)
 		show();
 
-	if (m_colorPickWasGlobal && Settings::usePassivePopup()) // TODO
-		showPassiveDropped(i18n("Grabbed screen zone to basket <i>%1</i>"), false);
+	if (Settings::usePassivePopup())
+		showPassiveDropped(i18n("Grabbed screen zone to basket <i>%1</i>"));
 }
 
 // BEGIN Color picker (code from KColorEdit):
@@ -2482,18 +2488,13 @@ void Container::slotColorFromScreenGlobal()
 
 void Container::colorPicked(const QColor &color)
 {
-//	currentBasket()->restoreInsertionData();
 	currentBasket()->insertColor(color);
-/*	Note *note = NoteFactory::createNoteColor(color, currentBasket());
-	currentBasket()->ensureNoteVisible(note);
-	currentBasket()->unselectAllBut(note);
-	currentBasket()->setFocusedNote(note);*/
 
 	if (m_colorPickWasShown)
 		show();
 
-	if (m_colorPickWasGlobal && Settings::usePassivePopup())
-		showPassiveDropped(i18n("Picked color to basket <i>%1</i>"), false);
+	if (Settings::usePassivePopup())
+		showPassiveDropped(i18n("Picked color to basket <i>%1</i>"));
 }
 
 void Container::colorPickingCanceled()
@@ -3169,7 +3170,7 @@ void Container::pasteInCurrentBasket()
 	currentBasket()->pasteNote();
 
 	if (Settings::usePassivePopup())
-		showPassiveDropped(i18n("Clipboard content (%1) pasted to basket <i>%2</i>"));
+		showPassiveDropped(i18n("Clipboard content pasted to basket <i>%1</i>"));
 }
 
 void Container::pasteSelInCurrentBasket()
@@ -3177,14 +3178,15 @@ void Container::pasteSelInCurrentBasket()
 	currentBasket()->pasteNote(QClipboard::Selection);
 
 	if (Settings::usePassivePopup())
-		showPassiveDropped(i18n("Selection (%1) pasted to basket <i>%2</i>"));
+		showPassiveDropped(i18n("Selection pasted to basket <i>%1</i>"));
 }
 
-void Container::showPassiveDropped(const QString &title, bool showTypeName)
+void Container::showPassiveDropped(const QString &title)
 {
 	if ( ! currentBasket()->isLocked() ) {
-		m_passiveDroppedTitle         = title;
-		m_passiveDroppedShortTypeName = showTypeName;
+		// TODO: Keep basket, so that we show the message only if something was added to a NOT visible basket
+		m_passiveDroppedTitle     = title;
+		m_passiveDroppedSelection = currentBasket()->selectedNotes();
 		QTimer::singleShot( c_delayTooltipTime, this, SLOT(showPassiveDroppedDelayed()) );
 		// DELAY IT BELOW:
 	} else
@@ -3193,17 +3195,18 @@ void Container::showPassiveDropped(const QString &title, bool showTypeName)
 
 void Container::showPassiveDroppedDelayed()
 {
-	return; // TODO
+	if (isActiveWindow())
+		return;
 
-	QString title        = m_passiveDroppedTitle;
-	bool    showTypeName = m_passiveDroppedShortTypeName;
+	QString title = m_passiveDroppedTitle;
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : (QWidget*)Global::mainContainer);
+	QPixmap contentsPixmap = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
+	QMimeSourceFactory::defaultFactory()->setPixmap("_passivepopup_image_", contentsPixmap);
 	m_passivePopup->setView(
-		(showTypeName ? title.arg(""/*currentBasket()->lastInsertedNote()->content()->typeName()*/) : title)
-		     .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
-	""/*"<qt>" + currentBasket()->lastInsertedNote()->content()->toHtml("_passivepopup_image_") + "</qt>"*/,
+		title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+		(contentsPixmap.isNull() ? "" : "<img src=\"_passivepopup_image_\">"),
 		kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
@@ -3221,8 +3224,16 @@ void Container::showPassiveImpossible(const QString &message)
 	m_passivePopup->show();
 }
 
-void Container::showPassiveContent()
+void Container::showPassiveContentForced()
 {
+	showPassiveContent(/*forceShow=*/true);
+}
+
+void Container::showPassiveContent(bool forceShow/* = false*/)
+{
+	if (!forceShow && isActiveWindow())
+		return;
+
 	// FIXME: Duplicate code (2 times)
 	QString message;
 
@@ -3237,5 +3248,11 @@ void Container::showPassiveContent()
 		kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
+
+void Container::addNoteText()  { show(); currentBasket()->insertEmptyNote(NoteType::Text);  }
+void Container::addNoteHtml()  { show(); currentBasket()->insertEmptyNote(NoteType::Html);  }
+void Container::addNoteImage() { show(); currentBasket()->insertEmptyNote(NoteType::Image); }
+void Container::addNoteLink()  { show(); currentBasket()->insertEmptyNote(NoteType::Link);  }
+void Container::addNoteColor() { show(); currentBasket()->insertEmptyNote(NoteType::Color); }
 
 #include "container.moc"

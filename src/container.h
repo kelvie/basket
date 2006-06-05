@@ -50,6 +50,7 @@ class DecoratedBasket;
 class Basket;
 class Container;
 class RegionGrabber;
+class NoteSelection;
 
 
 /// NEW:
@@ -444,7 +445,7 @@ class Container : public KMainWindow
 	QPopupMenu* popupMenu(const QString &menuName);
   private:
 	QString m_passiveDroppedTitle;
-	bool    m_passiveDroppedShortTypeName;
+	NoteSelection *m_passiveDroppedSelection;
 	KPassivePopup *m_passivePopup;
   public:
 	static const int c_delayTooltipTime;
@@ -453,11 +454,16 @@ class Container : public KMainWindow
 	void setCurrentBasket(Basket *basket);
 	void countsChanged(Basket *basket);
 	/** Global shortcuts */
-	void showPassiveDropped(const QString &title, bool showTypeName = true);
-		// %1 will be replaced by typeName(), unless showTypeName is false (it will then remove %1)
-		// %2 with currentBasket()->name()
+	void addNoteText();
+	void addNoteHtml();
+	void addNoteImage();
+	void addNoteLink();
+	void addNoteColor();
+	/** Passive Popups for Global Actions */
+	void showPassiveDropped(const QString &title);
 	void showPassiveDroppedDelayed(); // Do showPassiveDropped(), but delayed
-	void showPassiveContent();
+	void showPassiveContent(bool forceShow = false);
+	void showPassiveContentForced();
 	void showPassiveImpossible(const QString &message);
 	// For GUI :
 	void setFiltering(bool filtering);

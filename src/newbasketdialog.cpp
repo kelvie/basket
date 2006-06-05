@@ -258,6 +258,7 @@ void NewBasketDialog::slotOk()
 	Global::basketTree->closeAllEditors();
 
 	BasketFactory::newBasket(m_icon->icon(), m_name->text(), m_backgroundColor->color(), templateName, m_basketsMap[m_createIn->currentItem()]);
+	Global::mainContainer->show();
 
 	KDialogBase::slotOk();
 }

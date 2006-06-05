@@ -24,6 +24,7 @@
 #include <qstring.h>
 #include <qdragobject.h>
 #include <qdatastream.h>
+#include <qpixmap.h>
 #include <qvaluelist.h>
 #include <kmultipledrag.h>
 
@@ -61,6 +62,7 @@ class NoteDrag
 	static void setFeedbackPixmap(  NoteSelection *noteList, KMultipleDrag *multipleDrag               );
 	static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
   public:
+	static QPixmap feedbackPixmap(NoteSelection *noteList);
 	static QDragObject* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
 	static bool canDecode(QMimeSource *source);
 	static Note* decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes);

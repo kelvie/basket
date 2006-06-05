@@ -1853,7 +1853,7 @@ void Basket::pasteNote(QClipboard::Mode mode)
 		Note *note = NoteFactory::dropNote(KApplication::clipboard()->data(mode), this);
 		if (note) {
 			insertCreatedNote(note);
-			unselectAllBut(note);
+			//unselectAllBut(note);
 		}
 	}
 }

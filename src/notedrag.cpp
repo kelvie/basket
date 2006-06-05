@@ -257,6 +257,13 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 
 void NoteDrag::setFeedbackPixmap(NoteSelection *noteList, KMultipleDrag *multipleDrag)
 {
+	QPixmap pixmap = feedbackPixmap(noteList);
+	if (!pixmap.isNull())
+		multipleDrag->setPixmap(pixmap, QPoint(-8, -8));
+}
+
+QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
+{
 	static const int MARGIN  = 2;
 	static const int SPACING = 1;
 
@@ -346,8 +353,10 @@ void NoteDrag::setFeedbackPixmap(NoteSelection *noteList, KMultipleDrag *multipl
 		painter.drawLine(1,                  result.height() - 2, result.width() - 2, result.height() - 2);
 		painter.drawLine(result.width() - 2, 1,                   result.width() - 2, result.height() - 2);
 		// And assign the feedback pixmap to the drag object:
-		multipleDrag->setPixmap(result, QPoint(-8, -8));
+		//multipleDrag->setPixmap(result, QPoint(-8, -8));
+		return result;
 	}
+	return QPixmap();
 }
 
 bool NoteDrag::canDecode(QMimeSource *source)
