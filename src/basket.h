@@ -518,8 +518,10 @@ class Basket : public QScrollView, public QToolTip
   public:
 	void setFocusedNote(Note *note);
 	void focusANote();
-	void focusANonSelectedNoteAbove();
-	void focusANonSelectedNoteBelow();
+	void focusANonSelectedNoteAbove(bool inSameColumn);
+	void focusANonSelectedNoteBelow(bool inSameColumn);
+	void focusANonSelectedNoteBelowOrThenAbove();
+	void focusANonSelectedNoteAboveOrThenBelow();
 	Note* focusedNote() { return m_focusedNote; }
 	Note* firstNoteInStack();
 	Note* lastNoteInStack();

@@ -3429,8 +3429,7 @@ void Basket::closeEditor()
 
 	// Delete the note if it is now empty:
 	if (isEmpty) {
-		focusANonSelectedNoteAbove();
-		focusANonSelectedNoteBelow();
+		focusANonSelectedNoteAboveOrThenBelow();
 		note->setSelected(true);
 		note->deleteSelectedNotes();
 		save();
@@ -3592,8 +3591,7 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 	} else {
 		// Delete the note user have canceled the addition:
 		if ((justAdded && editor->canceled()) || editor->isEmpty() /*) && editor->note()->states().count() <= 0*/) {
-			focusANonSelectedNoteAbove();
-			focusANonSelectedNoteBelow();
+			focusANonSelectedNoteAboveOrThenBelow();
 			editor->note()->setSelected(true);
 			editor->note()->deleteSelectedNotes();
 			save();
@@ -3634,7 +3632,7 @@ void Basket::noteDelete()
 	noteDeleteWithoutConfirmation();
 }
 
-void Basket::focusANonSelectedNoteBelow()
+void Basket::focusANonSelectedNoteBelow(bool inSameColumn)
 {
 	// First focus another unselected one below it...:
 	if (m_focusedNote && m_focusedNote->isSelected()) {
@@ -3642,13 +3640,15 @@ void Basket::focusANonSelectedNoteBelow()
 		while (next && next->isSelected())
 			next = next->nextShownInStack();
 		if (next) {
-			setFocusedNote(next);
-			m_startOfShiftSelectionNote = next;
+			if (inSameColumn && isColumnsLayout() && m_focusedNote->parentPrimaryNote() == next->parentPrimaryNote()) {
+				setFocusedNote(next);
+				m_startOfShiftSelectionNote = next;
+			}
 		}
 	}
 }
 
-void Basket::focusANonSelectedNoteAbove()
+void Basket::focusANonSelectedNoteAbove(bool inSameColumn)
 {
 	// ... Or above it:
 	if (m_focusedNote && m_focusedNote->isSelected()) {
@@ -3656,17 +3656,34 @@ void Basket::focusANonSelectedNoteAbove()
 		while (prev && prev->isSelected())
 			prev = prev->prevShownInStack();
 		if (prev) {
-			setFocusedNote(prev);
-			m_startOfShiftSelectionNote = prev;
+			if (inSameColumn && isColumnsLayout() && m_focusedNote->parentPrimaryNote() == prev->parentPrimaryNote()) {
+				setFocusedNote(prev);
+				m_startOfShiftSelectionNote = prev;
+			}
 		}
 	}
+}
+
+void Basket::focusANonSelectedNoteBelowOrThenAbove()
+{
+	focusANonSelectedNoteBelow(/*inSameColumn=*/true);
+	focusANonSelectedNoteAbove(/*inSameColumn=*/true);
+	focusANonSelectedNoteBelow(/*inSameColumn=*/false);
+	focusANonSelectedNoteAbove(/*inSameColumn=*/false);
+}
+
+void Basket::focusANonSelectedNoteAboveOrThenBelow()
+{
+	focusANonSelectedNoteAbove(/*inSameColumn=*/true);
+	focusANonSelectedNoteBelow(/*inSameColumn=*/true);
+	focusANonSelectedNoteAbove(/*inSameColumn=*/false);
+	focusANonSelectedNoteBelow(/*inSameColumn=*/false);
 }
 
 void Basket::noteDeleteWithoutConfirmation(bool deleteFilesToo)
 {
 	// If the currently focused note is selected, it will be deleted.
-	focusANonSelectedNoteBelow();
-	focusANonSelectedNoteAbove();
+	focusANonSelectedNoteBelowOrThenAbove();
 
 	// Do the deletion:
 	Note *note = firstNote();
