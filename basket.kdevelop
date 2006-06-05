@@ -28,7 +28,7 @@
       <mainprogram>src/basket</mainprogram>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs>-d --nofork --data-folder /home/seb/.basket</programargs>
+      <programargs>-d --nofork --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars>
@@ -148,7 +148,7 @@
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs>-d --nofork</programargs>
+      <programargs>-d --nofork --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <gdbpath></gdbpath>
       <configGdbScript></configGdbScript>
       <runShellScript></runShellScript>
