@@ -21,13 +21,14 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <qstring.h>
+
 class DebugWindow;
 class BackgroundManager;
 class Container;
 class ContainerSystemTray;
 class BasketTree;
 class KGlobalAccel;
-class QString;
 
 /** Handle all global variables of the application.
   * This file only declare classes : developer should include
@@ -36,6 +37,8 @@ class QString;
   */
 class Global
 {
+  private:
+	static QString s_customSavesFolder;
   public:
 	// Global Variables:
 	static DebugWindow         *debugWindow;
@@ -46,6 +49,7 @@ class Global
 	static KGlobalAccel        *globalAccel;
 
 	// Application Folders:
+	static void setCustomSavesFolder(const QString &folder);
 	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
 	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
 	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".

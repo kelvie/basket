@@ -69,6 +69,8 @@ int main(int argc, char *argv[])
 	{
 		{ "d", 0, 0 },
 		{ "debug", I18N_NOOP("Show the debug window"), 0 },
+		{ "f", 0, 0 },
+		{ "data-folder <folder>", I18N_NOOP("Custom folder where to load and save basket data and application data (useful for debugging purpose)"), 0 },
 		{ "h", 0, 0 },
 		{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
 		{ 0, 0, 0 }
@@ -115,6 +117,11 @@ int main(int argc, char *argv[])
 	/***************************/
 
 
+
+	/* Custom data folder */
+	QCString customDataFolder = KCmdLineArgs::parsedArgs()->getOption("data-folder");
+	if (customDataFolder != 0 && !customDataFolder.isEmpty())
+		Global::setCustomSavesFolder(customDataFolder);
 
 	/* Settings */
 	Settings::loadConfig();

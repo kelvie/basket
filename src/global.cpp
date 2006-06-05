@@ -28,35 +28,31 @@
 
 /** Define initial values for global variables : */
 
-DebugWindow         *Global::debugWindow       = 0L;
-BackgroundManager   *Global::backgroundManager = 0L;
-Container           *Global::mainContainer     = 0L;
-ContainerSystemTray *Global::tray              = 0L;
-BasketTree          *Global::basketTree        = 0L;
-KGlobalAccel        *Global::globalAccel       = 0L;
+QString              Global::s_customSavesFolder = "";
+DebugWindow         *Global::debugWindow         = 0L;
+BackgroundManager   *Global::backgroundManager   = 0L;
+Container           *Global::mainContainer       = 0L;
+ContainerSystemTray *Global::tray                = 0L;
+BasketTree          *Global::basketTree          = 0L;
+KGlobalAccel        *Global::globalAccel         = 0L;
+
+void Global::setCustomSavesFolder(const QString &folder)
+{
+	s_customSavesFolder = folder;
+}
 
 QString Global::savesFolder()
 {
-#if 0
-	/* This pre-linking condition is useful to have two versions of this application :
-	 *  For standard use (official released version) :
-	 *   Must be 0
-	 *  For developer(s) use :
-	 *   0 : The path to store debug baskets
-	 *       (so, no need to edit code when doing a release)
-	 *   1 : The path to store real baskets you use
-	 *       (installed version)
-	 * Note that only data are separate : configurations are shared !
-	 */
-	return "/home/seb/.basket/";
-#else
 	static QString *folder = 0L; // Memorize the folder to do not have to re-compute it each time it's needed
 
-	if (folder == 0L)            // Initialize it if not yet done
-		folder = new QString( KGlobal::dirs()->saveLocation("data", "basket/") );
+	if (folder == 0L) {            // Initialize it if not yet done
+		if (s_customSavesFolder.isEmpty())
+			folder = new QString( KGlobal::dirs()->saveLocation("data", "basket/") );
+		else
+			folder = new QString(s_customSavesFolder + "/");
+	}
 
 	return *folder;
-#endif
 }
 
 QString Global::basketsFolder()     { return savesFolder() + "baskets/";     }
