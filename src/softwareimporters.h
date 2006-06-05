@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +28,7 @@ class QString;
 class Basket;
 
 /** Functions that import data from other softwares.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 namespace SoftwareImporters
 {
@@ -43,6 +43,8 @@ namespace SoftwareImporters
 	void importKJots();
 	void importStickyNotes();
 	void importTomboy();
+  /** @author Petri Damsten <petri.damsten@iki.fi>
+   */
 	void importKnowIt();
 }
 
