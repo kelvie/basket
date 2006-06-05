@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -514,7 +514,7 @@ DebuggedLineEdit::DebuggedLineEdit(const QString &text, QWidget *parent)
 {
 }
 
-DebuggedLineEdit::~FocusedLineEdit()
+DebuggedLineEdit::~DebuggedLineEdit()
 {
 }
 
