@@ -1610,7 +1610,9 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 		m_canDrag  = true;
 		event->accept();
 	} else if (event->button() & Qt::MidButton) {    // Paste
+		m_parentContainer->currentBasket()->setInsertPopupMenu();
 		m_parentContainer->currentBasket()->pasteNote(QClipboard::Selection);
+		m_parentContainer->currentBasket()->cancelInsertPopupMenu();
 		if (Settings::usePassivePopup())
 			Global::mainContainer->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
 		event->accept();
