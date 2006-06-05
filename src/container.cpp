@@ -2369,8 +2369,9 @@ void Container::importKnowIt()      { SoftwareImporters::importKnowIt();      }
 
 void Container::showHideFilterBar(bool show, bool switchFocus)
 {
-	if (show != m_actShowFilter->isChecked())
-		m_actShowFilter->setChecked(show);
+//	if (show != m_actShowFilter->isChecked())
+//		m_actShowFilter->setChecked(show);
+	m_actShowFilter->setChecked(currentDecoratedBasket()->filterData().isFiltering);
 
 	currentDecoratedBasket()->setFilterBarShown(show, switchFocus);
 	currentDecoratedBasket()->resetFilter();
