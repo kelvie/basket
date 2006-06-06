@@ -1327,7 +1327,7 @@ void BasketTree::needSave(QListViewItem*)
 {
 	if (!m_loading)
 		// A basket has been collapsed/expanded or a new one is select: this is not urgent:
-		QTimer::singleShot(1000/*ms*/, this, SLOT(save()));
+		QTimer::singleShot(500/*ms*/, this, SLOT(save()));
 }
 
 void BasketTree::slotPressed(QListViewItem *item, const QPoint &/*pos*/, int /*column*/)
@@ -1409,8 +1409,7 @@ void DesktopColorPicker::keyPressEvent(QKeyEvent *event)
 			releaseKeyboard();
 			emit canceledPick();
 		}
-	else
-		QDesktopWidget::keyPressEvent(event);
+	QDesktopWidget::keyPressEvent(event);
 }
 
 /** KSystemTray2 */
@@ -2512,7 +2511,8 @@ void Container::colorPicked(const QColor &color)
 
 void Container::colorPickingCanceled()
 {
-	show();
+	if (m_colorPickWasShown)
+		show();
 }
 
 void Container::toggleToolBar()
