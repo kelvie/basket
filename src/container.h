@@ -466,6 +466,7 @@ class Container : public KMainWindow
 	void showPassiveContent(bool forceShow = false);
 	void showPassiveContentForced();
 	void showPassiveImpossible(const QString &message);
+	void showPassiveLoading(Basket *basket);
 	// For GUI :
 	void setFiltering(bool filtering);
   protected:

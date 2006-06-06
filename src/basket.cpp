@@ -1361,8 +1361,10 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		if ( (zone == Note::Handle || zone == Note::Group) ||
 		     (clicked && clicked->isSelected() &&
 		       (zone == Note::TagsArrow || zone == Note::Custom0 || zone == Note::Content || zone == Note::Link /**/ || zone >= Note::Emblem0 /**/)) ) {
-			m_pressPos = event->pos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
-			m_canDrag  = true;
+			if (!shiftPressed && !controlPressed) {
+				m_pressPos = event->pos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
+				m_canDrag  = true;
+			}
 		}
 
 		// Initializing Resizer move:
@@ -1396,11 +1398,14 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				unselectAllBut(clicked);
 			setFocusedNote(end); /// /// ///
 			m_startOfShiftSelectionNote = (end->isGroup() ? end->firstRealChild() : end);
-			m_noActionOnMouseRelease = false;
+			//m_noActionOnMouseRelease = false;
+			m_noActionOnMouseRelease = true;
 			return;
-		} else if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
+		}
+		// MOVED TO RELEASE EVENT:
+		/* else if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
 			if (controlPressed && shiftPressed)
-				selectRange(m_startOfShiftSelectionNote, clicked, /*unselectOthers=*/false);
+				selectRange(m_startOfShiftSelectionNote, clicked, / *unselectOthers=* /false);
 			else if (shiftPressed)
 				selectRange(m_startOfShiftSelectionNote, clicked);
 			else if (controlPressed)
@@ -1409,7 +1414,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
 			m_noActionOnMouseRelease = true;
 			return;
-		}
+		}*/
 
 		// Initializing Note move:
 /*		if ((zone == Note::Group || zone == Note::Handle) && clicked->isFree()) {
@@ -1794,6 +1799,8 @@ void Basket::contentsDropEvent(QDropEvent *event)
 
 void Basket::insertEmptyNote(int type)
 {
+	if (!isLoaded())
+		load();
 	if (isDuringEdit())
 		closeEditor();
 	Note *note = NoteFactory::createEmptyNote((NoteType::Id)type, this);
@@ -1845,6 +1852,10 @@ void Basket::pasteNote(QClipboard::Mode mode)
 		else if (m_editor->lineEdit())
 			m_editor->lineEdit()->paste();
 	} else {
+		if (!isLoaded()) {
+			Global::mainContainer->showPassiveLoading(this);
+			load();
+		}
 		closeEditor();
 		unselectAll();
 		Note *note = NoteFactory::dropNote(KApplication::clipboard()->data(mode), this);
@@ -1984,6 +1995,23 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		return;
 	}
 	Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
+
+	// Convenient variables:
+	bool controlPressed = event->stateAfter() & Qt::ControlButton;
+	bool shiftPressed   = event->stateAfter() & Qt::ShiftButton;
+
+	if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
+		if (controlPressed && shiftPressed)
+			selectRange(m_startOfShiftSelectionNote, clicked, /*unselectOthers=*/false);
+		else if (shiftPressed)
+			selectRange(m_startOfShiftSelectionNote, clicked);
+		else if (controlPressed)
+			clicked->setSelectedRecursivly(!clicked->allSelected());
+		setFocusedNote(clicked); /// /// ///
+		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
+		m_noActionOnMouseRelease = true;
+		return;
+	}
 
 	// Switch tag states:
 	if (zone >= Note::Emblem0) {
@@ -3478,7 +3506,7 @@ Note* Basket::theSelectedNote()
 void debugSel(NoteSelection* sel, int n = 0)
 {
 	for (NoteSelection *node = sel; node; node = node->next) {
-		for(int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
 			std::cout << "-";
 		std::cout << (node->firstChild ? "Group" : node->note->content()->toText("")) << std::endl;
 		if (node->firstChild)
@@ -3504,12 +3532,20 @@ NoteSelection* Basket::selectedNotes()
 	if (selection.firstChild->note->isColumn()) {
 		NoteSelection tmpSelection;
 		NoteSelection *nextNode;
-		for (NoteSelection *node = selection.firstChild; node; node = node->next) {
-			for (NoteSelection *subNode = node->firstChild; subNode; subNode = nextNode) {
-				nextNode = subNode->next;
-				tmpSelection.append(subNode);
-				subNode->parent = 0;
-				subNode->next = 0;
+		NoteSelection *nextSubNode;
+		for (NoteSelection *node = selection.firstChild; node; node = nextNode) {
+			nextNode = node->next;
+			if (node->note->isColumn()) {
+				for (NoteSelection *subNode = node->firstChild; subNode; subNode = nextSubNode) {
+					nextSubNode = subNode->next;
+					tmpSelection.append(subNode);
+					subNode->parent = 0;
+					subNode->next = 0;
+				}
+			} else {
+				tmpSelection.append(node);
+				node->parent = 0;
+				node->next = 0;
 			}
 		}
 //		debugSel(tmpSelection.firstChild);

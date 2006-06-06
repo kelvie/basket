@@ -2456,6 +2456,10 @@ void Container::screenshotGrabbed(const QPixmap &pixmap)
 		return;
 	}
 
+	if (!currentBasket()->isLoaded()) {
+		showPassiveLoading(currentBasket());
+		currentBasket()->load();
+	}
 	currentBasket()->insertImage(pixmap);
 
 	if (m_colorPickWasShown)
@@ -2493,6 +2497,10 @@ void Container::slotColorFromScreenGlobal()
 
 void Container::colorPicked(const QColor &color)
 {
+	if (!currentBasket()->isLoaded()) {
+		showPassiveLoading(currentBasket());
+		currentBasket()->load();
+	}
 	currentBasket()->insertColor(color);
 
 	if (m_colorPickWasShown)
@@ -3258,6 +3266,20 @@ void Container::showPassiveContent(bool forceShow/* = false*/)
 			: Tools::textToHTMLWithoutP(currentBasket()->basketName()) ),
 		message,
 		kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
+	m_passivePopup->show();
+}
+
+void Container::showPassiveLoading(Basket *basket)
+{
+	if (isActiveWindow())
+		return;
+
+	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
+	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : (QWidget*)Global::mainContainer);
+	m_passivePopup->setView(
+		Tools::textToHTMLWithoutP(basket->basketName()),
+		i18n("Loading..."),
+		kapp->iconLoader()->loadIcon(basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
