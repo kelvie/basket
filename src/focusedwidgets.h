@@ -27,6 +27,7 @@
 #include <kcombobox.h>
 #include <klineedit.h>
 #include <kapplication.h>
+#include <qclipboard.h>
 
 class FocusedTextEdit : public KTextEdit
 {
@@ -34,7 +35,9 @@ class FocusedTextEdit : public KTextEdit
   public:
 	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0, const char *name = 0);
 	~FocusedTextEdit();
+	void paste();
   protected:
+	void adaptClipboardText(QClipboard::Mode mode);
 	void keyPressEvent(QKeyEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	QPopupMenu* createPopupMenu(const QPoint &pos);

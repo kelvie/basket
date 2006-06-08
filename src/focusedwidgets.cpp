@@ -31,13 +31,52 @@ FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent,
  : KTextEdit(parent, name),
    m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
-	m_disableUpdatesOnKeyPress = false;
-	setWFlags(Qt::WNoAutoErase);
+	setWFlags(Qt::WNoAutoErase); // Does not work, we still need the disableUpdatesOnKeyPress hack!
 }
 
 FocusedTextEdit::~FocusedTextEdit()
 {
 }
+
+/**
+  * Thanks to alex.theel@gmx.net, author of TuxCards
+  * Code copied from tuxcards-1.2/src/gui/editor/editor.cpp
+  *
+  ***
+  * Override the regular paste() methode, so that lines are
+  * not separated by each other with an blank line.
+  */
+void FocusedTextEdit::paste()
+{
+	adaptClipboardText(QClipboard::Selection);
+	adaptClipboardText(QClipboard::Clipboard);
+	KTextEdit::paste();
+}
+
+/**
+  * Thanks to alex.theel@gmx.net, author of TuxCards
+  * Code copied from tuxcards-1.2/src/gui/editor/editor.cpp
+  *
+  ***
+  * Auxiliar method that takes the text from the clipboard - using the
+  * specified 'mode' -, replaces all '\n' within that text and writes
+  * it back to the clipboard.
+  */
+void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
+{
+	QClipboard *clipboard = QApplication::clipboard();
+	if (!clipboard)
+		return;
+
+	if ( (textFormat() == Qt::RichText) && (!clipboard->data(mode)->provides("application/x-qrichtext")) ) {
+		QString text = clipboard->text(mode);
+		if (text) {
+			text = text.replace("\n", QChar(0x2028));
+			clipboard->setText(text, mode);
+		}
+	}
+}
+
 
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
