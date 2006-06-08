@@ -1102,7 +1102,9 @@ void Basket::load()
 	QDomElement notes = XMLWork::getElement(docElem, "notes");
 	if (notes.isNull())
 		notes = XMLWork::getElement(docElem, "items");
+	m_watcher->stopScan();
 	loadNotes(notes, 0L);
+	m_watcher->startScan();
 	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
 	//END
 	signalCountsChanged();
@@ -1267,6 +1269,13 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	viewport()->setMouseTracking(true);
 	viewport()->setBackgroundMode(NoBackground); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
 
+	// File Watcher:
+	m_watcher = new KDirWatch(this);
+	connect( m_watcher,       SIGNAL(dirty(const QString&)),   this, SLOT(watchedFileModified(const QString&)) );
+	connect( m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&))  );
+	connect( &m_watcherTimer, SIGNAL(timeout()),               this, SLOT(updateModifiedNotes())               );
+
+	// Various Connections:
 	connect( &m_animationTimer,           SIGNAL(timeout()),   this, SLOT(animateObjects())           );
 	connect( &m_autoScrollSelectionTimer, SIGNAL(timeout()),   this, SLOT(doAutoScrollSelection())    );
 	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())     );
@@ -4724,6 +4733,51 @@ void Basket::ensureNoteVisible(Note *note)
 
 
 
+void Basket::addWatchedFile(const QString &fileName)
+{
+	m_watcher->addFile(fileName);
+}
+
+void Basket::removeWatchedFile(const QString &fileName)
+{
+	m_watcher->removeFile(fileName);
+}
+
+void Basket::watchedFileModified(const QString &fileName)
+{
+	m_modifiedFiles.append(fileName);
+	// If a big file is saved by an application, notifications are send several times.
+	// We wait they are not sent anymore to considere the file complete!
+	m_watcherTimer.start(200/*ms*/, true);
+	DEBUG_WIN << "Watcher>Modified : <font color=blue>" + fileName + "</font>";
+}
+
+void Basket::watchedFileDeleted(const QString &fileName)
+{
+	Note *note = noteForFullPath(fileName);
+	removeWatchedFile(fileName);
+	if (note) {
+		unselectAllBut(note);
+		noteDeleteWithoutConfirmation();
+	}
+	DEBUG_WIN << "Watcher>Remove : <font color=blue>" + fileName + "</font>";
+}
+
+void Basket::updateModifiedNotes()
+{
+	for (QValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
+		Note *note = noteForFullPath(*it);
+		if (note)
+			note->content()->loadFromFile();
+	}
+	m_modifiedFiles.clear();
+}
+
+
+
+
+
+
 
 
 
@@ -4789,26 +4843,6 @@ void Basket::ensureNoteVisible(Note *note)
 /** Basket */
 
 const int Basket::c_updateTime = 200;
-
-Basket::Basket(QWidget *parent, const QString &folderName, const char *name, WFlags fl)
- : QScrollView(parent, name, fl)
-{
-//...
-	// Create m_watcher before load() because mirrored files should be added to it
-	m_watcher = new KDirWatch(this);
-	m_watcher->addDir(fullPath(), true); // Watch all files modifications
-	connect( m_watcher,     SIGNAL(dirty(const QString&)),   this, SLOT(slotModifiedFile(const QString&)) );
-	connect( m_watcher,     SIGNAL(created(const QString&)), this, SLOT(slotCreatedFile(const QString&))  );
-	connect( m_watcher,     SIGNAL(deleted(const QString&)), this, SLOT(slotDeletedFile(const QString&))  );
-	connect(&m_updateTimer, SIGNAL(timeout()),               this, SLOT(slotUpdateNotes())                );
-
-	m_watcher->stopScan();
-	load(); // We disable Dir scan during load, in case files are created (when importing launchers)
-	m_watcher->startScan();
-	resetFilter();
-}
-
-
 
 
 
@@ -4944,194 +4978,6 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 	}
 }
 
-
-
-void Basket::processActionAsYouType(QKeyEvent *event)
-{
-	if (Global::debugWindow)
-		*Global::debugWindow << QString("Key press (%1)").arg(event->text());
-
-	if ( (kapp->focusWidget() != this) ||    // Do not receive child keyPress events
-	     (event->key() == Qt::Key_Escape) || // This key generate a text() !
-	     (event->text().isEmpty()) ||        // It should be a text (not a modifier...)
-	     (event->state() & AltButton) ||     // If user pressed an unexisting shortcut
-	     (event->state() & MetaButton) ||    //  or accelerator key, do nothing
-	     ((event->state() & ControlButton) && (event->key() != Qt::Key_Backspace)) ) // But allow Ctrl+BreakSpace
-		return;                                                                        //  for filter bar
-
-	DecoratedBasket *decoration = this->decoration();
-	FilterBar       *filterBar  = decoration->filterBar();
-
-	int  action         = Settings::writingAction();
-	bool takeCareOfText = true;
-	if ( event->text().startsWith(",") &&
-	     (Settings::writingCommaAction() != 0) && // Do the same, so don't process the ',' as a special case!
-		 (Settings::writingCommaAction() != Settings::writingAction()) ) { // Do the same too!
-		action = Settings::writingCommaAction();
-		takeCareOfText = false;
-	}
-	if (decoration->isFilterBarShown()) {
-		action = 1;
-		takeCareOfText = true;
-	}
-
-	// O:Nothing ; 1:Filter ; 2:Text ; 3:Html ; 4:Link
-	if (action == 1) {
-		if ((event->key() == Qt::Key_Backspace) && !decoration->isFilterBarShown())
-			return; // Do not show and then hide bar (avoid two basket savings)
-		if ( ! decoration->isFilterBarShown() )
-			Global::mainContainer->showHideFilterBar(true, false);
-		if (takeCareOfText)
-			kapp->sendEvent(filterBar->lineEdit(), event);
-		if (filterBar->lineEdit()->text().isEmpty() && takeCareOfText) // takeCareOfText: comma just show the (empty) bar
-			Global::mainContainer->showHideFilterBar(false);
-	} else if (action > 1) {
-		if ( (isLocked()) ||                        // Do not insert note if locked
-		     (event->key() == Qt::Key_Backspace) || // Or if key is backspace !
-		     (m_stackedKeyEvent != 0L) )            // Sometimes, insert link dialog can take time to appear
-			return;                                 //  and lot of links would be created otherwise.
-		Note::Type type = Note::Text;
-		if (action == 3)
-			type = Note::Html;
-		if (action == 4)
-			type = Note::Link;
-		if (takeCareOfText)
-			m_stackedKeyEvent = new QKeyEvent(*event);
-		else
-			m_stackedKeyEvent = 0L;
-		Global::mainContainer->insertEmpty(type);
-	}
-}
-
-Note* Basket::nextShownNoteFrom(Note *note, int step)
-{
-	if (step > 0) {
-		while (step && note) {
-			note = note->next();
-			if (note && note->isShown())
-				step--;
-		}
-	} else {
-		while (step && note) {
-			note = note->previous();
-			if (note && note->isShown())
-				step++;
-		}
-	}
-	return note;
-}
-
-void Basket::clicked(Note *note, bool controlPressed, bool shiftPressed)
-{
-	if (shiftPressed) {
-		if (m_startOfShiftSelectionNote == 0L)
-			m_startOfShiftSelectionNote = note;
-		selectRange(m_startOfShiftSelectionNote, note);
-	} else {
-		m_startOfShiftSelectionNote = note;
-		if (controlPressed) {
-			note->setSelected( ! note->isSelected() );
-			recolorizeNotes();
-		} else
-			unselectAllBut(note);
-	}
-
-	setFocusedNote(note);
-}
-
-
-
-void Basket::editNote(Note *note, bool editAnnotations)
-{
-	if (isLocked())
-		return;
-
-	if (m_editor != 0L) // It arrive toolbar of another editor stay shown...
-		closeEditor();
-
-	setFocusedNote(note); // Focus and select note (in case of new inserted note)
-	unselectAllBut(note);
-
-	// If possible and if wanted, use inline editor :
-	if ( true/*Settings::useInlineEditors()*/ && !editAnnotations && Global::mainContainer->isShown() &&
-	     (note->type() == Note::Text || note->type() == Note::Html) ) {
-		if (note->type() == Note::Text)
-			m_editor = new NoteTextEditor(note, Global::mainContainer, viewport(), m_stackedKeyEvent);
-		else
-			m_editor = new NoteHtmlEditor(note, Global::mainContainer, viewport(), m_stackedKeyEvent);
-		Global::mainContainer->addDockWindow(m_editor->toolbar());
-/*		// DISABLE all SHOWN notes:
-		for (Note *it = firstShownNote(); it != 0L; it = it->next())
-			if (it->isShown()) {
-				it->setEnabled(false);
-				if (it == lastShownNote())
-					break;
-			}*/
-		// The editor :
-		m_editor->editorWidget()->setPaletteBackgroundColor(note->isAlternate() ? altColor() : color());
-		m_editor->editorWidget()->reparent( viewport(), QPoint(0,0), true );
-		addChild(m_editor->editorWidget(), 0, 0);
-		placeEditor();
-//		((QFrame*)m_editor->editorWidget())->setFrameShape(QFrame::NoFrame);
-//		((QFrame*)m_editor->editorWidget())->setLineWidth(1);
-		// To avoid a one line text with an hozirontal scrollBar that take all the widget :
-		if (note->type() == Note::Text || note->type() == Note::Html)
-			((QScrollView*)m_editor->editorWidget())->setHScrollBarMode(QScrollView::AlwaysOff);
-		m_editor->editorWidget()->show();
-		m_editor->editorWidget()->raise();
-		m_editor->goFirstFocus();
-		connect( m_editor, SIGNAL(focusOut()), this, SLOT(closeEditor()) );
-		connect( (QTextEdit*)(m_editor->editorWidget()), SIGNAL(textChanged()), this, SLOT(placeEditor()) );
-//		if (m_stackedKeyEvent) {
-//			kapp->postEvent(m_editor->editorWidget(), m_stackedKeyEvent);
-		m_stackedKeyEvent = 0L;
-//		}
-		kapp->processEvents();   // Show the editor toolbar before ensuring the note is visible
-		ensureNoteVisible(note); //  because toolbar can create a new line and then partially hide the note
-		Global::mainContainer->updateStatusBarHint(); // Display the edition hint
-	} else {
-		NoteEditDialog *dialog = new NoteEditDialog(note, editAnnotations, note, m_stackedKeyEvent);
-		dialog->exec();
-		m_stackedKeyEvent = 0L;
-		delete dialog;
-	}
-}
-
-
-
-
-void Basket::openNote()
-{
-	for (Note *it = firstNote(); it != 0L; it = it->next())
-		if (it->isSelected())
-			it->slotOpen();
-}
-
-void Basket::openNoteWith()
-{
-	if (m_countSelecteds != 1) // TODO: Do better for multiple open with...
-		return;
-
-	// Take THE selected note
-	for (Note *it = firstNote(); it != 0L; it = it->next())
-		if (it->isSelected()) {
-			it->slotOpenWith();
-			return;
-		}
-}
-
-void Basket::saveNoteAs()
-{
-	if (m_countSelecteds != 1) // TODO: Do better for multiple save as...
-		return;
-
-	// Take THE selected note
-	for (Note *it = firstNote(); it != 0L; it = it->next())
-		if (it->isSelected()) {
-			it->slotSaveAs();
-			return;
-		}
-}
 
 void Basket::moveOnTop()
 {

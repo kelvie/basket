@@ -29,6 +29,7 @@
 #include <qdatetime.h>
 #include <qclipboard.h>
 #include <kshortcut.h>
+#include <kdirwatch.h>
 #include <kaction.h>
 #include <kio/job.h>
 
@@ -555,6 +556,18 @@ class Basket : public QScrollView, public QToolTip
 	Note *m_startOfShiftSelectionNote;
 
 
+/// THE NEW FILE WATCHER:
+  private:
+	KDirWatch           *m_watcher;
+	QTimer               m_watcherTimer;
+	QValueList<QString>  m_modifiedFiles;
+  public:
+	void addWatchedFile(const QString &fileName);
+	void removeWatchedFile(const QString &fileName);
+  private slots:
+	void watchedFileModified(const QString &fileName);
+	void watchedFileDeleted(const QString &fileName);
+	void updateModifiedNotes();
 
 
 /// FROM OLD ARCHITECTURE **********************

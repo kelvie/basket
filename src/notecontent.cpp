@@ -524,6 +524,7 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
 TextContent::TextContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName), m_simpleRichText(0)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
@@ -602,6 +603,7 @@ void TextContent::exportToHTML(QTextStream &stream, int indent, const HtmlExport
 HtmlContent::HtmlContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName), m_simpleRichText(0)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
@@ -679,6 +681,7 @@ void HtmlContent::exportToHTML(QTextStream &stream, int indent, const HtmlExport
 ImageContent::ImageContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName), m_format(0)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
@@ -784,6 +787,7 @@ int AnimationContent::INVALID_STATUS = -100;
 AnimationContent::AnimationContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName), m_oldStatus(INVALID_STATUS)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
@@ -902,6 +906,7 @@ void AnimationContent::exportToHTML(QTextStream &stream, int /*indent*/, const H
 FileContent::FileContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName), m_previewJob(0)
 {
+	basket()->addWatchedFile(fileName);
 	setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???
 }
 
@@ -1298,6 +1303,7 @@ void LinkContent::exportToHTML(QTextStream &stream, int indent, const HtmlExport
 LauncherContent::LauncherContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
@@ -1697,6 +1703,7 @@ const int UnknownContent::DECORATION_MARGIN = 2;
 UnknownContent::UnknownContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName)
 {
+	basket()->addWatchedFile(fileName);
 	loadFromFile();
 }
 
