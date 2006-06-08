@@ -562,11 +562,11 @@ class Basket : public QScrollView, public QToolTip
 	QTimer               m_watcherTimer;
 	QValueList<QString>  m_modifiedFiles;
   public:
-	void addWatchedFile(const QString &fileName);
-	void removeWatchedFile(const QString &fileName);
+	void addWatchedFile(const QString &fullPath);
+	void removeWatchedFile(const QString &fullPath);
   private slots:
-	void watchedFileModified(const QString &fileName);
-	void watchedFileDeleted(const QString &fileName);
+	void watchedFileModified(const QString &fullPath);
+	void watchedFileDeleted(const QString &fullPath);
 	void updateModifiedNotes();
 
 

@@ -36,7 +36,7 @@ echo ""
 echo "                             What do you want to do?"
 echo ""
 echo "  1/ Install BasKet Note Pads system wide (you will need the root password)"
-echo "  2/ Install BasKet Note Pads in your home directory"
+echo "  2/ Install BasKet Note Pads in your user folder"
 #echo "  3/ Uninstall BasKet Note Pads (you should not: it is so fantastic ;-) )"
 echo ""
 
@@ -77,8 +77,9 @@ if [ $WHAT_TO_DO == 3 ]; then
       exit 1
     fi
   fi
+  # TODO: Also definitively remove your baskets?
   # At this stage, SYS_WIDE and prefix are set and uninstall can begin:
-  if [ SYS_WIDE == 1 ]; then
+  if [ $SYS_WIDE == 1 ]; then
     su
     make uninstall || ./configure --prefix=$prefix && make uninstall
     logout
@@ -127,7 +128,7 @@ echo ""
 echo ""
 
 echo "make"
-make || (echo "======== ERROR: Recompiling Without Fam Support ========" && echo "" > src/have_fam.h && make) || error
+make || error
 
 clear
 echo ""
@@ -140,10 +141,10 @@ echo "                 The application has successfuly been compiled."
 echo ""
 echo ""
 
-echo $'\a' # Beep to avert user the configuration/compilation is ended and he must act to enter the apssword
+echo $'\a' # Beep to avert user the configuration/compilation is ended and he must act to enter the password
 
-if [ `echo "$SYS_WIDE"` == "n" ]; then
-  # First make the bin directory to not copy basket file to bon file if bin/ doesn't exist
+if [ "_$SYS_WIDE" == "_n" ]; then
+  # First make the bin folder to not copy basket file to bin file if bin/ doesn't exist
   mkdir $prefix/bin
   make install
 else
@@ -180,7 +181,7 @@ if [ "_$RESTART" != "_n" ]; then
   # Get the pid of the process basket, if currently running
   pid=`ps aux | awk '$11 == "basket" { print $2 }'`
   if [ "_$pid" == "_" ]; then
-    foo=0
+    dummy=0
   else
     kill -s SIGTERM $pid
   fi
@@ -202,10 +203,10 @@ echo "    ======================================================================
 echo ""
 echo ""
 echo "   In the future, if you want to uninstall BasKet Note Pads, you will have to"
-if [ `echo "$SYS_WIDE"` == "n" ]; then
-  echo "               enter the command make uninstall in this directory."
+if [ "_$SYS_WIDE" == "_n" ]; then
+  echo "                enter the command make uninstall in this folder."
 else
-  echo "           enter the command su -c 'make uninstall' in this directory."
+  echo "            enter the command su -c 'make uninstall' in this folder."
 fi
 echo ""
 echo ""

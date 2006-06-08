@@ -4733,34 +4733,42 @@ void Basket::ensureNoteVisible(Note *note)
 
 
 
-void Basket::addWatchedFile(const QString &fileName)
+void Basket::addWatchedFile(const QString &fullPath)
 {
-	m_watcher->addFile(fileName);
+//	DEBUG_WIN << "Watcher>Add Monitoring Of : <font color=blue>" + fullPath + "</font>";
+	m_watcher->addFile(fullPath);
 }
 
-void Basket::removeWatchedFile(const QString &fileName)
+void Basket::removeWatchedFile(const QString &fullPath)
 {
-	m_watcher->removeFile(fileName);
+//	DEBUG_WIN << "Watcher>Remove Monitoring Of : <font color=blue>" + fullPath + "</font>";
+	m_watcher->removeFile(fullPath);
 }
 
-void Basket::watchedFileModified(const QString &fileName)
+void Basket::watchedFileModified(const QString &fullPath)
 {
-	m_modifiedFiles.append(fileName);
+	if (!m_modifiedFiles.contains(fullPath))
+		m_modifiedFiles.append(fullPath);
 	// If a big file is saved by an application, notifications are send several times.
 	// We wait they are not sent anymore to considere the file complete!
 	m_watcherTimer.start(200/*ms*/, true);
-	DEBUG_WIN << "Watcher>Modified : <font color=blue>" + fileName + "</font>";
+	DEBUG_WIN << "Watcher>Modified : <font color=blue>" + fullPath + "</font>";
 }
 
-void Basket::watchedFileDeleted(const QString &fileName)
+void Basket::watchedFileDeleted(const QString &fullPath)
 {
-	Note *note = noteForFullPath(fileName);
-	removeWatchedFile(fileName);
+	Note *note = noteForFullPath(fullPath);
+	removeWatchedFile(fullPath);
 	if (note) {
+		NoteSelection *selection = selectedNotes();
 		unselectAllBut(note);
 		noteDeleteWithoutConfirmation();
+		while (selection) {
+			selection->note->setSelected(true);
+			selection = selection->nextStacked();
+		}
 	}
-	DEBUG_WIN << "Watcher>Remove : <font color=blue>" + fileName + "</font>";
+	DEBUG_WIN << "Watcher>Removed : <font color=blue>" + fullPath + "</font>";
 }
 
 void Basket::updateModifiedNotes()
@@ -5079,30 +5087,14 @@ void Basket::moveNoteDown()
 
 
 /*********** Work to re-load notes when theire files have changed */
-// TODO: class BasketUpdater
-// FIXME: When a rename (de, new, del), if cutted by two timer intervals ????? Restart with 50 ms ? Yes.
-// FIXME: If a timer can't be launched ? Is this happens often ?
 
-// Created :         In :                  Deleted in :
-// FileEvent(...)    slot*edFile           event
-//   QString(...)
-
-void Basket::dontCareOfCreation(const QString &path) /////////// FIXME: TODO: URGENT: notYetInserted() ???,
+void Basket::dontCareOfCreation(const QString &path)
 {
 	m_dontCare.append(path);
 	if (Global::debugWindow)
 		*Global::debugWindow << "Watcher>Add a <i>don't care creation</i> of file : <font color=violet>" + path + "</font>";
 }
 
-void Basket::slotModifiedFile(const QString &path)
-{
-	m_updateQueue.append( new FileEvent(FileEvent::Modified, path) );
-	if ( ! m_updateTimer.isActive() )
-		m_updateTimer.start(c_updateTime, true); // 200 ms, only once
-	if (Global::debugWindow)
-		*Global::debugWindow << "Watcher>Modified : <font color=blue>" + path + "</font>";
-
-}
 void Basket::slotCreatedFile(const QString &path)
 {
 	bool dontCare = false;
@@ -5119,133 +5111,6 @@ void Basket::slotCreatedFile(const QString &path)
 		if (dontCare)
 			*Global::debugWindow << "\tBut don't care (created by the application and we know this) : ignore it";
 	}
-}
-void Basket::slotDeletedFile(const QString &path)
-{
-	m_updateQueue.append( new FileEvent(FileEvent::Deleted, path) );
-	if ( ! m_updateTimer.isActive() )
-		m_updateTimer.start(c_updateTime, true); // 200 ms, only once
-	if (Global::debugWindow)
-		*Global::debugWindow << "Watcher>Deleted : <font color=red>" + path + "</font>";
-}
-
-void Basket::slotUpdateNotes()
-{
-	/* This functions is called after changes on the disk
-	 *
-	 */
-
-//	m_dontCare.clear();
-
-	if (Global::debugWindow)
-		*Global::debugWindow << "Updater : Begin";
-
-	/* First, browse the queue and keep only one instance of each files
-	    (to reload/change only once), placed in lists per actions to do.
-	    Note : Events was added in m_updateQueue by chronogical order */
-	FileEvent   *event;
-	QStringList  toCreate;
-	QStringList  toModify;
-	QStringList  toDelete;
-	QStringList  toRename;
-	QStringList  renameTo;
-	while (m_updateQueue.count() > 0) {
-		event = m_updateQueue.take(0);
-
-		int     eventType =   event->event;
-		QString eventPath(event->filePath);
-		/* The .basket file isn't a note */
-		if (eventPath.endsWith("/.basket")) {
-			;                                             // Do nothing
-		/* Note must be created ? */
-		} else if (eventType == FileEvent::Created) {
-			if (toCreate.findIndex(eventPath) == -1)      // Create only once (return first index or -1 if not)
-				toCreate.append(eventPath);
-		/* Note must be updated ? */
-		} else if (eventType == FileEvent::Modified) {
-			if ( toCreate.findIndex(eventPath) == -1 &&   // If created and then modified, do not add
-			     toModify.findIndex(eventPath) == -1    ) // If modified several times,    do not add
-				toModify.append(eventPath);
-		/* Note must be deleted ? */
-		} else if (eventType == FileEvent::Deleted) {
-			// First try to see if it is a file to rename
-			//  In this case, events are : [delete foo], [create bar], [delete foo]
-			if (m_updateQueue.count() >= 2) { // If theire is at least two next events
-				FileEvent *createEvt  = m_updateQueue.take(0);
-				FileEvent *delete2Evt = m_updateQueue.take(0);
-				if (createEvt->event     == FileEvent::Created &&
-				    delete2Evt->event    == FileEvent::Deleted &&
-				    delete2Evt->filePath == event->filePath       ) {
-					if (toRename.findIndex(eventPath) == -1 ) { // Rename only once
-						toRename.append(eventPath);
-						renameTo.append(createEvt->filePath);
-					}
-					delete event;
-					delete createEvt;
-					delete delete2Evt;
-					continue; // Continue on top of the while(){}
-				} else { // It isn't a rename : re-place the events in the stack to parse them the next time
-					m_updateQueue.prepend(delete2Evt); // In the inverse order !
-					m_updateQueue.prepend(createEvt);
-					// It's a delete : perform the corresponding action :
-				}
-			}
-			if (toCreate.findIndex(eventPath) != -1)  // Created and then deleted
-				toCreate.remove(eventPath);           //  => No need to create
-			if (toModify.findIndex(eventPath) != -1)  // Modified and then deleted
-				toModify.remove(eventPath);           //  => No need to modify
-			if (toDelete.findIndex(eventPath) == -1 ) // Delete only once
-				toDelete.append(eventPath);
-		}
-		delete event;
-
-	}
-
-	if (Global::debugWindow) {
-		QValueList<QString>::iterator path;
-		QValueList<QString>::iterator name2 = renameTo.begin();
-		*Global::debugWindow << "    Create :";
-		for (path = toCreate.begin(); path != toCreate.end(); ++path)
-			*Global::debugWindow << "\t" + (*path);
-		*Global::debugWindow << "    Modify :";
-		for (path = toModify.begin(); path != toModify.end(); ++path)
-			*Global::debugWindow << "\t" + (*path);
-		*Global::debugWindow << "    Delete :";
-		for (path = toDelete.begin(); path != toDelete.end(); ++path)
-			*Global::debugWindow << "\t" + (*path);
-		*Global::debugWindow << "    Rename :";
-		for (path = toRename.begin(); path != toRename.end(); ++path) {
-			*Global::debugWindow << "\t" + (*path) + " to " + (*name2);
-			++name2;
-		}
-	}
-
-	Note *note;
-	QValueList<QString>::iterator path;
-	QValueList<QString>::iterator name2 = renameTo.begin();
-	for (path = toCreate.begin(); path != toCreate.end(); ++path) {
-		// fileNameForFullPath() :
-		QString fileName = (*path).mid(fullPath().length()); // fileName is never a mirror
-		NoteFactory::loadFile(fileName, this);
-	}
-	for (path = toModify.begin(); path != toModify.end(); ++path)
-		if ( (note = noteForFullPath(*path)) != 0 ) {
-			note->loadContent();
-			noteSizeChanged(note);
-		}
-	for (path = toDelete.begin(); path != toDelete.end(); ++path)
-		if ( (note = noteForFullPath(*path)) != 0 )
-			delNote(note);
-	for (path = toRename.begin(); path != toRename.end(); ++path) {
-		if ( (note = noteForFullPath(*path)) != 0 )
-			note->fileNameChanged( (*name2).mid(fullPath().length()) ); // Same
-		++name2;
-	} // We view renamed files ^^ and save the change:
-	if (!toRename.isEmpty())
-		save();
-
-	if (Global::debugWindow)
-		*Global::debugWindow << "Updater : End";
 }
 
 /******************************************************************/
