@@ -76,11 +76,8 @@ QString Settings::s_imageProg            = "kolourpaint";
 QString Settings::s_animationProg        = "gimp";
 QString Settings::s_soundProg            = "";
 // Addictive Features:
-bool    Settings::s_enterValidateInline  = false;
 bool    Settings::s_groupOnInsertionLine = false;
 int     Settings::s_middleAction         = 0;
-int     Settings::s_writingAction        = 0;
-int     Settings::s_writingCommaAction   = 0;
 bool    Settings::s_showIconInSystray    = false; // TODO: RENAME: basketIconInSystray
 bool    Settings::s_hideOnMouseOut       = false;
 int     Settings::s_timeToHideOnMouseOut = 0;
@@ -128,9 +125,6 @@ void Settings::loadConfig()
 	setShowIconInSystray(    config->readBoolEntry("showIconInSystray",    false) );
 	setStartDocked(          config->readBoolEntry("startDocked",          false) );
 	setMiddleAction(         config->readNumEntry( "middleAction",         0)     );
-	setWritingAction(        config->readNumEntry( "writingAction",        0)     );
-	setWritingCommaAction(   config->readNumEntry( "writingCommaAction",   0)     );
-	setEnterValidateInline(  config->readBoolEntry("enterValidateInline",  false) );
 	setGroupOnInsertionLine( config->readBoolEntry("groupOnInsertionLine", false) );
 	setSpellCheckTextNotes(  config->readBoolEntry("spellCheckTextNotes",  true)  );
 	setHideOnMouseOut(       config->readBoolEntry("hideOnMouseOut",       false) );
@@ -200,9 +194,6 @@ void Settings::saveConfig()
 	config->writeEntry( "showIconInSystray",    showIconInSystray()    );
 	config->writeEntry( "startDocked",          startDocked()          );
 	config->writeEntry( "middleAction",         middleAction()         );
-	config->writeEntry( "writingAction",        writingAction()        );
-	config->writeEntry( "writingCommaAction",   writingCommaAction()   );
-	config->writeEntry( "enterValidateInline",  enterValidateInline()  );
 	config->writeEntry( "groupOnInsertionLine", groupOnInsertionLine() );
 	config->writeEntry( "spellCheckTextNotes",  spellCheckTextNotes()  );
 	config->writeEntry( "hideOnMouseOut",       hideOnMouseOut()       );
@@ -590,28 +581,13 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	                                    "can be very powerful and time saving in the context of %1:")
 	                                    .arg(kapp->aboutData()->programName()), page6) );
 
-	m_enterValidateInlineWidget = new QWidget(page6);
-	QHBoxLayout *hLayV = new QHBoxLayout(m_enterValidateInlineWidget, /*margin=*/0, KDialogBase::spacingHint());
-	m_enterValidateInline = new QCheckBox(i18n("Co&nfirm changes with the Enter key in text editors"), m_enterValidateInlineWidget);
-	m_enterValidateInline->setChecked(Settings::enterValidateInline());
-	HelpLabel *helpV = new HelpLabel(i18n("How to insert new lines?"), i18n(
-		"<p>If you choose to confirm changes with the Enter (Return) key, you still can insert new lines by pressing Ctrl+Return in text editors.</p>"
-		"<p>Notice that new paragraphs in rich text editors are inserted with Shift+Return.</p>"), m_enterValidateInlineWidget);
-	hLayV->addWidget(m_enterValidateInline);
-	hLayV->addWidget(helpV);
-	hLayV->insertStretch(-1);
-	layout6->addWidget(m_enterValidateInlineWidget);
-
-	/// ///
-	m_enterValidateInlineWidget->hide();
-
 	m_groupOnInsertionLineWidget = new QWidget(page6);
-	hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialogBase::spacingHint());
+	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialogBase::spacingHint());
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
 	m_groupOnInsertionLine->setChecked(Settings::groupOnInsertionLine());
 	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
-	helpV = new HelpLabel(i18n("How to group a new note?"),
+	HelpLabel *helpV = new HelpLabel(i18n("How to group a new note?"),
 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
 		"<p><img src=\"__resource_help_insertion_line.png\"></p>" +
 		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
@@ -639,36 +615,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ga->addWidget(labelM,                                         0, 0);
 	ga->addWidget(m_middleAction,                                 0, 1);
 	ga->addWidget(new QLabel(i18n("at cursor position"), page6),  0, 2);
-
-	m_writingAction = new QComboBox(page6);
-	m_writingAction->insertItem( i18n("Do nothing")            );
-	m_writingAction->insertItem( i18n("Filter")                );
-	m_writingAction->insertItem( i18n("Insert text note")      );
-	m_writingAction->insertItem( i18n("Insert rich text note") );
-	m_writingAction->insertItem( i18n("Insert link note")      );
-	m_writingAction->setCurrentItem(Settings::writingAction());
-	QLabel *labelY = new QLabel(m_writingAction, i18n("&When writing in a basket:"), page6);
-
-	/// ///
-	m_writingAction->hide();
-	labelY->hide();
-//	ga->addWidget(labelY,          1, 0);
-//	ga->addWidget(m_writingAction, 1, 1);
-
-	m_writingCommaAction = new QComboBox(page6);
-	m_writingCommaAction->insertItem( i18n("Do the same")           );
-	m_writingCommaAction->insertItem( i18n("Filter")                );
-	m_writingCommaAction->insertItem( i18n("Insert text note")      );
-	m_writingCommaAction->insertItem( i18n("Insert rich text note") );
-	m_writingCommaAction->insertItem( i18n("Insert link note")      );
-	m_writingCommaAction->setCurrentItem(Settings::writingCommaAction());
-	QLabel *labelZ = new QLabel(m_writingCommaAction, i18n("&But begin writing with a comma (,):"), page6);
-
-	/// ///
-	m_writingCommaAction->hide();
-	labelZ->hide();
-//	ga->addWidget(labelZ,               2, 0);
-//	ga->addWidget(m_writingCommaAction, 2, 1);
 
 	QGroupBox *gbSys = new QGroupBox(3, Qt::Vertical, i18n("System Tray Icon"), page6);
 	layout6->addWidget(gbSys);
@@ -751,9 +697,6 @@ void SettingsDialog::slotApply()
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()      );
 	Settings::setMiddleAction(         m_middleAction->currentItem()       );
-	Settings::setWritingAction(        m_writingAction->currentItem()      );
-	Settings::setWritingCommaAction(   m_writingCommaAction->currentItem() );
-	Settings::setEnterValidateInline(  m_enterValidateInline->isChecked()  );
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
 
 	Settings::setNewNotesPlace(        m_newNotesPlace->currentItem()      );

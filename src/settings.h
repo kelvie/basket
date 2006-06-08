@@ -63,9 +63,6 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_exportTextTags;
 	static bool    s_usePassivePopup;
 	static int     s_middleAction;         // O:Nothing ; 1:Paste ; 2:Text ; 3:Html ; 4:Image ; 5:Link ; 6:Launcher ; 7:Color
-	static int     s_writingAction;        // O:Nothing ; 1:Filter ; 2:Text ; 3:Html ; 4:Link
-	static int     s_writingCommaAction;   // O:Same ; 1:Filter ; 2:Text ; 3:Html ; 4:Link
-	static bool    s_enterValidateInline;
 	static bool    s_groupOnInsertionLine;
 	static bool    s_spellCheckTextNotes;
 	static int     s_basketTreeWidth;
@@ -115,9 +112,6 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline bool    showIconInSystray()    { return s_showIconInSystray;    }
 	static inline bool    startDocked()          { return s_startDocked;          }
 	static inline int     middleAction()         { return s_middleAction;         }
-	static inline int     writingAction()        { return s_writingAction;        }
-	static inline int     writingCommaAction()   { return s_writingCommaAction;   }
-	static inline bool    enterValidateInline()  { return false/*s_enterValidateInline*/;  }
 	static inline bool    groupOnInsertionLine() { return s_groupOnInsertionLine; }
 	static inline bool    spellCheckTextNotes()  { return s_spellCheckTextNotes;  }
 	static inline bool    hideOnMouseOut()       { return s_hideOnMouseOut;       }
@@ -201,9 +195,6 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline void setBlinkedFilter(bool blinked)           { s_blinkedFilter        = blinked;     }
 	static inline void setStartDocked(bool docked)              { s_startDocked          = docked;      }
 	static inline void setMiddleAction(int action)              { s_middleAction         = action;      }
-	static inline void setWritingAction(int action)             { s_writingAction        = action;      }
-	static inline void setWritingCommaAction(int action)        { s_writingCommaAction   = action;      }
-	static inline void setEnterValidateInline(bool yes)         { s_enterValidateInline  = yes;         }
 	static inline void setGroupOnInsertionLine(bool yes)        { s_groupOnInsertionLine = yes;         }
 	static inline void setSpellCheckTextNotes(bool yes)         { s_spellCheckTextNotes  = yes;         }
 	static inline void setHideOnMouseOut(bool hide)             { s_hideOnMouseOut       = hide;        }
@@ -269,10 +260,6 @@ class SettingsDialog : public KDialogBase
 	QCheckBox           *m_exportTextTags;
 	QCheckBox           *m_usePassivePopup;
 	QComboBox           *m_middleAction;
-	QComboBox           *m_writingAction;
-	QComboBox           *m_writingCommaAction;
-	QCheckBox           *m_enterValidateInline;
-	QWidget             *m_enterValidateInlineWidget;
 	QCheckBox           *m_groupOnInsertionLine;
 	QWidget             *m_groupOnInsertionLineWidget;
 	// System Tray Icon

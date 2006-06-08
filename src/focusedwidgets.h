@@ -28,30 +28,20 @@
 #include <klineedit.h>
 #include <kapplication.h>
 
-/** The following widgets emit focusOut() signal as soon as they lost focus
-  * FocusedTextEdit also emit escapePressed() when Escape key is pressed
-  */
-
-// FIXME: emit focusOut() for Escape key in ALL focused widgets ?
-
 class FocusedTextEdit : public KTextEdit
 {
   Q_OBJECT
   public:
-	FocusedTextEdit(bool escapeOnReturn, bool disableUpdatesOnKeyPress, QWidget *parent = 0, const char *name = 0);
+	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0, const char *name = 0);
 	~FocusedTextEdit();
   protected:
 	void keyPressEvent(QKeyEvent *event);
-	void focusOutEvent(QFocusEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	QPopupMenu* createPopupMenu(const QPoint &pos);
   signals:
-	void focusOut();
 	void escapePressed();
   private:
-	bool m_escapeOnReturn;
 	bool m_disableUpdatesOnKeyPress;
-	bool m_discardNextFocusOut;
 };
 
 class FocusedColorCombo : public KColorCombo
@@ -61,16 +51,6 @@ class FocusedColorCombo : public KColorCombo
 	FocusedColorCombo(QWidget *parent = 0, const char *name = 0)
 	 : KColorCombo(parent, name) {}
 	~FocusedColorCombo()         {}
-  protected:
-	void focusOutEvent(QFocusEvent *event)
-	{
-/*1		if ( kapp->focusWidget() != 0L ) // When color dialog is called, focusWidget == 0L
-			emit focusOut();             // FIXME: That's not so accurate but the only way :'-(
-*/
-		KColorCombo::focusOutEvent(event);
-	}
-  signals:
-	void focusOut();
 };
 
 class FocusedFontCombo : public KFontCombo
@@ -80,10 +60,6 @@ class FocusedFontCombo : public KFontCombo
 	FocusedFontCombo(QWidget *parent = 0, const char *name = 0)
 	 : KFontCombo(parent, name) {}
 	~FocusedFontCombo()         {}
-  protected:
-	void focusOutEvent(QFocusEvent *event) { /*2 emit focusOut();*/ KFontCombo::focusOutEvent(event); }
-  signals:
-	void focusOut();
 };
 
 // TODO: Rename to EscapableKComboBox

@@ -122,65 +122,12 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 
 #include <iostream>
 
-/** Several possible scenarii to leave or not the edit mode:
-  * - The user click on the basket, the edit widget then have a focusOut() event.
-  *   The new focused widget (the basket) is not in the m_secondaryInlineWidgets list, so we leave the mode
-  * - The user click on the font or color combobox of the rich text edit: the edit widget then have a focusOut() event.
-  *   But the new focused widget is in the m_secondaryInlineWidgets list, so we do nothing.
-  *   Then the user can reswitch focus to the edit widget or click the basket.
-  *   The font or color combobox will then also send focusOut() event, this will be threated here like the event from the editbox.
-  * - The user click another window from another application.
-  *   kapp->focusWidget() and kapp->activeWindow() are both equal to 0 because out of our application.
-  *   We close the editor. But only after a small laps of time: see below.
-  * - The user click "Custom..." in the color combobox. A new KColorDialog is open.
-  *   But kapp->focusWidget() and kapp->activeWindow() are both equal to 0 for a short laps of time.
-  *   After the window is created and displayed, those values are then different from 0.
-  *   To avoid to close the editor in this case (the application could believe the focus is now in another application, like in the previous case),
-  *   we temporize and then re-test a second time: if the active window is a KColorDialog, it's OK.
-  */
-void NoteEditor::slotFocusOut()
-{
-	QValueList<QWidget*> inlineWidgets = m_secondaryInlineWidgets;
-	inlineWidgets.append(widget());
-
-	QWidget *focusWidget      = kapp->focusWidget();
-	QObject *focusParent      = (focusWidget ? focusWidget->parent() : 0);
-	QObject *focusGrandParent = (focusParent ? focusParent->parent() : 0);
-
-//	std::cout << "------" << std::endl;
-//	if (focusWidget)
-//		std::cout << "FOCUS: " << focusWidget->className() << std::endl;
-//	if (focusParent)
-//		std::cout << "FOCUS PARENT: " << focusParent->className() << std::endl;
-//	if (focusGrandParent)
-//		std::cout << "FOCUS GRAND PARENT: " << focusGrandParent->className() << std::endl;
-
-	for (QValueList<QWidget*>::iterator it = inlineWidgets.begin(); it != inlineWidgets.end(); ++it) {
-//		std::cout << (*it)->className() << std::endl;
-		// If current focused widget is this KTextEdit or the popup menu of the KTextEdit, do not consider that as a focus loss:
-		if ( focusWidget == *it || (focusParent && focusParent == *it) || (focusGrandParent && focusGrandParent == *it) )
-			return;
-	}
-
-	// When color dialog is called, focusWidget == 0L, but also when another application widget stealed focus. We need to differenciate those two cases:
-	if (!focusWidget && !kapp->activeWindow())
-		QTimer::singleShot(100, this, SLOT(slotFocusOut2()));
-	else
-		emit askValidation();
-}
-
-void NoteEditor::slotFocusOut2()
-{
-	if (!kapp->activeWindow())
-		emit askValidation();
-}
-
 /** class TextEditor: */
 
 TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
  : NoteEditor(textContent), m_textContent(textContent)
 {
-	FocusedTextEdit *textEdit = new FocusedTextEdit(Settings::enterValidateInline(), /*disableUpdatesOnKeyPress=*/true, parent);
+	FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
 	textEdit->setTextFormat(Qt::PlainText);
@@ -195,7 +142,6 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
-	connect( textEdit, SIGNAL(focusOut()),      this, SLOT(slotFocusOut())    );
 }
 
 TextEditor::~TextEditor()
@@ -245,7 +191,7 @@ void TextEditor::validate()
 HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
  : NoteEditor(htmlContent), m_htmlContent(htmlContent)
 {
-	FocusedTextEdit *textEdit = new FocusedTextEdit(Settings::enterValidateInline(), /*disableUpdatesOnKeyPress=*/true, parent);
+	FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
 	textEdit->setTextFormat(Qt::RichText);
@@ -258,16 +204,9 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 
-	QValueList<QWidget*> widgets;
-	widgets.append(InlineEditors::instance()->richTextFont);
-	widgets.append(InlineEditors::instance()->richTextColor);
-	widgets.append(InlineEditors::instance()->richTextToolBar());
-	setSecondaryInlineWidgets(widgets);
-
 	connect( textEdit,                                 SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
-	connect( textEdit,                                 SIGNAL(focusOut()),      this, SLOT(slotFocusOut())    );
-//	connect( InlineEditors::instance()->richTextFont,  SIGNAL(focusOut()),      this, SLOT(slotFocusOut())    );
-//	connect( InlineEditors::instance()->richTextColor, SIGNAL(focusOut()),      this, SLOT(slotFocusOut())    );
+//	connect( InlineEditors::instance()->richTextFont,  SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
+//	connect( InlineEditors::instance()->richTextColor, SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
 
 	connect( InlineEditors::instance()->richTextFont,  SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFamily(const QString&)) );
 	connect( InlineEditors::instance()->richTextColor, SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
@@ -423,7 +362,6 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 	setInlineEditor(lineEdit);
 	connect( lineEdit, SIGNAL(returnPressed()), this, SIGNAL(askValidation()) );
 	connect( lineEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
-//	connect( lineEdit, SIGNAL(focusOut()),      this, SLOT(slotFocusOut())    );
 }
 
 FileEditor::~FileEditor()

@@ -1281,10 +1281,6 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())     );
 	connect( &m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimout()) );
 	connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
-
-//	m_transparentWidget = new TransparentWidget(this);
-//	m_transparentWidget->setPosition(100, 100);
-//	addChild(m_transparentWidget, 100, 100);
 }
 
 void Basket::contentsMoved()
@@ -2530,17 +2526,7 @@ void Basket::maybeTip(const QPoint &pos)
 	QPoint contentPos = viewportToContents(pos);
 	Note *note = noteAt(contentPos.x(), contentPos.y());
 
-	/*if (isDuringEdit()) {
-		message = i18n("Confirm note changes"); // TODO: i18n("Cancel note addition");    i18n("Confirm note addition");   ""
-		QValueList<QRect> areas;
-		areas.clear();
-		areas.append( QRect(0, 0, contentsWidth(), contentsHeight()) );
-		QRect editorRect(m_editor->widget()->x(), m_editor->widget()->y(), m_editor->widget()->width(), m_editor->widget()->height());
-		substractRectOnAreas(editorRect, areas, / *andRemove=* /true);
-		for (QValueList<QRect>::iterator it = areas.begin(); it != areas.end(); ++it)
-			if ((*it).contains(pos))
-				rect = *it;
-	} else */if (!note && isFreeLayout()) {
+	if (!note && isFreeLayout()) {
 		message = i18n("Insert note here\nRight click for more options");
 		QRect itRect;
 		for (QValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
@@ -3164,7 +3150,7 @@ void Basket::toggledTagInMenu(int id)
 		return;
 	}
 	if (id == 2) {
-		removeAllTagsFromSelectedNotes();//m_tagPopupNote->removeAllTags();
+		removeAllTagsFromSelectedNotes();
 		//m_tagPopupNote->setWidth(0); // To force a new layout computation
 		filterAgain();
 		save();
@@ -3183,9 +3169,9 @@ void Basket::toggledTagInMenu(int id)
 		return;
 
 	if (m_tagPopupNote->hasTag(tag))
-		removeTagFromSelectedNotes(tag);//m_tagPopupNote->removeTag(tag);
+		removeTagFromSelectedNotes(tag);
 	else
-		addTagToSelectedNotes(tag);//m_tagPopupNote->addTag(tag);
+		addTagToSelectedNotes(tag);
 	m_tagPopupNote->setWidth(0); // To force a new layout computation
 	filterAgain();
 	save();
@@ -3337,8 +3323,6 @@ void Basket::selectionChangedInEditor()
 
 void Basket::contentChangedInEditor()
 {
-//	std::cout << "contentChangedInEditor()" << std::endl;
-
 	if (m_inactivityAutoSaveTimer.isActive())
 		m_inactivityAutoSaveTimer.stop();
 
@@ -3347,10 +3331,8 @@ void Basket::contentChangedInEditor()
 
 void Basket::inactivityAutoSaveTimout()
 {
-	if (m_editor) {
-//		std::cout << "Auto Saving" << std::endl;
+	if (m_editor)
 		m_editor->autoSave();
-	}
 }
 
 void Basket::placeEditorAndEnsureVisible()
@@ -3397,11 +3379,9 @@ void Basket::placeEditor(bool andEnsureVisible /*= false*/)
 		x -= 1;
 		y = note->y() + Note::NOTE_MARGIN - frameWidth;
 	}
-//	std::cout << m_editorWidth << ":" << m_editorHeight << "       " << width << "," << height <<std::endl;
 	if ((m_editorWidth > 0 && m_editorWidth != width) || (m_editorHeight > 0 && m_editorHeight != height)) {
 		m_editorWidth  = width; // Avoid infinite recursion!!!
 		m_editorHeight = height;
-//		std::cout << "autoSaving" << std::endl;
 		m_editor->autoSave();
 	}
 	m_editorWidth  = width;
@@ -3418,10 +3398,6 @@ void Basket::placeEditor(bool andEnsureVisible /*= false*/)
 	addChild(m_rightEditorBorder,     note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 	m_rightEditorBorder->setPosition( note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 
-	// ensureWidgetVisible(m_editor->widget()):
-	//int visibleX = (contentsX() + visibleWidth()) / 2; // Take middle of view, to not scroll in X
-//	ensureVisible( note->rightLimit(), y + height, 0,0 ); // Bottom-right corner
-//	ensureVisible( x,                  y,          0,0 ); // Top-left corner
 	if (andEnsureVisible)
 		ensureNoteVisible(note);
 }
@@ -3964,7 +3940,6 @@ void Basket::linkLookChanged()
 	relayoutNotes(true);
 }
 
-
 void Basket::slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool)
 {
 	Note *note = noteForFullPath(to.path());
@@ -4007,7 +3982,7 @@ Note* Basket::noteForFullPath(const QString &path)
 
 void Basket::deleteFiles()
 {
-//	m_watcher->stopScan();
+	m_watcher->stopScan();
 	Tools::deleteRecursively(fullPath());
 }
 
@@ -4513,11 +4488,8 @@ void Basket::keyPressEvent(QKeyEvent *event)
 			cancelFilter();
 	}
 
-	if (countFounds() == 0) {
-//		processActionAsYouType(event);
-		//event->ignore(); // Important !!
+	if (countFounds() == 0)
 		return;
-	}
 
 	if (!m_focusedNote)
 		return;
@@ -4538,9 +4510,6 @@ void Basket::keyPressEvent(QKeyEvent *event)
 			scrollBy(0, -30); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_PageDown:
-		//	toFocus = m_focusedNote;
-		//	for (int i = 0; i < 10 && toFocus; ++i)
-		//		toFocus = (isFreeLayout() ? toFocus->noteOn(BOTTOM_SIDE) : toFocus->nextShownInStack());
 			if (isFreeLayout()) {
 				Note *lastFocused = m_focusedNote;
 				for (int i = 0; i < 10 && m_focusedNote; ++i)
@@ -4559,9 +4528,6 @@ void Basket::keyPressEvent(QKeyEvent *event)
 			scrollBy(0, visibleHeight() / 2); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_PageUp:
-		//	toFocus = m_focusedNote;
-		//	for (int i = 0; i < 10 && toFocus; ++i)
-		//		toFocus = (isFreeLayout() ? toFocus->noteOn(TOP_SIDE) : toFocus->prevShownInStack());
 			if (isFreeLayout()) {
 				Note *lastFocused = m_focusedNote;
 				for (int i = 0; i < 10 && m_focusedNote; ++i)
@@ -4609,7 +4575,6 @@ void Basket::keyPressEvent(QKeyEvent *event)
 				event->ignore();
 			return;          // ... so we return after the process
 		default:
-//			processActionAsYouType(event);
 			return;
 	}
 
@@ -4708,9 +4673,6 @@ void Basket::selectRange(Note *start, Note *end, bool unselectOthers /*= true*/)
 
 void Basket::focusInEvent(QFocusEvent*)
 {
-//	if (isDuringEdit()) // It arrive toolbar of another editor stay shown...
-//		closeEditor();
-
 	focusANote();      // hasFocus() is true at this stage, note will be focused
 }
 
@@ -4730,8 +4692,6 @@ void Basket::ensureNoteVisible(Note *note)
 	ensureVisible( finalRight,     finalBottom,    0,0 );
 	ensureVisible( note->finalX(), note->finalY(), 0,0 );
 }
-
-
 
 void Basket::addWatchedFile(const QString &fullPath)
 {

@@ -27,12 +27,12 @@
 
 /** class FocusedTextEdit */
 
-FocusedTextEdit::FocusedTextEdit(bool escapeOnReturn, bool disableUpdatesOnKeyPress, QWidget *parent, const char *name)
+FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent, const char *name)
  : KTextEdit(parent, name),
-   m_escapeOnReturn(escapeOnReturn),
-   m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress),
-   m_discardNextFocusOut(false)
+   m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
+	m_disableUpdatesOnKeyPress = false;
+	setWFlags(Qt::WNoAutoErase);
 }
 
 FocusedTextEdit::~FocusedTextEdit()
@@ -42,9 +42,6 @@ FocusedTextEdit::~FocusedTextEdit()
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape) {
-		emit escapePressed();
-		return;
-	} else if (m_escapeOnReturn && event->key() == Qt::Key_Return && event->state() == 0) {
 		emit escapePressed();
 		return;
 	// In RichTextFormat mode, [Return] create a new paragraphe.
@@ -68,16 +65,6 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void FocusedTextEdit::focusOutEvent(QFocusEvent *event)
-{
-	if (m_discardNextFocusOut)
-		m_discardNextFocusOut = false;
-/*4	else
-		emit focusOut();
-*/
-	KTextEdit::focusOutEvent(event); //
-}
-
 #include "global.h"
 #include "container.h"
 #include "basket.h"
@@ -96,8 +83,6 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 
 QPopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 {
-	// Disable the next focusOut event:
-	m_discardNextFocusOut = true;
 	QPopupMenu *menu = KTextEdit::createPopupMenu(pos);
 
 	int index = 0;
@@ -106,11 +91,8 @@ QPopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 		id = menu->idAt(index);
 		if (id == -1)
 			break;
-		// Disable the spell checking dialog since it would trigger a focusOut event:
-		if (menu->text(id) == i18n("Check Spelling..."))
-			menu->setItemEnabled(id, false);
 		// Disable Spell Check for rich text editors, because it doesn't work anyway:
-		if (textFormat() == Qt::RichText && menu->text(id) == i18n("Auto Spell Check"))
+		if (textFormat() == Qt::RichText && (menu->text(id) == i18n("Auto Spell Check") || menu->text(id) == i18n("Check Spelling...")))
 			menu->setItemEnabled(id, false);
 		// Always enable tabulations!:
 		if (menu->text(id) == i18n("Allow Tabulations"))

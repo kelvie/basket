@@ -254,7 +254,6 @@ void NewBasketDialog::slotOk()
 	if (item->text() == i18n("Mind map"))
 		templateName = "mindmap";
 
-	// NewBasketDialog is a dialog of the app, so it does not have triggered an inline-editor close. See ItemEditor::slotFocusOut():
 	Global::basketTree->closeAllEditors();
 
 	BasketFactory::newBasket(m_icon->icon(), m_name->text(), m_backgroundColor->color(), templateName, m_basketsMap[m_createIn->currentItem()]);

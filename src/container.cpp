@@ -717,11 +717,6 @@ BasketTree::BasketTree(QWidget *parent)
 	m_tree->setMidLineWidth(0);
 	m_tree->setFocusPolicy(QWidget::NoFocus);
 
-//	m_tree->setLineWidth(0);
-//	m_tree->setPaletteBackgroundColor(paletteBackgroundColor());
-//	m_stack->setPaletteBackgroundColor(paletteBackgroundColor());
-//	setPaletteBackgroundColor(KGlobalSettings::highlightColor());
-
 	/// Configure the List View Drag and Drop:
 	m_tree->setDragEnabled(true);
 	m_tree->setAcceptDrops(true);
@@ -1619,19 +1614,6 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 		KPopupMenu menu(this);
 		menu.insertTitle( SmallIcon("basket"), kapp->aboutData()->programName() );
 
-/*		QPtrList<Basket> baskets = m_parentContainer->listBaskets();
-		Basket *cur;
-		for (uint i = 0; i < baskets.count(); ++i ) {
-			cur = baskets.at(i);
-			if ( ! cur->icon().isEmpty() )
-				menu.insertNote( SmallIconSet(cur->icon()), QString(cur->name()).replace("&", "&&"), i + 10 );
-			else
-				menu.insertNote(                            QString(cur->name()).replace("&", "&&"), i + 10 );
-		}
-		menu.setNoteChecked( m_parentContainer->currentBasketIndex() + 10, true );
-		connect( &menu, SIGNAL(activated(int)), this, SLOT(showBasket(int)) );
-		menu.insertSeparator();
-*/
 		m_parentContainer->actNewBasket->plug(&menu);
 		m_parentContainer->actNewSubBasket->plug(&menu);
 		menu.insertSeparator();
@@ -2576,11 +2558,7 @@ void Container::updateStatusBarHint()
 {
 	QString message = "";
 
-	/*if (currentBasket()->isDuringEdit() && Settings::enterValidateInline())
-		message = i18n("Editing. Press Escape, Return or click outside to confirm.");
-	else if (currentBasket()->isDuringEdit())
-		message = i18n("Editing. Press Escape or click outside to confirm.");
-	else */if (currentBasket()->isDuringDrag())
+	if (currentBasket()->isDuringDrag())
 		message = i18n("Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link.");
 // Too much noise information:
 //	else if (currentBasket()->inserterShown() && currentBasket()->inserterSplit() && !currentBasket()->inserterGroup())

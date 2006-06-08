@@ -37,10 +37,10 @@ shellrc_DATA = basketui.rc
 
 noinst_HEADERS = basket.h basketproperties.h container.h debugwindow.h \
 	linklabel.h variouswidgets.h xmlwork.h keyboard.h global.h settings.h \
-	focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h have_fam.h tag.h \
-	qeffects.h kcolorcombo2.h newbasketdialog.h tagsedit.h formatimporter.h note.h \
-	notecontent.h notedrag.h noteedit.h notefactory.h filter.h tools.h \
-	backgroundmanager.h regiongrabber.h softwareimporters.h kicondialog.h kiconcanvas.h
+	focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h tag.h qeffects.h \
+	kcolorcombo2.h newbasketdialog.h tagsedit.h formatimporter.h note.h notecontent.h \
+	notedrag.h noteedit.h notefactory.h filter.h tools.h backgroundmanager.h \
+	regiongrabber.h softwareimporters.h kicondialog.h kiconcanvas.h
 basket_SOURCES = basket.cpp basketproperties.cpp container.cpp debugwindow.cpp \
 	linklabel.cpp variouswidgets.cpp main.cpp xmlwork.cpp keyboard.cpp global.cpp \
 	settings.cpp focusedwidgets.cpp popupmenu.cpp basketfactory.cpp exporterdialog.cpp \

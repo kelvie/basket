@@ -87,14 +87,6 @@ class NoteEditor : public QObject
 	virtual void validate() {}
 	virtual void autoSave() {} // Same as validate(), but does not precede editor close and is triggered either while the editor widget changed size or after 3 seconds of inactivity.
 
-  protected slots:
-	void slotFocusOut();
-	void slotFocusOut2();
-  protected:
-	void setSecondaryInlineWidgets(QValueList<QWidget*> widgets) { m_secondaryInlineWidgets = widgets; }
-  private:
-	QValueList<QWidget*> m_secondaryInlineWidgets;
-
   signals:
 	void askValidation();
 
