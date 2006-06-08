@@ -1976,6 +1976,13 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 	}
 	m_selectionStarted = false;
 
+	Note *clicked = noteAt(event->pos().x(), event->pos().y());
+	Note::Zone zone = (clicked ? clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) ) : Note::None);
+	if ((zone == Note::Handle || zone == Note::Group) && editedNote() && editedNote() == clicked) {
+		closeEditor();
+		//clicked->setSelected(true);
+	}
+
 	// Do nothing if an action has already been made during mousePressEvent,
 	// or if user made a selection and canceled it by regressing to a very small rectangle.
 	if (m_noActionOnMouseRelease)
@@ -1986,7 +1993,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 	// Obviously, nothing should be done in this case:
 	m_noActionOnMouseRelease = true;
 
-	Note *clicked = noteAt(event->pos().x(), event->pos().y());
+//	Note *clicked = noteAt(event->pos().x(), event->pos().y());
 	if ( ! clicked ) {
 		if (isFreeLayout() && event->button() == Qt::LeftButton) {
 			clickedToInsert(event);
@@ -1994,7 +2001,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		}
 		return;
 	}
-	Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
+//	Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
 
 	// Convenient variables:
 	bool controlPressed = event->stateAfter() & Qt::ControlButton;
