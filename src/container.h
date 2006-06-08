@@ -277,7 +277,6 @@ class ContainerSystemTray : public KSystemTray2
 	void updateToolTip();
   protected slots:
 	void updateToolTipDelayed();
-	void showBasket(int index);
   private:
 	QTimer    *m_showTimer;
 	QTimer    *m_autoShowTimer;
@@ -286,71 +285,6 @@ class ContainerSystemTray : public KSystemTray2
 	Container *m_parentContainer;
 	QPixmap    m_iconPixmap;
 	QPixmap    m_lockedIconPixmap;
-};
-
-/** This class provide a QTabBar with a popup menu for the baskets
-  * and drag and drop possibilities.
-  * @author Sébastien Laoût
-  */
-class ContainerTabBar : public QTabBar
-{
-  Q_OBJECT
-  public:
-	ContainerTabBar(QWidget *parent = 0, const char *name = 0);
-	~ContainerTabBar();
-	int tabIndexForCursorPosition(const QPoint &curPos);
-	void updateToolTips(const QStringList &tips);
-  protected:
-	virtual void dragEnterEvent(QDragEnterEvent*);
-	virtual void dragMoveEvent(QDragMoveEvent *event);
-	virtual void dragLeaveEvent(QDragLeaveEvent*);
-	virtual void dropEvent(QDropEvent *event);
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent*);
-	virtual void mouseDoubleClickEvent(QMouseEvent *event);
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-  signals:
-	void doubleClicked(int tabIndex);
-	void wantContextMenu(int tabIndex, const QPoint &globalPos);
-	void wantContextMenu(int tabIndex, const QRect  &globalRect);
-	void wantShowPage(int tabIndex);
-	void wantPaste(int tabIndex, QClipboard::Mode mode);
-  private slots:
-	void timeout();
-
-  private:
-	QTimer        *m_showTimer;
-	int            m_basketIndexToMove;
-	Basket        *m_pointedBasket;
-	int            m_pointedBasketIndex;
-	QToolTipGroup *m_ttGroup;
-};
-
-/** This class provide a QTabWidget with a popup menu for the tabs.
-  * @author Sébastien Laoût
-  */
-class ContainerTabWidget : public QTabWidget
-{
-  Q_OBJECT
-  public:
-	ContainerTabWidget(QWidget *parent = 0, const char *name = 0);
-	~ContainerTabWidget();
-	void updateToolTips(const QStringList &tips);
-  signals:
-	void doubleClicked(int tabIndex);
-	void contextMenu(int tabIndex, const QPoint &globalPos);
-	void contextMenu(int tabIndex, const QRect  &globalRect);
-	void wantPaste(int tabIndex, QClipboard::Mode mode);
-  public slots:
-	void setCurrentPage(int index); // We overload it to not try to show a page that is already shown
-  private slots:
-	void slotWantPaste(int tabIndex, QClipboard::Mode mode);
-	void slotDoubleClicked(int tabIndex);
-	void slotContextMenu(int tabIndex, const QPoint &globalPos);
-	void slotContextMenu(int tabIndex, const QRect  &globalRect);
-  protected:
-	virtual void contextMenuEvent(QContextMenuEvent *event);
 };
 
 /** The window that contain baskets, organized by tabs.
@@ -451,7 +385,6 @@ class Container : public KMainWindow
   public:
 	static const int c_delayTooltipTime;
   public slots:
-	void setCurrentBasket(int index);
 	void setCurrentBasket(Basket *basket);
 	void countsChanged(Basket *basket);
 	/** Global shortcuts */
@@ -480,8 +413,6 @@ class Container : public KMainWindow
 	void polish();
   private slots:
 	/** User actions */
-	void contextMenu(int tabIndex, const QPoint &globalPos);
-	void contextMenu(int tabIndex, const QRect  &globalRect);
 	void changedSelectedNotes();
 	void timeoutTryHide();
 	void timeoutHide();
