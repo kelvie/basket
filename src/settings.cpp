@@ -399,7 +399,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	m_viewTextFileContent  = new QCheckBox( i18n("&Text"),               buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
-	m_viewSoundFileContent = new QCheckBox( i18n("So&und"),              buttonGroup );
+	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
 	m_viewTextFileContent->setChecked(  Settings::viewTextFileContent()  );
 	m_viewHtmlFileContent->setChecked(  Settings::viewHtmlFileContent()  );
 	m_viewImageFileContent->setChecked( Settings::viewImageFileContent() );

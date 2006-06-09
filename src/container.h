@@ -322,9 +322,10 @@ class Container : public KMainWindow
 	void exportToHTML();
 	void importKNotes();
 	void importKJots();
+	void importKnowIt();
+	void importTuxCards();
 	void importStickyNotes();
 	void importTomboy();
-	void importKnowIt();
 	void hideOnEscape();
 	bool askForQuit();
 	/** Edit */

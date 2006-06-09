@@ -24,6 +24,9 @@
 #include <klocale.h>
 #include <kfiledialog.h>
 #include <qptrstack.h>
+#include <qlayout.h>
+#include <qvbuttongroup.h>
+#include <qradiobutton.h>
 
 #include "softwareimporters.h"
 #include "basket.h"
@@ -33,6 +36,37 @@
 #include "container.h"
 #include "xmlwork.h"
 #include "tools.h"
+
+/** class TreeImportDialog: */
+
+TreeImportDialog::TreeImportDialog(QWidget *parent)
+ : KDialogBase(KDialogBase::Swallow, i18n("Import Hierarchy"), KDialogBase::Ok | KDialogBase::Cancel,
+               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false)
+{
+	QWidget *page = new QWidget(this);
+	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+
+	m_choices = new QVButtonGroup(i18n("How to Import the Notes?"), page);
+	new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
+	new QRadioButton(i18n("First level notes in separate baskets"),                    m_choices);
+	new QRadioButton(i18n("All notes in &one basket"),                                 m_choices);
+	m_choices->setButton(0);
+	topLayout->addWidget(m_choices);
+	topLayout->addStretch(10);
+
+	setMainWidget(page);
+}
+
+TreeImportDialog::~TreeImportDialog()
+{
+}
+
+int TreeImportDialog::choice()
+{
+	return m_choices->selectedId();
+}
+
+/** namespace SoftwareImporters: */
 
 QString SoftwareImporters::fromICS(const QString &ics)
 {
@@ -373,99 +407,112 @@ void SoftwareImporters::importTomboy()
 		finishImport(basket);
 }
 
+/** @author Petri Damsten <petri.damsten@iki.fi>
+  */
 void SoftwareImporters::importKnowIt()
 {
-  KURL url = KFileDialog::getOpenURL(":ImportKnowIt",
-                                     "*.kno|KnowIt files\n*.*|All files");
-  if (!url.isEmpty())
-  {
-    QFile file(url.path());
-    QFileInfo info(url.path());
-    Basket* basket = 0;
-    Basket* master = 0;
-    QString text;
+	KURL url = KFileDialog::getOpenURL(":ImportKnowIt",
+	                                   "*.kno|KnowIt files\n*.*|All files");
+	if (!url.isEmpty())
+	{
+		QFile file(url.path());
+		QFileInfo info(url.path());
+		Basket* basket = 0;
+		Basket* master = 0;
+		QString text;
 
-    BasketFactory::newBasket(/*icon=*/"knowit",
-                                    /*name=*/info.baseName(),
-                                    /*backgroundColor=*/QColor(),
-                                    /*templateName=*/"1column",
-                                    /*createIn=*/0);
-    master = Global::basketTree->currentBasket();
-    master->load();
+		BasketFactory::newBasket(/*icon=*/"knowit",
+		                         /*name=*/info.baseName(),
+		                         /*backgroundColor=*/QColor(),
+		                         /*templateName=*/"1column",
+		                         /*createIn=*/0);
+		master = Global::basketTree->currentBasket();
+		master->load();
 
-    if(file.open(IO_ReadOnly))
-    {
-      QTextStream stream(&file);
-      uint level;
-      QString name;
-      QString line;
-      QStringList links;
-      QStringList descriptions;
+		if(file.open(IO_ReadOnly))
+		{
+			QTextStream stream(&file);
+			uint level;
+			QString name;
+			QString line;
+			QStringList links;
+			QStringList descriptions;
 
-      stream.setEncoding(QTextStream::UnicodeUTF8);
-      while(1)
-      {
-        line = stream.readLine();
+			stream.setEncoding(QTextStream::UnicodeUTF8);
+			while(1)
+			{
+				line = stream.readLine();
 
-        if(line.startsWith("\\NewEntry") ||
-           line.startsWith("\\CurrentEntry") || stream.atEnd())
-        {
-          if(!name.isEmpty())
-          {
-            if(level == 0)
-            {
-              BasketFactory::newBasket(/*icon=*/"knowit",
-                                      /*name=*/name,
-                                      /*backgroundColor=*/QColor(),
-                                      /*templateName=*/"1column",
-                                      /*createIn=*/master);
-              basket = Global::basketTree->currentBasket();
-              basket->load();
-            }
+				if(line.startsWith("\\NewEntry") ||
+				   line.startsWith("\\CurrentEntry") || stream.atEnd())
+				{
+					if(!name.isEmpty())
+					{
+						if(level == 0)
+						{
+							BasketFactory::newBasket(/*icon=*/"knowit",
+							                         /*name=*/name,
+							                         /*backgroundColor=*/QColor(),
+							                         /*templateName=*/"1column",
+							                         /*createIn=*/master);
+							basket = Global::basketTree->currentBasket();
+							basket->load();
+						}
 
-            if(!text.stripWhiteSpace().isEmpty())
-            {
-              insertTitledNote(basket, name, text, Qt::RichText);
-            }
-            for(uint j = 0; j < links.count(); ++j)
-            {
-              Note* link;
-              if(descriptions.count() < j+1 || descriptions[j].isEmpty())
-                link = NoteFactory::createNoteLink(links[j], basket);
-              else
-                link = NoteFactory::createNoteLink(links[j],
-                  descriptions[j], basket);
-              basket->insertCreatedNote(link);
-            }
-            finishImport(basket);
-          }
-          if(stream.atEnd())
-            break;
+						if(!text.stripWhiteSpace().isEmpty())
+						{
+							insertTitledNote(basket, name, text, Qt::RichText);
+						}
+						for(uint j = 0; j < links.count(); ++j)
+						{
+							Note* link;
+							if(descriptions.count() < j+1 || descriptions[j].isEmpty())
+								link = NoteFactory::createNoteLink(links[j], basket);
+							else
+								link = NoteFactory::createNoteLink(links[j],
+							descriptions[j], basket);
+							basket->insertCreatedNote(link);
+						}
+						finishImport(basket);
+					}
+					if(stream.atEnd())
+						break;
 
-          int i = line.find("Entry") + 6;
-          int n = line.find(' ', i);
-          level = line.mid(i, n - i).toInt();
-          name = line.mid(n+1);
-          text = "";
-          links.clear();
-          descriptions.clear();
-        }
-        else if(line.startsWith("\\Link"))
-        {
-          links.append(line.mid(6));
-        }
-        else if(line.startsWith("\\Descr"))
-        {
-          while(descriptions.count() < links.count() - 1)
-            descriptions.append("");
-          descriptions.append(line.mid(7));
-        }
-        else
-        {
-          text += line + "\n";
-        }
-      }
-      file.close();
-    }
-  }
+					int i = line.find("Entry") + 6;
+					int n = line.find(' ', i);
+					level = line.mid(i, n - i).toInt();
+					name = line.mid(n+1);
+					text = "";
+					links.clear();
+					descriptions.clear();
+				}
+				else if(line.startsWith("\\Link"))
+				{
+					links.append(line.mid(6));
+				}
+				else if(line.startsWith("\\Descr"))
+				{
+					while(descriptions.count() < links.count() - 1)
+						descriptions.append("");
+					descriptions.append(line.mid(7));
+				}
+				else
+				{
+					text += line + "\n";
+				}
+			}
+			file.close();
+		}
+	}
 }
+
+void SoftwareImporters::importTuxCards()
+{
+	QString fileName = KFileDialog::getOpenFileName(":ImportTuxCards",  "*.*|All files");
+	if (fileName.isEmpty())
+		return;
+
+	int hierarchy = TreeImportDialog(0).exec();
+}
+
+#include "softwareimporters.h"

@@ -70,7 +70,7 @@ am_basket_OBJECTS = basket.$(OBJEXT) basketproperties.$(OBJEXT) \
 	regiongrabber.$(OBJEXT) softwareimporters.$(OBJEXT) \
 	kicondialog.$(OBJEXT) kiconcanvas.$(OBJEXT)
 #>- basket_OBJECTS = $(am_basket_OBJECTS)
-#>+ 16
+#>+ 17
 basket_final_OBJECTS = basket.all_cpp.o 
 basket_nofinal_OBJECTS = basket.$(OBJEXT) basketproperties.$(OBJEXT) \
 	container.$(OBJEXT) debugwindow.$(OBJEXT) linklabel.$(OBJEXT) \
@@ -84,7 +84,8 @@ basket_nofinal_OBJECTS = basket.$(OBJEXT) basketproperties.$(OBJEXT) \
 	notedrag.$(OBJEXT) noteedit.$(OBJEXT) notefactory.$(OBJEXT) \
 	filter.$(OBJEXT) tools.$(OBJEXT) backgroundmanager.$(OBJEXT) \
 	regiongrabber.$(OBJEXT) softwareimporters.$(OBJEXT) \
-	kicondialog.$(OBJEXT) kiconcanvas.$(OBJEXT) kicondialogui.$(OBJEXT)
+	kicondialog.$(OBJEXT) kiconcanvas.$(OBJEXT) kicondialogui.$(OBJEXT)\
+softwareimporters.moc.o 
 @KDE_USE_FINAL_FALSE@basket_OBJECTS = $(basket_nofinal_OBJECTS)
 @KDE_USE_FINAL_TRUE@basket_OBJECTS = $(basket_final_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -880,18 +881,18 @@ notecontent.moc: $(srcdir)/notecontent.h
 mocs: notecontent.moc
 
 #>+ 3
-filter.moc: $(srcdir)/filter.h
-	$(MOC) $(srcdir)/filter.h -o filter.moc
-
-#>+ 2
-mocs: filter.moc
-
-#>+ 3
 noteedit.moc: $(srcdir)/noteedit.h
 	$(MOC) $(srcdir)/noteedit.h -o noteedit.moc
 
 #>+ 2
 mocs: noteedit.moc
+
+#>+ 3
+filter.moc: $(srcdir)/filter.h
+	$(MOC) $(srcdir)/filter.h -o filter.moc
+
+#>+ 2
+mocs: filter.moc
 
 #>+ 3
 tagsedit.moc: $(srcdir)/tagsedit.h
@@ -906,6 +907,13 @@ container.moc: $(srcdir)/container.h
 
 #>+ 2
 mocs: container.moc
+
+#>+ 3
+softwareimporters.moc.cpp: $(srcdir)/softwareimporters.h
+	$(MOC) $(srcdir)/softwareimporters.h -o softwareimporters.moc.cpp
+
+#>+ 2
+mocs: softwareimporters.moc.cpp
 
 #>+ 3
 settings.moc: $(srcdir)/settings.h
@@ -937,7 +945,7 @@ mocs: notedrag.moc
 
 #>+ 3
 clean-metasources:
-	-rm -f  newbasketdialog.moc linklabel.moc debugwindow.moc basket.moc kiconcanvas.moc kicondialog.moc backgroundmanager.moc kcolorcombo2.moc exporterdialog.moc formatimporter.moc qeffects.moc variouswidgets.moc basketproperties.moc notecontent.moc filter.moc noteedit.moc tagsedit.moc container.moc settings.moc regiongrabber.moc focusedwidgets.moc notedrag.moc
+	-rm -f  newbasketdialog.moc linklabel.moc debugwindow.moc basket.moc kiconcanvas.moc kicondialog.moc backgroundmanager.moc kcolorcombo2.moc exporterdialog.moc formatimporter.moc qeffects.moc variouswidgets.moc basketproperties.moc notecontent.moc noteedit.moc filter.moc tagsedit.moc container.moc softwareimporters.moc.cpp settings.moc regiongrabber.moc focusedwidgets.moc notedrag.moc
 
 #>+ 2
 KDE_DIST=cr22-app-basket.png cr32-app-basket.png cr128-app-basket.png cr16-app-basket.png cr64-app-basket.png kicondialogui.ui basket.desktop basketui.rc crsc-app-basket.svg kicondialogui.h Makefile.in basket.lsm cr48-app-basket.png Makefile.am 
@@ -1015,11 +1023,11 @@ bcheck-am:
 
 
 #>+ 11
-basket.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/basket.cpp $(srcdir)/basketproperties.cpp $(srcdir)/container.cpp $(srcdir)/debugwindow.cpp $(srcdir)/linklabel.cpp $(srcdir)/variouswidgets.cpp $(srcdir)/main.cpp $(srcdir)/xmlwork.cpp $(srcdir)/keyboard.cpp $(srcdir)/global.cpp $(srcdir)/settings.cpp $(srcdir)/focusedwidgets.cpp $(srcdir)/popupmenu.cpp $(srcdir)/basketfactory.cpp $(srcdir)/exporterdialog.cpp $(srcdir)/tag.cpp $(srcdir)/qeffects.cpp $(srcdir)/kcolorcombo2.cpp $(srcdir)/newbasketdialog.cpp $(srcdir)/tagsedit.cpp $(srcdir)/formatimporter.cpp $(srcdir)/note.cpp $(srcdir)/notecontent.cpp $(srcdir)/notedrag.cpp $(srcdir)/noteedit.cpp $(srcdir)/notefactory.cpp $(srcdir)/filter.cpp $(srcdir)/tools.cpp $(srcdir)/backgroundmanager.cpp $(srcdir)/regiongrabber.cpp $(srcdir)/softwareimporters.cpp $(srcdir)/kicondialog.cpp $(srcdir)/kiconcanvas.cpp $(srcdir)/kicondialogui.cpp  linklabel.moc newbasketdialog.moc basket.moc debugwindow.moc kicondialogui.moc kiconcanvas.moc kicondialog.moc backgroundmanager.moc kcolorcombo2.moc exporterdialog.moc formatimporter.moc qeffects.moc variouswidgets.moc basketproperties.moc notecontent.moc noteedit.moc filter.moc tagsedit.moc container.moc settings.moc regiongrabber.moc focusedwidgets.moc notedrag.moc
+basket.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/basket.cpp $(srcdir)/basketproperties.cpp $(srcdir)/container.cpp $(srcdir)/debugwindow.cpp $(srcdir)/linklabel.cpp $(srcdir)/variouswidgets.cpp $(srcdir)/main.cpp $(srcdir)/xmlwork.cpp $(srcdir)/keyboard.cpp $(srcdir)/global.cpp $(srcdir)/settings.cpp $(srcdir)/focusedwidgets.cpp $(srcdir)/popupmenu.cpp $(srcdir)/basketfactory.cpp $(srcdir)/exporterdialog.cpp $(srcdir)/tag.cpp $(srcdir)/qeffects.cpp $(srcdir)/kcolorcombo2.cpp $(srcdir)/newbasketdialog.cpp $(srcdir)/tagsedit.cpp $(srcdir)/formatimporter.cpp $(srcdir)/note.cpp $(srcdir)/notecontent.cpp $(srcdir)/notedrag.cpp $(srcdir)/noteedit.cpp $(srcdir)/notefactory.cpp $(srcdir)/filter.cpp $(srcdir)/tools.cpp $(srcdir)/backgroundmanager.cpp $(srcdir)/regiongrabber.cpp $(srcdir)/softwareimporters.cpp $(srcdir)/kicondialog.cpp $(srcdir)/kiconcanvas.cpp $(srcdir)/kicondialogui.cpp softwareimporters.moc.cpp  linklabel.moc newbasketdialog.moc basket.moc debugwindow.moc kicondialogui.moc kiconcanvas.moc kicondialog.moc backgroundmanager.moc kcolorcombo2.moc exporterdialog.moc formatimporter.moc qeffects.moc variouswidgets.moc basketproperties.moc notecontent.moc filter.moc noteedit.moc tagsedit.moc container.moc settings.moc regiongrabber.moc focusedwidgets.moc notedrag.moc
 	@echo 'creating basket.all_cpp.cpp ...'; \
 	rm -f basket.all_cpp.files basket.all_cpp.final; \
 	echo "#define KDE_USE_FINAL 1" >> basket.all_cpp.final; \
-	for file in basket.cpp basketproperties.cpp container.cpp debugwindow.cpp linklabel.cpp variouswidgets.cpp main.cpp xmlwork.cpp keyboard.cpp global.cpp settings.cpp focusedwidgets.cpp popupmenu.cpp basketfactory.cpp exporterdialog.cpp tag.cpp qeffects.cpp kcolorcombo2.cpp newbasketdialog.cpp tagsedit.cpp formatimporter.cpp note.cpp notecontent.cpp notedrag.cpp noteedit.cpp notefactory.cpp filter.cpp tools.cpp backgroundmanager.cpp regiongrabber.cpp softwareimporters.cpp kicondialog.cpp kiconcanvas.cpp kicondialogui.cpp ; do \
+	for file in basket.cpp basketproperties.cpp container.cpp debugwindow.cpp linklabel.cpp variouswidgets.cpp main.cpp xmlwork.cpp keyboard.cpp global.cpp settings.cpp focusedwidgets.cpp popupmenu.cpp basketfactory.cpp exporterdialog.cpp tag.cpp qeffects.cpp kcolorcombo2.cpp newbasketdialog.cpp tagsedit.cpp formatimporter.cpp note.cpp notecontent.cpp notedrag.cpp noteedit.cpp notefactory.cpp filter.cpp tools.cpp backgroundmanager.cpp regiongrabber.cpp softwareimporters.cpp kicondialog.cpp kiconcanvas.cpp kicondialogui.cpp softwareimporters.moc.cpp ; do \
 	  echo "#include \"$$file\"" >> basket.all_cpp.files; \
 	  test ! -f $(srcdir)/$$file || egrep '^#pragma +implementation' $(srcdir)/$$file >> basket.all_cpp.final; \
 	done; \

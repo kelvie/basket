@@ -1909,12 +1909,14 @@ void Container::setupActions()
 	             this, SLOT(importKNotes()),      actionCollection(), "basket_import_knotes" );
 	new KAction( i18n("K&Jots"), "kjots", 0,
 	             this, SLOT(importKJots()),       actionCollection(), "basket_import_kjots" );
+	new KAction( i18n("&KnowIt..."), "knowit", 0,
+	             this, SLOT(importKnowIt()),      actionCollection(), "basket_import_knowit" );
+	new KAction( i18n("Tux&Cards..."), "tuxcards", 0,
+	             this, SLOT(importTuxCards()),    actionCollection(), "basket_import_tuxcards" );
 	new KAction( i18n("&Sticky Notes"), "gnome", 0,
 	             this, SLOT(importStickyNotes()), actionCollection(), "basket_import_sticky_notes" );
 	new KAction( i18n("&Tomboy"), "tintin", 0,
 	             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
-	new KAction( i18n("&KnowIt..."), "knowit", 0,
-	             this, SLOT(importKnowIt()),      actionCollection(), "basket_import_knowit" );
 
 	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStdAccel::shortcut(KStdAccel::Close),
 	                               this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
@@ -1952,7 +1954,7 @@ void Container::setupActions()
 	                                      actionCollection(), "edit_filter" );
 	connect( m_actShowFilter, SIGNAL(toggled(bool)), this, SLOT(showHideFilterBar(bool)) );
 
-	m_actFilterAllBaskets = new KToggleAction( i18n("Filter &all Baskets"), "find", "Ctrl+Shift+F",
+	m_actFilterAllBaskets = new KToggleAction( i18n("Filter all &Baskets"), "find", "Ctrl+Shift+F",
 	                                           actionCollection(), "edit_filter_all_baskets" );
 	connect( m_actFilterAllBaskets, SIGNAL(toggled(bool)), Global::basketTree, SLOT(toggleFilterAllBaskets(bool)) );
 
@@ -2131,9 +2133,10 @@ void Container::slotResetFilter()           { currentDecoratedBasket()->resetFil
 
 void Container::importKJots()       { SoftwareImporters::importKJots();       }
 void Container::importKNotes()      { SoftwareImporters::importKNotes();      }
+void Container::importKnowIt()      { SoftwareImporters::importKnowIt();      }
+void Container::importTuxCards()    { SoftwareImporters::importTuxCards();    }
 void Container::importStickyNotes() { SoftwareImporters::importStickyNotes(); }
 void Container::importTomboy()      { SoftwareImporters::importTomboy();      }
-void Container::importKnowIt()      { SoftwareImporters::importKnowIt();      }
 
 void Container::showHideFilterBar(bool show, bool switchFocus)
 {

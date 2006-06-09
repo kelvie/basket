@@ -22,6 +22,7 @@
 #include <kstandarddirs.h>
 #include <qstring.h>
 #include <kaction.h>
+#include <qdir.h>
 
 #include "global.h"
 #include "container.h"
@@ -48,8 +49,11 @@ QString Global::savesFolder()
 	if (folder == 0L) {            // Initialize it if not yet done
 		if (s_customSavesFolder.isEmpty())
 			folder = new QString( KGlobal::dirs()->saveLocation("data", "basket/") );
-		else
+		else {
+			QDir dir;
+			dir.mkdir(s_customSavesFolder);
 			folder = new QString(s_customSavesFolder + "/");
+		}
 	}
 
 	return *folder;

@@ -1,31 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="8" >
-  <Doc0 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/basket.cpp" >
-   <View0 line="1839" Type="Source" />
+ <DocsAndViews NumberOfDocuments="4" >
+  <Doc0 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/softwareimporters.h" >
+   <View0 line="24" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/basket.h" >
-   <View0 line="232" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/softwareimporters.cpp" >
+   <View0 line="28" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/container.h" >
-   <View0 line="400" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/basketproperties.h" >
+   <View0 line="67" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/container.cpp" >
-   <View0 line="1614" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/basketproperties.cpp" >
+   <View0 line="24" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/notedrag.cpp" >
-   <View0 line="259" Type="Source" />
-  </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/notedrag.h" >
-   <View0 line="64" Type="Source" />
-  </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/main.cpp" >
-   <View0 line="173" Type="Source" />
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/seb/Programmation/basket/src/settings.cpp" >
-   <View0 line="612" Type="Source" />
-  </Doc7>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
@@ -33,20 +21,11 @@
   </kdevdebugger>
   <kdevbookmarks>
    <bookmarks>
-    <bookmark url="/home/seb/Programmation/basket/src/container.cpp" >
-     <mark line="3179" />
-     <mark line="3214" />
-     <mark line="2180" />
-    </bookmark>
     <bookmark url="/home/seb/Programmation/basket/src/basket.cpp" >
-     <mark line="4686" />
-     <mark line="1851" />
-     <mark line="1852" />
+     <mark line="4764" />
     </bookmark>
     <bookmark url="/home/seb/Programmation/basket/src/basket.h" >
-     <mark line="230" />
-     <mark line="606" />
-     <mark line="220" />
+     <mark line="617" />
     </bookmark>
    </bookmarks>
   </kdevbookmarks>

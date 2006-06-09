@@ -22,13 +22,29 @@
 #define SOFTWAREIMPORTERS_H
 
 #include <qnamespace.h>
+#include <kdialogbase.h>
 
 class QString;
+class QVButtonGroup;
 
 class Basket;
 
+/** The dialog to ask how to import hierarchical data.
+  * @author Sébastien Laoût
+  */
+class TreeImportDialog : public KDialogBase
+{
+  Q_OBJECT
+  public:
+	TreeImportDialog(QWidget *parent = 0);
+	~TreeImportDialog();
+	int choice();
+  private:
+	QVButtonGroup *m_choices;
+};
+
 /** Functions that import data from other softwares.
-  * @author Sï¿½astien Laot
+  * @author Sébastien Laoût
   */
 namespace SoftwareImporters
 {
@@ -41,11 +57,10 @@ namespace SoftwareImporters
 	// The importers in themselves:
 	void importKNotes();
 	void importKJots();
+	void importKnowIt();
+	void importTuxCards();
 	void importStickyNotes();
 	void importTomboy();
-  /** @author Petri Damsten <petri.damsten@iki.fi>
-   */
-	void importKnowIt();
 }
 
 #endif // SOFTWAREIMPORTERS_H

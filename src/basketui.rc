@@ -15,6 +15,7 @@
     <Action name="basket_import_knotes" />
     <Action name="basket_import_kjots" />
     <Action name="basket_import_knowit" />
+    <Action name="basket_import_tuxcards" />
     <Separator/>
     <Action name="basket_import_sticky_notes" />
     <Action name="basket_import_tomboy" />
