@@ -27,6 +27,7 @@
 #include <qlayout.h>
 #include <qvbuttongroup.h>
 #include <qradiobutton.h>
+#include <kmessagebox.h>
 
 #include "softwareimporters.h"
 #include "basket.h"
@@ -48,8 +49,8 @@ TreeImportDialog::TreeImportDialog(QWidget *parent)
 
 	m_choices = new QVButtonGroup(i18n("How to Import the Notes?"), page);
 	new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
-	new QRadioButton(i18n("First level notes in separate baskets"),                    m_choices);
-	new QRadioButton(i18n("All notes in &one basket"),                                 m_choices);
+	new QRadioButton(i18n("&First level notes in separate baskets"),                   m_choices);
+	new QRadioButton(i18n("&All notes in one basket"),                                 m_choices);
 	m_choices->setButton(0);
 	topLayout->addWidget(m_choices);
 	topLayout->addStretch(10);
@@ -128,7 +129,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
 	return "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
 }
 
-void SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/)
+Note* SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
 {
 	Note *nGroup = new Note(parent);
 
@@ -141,9 +142,13 @@ void SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, c
 	else
 		nContent = NoteFactory::createNoteHtml(content, parent);
 
-	parent->insertNote(nGroup,   parent->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
-	parent->insertNote(nTitle,   nGroup,              Note::BottomColumn, QPoint(), /*animate=*/false);
-	parent->insertNote(nContent, nTitle,              Note::BottomInsert, QPoint(), /*animate=*/false);
+	if (parentNote == 0)
+		parentNote = parent->firstNote(); // In the first column!
+	parent->insertNote(nGroup,   parentNote, Note::BottomColumn, QPoint(), /*animate=*/false);
+	parent->insertNote(nTitle,   nGroup,     Note::BottomColumn, QPoint(), /*animate=*/false);
+	parent->insertNote(nContent, nTitle,     Note::BottomInsert, QPoint(), /*animate=*/false);
+
+	return nGroup;
 }
 
 void SoftwareImporters::finishImport(Basket *basket)
@@ -412,7 +417,7 @@ void SoftwareImporters::importTomboy()
 void SoftwareImporters::importKnowIt()
 {
 	KURL url = KFileDialog::getOpenURL(":ImportKnowIt",
-	                                   "*.kno|KnowIt files\n*.*|All files");
+	                                   "*.kno|KnowIt files\n*|All files");
 	if (!url.isEmpty())
 	{
 		QFile file(url.path());
@@ -508,11 +513,69 @@ void SoftwareImporters::importKnowIt()
 
 void SoftwareImporters::importTuxCards()
 {
-	QString fileName = KFileDialog::getOpenFileName(":ImportTuxCards",  "*.*|All files");
+	QString fileName = KFileDialog::getOpenFileName(":ImportTuxCards",  "*|All files");
 	if (fileName.isEmpty())
 		return;
 
-	int hierarchy = TreeImportDialog(0).exec();
+	TreeImportDialog dialog;
+	if (dialog.exec() == QDialog::Rejected)
+		return;
+
+	int hierarchy = dialog.choice();
+
+	QDomDocument *document = XMLWork::openFile("tuxcards_data_file"/*"InformationCollection"*/, fileName);
+	if (document == 0) {
+		KMessageBox::error(0, i18n("Can not import that file. It is either corrupted or not a TuxCards file."), i18n("Bad File Format"));
+		return;
+	}
+
+	QDomElement collection = document->documentElement();
+	int remainingHierarchy = (hierarchy == 0 ? 65000 : 3 - hierarchy);
+	importTuxCardsNode(collection, /*parentBasket=*/0, /*parentNote=*/0, remainingHierarchy);
+}
+
+// TODO: <InformationElement isOpen="true" isEncripted="false"
+
+void SoftwareImporters::importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy)
+{
+	for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+		QDomElement e = n.toElement();
+		if (e.isNull() || e.tagName() != "InformationElement") // Cannot handle that!
+			continue;
+
+		QString icon        = e.attribute("iconFileName");
+		QString name        = XMLWork::getElementText(e, "Description");
+		QString content     = XMLWork::getElementText(e, "Information");
+		bool    isRichText  = (e.attribute("informationFormat") == "RTF");
+		bool    isEncrypted = (e.attribute("isEncripted") == "true");
+		if (icon.isEmpty() || icon == "none")
+			icon = "tuxcards";
+		Note *nContent;
+
+		if (isEncrypted) {
+			KMessageBox::information(0, i18n("A note is encrypted. The importer do not support encrypted notes yet. Please remove the encryption with TuxCards and re-import the file."), i18n("Encrypted Notes note upported Yet"));
+			isRichText = true;
+			content = i18n("<font color='red'><b>Encrypted note.</b><br>The importer do not support encrypted notes yet. Please remove the encryption with TuxCards and re-import the file.");
+		}
+
+		if (remainingHierarchy > 0) {
+			BasketFactory::newBasket(icon, name, /*backgroundColor=*/QColor(), /*templateName=*/"1column", parentBasket);
+			Basket *basket = Global::basketTree->currentBasket();
+			basket->load();
+
+			if (isRichText)
+				nContent = NoteFactory::createNoteHtml(content, basket);
+			else
+				nContent = NoteFactory::createNoteText(content, basket);
+			basket->insertNote(nContent, basket->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
+
+			importTuxCardsNode(e, basket, 0, remainingHierarchy - 1);
+			finishImport(basket);
+		} else {
+			Note *nGroup = insertTitledNote(parentBasket, name, content, (isRichText ? Qt::RichText : Qt::PlainText), parentNote);
+			importTuxCardsNode(e, parentBasket, nGroup, remainingHierarchy - 1);
+		}
+	}
 }
 
 #include "softwareimporters.h"
