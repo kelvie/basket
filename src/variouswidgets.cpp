@@ -147,7 +147,7 @@ void ViewSizeDialog::resizeEvent(QResizeEvent *)
 	m_sizeGrip->move( width() - m_sizeGrip->width(), height() - m_sizeGrip->height() );
 }
 
-/** class KURLLabel: */
+/** class HelpLabel: */
 
 HelpLabel::HelpLabel(const QString &text, const QString &message, QWidget *parent)
  : KURLLabel(parent), m_message(message)
@@ -162,8 +162,7 @@ HelpLabel::~HelpLabel()
 
 void HelpLabel::showMessage()
 {
-	// TODO: Align it with the label!
-	QWhatsThis::display(m_message);
+	QWhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
 }
 
 /** class IconSizeDialog: */
