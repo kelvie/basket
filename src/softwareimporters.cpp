@@ -423,16 +423,24 @@ void SoftwareImporters::importKnowIt()
 		QFile file(url.path());
 		QFileInfo info(url.path());
 		Basket* basket = 0;
-		Basket* master = 0;
+		QPtrStack<Basket> baskets;
 		QString text;
+		int hierarchy = 0;
+
+		TreeImportDialog dialog;
+		if (dialog.exec() == QDialog::Rejected)
+			return;
+
+		hierarchy = dialog.choice();
 
 		BasketFactory::newBasket(/*icon=*/"knowit",
 		                         /*name=*/info.baseName(),
 		                         /*backgroundColor=*/QColor(),
 		                         /*templateName=*/"1column",
 		                         /*createIn=*/0);
-		master = Global::basketTree->currentBasket();
-		master->load();
+		basket = Global::basketTree->currentBasket();
+		basket->load();
+		baskets.push(basket);
 
 		if(file.open(IO_ReadOnly))
 		{
@@ -451,20 +459,28 @@ void SoftwareImporters::importKnowIt()
 				if(line.startsWith("\\NewEntry") ||
 				   line.startsWith("\\CurrentEntry") || stream.atEnd())
 				{
+					while(level + 1 < baskets.count())
+						baskets.pop();
+					if(level + 1 > baskets.count())
+						baskets.push(basket);
+
 					if(!name.isEmpty())
 					{
-						if(level == 0)
+						if((level == 0 && hierarchy == 1) ||
+							(hierarchy == 0))
 						{
 							BasketFactory::newBasket(/*icon=*/"knowit",
 							                         /*name=*/name,
 							                         /*backgroundColor=*/QColor(),
 							                         /*templateName=*/"1column",
-							                         /*createIn=*/master);
+							                         /*createIn=*/baskets.top());
 							basket = Global::basketTree->currentBasket();
 							basket->load();
 						}
 
-						if(!text.stripWhiteSpace().isEmpty())
+						if(!text.stripWhiteSpace().isEmpty() ||
+							hierarchy == 2 ||
+							(hierarchy == 1 && level > 0))
 						{
 							insertTitledNote(basket, name, text, Qt::RichText);
 						}
