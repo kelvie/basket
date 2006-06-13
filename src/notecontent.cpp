@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,7 @@
 #include <qwidget.h>
 #include <qcursor.h>
 #include <qstringlist.h>
+#include <qbuffer.h>
 #include <ktextedit.h>
 #include <kservice.h>
 #include <kcolordialog.h>
@@ -74,19 +75,6 @@
 
 /** Helping functions:
  */
-
-QString loadFileToString(const QString &fileName) // TODO: Tools::loadTextFile()     With encoding...
-{
-	QFile file(fileName);
-	if (file.open(IO_ReadOnly)) {
-		QTextStream stream(&file);
-		QString text;
-		text = stream.read();
-		file.close();
-		return text;
-	} else
-		return "";
-}
 
 void saveStringAsFile(const QString &text, const QString &fileName) // TODO: Tools::saveTextFile()     + With encoding...  + KSaveFile    + With Disk Space checking
 {
@@ -549,7 +537,11 @@ void TextContent::paint(QPainter *painter, int width, int height, const QColorGr
 void TextContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
-	setText(loadFileToString(fullPath()));
+
+	QString content;
+
+	basket()->loadFromFile(fullPath(), &content);
+	setText(content);
 }
 
 void TextContent::saveToFile()
@@ -628,7 +620,11 @@ void HtmlContent::paint(QPainter *painter, int width, int height, const QColorGr
 void HtmlContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
-	setHtml(loadFileToString(fullPath()));
+
+	QString content;
+
+	basket()->loadFromFile(fullPath(), &content);
+	setHtml(content);
 }
 
 void HtmlContent::saveToFile()
@@ -716,9 +712,17 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QCo
 void ImageContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
-	m_format = (char* /* from const char* */)QPixmap::imageFormat(fullPath()); // See QImageIO to know what formats can be supported.
+
+	QByteArray content;
+
+	basket()->loadFromFile(fullPath(), &content);
+	QBuffer buffer(content);
+
+	buffer.open(IO_ReadOnly);
+	m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
+	buffer.close();
 	if (m_format)
-		m_pixmap.load(fullPath());
+		m_pixmap.loadFromData(content);
 	else
 		m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
 	setPixmap(m_pixmap);

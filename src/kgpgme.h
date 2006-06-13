@@ -54,12 +54,9 @@ class KGpgMe
 		void setHint(QString hint) { m_hint = hint; };
 		QString hint() const { return m_hint; };
 
-		bool encrypt(const QByteArray& inBuffer, QString* outBuffer,
+		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
 			QString keyid = QString::null) const;
-		bool encrypt(const QString& inBuffer, QString* outBuffer,
-			QString keyid = QString::null) const;
-		bool decrypt(const QString& inBuffer, QByteArray* outBuffer) const;
-		bool decrypt(const QString& inBuffer, QString* outBuffer) const;
+		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
 
 		static QString checkForUtf8(QString txt);
 

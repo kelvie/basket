@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -72,6 +72,9 @@
 #include "exporterdialog.h"
 #include "config.h"
 #include "popupmenu.h"
+#ifdef HAVE_LIBGPGME
+#include "kgpgme.h"
+#endif
 
 #include <iostream>
 
@@ -1083,9 +1086,19 @@ void Basket::load()
 	m_loadingLaunched = true;
 
 	DEBUG_WIN << "Basket[" + folderName() + "]: Loading...";
+	QDomDocument *doc = 0;
+	QString content;
 
-	QDomDocument *doc = XMLWork::openFile("basket", fullPath() + "/.basket");
-	if (doc == 0) {
+	if (loadFromFile(fullPath() + "/.basket", &content, &m_encrypted)) {
+		doc = new QDomDocument("basket");
+		if ( ! doc->setContent(content) ) {
+			delete doc;
+			doc = 0;
+		}
+	}
+	if(m_encrypted)
+		DEBUG_WIN << "Basket is encrypted.";
+	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 		return;
 	}
@@ -1237,7 +1250,10 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
    m_isInsertPopupMenu(false),
-   m_loaded(false), m_loadingLaunched(false),
+   m_loaded(false), m_loadingLaunched(false), m_encrypted(false),
+#ifdef HAVE_LIBGPGME
+   m_gpg(0),
+#endif
    m_backgroundPixmap(0), m_opaqueBackgroundPixmap(0), m_selectedBackgroundPixmap(0),
    m_action(0), m_shortcutAction(0),
    m_hoveredNote(0), m_hoveredZone(Note::None), m_lockedHovering(false), m_underMouse(false),
@@ -1281,6 +1297,9 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())     );
 	connect( &m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimout()) );
 	connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
+#ifdef HAVE_LIBGPGME
+	m_gpg = new KGpgMe();
+#endif
 }
 
 void Basket::contentsMoved()
@@ -2672,6 +2691,9 @@ Note* Basket::noteAt(int x, int y)
 Basket::~Basket()
 {
 	delete m_action;
+#ifdef HAVE_LIBGPGME
+	delete m_gpg;
+#endif
 	// TODO: Delete Notes (and then NoteContents)!
 }
 
@@ -4741,13 +4763,60 @@ void Basket::updateModifiedNotes()
 	m_modifiedFiles.clear();
 }
 
+bool Basket::loadFromFile(const QString &fileName, QString *string, bool *wasEncrypted)
+{
+	QByteArray array;
 
+	if(loadFromFile(fileName, &array, wasEncrypted)){
+		*string = QString::fromLocal8Bit(array.data(), array.size());
+		return true;
+	}
+	else
+		return false;
+}
 
+bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasEncrypted)
+{
+	QFile file(fileName);
+	bool encrypted = false;
 
+	if(wasEncrypted)
+		*wasEncrypted = false;
 
+	if (file.open(IO_ReadOnly)){
+		*array = file.readAll();
+		const char* magic = "-----BEGIN PGP MESSAGE-----";
+		uint i = 0;
 
+		if(array->size() > strlen(magic))
+			for (i = 0; array->at(i) == magic[i]; ++i)
+				;
+		if (i == strlen(magic))
+		{
+			encrypted = true;
+			if(wasEncrypted)
+				*wasEncrypted = true;
+		}
+		file.close();
+#ifdef HAVE_LIBGPGME
+		if(encrypted)
+		{
+			QByteArray tmp(*array);
 
-
+			tmp.detach();
+			return m_gpg->decrypt(tmp, array);
+		}
+#else
+		if(encrypted)
+		{
+			KMessageBox::information(0, i18n("Basket is encrypted, but the encryption support is not compiled in."), i18n("Encrypted Baskets not supported"));
+			return false;
+		}
+#endif
+		return true;
+	} else
+		return false;
+}
 
 #if 0
 

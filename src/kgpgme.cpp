@@ -222,13 +222,7 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 	return keys;
 }
 
-bool KGpgMe::encrypt(const QString& inBuffer, QString* outBuffer,
-QString keyid /* = QString::null */) const
-{
-	return encrypt(inBuffer.utf8(), outBuffer, keyid);
-}
-
-bool KGpgMe::encrypt(const QByteArray& inBuffer, QString* outBuffer,
+bool KGpgMe::encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
 QString keyid /* = QString::null */) const
 {
 	gpgme_error_t err = 0;
@@ -237,7 +231,7 @@ QString keyid /* = QString::null */) const
 	gpgme_key_t* key = NULL;
 	gpgme_encrypt_result_t result = 0;
 
-	*outBuffer = "";
+	outBuffer->resize(0);
 	if(m_ctx) {
 		err = gpgme_data_new_from_mem(&in, inBuffer.data(), inBuffer.size(), 1);
 		if(!err) {
@@ -271,8 +265,9 @@ QString keyid /* = QString::null */) const
 							}
 							else {
 								while((ret = gpgme_data_read(out, buf, BUF_SIZE)) > 0) {
-									buf[ret] = 0;
-									*outBuffer += buf;
+									uint size = outBuffer->size();
+									if(outBuffer->resize(size + ret))
+										memcpy(outBuffer->data() + size, buf, ret);
 								}
 								if(ret < 0)
 									err = gpgme_err_code_from_errno(errno);
@@ -296,18 +291,7 @@ QString keyid /* = QString::null */) const
 	return (err == 0);
 }
 
-bool KGpgMe::decrypt(const QString& inBuffer, QString* outBuffer) const
-{
-	QByteArray array;
-	bool result;
-
-	result = decrypt(inBuffer, &array);
-	if(result)
-		*outBuffer = QString::fromUtf8(array.data(), array.size());
-	return result;
-}
-
-bool KGpgMe::decrypt(const QString& inBuffer, QByteArray* outBuffer) const
+bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 {
 	gpgme_error_t err = 0;
 	gpgme_data_t in = 0, out = 0;
@@ -315,7 +299,7 @@ bool KGpgMe::decrypt(const QString& inBuffer, QByteArray* outBuffer) const
 
 	outBuffer->resize(0);
 	if(m_ctx) {
-		err = gpgme_data_new_from_mem(&in, inBuffer.ascii(), inBuffer.length(), 1);
+		err = gpgme_data_new_from_mem(&in, inBuffer.data(), inBuffer.size(), 1);
 		if(!err) {
 			err = gpgme_data_new(&out);
 			if(!err) {

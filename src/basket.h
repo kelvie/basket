@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,7 @@
 
 #include "filter.h"
 #include "note.h" // For Note::Zone
+#include "config.h"
 
 class QVBoxLayout;
 class QDomDocument;
@@ -44,11 +45,14 @@ class Basket;
 class Note;
 class NoteEditor;
 class Tag;
+#ifdef HAVE_LIBGPGME
+class KGpgMe;
+#endif
 
 
 /** A list of flags to set how notes are inserted/plugged in the basket
   * Declare a varible with the type PlugOptions::Flags and assign a value like PlugOptions::DoSelection...
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 namespace PlugOptions
 {
@@ -100,7 +104,7 @@ class HtmlExportData
 };
 
 /** This class handle Basket and add a FilterWidget on top of it.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class DecoratedBasket : public QWidget
 {
@@ -139,7 +143,7 @@ class TransparentWidget : public QWidget
 };
 
 /**
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class Basket : public QScrollView, public QToolTip
 {
@@ -259,6 +263,10 @@ class Basket : public QScrollView, public QToolTip
   private:
 	bool m_loaded;
 	bool m_loadingLaunched;
+	bool m_encrypted;
+#ifdef HAVE_LIBGPGME
+	KGpgMe* m_gpg;
+#endif
   private slots:
 	void loadNotes(const QDomElement &notes, Note *parent);
 	void saveNotes(QDomDocument &document, QDomElement &element, Note *parent);
@@ -270,6 +278,8 @@ class Basket : public QScrollView, public QToolTip
   public:
 	bool isLoaded()        { return m_loaded;          }
 	bool loadingLaunched() { return m_loadingLaunched; }
+	bool loadFromFile(const QString &fileName, QString* string, bool* wasEncrypted = 0);
+	bool loadFromFile(const QString &fileName, QByteArray* array, bool* wasEncrypted = 0);
 
 /// BACKGROUND:
   private:
@@ -649,7 +659,7 @@ class NoteEditorBase;
   * It associate the file name with an event.
   * All this queue will be treated later.
   * TODO: rename to class WatcherEvent ?
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class FileEvent
 {
@@ -664,7 +674,7 @@ class FileEvent
 };
 
 /** Basket that contain some Notes.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 clas   s Bas    ket : public QScrollView
 {
