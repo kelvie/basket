@@ -4718,7 +4718,6 @@ void Basket::ensureNoteVisible(Note *note)
 void Basket::addWatchedFile(const QString &fullPath)
 {
 //	DEBUG_WIN << "Watcher>Add Monitoring Of : <font color=blue>" + fullPath + "</font>";
-	m_watcher = 0;
 	m_watcher->addFile(fullPath);
 }
 
