@@ -4718,6 +4718,7 @@ void Basket::ensureNoteVisible(Note *note)
 void Basket::addWatchedFile(const QString &fullPath)
 {
 //	DEBUG_WIN << "Watcher>Add Monitoring Of : <font color=blue>" + fullPath + "</font>";
+	m_watcher = 0;
 	m_watcher->addFile(fullPath);
 }
 
@@ -4809,7 +4810,7 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasE
 #else
 		if(encrypted)
 		{
-			KMessageBox::information(0, i18n("Basket is encrypted, but the encryption support is not compiled in."), i18n("Encrypted Baskets not supported"));
+			KMessageBox::information(0, i18n("This basket is encrypted. But the encryption support was not enabled while building the application."), i18n("Encrypted Baskets not Supported"));
 			return false;
 		}
 #endif

@@ -41,6 +41,8 @@
 #include "basket.h"
 #include "likeback.h"
 
+#include "crashhandler.h"
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -90,6 +92,11 @@ int main(int argc, char *argv[])
 	KUniqueApplication::addCmdLineOptions();
 	KUniqueApplication app;
 
+
+	/* Crash Handler to Mail Developers when Crashing: */
+#ifndef BASKET_USE_DRKONQI
+	KCrash::setCrashHandler( Crash::crashHandler );
+#endif
 
 
 	/******* ALPHA 1 ***********/
