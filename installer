@@ -108,6 +108,19 @@ echo ""
 
 read -s -n 1 # read 1 character without echo, ended by ENTER
 
+if [ ! -e configure ]; then
+  clear
+  echo ""
+  echo "    ========================================================================  "
+  echo "  ((                          Preparation from SVN                          ))"
+  echo "    ========================================================================  "
+  echo ""
+  echo ""
+
+  echo "make -f Makefile.cvs"
+  make -f Makefile.cvs || error
+fi
+
 clear
 echo ""
 echo "    ========================================================================  "
