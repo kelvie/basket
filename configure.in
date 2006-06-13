@@ -69,6 +69,8 @@ dnl PACKAGE set before
 AC_C_BIGENDIAN
 AC_CHECK_KDEMAXPATHLEN
 
+AH_TEMPLATE([HAVE_LIBGPGME], [Define if libgpgme is available])
+AM_PATH_GPGME(1.0.0, AC_DEFINE([HAVE_LIBGPGME], [], []))
 KDE_CREATE_SUBDIRSLIST
 AC_CONFIG_FILES([ Makefile ])
 AC_CONFIG_FILES([ backgrounds/Makefile ])
