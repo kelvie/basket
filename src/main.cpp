@@ -39,6 +39,7 @@
 #include "debugwindow.h"
 #include "notedrag.h"
 #include "basket.h"
+#include "likeback.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -116,6 +117,15 @@ int main(int argc, char *argv[])
 	}
 	/***************************/
 
+
+	/* LikeBack */
+	QString version = VERSION;
+	if ( version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	     version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	     version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	     version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1    ) // TODO: LikeBack::isDevelVersion
+		new LikeBack();
+	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 
 
 	/* Custom data folder */
