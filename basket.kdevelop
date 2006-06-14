@@ -28,7 +28,7 @@
       <mainprogram>src/basket</mainprogram>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs>-d --nofork --data-folder ~/.kde/share/apps/basket-debug</programargs>
+      <programargs>-d --nofork --use-dr-konquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars>
@@ -148,11 +148,11 @@
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs>-d --nofork --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <programargs>-d --nofork --use-dr-konquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -200,7 +200,7 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>

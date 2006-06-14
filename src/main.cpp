@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
 		{ "data-folder <folder>", I18N_NOOP("Custom folder where to load and save basket data and application data (useful for debugging purpose)"), 0 },
 		{ "h", 0, 0 },
 		{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
+		{ "k", 0, 0 },
+		{ "use-dr-konquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
 		{ 0, 0, 0 }
 	};
 	KAboutData aboutData( "basket", I18N_NOOP("BasKet Note Pads"),
@@ -95,7 +97,8 @@ int main(int argc, char *argv[])
 
 	/* Crash Handler to Mail Developers when Crashing: */
 #ifndef BASKET_USE_DRKONQI
-	KCrash::setCrashHandler( Crash::crashHandler );
+	if (!KCmdLineArgs::parsedArgs()->isSet("use-dr-konquy"))
+		KCrash::setCrashHandler( Crash::crashHandler );
 #endif
 
 
