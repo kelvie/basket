@@ -1067,15 +1067,7 @@ void Basket::save()
 	root.appendChild(notes);
 
 	// Write to Disk:
-	QFile file(fullPath() + "/.basket");
-	if (file.open(IO_WriteOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
-		QString xml = document.toString();
-		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-		stream << xml;
-		file.close();
-	} else
+	if(!saveToFile(fullPath() + "/.basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 }
 
@@ -1090,7 +1082,7 @@ void Basket::load()
 	QDomDocument *doc = 0;
 	QString content;
 
-	if (loadFromFile(fullPath() + "/.basket", &content, &m_encrypted)) {
+	if (loadFromFile(fullPath() + "/.basket", &content)) {
 		doc = new QDomDocument("basket");
 		if ( ! doc->setContent(content) ) {
 			delete doc;
@@ -4821,12 +4813,12 @@ void Basket::updateModifiedNotes()
 	m_modifiedFiles.clear();
 }
 
-bool Basket::loadFromFile(const QString &fileName, QString *string, bool *wasEncrypted)
+bool Basket::loadFromFile(const QString &fileName, QString *string)
 {
 	QByteArray array;
 
-	if(loadFromFile(fileName, &array, wasEncrypted)){
-		*string = QString::fromLocal8Bit(array.data(), array.size());
+	if(loadFromFile(fileName, &array)){
+		*string = QString::fromUtf8(array.data(), array.size());
 		return true;
 	}
 	else
@@ -4847,13 +4839,10 @@ bool Basket::isEncrypted()
 	return false;
 }
 
-bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasEncrypted)
+bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
 {
 	QFile file(fileName);
 	bool encrypted = false;
-
-	if(wasEncrypted)
-		*wasEncrypted = false;
 
 	if (file.open(IO_ReadOnly)){
 		*array = file.readAll();
@@ -4866,8 +4855,6 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasE
 		if (i == strlen(magic))
 		{
 			encrypted = true;
-			if(wasEncrypted)
-				*wasEncrypted = true;
 		}
 		file.close();
 #ifdef HAVE_LIBGPGME
@@ -4887,6 +4874,37 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasE
 		return true;
 	} else
 		return false;
+}
+
+bool Basket::saveToFile(const QString& fileName, const QString& string)
+{
+	return saveToFile(fileName, string.utf8());
+}
+
+bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
+{
+	QFile file(fileName);
+	bool result = false;
+
+	if (file.open(IO_WriteOnly)){
+#ifdef HAVE_LIBGPGME
+		if(m_encrypted)
+		{
+			QByteArray tmp;
+
+			// TODO: get user key if defined
+			if(m_gpg->encrypt(array, &tmp))
+				result = (file.writeBlock(tmp) == tmp.size());
+		}
+		else
+			result = (file.writeBlock(array) == array.size());
+#else
+		if(!m_encrypted)
+			result = (file.writeBlock(array) == array.size());
+#endif
+		file.close();
+	}
+	return result;
 }
 
 #if 0

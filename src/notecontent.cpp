@@ -73,19 +73,6 @@
 	#include <arts/kartsdispatcher.h>
 #endif
 
-/** Helping functions:
- */
-
-void saveStringAsFile(const QString &text, const QString &fileName) // TODO: Tools::saveTextFile()     + With encoding...  + KSaveFile    + With Disk Space checking
-{
-	QFile file(fileName);
-	if (file.open(IO_WriteOnly)) {
-		QTextStream stream(&file);
-		stream << text;
-		file.close();
-	}
-}
-
 /** class NoteContent:
  */
 
@@ -546,7 +533,7 @@ void TextContent::loadFromFile()
 
 void TextContent::saveToFile()
 {
-	saveStringAsFile(text(), fullPath());
+	basket()->saveToFile(fullPath(), text());
 }
 
 QString TextContent::linkAt(const QPoint &pos)
@@ -629,7 +616,7 @@ void HtmlContent::loadFromFile()
 
 void HtmlContent::saveToFile()
 {
-	saveStringAsFile(html(), fullPath());
+	basket()->saveToFile(fullPath(), html());
 }
 
 QString HtmlContent::linkAt(const QPoint &pos)
@@ -731,7 +718,12 @@ void ImageContent::loadFromFile()
 
 void ImageContent::saveToFile()
 {
-	m_pixmap.save(fullPath(), m_format);
+	QByteArray ba;
+	QBuffer buffer(ba);
+
+	buffer.open(IO_WriteOnly);
+	m_pixmap.save(&buffer, m_format);
+	basket()->saveToFile(fullPath(), ba);
 }
 
 
