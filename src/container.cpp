@@ -1854,6 +1854,9 @@ Container::Container(QWidget *parent, const char *name)
 
 Container::~Container()
 {
+	if (currentBasket() && currentBasket()->isDuringEdit())
+		currentBasket()->closeEditor();
+	Global::mainContainer = 0;
 	delete m_colorPicker;
 }
 

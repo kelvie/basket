@@ -250,8 +250,8 @@ int main(int argc, char *argv[])
 	/* Go */
 	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
 	int result = app.exec();
-	if (Global::mainContainer->currentBasket()->isDuringEdit())
-		Global::mainContainer->currentBasket()->closeEditor();
+	//if (Global::mainContainer->currentBasket()->isDuringEdit())
+	//	Global::mainContainer->currentBasket()->closeEditor();
 //	Settings::setMainWindowPosition(Global::mainContainer->pos());
 //	Settings::setMainWindowSize(Global::mainContainer->size());
 	Settings::saveConfig();
