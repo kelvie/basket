@@ -42,6 +42,7 @@ LikeBack::LikeBack(Button buttons, bool warnUnnamedWindow, const QString &custom
  : QWidget( 0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
  , m_buttons(buttons)
  , m_warnUnnamedWindow(warnUnnamedWindow)
+ , m_canShow(true)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
@@ -193,7 +194,7 @@ void LikeBack::autoMove()
 	static QWidget *lastWindow = 0;
 
 	QWidget *window = kapp->activeWindow();
-	bool shouldShow = (enabled() && window && qstricmp(window->name(), LIKEBACK_WINDOW) != 0);
+	bool shouldShow = (m_canShow && enabled() && window && qstricmp(window->name(), LIKEBACK_WINDOW) != 0);
 	if (shouldShow) {
 		//move(window->x() + window->width() - 100 - width(), window->y());
 		//move(window->x() + window->width() - 100 - width(), window->mapToGlobal(QPoint(0, 0)).y() - height());
@@ -236,13 +237,17 @@ void LikeBack::showDialog(Button button)
 {
 	QString windowName = (kapp->activeWindow() ? kapp->activeWindow()->name() : "");
 	LikeBackDialog dialog(button, windowName, "");
+	hide();
+	m_canShow = false;
+	kapp->processEvents();
 	dialog.exec();
+	m_canShow = true;
 }
 
 /** class LikeBackDialog: */
 
 LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QString context)
- : QDialog(kapp->activeWindow(), LIKEBACK_WINDOW)
+ : KDialog(kapp->activeWindow(), LIKEBACK_WINDOW)
  , m_reason(reason)
  , m_windowName(windowName)
  , m_context(context)

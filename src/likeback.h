@@ -21,7 +21,7 @@
 #ifndef LIKEBACK_H
 #define LIKEBACK_H
 
-#include <qdialog.h>
+#include <kdialog.h>
 #include <qtimer.h>
 
 class QTextEdit;
@@ -58,6 +58,7 @@ class LikeBack : public QWidget
 	QTimer   m_timer;
 	Button   m_buttons;
 	bool     m_warnUnnamedWindow;
+	bool     m_canShow;
 	static QString   s_hostName;
 	static QString   s_remotePath;
 	static Q_UINT16  s_hostPort;
@@ -66,7 +67,7 @@ class LikeBack : public QWidget
 	static int       s_disabledCount;
 };
 
-class LikeBackDialog : public QDialog
+class LikeBackDialog : public KDialog
 {
   Q_OBJECT
   public:
