@@ -4813,12 +4813,15 @@ void Basket::updateModifiedNotes()
 	m_modifiedFiles.clear();
 }
 
-bool Basket::loadFromFile(const QString &fileName, QString *string)
+bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)
 {
 	QByteArray array;
 
 	if(loadFromFile(fileName, &array)){
-		*string = QString::fromUtf8(array.data(), array.size());
+		if (isLocalEncoding)
+			*string = QString::fromLocal8Bit(array.data(), array.size());
+		else
+			*string = QString::fromUtf8(array.data(), array.size());
 		return true;
 	}
 	else
@@ -4876,9 +4879,10 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
 		return false;
 }
 
-bool Basket::saveToFile(const QString& fileName, const QString& string)
+bool Basket::saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding)
 {
-	return saveToFile(fileName, string.utf8());
+	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	return saveToFile(fileName, bytes);
 }
 
 bool Basket::saveToFile(const QString& fileName, const QByteArray& array)

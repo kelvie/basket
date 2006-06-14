@@ -527,13 +527,13 @@ void TextContent::loadFromFile()
 
 	QString content;
 
-	basket()->loadFromFile(fullPath(), &content);
+	basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 	setText(content);
 }
 
 void TextContent::saveToFile()
 {
-	basket()->saveToFile(fullPath(), text());
+	basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
 }
 
 QString TextContent::linkAt(const QPoint &pos)
@@ -610,13 +610,13 @@ void HtmlContent::loadFromFile()
 
 	QString content;
 
-	basket()->loadFromFile(fullPath(), &content);
+	basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 	setHtml(content);
 }
 
 void HtmlContent::saveToFile()
 {
-	basket()->saveToFile(fullPath(), html());
+	basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
 }
 
 QString HtmlContent::linkAt(const QPoint &pos)

@@ -282,10 +282,10 @@ class Basket : public QScrollView, public QToolTip
 	bool isEncrypted();
 	bool isLoaded()        { return m_loaded;          };
 	bool loadingLaunched() { return m_loadingLaunched; };
-	bool loadFromFile(const QString &fileName, QString* string);
+	bool loadFromFile(const QString &fileName, QString* string, bool isLocalEncoding = false);
 	bool loadFromFile(const QString &fileName, QByteArray* array);
 	bool saveToFile(const QString& fileName, const QByteArray& array);
-	bool saveToFile(const QString& fileName, const QString& string);
+	bool saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding = false);
 
 /// BACKGROUND:
   private:
