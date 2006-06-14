@@ -27,6 +27,7 @@
 #include <qlistview.h>
 #include <qcursor.h>
 #include <qsimplerichtext.h>
+#include <qpushbutton.h>
 #include <ktextedit.h>
 #include <qpoint.h>
 #include <qstringlist.h>
@@ -1097,7 +1098,10 @@ void Basket::load()
 		}
 	}
 	if(m_encrypted)
+	{
+		m_locked = false;
 		DEBUG_WIN << "Basket is encrypted.";
+	}
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 		return;
@@ -1250,7 +1254,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
    m_isInsertPopupMenu(false),
-   m_loaded(false), m_loadingLaunched(false), m_encrypted(false),
+   m_loaded(false), m_loadingLaunched(false), m_encrypted(false), m_locked(false), m_decryptBox(0),
 #ifdef HAVE_LIBGPGME
    m_gpg(0),
 #endif
@@ -2691,6 +2695,8 @@ Note* Basket::noteAt(int x, int y)
 Basket::~Basket()
 {
 	delete m_action;
+	if(m_decryptBox)
+		delete m_decryptBox;
 #ifdef HAVE_LIBGPGME
 	delete m_gpg;
 #endif
@@ -2751,14 +2757,66 @@ QColor alphaBlendColors(const QColor &bgColor, const QColor &fgColor, const int 
 	return result;
 }
 
+void Basket::unlock()
+{
+	m_decryptBox->hide();
+	QTimer::singleShot( 0, this, SLOT(load()) );
+}
+
 void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight)
 {
 	// Start the load the first time the basket is shown:
 	if (!m_loadingLaunched)
-		QTimer::singleShot( 0, this, SLOT(load()) );
+	{
+		m_encrypted = isEncrypted();
+		if(!m_encrypted)
+			QTimer::singleShot( 0, this, SLOT(load()) );
+		else
+			m_locked = true;
+	}
 
 	QBrush brush(backgroundColor()); // FIXME: share it for all the basket?
 	QRect clipRect(clipX, clipY, clipWidth, clipHeight);
+
+	if(m_locked)
+	{
+		if(!m_decryptBox)
+		{
+			m_decryptBox = new QFrame( this, "m_decryptBox" );
+			m_decryptBox->setFrameShape( QFrame::StyledPanel );
+			m_decryptBox->setFrameShadow( QFrame::Plain );
+			m_decryptBox->setLineWidth( 1 );
+
+			QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
+
+#ifdef HAVE_LIBGPGME
+			QPushButton* button = new QPushButton( m_decryptBox, "button" );
+			button->setText( i18n( "Unlock" ) );
+			layout->addWidget( button, 1, 2 );
+#endif
+			QLabel* label = new QLabel( m_decryptBox, "label" );
+#ifdef HAVE_LIBGPGME
+			label->setText( i18n("<b>Password protected basket.</b><br/><br/>Press unlock to view it.") );
+#else
+			label->setText( i18n("<b>Password protected basket.</b><br/><br/>Encryption not supported by<br/>this version of basket.") );
+#endif
+			label->setAlignment( int( QLabel::AlignTop ) );
+			layout->addMultiCellWidget( label, 0, 0, 1, 2 );
+			QLabel* pixmap = new QLabel( m_decryptBox, "pixmap" );
+			pixmap->setPixmap( KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeHuge) );
+			layout->addMultiCellWidget( pixmap, 0, 1, 0, 0 );
+
+			QSpacerItem* spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+			layout->addItem( spacer, 1, 1 );
+
+			m_decryptBox->resize(layout->sizeHint());
+
+			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
+			m_decryptBox->show();
+		}
+		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
+							(visibleHeight() - m_decryptBox->height()) / 2);
+	}
 
 	// Draw notes (but not when it's not loaded yet):
 	Note *note = (m_loaded ? m_firstNote : 0);
@@ -4775,6 +4833,20 @@ bool Basket::loadFromFile(const QString &fileName, QString *string, bool *wasEnc
 		return false;
 }
 
+bool Basket::isEncrypted()
+{
+	QFile file(fullPath() + "/.basket");
+
+	if (file.open(IO_ReadOnly)){
+		QString line;
+
+		file.readLine(line, 32);
+		if(line.startsWith("-----BEGIN PGP MESSAGE-----"))
+			return true;
+	}
+	return false;
+}
+
 bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasEncrypted)
 {
 	QFile file(fileName);
@@ -4809,7 +4881,6 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array, bool *wasE
 #else
 		if(encrypted)
 		{
-			KMessageBox::information(0, i18n("This basket is encrypted. But the encryption support was not enabled while building the application."), i18n("Encrypted Baskets not Supported"));
 			return false;
 		}
 #endif

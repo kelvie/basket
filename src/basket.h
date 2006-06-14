@@ -264,20 +264,24 @@ class Basket : public QScrollView, public QToolTip
 	bool m_loaded;
 	bool m_loadingLaunched;
 	bool m_encrypted;
+	bool m_locked;
+	QFrame* m_decryptBox;
 #ifdef HAVE_LIBGPGME
 	KGpgMe* m_gpg;
 #endif
   private slots:
 	void loadNotes(const QDomElement &notes, Note *parent);
 	void saveNotes(QDomDocument &document, QDomElement &element, Note *parent);
+	void unlock();
   public slots:
 	void load();
 	void loadProperties(const QDomElement &properties);
 	void saveProperties(QDomDocument &document, QDomElement &properties);
 	void save();
   public:
-	bool isLoaded()        { return m_loaded;          }
-	bool loadingLaunched() { return m_loadingLaunched; }
+	bool isEncrypted();
+	bool isLoaded()        { return m_loaded;          };
+	bool loadingLaunched() { return m_loadingLaunched; };
 	bool loadFromFile(const QString &fileName, QString* string, bool* wasEncrypted = 0);
 	bool loadFromFile(const QString &fileName, QByteArray* array, bool* wasEncrypted = 0);
 
