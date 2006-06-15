@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KGPGME_H
-#define KGPGME_H
+#ifndef PASSWORD_H
+#define PASSWORD_H
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -26,49 +26,38 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <gpgme.h>
-#include <qstringlist.h>
+#include <passwordlayout.h>
+#include <kdialogbase.h>
 
 /**
 	@author Petri Damsten <damu@iki.fi>
 */
-
-class KGpgKey
+class Password : public PasswordLayout
 {
+	Q_OBJECT
 	public:
-		QString id;
-		QString name;
-		QString email;
+		Password(QWidget *parent, const char *name = 0);
+		~Password();
+
+	private slots:
+		virtual void changeKey();
+		virtual void clearKey();
 };
 
-typedef QValueList< KGpgKey > KGpgKeyList;
-
-class KGpgMe
+class PasswordDlg : public KDialogBase
 {
+	Q_OBJECT
 	public:
-		KGpgMe(QString hint = QString::null);
-		~KGpgMe();
+		PasswordDlg(QWidget *parent, const char *name = 0);
+		~PasswordDlg();
 
-		QString selectKey(QString previous = QString::null);
-		KGpgKeyList keys(bool privateKeys = false) const;
-		void setHint(QString hint) { m_hint = hint; };
-		QString hint() const { return m_hint; };
+		Password* w;
 
-		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
-			QString keyid = QString::null) const;
-		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
-
-		static QString checkForUtf8(QString txt);
-
-	private:
-		gpgme_ctx_t m_ctx;
-		QString m_hint;
-
-		void init(gpgme_protocol_t proto);
-		void setPassphraseCb();
-		static gpgme_error_t passphraseCb(void *hook, const char *uid_hint,
-			const char *passphrase_info,
-			int last_was_bad, int fd);
+	protected slots:
+		virtual void slotOk();
 };
-#endif																  // HAVE_LIBGPGME
-#endif																  // KGPGME_H
+
+#endif // HAVE_LIBGPGME
+
+#endif // PASSWORD_H
+

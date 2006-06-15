@@ -165,7 +165,7 @@ QString KGpgMe::checkForUtf8(QString txt)
 	return txt;
 }
 
-QString KGpgMe::selectKey(QString previous) const
+QString KGpgMe::selectKey(QString previous)
 {
 	KGpgSelKey dlg(kapp->activeWindow(), "", previous, *this);
 

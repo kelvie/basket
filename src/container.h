@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -180,7 +180,7 @@ class BasketTree : public QSplitter
 };
 
 /** Class to pick a color on the screen
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class DesktopColorPicker : public QDesktopWidget
 {
@@ -211,7 +211,7 @@ class DesktopColorPicker : public QDesktopWidget
 };
 
 /** This class is a QLabel that can emit a clicked() signal when clicked !
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class ClickableLabel : public QLabel
 {
@@ -233,7 +233,7 @@ class ClickableLabel : public QLabel
 
 /** Convenient class to develop the displayCloseMessage() dialog
   * hopefuly integrated in KDE 3.4
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class KSystemTray2 : public KSystemTray
 {
@@ -254,7 +254,7 @@ class KSystemTray2 : public KSystemTray
 };
 
 /** This class provide a personalized system tray icon.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class ContainerSystemTray : public KSystemTray2
 {
@@ -288,7 +288,7 @@ class ContainerSystemTray : public KSystemTray2
 };
 
 /** The window that contain baskets, organized by tabs.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class Container : public KMainWindow
 {
@@ -318,6 +318,7 @@ class Container : public KMainWindow
 	void propBasket();
 	void delBasket();
 	void doBasketDeletion(Basket *basket);
+	void password();
 	void lockBasket();
 	void exportToHTML();
 	void importKNotes();
@@ -439,12 +440,13 @@ class Container : public KMainWindow
 	KAction       *actConfigGlobalShortcuts;
 	KAction       *actAppConfig;
 	QPtrList<KAction> actBasketsList;
+	KAction       *m_actPassBasket;
+	KAction       *m_actLockBasket;
   private:
 	bool m_newBasketPopup;
 	// Basket actions :
 	KAction       *m_actPropBasket;
 	KAction       *m_actDelBasket;
-	KToggleAction *m_actLockBasket;
 	// Edit actions :
 	KAction       *m_actUndo;
 	KAction       *m_actRedo;

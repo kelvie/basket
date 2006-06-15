@@ -137,6 +137,9 @@
   <Action name="basket_export_html" />
   <Action name="basket_remove" />
   <Separator/>
+  <Action name="basket_password" />
+  <Action name="basket_lock" />
+  <Separator/>
   <Action name="basket_new" />
   <Action name="basket_new_sub" />
  </Menu>

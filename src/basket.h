@@ -149,7 +149,14 @@ class Basket : public QScrollView, public QToolTip
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
   Q_OBJECT
-  public:
+	public:
+		enum EncryptionTypes {
+			NoEncryption         = 0,
+			PasswordEncryption   = 1,
+			PrivateKeyEncryption = 2
+		};
+
+	public:
 	Basket(QWidget *parent, const QString &folderName);
 	~Basket();
 
@@ -263,9 +270,10 @@ class Basket : public QScrollView, public QToolTip
   private:
 	bool m_loaded;
 	bool m_loadingLaunched;
-	bool m_encrypted;
 	bool m_locked;
 	QFrame* m_decryptBox;
+	int m_encryptionType;
+	QString m_encryptionKey;
 #ifdef HAVE_LIBGPGME
 	KGpgMe* m_gpg;
 #endif
@@ -286,6 +294,9 @@ class Basket : public QScrollView, public QToolTip
 	bool loadFromFile(const QString &fileName, QByteArray* array);
 	bool saveToFile(const QString& fileName, const QByteArray& array);
 	bool saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding = false);
+	void setProtection(int type, QString key);
+	int  encryptionType()  { return m_encryptionType;  };
+	QString encryptionKey(){ return m_encryptionKey;   };
 
 /// BACKGROUND:
   private:

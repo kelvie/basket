@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <qwhatsthis.h>
 #include <qvaluelist.h>
 #include <qregexp.h>
+#include <qbuttongroup.h>
 #include <kstringhandler.h>
 
 #include <ksqueezedtextlabel.h>
@@ -84,7 +85,7 @@
 #include "formatimporter.h"
 #include "softwareimporters.h"
 #include "regiongrabber.h"
-
+#include "password.h"
 
 
 #include <iostream>
@@ -124,7 +125,7 @@ BasketListViewItem::~BasketListViewItem()
 {
 }
 
-bool BasketListViewItem::acceptDrop(const QMimeSource *mime) const
+bool BasketListViewItem::acceptDrop(const QMimeSource *) const
 {
 	std::cout << "accept" << std::endl;
 	return true;
@@ -1905,6 +1906,14 @@ void Container::setupActions()
 	                               this, SLOT(propBasket()), actionCollection(), "basket_properties" );
 	m_actDelBasket  = new KAction( i18n("Remove Basket", "&Remove"), "", 0,
 	                               this, SLOT(delBasket()), actionCollection(), "basket_remove" );
+#ifdef HAVE_LIBGPGME
+	m_actPassBasket = new KAction( i18n("Password protection", "&Password..."), "", 0,
+								   this, SLOT(password()), actionCollection(), "basket_password" );
+	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", 0,
+								   this, SLOT(lockBasket()), actionCollection(), "basket_lock" );
+	m_actLockBasket->setEnabled(false);
+	m_actPassBasket->setEnabled(false);
+#endif
 
 	new KAction( i18n("&Export to HTML..."), "fileexport", 0,
 	             this, SLOT(exportToHTML()),      actionCollection(), "basket_export_html" );
@@ -2068,7 +2077,6 @@ void Container::setupActions()
 	m_insertActions.append( m_actGrabScreenshot );
 
 	/** Settings : ************************************************************/
-
 	m_actShowToolbar   = KStdAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
     m_actShowStatusbar = KStdAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
 
@@ -2484,17 +2492,25 @@ void Container::doBasketDeletion(Basket *basket)
 //	delete basket;
 }
 
-void Container::lockBasket()
+void Container::password()
 {
+#ifdef HAVE_LIBGPGME
+	PasswordDlg dlg(this);
 	Basket *cur = currentBasket();
 
-	cur->setLocked( ! cur->isLocked() );
-	cur->save();
+	dlg.w->buttonGroup->setButton(cur->encryptionType());
+	dlg.w->keyLineEdit->setText(cur->encryptionKey());
+	if(dlg.exec())
+		cur->setProtection(dlg.w->buttonGroup->selectedId(), dlg.w->keyLineEdit->text());
+#endif
+}
 
-	Global::tray->updateToolTip();
-
-	// Update displays :
-//	tabChanged(0);
+void Container::lockBasket()
+{
+#ifdef HAVE_LIBGPGME
+	m_actLockBasket->setEnabled(false);
+	m_actPassBasket->setEnabled(false);
+#endif
 }
 
 void Container::showSettingsDialog()

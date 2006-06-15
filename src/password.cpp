@@ -17,58 +17,75 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KGPGME_H
-#define KGPGME_H
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "password.h"
 
 #ifdef HAVE_LIBGPGME
 
-#include <gpgme.h>
-#include <qstringlist.h>
+#include <qlayout.h>
+#include <qtoolbutton.h>
+#include <qbuttongroup.h>
+#include <klocale.h>
+#include <kiconloader.h>
+#include <kmessagebox.h>
+#include <kgpgme.h>
+#include <basket.h>
 
-/**
-	@author Petri Damsten <damu@iki.fi>
-*/
-
-class KGpgKey
+PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
+	:KDialogBase(Plain, i18n("Password protection"), Ok|Cancel, Ok,
+				 parent, name, true, false), w(0)
 {
-	public:
-		QString id;
-		QString name;
-		QString email;
-};
+	QHBoxLayout* toplayout = new QHBoxLayout(plainPage(), 0, 0);
+	w = new Password(plainPage());
+	toplayout->addWidget(w, 1);
+}
 
-typedef QValueList< KGpgKey > KGpgKeyList;
-
-class KGpgMe
+PasswordDlg::~PasswordDlg()
 {
-	public:
-		KGpgMe(QString hint = QString::null);
-		~KGpgMe();
+	delete w;
+}
 
-		QString selectKey(QString previous = QString::null);
-		KGpgKeyList keys(bool privateKeys = false) const;
-		void setHint(QString hint) { m_hint = hint; };
-		QString hint() const { return m_hint; };
+void PasswordDlg::slotOk()
+{
+	int n = w->buttonGroup->selectedId();
+	QString key = w->keyLineEdit->text();
+	if(n == Basket::PrivateKeyEncryption && key.isEmpty())
+		KMessageBox::error(w, i18n("No private key selected."));
+	else
+		QDialog::accept();
+}
 
-		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
-			QString keyid = QString::null) const;
-		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
+Password::Password(QWidget *parent, const char *name)
+ : PasswordLayout(parent, name)
+{
+	clearButton->setIconSet(SmallIconSet("clear_left"));
+}
 
-		static QString checkForUtf8(QString txt);
 
-	private:
-		gpgme_ctx_t m_ctx;
-		QString m_hint;
+Password::~Password()
+{
+}
 
-		void init(gpgme_protocol_t proto);
-		void setPassphraseCb();
-		static gpgme_error_t passphraseCb(void *hook, const char *uid_hint,
-			const char *passphrase_info,
-			int last_was_bad, int fd);
-};
-#endif																  // HAVE_LIBGPGME
-#endif																  // KGPGME_H
+void Password::changeKey()
+{
+	KGpgMe gpg;
+	QString key = gpg.selectKey(keyLineEdit->text());
+	if(!key.isEmpty())
+	{
+		keyLineEdit->setText(key);
+		buttonGroup->setButton(Basket::PrivateKeyEncryption);
+	}
+}
+
+void Password::clearKey()
+{
+	int n = buttonGroup->selectedId();
+
+	keyLineEdit->setText("");
+	if(n == Basket::PrivateKeyEncryption)
+		buttonGroup->setButton(Basket::PasswordEncryption);
+}
+
+#include "password.moc"
+
+#endif

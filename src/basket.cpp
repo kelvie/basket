@@ -819,6 +819,10 @@ void Basket::loadProperties(const QDomElement &properties)
 	if (actionString == actionStrings[1]) action = 1;
 	if (actionString == actionStrings[2]) action = 2;
 
+	QDomElement protection = XMLWork::getElement(properties, "protection");
+	m_encryptionType = protection.attribute( "type" ).toInt();
+	m_encryptionKey = protection.attribute( "key" );
+
 	// Apply the Properties:
 	setDisposition((free ? (mindMap ? 2 : 1) : 0), columnCount);
 	setShortcut(combination, action);
@@ -847,6 +851,11 @@ void Basket::saveProperties(QDomDocument &document, QDomElement &properties)
 	QString actionStrings[] = { "show", "globalShow", "globalSwitch" };
 	shortcut.setAttribute( "combination", m_action->shortcut().toStringInternal() );
 	shortcut.setAttribute( "action",      actionStrings[shortcutAction()]         );
+
+	QDomElement protection = document.createElement("protection");
+	properties.appendChild(protection);
+	protection.setAttribute( "type", m_encryptionType );
+	protection.setAttribute( "key",  m_encryptionKey );
 }
 
 void Basket::subscribeBackgroundImages()
@@ -1089,11 +1098,13 @@ void Basket::load()
 			doc = 0;
 		}
 	}
-	if(m_encrypted)
+	if(isEncrypted())
 	{
 		m_locked = false;
 		DEBUG_WIN << "Basket is encrypted.";
+		Global::mainContainer->m_actLockBasket->setEnabled(true);
 	}
+	Global::mainContainer->m_actPassBasket->setEnabled(true);
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 		return;
@@ -1246,7 +1257,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
    m_isInsertPopupMenu(false),
-   m_loaded(false), m_loadingLaunched(false), m_encrypted(false), m_locked(false), m_decryptBox(0),
+   m_loaded(false), m_loadingLaunched(false), m_locked(false), m_decryptBox(0), m_encryptionType(NoEncryption),
 #ifdef HAVE_LIBGPGME
    m_gpg(0),
 #endif
@@ -2760,8 +2771,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	// Start the load the first time the basket is shown:
 	if (!m_loadingLaunched)
 	{
-		m_encrypted = isEncrypted();
-		if(!m_encrypted)
+		if(!isEncrypted())
 			QTimer::singleShot( 0, this, SLOT(load()) );
 		else
 			m_locked = true;
@@ -4813,6 +4823,14 @@ void Basket::updateModifiedNotes()
 	m_modifiedFiles.clear();
 }
 
+void Basket::setProtection(int type, QString key)
+{
+	m_encryptionType = type;
+	m_encryptionKey = key;
+	// TODO: save all notes
+
+}
+
 bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)
 {
 	QByteArray array;
@@ -4830,6 +4848,8 @@ bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocal
 
 bool Basket::isEncrypted()
 {
+	return (m_encryptionType != NoEncryption);
+	/*
 	QFile file(fullPath() + "/.basket");
 
 	if (file.open(IO_ReadOnly)){
@@ -4840,6 +4860,7 @@ bool Basket::isEncrypted()
 			return true;
 	}
 	return false;
+	*/
 }
 
 bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
@@ -4892,18 +4913,20 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 
 	if (file.open(IO_WriteOnly)){
 #ifdef HAVE_LIBGPGME
-		if(m_encrypted)
+		if(isEncrypted())
 		{
 			QByteArray tmp;
+			QString key = QString::null;
 
-			// TODO: get user key if defined
-			if(m_gpg->encrypt(array, &tmp))
+			if(m_encryptionType == PrivateKeyEncryption)
+				key = m_encryptionKey;
+			if(m_gpg->encrypt(array, &tmp, key))
 				result = (file.writeBlock(tmp) == tmp.size());
 		}
 		else
 			result = (file.writeBlock(array) == array.size());
 #else
-		if(!m_encrypted)
+		if(!isEncrypted())
 			result = (file.writeBlock(array) == array.size());
 #endif
 		file.close();
