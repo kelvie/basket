@@ -2795,6 +2795,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			QPushButton* button = new QPushButton( m_decryptBox, "button" );
 			button->setText( i18n( "Unlock" ) );
 			layout->addWidget( button, 1, 2 );
+			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
 #endif
 			QLabel* label = new QLabel( m_decryptBox, "label" );
 #ifdef HAVE_LIBGPGME
@@ -2813,7 +2814,6 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 
 			m_decryptBox->resize(layout->sizeHint());
 
-			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
 			m_decryptBox->show();
 		}
 		if(m_decryptBox->isHidden())
@@ -4948,6 +4948,7 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 
 void Basket::lock()
 {
+#ifdef HAVE_LIBGPGME
 	m_gpg->clearCache();
 	m_locked = true;
 	// TODO: delete notes here;
@@ -4955,6 +4956,7 @@ void Basket::lock()
 	m_loaded = false;
 	m_loadingLaunched = false;
 	updateContents();
+#endif
 }
 
 #if 0
