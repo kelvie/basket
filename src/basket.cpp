@@ -218,7 +218,7 @@ void DecoratedBasket::setFilterBarPosition(bool onTop)
 
 void DecoratedBasket::setFilterBarShown(bool show, bool switchFocus)
 {
-	m_basket->setShowFilterBar(true);//show);
+//	m_basket->setShowFilterBar(true);//show);
 //	m_basket->save();
 	// In this order (m_basket and then m_filter) because setShown(false)
 	//  will call resetFilter() that will update actions, and then check the
@@ -1251,7 +1251,7 @@ void Basket::countsChangedTimeOut()
 Basket::Basket(QWidget *parent, const QString &folderName)
  : QScrollView(parent),
    QToolTip(viewport()),
-   m_noActionOnMouseRelease(false), m_pressPos(-100, -100), m_canDrag(false),
+   m_noActionOnMouseRelease(false), m_ignoreCloseEditorOnNextMouseRelease(false), m_pressPos(-100, -100), m_canDrag(false),
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
    m_isInsertPopupMenu(false),
@@ -1520,13 +1520,38 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 	}
 
 	// Paste selection under cursor (but not "create new primary note under cursor" because this is on moveRelease):
-	if (event->button() == Qt::MidButton && zone != Note::Resizer) {
-		if (clicked)
-			zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()), true );
-		closeEditor();
-		clickedToInsert(event, clicked, zone);
+	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
+		if ((Settings::middleAction() != 0) && (event->state() == Qt::ShiftButton)) {
+			m_clickedToInsert = clicked;
+			m_zoneToInsert    = zone;
+			m_posToInsert     = event->pos();
+			closeEditor();
+			removeInserter();                     // If clicked at an insertion line and the new note shows a dialog for editing,
+			NoteType::Id type = (NoteType::Id)0;  //  hide that inserter before the note edition instead of after the dialog is closed
+			switch (Settings::middleAction()) {
+				case 1:
+					m_isInsertPopupMenu = true;
+					pasteNote();
+					break;
+				case 2: type = NoteType::Text;     break;
+				case 3: type = NoteType::Html;     break;
+				case 4: type = NoteType::Image;    break;
+				case 5: type = NoteType::Link;     break;
+				case 6: type = NoteType::Launcher; break;
+				case 7: type = NoteType::Color;    break;
+			}
+			if (type != 0) {
+				m_ignoreCloseEditorOnNextMouseRelease = true;
+				Global::mainContainer->insertEmpty(type);
+			}
+		} else {
+			if (clicked)
+				zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()), true );
+			closeEditor();
+			clickedToInsert(event, clicked, zone);
+			save();
+		}
 		m_noActionOnMouseRelease = true;
-		save();
 		return;
 	}
 
@@ -2008,8 +2033,13 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 	Note *clicked = noteAt(event->pos().x(), event->pos().y());
 	Note::Zone zone = (clicked ? clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) ) : Note::None);
 	if ((zone == Note::Handle || zone == Note::Group) && editedNote() && editedNote() == clicked) {
-		closeEditor();
-		//clicked->setSelected(true);
+		if (m_ignoreCloseEditorOnNextMouseRelease)
+			m_ignoreCloseEditorOnNextMouseRelease = false;
+		else {
+			bool editedNoteStillThere = closeEditor();
+			if (editedNoteStillThere)
+				clicked->setSelected(true);
+		}
 	}
 
 	// Do nothing if an action has already been made during mousePressEvent,
@@ -3491,10 +3521,10 @@ void Basket::closeEditorDelayed()
 	QTimer::singleShot( 0, this, SLOT(closeEditor()) );
 }
 
-void Basket::closeEditor()
+bool Basket::closeEditor()
 {
 	if (!isDuringEdit())
-		return;
+		return true;
 
 	if (m_redirectEditActions) {
 		disconnect( m_editor->widget(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()) );
@@ -3557,6 +3587,9 @@ void Basket::closeEditor()
 	// Set focus to the basket, unless the user pressed a letter key in the filter bar and the currently edited note came hidden, then editing closed:
 	if (!decoration()->filterBar()->lineEdit()->hasFocus())
 		setFocus();
+
+	// Return true if the note is still there:
+	return (note != 0);
 }
 
 Note* Basket::theSelectedNote()
@@ -5118,44 +5151,6 @@ void Basket::dropEvent(QDropEvent *event)
 	resetInsertTo();
 }
 
-
-void Basket::contentsMousePressEvent(QMouseEvent *event)
-{
-	if (event->button() & Qt::LeftButton) { // Clicked an empty area of the basket
-		if ( ! isDuringEdit() ) // Do nothing when clicked in edit mode
-			unselectAll();
-		setFocus();
-	}
-	// if MidButton BUT NOT ALT PRESSED to allow Alt+middleClick to launch actions
-	//              Because KWin handle Alt+click : it's allow an alternative to alt+click !
-	if ( (event->button() & Qt::MidButton) && (event->state() == 0) ) {
-//		if (insertAtCursorPos())
-			computeInsertPlace(event->pos());
-		pasteNote(QClipboard::Selection);
-		event->accept();
-	} else if ( (Settings::middleAction() != 0) &&
-	            (event->button() & Qt::MidButton) && (event->state() == Qt::ShiftButton) ) {
-//		if (insertAtCursorPos())
-			computeInsertPlace(event->pos());
-		// O:Nothing ; 1:Paste ; 2:Text ; 3:Html ; 4:Image ; 5:Link ; 6:Launcher ; 7:Color
-		// TODO: 8:Ask (with a popup menu)
-		Note::Type type = (Note::Type)0;
-		switch (Settings::middleAction()) {
-			case 1: pasteNote();           break;
-			case 2: type = Note::Text;     break;
-			case 3: type = Note::Html;     break;
-			case 4: type = Note::Image;    break;
-			case 5: type = Note::Link;     break;
-			case 6: type = Note::Launcher; break;
-			case 7: type = Note::Color;    break;
-		}
-		if (type != 0)
-			Global::mainContainer->insertEmpty(type);
-		event->accept();
-	}
-}
-
-
 void Basket::moveOnTop()
 {
 	if (m_countSelecteds == 0)
@@ -5253,36 +5248,6 @@ void Basket::moveNoteDown()
 	}
 	ensureNoteVisible(m_focusedNote);
 }
-
-
-/*********** Work to re-load notes when theire files have changed */
-
-void Basket::dontCareOfCreation(const QString &path)
-{
-	m_dontCare.append(path);
-	if (Global::debugWindow)
-		*Global::debugWindow << "Watcher>Add a <i>don't care creation</i> of file : <font color=violet>" + path + "</font>";
-}
-
-void Basket::slotCreatedFile(const QString &path)
-{
-	bool dontCare = false;
-	if (m_dontCare.contains(path)) { // Don't care of creation of files we know we have created ourself
-		m_dontCare.remove(path);
-		dontCare = true;
-	} else {
-		m_updateQueue.append( new FileEvent(FileEvent::Created, path) );
-		if ( ! m_updateTimer.isActive() )
-			m_updateTimer.start(c_updateTime, true); // 200 ms, only once
-	}
-	if (Global::debugWindow) {
-		*Global::debugWindow << "Watcher>Created : <font color=green>" + path + "</font>";
-		if (dontCare)
-			*Global::debugWindow << "\tBut don't care (created by the application and we know this) : ignore it";
-	}
-}
-
-/******************************************************************/
 
 #endif // #if 0
 

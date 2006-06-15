@@ -260,7 +260,7 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 			"Type=Application\n").arg(command, name, icon.isEmpty() ? QString("exec") : icon);
 	QString fileName = fileNameForNewNote(parent, "launcher.desktop");
 	QString fullPath = parent->fullPathForFileName(fileName);
-	parent->dontCareOfCreation(fullPath);
+//	parent->dontCareOfCreation(fullPath);
 	QFile file(fullPath);
 	if ( file.open(IO_WriteOnly) ) {
 		QTextStream stream(&file);
@@ -676,7 +676,7 @@ Note* NoteFactory::copyFileAndLoad(const KURL &url, Basket *parent)
 		*Global::debugWindow << "copyFileAndLoad: " + url.prettyURL() + " to " + fullPath;
 
 //	QString annotations = i18n("Original file: %1").arg(url.prettyURL());
-	parent->dontCareOfCreation(fullPath);
+//	parent->dontCareOfCreation(fullPath);
 	KIO::CopyJob *copyJob = KIO::copy(url, KURL(fullPath));
 	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
 					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
@@ -695,7 +695,7 @@ Note* NoteFactory::moveFileAndLoad(const KURL &url, Basket *parent)
 		*Global::debugWindow << "moveFileAndLoad: " + url.prettyURL() + " to " + fullPath;
 
 //	QString annotations = i18n("Original file: %1").arg(url.prettyURL());
-	parent->dontCareOfCreation(fullPath);
+//	parent->dontCareOfCreation(fullPath);
 	KIO::CopyJob *copyJob = KIO::move(url, KURL(fullPath));
 	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
 					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
@@ -805,7 +805,7 @@ QString NoteFactory::createFileForNewNote(Basket *parent, const QString &extensi
 	}
 
 	// Create the file
-	parent->dontCareOfCreation(fullName);
+//	parent->dontCareOfCreation(fullName);
 	QFile file(fullName);
 	file.open(IO_WriteOnly);
 	file.close();

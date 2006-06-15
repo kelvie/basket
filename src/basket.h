@@ -163,6 +163,7 @@ class Basket : public QScrollView, public QToolTip
 /// USER INTERACTION:
   private:
 	bool   m_noActionOnMouseRelease;
+	bool   m_ignoreCloseEditorOnNextMouseRelease;
 	QPoint m_pressPos;
 	bool   m_canDrag;
   public:
@@ -502,7 +503,7 @@ class Basket : public QScrollView, public QToolTip
   public slots:
 	void placeEditor(bool andEnsureVisible = false);
 	void placeEditorAndEnsureVisible();
-	void closeEditor();
+	bool closeEditor();
 	void closeEditorDelayed();
 	void updateEditorAppearance();
 
@@ -608,30 +609,7 @@ public slots:
 	void resetInsertTo() {}
 
 	void  computeInsertPlace(const QPoint &/*cursorPosition*/)    { }
-	void  processActionAsYouType(QKeyEvent */*event*/)    { };
-	public slots:
-		/** Notes manipulation */
-		void changeNotePlace(Note */*note*/)    { };
-		/** Selection of note(s) */
-		void clicked(Note */*note*/, bool /*controlPressed*/, bool /*shiftPressed*/)    { };
-
-	public:
-		void    dontCareOfCreation(const QString &/*path*/)    { };
-	protected slots:
-		void slotModifiedFile(const QString &/*path*/)    { };
-		void slotCreatedFile(const QString &/*path*/)    { };
-		void slotDeletedFile(const QString &/*path*/)    { };
-		void slotUpdateNotes()    { };
-		void clipboardChanged(bool /*selectionMode*/ = false)    { };
-		void selectionChanged()    { };
-	public:
-		bool importLauncher(const QString &/*type*/, const QDomElement &/*content*/, const QString &/*runCommand*/,
-							const QString &/*annotations*//*, bool checked*/)    { return false; }
-
-	inline bool    showFilterBar()          { return 0;}//m_showFilterBar;          } // Others... ::
-	/** Basket properties SET */
-	void setLocked(bool /*lock*/) {};
-	void setShowFilterBar(bool /*show*/)         { }
+  public:
 
 	friend class ContainerSystemTray;
 };
