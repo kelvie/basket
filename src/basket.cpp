@@ -4827,8 +4827,18 @@ void Basket::setProtection(int type, QString key)
 {
 	m_encryptionType = type;
 	m_encryptionKey = key;
-	// TODO: save all notes
 
+	saveAgain();
+	emit propertiesChanged(this);
+}
+
+void Basket::saveAgain()
+{
+	// Re-encrypt basket file:
+	save();
+	// Re-encrypt every note files recursively:
+	FOR_EACH_NOTE (note)
+		note->saveAgain();
 }
 
 bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)

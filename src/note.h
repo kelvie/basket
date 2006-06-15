@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,7 +46,7 @@ class QSimpleRichText;
   * new TextContent(note, fileName); // note is now a note with a text content!
   * new ColorContent(note, Qt::red); // Should never be done!!!!! the old Content should be deleted...
   * @endcode
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class Note
 {
@@ -150,6 +150,7 @@ class Note
 	QString addedStringDate();
 	QString lastModificationStringDate();
 	QString toText(const QString &cuttedFullPath);
+	void saveAgain();
   protected:
 	void setContent(NoteContent *content);
 	friend class NoteContent;

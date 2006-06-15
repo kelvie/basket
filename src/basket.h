@@ -288,6 +288,7 @@ class Basket : public QScrollView, public QToolTip
 	void save();
   public:
 	bool isEncrypted();
+	bool isLocked()        { return m_locked;          };
 	bool isLoaded()        { return m_loaded;          };
 	bool loadingLaunched() { return m_loadingLaunched; };
 	bool loadFromFile(const QString &fileName, QString* string, bool isLocalEncoding = false);
@@ -297,6 +298,7 @@ class Basket : public QScrollView, public QToolTip
 	void setProtection(int type, QString key);
 	int  encryptionType()  { return m_encryptionType;  };
 	QString encryptionKey(){ return m_encryptionKey;   };
+	void saveAgain();
 
 /// BACKGROUND:
   private:
@@ -625,7 +627,6 @@ public slots:
 		bool importLauncher(const QString &/*type*/, const QDomElement &/*content*/, const QString &/*runCommand*/,
 							const QString &/*annotations*//*, bool checked*/)    { return false; }
 
-	inline bool    isLocked()               { return 0;}//m_isLocked;               }
 	inline bool    showFilterBar()          { return 0;}//m_showFilterBar;          } // Others... ::
 	/** Basket properties SET */
 	void setLocked(bool /*lock*/) {};

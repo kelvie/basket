@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -2765,9 +2765,13 @@ Note* Note::parentPrimaryNote()
 	return primary;
 }
 
-
-
-
+void Note::saveAgain()
+{
+	if(content())
+		content()->saveToFile();
+	FOR_EACH_CHILD (child)
+		child->saveAgain();
+}
 
 #if 0
 
