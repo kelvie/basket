@@ -42,7 +42,7 @@
 
 TreeImportDialog::TreeImportDialog(QWidget *parent)
  : KDialogBase(KDialogBase::Swallow, i18n("Import Hierarchy"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false)
+               KDialogBase::Ok, parent, /*name=*/"ImportHierarchy", /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
 	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());

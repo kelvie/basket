@@ -81,7 +81,7 @@ class KIconDialog::KIconDialogPrivate
  */
 
 KIconDialog::KIconDialog(QWidget *parent, const char *name)
-    : KDialogBase(parent, name, true, i18n("Select Icon"), Ok|Cancel, Ok)
+    : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
     mpLoader = KGlobal::iconLoader();

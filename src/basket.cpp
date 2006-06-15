@@ -4154,7 +4154,7 @@ void Basket::exportToHTML()
 	/*KMessageBox::information(this, "Sorry, this action isn't re-available yet. It need to be adapted to the new BasKet Note Pads capabilities.");*/
 
 	// Get the HTML filename:
-	ExporterDialog *options = new ExporterDialog(this);
+	ExporterDialog *options = new ExporterDialog(this, this, "ExportToHtml");
 	if (options->exec() == QDialog::Rejected)
 		return;
 
@@ -4921,13 +4921,13 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 			if(m_encryptionType == PrivateKeyEncryption)
 				key = m_encryptionKey;
 			if(m_gpg->encrypt(array, &tmp, key))
-				result = (file.writeBlock(tmp) == tmp.size());
+				result = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
 		}
 		else
-			result = (file.writeBlock(array) == array.size());
+			result = (file.writeBlock(array) == (Q_LONG)array.size());
 #else
 		if(!isEncrypted())
-			result = (file.writeBlock(array) == array.size());
+			result = (file.writeBlock(array) == (Q_LONG)array.size());
 #endif
 		file.close();
 	}

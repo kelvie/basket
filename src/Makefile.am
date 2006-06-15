@@ -51,4 +51,7 @@ basket_SOURCES = basket.cpp basketproperties.cpp container.cpp debugwindow.cpp \
 				filter.cpp tools.cpp backgroundmanager.cpp regiongrabber.cpp softwareimporters.cpp \
 				kicondialogui.ui kicondialog.cpp kiconcanvas.cpp kgpgme.cpp likeback.cpp \
 		crashhandler.cpp passwordlayout.ui password.cpp
-kde_icon_KDEICON = cr128-app-basket.png cr16-app-basket.png cr22-app-basket.png cr32-app-basket.png cr48-app-basket.png cr64-app-basket.png hi16-app-basket_old.png hi32-app-basket_old.png crsc-app-basket.svg
+kde_icon_KDEICON = cr128-app-basket.png cr16-app-basket.png cr22-app-basket.png \
+	cr32-app-basket.png cr48-app-basket.png cr64-app-basket.png hi16-app-basket_old.png \
+	hi32-app-basket_old.png crsc-app-basket.svg cr16-action-likeback_configure.png \
+	cr16-action-likeback_dislike.png cr16-action-likeback_like.png

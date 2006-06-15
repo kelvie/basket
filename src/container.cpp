@@ -1353,6 +1353,7 @@ void BasketTree::slotPressed(QListViewItem *item, const QPoint &/*pos*/, int /*c
 DesktopColorPicker::DesktopColorPicker()
  : QDesktopWidget()
 {
+	setName("DesktopColorPicker");
 	m_gettingColorFromScreen = false;
 }
 
@@ -1808,7 +1809,7 @@ void ContainerSystemTray::leaveEvent(QEvent*)
 /** Container */
 
 Container::Container(QWidget *parent, const char *name)
- : KMainWindow(parent, name != 0 ? name : "BasketsContainer"), m_passivePopup(0L), m_newBasketPopup(false), m_regionGrabber(0)
+ : KMainWindow(parent, name != 0 ? name : "MainWindow"), m_passivePopup(0L), m_newBasketPopup(false), m_regionGrabber(0)
 {
 	Global::mainContainer = this; // FIXME: Needed for the uggly hack in Basket:: setupActions() :-/ And elsewhere too :-D
 
@@ -2495,7 +2496,7 @@ void Container::doBasketDeletion(Basket *basket)
 void Container::password()
 {
 #ifdef HAVE_LIBGPGME
-	PasswordDlg dlg(this);
+	PasswordDlg dlg(this, "Password");
 	Basket *cur = currentBasket();
 
 	dlg.w->buttonGroup->setButton(cur->encryptionType());

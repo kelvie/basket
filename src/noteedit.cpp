@@ -412,7 +412,7 @@ LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent
 ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
  : NoteEditor(colorContent)
 {
-	KColorDialog dialog(parent, /*name=*/0, /*modal=*/true);
+	KColorDialog dialog(parent, /*name=*/"EditColor", /*modal=*/true);
 	dialog.setColor(colorContent->color());
 	dialog.setCaption(i18n("Edit Color Note"));
 	if (dialog.exec() == QDialog::Accepted) {
@@ -469,7 +469,7 @@ void DebuggedLineEdit::keyPressEvent(QKeyEvent *event)
 
 LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
  : KDialogBase(KDialogBase::Plain, i18n("Edit Link Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/true),
+               KDialogBase::Ok, parent, /*name=*/"EditLink", /*modal=*/true, /*separator=*/true),
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();
@@ -628,7 +628,7 @@ void LinkEditDialog::slotOk()
 
 LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *parent)
  : KDialogBase(KDialogBase::Plain, i18n("Edit Launcher Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/true),
+               KDialogBase::Ok, parent, /*name=*/"EditLauncher", /*modal=*/true, /*separator=*/true),
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();

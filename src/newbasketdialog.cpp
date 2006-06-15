@@ -72,7 +72,7 @@ void SingleSelectionKIconView::slotSelectionChanged()
 
 NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
  : KDialogBase(KDialogBase::Swallow, i18n("New Basket"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/true)
+               KDialogBase::Ok, parent, /*name=*/"NewBasket", /*modal=*/true, /*separator=*/true)
 {
 	QWidget *page = new QWidget(this);
 	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());

@@ -10,6 +10,9 @@
    <Action name="basket_export_html" />
    <Action name="basket_remove" />
    <Separator/>
+   <Action name="basket_password" />
+   <Action name="basket_lock" />
+   <Separator/>
    <Menu icon="fileimport" >
     <text>&amp;Import</text>
     <Action name="basket_import_knotes" />

@@ -311,7 +311,7 @@ void Settings::setBigNotes(bool big)
 
 SettingsDialog::SettingsDialog(QWidget *parent)
  : KDialogBase(KDialogBase::IconList, i18n("Configure"),
-               KDialogBase::Default | KDialogBase::Ok | KDialogBase::Apply | KDialogBase::Cancel, KDialogBase::Ok, parent)
+			   KDialogBase::Default | KDialogBase::Ok | KDialogBase::Apply | KDialogBase::Cancel, KDialogBase::Ok, parent, /*name=*/"ConfigureApplication")
 {
 	QFrame *page1 = addPage( i18n("General"),              QString::null, DesktopIcon("basket",            KIcon::SizeMedium) );
 	QFrame *page3 = addPage( i18n("Notes Look"),           QString::null, DesktopIcon("colorize",          KIcon::SizeMedium) );

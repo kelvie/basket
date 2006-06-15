@@ -44,7 +44,7 @@
 
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
  : KDialogBase(KDialogBase::Swallow, i18n("Basket Properties"), KDialogBase::Ok | KDialogBase::Apply | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false),
+               KDialogBase::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
    m_basket(basket)
 {
 	QWidget *page = new QWidget(this);
