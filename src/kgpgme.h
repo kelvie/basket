@@ -53,6 +53,7 @@ class KGpgMe
 		KGpgKeyList keys(bool privateKeys = false) const;
 		void setHint(QString hint) { m_hint = hint; };
 		QString hint() const { return m_hint; };
+		void clearCache() { m_cache = ""; };
 
 		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
 			QString keyid = QString::null) const;
@@ -63,6 +64,7 @@ class KGpgMe
 	private:
 		gpgme_ctx_t m_ctx;
 		QString m_hint;
+		QString m_cache;
 
 		void init(gpgme_protocol_t proto);
 		void setPassphraseCb();

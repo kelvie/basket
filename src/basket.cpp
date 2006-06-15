@@ -2816,6 +2816,8 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
 			m_decryptBox->show();
 		}
+		if(m_decryptBox->isHidden())
+			m_decryptBox->show();
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
 							(visibleHeight() - m_decryptBox->height()) / 2);
 	}
@@ -4942,6 +4944,17 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 		file.close();
 	}
 	return result;
+}
+
+void Basket::lock()
+{
+	m_gpg->clearCache();
+	m_locked = true;
+	// TODO: delete notes here;
+	m_firstNote = 0;
+	m_loaded = false;
+	m_loadingLaunched = false;
+	updateContents();
 }
 
 #if 0

@@ -2512,6 +2512,9 @@ void Container::password()
 void Container::lockBasket()
 {
 #ifdef HAVE_LIBGPGME
+	Basket *cur = currentBasket();
+
+	cur->lock();
 #endif
 }
 
