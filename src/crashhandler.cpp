@@ -17,6 +17,7 @@
 #include "config.h"
 
 #include <kapplication.h> //invokeMailer()
+#include <kaboutdata.h>
 #include <kdeversion.h>
 #include <klocale.h>
 #include <ktempfile.h>
@@ -76,12 +77,12 @@
 
             QString subject = "CRASH: " VERSION " ";
             QString body = i18n(
-                    "BasKet Note Pads has crashed! We're sorry about this.\n"
+                    "%1 has crashed! We're sorry about this.\n"
                     "\n"
                     "But, all is not lost! You could potentially help us fix the crash. "
                     "Information describing the crash is below, so just click send, "
                     "or if you have time, write a brief description of how the crash happened first.\n\n"
-                    "Many thanks." ) + "\n\n";
+                    "Many thanks." ).arg(kapp->aboutData()->programName()) + "\n\n";
             body += "\n\n\n\n\n\n" + i18n(
                     "The information below is to help the developers identify the problem, "
                     "please do not modify it." ) + "\n\n\n\n";
@@ -202,9 +203,10 @@
                         /*startup_id*/  "" );
             }
             else {
-                std::cout << i18n( "\nBasKet Note Pads has crashed! We're terribly sorry about this :(\n\n"
-                                   "But, all is not lost! Perhaps an upgrade is already available "
-                                   "which fixes the problem. Please check your distribution's software repository.\n" ).local8Bit();
+				std::cout << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
+                                          "But, all is not lost! Perhaps an upgrade is already available "
+                                          "which fixes the problem. Please check your distribution's software repository." )
+						.arg(kapp->aboutData()->programName()).local8Bit() << std::endl;
             }
 
             //_exit() exits immediately, otherwise this

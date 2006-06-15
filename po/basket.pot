@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2006-03-21 18:25+0100\n"
+"POT-Creation-Date: 2006-06-15 18:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,225 +13,238 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: basket.cpp:506
+#: basket.cpp:517
 msgid "The new note does not match the filter and is hidden."
 msgstr ""
 
-#: basket.cpp:507
+#: basket.cpp:518
 msgid "A new note does not match the filter and is hidden."
 msgstr ""
 
-#: basket.cpp:508
+#: basket.cpp:519
 msgid "Some new notes do not match the filter and are hidden."
 msgstr ""
 
-#: basket.cpp:509
+#: basket.cpp:520
 msgid "The new notes do not match the filter and are hidden."
 msgstr ""
 
-#: basket.cpp:1398
+#: basket.cpp:1491
 msgid ""
 "_: The verb (Group New Note)\n"
 "Group"
 msgstr ""
 
-#: basket.cpp:1398
+#: basket.cpp:1491
 msgid ""
 "_: The verb (Insert New Note)\n"
 "Insert"
 msgstr ""
 
-#: basket.cpp:1989
+#: basket.cpp:2145
 msgid ""
 "This message should never appear. If it's the case, this program is buggy! "
 "Please report the bug to the developer."
 msgstr ""
 
-#: basket.cpp:2400
-msgid "Confirm note changes"
-msgstr ""
-
-#: basket.cpp:2410 basket.cpp:2455 basket.cpp:2458
+#: basket.cpp:2556 basket.cpp:2601 basket.cpp:2604
 msgid ""
 "Insert note here\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2428
+#: basket.cpp:2574
 msgid "Resize those columns"
 msgstr ""
 
-#: basket.cpp:2430
+#: basket.cpp:2576
 msgid "Resize this group"
 msgstr ""
 
-#: basket.cpp:2431
+#: basket.cpp:2577
 msgid "Resize this note"
 msgstr ""
 
-#: basket.cpp:2432
+#: basket.cpp:2578
 msgid "Select or move this note"
 msgstr ""
 
-#: basket.cpp:2433
+#: basket.cpp:2579
 msgid "Select or move this group"
 msgstr ""
 
-#: basket.cpp:2434
+#: basket.cpp:2580
 msgid "Assign or remove tags from this note"
 msgstr ""
 
-#: basket.cpp:2436
+#: basket.cpp:2582
 #, c-format
 msgid "<b>Assigned Tags</b>: %1"
 msgstr ""
 
-#: basket.cpp:2443
+#: basket.cpp:2589
 msgid "%1, %2"
 msgstr ""
 
-#: basket.cpp:2450
+#: basket.cpp:2596
 msgid "Expand this group"
 msgstr ""
 
-#: basket.cpp:2451
+#: basket.cpp:2597
 msgid "Collapse this group"
 msgstr ""
 
-#: basket.cpp:2456
+#: basket.cpp:2602
 msgid ""
 "Group note with the one below\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2457
+#: basket.cpp:2603
 msgid ""
 "Group note with the one above\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2473
+#: basket.cpp:2619
 msgid "Added"
 msgstr ""
 
-#: basket.cpp:2474
+#: basket.cpp:2620
 msgid "Last Modification"
 msgstr ""
 
-#: basket.cpp:2482
+#: basket.cpp:2628
 msgid ""
 "_: of the form 'key: value'\n"
 "<b>%1</b>: %2"
 msgstr ""
 
-#: basket.cpp:2485
+#: basket.cpp:2631
 msgid "Click on the right to group instead of insert"
 msgstr ""
 
-#: basket.cpp:2487
+#: basket.cpp:2633
 msgid "Click on the left to insert instead of group"
 msgstr ""
 
-#: basket.cpp:2615
+#: basket.cpp:2796
+msgid "&Unlock"
+msgstr ""
+
+#: basket.cpp:2800
+msgid "Password protected basket."
+msgstr ""
+
+#: basket.cpp:2802
+msgid "Press Unlock to view it."
+msgstr ""
+
+#: basket.cpp:2804
+#, c-format
+msgid "Encryption is not supported by<br/>this version of %1."
+msgstr ""
+
+#: basket.cpp:2835 container.cpp:2593 container.cpp:3017
 msgid "Loading..."
 msgstr ""
 
-#: basket.cpp:2856 basket.cpp:2877 basket.cpp:2990
+#: basket.cpp:3076 basket.cpp:3097 basket.cpp:3208
 msgid "&Customize..."
 msgstr ""
 
-#: basket.cpp:2858 basket.cpp:2879
+#: basket.cpp:3078 basket.cpp:3099
 msgid "&Filter by this Tag"
 msgstr ""
 
-#: basket.cpp:2880
+#: basket.cpp:3100
 msgid "Filter by this &State"
 msgstr ""
 
-#: basket.cpp:2964
+#: basket.cpp:3182
 msgid "Tags"
 msgstr ""
 
-#: basket.cpp:2988
+#: basket.cpp:3206
 msgid "&Assign new Tag..."
 msgstr ""
 
-#: basket.cpp:2989
+#: basket.cpp:3207
 msgid "&Remove All"
 msgstr ""
 
-#: basket.cpp:3491
+#: basket.cpp:3729
 #, c-format
 msgid ""
 "_n: <qt>Do you really want to delete this note?</qt>\n"
 "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
 msgstr ""
 
-#: basket.cpp:3493
+#: basket.cpp:3731
 msgid ""
 "_n: Delete Note\n"
 "Delete Notes"
 msgstr ""
 
-#: basket.cpp:3572
+#: basket.cpp:3829
 msgid ""
 "_n: Copied note to clipboard.\n"
 "Copied notes to clipboard."
 msgstr ""
 
-#: basket.cpp:3573
+#: basket.cpp:3830
 msgid ""
 "_n: Cut note to clipboard.\n"
 "Cut notes to clipboard."
 msgstr ""
 
-#: basket.cpp:3574
+#: basket.cpp:3831
 msgid ""
 "_n: Copied note to selection.\n"
 "Copied notes to selection."
 msgstr ""
 
-#: basket.cpp:3620 basket.cpp:3669
+#: basket.cpp:3877 basket.cpp:3926
 msgid "Unable to open this note."
 msgstr ""
 
-#: basket.cpp:3644
+#: basket.cpp:3901
 msgid "You are not authorized to open this file."
 msgstr ""
 
-#: basket.cpp:3686
+#: basket.cpp:3943
 msgid "Save to File"
 msgstr ""
 
-#: basket.cpp:3917 basket.cpp:3918
+#: basket.cpp:4178 basket.cpp:4179
 msgid ""
 "_: HTML export folder (files)\n"
 "%1_files"
 msgstr ""
 
-#: basket.cpp:3924 basket.cpp:3925
+#: basket.cpp:4185 basket.cpp:4186
 msgid ""
 "_: HTML export folder (icons)\n"
 "icons"
 msgstr ""
 
-#: basket.cpp:3926 basket.cpp:3927
+#: basket.cpp:4187 basket.cpp:4188
 msgid ""
 "_: HTML export folder (images)\n"
 "images"
 msgstr ""
 
-#: basket.cpp:3928 basket.cpp:3929
+#: basket.cpp:4189 basket.cpp:4190
 msgid ""
 "_: HTML export folder (data)\n"
 "data"
 msgstr ""
 
-#: basket.cpp:4052
+#: basket.cpp:4313
 msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr ""
 
-#: basket.cpp:4089
+#: basket.cpp:4350
 msgid ""
 "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
@@ -256,11 +269,11 @@ msgstr ""
 msgid "Basket Properties"
 msgstr ""
 
-#: basketproperties.cpp:61 main.cpp:81 newbasketdialog.cpp:88
+#: basketproperties.cpp:61 main.cpp:89 newbasketdialog.cpp:88
 msgid "Icon"
 msgstr ""
 
-#: basketproperties.cpp:64 newbasketdialog.cpp:91
+#: basketproperties.cpp:64 kgpgme.cpp:61 newbasketdialog.cpp:91
 msgid "Name"
 msgstr ""
 
@@ -336,23 +349,23 @@ msgstr ""
 msgid "S&witch to this basket (global shortcut)"
 msgstr ""
 
-#: container.cpp:373
+#: container.cpp:375
 msgid "%1+%2+"
 msgstr ""
 
-#: container.cpp:375
+#: container.cpp:377
 msgid "%1+"
 msgstr ""
 
-#: container.cpp:378
+#: container.cpp:380
 msgid "%1+%2"
 msgstr ""
 
-#: container.cpp:710
+#: container.cpp:711
 msgid "Baskets"
 msgstr ""
 
-#: container.cpp:749
+#: container.cpp:745
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -360,225 +373,245 @@ msgid ""
 "clicking a basket to open it, or reorganize them using drag and drop."
 msgstr ""
 
-#: container.cpp:1253 container.cpp:2074 settings.cpp:325
+#: container.cpp:1255 container.cpp:1846 settings.cpp:316
 msgid "General"
 msgstr ""
 
-#: container.cpp:1512
+#: container.cpp:1514
 msgid ""
 "<p>Closing the main window will keep %1 running in the system tray. Use "
 "<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
 msgstr ""
 
-#: container.cpp:1558 container.cpp:1563
+#: container.cpp:1560 container.cpp:1565
 msgid "Docking in System Tray"
 msgstr ""
 
-#: container.cpp:1609
-msgid "Pasted selection (%1) to basket <i>%2</i>"
+#: container.cpp:1613
+msgid "Pasted selection to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:1641
+#: container.cpp:1633
 msgid "&Minimize"
 msgstr ""
 
-#: container.cpp:1643
+#: container.cpp:1635
 msgid "&Restore"
 msgstr ""
 
-#: container.cpp:1698
-msgid "Dropped (%1) to basket <i>%2</i>"
+#: container.cpp:1692
+msgid "Dropped to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:1792
+#: container.cpp:1780
 msgid "%1 (Locked)"
 msgstr ""
 
-#: container.cpp:2126
+#: container.cpp:1901
 msgid "&New..."
 msgstr ""
 
-#: container.cpp:2128
+#: container.cpp:1903
 msgid "New &Sub-basket..."
 msgstr ""
 
-#: container.cpp:2133
+#: container.cpp:1908
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
 msgstr ""
 
-#: container.cpp:2136
+#: container.cpp:1911
+msgid ""
+"_: Password protection\n"
+"&Password..."
+msgstr ""
+
+#: container.cpp:1913
+msgid ""
+"_: Lock Basket\n"
+"&Lock"
+msgstr ""
+
+#: container.cpp:1919
 msgid "&Export to HTML..."
 msgstr ""
 
-#: container.cpp:2138
-msgid "&KNotes"
+#: container.cpp:1921
+msgid "K&Notes"
 msgstr ""
 
-#: container.cpp:2140
+#: container.cpp:1923
 msgid "K&Jots"
 msgstr ""
 
-#: container.cpp:2142
+#: container.cpp:1925
+msgid "&KnowIt..."
+msgstr ""
+
+#: container.cpp:1927
+msgid "Tux&Cards..."
+msgstr ""
+
+#: container.cpp:1929
 msgid "&Sticky Notes"
 msgstr ""
 
-#: container.cpp:2144
+#: container.cpp:1931
 msgid "&Tomboy"
 msgstr ""
 
-#: container.cpp:2147
+#: container.cpp:1934
 msgid "&Hide Window"
 msgstr ""
 
-#: container.cpp:2166
+#: container.cpp:1953
 msgid "D&elete"
 msgstr ""
 
-#: container.cpp:2170
+#: container.cpp:1957
 msgid "Selects all notes"
 msgstr ""
 
-#: container.cpp:2171
+#: container.cpp:1958
 msgid "U&nselect All"
 msgstr ""
 
-#: container.cpp:2173
+#: container.cpp:1960
 msgid "Unselects all selected notes"
 msgstr ""
 
-#: container.cpp:2174
+#: container.cpp:1961
 msgid "&Invert Selection"
 msgstr ""
 
-#: container.cpp:2177
+#: container.cpp:1964
 msgid "Inverts the current selection of notes"
 msgstr ""
 
-#: container.cpp:2179
+#: container.cpp:1966
 msgid "&Filter"
 msgstr ""
 
-#: container.cpp:2183
-msgid "Filter &all Baskets"
+#: container.cpp:1970
+msgid "Filter all &Baskets"
 msgstr ""
 
-#: container.cpp:2187
+#: container.cpp:1974
 msgid "&Reset Filter"
 msgstr ""
 
-#: container.cpp:2192
+#: container.cpp:1979
 msgid "&Previous Basket"
 msgstr ""
 
-#: container.cpp:2194
+#: container.cpp:1981
 msgid "&Next Basket"
 msgstr ""
 
-#: container.cpp:2196
+#: container.cpp:1983
 msgid "&Fold Basket"
 msgstr ""
 
-#: container.cpp:2198
+#: container.cpp:1985
 msgid "&Expand Basket"
 msgstr ""
 
-#: container.cpp:2203
+#: container.cpp:1990
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
 msgstr ""
 
-#: container.cpp:2208
+#: container.cpp:1995
 msgid "&Open"
 msgstr ""
 
-#: container.cpp:2211
+#: container.cpp:1998
 msgid "Open &With..."
 msgstr ""
 
-#: container.cpp:2215
+#: container.cpp:2002
 msgid "&Save to File..."
 msgstr ""
 
-#: container.cpp:2218
+#: container.cpp:2005
 msgid "&Group"
 msgstr ""
 
-#: container.cpp:2220
+#: container.cpp:2007
 msgid "U&ngroup"
 msgstr ""
 
-#: container.cpp:2223
+#: container.cpp:2010
 msgid "Move on &Top"
 msgstr ""
 
-#: container.cpp:2225
+#: container.cpp:2012
 msgid "Move &Up"
 msgstr ""
 
-#: container.cpp:2227
+#: container.cpp:2014
 msgid "Move &Down"
 msgstr ""
 
-#: container.cpp:2229
+#: container.cpp:2016
 msgid "Move on &Bottom"
 msgstr ""
 
-#: container.cpp:2239 settings.cpp:408
+#: container.cpp:2026 settings.cpp:399
 msgid "&Text"
 msgstr ""
 
-#: container.cpp:2240
+#: container.cpp:2027
 msgid "&Rich Text"
 msgstr ""
 
-#: container.cpp:2241
+#: container.cpp:2028
 msgid "&Link"
 msgstr ""
 
-#: container.cpp:2242
+#: container.cpp:2029
 msgid "&Image"
 msgstr ""
 
-#: container.cpp:2243
+#: container.cpp:2030
 msgid "&Color"
 msgstr ""
 
-#: container.cpp:2244
+#: container.cpp:2031
 msgid "L&auncher"
 msgstr ""
 
-#: container.cpp:2246
+#: container.cpp:2033
 msgid "Import Launcher from &KDE Menu..."
 msgstr ""
 
-#: container.cpp:2247
+#: container.cpp:2034
 msgid "Im&port Icon..."
 msgstr ""
 
-#: container.cpp:2248
+#: container.cpp:2035
 msgid "Load From &File..."
 msgstr ""
 
-#: container.cpp:2271
+#: container.cpp:2058
 msgid "C&olor from Screen"
 msgstr ""
 
-#: container.cpp:2276
-msgid "&Grab Screen Zone"
+#: container.cpp:2063
+msgid "Grab Screen &Zone"
 msgstr ""
 
-#: container.cpp:2298
+#: container.cpp:2084
 msgid "Hide &Toolbar"
 msgstr ""
 
-#: container.cpp:2304
+#: container.cpp:2090
 msgid "Configure &Global Shortcuts..."
 msgstr ""
 
-#: container.cpp:2322
+#: container.cpp:2108
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of "
@@ -589,35 +622,27 @@ msgid ""
 "try to remove the file %5basketui.rc</p>"
 msgstr ""
 
-#: container.cpp:2333
+#: container.cpp:2119
 msgid "Ressource not Found"
 msgstr ""
 
-#: container.cpp:2377 container.cpp:2386
+#: container.cpp:2166 container.cpp:2175
 msgid "Cannot add note."
 msgstr ""
 
-#: container.cpp:2433
+#: container.cpp:2237
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:2475
+#: container.cpp:2278
 msgid "Picked color to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:2545
-msgid "Editing. Press Escape, Return or click outside to confirm."
-msgstr ""
-
-#: container.cpp:2547
-msgid "Editing. Press Escape or click outside to confirm."
-msgstr ""
-
-#: container.cpp:2549
+#: container.cpp:2349
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
 msgstr ""
 
-#: container.cpp:2589
+#: container.cpp:2390
 msgid ""
 "<p>%1 let you to collect a wide variety of objects and keep them all in one "
 "place.</p><p>You can group things for different purposes in tabs by creating "
@@ -628,127 +653,152 @@ msgid ""
 "shop-lists...</p>"
 msgstr ""
 
-#: container.cpp:2656
+#: container.cpp:2426
 msgid "Delete Basket"
 msgstr ""
 
-#: container.cpp:2659
+#: container.cpp:2429
 msgid "Delete Only that Basket"
 msgstr ""
 
-#: container.cpp:2660
+#: container.cpp:2430
 msgid "Delete With its Childs"
 msgstr ""
 
-#: container.cpp:2668 container.cpp:2674
+#: container.cpp:2438 container.cpp:2444
 msgid "<qt>Do you really want to remove <b>%1</b> and its contents?</qt>"
 msgstr ""
 
-#: container.cpp:2676
+#: container.cpp:2446
 msgid "Remove Basket"
 msgstr ""
 
-#: container.cpp:2678
+#: container.cpp:2448
 msgid "&Remove Basket"
 msgstr ""
 
-#: container.cpp:2689
+#: container.cpp:2459
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
 msgstr ""
 
-#: container.cpp:2692
+#: container.cpp:2462
 msgid "Remove Child Baskets"
 msgstr ""
 
-#: container.cpp:2694
+#: container.cpp:2464
 msgid "&Remove Child Baskets"
 msgstr ""
 
-#: container.cpp:2793
+#: container.cpp:2572
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr ""
 
-#: container.cpp:2798
+#: container.cpp:2577
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr ""
 
-#: container.cpp:2814
+#: container.cpp:2595
 msgid "No notes"
 msgstr ""
 
-#: container.cpp:2816
+#: container.cpp:2597
 #, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
 msgstr ""
 
-#: container.cpp:2817
+#: container.cpp:2598
 #, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
 msgstr ""
 
-#: container.cpp:2818
+#: container.cpp:2599
 msgid "all matches"
 msgstr ""
 
-#: container.cpp:2818
+#: container.cpp:2599
 msgid "no filter"
 msgstr ""
 
-#: container.cpp:2820
+#: container.cpp:2601
 #, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
 msgstr ""
 
-#: container.cpp:2822
+#: container.cpp:2603
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr ""
 
-#: container.cpp:3030
+#: container.cpp:2805
 msgid "<p>Do you really want to quit %1?</p>"
 msgstr ""
 
-#: container.cpp:3032
+#: container.cpp:2807
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session: it will be reloaded the next time you log in.</p>"
 msgstr ""
 
-#: container.cpp:3035
+#: container.cpp:2810
 msgid "Quit Confirm"
 msgstr ""
 
-#: container.cpp:3071 newbasketdialog.cpp:89
+#: container.cpp:2846 newbasketdialog.cpp:89
 msgid "Basket"
 msgstr ""
 
-#: container.cpp:3161
-msgid "Clipboard content (%1) pasted to basket <i>%2</i>"
+#: container.cpp:2929
+msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:3169
-msgid "Selection (%1) pasted to basket <i>%2</i>"
+#: container.cpp:2937
+msgid "Selection pasted to basket <i>%1</i>"
 msgstr ""
 
-#: container.cpp:3180
+#: container.cpp:2949
 msgid "No note was added."
 msgstr ""
 
-#: container.cpp:3206
+#: container.cpp:2976
 msgid "Basket <i>%1</i> is locked"
 msgstr ""
 
-#: container.cpp:3223
+#: container.cpp:3001
 msgid "(Locked)"
+msgstr ""
+
+#: crashhandler.cpp:80
+msgid ""
+"%1 has crashed! We're sorry about this.\n"
+"\n"
+"But, all is not lost! You could potentially help us fix the crash. "
+"Information describing the crash is below, so just click send, or if you "
+"have time, write a brief description of how the crash happened first.\n"
+"\n"
+"Many thanks."
+msgstr ""
+
+#: crashhandler.cpp:87
+msgid ""
+"The information below is to help the developers identify the problem, please "
+"do not modify it."
+msgstr ""
+
+#: crashhandler.cpp:206
+msgid ""
+"%1 has crashed! We're sorry about this.\n"
+"\n"
+"But, all is not lost! Perhaps an upgrade is already available which fixes "
+"the problem. Please check your distribution's software repository."
 msgstr ""
 
 #: debugwindow.cpp:34
@@ -783,39 +833,39 @@ msgstr ""
 msgid "For&mat for impression"
 msgstr ""
 
-#: filter.cpp:59
+#: filter.cpp:60
 msgid "Reset Filter"
 msgstr ""
 
-#: filter.cpp:63
+#: filter.cpp:64
 msgid "&Filter: "
 msgstr ""
 
-#: filter.cpp:65
+#: filter.cpp:66
 msgid "&Tag: "
 msgstr ""
 
-#: filter.cpp:68
+#: filter.cpp:69
 msgid "Filter all Baskets"
 msgstr ""
 
-#: filter.cpp:140
+#: filter.cpp:149
 msgid "(Not tagged)"
 msgstr ""
 
-#: filter.cpp:141
+#: filter.cpp:150
 msgid "(Tagged)"
 msgstr ""
 
-#: focusedwidgets.cpp:94
-msgid "Check Spelling..."
-msgstr ""
-
-#: focusedwidgets.cpp:97
+#: focusedwidgets.cpp:134
 msgid "Auto Spell Check"
 msgstr ""
 
-#: focusedwidgets.cpp:100
+#: focusedwidgets.cpp:134
+msgid "Check Spelling..."
+msgstr ""
+
+#: focusedwidgets.cpp:137
 msgid "Allow Tabulations"
 msgstr ""
 
@@ -835,6 +885,197 @@ msgstr ""
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 msgid "(Default)"
+msgstr ""
+
+#: kgpgme.cpp:50
+msgid "Private Key List"
+msgstr ""
+
+#: kgpgme.cpp:62
+msgid "Email"
+msgstr ""
+
+#: kgpgme.cpp:63
+msgid "ID"
+msgstr ""
+
+#: kgpgme.cpp:68
+msgid "Choose a secret key:"
+msgstr ""
+
+#: kgpgme.cpp:219
+msgid "Key listing unexpectedly truncated"
+msgstr ""
+
+#: kgpgme.cpp:255
+msgid "Invalid recipient encountered"
+msgstr ""
+
+#: kgpgme.cpp:311
+msgid "Unsupported algorithm"
+msgstr ""
+
+#: kgpgme.cpp:370
+msgid "Password was not accepted."
+msgstr ""
+
+#: kicondialog.cpp:84 kicondialog.cpp:94
+msgid "Select Icon"
+msgstr ""
+
+#: kicondialog.cpp:121
+msgid "&Browse..."
+msgstr ""
+
+#: kicondialog.cpp:133
+msgid "(All Icons)"
+msgstr ""
+
+#: kicondialog.cpp:134
+msgid "(Recent)"
+msgstr ""
+
+#: kicondialog.cpp:135
+msgid "Actions"
+msgstr ""
+
+#: kicondialog.cpp:136 settings.cpp:318
+msgid "Applications"
+msgstr ""
+
+#: kicondialog.cpp:137
+msgid "Devices"
+msgstr ""
+
+#: kicondialog.cpp:138
+msgid "Filesystem"
+msgstr ""
+
+#: kicondialog.cpp:139
+msgid "File Types"
+msgstr ""
+
+#: kicondialog.cpp:356
+msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
+msgstr ""
+
+#. i18n: file kicondialogui.ui line 31
+#: kicondialogui.cpp:108 rc.cpp:33
+#, no-c-format
+msgid "KIconDialogUI"
+msgstr ""
+
+#. i18n: file kicondialogui.ui line 105
+#: kicondialogui.cpp:109 rc.cpp:36
+#, no-c-format
+msgid "Fi&lter:"
+msgstr ""
+
+#. i18n: file kicondialogui.ui line 160
+#: kicondialogui.cpp:111 rc.cpp:42
+#, no-c-format
+msgid "Alt+O"
+msgstr ""
+
+#: likeback.cpp:56
+msgid "I Like..."
+msgstr ""
+
+#: likeback.cpp:63
+msgid "I Dislike..."
+msgstr ""
+
+#: likeback.cpp:70
+msgid "I Found a Bug..."
+msgstr ""
+
+#: likeback.cpp:77
+msgid "Configure..."
+msgstr ""
+
+#: likeback.cpp:113
+msgid ""
+"<p><b>Welcome to this testing version of %1.</b></p><p>To help us improve "
+"it, your comments are important.</p><p>Each time you are surprised with "
+"something you like, or something you do not like, please click the "
+"appropriate hand below the window title-bar, briefly describe the object of "
+"your sentiment and click Send.</p><p>Follow the same principle to quickly "
+"report a bug: just click the bug icon in the top-right corner of the window, "
+"describe it and click Send.</p><p>Examples:</p><table><tr><td><nobr><b><img "
+"source=\"likeback_icon_like\"> I like...</b></nobr><br>the nice new "
+"artwork.<br>Very refreshing.</td><td><nobr><b><img "
+"source=\"likeback_icon_dislike\"> I do not like...</b></nobr><br>the welcome "
+"page of that wizard.<br>Too time consuming.</td><td><nobr><b><img "
+"source=\"likeback_icon_bug\"> I found a bug...</b></nobr><br>when clicking "
+"the Add button, nothing happens.</td></tr></table>"
+msgstr ""
+
+#: likeback.cpp:131
+msgid "Help Improve the Application"
+msgstr ""
+
+#: likeback.cpp:274
+msgid "I like..."
+msgstr ""
+
+#: likeback.cpp:275
+msgid "Please briefly describe what you like."
+msgstr ""
+
+#: likeback.cpp:281
+msgid "I do not like..."
+msgstr ""
+
+#: likeback.cpp:282
+msgid "Please briefly describe what you do not like."
+msgstr ""
+
+#: likeback.cpp:288
+msgid "I found a bug..."
+msgstr ""
+
+#: likeback.cpp:289
+msgid "Please briefly describe the bug you encountered."
+msgstr ""
+
+#: likeback.cpp:328 likeback.cpp:330
+msgid "Send"
+msgstr ""
+
+#: likeback.cpp:341
+msgid "Only english and french languages are accepted."
+msgstr ""
+
+#: likeback.cpp:345
+msgid ""
+"Note that to improve this application, it's important to tell us the things "
+"you like as much as the things you dislike."
+msgstr ""
+
+#: likeback.cpp:348
+msgid "Do not ask for features: your wish will be ignored."
+msgstr ""
+
+#: likeback.cpp:349
+msgid "The comment will be submitted annonymously."
+msgstr ""
+
+#: likeback.cpp:397
+msgid "<p>Error while trying to send the report.</p><p>Please retry later."
+msgstr ""
+
+#: likeback.cpp:397
+msgid "Transfert Error"
+msgstr ""
+
+#: likeback.cpp:399
+msgid ""
+"<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
+"will help improve the application."
+msgstr ""
+
+#: likeback.cpp:399
+msgid "Message Sent"
 msgstr ""
 
 #: linklabel.cpp:560
@@ -921,156 +1162,167 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: main.cpp:66
+#: main.cpp:70
 msgid "A set of baskets to keep a full range of data on hand."
 msgstr ""
 
-#: main.cpp:70
+#: main.cpp:74
 msgid "Show the debug window"
 msgstr ""
 
-#: main.cpp:72
+#: main.cpp:76
+msgid ""
+"Custom folder where to load and save basket data and application data "
+"(useful for debugging purpose)"
+msgstr ""
+
+#: main.cpp:78
 msgid "Hide the main window in the system tray icon on startup"
 msgstr ""
 
-#: main.cpp:75
+#: main.cpp:80
+msgid ""
+"When crashing, use the standard KDE report dialog instead of sending an email"
+msgstr ""
+
+#: main.cpp:83
 msgid "BasKet Note Pads"
 msgstr ""
 
-#: main.cpp:80
+#: main.cpp:88
 msgid "Author, maintainer"
 msgstr ""
 
-#: main.cpp:159
+#: main.cpp:187
 msgid "Show/hide main window"
 msgstr ""
 
-#: main.cpp:160
+#: main.cpp:188
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
 msgstr ""
 
-#: main.cpp:163
+#: main.cpp:191
 msgid "Paste clipboard contents in current basket"
 msgstr ""
 
-#: main.cpp:164
+#: main.cpp:192
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
 msgstr ""
 
-#: main.cpp:167
+#: main.cpp:195
 msgid "Show current basket name"
 msgstr ""
 
-#: main.cpp:168
+#: main.cpp:196
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 
-#: main.cpp:171
+#: main.cpp:199
 msgid "Paste selection in current basket"
 msgstr ""
 
-#: main.cpp:172
+#: main.cpp:200
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
 msgstr ""
 
-#: main.cpp:175
+#: main.cpp:203
 msgid "Create a new basket"
 msgstr ""
 
-#: main.cpp:176
+#: main.cpp:204
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
 "paste selection in this new basket)."
 msgstr ""
 
-#: main.cpp:179
+#: main.cpp:207
 msgid "Go to previous basket"
 msgstr ""
 
-#: main.cpp:180
+#: main.cpp:208
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr ""
 
-#: main.cpp:183
+#: main.cpp:211
 msgid "Go to next basket"
 msgstr ""
 
-#: main.cpp:184
+#: main.cpp:212
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
 msgstr ""
 
-#: main.cpp:189 settings.cpp:628 settings.cpp:643 settings.cpp:654
+#: main.cpp:217 settings.cpp:607
 msgid "Insert text note"
 msgstr ""
 
-#: main.cpp:190
+#: main.cpp:218
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 
-#: main.cpp:193 settings.cpp:629 settings.cpp:644 settings.cpp:655
+#: main.cpp:221 settings.cpp:608
 msgid "Insert rich text note"
 msgstr ""
 
-#: main.cpp:194
+#: main.cpp:222
 msgid ""
 "Add a rich text note to the current basket without having to open main "
 "window."
 msgstr ""
 
-#: main.cpp:197 settings.cpp:630
+#: main.cpp:225 settings.cpp:609
 msgid "Insert image note"
 msgstr ""
 
-#: main.cpp:198
+#: main.cpp:226
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 
-#: main.cpp:201 settings.cpp:631 settings.cpp:645 settings.cpp:656
+#: main.cpp:229 settings.cpp:610
 msgid "Insert link note"
 msgstr ""
 
-#: main.cpp:202
+#: main.cpp:230
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 
-#: main.cpp:205 settings.cpp:633
+#: main.cpp:233 settings.cpp:612
 msgid "Insert color note"
 msgstr ""
 
-#: main.cpp:206
+#: main.cpp:234
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 
-#: main.cpp:209
+#: main.cpp:237
 msgid "Pick color from screen"
 msgstr ""
 
-#: main.cpp:210
+#: main.cpp:238
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
 msgstr ""
 
-#: main.cpp:214
+#: main.cpp:242
 msgid "Grab screen zone"
 msgstr ""
 
-#: main.cpp:215
+#: main.cpp:243
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -1100,7 +1352,7 @@ msgstr ""
 msgid "Three columns"
 msgstr ""
 
-#: newbasketdialog.cpp:144 newbasketdialog.cpp:252
+#: newbasketdialog.cpp:144
 msgid "Free"
 msgstr ""
 
@@ -1130,167 +1382,171 @@ msgid ""
 "to people).</li></ul>"
 msgstr ""
 
+#: newbasketdialog.cpp:252
+msgid "Free-form"
+msgstr ""
+
 #: newbasketdialog.cpp:254
 msgid "Mind map"
 msgstr ""
 
-#: notecontent.cpp:196
+#: notecontent.cpp:171
 msgid "Text"
 msgstr ""
 
-#: notecontent.cpp:197
+#: notecontent.cpp:172
 msgid "Rich Text"
 msgstr ""
 
-#: notecontent.cpp:198
+#: notecontent.cpp:173
 msgid "Image"
 msgstr ""
 
-#: notecontent.cpp:199
+#: notecontent.cpp:174
 msgid "Animation"
 msgstr ""
 
-#: notecontent.cpp:200
+#: notecontent.cpp:175
 msgid "Sound"
 msgstr ""
 
-#: notecontent.cpp:202
+#: notecontent.cpp:177
 msgid "Link"
 msgstr ""
 
-#: notecontent.cpp:203
+#: notecontent.cpp:178
 msgid "Launcher"
 msgstr ""
 
-#: notecontent.cpp:204 noteedit.cpp:784
+#: notecontent.cpp:179 noteedit.cpp:749
 msgid "Color"
 msgstr ""
 
-#: notecontent.cpp:205
+#: notecontent.cpp:180
 msgid "Unknown"
 msgstr ""
 
-#: notecontent.cpp:346
+#: notecontent.cpp:321
 msgid "Edit this text"
 msgstr ""
 
-#: notecontent.cpp:347
+#: notecontent.cpp:322
 msgid "Edit this rich text"
 msgstr ""
 
-#: notecontent.cpp:348
+#: notecontent.cpp:323
 msgid "Edit this image"
 msgstr ""
 
-#: notecontent.cpp:349
+#: notecontent.cpp:324
 msgid "Edit this animation"
 msgstr ""
 
-#: notecontent.cpp:350
+#: notecontent.cpp:325
 msgid "Edit the file name of this sound"
 msgstr ""
 
-#: notecontent.cpp:351
+#: notecontent.cpp:326
 msgid "Edit the name of this file"
 msgstr ""
 
-#: notecontent.cpp:352
+#: notecontent.cpp:327
 msgid "Edit this link"
 msgstr ""
 
-#: notecontent.cpp:353
+#: notecontent.cpp:328
 msgid "Edit this launcher"
 msgstr ""
 
-#: notecontent.cpp:354
+#: notecontent.cpp:329
 msgid "Edit this color"
 msgstr ""
 
-#: notecontent.cpp:355
+#: notecontent.cpp:330
 msgid "Edit this unknown object"
 msgstr ""
 
-#: notecontent.cpp:568
+#: notecontent.cpp:548
 msgid "Opening text..."
 msgstr ""
 
-#: notecontent.cpp:569
+#: notecontent.cpp:549
 msgid "Opening texts..."
 msgstr ""
 
-#: notecontent.cpp:570
+#: notecontent.cpp:550
 msgid "Opening text with..."
 msgstr ""
 
-#: notecontent.cpp:571
+#: notecontent.cpp:551
 msgid "Opening texts with..."
 msgstr ""
 
-#: notecontent.cpp:572
+#: notecontent.cpp:552
 msgid "Open text with:"
 msgstr ""
 
-#: notecontent.cpp:573
+#: notecontent.cpp:553
 msgid "Open texts with:"
 msgstr ""
 
-#: notecontent.cpp:646
+#: notecontent.cpp:631
 msgid "Opening rich text..."
 msgstr ""
 
-#: notecontent.cpp:647
+#: notecontent.cpp:632
 msgid "Opening rich texts..."
 msgstr ""
 
-#: notecontent.cpp:648
+#: notecontent.cpp:633
 msgid "Opening rich text with..."
 msgstr ""
 
-#: notecontent.cpp:649
+#: notecontent.cpp:634
 msgid "Opening rich texts with..."
 msgstr ""
 
-#: notecontent.cpp:650
+#: notecontent.cpp:635
 msgid "Open rich text with:"
 msgstr ""
 
-#: notecontent.cpp:651
+#: notecontent.cpp:636
 msgid "Open rich texts with:"
 msgstr ""
 
-#: notecontent.cpp:733 notecontent.cpp:930
+#: notecontent.cpp:732 notecontent.cpp:931
 msgid "Size"
 msgstr ""
 
-#: notecontent.cpp:734 variouswidgets.cpp:146
+#: notecontent.cpp:733 variouswidgets.cpp:146
 msgid "%1 by %2 pixels"
 msgstr ""
 
-#: notecontent.cpp:740
+#: notecontent.cpp:739
 msgid "Opening image..."
 msgstr ""
 
-#: notecontent.cpp:741
+#: notecontent.cpp:740
 msgid "Opening images..."
 msgstr ""
 
-#: notecontent.cpp:742
+#: notecontent.cpp:741
 msgid "Opening image with..."
 msgstr ""
 
-#: notecontent.cpp:743
+#: notecontent.cpp:742
 msgid "Opening images with..."
 msgstr ""
 
-#: notecontent.cpp:744
+#: notecontent.cpp:743
 msgid "Open image with:"
 msgstr ""
 
-#: notecontent.cpp:745
+#: notecontent.cpp:744
 msgid "Open images with:"
 msgstr ""
 
-#: notecontent.cpp:769
+#: notecontent.cpp:768
 msgid "Click for full size view"
 msgstr ""
 
@@ -1318,263 +1574,263 @@ msgstr ""
 msgid "Open animations with:"
 msgstr ""
 
-#: notecontent.cpp:935
+#: notecontent.cpp:936
 msgid "Type"
 msgstr ""
 
-#: notecontent.cpp:973
+#: notecontent.cpp:974
 msgid "Open this file"
 msgstr ""
 
-#: notecontent.cpp:992
+#: notecontent.cpp:993
 msgid "Opening file..."
 msgstr ""
 
-#: notecontent.cpp:993
+#: notecontent.cpp:994
 msgid "Opening files..."
 msgstr ""
 
-#: notecontent.cpp:994
+#: notecontent.cpp:995
 msgid "Opening file with..."
 msgstr ""
 
-#: notecontent.cpp:995
+#: notecontent.cpp:996
 msgid "Opening files with..."
 msgstr ""
 
-#: notecontent.cpp:996
+#: notecontent.cpp:997
 msgid "Open file with:"
 msgstr ""
 
-#: notecontent.cpp:997
+#: notecontent.cpp:998
 msgid "Open files with:"
 msgstr ""
 
-#: notecontent.cpp:1068
+#: notecontent.cpp:1069
 msgid "Open this sound"
 msgstr ""
 
-#: notecontent.cpp:1105
+#: notecontent.cpp:1106
 msgid "Opening sound..."
 msgstr ""
 
-#: notecontent.cpp:1106
+#: notecontent.cpp:1107
 msgid "Opening sounds..."
 msgstr ""
 
-#: notecontent.cpp:1107
+#: notecontent.cpp:1108
 msgid "Opening sound with..."
 msgstr ""
 
-#: notecontent.cpp:1108
+#: notecontent.cpp:1109
 msgid "Opening sounds with..."
 msgstr ""
 
-#: notecontent.cpp:1109
+#: notecontent.cpp:1110
 msgid "Open sound with:"
 msgstr ""
 
-#: notecontent.cpp:1110
+#: notecontent.cpp:1111
 msgid "Open sounds with:"
 msgstr ""
 
-#: notecontent.cpp:1148
+#: notecontent.cpp:1149
 msgid "Target"
 msgstr ""
 
-#: notecontent.cpp:1171
+#: notecontent.cpp:1172
 msgid "Open this link"
 msgstr ""
 
-#: notecontent.cpp:1197
+#: notecontent.cpp:1198
 msgid "Link have no URL to open."
 msgstr ""
 
-#: notecontent.cpp:1200
+#: notecontent.cpp:1201
 msgid "Opening link target..."
 msgstr ""
 
-#: notecontent.cpp:1201
+#: notecontent.cpp:1202
 msgid "Opening link targets..."
 msgstr ""
 
-#: notecontent.cpp:1202
+#: notecontent.cpp:1203
 msgid "Opening link target with..."
 msgstr ""
 
-#: notecontent.cpp:1203
+#: notecontent.cpp:1204
 msgid "Opening link targets with..."
 msgstr ""
 
-#: notecontent.cpp:1204
+#: notecontent.cpp:1205
 msgid "Open link target with:"
 msgstr ""
 
-#: notecontent.cpp:1205
+#: notecontent.cpp:1206
 msgid "Open link targets with:"
 msgstr ""
 
-#: notecontent.cpp:1329
+#: notecontent.cpp:1331
 msgid "%1 <i>(run in terminal)</i>"
 msgstr ""
 
-#: notecontent.cpp:1332
+#: notecontent.cpp:1334
 msgid "Comment"
 msgstr ""
 
-#: notecontent.cpp:1336
+#: notecontent.cpp:1338
 msgid "Command"
 msgstr ""
 
-#: notecontent.cpp:1359
+#: notecontent.cpp:1361
 msgid "Launch this application"
 msgstr ""
 
-#: notecontent.cpp:1380
+#: notecontent.cpp:1382
 msgid "The launcher have no command to run."
 msgstr ""
 
-#: notecontent.cpp:1383
+#: notecontent.cpp:1385
 msgid "Launching application..."
 msgstr ""
 
-#: notecontent.cpp:1384
+#: notecontent.cpp:1386
 msgid "Launching applications..."
 msgstr ""
 
-#: notecontent.cpp:1471
+#: notecontent.cpp:1473
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
 msgstr ""
 
-#: notecontent.cpp:1472
+#: notecontent.cpp:1474
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
 msgstr ""
 
-#: notecontent.cpp:1474
+#: notecontent.cpp:1476
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
 msgstr ""
 
-#: notecontent.cpp:1475
+#: notecontent.cpp:1477
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
 msgstr ""
 
-#: notecontent.cpp:1628
+#: notecontent.cpp:1630
 msgid "CSS Color Name"
 msgstr ""
 
-#: notecontent.cpp:1638
+#: notecontent.cpp:1640
 msgid "CSS Extended Color Name"
 msgstr ""
 
-#: notecontent.cpp:1644
+#: notecontent.cpp:1646
 msgid "Is Web Color"
 msgstr ""
 
-#: note.cpp:2750
+#: note.cpp:2791
 msgid "(Image)"
 msgstr ""
 
-#: noteedit.cpp:381
+#: noteedit.cpp:323
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
 
-#: noteedit.cpp:383
+#: noteedit.cpp:325
 msgid "Edit Image Note"
 msgstr ""
 
-#: noteedit.cpp:397
+#: noteedit.cpp:339
 msgid ""
 "This animated image can not be edited here.\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
 
-#: noteedit.cpp:399
+#: noteedit.cpp:341
 msgid "Edit Animation Note"
 msgstr ""
 
-#: noteedit.cpp:475
+#: noteedit.cpp:417
 msgid "Edit Color Note"
 msgstr ""
 
-#: noteedit.cpp:498
+#: noteedit.cpp:440
 msgid ""
 "The type of this note is unknown and can not be edited here.\n"
 "You however can drag or copy the note into an application that understands "
 "it."
 msgstr ""
 
-#: noteedit.cpp:500
+#: noteedit.cpp:442
 msgid "Edit Unknown Note"
 msgstr ""
 
-#: noteedit.cpp:508
+#: noteedit.cpp:471
 msgid "Edit Link Note"
 msgstr ""
 
-#: noteedit.cpp:520 noteedit.cpp:533
+#: noteedit.cpp:483 noteedit.cpp:496
 msgid "Auto"
 msgstr ""
 
-#: noteedit.cpp:529 noteedit.cpp:682
+#: noteedit.cpp:492 noteedit.cpp:645
 msgid "&Icon:"
 msgstr ""
 
-#: noteedit.cpp:553
+#: noteedit.cpp:516
 msgid "Ta&rget:"
 msgstr ""
 
-#: noteedit.cpp:554
+#: noteedit.cpp:517
 msgid "&Title:"
 msgstr ""
 
-#: noteedit.cpp:667
+#: noteedit.cpp:630
 msgid "Edit Launcher Note"
 msgstr ""
 
-#: noteedit.cpp:676
+#: noteedit.cpp:639
 msgid "Choose a command to run:"
 msgstr ""
 
-#: noteedit.cpp:685
+#: noteedit.cpp:648
 msgid "&Guess"
 msgstr ""
 
-#: noteedit.cpp:701
+#: noteedit.cpp:664
 msgid "Comman&d:"
 msgstr ""
 
-#: noteedit.cpp:702
+#: noteedit.cpp:665
 msgid "&Name:"
 msgstr ""
 
-#: noteedit.cpp:786
+#: noteedit.cpp:751
 msgid "Bold"
 msgstr ""
 
-#: noteedit.cpp:788
+#: noteedit.cpp:753
 msgid "Underline"
 msgstr ""
 
-#: noteedit.cpp:793
+#: noteedit.cpp:758
 msgid "Align Left"
 msgstr ""
 
-#: noteedit.cpp:794
+#: noteedit.cpp:759
 msgid "Centered"
 msgstr ""
 
-#: noteedit.cpp:795
+#: noteedit.cpp:760
 msgid "Align Right"
 msgstr ""
 
-#: noteedit.cpp:796
+#: noteedit.cpp:761
 msgid "Justified"
 msgstr ""
 
@@ -1607,16 +1863,84 @@ msgstr ""
 msgid "C&ancel\tEscape"
 msgstr ""
 
-#: notefactory.cpp:948
+#: notefactory.cpp:966
 msgid "Import Icon as Image"
 msgstr ""
 
-#: notefactory.cpp:948
+#: notefactory.cpp:966
 msgid "Choose the size of the icon to import as an image:"
 msgstr ""
 
-#: notefactory.cpp:961
+#: notefactory.cpp:979
 msgid "Load File Content into a Note"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 16
+#: password.cpp:35 rc.cpp:45
+#, no-c-format
+msgid "Password Protection"
+msgstr ""
+
+#: password.cpp:53
+msgid "No private key selected."
+msgstr ""
+
+#: passwordlayout.cpp:94
+msgid "Password protection"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 44
+#: passwordlayout.cpp:96 rc.cpp:49
+#, no-c-format
+msgid "&No password"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 47
+#: passwordlayout.cpp:97 rc.cpp:52
+#, no-c-format
+msgid "Alt+N"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 55
+#: passwordlayout.cpp:98 rc.cpp:55
+#, no-c-format
+msgid "Protect basket with a &password"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 58
+#: passwordlayout.cpp:99 rc.cpp:58
+#, no-c-format
+msgid "Alt+P"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 66
+#: passwordlayout.cpp:100 rc.cpp:61
+#, no-c-format
+msgid "Protect basket with private &key"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 69
+#: passwordlayout.cpp:101 rc.cpp:64
+#, no-c-format
+msgid "Alt+K"
+msgstr ""
+
+#: passwordlayout.cpp:102
+msgid ""
+"<qt><b>Always encrypt with:</b><br /> \n"
+"<p>This ensures all files/messages will also be encrypted with the chosen "
+"key. However, if the \"Encrypt files with:\" option is selected that chosen "
+"key will override the \"Always encrypt with:\" selection.</p></qt>"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 113
+#: passwordlayout.cpp:104 rc.cpp:71 variouswidgets.cpp:46
+#, no-c-format
+msgid "..."
+msgstr ""
+
+#: passwordlayout.cpp:105
+msgid "Change..."
 msgstr ""
 
 #. i18n: file basketui.rc line 5
@@ -1625,71 +1949,83 @@ msgstr ""
 msgid "&Basket"
 msgstr ""
 
-#. i18n: file basketui.rc line 14
+#. i18n: file basketui.rc line 17
 #: rc.cpp:6
 #, no-c-format
 msgid "&Import"
 msgstr ""
 
-#. i18n: file basketui.rc line 40
+#. i18n: file basketui.rc line 46
 #: rc.cpp:12
 #, no-c-format
 msgid "&Go"
 msgstr ""
 
-#. i18n: file basketui.rc line 47
+#. i18n: file basketui.rc line 53
 #: rc.cpp:15
 #, no-c-format
 msgid "&Note"
 msgstr ""
 
-#. i18n: file basketui.rc line 113
+#. i18n: file basketui.rc line 120
 #: rc.cpp:30
 #, no-c-format
 msgid "Rich Text Edit Toolbar"
 msgstr ""
 
-#: settings.cpp:326
+#. i18n: file passwordlayout.ui line 97
+#: rc.cpp:67
+#, no-c-format
+msgid ""
+"<qt><b>Always encrypt with:</b><br />\n"
+"<p>This ensures all files/messages will also be encrypted with the chosen "
+"key. However, if the \"Encrypt files with:\" option is selected that chosen "
+"key will override the \"Always encrypt with:\" selection.</p></qt>"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 121
+#: rc.cpp:74
+#, no-c-format
+msgid "C&hange..."
+msgstr ""
+
+#: settings.cpp:317
 msgid "Notes Look"
 msgstr ""
 
-#: settings.cpp:327
-msgid "Applications"
-msgstr ""
-
-#: settings.cpp:328
+#: settings.cpp:319
 msgid "Addictive Features"
 msgstr ""
 
-#: settings.cpp:335
+#: settings.cpp:326
 msgid "Doc&k in system tray"
 msgstr ""
 
-#: settings.cpp:339
+#: settings.cpp:330
 msgid "&Use balloons to report results of global actions"
 msgstr ""
 
-#: settings.cpp:343
+#: settings.cpp:334
 msgid "Ani&mate changes in baskets"
 msgstr ""
 
-#: settings.cpp:347
+#: settings.cpp:338
 msgid "Sho&w tooltips in baskets"
 msgstr ""
 
-#: settings.cpp:351
+#: settings.cpp:342
 msgid "Bi&g notes"
 msgstr ""
 
-#: settings.cpp:356
+#: settings.cpp:347
 msgid "E&xport tags in texts"
 msgstr ""
 
-#: settings.cpp:359
+#: settings.cpp:350
 msgid "When does this apply?"
 msgstr ""
 
-#: settings.cpp:360
+#: settings.cpp:351
 msgid ""
 "<p>It does apply when you copy and paste, or drag and drop notes to a text "
 "editor.</p><p>If enabled, this property allows you to paste the tags as "
@@ -1698,169 +2034,169 @@ msgid ""
 "<b>[x]</b>, representing an empty  checkbox and a checked box.</p>"
 msgstr ""
 
-#: settings.cpp:375
+#: settings.cpp:366
 msgid "On left"
 msgstr ""
 
-#: settings.cpp:376
+#: settings.cpp:367
 msgid "On right"
 msgstr ""
 
-#: settings.cpp:378
+#: settings.cpp:369
 msgid "Bask&ets tree position:"
 msgstr ""
 
-#: settings.cpp:384 settings.cpp:395
+#: settings.cpp:375 settings.cpp:386
 msgid "On top"
 msgstr ""
 
-#: settings.cpp:385 settings.cpp:396
+#: settings.cpp:376 settings.cpp:387
 msgid "On bottom"
 msgstr ""
 
-#: settings.cpp:387
+#: settings.cpp:378
 msgid "&Filter bar position:"
 msgstr ""
 
-#: settings.cpp:394
+#: settings.cpp:385
 msgid "New notes &place:"
 msgstr ""
 
-#: settings.cpp:397
+#: settings.cpp:388
 msgid "At current note"
 msgstr ""
 
-#: settings.cpp:407
+#: settings.cpp:398
 msgid "View Content of Added Files for the Following Types"
 msgstr ""
 
-#: settings.cpp:409
+#: settings.cpp:400
 msgid "&HTML page"
 msgstr ""
 
-#: settings.cpp:410
+#: settings.cpp:401
 msgid "&Image or animation"
 msgstr ""
 
-#: settings.cpp:411
-msgid "So&und"
+#: settings.cpp:402
+msgid "&Sound"
 msgstr ""
 
-#: settings.cpp:424
+#: settings.cpp:415
 msgid "&New images size:"
 msgstr ""
 
-#: settings.cpp:431
+#: settings.cpp:422
 msgid "&by"
 msgstr ""
 
-#: settings.cpp:434
+#: settings.cpp:425
 msgid "pixels"
 msgstr ""
 
-#: settings.cpp:436
+#: settings.cpp:427
 msgid "&Visualize..."
 msgstr ""
 
-#: settings.cpp:448
+#: settings.cpp:439
 msgid "Customize look of file, sound, link and launcher notes:"
 msgstr ""
 
-#: settings.cpp:453
+#: settings.cpp:444
 msgid "Conference audio record"
 msgstr ""
 
-#: settings.cpp:454
+#: settings.cpp:445
 msgid "Annual report"
 msgstr ""
 
-#: settings.cpp:455
+#: settings.cpp:446
 msgid "Home folder"
 msgstr ""
 
-#: settings.cpp:457
+#: settings.cpp:448
 #, c-format
 msgid "Launch %1"
 msgstr ""
 
-#: settings.cpp:458
+#: settings.cpp:449
 msgid "&Sounds"
 msgstr ""
 
-#: settings.cpp:459
+#: settings.cpp:450
 msgid "&Files"
 msgstr ""
 
-#: settings.cpp:460
+#: settings.cpp:451
 msgid "&Local Links"
 msgstr ""
 
-#: settings.cpp:461
+#: settings.cpp:452
 msgid "&Network Links"
 msgstr ""
 
-#: settings.cpp:462
+#: settings.cpp:453
 msgid "Launc&hers"
 msgstr ""
 
-#: settings.cpp:467
+#: settings.cpp:458
 msgid "Open &text notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:468
+#: settings.cpp:459
 msgid "Open text notes with:"
 msgstr ""
 
-#: settings.cpp:475
+#: settings.cpp:466
 msgid "Open &rich text notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:476
+#: settings.cpp:467
 msgid "Open rich text notes with:"
 msgstr ""
 
-#: settings.cpp:483
+#: settings.cpp:474
 msgid "Open &image notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:484
+#: settings.cpp:475
 msgid "Open image notes with:"
 msgstr ""
 
-#: settings.cpp:491
+#: settings.cpp:482
 msgid "Open a&nimation notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:492
+#: settings.cpp:483
 msgid "Open animation notes with:"
 msgstr ""
 
-#: settings.cpp:499
+#: settings.cpp:490
 msgid "Open so&und notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:500
+#: settings.cpp:491
 msgid "Open sound notes with:"
 msgstr ""
 
-#: settings.cpp:508
+#: settings.cpp:499
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
 "Konqueror will be used.</p>"
 msgstr ""
 
-#: settings.cpp:518
+#: settings.cpp:509
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
 msgstr ""
 
-#: settings.cpp:542
+#: settings.cpp:533
 msgid "How to change the application used to open Web links?"
 msgstr ""
 
-#: settings.cpp:543
+#: settings.cpp:534
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -1878,11 +2214,11 @@ msgid ""
 "browser), read the second help link.</p>"
 msgstr ""
 
-#: settings.cpp:561
+#: settings.cpp:552
 msgid "How to change the applications used to open files and links?"
 msgstr ""
 
-#: settings.cpp:562
+#: settings.cpp:553
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applys to Web links if you choose not to open them systematically in a "
@@ -1900,43 +2236,28 @@ msgid ""
 "xhtml+xml\".</li></ul>"
 msgstr ""
 
-#: settings.cpp:589
+#: settings.cpp:580
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
 msgstr ""
 
-#: settings.cpp:595
-msgid "Co&nfirm changes with the Enter key in text editors"
-msgstr ""
-
-#: settings.cpp:597
-msgid "How to insert new lines?"
-msgstr ""
-
-#: settings.cpp:598
-msgid ""
-"<p>If you choose to confirm changes with the Enter (Return) key, you still "
-"can insert new lines by pressing Ctrl+Return in text editors.</p><p>Notice "
-"that new paragraphs in rich text editors are inserted with Shift+Return.</p>"
-msgstr ""
-
-#: settings.cpp:607
+#: settings.cpp:586
 msgid "&Group a new note when clicking on the right of the insertion line"
 msgstr ""
 
-#: settings.cpp:611
+#: settings.cpp:590
 msgid "How to group a new note?"
 msgstr ""
 
-#: settings.cpp:612
+#: settings.cpp:591
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
 msgstr ""
 
-#: settings.cpp:614
+#: settings.cpp:593
 msgid ""
 "<p>Place your mouse between notes, where you want to add a new one.<br>Click "
 "on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
@@ -1944,76 +2265,106 @@ msgid ""
 "<b>below or above</b>, depending on where your mouse is.</p>"
 msgstr ""
 
-#: settings.cpp:626 settings.cpp:641
+#: settings.cpp:605
 msgid "Do nothing"
 msgstr ""
 
-#: settings.cpp:627
+#: settings.cpp:606
 msgid "Paste clipboard"
 msgstr ""
 
-#: settings.cpp:632
+#: settings.cpp:611
 msgid "Insert launcher note"
 msgstr ""
 
-#: settings.cpp:635
+#: settings.cpp:614
 msgid "&Shift+middle-click:"
 msgstr ""
 
-#: settings.cpp:638
+#: settings.cpp:617
 msgid "at cursor position"
 msgstr ""
 
-#: settings.cpp:642 settings.cpp:653
-msgid "Filter"
-msgstr ""
-
-#: settings.cpp:647
-msgid "&When writing in a basket:"
-msgstr ""
-
-#: settings.cpp:652
-msgid "Do the same"
-msgstr ""
-
-#: settings.cpp:658
-msgid "&But begin writing with a comma (,):"
-msgstr ""
-
-#: settings.cpp:662
+#: settings.cpp:619
 msgid "System Tray Icon"
 msgstr ""
 
-#: settings.cpp:668
+#: settings.cpp:625
 msgid "Show c&urrent basket icon in system tray icon"
 msgstr ""
 
-#: settings.cpp:674
+#: settings.cpp:631
 msgid "H&ide main window when mouse goes out of it for"
 msgstr ""
 
-#: settings.cpp:677 settings.cpp:684
+#: settings.cpp:634 settings.cpp:641
 msgid " tenths of seconds"
 msgstr ""
 
-#: settings.cpp:681
+#: settings.cpp:638
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr ""
 
-#: softwareimporters.cpp:139
+#: softwareimporters.cpp:44
+msgid "Import Hierarchy"
+msgstr ""
+
+#: softwareimporters.cpp:50
+msgid "How to Import the Notes?"
+msgstr ""
+
+#: softwareimporters.cpp:51
+msgid "&Keep original hierarchy (all notes in separate baskets)"
+msgstr ""
+
+#: softwareimporters.cpp:52
+msgid "&First level notes in separate baskets"
+msgstr ""
+
+#: softwareimporters.cpp:53
+msgid "&All notes in one basket"
+msgstr ""
+
+#: softwareimporters.cpp:180
 msgid "From KJots"
 msgstr ""
 
-#: softwareimporters.cpp:227
+#: softwareimporters.cpp:268
 msgid "From KNotes"
 msgstr ""
 
-#: softwareimporters.cpp:298
+#: softwareimporters.cpp:339
 msgid "From Sticky Notes"
 msgstr ""
 
-#: softwareimporters.cpp:348
+#: softwareimporters.cpp:389
 msgid "From Tomboy"
+msgstr ""
+
+#: softwareimporters.cpp:544
+msgid ""
+"Can not import that file. It is either corrupted or not a TuxCards file."
+msgstr ""
+
+#: softwareimporters.cpp:544
+msgid "Bad File Format"
+msgstr ""
+
+#: softwareimporters.cpp:572
+msgid ""
+"A note is encrypted. The importer do not support encrypted notes yet. Please "
+"remove the encryption with TuxCards and re-import the file."
+msgstr ""
+
+#: softwareimporters.cpp:572
+msgid "Encrypted Notes not Supported Yet"
+msgstr ""
+
+#: softwareimporters.cpp:574
+msgid ""
+"<font color='red'><b>Encrypted note.</b><br>The importer do not support "
+"encrypted notes yet. Please remove the encryption with TuxCards and "
+"re-import the file."
 msgstr ""
 
 #: tag.cpp:80
@@ -2097,53 +2448,53 @@ msgstr ""
 msgid "Highlight"
 msgstr ""
 
-#: tag.cpp:487
+#: tag.cpp:486
 msgid "Important"
 msgstr ""
 
-#: tag.cpp:487
+#: tag.cpp:486
 msgid "Very Important"
 msgstr ""
 
-#: tag.cpp:488
+#: tag.cpp:487
 msgid "Idea"
 msgstr ""
 
-#: tag.cpp:488
+#: tag.cpp:487
 msgid ""
 "_: The initial of 'Idea'\n"
 "I."
 msgstr ""
 
-#: tag.cpp:488
+#: tag.cpp:487
 msgid "Title"
 msgstr ""
 
-#: tag.cpp:489
+#: tag.cpp:488
 msgid "Code"
 msgstr ""
 
-#: tag.cpp:489
+#: tag.cpp:488
 msgid "Work"
 msgstr ""
 
-#: tag.cpp:489
+#: tag.cpp:488
 msgid ""
 "_: The initial of 'Work'\n"
 "W."
 msgstr ""
 
-#: tag.cpp:507
+#: tag.cpp:506
 msgid "Personal"
 msgstr ""
 
-#: tag.cpp:507
+#: tag.cpp:506
 msgid ""
 "_: The initial of 'Personal'\n"
 "P."
 msgstr ""
 
-#: tag.cpp:507
+#: tag.cpp:506
 msgid "Funny"
 msgstr ""
 
@@ -2163,31 +2514,27 @@ msgid ""
 "Your emails"
 msgstr ""
 
-#: variouswidgets.cpp:46
-msgid "..."
-msgstr ""
-
-#: variouswidgets.cpp:83 variouswidgets.cpp:191
+#: variouswidgets.cpp:83 variouswidgets.cpp:190
 msgid "16 by 16 pixels"
 msgstr ""
 
-#: variouswidgets.cpp:84 variouswidgets.cpp:192
+#: variouswidgets.cpp:84 variouswidgets.cpp:191
 msgid "22 by 22 pixels"
 msgstr ""
 
-#: variouswidgets.cpp:85 variouswidgets.cpp:193
+#: variouswidgets.cpp:85 variouswidgets.cpp:192
 msgid "32 by 32 pixels"
 msgstr ""
 
-#: variouswidgets.cpp:86 variouswidgets.cpp:194
+#: variouswidgets.cpp:86 variouswidgets.cpp:193
 msgid "48 by 48 pixels"
 msgstr ""
 
-#: variouswidgets.cpp:87 variouswidgets.cpp:195
+#: variouswidgets.cpp:87 variouswidgets.cpp:194
 msgid "64 by 64 pixels"
 msgstr ""
 
-#: variouswidgets.cpp:88 variouswidgets.cpp:196
+#: variouswidgets.cpp:88 variouswidgets.cpp:195
 msgid "128 by 128 pixels"
 msgstr ""
 

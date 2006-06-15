@@ -2791,15 +2791,16 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 
 #ifdef HAVE_LIBGPGME
 			QPushButton* button = new QPushButton( m_decryptBox, "button" );
-			button->setText( i18n( "Unlock" ) );
+			button->setText( i18n( "&Unlock" ) );
 			layout->addWidget( button, 1, 2 );
 			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
 #endif
 			QLabel* label = new QLabel( m_decryptBox, "label" );
+			QString text = "<b>" + i18n("Password protected basket.") + "</b><br/><br/>";
 #ifdef HAVE_LIBGPGME
-			label->setText( i18n("<b>Password protected basket.</b><br/><br/>Press unlock to view it.") );
+			label->setText( text + i18n("Press Unlock to view it.") );
 #else
-			label->setText( i18n("<b>Password protected basket.</b><br/><br/>Encryption not supported by<br/>this version of basket.") );
+			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(kapp->aboutData()->programName()) );
 #endif
 			label->setAlignment( int( QLabel::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );

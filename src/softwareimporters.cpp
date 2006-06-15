@@ -569,7 +569,7 @@ void SoftwareImporters::importTuxCardsNode(const QDomElement &element, Basket *p
 		Note *nContent;
 
 		if (isEncrypted) {
-			KMessageBox::information(0, i18n("A note is encrypted. The importer do not support encrypted notes yet. Please remove the encryption with TuxCards and re-import the file."), i18n("Encrypted Notes note upported Yet"));
+			KMessageBox::information(0, i18n("A note is encrypted. The importer do not support encrypted notes yet. Please remove the encryption with TuxCards and re-import the file."), i18n("Encrypted Notes not Supported Yet"));
 			isRichText = true;
 			content = i18n("<font color='red'><b>Encrypted note.</b><br>The importer do not support encrypted notes yet. Please remove the encryption with TuxCards and re-import the file.");
 		}

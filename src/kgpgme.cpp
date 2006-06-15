@@ -65,7 +65,7 @@ class KGpgSelKey : public KDialogBase
 			keysListpr->setFullWidth(true);
 			keysListpr->setAllColumnsShowFocus(true);
 
-			labeltxt = new QLabel(i18n("Choose secret key:"),page);
+			labeltxt = new QLabel(i18n("Choose a secret key:"),page);
 			vbox = new QVBoxLayout(page);
 
 			KGpgKeyList list = gpg.keys(true);
@@ -308,7 +308,7 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 					result = gpgme_op_decrypt_result(m_ctx);
 					if(result->unsupported_algorithm) {
 						KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
-							.arg(i18n("unsupported algorithm"))
+							.arg(i18n("Unsupported algorithm"))
 							.arg(result->unsupported_algorithm));
 					}
 					else {

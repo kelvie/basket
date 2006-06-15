@@ -394,7 +394,7 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
 	m_message->setEnabled(true);
 	LikeBack::disable();
 	if (error) {
-		KMessageBox::error(this, i18n("Error while trying to send the report."), i18n("Transfert Error"));
+		KMessageBox::error(this, i18n("<p>Error while trying to send the report.</p><p>Please retry later."), i18n("Transfert Error"));
 	} else {
 		KMessageBox::information(this, i18n("<p>Your comment has been sent successfully.</p><p>Thanks for your time. It will help improve the application.") /*+ QString(http->readAll())*/, i18n("Message Sent"));
 		close();

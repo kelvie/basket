@@ -32,7 +32,7 @@
 #include <basket.h>
 
 PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
-	:KDialogBase(Plain, i18n("Password protection"), Ok|Cancel, Ok,
+	:KDialogBase(Plain, i18n("Password Protection"), Ok|Cancel, Ok,
 				 parent, name, true, false), w(0)
 {
 	QHBoxLayout* toplayout = new QHBoxLayout(plainPage(), 0, 0);
@@ -52,7 +52,7 @@ void PasswordDlg::slotOk()
 	if(n == Basket::PrivateKeyEncryption && key.isEmpty())
 		KMessageBox::error(w, i18n("No private key selected."));
 	else
-		QDialog::accept();
+		KDialogBase::slotOk();
 }
 
 Password::Password(QWidget *parent, const char *name)
