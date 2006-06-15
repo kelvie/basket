@@ -89,6 +89,9 @@ if [ $WHAT_TO_DO == 3 ]; then
   exit 0
 fi
 
+appVersion=$(cat basket.spec | grep "%define version " | cut -d " " -f 3)
+isDevel=$(echo "$appVersion" | grep -i -E "(alpha|beta|pre|rc|svn)")
+
 clear
 echo ""
 echo "    ========================================================================  "
@@ -129,8 +132,13 @@ echo "    ======================================================================
 echo ""
 echo ""
 
-echo "./configure --prefix=$prefix"
-./configure --prefix=$prefix || error
+if [ "_$isDevel" == "_" ]; then
+  echo "./configure --prefix=$prefix"
+  ./configure --prefix=$prefix || error
+else
+  echo "./configure --enable-debug=full --prefix=$prefix"
+  ./configure --enable-debug=full --prefix=$prefix || error
+fi
 
 clear
 echo ""
