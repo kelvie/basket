@@ -777,8 +777,13 @@ void BasketTree::slotContextMenu(KListView */*listView*/, QListViewItem *item, c
 {
 	QString menuName;
 	if (item) {
-		setCurrentBasket(((BasketListViewItem*)item)->basket());
+		Basket* basket = ((BasketListViewItem*)item)->basket();
+
+		setCurrentBasket(basket);
 		menuName = "basket_popup";
+
+		Global::mainContainer->m_actLockBasket->setEnabled(!basket->isLocked() && basket->isEncrypted());
+		Global::mainContainer->m_actPassBasket->setEnabled(!basket->isLocked());
 	} else {
 		menuName = "tab_bar_popup";
 		/*
@@ -1912,8 +1917,6 @@ void Container::setupActions()
 								   this, SLOT(password()), actionCollection(), "basket_password" );
 	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", 0,
 								   this, SLOT(lockBasket()), actionCollection(), "basket_lock" );
-	m_actLockBasket->setEnabled(false);
-	m_actPassBasket->setEnabled(false);
 #endif
 
 	new KAction( i18n("&Export to HTML..."), "fileexport", 0,
@@ -2509,8 +2512,6 @@ void Container::password()
 void Container::lockBasket()
 {
 #ifdef HAVE_LIBGPGME
-	m_actLockBasket->setEnabled(false);
-	m_actPassBasket->setEnabled(false);
 #endif
 }
 
