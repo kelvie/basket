@@ -80,7 +80,7 @@ class KIconDialog::KIconDialogPrivate
  * specified icons can be chosen.
  */
 
-KIconDialog::KIconDialog(QWidget *parent, const char *name)
+KIconDialog::KIconDialog(QWidget *parent, const char*)
     : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
@@ -328,7 +328,7 @@ void KIconDialog::slotOk()
         d->recentList.push_back(key);
 
         // Limit recent list in size
-        while ( d->recentList.size() > d->recentMax )
+        while ( (int)d->recentList.size() > d->recentMax )
             d->recentList.pop_front();
     }
 
