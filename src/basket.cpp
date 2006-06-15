@@ -1102,9 +1102,7 @@ void Basket::load()
 	{
 		m_locked = false;
 		DEBUG_WIN << "Basket is encrypted.";
-		Global::mainContainer->m_actLockBasket->setEnabled(true);
 	}
-	Global::mainContainer->m_actPassBasket->setEnabled(true);
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 		return;
