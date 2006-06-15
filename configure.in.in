@@ -5,5 +5,8 @@ AC_C_BIGENDIAN
 AC_CHECK_KDEMAXPATHLEN
 
 AH_TEMPLATE([HAVE_LIBGPGME], [Define if libgpgme is available])
-AM_PATH_GPGME(1.0.0, AC_DEFINE([HAVE_LIBGPGME], [], []))
-AM_PATH_GPG_ERROR(1.0,, AC_MSG_ERROR([libgpg-error was not found]))
+AM_PATH_GPGME(1.0.0, , GPGME=no)
+AM_PATH_GPG_ERROR(1.0, , GPGME=no)
+if test "$GPGME" != "no"; then
+	AC_DEFINE([HAVE_LIBGPGME])
+fi
