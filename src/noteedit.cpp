@@ -530,7 +530,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	connect( m_autoIcon,  SIGNAL(clicked()), this, SLOT(guessIcon())  );
 
 	QWidget *stretchWidget = new QWidget(page);
-	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/5000)); // Make it fill ALL vertical space
+	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/255)); // Make it fill ALL vertical space
 	layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 
 
@@ -671,7 +671,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	layout->addWidget(wid,       2, 1, Qt::AlignVCenter);
 
 	QWidget *stretchWidget = new QWidget(page);
-	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/5000)); // Make it fill ALL vertical space
+	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/255)); // Make it fill ALL vertical space
 	layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 
 	connect( guessButton, SIGNAL(clicked()), this, SLOT(guessIcon()) );
