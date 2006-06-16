@@ -4098,6 +4098,8 @@ void Basket::slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, boo
 	DEBUG_WIN << "Copy finished, load note: " + to.path() + (note ? "" : " --- NO CORRESPONDING NOTE");
 	if (note != 0L) {
 		note->content()->loadFromFile();
+		if(isEncrypted())
+			note->content()->saveToFile();
 		if (m_focusedNote == note)   // When inserting a new note we ensure it visble
 			ensureNoteVisible(note); //  But after loading it has certainly grown and if it was
 	}                                //  on bottom of the basket it's not visible entirly anymore
@@ -4114,6 +4116,8 @@ void Basket::slotCopyingDone2(KIO::Job *job)
 	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destURL().path() + (note ? "" : " --- NO CORRESPONDING NOTE");
 	if (note != 0L) {
 		note->content()->loadFromFile();
+		if(isEncrypted())
+			note->content()->saveToFile();
 		if (m_focusedNote == note)   // When inserting a new note we ensure it visble
 			ensureNoteVisible(note); //  But after loading it has certainly grown and if it was
 	}                                //  on bottom of the basket it's not visible entirly anymore
