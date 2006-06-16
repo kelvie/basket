@@ -279,6 +279,8 @@ class Basket : public QScrollView, public QToolTip
 #ifdef HAVE_LIBGPGME
 	KGpgMe* m_gpg;
 #endif
+	void enableActions();
+
   private slots:
 	void loadNotes(const QDomElement &notes, Note *parent);
 	void saveNotes(QDomDocument &document, QDomElement &element, Note *parent);

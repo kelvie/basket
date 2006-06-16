@@ -784,11 +784,6 @@ void BasketTree::slotContextMenu(KListView */*listView*/, QListViewItem *item, c
 
 		setCurrentBasket(basket);
 		menuName = "basket_popup";
-
-#ifdef HAVE_LIBGPGME
-		Global::mainContainer->m_actLockBasket->setEnabled(!basket->isLocked() && basket->isEncrypted());
-		Global::mainContainer->m_actPassBasket->setEnabled(!basket->isLocked());
-#endif
 	} else {
 		menuName = "tab_bar_popup";
 		/*

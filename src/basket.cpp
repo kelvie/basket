@@ -1053,6 +1053,15 @@ void Basket::equalizeColumnSizes()
 	relayoutNotes(true);
 }
 
+void Basket::enableActions()
+{
+#ifdef HAVE_LIBGPGME
+	Global::mainContainer->m_actLockBasket->setEnabled(!isLocked() && isEncrypted());
+	Global::mainContainer->m_actPassBasket->setEnabled(!isLocked());
+#endif
+
+}
+
 void Basket::save()
 {
 	if (!m_loaded)
@@ -1148,6 +1157,7 @@ void Basket::load()
 		animateLoad();//QTimer::singleShot( 0, this, SLOT(animateLoad()) );
 	else
 		m_loaded = true;
+	enableActions();
 }
 
 void Basket::filterAgain()
@@ -1305,6 +1315,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 #ifdef HAVE_LIBGPGME
 	m_gpg = new KGpgMe();
 #endif
+	enableActions();
 }
 
 void Basket::contentsMoved()
@@ -2878,6 +2889,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		note->draw(painter, clipRect);
 		note = note->next();
 	}
+	enableActions();
 
 	// Draw loading message:
 	if (!m_loaded) {
@@ -5038,6 +5050,7 @@ void Basket::lock()
 #ifdef HAVE_LIBGPGME
 	m_gpg->clearCache();
 	m_locked = true;
+	enableActions();
 	// TODO: delete notes here;
 	m_firstNote = 0;
 	m_loaded = false;
