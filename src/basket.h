@@ -273,6 +273,7 @@ class Basket : public QScrollView, public QToolTip
 	bool m_loadingLaunched;
 	bool m_locked;
 	QFrame* m_decryptBox;
+	QPushButton* m_button;
 	int m_encryptionType;
 	QString m_encryptionKey;
 #ifdef HAVE_LIBGPGME

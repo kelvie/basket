@@ -1255,7 +1255,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
    m_isInsertPopupMenu(false),
-   m_loaded(false), m_loadingLaunched(false), m_locked(false), m_decryptBox(0), m_encryptionType(NoEncryption),
+   m_loaded(false), m_loadingLaunched(false), m_locked(false), m_decryptBox(0), m_button(0), m_encryptionType(NoEncryption),
 #ifdef HAVE_LIBGPGME
    m_gpg(0),
 #endif
@@ -2790,7 +2790,6 @@ QColor alphaBlendColors(const QColor &bgColor, const QColor &fgColor, const int 
 
 void Basket::unlock()
 {
-	m_decryptBox->hide();
 	QTimer::singleShot( 0, this, SLOT(load()) );
 }
 
@@ -2820,10 +2819,10 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
 
 #ifdef HAVE_LIBGPGME
-			QPushButton* button = new QPushButton( m_decryptBox, "button" );
-			button->setText( i18n( "&Unlock" ) );
-			layout->addWidget( button, 1, 2 );
-			connect( button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
+			m_button = new QPushButton( m_decryptBox, "button" );
+			m_button->setText( i18n( "&Unlock" ) );
+			layout->addWidget( m_button, 1, 2 );
+			connect( m_button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
 #endif
 			QLabel* label = new QLabel( m_decryptBox, "label" );
 			QString text = "<b>" + i18n("Password protected basket.") + "</b><br/><br/>";
@@ -2846,9 +2845,17 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			m_decryptBox->show();
 		}
 		if(m_decryptBox->isHidden())
+		{
+			m_button->setDown(false);
 			m_decryptBox->show();
+		}
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
 							(visibleHeight() - m_decryptBox->height()) / 2);
+	}
+	else
+	{
+		if(m_decryptBox && m_decryptBox->isShown())
+			m_decryptBox->hide();
 	}
 
 	// Draw notes (but not when it's not loaded yet):
@@ -4859,11 +4866,15 @@ void Basket::updateModifiedNotes()
 
 void Basket::setProtection(int type, QString key)
 {
-	m_encryptionType = type;
-	m_encryptionKey = key;
+	if(m_encryptionType != type || m_encryptionKey != key)
+	{
+		m_encryptionType = type;
+		m_encryptionKey = key;
+		m_gpg->clearCache();
 
-	saveAgain();
-	emit propertiesChanged(this);
+		saveAgain();
+		emit propertiesChanged(this);
+	}
 }
 
 void Basket::saveAgain()
@@ -4931,6 +4942,10 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
 			QByteArray tmp(*array);
 
 			tmp.detach();
+			if(m_encryptionType == PrivateKeyEncryption)
+				m_gpg->setText(i18n("Password for Private Key:"), false);
+			else
+				m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), false);
 			return m_gpg->decrypt(tmp, array);
 		}
 #else
@@ -4963,7 +4978,14 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 			QString key = QString::null;
 
 			if(m_encryptionType == PrivateKeyEncryption)
+			{
 				key = m_encryptionKey;
+				// public key doesn't need password
+				m_gpg->setText("", false);
+			}
+			else
+				m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
+
 			if(m_gpg->encrypt(array, &tmp, key))
 				result = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
 		}

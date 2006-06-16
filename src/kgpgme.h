@@ -46,14 +46,15 @@ typedef QValueList< KGpgKey > KGpgKeyList;
 class KGpgMe
 {
 	public:
-		KGpgMe(QString hint = QString::null);
+		KGpgMe();
 		~KGpgMe();
 
 		QString selectKey(QString previous = QString::null);
 		KGpgKeyList keys(bool privateKeys = false) const;
-		void setHint(QString hint) { m_hint = hint; };
-		QString hint() const { return m_hint; };
-		void clearCache() { m_cache = ""; };
+		void setText(QString text, bool saving) { m_text = text; m_saving = saving; };
+		QString text() const { return m_text; };
+		bool saving() const { return m_saving; };
+		void clearCache();
 
 		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
 			QString keyid = QString::null) const;
@@ -63,14 +64,18 @@ class KGpgMe
 
 	private:
 		gpgme_ctx_t m_ctx;
-		QString m_hint;
-		QString m_cache;
+		QString m_text;
+		bool m_saving;
+		QCString m_cache;
 
 		void init(gpgme_protocol_t proto);
 		void setPassphraseCb();
 		static gpgme_error_t passphraseCb(void *hook, const char *uid_hint,
-			const char *passphrase_info,
-			int last_was_bad, int fd);
+										  const char *passphrase_info,
+										  int last_was_bad, int fd);
+		gpgme_error_t passphrase(const char *uid_hint,
+								 const char *passphrase_info,
+								 int last_was_bad, int fd);
 };
 #endif																  // HAVE_LIBGPGME
 #endif																  // KGPGME_H

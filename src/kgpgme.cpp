@@ -98,7 +98,7 @@ class KGpgSelKey : public KDialogBase
 		}
 };
 
-KGpgMe::KGpgMe(QString hint) : m_ctx(0), m_hint(hint)
+KGpgMe::KGpgMe() : m_ctx(0)
 {
 	init(GPGME_PROTOCOL_OpenPGP);
 	if(gpgme_new(&m_ctx)) {
@@ -114,6 +114,16 @@ KGpgMe::~KGpgMe()
 {
 	if(m_ctx)
 		gpgme_release(m_ctx);
+	clearCache();
+}
+
+void KGpgMe::clearCache()
+{
+	if(m_cache.size() > 0)
+	{
+		m_cache.fill('\0');
+		m_cache.truncate(0);
+	}
 }
 
 void KGpgMe::init(gpgme_protocol_t proto)
@@ -354,25 +364,49 @@ void KGpgMe::setPassphraseCb()
 }
 
 gpgme_error_t KGpgMe::passphraseCb(void* hook, const char* uid_hint,
-const char* /*passphrase_info*/,
-int last_was_bad, int fd)
+								   const char* passphrase_info,
+								   int last_was_bad, int fd)
 {
-	QCString password;
-	gpgme_error_t res = GPG_ERR_CANCELED;
 	KGpgMe* gpg = static_cast<KGpgMe*>(hook);
+	return gpg->passphrase(uid_hint, passphrase_info, last_was_bad, fd);
+}
+
+gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
+								 const char* /*passphrase_info*/,
+								 int last_was_bad, int fd)
+{
+	gpgme_error_t res = GPG_ERR_CANCELED;
 	QString s;
 	QString gpg_hint = checkForUtf8(uid_hint);
+	int result;
 
-	s = gpg->hint();
-	if(!s.isEmpty())
-		s += "\n\n";
-	if(last_was_bad)
-		s += i18n("Password was not accepted.") + "\n\n";
+	if(last_was_bad){
+		s += i18n("<b>Password was not accepted.</b><br><br>") + "\n\n";
+		clearCache();
+	}
+
+	if(!m_text.isEmpty())
+		s += m_text + "<br>";
+
 	if(!gpg_hint.isEmpty())
 		s += gpg_hint;
 
-	if(KPasswordDialog::getPassword(password, s) == KPasswordDialog::Accepted) {
-		write(fd, password.data(), password.length());
+	if(m_cache.isEmpty()){
+		QCString password;
+
+		if(m_saving)
+			result = KPasswordDialog::getNewPassword(password, s);
+		else
+			result = KPasswordDialog::getPassword(password, s);
+
+		if(result == KPasswordDialog::Accepted)
+			m_cache = password;
+	}
+	else
+		result = KPasswordDialog::Accepted;
+
+	if(result == KPasswordDialog::Accepted) {
+		write(fd, m_cache.data(), m_cache.length());
 		res = 0;
 	}
 	write(fd, "\n", 1);
