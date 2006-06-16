@@ -120,6 +120,12 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 		Global::mainContainer->currentBasket()->wheelEvent(event);
 }
 
+void FocusedTextEdit::enterEvent(QEvent *event)
+{
+	emit mouseEntered();
+	KTextEdit::enterEvent(event);
+}
+
 QPopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 {
 	QPopupMenu *menu = KTextEdit::createPopupMenu(pos);
@@ -141,6 +147,48 @@ QPopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 
 	// And return the menu:
 	return menu;
+}
+
+/** class FocusedColorCombo: */
+
+FocusedColorCombo::FocusedColorCombo(QWidget *parent, const char *name)
+ : KColorCombo(parent, name)
+{
+}
+
+FocusedColorCombo::~FocusedColorCombo()
+{
+}
+
+void FocusedColorCombo::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape)
+		emit escapePressed();
+	else if (event->key() == Qt::Key_Return)
+		emit returnPressed2();
+	else
+		KColorCombo::keyPressEvent(event);
+}
+
+/** class FocusedFontCombo: */
+
+FocusedFontCombo::FocusedFontCombo(QWidget *parent, const char *name)
+ : KFontCombo(parent, name)
+{
+}
+
+FocusedFontCombo::~FocusedFontCombo()
+{
+}
+
+void FocusedFontCombo::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape)
+		emit escapePressed();
+	else if (event->key() == Qt::Key_Return)
+		emit returnPressed2();
+	else
+		KFontCombo::keyPressEvent(event);
 }
 
 /** class FocusedComboBox: */
@@ -181,6 +229,12 @@ void FocusedLineEdit::keyPressEvent(QKeyEvent *event)
 		emit escapePressed();
 	else
 		KLineEdit::keyPressEvent(event);
+}
+
+void FocusedLineEdit::enterEvent(QEvent *event)
+{
+	emit mouseEntered();
+	KLineEdit::enterEvent(event);
 }
 
 #include "focusedwidgets.moc"

@@ -89,6 +89,7 @@ class NoteEditor : public QObject
 
   signals:
 	void askValidation();
+	void mouseEnteredEditorWidget();
 
   public:
 	static NoteEditor* editNoteContent(NoteContent *noteContent, QWidget *parent);

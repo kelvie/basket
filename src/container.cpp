@@ -571,6 +571,7 @@ BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 
 void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 {
+	std::cout << "BasketTreeListView::contentsDragEnterEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem")) {
 		QListViewItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (it.current()) {
@@ -601,6 +602,7 @@ void BasketTreeListView::removeExpands()
 
 void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 {
+	std::cout << "BasketTreeListView::contentsDragLeaveEvent" << std::endl;
 	m_autoOpenItem = 0;
 	m_autoOpenTimer.stop();
 	removeExpands();
@@ -619,6 +621,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 
 void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 {
+	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
 		KListView::contentsDragMoveEvent(event);
 	else {

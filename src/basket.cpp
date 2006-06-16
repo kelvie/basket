@@ -2483,6 +2483,11 @@ void Basket::doHoverEffects(const QPoint &pos)
 	doHoverEffects(note, zone, pos);
 }
 
+void Basket::mouseEnteredEditorWidget()
+{
+	doHoverEffects(editedNote(), Note::Content, QPoint());
+}
+
 void Basket::removeInserter()
 {
 	if (m_inserterShown) { // Do not hide (and then update/repaint the view) if it is already hidden!
@@ -3719,7 +3724,8 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 		m_editor->widget()->show();
 		//m_editor->widget()->raise();
 		m_editor->widget()->setFocus();
-		connect( m_editor, SIGNAL(askValidation()), this, SLOT(closeEditorDelayed()) );
+		connect( m_editor, SIGNAL(askValidation()),            this, SLOT(closeEditorDelayed())       );
+		connect( m_editor, SIGNAL(mouseEnteredEditorWidget()), this, SLOT(mouseEnteredEditorWidget()) );
 		if (m_editor->textEdit()) {
 			connect( m_editor->textEdit(), SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()) );
 			if (clickedPoint != QPoint()) {

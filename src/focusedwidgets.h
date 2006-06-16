@@ -40,29 +40,41 @@ class FocusedTextEdit : public KTextEdit
 	void adaptClipboardText(QClipboard::Mode mode);
 	void keyPressEvent(QKeyEvent *event);
 	void wheelEvent(QWheelEvent *event);
+	void enterEvent(QEvent *event);
 	QPopupMenu* createPopupMenu(const QPoint &pos);
   signals:
 	void escapePressed();
+	void mouseEntered();
   private:
 	bool m_disableUpdatesOnKeyPress;
 };
 
+// TODO: Rename to EscapableKColorCombo
 class FocusedColorCombo : public KColorCombo
 {
   Q_OBJECT
   public:
-	FocusedColorCombo(QWidget *parent = 0, const char *name = 0)
-	 : KColorCombo(parent, name) {}
-	~FocusedColorCombo()         {}
+	FocusedColorCombo(QWidget *parent = 0, const char *name = 0);
+	~FocusedColorCombo();
+  protected:
+	void keyPressEvent(QKeyEvent *event);
+  signals:
+	void escapePressed();
+	void returnPressed2();
 };
 
+// TODO: Rename to EscapableKFontCombo
 class FocusedFontCombo : public KFontCombo
 {
   Q_OBJECT
   public:
-	FocusedFontCombo(QWidget *parent = 0, const char *name = 0)
-	 : KFontCombo(parent, name) {}
-	~FocusedFontCombo()         {}
+	FocusedFontCombo(QWidget *parent = 0, const char *name = 0);
+	~FocusedFontCombo();
+  protected:
+	void keyPressEvent(QKeyEvent *event);
+  signals:
+	void escapePressed();
+	void returnPressed2();
 };
 
 // TODO: Rename to EscapableKComboBox
@@ -88,8 +100,10 @@ class FocusedLineEdit : public KLineEdit
 	~FocusedLineEdit();
   protected:
 	void keyPressEvent(QKeyEvent *event);
+	void enterEvent(QEvent *event);
   signals:
 	void escapePressed();
+	void mouseEntered();
 };
 
 #endif // FOCUSEDWIDGETS_H

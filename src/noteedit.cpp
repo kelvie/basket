@@ -141,7 +141,8 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	textEdit->moveCursor(KTextEdit::MoveEnd, false); // FIXME: Sometimes, the cursor flicker at ends before being positionned where clicked (because kapp->processEvents() I think)
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
-	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
+	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
+	connect( textEdit, SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
 }
 
 TextEditor::~TextEditor()
@@ -204,12 +205,18 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 
+	connect( textEdit,                                 SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
 	connect( textEdit,                                 SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
 //	connect( InlineEditors::instance()->richTextFont,  SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
 //	connect( InlineEditors::instance()->richTextColor, SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
 
 	connect( InlineEditors::instance()->richTextFont,  SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFamily(const QString&)) );
 	connect( InlineEditors::instance()->richTextColor, SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
+
+	connect( InlineEditors::instance()->richTextFont,  SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFont,  SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextColor, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextColor, SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
 
 	connect( textEdit,  SIGNAL(cursorPositionChanged(int, int)), this, SLOT(cursorPositionChanged()) );
 	connect( textEdit,  SIGNAL(clicked(int, int)),               this, SLOT(cursorPositionChanged()) );
@@ -360,8 +367,9 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 	lineEdit->setText(m_fileContent->fileName());
 	lineEdit->selectAll();
 	setInlineEditor(lineEdit);
-	connect( lineEdit, SIGNAL(returnPressed()), this, SIGNAL(askValidation()) );
-	connect( lineEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
+	connect( lineEdit, SIGNAL(returnPressed()), this, SIGNAL(askValidation())            );
+	connect( lineEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
+	connect( lineEdit, SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
 }
 
 FileEditor::~FileEditor()

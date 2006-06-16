@@ -359,6 +359,7 @@ class Basket : public QScrollView, public QToolTip
 	void doHoverEffects(Note *note, Note::Zone zone, const QPoint &pos = QPoint(0, 0)); /// << @p pos is optionnal and only used to show the link target in the statusbar
 	void doHoverEffects(const QPoint &pos);
 	void doHoverEffects(); // The same, but using the current cursor position
+	void mouseEnteredEditorWidget();
   public:
 	void popupTagsMenu(Note *note);
 	void popupEmblemMenu(Note *note, int emblemNumber);
