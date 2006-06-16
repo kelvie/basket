@@ -480,6 +480,7 @@ class Basket : public QScrollView, public QToolTip
   public:
 	enum CopyMode { CopyToClipboard, CopyToSelection, CutToClipboard };
 	void doCopy(CopyMode copyMode);
+	bool selectionIsOneGroup();
 
 /// NOTES EDITION:
   private:

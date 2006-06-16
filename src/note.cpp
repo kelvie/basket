@@ -2627,6 +2627,20 @@ Note* Note::firstSelected()
 	return first;
 }
 
+bool Note::selectionIsOneGroup()
+{
+	if (isGroup() && allSelected() && count() == basket()->countSelecteds())
+		return true;
+
+	FOR_EACH_CHILD (child) {
+		bool oneGroupSelected = child->selectionIsOneGroup();
+		if (oneGroupSelected)
+			return true;
+	}
+
+	return false;
+}
+
 void Note::groupIn(Note *group)
 {
 	if (this == group)

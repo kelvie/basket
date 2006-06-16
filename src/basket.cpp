@@ -2038,9 +2038,17 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		else {
 			bool editedNoteStillThere = closeEditor();
 			if (editedNoteStillThere)
-				clicked->setSelected(true);
+				//clicked->setSelected(true);
+				unselectAllBut(clicked);
 		}
 	}
+
+
+	if (event->stateAfter() == 0 && (zone == Note::Group || zone == Note::Handle)) {
+		closeEditor();
+		unselectAllBut(clicked);
+	}
+
 
 	// Do nothing if an action has already been made during mousePressEvent,
 	// or if user made a selection and canceled it by regressing to a very small rectangle.
@@ -2126,6 +2134,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 			// We select note on mousePress if it was unselected or Ctrl is pressed.
 			// But the user can want to drag select_s_ notes, so it the note is selected, we only select it alone on mouseRelease:
 			if (event->stateAfter() == 0) {
+				std::cout << "EXEC" << std::endl;
 				if ( !(event->stateAfter() & Qt::ControlButton) && clicked->allSelected())
 					unselectAllBut(clicked);
 				if (zone == Note::Handle && isDuringEdit() && editedNote() == clicked) {
@@ -3995,10 +4004,24 @@ void Basket::noteSaveAs()
 	KIO::copy(url, KURL(fileName));
 }
 
+bool Basket::selectionIsOneGroup()
+{
+	FOR_EACH_NOTE (note) {
+		bool oneGroupSelected = note->selectionIsOneGroup();
+		if (oneGroupSelected)
+			return true;
+	}
+	return false;
+}
+
 void Basket::noteGroup()
 {
 	// Nothing to do?
 	if (countSelecteds() <= 1)
+		return;
+
+	// If every selected notes are ALREADY in one group, then don't touch anything:
+	if (selectionIsOneGroup())
 		return;
 
 	// Get the first selected note: we will group selected items just before:
