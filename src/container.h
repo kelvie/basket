@@ -311,7 +311,9 @@ class Container : public KMainWindow
 	void showAppPurpose(); // TODO: Remove
 	/** Basket */
 	void askNewBasket();
+	void askNewBasket(Basket *parent, Basket *pickProperties);
 	void askNewSubBasket();
+	void askNewSiblingBasket();
 	void aboutToHideNewBasketPopup();
 	void setNewBasketPopup();
 	void cancelNewBasketPopup();
@@ -429,6 +431,7 @@ class Container : public KMainWindow
   public: // TODO: Migrate to private
 	KAction       *actNewBasket;
 	KAction       *actNewSubBasket;
+	KAction       *actNewSiblingBasket;
 	KAction       *m_actHideWindow;
 	KAction       *actQuit;
 	KAction       *m_actPaste;

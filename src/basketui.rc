@@ -3,8 +3,7 @@
  <MenuBar noMerge="1" >
   <Menu name="basket" >
    <text>&amp;Basket</text>
-   <Action name="basket_new" />
-   <Action name="basket_new_sub" />
+   <Action name="basket_new_menu" />
    <Separator/>
    <Action name="basket_properties" />
    <Action name="basket_export_html" />
@@ -106,7 +105,7 @@
  </MenuBar>
  <ToolBar newline="false" position="Top" noMerge="1" name="mainToolBar" fullWidth="true" >
   <text>Main Toolbar</text>
-  <Action name="basket_new" />
+  <Action name="basket_new_menu" />
   <Action name="basket_properties" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="edit_cut" />
@@ -145,6 +144,7 @@
   <Separator/>
   <Action name="basket_new" />
   <Action name="basket_new_sub" />
+  <Action name="basket_new_sibling" />
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />

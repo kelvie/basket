@@ -1257,7 +1257,7 @@ void BasketTree::removeBasket(Basket *basket)
 
 	// If there is no basket anymore, add a new one:
 	if (!nextBasketItem)
-		BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+		BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 	else // No need to save two times if we add a basket
 		save();
 
@@ -1623,6 +1623,7 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 
 		m_parentContainer->actNewBasket->plug(&menu);
 		m_parentContainer->actNewSubBasket->plug(&menu);
+		m_parentContainer->actNewSiblingBasket->plug(&menu);
 		menu.insertSeparator();
 		m_parentContainer->m_actPaste->plug(&menu);
 		m_parentContainer->m_actGrabScreenshot->plug(&menu);
@@ -1848,7 +1849,7 @@ Container::Container(QWidget *parent, const char *name)
 		}
 		if (!m_baskets->firstListViewItem()) {
 			// Create first basket:
-			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		}
 		// TODO: Create Welcome Baskets:
 	}
@@ -1903,10 +1904,18 @@ void Container::setupActions()
 {
 	/** Basket : **************************************************************/
 
-	actNewBasket    = new KAction( i18n("&New..."), "filenew", KStdAccel::shortcut(KStdAccel::New),
-	                               this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
-	actNewSubBasket = new KAction( i18n("New &Sub-basket..."), "", "Ctrl+Shift+N",
-	                               this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
+	actNewBasket        = new KAction( i18n("&New Basket..."), "filenew", KStdAccel::shortcut(KStdAccel::New),
+	                                   this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
+	actNewSubBasket     = new KAction( i18n("New &Sub-Basket..."), "", "Ctrl+Shift+N",
+	                                   this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
+	actNewSiblingBasket = new KAction( i18n("New Si&bling Basket..."), "", "",
+	                                   this, SLOT(askNewSiblingBasket()), actionCollection(), "basket_new_sibling" );
+
+	KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), "filenew", actionCollection(), "basket_new_menu");
+	newBasketMenu->insert(actNewBasket);
+	newBasketMenu->insert(actNewSubBasket);
+	newBasketMenu->insert(actNewSiblingBasket);
+	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
 
 	m_actPropBasket = new KAction( i18n("&Properties..."), "misc", "F2",
 	                               this, SLOT(propBasket()), actionCollection(), "basket_properties" );
@@ -2682,13 +2691,32 @@ void Container::updateNotesActions()
 
 void Container::askNewBasket()
 {
-	Basket *parent = (m_newBasketPopup ? 0 : Global::basketTree->parentBasketOf(currentBasket()));
-	NewBasketDialog(parent, this).exec();
+	askNewBasket(0, 0);
+}
+
+void Container::askNewBasket(Basket *parent, Basket *pickProperties)
+{
+	NewBasketDefaultProperties properties;
+	if (pickProperties) {
+		properties.icon            = pickProperties->icon();
+		properties.backgroundImage = pickProperties->backgroundImageName();
+		properties.backgroundColor = pickProperties->backgroundColorSetting();
+		properties.textColor       = pickProperties->textColorSetting();
+		properties.freeLayout      = pickProperties->isFreeLayout();
+		properties.columnCount     = pickProperties->columnsCount();
+	}
+
+	NewBasketDialog(parent, properties, this).exec();
 }
 
 void Container::askNewSubBasket()
 {
-	NewBasketDialog(Global::basketTree->currentBasket(), this).exec();
+	askNewBasket( /*parent=*/Global::basketTree->currentBasket(), /*pickPropertiesOf=*/Global::basketTree->currentBasket() );
+}
+
+void Container::askNewSiblingBasket()
+{
+	askNewBasket( /*parent=*/Global::basketTree->parentBasketOf(currentBasket()), /*pickPropertiesOf=*/currentBasket() );
 }
 
 Basket* Container::currentBasket()

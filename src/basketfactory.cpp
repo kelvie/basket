@@ -92,7 +92,13 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 	}
 }
 
-void BasketFactory::newBasket(const QString &icon, const QString &name, const QColor &backgroundColor, const QString &templateName, Basket *parent)
+void BasketFactory::newBasket(const QString &icon,
+                              const QString &name,
+                              const QString &backgroundImage,
+                              const QColor  &backgroundColor,
+                              const QColor  &textColor,
+                              const QString &templateName,
+                              Basket *parent)
 {
 	// Unpack the templateName file to a new basket folder:
 	QString folderName = unpackTemplate(templateName);
@@ -128,6 +134,24 @@ void BasketFactory::newBasket(const QString &icon, const QString &name, const QC
 			properties.appendChild(appearanceElement);
 		}
 		appearanceElement.setAttribute("backgroundColor", backgroundColor.name());
+	}
+
+	if (!backgroundImage.isEmpty()) {
+		QDomElement appearanceElement = XMLWork::getElement(properties, "appearance");
+		if (appearanceElement.tagName().isEmpty()) { // If there is not already an appearance tag, add it since we will access it below
+			appearanceElement = document->createElement("appearance");
+			properties.appendChild(appearanceElement);
+		}
+		appearanceElement.setAttribute("backgroundImage", backgroundImage);
+	}
+
+	if (textColor.isValid()) {
+		QDomElement appearanceElement = XMLWork::getElement(properties, "appearance");
+		if (appearanceElement.tagName().isEmpty()) { // If there is not already an appearance tag, add it since we will access it below
+			appearanceElement = document->createElement("appearance");
+			properties.appendChild(appearanceElement);
+		}
+		appearanceElement.setAttribute("textColor", textColor.name());
 	}
 
 	// Load it in the parent basket (it will save the tree and switch to this new basket):

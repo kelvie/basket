@@ -68,11 +68,24 @@ void SingleSelectionKIconView::slotSelectionChanged()
 		m_lastSelected->setSelected(true);
 }
 
+/** class NewBasketDefaultProperties: */
+
+NewBasketDefaultProperties::NewBasketDefaultProperties()
+ : icon("")
+ , backgroundImage("")
+ , backgroundColor()
+ , textColor()
+ , freeLayout(false)
+ , columnCount(1)
+{
+}
+
 /** class NewBasketDialog: */
 
-NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
+NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
  : KDialogBase(KDialogBase::Swallow, i18n("New Basket"), KDialogBase::Ok | KDialogBase::Cancel,
                KDialogBase::Ok, parent, /*name=*/"NewBasket", /*modal=*/true, /*separator=*/true)
+ , m_defaultProperties(defaultProperties)
 {
 	QWidget *page = new QWidget(this);
 	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
@@ -82,14 +95,19 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
-	m_icon->setIcon("basket");
+	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
 	int size = QMAX(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_icon, i18n("Icon"));
-	m_name = new QLineEdit(i18n("Basket"), page);
+	m_name = new QLineEdit(/*i18n("Basket"), */page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
+	connect( m_name, SIGNAL(textChanged(const QString&)), this, SLOT(nameChanged(const QString&)) );
+	enableButtonOK(false);
 	QToolTip::add(m_name, i18n("Name"));
 	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), page);
+	m_backgroundColor->setColor(QColor());
+	m_backgroundColor->setFixedSize(m_backgroundColor->sizeHint());
+	m_backgroundColor->setColor(m_defaultProperties.backgroundColor);
 	QToolTip::add(m_backgroundColor, i18n("Background color"));
 	nameLayout->addWidget(m_icon);
 	nameLayout->addWidget(m_name);
@@ -99,6 +117,17 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	KPushButton *button = new KPushButton( KGuiItem(i18n("&Manage Templates..."), "configure"), page );
 	connect( button, SIGNAL(clicked()), this, SLOT(manageTemplates()) );
+
+	// Compute the right template to use as the default:
+	QString defaultTemplate = "free";
+	if (!m_defaultProperties.freeLayout) {
+		if (m_defaultProperties.columnCount == 1)
+			defaultTemplate = "1column";
+		else if (m_defaultProperties.columnCount == 2)
+			defaultTemplate = "2columns";
+		else
+			defaultTemplate = "3columns";
+	}
 
 	// Empty:
 	// * * * * *
@@ -114,13 +143,17 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	m_templates->setGridX(m_templates->maxItemWidth());
 	KIconViewItem *lastTemplate = 0;
 	QPixmap icon(40, 53);
+
 	QPainter painter(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("One column"), icon);
-	m_templates->setSelected(lastTemplate, true);
+
+	if (defaultTemplate == "1column")
+		m_templates->setSelected(lastTemplate, true);
+
 	painter.begin(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
@@ -128,6 +161,10 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	painter.drawLine(icon.width() / 2, 0, icon.width() / 2, icon.height());
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Two columns"), icon);
+
+	if (defaultTemplate == "2columns")
+		m_templates->setSelected(lastTemplate, true);
+
 	painter.begin(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
@@ -136,12 +173,20 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	painter.drawLine(icon.width() * 2 / 3, 0, icon.width() * 2 / 3, icon.height());
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Three columns"), icon);
+
+	if (defaultTemplate == "3columns")
+		m_templates->setSelected(lastTemplate, true);
+
 	painter.begin(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Free"), icon);
+
+	if (defaultTemplate == "free")
+		m_templates->setSelected(lastTemplate, true);
+
 /*	painter.begin(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
@@ -149,6 +194,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, QWidget *parent)
 	painter.drawRect(icon.width() * 2 / 5, icon.height() * 3 / 7, icon.width() / 5, icon.height() / 7);
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Mind map"), icon);*/
+
 	m_templates->setMinimumHeight(topLayout->minimumSize().width() * 9 / 16);
 
 	QLabel *label = new QLabel(m_templates, i18n("&Template:"), page);
@@ -239,6 +285,11 @@ void NewBasketDialog::polish()
 	m_name->setFocus();
 }
 
+void NewBasketDialog::nameChanged(const QString &newName)
+{
+	enableButtonOK(!newName.isEmpty());
+}
+
 void NewBasketDialog::slotOk()
 {
 	QIconViewItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
@@ -256,7 +307,14 @@ void NewBasketDialog::slotOk()
 
 	Global::basketTree->closeAllEditors();
 
-	BasketFactory::newBasket(m_icon->icon(), m_name->text(), m_backgroundColor->color(), templateName, m_basketsMap[m_createIn->currentItem()]);
+	QString backgroundImage;
+	QColor  textColor;
+	if (m_backgroundColor->color() == m_defaultProperties.backgroundColor) {
+		backgroundImage = m_defaultProperties.backgroundImage;
+		textColor       = m_defaultProperties.textColor;
+	}
+
+	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
 	Global::mainContainer->show();
 
 	KDialogBase::slotOk();

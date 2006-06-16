@@ -31,7 +31,13 @@ class Basket;
 namespace BasketFactory
 {
 	/** You should use this method to create a new basket: */
-	void newBasket(const QString &icon, const QString &name, const QColor &backgroundColor, const QString &templateName, Basket *parent);
+	void newBasket(const QString &icon,
+	               const QString &name,
+	               const QString &backgroundImage,
+	               const QColor  &backgroundColor,
+	               const QColor  &textColor,
+	               const QString &templateName,
+	               Basket *parent);
 	/** Internal tool methods to process the method above: */
 	QString newFolderName();
 	QString unpackTemplate(const QString &templateName);
