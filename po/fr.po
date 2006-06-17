@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2006-06-17 13:14+0200\n"
-"PO-Revision-Date: 2006-06-17 13:16+0200\n"
+"POT-Creation-Date: 2006-06-17 21:26+0200\n"
+"PO-Revision-Date: 2006-06-17 21:27+0200\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team:  <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1194,22 +1194,22 @@ msgid "The comment will be submitted annonymously."
 msgstr "Le commentaire sera envoyé anonymement."
 
 #: likeback.cpp:397
-msgid "<p>Error while trying to send the report.</p><p>Please retry later."
+msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>Une erreur c'est produite lors de l'envoi du rapport.</p><p>Merci de "
-"réessayer plus tard."
+"réessayer plus tard.</p>"
 
 #: likeback.cpp:397
-msgid "Transfert Error"
+msgid "Transfer Error"
 msgstr "Erreur de transmition"
 
 #: likeback.cpp:399
 msgid ""
 "<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
-"will help improve the application."
+"will help improve the application.</p>"
 msgstr ""
 "<p>Votre commentaire a été envoyé avec succès.</p><p>Merci pour votre "
-"temps. Il permettra d'aider à améliorer cette application."
+"temps. Il permettra d'aider à améliorer cette application.</p>"
 
 #: likeback.cpp:399
 msgid "Message Sent"
@@ -2612,11 +2612,11 @@ msgstr "Notes cryptées par encore supportées"
 msgid ""
 "<font color='red'><b>Encrypted note.</b><br>The importer do not support "
 "encrypted notes yet. Please remove the encryption with TuxCards and "
-"re-import the file."
+"re-import the file.</font>"
 msgstr ""
 "<font color='red'><b>Note cryptée.</b><br>L'importateur ne supporte pas "
 "encore les notes cryptées. Merci de supprimer le cryptage avec TuxCards et "
-"réimporter le fichier."
+"réimporter le fichier.</font>"
 
 #: tag.cpp:80
 msgid "%1: %2"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2006-06-17 13:14+0200\n"
+"POT-Creation-Date: 2006-06-17 21:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1077,17 +1077,17 @@ msgid "The comment will be submitted annonymously."
 msgstr ""
 
 #: likeback.cpp:397
-msgid "<p>Error while trying to send the report.</p><p>Please retry later."
+msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 
 #: likeback.cpp:397
-msgid "Transfert Error"
+msgid "Transfer Error"
 msgstr ""
 
 #: likeback.cpp:399
 msgid ""
 "<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
-"will help improve the application."
+"will help improve the application.</p>"
 msgstr ""
 
 #: likeback.cpp:399
@@ -2364,7 +2364,7 @@ msgstr ""
 msgid ""
 "<font color='red'><b>Encrypted note.</b><br>The importer do not support "
 "encrypted notes yet. Please remove the encryption with TuxCards and "
-"re-import the file."
+"re-import the file.</font>"
 msgstr ""
 
 #: tag.cpp:80
