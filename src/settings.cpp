@@ -167,9 +167,18 @@ void Settings::loadConfig()
 	// The first time we start, we define "Text Alongside Icons" for the main toolbar.
 	// After that, the user is free to hide the text from the icons or customize as he/she want.
 	// But it is a good default (Fitt's Laws, better looking, less "empty"-feeling), especially for this application.
-	if (!config->readBoolEntry("alreadySetIconTextRight", false)) {
-		config->writeEntry( "IconText",                "IconTextRight" );
-		config->writeEntry( "alreadySetIconTextRight", true            );
+//	if (!config->readBoolEntry("alreadySetIconTextRight", false)) {
+//		config->writeEntry( "IconText",                "IconTextRight" );
+//		config->writeEntry( "alreadySetIconTextRight", true            );
+//	}
+	if (!config->readBoolEntry("alreadySetToolbarSettings", false)) {
+		config->writeEntry("IconText", "IconOnly"); // In 0.6.0 Alpha versions, it was made "IconTextRight". We're back to IconOnly
+		config->writeEntry("Index",    "0");        // Make sure the main toolbar is the first...
+		config->setGroup("MainWindow Toolbar richTextEditToolBar");
+		config->writeEntry("Position", "Top");      // In 0.6.0 Alpha versions, it was made "Bottom"
+		config->writeEntry("Index",    "1");        // ... and the rich text toolbar is on the right of the main toolbar
+		config->setGroup("MainWindow Toolbar mainToolBar");
+		config->writeEntry("alreadySetToolbarSettings", true);
 	}
 }
 
