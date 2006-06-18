@@ -25,6 +25,7 @@
 #include <qtimer.h>
 
 class QTextEdit;
+class QToolButton;
 
 /**
   * @author Sébastien Laoût <slaout@linux62.org>
@@ -34,8 +35,9 @@ class LikeBack : public QWidget
   Q_OBJECT
   public:
 	enum Button { ILike = 0x01, IDoNotLike = 0x02, IFoundABug = 0x04, Configure = 0x10,
-	              All = ILike | IDoNotLike | IFoundABug | Configure };
-	LikeBack(Button buttons = All, bool warnUnnamedWindow = true, const QString &customLanguageMessage = "");
+	              AllButtons = ILike | IDoNotLike | IFoundABug | Configure };
+	enum WindowListing { NoListing, WarnUnnamedWindows, AllWindows };
+	LikeBack(Button buttons = AllButtons, WindowListing windowListing = AllWindows, const QString &customLanguageMessage = "");
 	~LikeBack();
 	static void showInformationMessage();
 	static LikeBack* instance();
@@ -47,6 +49,7 @@ class LikeBack : public QWidget
 	static bool enabled();
 	static void disable();
 	static void enable();
+	static bool userWantToParticipate();
   private slots:
 	void autoMove();
 	void iLike();
@@ -54,11 +57,15 @@ class LikeBack : public QWidget
 	void iFoundABug();
 	void configure();
 	void showDialog(Button button);
+	void openConfigurePopup();
+	void doNotHelpAnymore();
+	void showWhatsThisMessage();
   private:
-	QTimer   m_timer;
-	Button   m_buttons;
-	bool     m_warnUnnamedWindow;
-	bool     m_canShow;
+	QTimer         m_timer;
+	Button         m_buttons;
+	QToolButton   *m_configureButton;
+	WindowListing  m_windowListing;
+	bool           m_canShow;
 	static QString   s_hostName;
 	static QString   s_remotePath;
 	static Q_UINT16  s_hostPort;

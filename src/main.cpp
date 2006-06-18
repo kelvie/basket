@@ -130,11 +130,13 @@ int main(int argc, char *argv[])
 
 	/* LikeBack */
 	QString version = VERSION;
-	if ( version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	     version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	     version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	     version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1    ) // TODO: LikeBack::isDevelVersion
-		new LikeBack();
+	// TODO: LikeBack::init() instead of all those if()s    [or implicitely called if not by hand?!]:
+	if (LikeBack::userWantToParticipate())
+		if ( version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
+		     version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
+		     version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
+		     version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1    ) // TODO: LikeBack::isDevelVersion
+			new LikeBack(LikeBack::AllButtons, LikeBack::NoListing, i18n("Only english and french languages are accepted."));
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 
 

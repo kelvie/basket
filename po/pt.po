@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pt\n"
-"POT-Creation-Date: 2006-06-17 21:26+0200\n"
+"POT-Creation-Date: 2006-06-18 16:49+0200\n"
 "PO-Revision-Date: 2006-05-09 22:36+0100\n"
 "Last-Translator: Nuno J. Silva <nunojsg@gmail.com>\n"
 "Language-Team: Português <pt@li.org>\n"
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Encryption is not supported by<br/>this version of %1."
 msgstr ""
 
-#: basket.cpp:2898 container.cpp:2606 container.cpp:3049
+#: basket.cpp:2898 container.cpp:2610 container.cpp:3053
 msgid "Loading..."
 msgstr "A carregar..."
 
@@ -429,7 +429,7 @@ msgstr ""
 "criando novos cestos dentro de outros. Pode navegar entre eles clicando num "
 "cesto para o abrir, ou reorganizá-los usando arrastar-e-largar."
 
-#: container.cpp:1260 container.cpp:1852 settings.cpp:316
+#: container.cpp:1260 container.cpp:1852 settings.cpp:325
 msgid "General"
 msgstr "Geral"
 
@@ -635,7 +635,7 @@ msgstr "Mover para &Baixo"
 msgid "Move on &Bottom"
 msgstr "Mover para o &Fim"
 
-#: container.cpp:2038 settings.cpp:399
+#: container.cpp:2038 settings.cpp:408
 msgid "&Text"
 msgstr "&Texto"
 
@@ -788,21 +788,21 @@ msgstr "Remover Sub-cestos"
 msgid "&Remove Child Baskets"
 msgstr "&Remover Sub-cestos"
 
-#: container.cpp:2585
+#: container.cpp:2589
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr ""
 "<p>Este cesto está <b>bloqueado</b>.<br>Clique aqui para o desbloquear.</p>"
 
-#: container.cpp:2590
+#: container.cpp:2594
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr ""
 "<p>Este cesto está <b>desbloqueado</b>.<br>Clique aqui para o bloquear.</p>"
 
-#: container.cpp:2608
+#: container.cpp:2612
 msgid "No notes"
 msgstr "Sem anotações"
 
-#: container.cpp:2610
+#: container.cpp:2614
 #, c-format
 msgid ""
 "_n: %n note\n"
@@ -811,7 +811,7 @@ msgstr ""
 "%n anotação\n"
 "%n anotações"
 
-#: container.cpp:2611
+#: container.cpp:2615
 #, c-format
 msgid ""
 "_n: %n selected\n"
@@ -820,15 +820,15 @@ msgstr ""
 "%n seleccionada\n"
 "%n seleccionadas"
 
-#: container.cpp:2612
+#: container.cpp:2616
 msgid "all matches"
 msgstr "todas as correspondências"
 
-#: container.cpp:2612
+#: container.cpp:2616
 msgid "no filter"
 msgstr "sem filtro"
 
-#: container.cpp:2614
+#: container.cpp:2618
 #, c-format
 msgid ""
 "_n: %n match\n"
@@ -837,17 +837,17 @@ msgstr ""
 "%n correspondência\n"
 "%n correspondências"
 
-#: container.cpp:2616
+#: container.cpp:2620
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr "%1, %2, %3"
 
-#: container.cpp:2837
+#: container.cpp:2841
 msgid "<p>Do you really want to quit %1?</p>"
 msgstr "<p>Deseja mesmo sair do %1?</p>"
 
-#: container.cpp:2839
+#: container.cpp:2843
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session: it will be reloaded the next time you log in.</p>"
@@ -856,34 +856,34 @@ msgstr ""
 "KDE: ele será iniciado automaticamente da próxima vez que iniciar "
 "sessão.</p>"
 
-#: container.cpp:2842
+#: container.cpp:2846
 msgid "Quit Confirm"
 msgstr "Confirmar Saída"
 
-#: container.cpp:2878
+#: container.cpp:2882
 msgid "Basket"
 msgstr "Cesto"
 
-#: container.cpp:2961
+#: container.cpp:2965
 #, fuzzy
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr ""
 "O conteúdo da área de transferência (%1) foi colado no cesto <i>%2</i>"
 
-#: container.cpp:2969
+#: container.cpp:2973
 #, fuzzy
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "Selecção (%1) colada no cesto <i>%2</i>"
 
-#: container.cpp:2981
+#: container.cpp:2985
 msgid "No note was added."
 msgstr "Não foi adicionada nenhuma anotação."
 
-#: container.cpp:3008
+#: container.cpp:3012
 msgid "Basket <i>%1</i> is locked"
 msgstr "O cesto <i>%1</i> está bloqueado"
 
-#: container.cpp:3033
+#: container.cpp:3037
 msgid "(Locked)"
 msgstr "(Bloqueado)"
 
@@ -968,15 +968,15 @@ msgstr "(Sem classificação)"
 msgid "(Tagged)"
 msgstr "(Classificado)"
 
-#: focusedwidgets.cpp:140
+#: focusedwidgets.cpp:143
 msgid "Auto Spell Check"
 msgstr "Verificação ortográfica automática"
 
-#: focusedwidgets.cpp:140
+#: focusedwidgets.cpp:143
 msgid "Check Spelling..."
 msgstr "Verificar ortografia..."
 
-#: focusedwidgets.cpp:143
+#: focusedwidgets.cpp:146
 msgid "Allow Tabulations"
 msgstr "Permitir Tabulações"
 
@@ -1057,7 +1057,7 @@ msgstr ""
 msgid "Actions"
 msgstr "Aplicações"
 
-#: kicondialog.cpp:136 settings.cpp:318
+#: kicondialog.cpp:136 settings.cpp:327
 msgid "Applications"
 msgstr "Aplicações"
 
@@ -1097,24 +1097,42 @@ msgstr "Filtrar"
 msgid "Alt+O"
 msgstr ""
 
-#: likeback.cpp:56
+#: likeback.cpp:60
 msgid "I Like..."
 msgstr ""
 
-#: likeback.cpp:63
+#: likeback.cpp:67
 #, fuzzy
 msgid "I Dislike..."
 msgstr "&Visualize..."
 
-#: likeback.cpp:70
+#: likeback.cpp:74
 msgid "I Found a Bug..."
 msgstr ""
 
-#: likeback.cpp:77
+#: likeback.cpp:81
 msgid "Configure..."
 msgstr ""
 
-#: likeback.cpp:113
+#: likeback.cpp:88
+msgid "What's &This?"
+msgstr ""
+
+#: likeback.cpp:90
+msgid "&Do not Help Anymore"
+msgstr ""
+
+#: likeback.cpp:124
+msgid ""
+"Are you sure you do not want to participate anymore in the application "
+"enhancing program?"
+msgstr ""
+
+#: likeback.cpp:125
+msgid "Do not Help Anymore"
+msgstr ""
+
+#: likeback.cpp:166
 msgid ""
 "<p><b>Welcome to this testing version of %1.</b></p><p>To help us improve "
 "it, your comments are important.</p><p>Each time you are surprised with "
@@ -1131,72 +1149,72 @@ msgid ""
 "the Add button, nothing happens.</td></tr></table>"
 msgstr ""
 
-#: likeback.cpp:131
+#: likeback.cpp:184
 msgid "Help Improve the Application"
 msgstr ""
 
-#: likeback.cpp:274
+#: likeback.cpp:327
 msgid "I like..."
 msgstr ""
 
-#: likeback.cpp:275
+#: likeback.cpp:328
 msgid "Please briefly describe what you like."
 msgstr ""
 
-#: likeback.cpp:281
+#: likeback.cpp:334
 msgid "I do not like..."
 msgstr ""
 
-#: likeback.cpp:282
+#: likeback.cpp:335
 msgid "Please briefly describe what you do not like."
 msgstr ""
 
-#: likeback.cpp:288
+#: likeback.cpp:341
 msgid "I found a bug..."
 msgstr ""
 
-#: likeback.cpp:289
+#: likeback.cpp:342
 msgid "Please briefly describe the bug you encountered."
 msgstr ""
 
-#: likeback.cpp:328 likeback.cpp:330
+#: likeback.cpp:379
 #, fuzzy
 msgid "Send"
 msgstr "Som"
 
-#: likeback.cpp:341
-msgid "Only english and french languages are accepted."
+#: likeback.cpp:389
+msgid "Only english language is accepted."
 msgstr ""
 
-#: likeback.cpp:345
+#: likeback.cpp:393
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
 msgstr ""
 
-#: likeback.cpp:348
+#: likeback.cpp:396
 msgid "Do not ask for features: your wish will be ignored."
 msgstr ""
 
-#: likeback.cpp:349
+#: likeback.cpp:397
 msgid "The comment will be submitted annonymously."
 msgstr ""
 
-#: likeback.cpp:397
+#: likeback.cpp:445
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 
-#: likeback.cpp:397
+#: likeback.cpp:445
 msgid "Transfer Error"
 msgstr ""
 
-#: likeback.cpp:399
+#: likeback.cpp:447
 msgid ""
 "<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
 "will help improve the application.</p>"
 msgstr ""
 
-#: likeback.cpp:399
+#: likeback.cpp:447
 msgid "Message Sent"
 msgstr ""
 
@@ -1334,11 +1352,15 @@ msgstr "Bloco de Notas BasKet"
 msgid "Author, maintainer"
 msgstr "Autoria e manutenção"
 
-#: main.cpp:187
+#: main.cpp:139
+msgid "Only english and french languages are accepted."
+msgstr ""
+
+#: main.cpp:189
 msgid "Show/hide main window"
 msgstr "Mostar/ocultar a janela principal"
 
-#: main.cpp:188
+#: main.cpp:190
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
@@ -1346,11 +1368,11 @@ msgstr ""
 "Permite-lhe abrir a janela principal se esta estiver ocultada, e ocultá-la "
 "se esta estiver aberta."
 
-#: main.cpp:191
+#: main.cpp:193
 msgid "Paste clipboard contents in current basket"
 msgstr "Colar o conteúdo da área-de-transferência no cesto actual"
 
-#: main.cpp:192
+#: main.cpp:194
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -1358,19 +1380,19 @@ msgstr ""
 "Permite-lhe colar os conteúdos da área de transferência no cesto activo "
 "sem ter de abrir a janela principal."
 
-#: main.cpp:195
+#: main.cpp:197
 msgid "Show current basket name"
 msgstr "Mostrar o nome do cesto activo"
 
-#: main.cpp:196
+#: main.cpp:198
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "Permite-lhe saber qual é o cesto activo sem abrir a janela principal."
 
-#: main.cpp:199
+#: main.cpp:201
 msgid "Paste selection in current basket"
 msgstr "Colar selecção no cesto actual"
 
-#: main.cpp:200
+#: main.cpp:202
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -1378,11 +1400,11 @@ msgstr ""
 "Permite-lhe colar a selecção que está na área-de-transferência para o "
 "cesto activo sem ter de abrir a janela principal."
 
-#: main.cpp:203
+#: main.cpp:205
 msgid "Create a new basket"
 msgstr "Criar um novo cesto"
 
-#: main.cpp:204
+#: main.cpp:206
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -1392,21 +1414,21 @@ msgstr ""
 "pode usar os atalhos globais para adicionar uma anotação, colar o "
 "conteúdo da área de transferência ou colar a selecção no novo cesto)."
 
-#: main.cpp:207
+#: main.cpp:209
 msgid "Go to previous basket"
 msgstr "Ir para o cesto anterior"
 
-#: main.cpp:208
+#: main.cpp:210
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr "Permite-lhe mudar o cesto activo sem ter de abrir a janela principal."
 
-#: main.cpp:211
+#: main.cpp:213
 msgid "Go to next basket"
 msgstr "Ir para o cesto seguinte"
 
-#: main.cpp:212
+#: main.cpp:214
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -1414,22 +1436,22 @@ msgstr ""
 "Permite-lhe mudar o cesto activo para o cesto seguinte sem ter de abrir a "
 "janela principal."
 
-#: main.cpp:217 settings.cpp:607
+#: main.cpp:219 settings.cpp:616
 msgid "Insert text note"
 msgstr "Inserir anotação com texto"
 
-#: main.cpp:218
+#: main.cpp:220
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Adiciona uma anotação com texto ao cesto activo sem ser necessário abrir "
 "a janela principal."
 
-#: main.cpp:221 settings.cpp:608
+#: main.cpp:223 settings.cpp:617
 msgid "Insert rich text note"
 msgstr "Inserir anotação com texto formatado"
 
-#: main.cpp:222
+#: main.cpp:224
 msgid ""
 "Add a rich text note to the current basket without having to open main "
 "window."
@@ -1437,44 +1459,44 @@ msgstr ""
 "Adiciona uma anotação com texto formatado ao cesto activo sem ser "
 "necessário abrir a janela principal."
 
-#: main.cpp:225 settings.cpp:609
+#: main.cpp:227 settings.cpp:618
 msgid "Insert image note"
 msgstr "Inserir anotação com imagem"
 
-#: main.cpp:226
+#: main.cpp:228
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Adiciona uma anotação com imagem ao cesto activo sem ser necessário abrir "
 "a janela principal."
 
-#: main.cpp:229 settings.cpp:610
+#: main.cpp:231 settings.cpp:619
 msgid "Insert link note"
 msgstr "Inserir anotação com ligação"
 
-#: main.cpp:230
+#: main.cpp:232
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Adiciona uma anotação com ligação ao cesto activo sem ser necessário "
 "abrir a janela principal."
 
-#: main.cpp:233 settings.cpp:612
+#: main.cpp:235 settings.cpp:621
 msgid "Insert color note"
 msgstr "Inserir anotação com cor"
 
-#: main.cpp:234
+#: main.cpp:236
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Adiciona uma anotação com cor ao cesto activo sem ser necessário abrir a "
 "janela principal."
 
-#: main.cpp:237
+#: main.cpp:239
 msgid "Pick color from screen"
 msgstr "Escolher cor a partir do ecrã"
 
-#: main.cpp:238
+#: main.cpp:240
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -1482,11 +1504,11 @@ msgstr ""
 "Adiciona uma anotação com uma cor escolhida do ecrã ao cesto activo sem "
 "ser necessário abrir a janela principal."
 
-#: main.cpp:242
+#: main.cpp:244
 msgid "Grab screen zone"
 msgstr "Fotografar zona do ecrã"
 
-#: main.cpp:243
+#: main.cpp:245
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -2160,43 +2182,43 @@ msgstr "A&notação"
 msgid "Rich Text Edit Toolbar"
 msgstr "Barra de ferramentas do Editor de Texto Formatado"
 
-#: settings.cpp:317
+#: settings.cpp:326
 msgid "Notes Look"
 msgstr "Aspecto das Anotações"
 
-#: settings.cpp:319
+#: settings.cpp:328
 msgid "Addictive Features"
 msgstr "Funções viciantes"
 
-#: settings.cpp:326
+#: settings.cpp:335
 msgid "Doc&k in system tray"
 msgstr "Ancorar no ta&buleiro de sistema"
 
-#: settings.cpp:330
+#: settings.cpp:339
 msgid "&Use balloons to report results of global actions"
 msgstr "&Usar balões para relatar os resultados de acções globais"
 
-#: settings.cpp:334
+#: settings.cpp:343
 msgid "Ani&mate changes in baskets"
 msgstr "Animar a&lterações nos cestos"
 
-#: settings.cpp:338
+#: settings.cpp:347
 msgid "Sho&w tooltips in baskets"
 msgstr "Mostrar dicas nos cestos."
 
-#: settings.cpp:342
+#: settings.cpp:351
 msgid "Bi&g notes"
 msgstr "Anotações &grandes"
 
-#: settings.cpp:347
+#: settings.cpp:356
 msgid "E&xport tags in texts"
 msgstr "E&xportar classificações com o texto"
 
-#: settings.cpp:350
+#: settings.cpp:359
 msgid "When does this apply?"
 msgstr "Quando é que isto se aplica?"
 
-#: settings.cpp:351
+#: settings.cpp:360
 msgid ""
 "<p>It does apply when you copy and paste, or drag and drop notes to a text "
 "editor.</p><p>If enabled, this property allows you to paste the tags as "
@@ -2212,155 +2234,155 @@ msgstr ""
 "respectivamente, uma caixa-de-verificação não assinalada e uma "
 "caixa-de-verificação assinalada.</p>"
 
-#: settings.cpp:366
+#: settings.cpp:375
 msgid "On left"
 msgstr "À esquerda"
 
-#: settings.cpp:367
+#: settings.cpp:376
 msgid "On right"
 msgstr "À direita"
 
-#: settings.cpp:369
+#: settings.cpp:378
 msgid "Bask&ets tree position:"
 msgstr "Posição da árvor&e de cestos:"
 
-#: settings.cpp:375 settings.cpp:386
+#: settings.cpp:384 settings.cpp:395
 msgid "On top"
 msgstr "No topo"
 
-#: settings.cpp:376 settings.cpp:387
+#: settings.cpp:385 settings.cpp:396
 msgid "On bottom"
 msgstr "No fundo"
 
-#: settings.cpp:378
+#: settings.cpp:387
 msgid "&Filter bar position:"
 msgstr "Posição da barra de &filtragem:"
 
-#: settings.cpp:385
+#: settings.cpp:394
 msgid "New notes &place:"
 msgstr "&Posição das novas anotações:"
 
-#: settings.cpp:388
+#: settings.cpp:397
 msgid "At current note"
 msgstr "Na anotação actual"
 
-#: settings.cpp:398
+#: settings.cpp:407
 msgid "View Content of Added Files for the Following Types"
 msgstr "Ver o Conteúdo dos Ficheiros Adicionados para os Seguintes Tipos"
 
-#: settings.cpp:400
+#: settings.cpp:409
 msgid "&HTML page"
 msgstr "Página &HTML"
 
-#: settings.cpp:401
+#: settings.cpp:410
 msgid "&Image or animation"
 msgstr "&Imagem ou animação"
 
-#: settings.cpp:402
+#: settings.cpp:411
 #, fuzzy
 msgid "&Sound"
 msgstr "&Sons"
 
-#: settings.cpp:415
+#: settings.cpp:424
 msgid "&New images size:"
 msgstr "Tamanho das &novas imagens:"
 
-#: settings.cpp:422
+#: settings.cpp:431
 msgid "&by"
 msgstr "po&r"
 
-#: settings.cpp:425
+#: settings.cpp:434
 msgid "pixels"
 msgstr "pixels"
 
-#: settings.cpp:427
+#: settings.cpp:436
 msgid "&Visualize..."
 msgstr "&Visualize..."
 
-#: settings.cpp:439
+#: settings.cpp:448
 msgid "Customize look of file, sound, link and launcher notes:"
 msgstr ""
 "Personalize o aspecto das anotações com ficheiros, sons, ligações e "
 "lançadores:"
 
-#: settings.cpp:444
+#: settings.cpp:453
 msgid "Conference audio record"
 msgstr "Gravação áudio da conferência"
 
-#: settings.cpp:445
+#: settings.cpp:454
 msgid "Annual report"
 msgstr "Relatório anual"
 
-#: settings.cpp:446
+#: settings.cpp:455
 msgid "Home folder"
 msgstr "Directoria pessoal"
 
-#: settings.cpp:448
+#: settings.cpp:457
 #, c-format
 msgid "Launch %1"
 msgstr "Lançar %1"
 
-#: settings.cpp:449
+#: settings.cpp:458
 msgid "&Sounds"
 msgstr "&Sons"
 
-#: settings.cpp:450
+#: settings.cpp:459
 msgid "&Files"
 msgstr "&Ficheiros"
 
-#: settings.cpp:451
+#: settings.cpp:460
 msgid "&Local Links"
 msgstr "Ligações &Locais"
 
-#: settings.cpp:452
+#: settings.cpp:461
 msgid "&Network Links"
 msgstr "L&igações de Rede"
 
-#: settings.cpp:453
+#: settings.cpp:462
 msgid "Launc&hers"
 msgstr "Lança&dores"
 
-#: settings.cpp:458
+#: settings.cpp:467
 msgid "Open &text notes with a custom application:"
 msgstr "Abrir anotações com &texto numa aplicação diferente:"
 
-#: settings.cpp:459
+#: settings.cpp:468
 msgid "Open text notes with:"
 msgstr "Abrir anotações com texto com:"
 
-#: settings.cpp:466
+#: settings.cpp:475
 msgid "Open &rich text notes with a custom application:"
 msgstr "Abrir anotações com texto fo&rmatado numa aplicação diferente:"
 
-#: settings.cpp:467
+#: settings.cpp:476
 msgid "Open rich text notes with:"
 msgstr "Abrir anotações com texto formatado com:"
 
-#: settings.cpp:474
+#: settings.cpp:483
 msgid "Open &image notes with a custom application:"
 msgstr "Abrir anotações com &imagens numa aplicação diferente:"
 
-#: settings.cpp:475
+#: settings.cpp:484
 msgid "Open image notes with:"
 msgstr "Abrir anotações com imagens com:"
 
-#: settings.cpp:482
+#: settings.cpp:491
 msgid "Open a&nimation notes with a custom application:"
 msgstr "Abrir anotações com a&nimações numa aplicação diferente:"
 
-#: settings.cpp:483
+#: settings.cpp:492
 msgid "Open animation notes with:"
 msgstr "Abrir anotações com animações com:"
 
-#: settings.cpp:490
+#: settings.cpp:499
 msgid "Open so&und notes with a custom application:"
 msgstr "Abir anotações com som n&uma aplicação diferente:"
 
-#: settings.cpp:491
+#: settings.cpp:500
 msgid "Open sound notes with:"
 msgstr "Abrir anotações com sons com:"
 
-#: settings.cpp:499
+#: settings.cpp:508
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
@@ -2370,7 +2392,7 @@ msgstr ""
 "para abrir anotações desse tipo.</p><p>Caso contrário, será usada a "
 "aplicação que foi configurada no Konqueror.</p>"
 
-#: settings.cpp:509
+#: settings.cpp:518
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
@@ -2378,11 +2400,11 @@ msgstr ""
 "<p>Defina a aplicação a usar para abrir anotações deste tipo, em vez da "
 "aplicação configurada do Konqueror.</p>"
 
-#: settings.cpp:533
+#: settings.cpp:542
 msgid "How to change the application used to open Web links?"
 msgstr "Como mudar as aplicações usadas para abrir ligações para a Web?"
 
-#: settings.cpp:534
+#: settings.cpp:543
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -2416,11 +2438,11 @@ msgstr ""
 "pormenorizada (por exemplo, abrir apenas as páginas Web no seu navegador "
 "Web), leia a segunda ligação de ajuda.</p>"
 
-#: settings.cpp:552
+#: settings.cpp:561
 msgid "How to change the applications used to open files and links?"
 msgstr "Como mudar as aplicações usadas para abrir ficheiros e ligações?"
 
-#: settings.cpp:553
+#: settings.cpp:562
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applys to Web links if you choose not to open them systematically in a "
@@ -2452,7 +2474,7 @@ msgstr ""
 "adicione o seu navegador Web como primeira entrada;</li><li>Faça a mesma "
 "coisa para o tipo \"application -> xhtml+xml\".</li></ul>"
 
-#: settings.cpp:580
+#: settings.cpp:589
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
@@ -2460,16 +2482,16 @@ msgstr ""
 "Esta página agrupa opções fora do normal que, após aprendidas,\n"
 "podem ser bastante poderosas e ajudá-lo a poupar tempo no %1:"
 
-#: settings.cpp:586
+#: settings.cpp:595
 msgid "&Group a new note when clicking on the right of the insertion line"
 msgstr ""
 "A&grupar uma nova anotação ao clicar na direita da linha de inserção"
 
-#: settings.cpp:590
+#: settings.cpp:599
 msgid "How to group a new note?"
 msgstr "Como agrupar uma nova anotação?"
 
-#: settings.cpp:591
+#: settings.cpp:600
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
@@ -2479,7 +2501,7 @@ msgstr ""
 "permite inserir notas na posição actual do cursor como também lhe permite "
 "agrupar uma nova nota com a que se encontra sob o cursor:</p>"
 
-#: settings.cpp:593
+#: settings.cpp:602
 msgid ""
 "<p>Place your mouse between notes, where you want to add a new one.<br>Click "
 "on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
@@ -2492,43 +2514,43 @@ msgstr ""
 "<b>agrupar</b> uma anotação com a que estiver <b>abaixo ou acima</b>, "
 "dependendo do local onde se encontra o seu apontador.</p>"
 
-#: settings.cpp:605
+#: settings.cpp:614
 msgid "Do nothing"
 msgstr "Não fazer nada"
 
-#: settings.cpp:606
+#: settings.cpp:615
 msgid "Paste clipboard"
 msgstr "Colar o conteúdo da área de transferência"
 
-#: settings.cpp:611
+#: settings.cpp:620
 msgid "Insert launcher note"
 msgstr "Inserir anotação com lançador"
 
-#: settings.cpp:614
+#: settings.cpp:623
 msgid "&Shift+middle-click:"
 msgstr "&Shift+botão-do-meio"
 
-#: settings.cpp:617
+#: settings.cpp:626
 msgid "at cursor position"
 msgstr "na posição do cursor"
 
-#: settings.cpp:619
+#: settings.cpp:628
 msgid "System Tray Icon"
 msgstr "Ícone do Tabuleiro de Sistema"
 
-#: settings.cpp:625
+#: settings.cpp:634
 msgid "Show c&urrent basket icon in system tray icon"
 msgstr "Mostrar o ícone no cesto act&ual no ícone do tabuleiro do sistema"
 
-#: settings.cpp:631
+#: settings.cpp:640
 msgid "H&ide main window when mouse goes out of it for"
 msgstr "Ocultar a janela pr&incipal quando o apontador está fora dela há"
 
-#: settings.cpp:634 settings.cpp:641
+#: settings.cpp:643 settings.cpp:650
 msgid " tenths of seconds"
 msgstr " décimas de segundo"
 
-#: settings.cpp:638
+#: settings.cpp:647
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr ""
 "&Mostrar a janela principal quando o apontador \n"

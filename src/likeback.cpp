@@ -19,12 +19,16 @@
  ***************************************************************************/
 
 #include <kapplication.h>
+#include <kaboutdata.h>
+#include <kconfig.h>
 #include <kiconloader.h>
 #include <kaboutdata.h>
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <qlayout.h>
 #include <qtoolbutton.h>
+#include <qpushbutton.h>
+#include <qpopupmenu.h>
 #include <qtextedit.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -38,10 +42,10 @@
 
 static const char *LIKEBACK_WINDOW = "_likeback_feedback_window_";
 
-LikeBack::LikeBack(Button buttons, bool warnUnnamedWindow, const QString &customLanguageMessage)
+LikeBack::LikeBack(Button buttons, WindowListing windowListing, const QString &customLanguageMessage)
  : QWidget( 0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
  , m_buttons(buttons)
- , m_warnUnnamedWindow(warnUnnamedWindow)
+ , m_windowListing(windowListing)
  , m_canShow(true)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -72,12 +76,21 @@ LikeBack::LikeBack(Button buttons, bool warnUnnamedWindow, const QString &custom
 	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(iFoundABug()) );
 	layout->add(m_bugButton);
 
-	QToolButton *m_configureButton = new QToolButton(this, "configure");
+	/*QToolButton **/m_configureButton = new QToolButton(this, "configure");
 	m_configureButton->setIconSet(configureIconSet);
 	m_configureButton->setTextLabel(i18n("Configure..."));
 	m_configureButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(configure()) );
 	layout->add(m_configureButton);
+
+	QPopupMenu *configureMenu = new QPopupMenu(this);
+	QIconSet whatsThisIconSet = kapp->iconLoader()->loadIconSet("contexthelp", KIcon::Small);
+	configureMenu->insertItem( /*whatsThisIconSet, */i18n("What's &This?"), this , SLOT(showWhatsThisMessage()) );
+	QIconSet dontHelpIconSet = kapp->iconLoader()->loadIconSet("stop", KIcon::Small);
+	configureMenu->insertItem( dontHelpIconSet, i18n("&Do not Help Anymore"), this , SLOT(doNotHelpAnymore()) );
+	m_configureButton->setPopup(configureMenu);
+	//m_configureButton->setPopupDelay(0);
+	connect( m_configureButton, SIGNAL(pressed()), this, SLOT(openConfigurePopup()) );
 
 	static const char *messageShown = "LikeBack_starting_information";
 	if (KMessageBox::shouldBeShownContinue(messageShown)) {
@@ -96,6 +109,46 @@ LikeBack::LikeBack(Button buttons, bool warnUnnamedWindow, const QString &custom
 
 LikeBack::~LikeBack()
 {
+}
+
+void LikeBack::openConfigurePopup()
+{
+	m_configureButton->openPopup();
+}
+
+void LikeBack::doNotHelpAnymore()
+{
+	disable();
+	int result = KMessageBox::questionYesNo(
+			kapp->activeWindow(),
+			i18n("Are you sure you do not want to participate anymore in the application enhancing program?"),
+			i18n("Do not Help Anymore"));
+	if (result == KMessageBox::No) {
+		enable();
+		return;
+	}
+
+	KConfig *config = KGlobal::config();
+	config->setGroup("LikeBack");
+	config->writeEntry("userWantToParticipateForVersion_" + kapp->aboutData()->version(), false);
+	deleteLater();
+}
+
+void LikeBack::showWhatsThisMessage()
+{
+	disable();
+	showInformationMessage();
+	enable();
+}
+
+bool LikeBack::userWantToParticipate()
+{
+	if (!kapp)
+		return true;
+
+	KConfig *config = KGlobal::config();
+	config->setGroup("LikeBack");
+	return config->readBoolEntry("userWantToParticipateForVersion_" + kapp->aboutData()->version(), true);
 }
 
 // TODO: Only show relevant buttons!
@@ -200,10 +253,10 @@ void LikeBack::autoMove()
 		//move(window->x() + window->width() - 100 - width(), window->mapToGlobal(QPoint(0, 0)).y() - height());
 		move(window->mapToGlobal(QPoint(0, 0)).x() + window->width() - width(), window->mapToGlobal(QPoint(0, 0)).y() + 1);
 
-		if (window != lastWindow)
-			if (m_warnUnnamedWindow && (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0)) {
+		if (window != lastWindow && m_windowListing != NoListing)
+			if (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0)
 				std::cout << "===== LikeBack ===== UNNAMED ACTIVE WINDOW ======" << std::endl;
-			} else
+			else if (m_windowListing == AllWindows)
 				std::cout << "LikeBack: Active Window: " << window->name() << std::endl;
 		lastWindow = window;
 	}
@@ -289,7 +342,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 			please    = i18n("Please briefly describe the bug you encountered.");
 			break;
 		case LikeBack::Configure:
-		case LikeBack::All:
+		case LikeBack::AllButtons:
 			return;
 	}
 
@@ -323,13 +376,8 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 	messageLayout->setSpacing(KDialogBase::spacingHint());
 	m_message = new QTextEdit(coloredWidget);
 	QIconSet sendIconSet = kapp->iconLoader()->loadIconSet("mail_send", KIcon::Toolbar);
-	QToolButton *sendButton = new QToolButton(coloredWidget);
-	sendButton->setIconSet(sendIconSet);
-	sendButton->setIconText(i18n("Send"));
-// 	sendButton->setText(i18n("Send"));
-	sendButton->setTextLabel(i18n("Send"));
-	sendButton->setUsesTextLabel(true);
-	sendButton->setTextPosition(QToolButton::BesideIcon);
+	QPushButton *sendButton = new QPushButton(sendIconSet, i18n("Send"), coloredWidget);
+	sendButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	connect( sendButton, SIGNAL(clicked()), this, SLOT(send()) );
 	messageLayout->addWidget(m_message);
 	messageLayout->addWidget(sendButton);
@@ -338,7 +386,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 	explainings->setText(
 			"<p>" + please + " " +
 			(LikeBack::customLanguageMessage().isEmpty() ?
-				i18n("Only english and french languages are accepted.") : // TODO: Remove french!
+				i18n("Only english language is accepted.") :
 				LikeBack::customLanguageMessage()
 			)  + "</p><p>" +
 			(reason == LikeBack::ILike || reason == LikeBack::IDoNotLike ?

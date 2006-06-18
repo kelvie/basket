@@ -10,7 +10,7 @@ METASOURCES = AUTO
 messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/basket.pot
 
-KDE_ICON = basket
+KDE_ICON = AUTO
 
 #########################################################################
 # APPLICATION SECTION
