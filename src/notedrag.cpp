@@ -156,9 +156,15 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDra
 			htmlEquivalent += (!htmlEquivalent.isEmpty() ? "<br>\n" : "") + html;
 	}
 	if (!htmlEquivalent.isEmpty()) {
+		// Add HTML flavour:
 		QTextDrag *htmlDrag = new QTextDrag(htmlEquivalent);
 		htmlDrag->setSubtype("html");
 		multipleDrag->addDragObject(htmlDrag);
+		// But also QTextEdit flavour, to be able to paste several notes to a text edit:
+		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).local8Bit();
+		QStoredDrag *richTextDrag = new QStoredDrag("application/x-qrichtext");
+		richTextDrag->setEncodedData(byteArray);
+		multipleDrag->addDragObject(richTextDrag);
 	}
 }
 

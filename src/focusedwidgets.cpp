@@ -90,6 +90,9 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 	} else if (event->key() == Qt::Key_Return && event->state() == 0)
 		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlButton,
 		                      event->text(), event->isAutoRepeat(), event->count() );
+	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlButton)
+		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftButton,
+		                      event->text(), event->isAutoRepeat(), event->count() );
 
 	if (m_disableUpdatesOnKeyPress)
 		setUpdatesEnabled(false);
