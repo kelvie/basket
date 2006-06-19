@@ -25,6 +25,7 @@
 #include <qlayout.h>
 #include <qtoolbutton.h>
 #include <qbuttongroup.h>
+#include <qradiobutton.h>
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
@@ -47,43 +48,63 @@ PasswordDlg::~PasswordDlg()
 
 void PasswordDlg::slotOk()
 {
-	int n = w->buttonGroup->selectedId();
-	QString key = w->keyLineEdit->text();
-	if(n == Basket::PrivateKeyEncryption && key.isEmpty())
+	int n = type();
+	if(n == Basket::PrivateKeyEncryption && key().isEmpty())
 		KMessageBox::error(w, i18n("No private key selected."));
 	else
 		KDialogBase::slotOk();
 }
 
+QString PasswordDlg::key() const
+{
+	QString s = w->keyCombo->currentText();
+	if(s.length() < 16)
+		return "";
+	int n = s.findRev(' ');
+	if(n < 0)
+		return "";
+	return s.mid(n+1);
+}
+
+int PasswordDlg::type() const
+{
+	return w->buttonGroup->selectedId();
+}
+
+void PasswordDlg::setKey(const QString& key)
+{
+	for(int i = 0; i < w->keyCombo->count(); ++i)
+	{
+		if(w->keyCombo->text(i).find(key) >= 0)
+		{
+			w->keyCombo->setCurrentItem(i);
+			return;
+		}
+	}
+}
+
+void PasswordDlg::setType(int type)
+{
+	w->buttonGroup->setButton(type);
+}
+
 Password::Password(QWidget *parent, const char *name)
  : PasswordLayout(parent, name)
 {
-	clearButton->setIconSet(SmallIconSet("clear_left"));
+	KGpgMe gpg;
+
+	KGpgKeyList list = gpg.keys(true);
+	for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
+		QString name = gpg.checkForUtf8((*it).name);
+
+		keyCombo->insertItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
+	}
+	publicPrivateRadioButton->setEnabled(keyCombo->count() > 0);
 }
 
 
 Password::~Password()
 {
-}
-
-void Password::changeKey()
-{
-	KGpgMe gpg;
-	QString key = gpg.selectKey(keyLineEdit->text());
-	if(!key.isEmpty())
-	{
-		keyLineEdit->setText(key);
-		buttonGroup->setButton(Basket::PrivateKeyEncryption);
-	}
-}
-
-void Password::clearKey()
-{
-	int n = buttonGroup->selectedId();
-
-	keyLineEdit->setText("");
-	if(n == Basket::PrivateKeyEncryption)
-		buttonGroup->setButton(Basket::PasswordEncryption);
 }
 
 #include "password.moc"

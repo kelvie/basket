@@ -38,10 +38,6 @@ class Password : public PasswordLayout
 	public:
 		Password(QWidget *parent, const char *name = 0);
 		~Password();
-
-	private slots:
-		virtual void changeKey();
-		virtual void clearKey();
 };
 
 class PasswordDlg : public KDialogBase
@@ -51,10 +47,16 @@ class PasswordDlg : public KDialogBase
 		PasswordDlg(QWidget *parent, const char *name = 0);
 		~PasswordDlg();
 
-		Password* w;
+		QString key() const;
+		int type() const;
+		void setKey(const QString& key);
+		void setType(int type);
 
 	protected slots:
 		virtual void slotOk();
+
+	private:
+		Password* w;
 };
 
 #endif // HAVE_LIBGPGME

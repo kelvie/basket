@@ -2515,10 +2515,10 @@ void Container::password()
 	PasswordDlg dlg(this, "Password");
 	Basket *cur = currentBasket();
 
-	dlg.w->buttonGroup->setButton(cur->encryptionType());
-	dlg.w->keyLineEdit->setText(cur->encryptionKey());
+	dlg.setType(cur->encryptionType());
+	dlg.setKey(cur->encryptionKey());
 	if(dlg.exec())
-		cur->setProtection(dlg.w->buttonGroup->selectedId(), dlg.w->keyLineEdit->text());
+		cur->setProtection(dlg.type(), dlg.key());
 #endif
 }
 
