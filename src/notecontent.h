@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -50,7 +50,7 @@ class HtmlExportData;
 
 /** A list of numeric identifier for each note type.
   * Declare a varible with the type NoteType::Id and assign a value like NoteType::Text...
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 namespace NoteType
 {
@@ -59,7 +59,7 @@ namespace NoteType
 
 /** Abstract base class for every content type of basket note.
  * It's a base class to represent those types: Text, Html, Image, Animation, Sound, File, Link, Launcher, Color, Unknown.
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class NoteContent // TODO: Mark some methods as const!             and some (like typeName() as static!
 {
@@ -84,8 +84,8 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual QString cssClass()                                      = 0L; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                 = 0L; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
 	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0L; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
-	virtual void    loadFromFile()                                     {} /// << Load the content from the file. The default implementation does nothing. @see fileName().
-	virtual void    saveToFile()                                       {} /// << Save the content to the file. The default implementation does nothing. @see fileName().
+	virtual bool    loadFromFile()                      { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
+	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
 	virtual QString linkAt(const QPoint &/*pos*/)          { return ""; } /// << @return the link anchor at position @p pos or "" if there is no link.
 	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
 	virtual void    fontChanged()                                   = 0L; /// << If your content display textual data, called when the font have changed (from tags or basket font)
@@ -140,7 +140,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 };
 
 /** Real implementation of plain text notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class TextContent : public NoteContent
 {
@@ -163,8 +163,8 @@ class TextContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
-	void    saveToFile();
+	bool    loadFromFile();
+	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
 	QString editToolTipText();
@@ -182,7 +182,7 @@ class TextContent : public NoteContent
 };
 
 /** Real implementation of rich text (HTML) notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class HtmlContent : public NoteContent
 {
@@ -205,8 +205,8 @@ class HtmlContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
-	void    saveToFile();
+	bool    loadFromFile();
+	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
 	QString editToolTipText();
@@ -224,7 +224,7 @@ class HtmlContent : public NoteContent
 };
 
 /** Real implementation of image notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class ImageContent : public NoteContent
 {
@@ -246,8 +246,8 @@ class ImageContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
-	void    saveToFile();
+	bool    loadFromFile();
+	bool    saveToFile();
 	void    fontChanged();
 	QString editToolTipText();
 	void    toolTipInfos(QStringList *keys, QStringList *values);
@@ -266,7 +266,7 @@ class ImageContent : public NoteContent
 };
 
 /** Real implementation of animated image (GIF, MNG) notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class AnimationContent : public QObject, public NoteContent // QObject to be able to receive QMovie signals
 {
@@ -294,13 +294,13 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
-	void    saveToFile();
+	bool    loadFromFile();
+	bool    saveToFile();
 	// Open Content or File:
 	QString messageWhenOpenning(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
-	void    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
+	bool    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
 	QMovie  movie() { return m_movie; }    /// << @return the movie note-content.
   protected slots:
 	void movieUpdated(const QRect&);
@@ -313,7 +313,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 };
 
 /** Real implementation of file notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class FileContent : public QObject, public NoteContent
 {
@@ -335,7 +335,7 @@ class FileContent : public QObject, public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
+	bool    loadFromFile();
 	void    fontChanged();
 	void    linkLookChanged();
 	QString editToolTipText();
@@ -366,7 +366,7 @@ class FileContent : public QObject, public NoteContent
 };
 
 /** Real implementation of sound notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class SoundContent : public FileContent // A sound is a file with just a bit different user interaction
 {
@@ -397,7 +397,7 @@ class SoundContent : public FileContent // A sound is a file with just a bit dif
 };
 
 /** Real implementation of link notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class LinkContent : public QObject, public NoteContent
 {
@@ -462,7 +462,7 @@ class LinkContent : public QObject, public NoteContent
 };
 
 /** Real implementation of launcher notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class LauncherContent : public NoteContent
 {
@@ -484,7 +484,7 @@ class LauncherContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
+	bool    loadFromFile();
 	void    fontChanged();
 	QString editToolTipText();
 	void    toolTipInfos(QStringList *keys, QStringList *values);
@@ -512,7 +512,7 @@ class LauncherContent : public NoteContent
 };
 
 /** Real implementation of color notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class ColorContent : public NoteContent
 {
@@ -552,7 +552,7 @@ class ColorContent : public NoteContent
 };
 
 /** Real implementation of unknown MIME-types dropped notes:
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class UnknownContent : public NoteContent
 {
@@ -575,7 +575,7 @@ class UnknownContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	void    loadFromFile();
+	bool    loadFromFile();
 	void    fontChanged();
 	QString editToolTipText();
 	// Drag and Drop Content:

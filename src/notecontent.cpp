@@ -521,19 +521,21 @@ void TextContent::paint(QPainter *painter, int width, int height, const QColorGr
 	m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
 }
 
-void TextContent::loadFromFile()
+bool TextContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
 	QString content;
 
-	basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-	setText(content);
+	bool result = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+	if(result)
+		setText(content);
+	return result;
 }
 
-void TextContent::saveToFile()
+bool TextContent::saveToFile()
 {
-	basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
+	return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
 }
 
 QString TextContent::linkAt(const QPoint &pos)
@@ -604,19 +606,21 @@ void HtmlContent::paint(QPainter *painter, int width, int height, const QColorGr
 	m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
 }
 
-void HtmlContent::loadFromFile()
+bool HtmlContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
 	QString content;
 
-	basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-	setHtml(content);
+	bool result = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+	if(result)
+		setHtml(content);
+	return result;
 }
 
-void HtmlContent::saveToFile()
+bool HtmlContent::saveToFile()
 {
-	basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
+	return basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
 }
 
 QString HtmlContent::linkAt(const QPoint &pos)
@@ -696,34 +700,38 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QCo
 	}
 }
 
-void ImageContent::loadFromFile()
+bool ImageContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
 
 	QByteArray content;
 
-	basket()->loadFromFile(fullPath(), &content);
-	QBuffer buffer(content);
+	if(basket()->loadFromFile(fullPath(), &content))
+	{
+		QBuffer buffer(content);
 
-	buffer.open(IO_ReadOnly);
-	m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
-	buffer.close();
-	if (m_format)
-		m_pixmap.loadFromData(content);
-	else
-		m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
-	setPixmap(m_pixmap);
+		buffer.open(IO_ReadOnly);
+		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
+		buffer.close();
+		if (m_format)
+			m_pixmap.loadFromData(content);
+		else
+			m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
+		setPixmap(m_pixmap);
+		return true;
+	}
+	return false;
 }
 
 
-void ImageContent::saveToFile()
+bool ImageContent::saveToFile()
 {
 	QByteArray ba;
 	QBuffer buffer(ba);
 
 	buffer.open(IO_WriteOnly);
 	m_pixmap.save(&buffer, m_format);
-	basket()->saveToFile(fullPath(), ba);
+	return basket()->saveToFile(fullPath(), ba);
 }
 
 
@@ -804,16 +812,17 @@ void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const
 		painter->drawPixmap(0, 0, frame);  // TODO: Scall down
 }
 
-void AnimationContent::loadFromFile()
+bool AnimationContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
-	setMovie(QMovie(fullPath()));
+	return setMovie(QMovie(fullPath()));
 }
 
 
-void AnimationContent::saveToFile()
+bool AnimationContent::saveToFile()
 {
 	// Impossible!
+	return false;
 }
 
 
@@ -830,16 +839,18 @@ QString AnimationContent::messageWhenOpenning(OpenMessage where)
 	}
 }
 
-void AnimationContent::setMovie(const QMovie &movie)
+bool AnimationContent::setMovie(const QMovie &movie)
 {
 	if (!m_movie.isNull()) {
 		// Disconnect?
+		return false;
 	}
 	m_movie = movie;
 	m_movie.connectUpdate( this, SLOT(movieUpdated(const QRect&)) );
 	m_movie.connectResize( this, SLOT(movieResized(const QSize&)) );
 	m_movie.connectStatus( this, SLOT(movieStatus(int))           );
 	contentChanged(  m_movie.framePixmap().width() + 1  ); // TODO
+	return true;
 }
 
 void AnimationContent::movieUpdated(const QRect&)
@@ -917,9 +928,10 @@ void FileContent::paint(QPainter *painter, int width, int height, const QColorGr
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
-void FileContent::loadFromFile()
+bool FileContent::loadFromFile()
 {
 	setFileName(fileName()); // File changed: get new file preview!
+	return true;
 }
 
 void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
@@ -1314,11 +1326,12 @@ void LauncherContent::paint(QPainter *painter, int width, int height, const QCol
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
-void LauncherContent::loadFromFile() // TODO: saveToFile() ?? Is it possible?
+bool LauncherContent::loadFromFile() // TODO: saveToFile() ?? Is it possible?
 {
 	DEBUG_WIN << "Loading LauncherContent From " + basket()->folderName() + fileName();
 	KService service(fullPath());
 	setLauncher(service.name(), service.icon(), service.exec());
+	return true;
 }
 
 
@@ -1742,7 +1755,7 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QColo
 	                  Qt::AlignAuto | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
 }
 
-void UnknownContent::loadFromFile()
+bool UnknownContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading UnknownContent From " + basket()->folderName() + fileName();
 	QFile file(fullPath());
@@ -1767,6 +1780,7 @@ void UnknownContent::loadFromFile()
 
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 	contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
+	return true;
 }
 
 void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
