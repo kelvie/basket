@@ -1319,7 +1319,6 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 #ifdef HAVE_LIBGPGME
 	m_gpg = new KGpgMe();
 #endif
-	enableActions();
 }
 
 void Basket::contentsMoved()
@@ -5035,33 +5034,35 @@ bool Basket::saveToFile(const QString& fileName, const QString& string, bool isL
 bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 {
 	QFile file(fileName);
-	bool result = false;
+	bool result = true;
+	QByteArray tmp;
 
-	if (file.open(IO_WriteOnly)){
 #ifdef HAVE_LIBGPGME
-		if(isEncrypted())
+	if(isEncrypted())
+	{
+		QString key = QString::null;
+
+		if(m_encryptionType == PrivateKeyEncryption)
 		{
-			QByteArray tmp;
-			QString key = QString::null;
-
-			if(m_encryptionType == PrivateKeyEncryption)
-			{
-				key = m_encryptionKey;
-				// public key doesn't need password
-				m_gpg->setText("", false);
-			}
-			else
-				m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
-
-			if(m_gpg->encrypt(array, &tmp, key))
-				result = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
+			key = m_encryptionKey;
+			// public key doesn't need password
+			m_gpg->setText("", false);
 		}
 		else
-			result = (file.writeBlock(array) == (Q_LONG)array.size());
+			m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
+
+		result = m_gpg->encrypt(array, &tmp, key);
+	}
+	else
+		tmp = array;
+
 #else
-		if(!isEncrypted())
-			result = (file.writeBlock(array) == (Q_LONG)array.size());
+	result = !isEncrypted();
+	if(result)
+		tmp = array;
 #endif
+	if (result && (result = file.open(IO_WriteOnly))){
+		result = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
 		file.close();
 	}
 	return result;
