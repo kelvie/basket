@@ -289,7 +289,7 @@ class Basket : public QScrollView, public QToolTip
 	void load();
 	void loadProperties(const QDomElement &properties);
 	void saveProperties(QDomDocument &document, QDomElement &properties);
-	void save();
+	bool save();
   public:
 	bool isEncrypted();
 	bool isLocked()        { return m_locked;          };
@@ -300,10 +300,10 @@ class Basket : public QScrollView, public QToolTip
 	bool loadFromFile(const QString &fileName, QByteArray* array);
 	bool saveToFile(const QString& fileName, const QByteArray& array);
 	bool saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding = false);
-	void setProtection(int type, QString key);
+	bool setProtection(int type, QString key);
 	int  encryptionType()  { return m_encryptionType;  };
 	QString encryptionKey(){ return m_encryptionKey;   };
-	void saveAgain();
+	bool saveAgain();
 
 /// BACKGROUND:
   private:

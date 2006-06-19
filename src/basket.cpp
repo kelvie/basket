@@ -1062,10 +1062,10 @@ void Basket::enableActions()
 
 }
 
-void Basket::save()
+bool Basket::save()
 {
 	if (!m_loaded)
-		return;
+		return false;
 
 	DEBUG_WIN << "Basket[" + folderName() + "]: Saving...";
 
@@ -1086,7 +1086,11 @@ void Basket::save()
 
 	// Write to Disk:
 	if(!saveToFile(fullPath() + "/.basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+	{
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
+		return false;
+	}
+	return true;
 }
 
 void Basket::load()
@@ -4909,26 +4913,44 @@ void Basket::updateModifiedNotes()
 	m_modifiedFiles.clear();
 }
 
-void Basket::setProtection(int type, QString key)
+bool Basket::setProtection(int type, QString key)
 {
 	if(m_encryptionType != type || m_encryptionKey != key)
 	{
+		int savedType = m_encryptionType;
+		QString savedKey = m_encryptionKey;
+
 		m_encryptionType = type;
 		m_encryptionKey = key;
 		m_gpg->clearCache();
 
-		saveAgain();
-		emit propertiesChanged(this);
+		if(saveAgain())
+		{
+			emit propertiesChanged(this);
+		}
+		else
+		{
+			m_encryptionType = savedType;
+			m_encryptionKey = savedKey;
+			m_gpg->clearCache();
+			return false;
+		}
 	}
+	return true;
 }
 
-void Basket::saveAgain()
+bool Basket::saveAgain()
 {
 	// Re-encrypt basket file:
-	save();
+	if(!save())
+		return false;
 	// Re-encrypt every note files recursively:
 	FOR_EACH_NOTE (note)
-		note->saveAgain();
+	{
+		if(!note->saveAgain())
+			return false;
+	}
+	return true;
 }
 
 bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)

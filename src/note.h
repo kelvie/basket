@@ -150,7 +150,7 @@ class Note
 	QString addedStringDate();
 	QString lastModificationStringDate();
 	QString toText(const QString &cuttedFullPath);
-	void saveAgain();
+	bool saveAgain();
   protected:
 	void setContent(NoteContent *content);
 	friend class NoteContent;

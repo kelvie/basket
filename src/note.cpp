@@ -2779,12 +2779,19 @@ Note* Note::parentPrimaryNote()
 	return primary;
 }
 
-void Note::saveAgain()
+bool Note::saveAgain()
 {
 	if(content())
-		content()->saveToFile();
+	{
+		if(!content()->saveToFile())
+			return false;
+	}
 	FOR_EACH_CHILD (child)
-		child->saveAgain();
+	{
+		if(!child->saveAgain())
+			return false;
+	}
+	return true;
 }
 
 #if 0
