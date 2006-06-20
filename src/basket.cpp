@@ -4940,16 +4940,23 @@ bool Basket::setProtection(int type, QString key)
 
 bool Basket::saveAgain()
 {
+	bool result = false;
+
+	m_watcher->stopScan();
 	// Re-encrypt basket file:
-	if(!save())
-		return false;
+	result = save();
 	// Re-encrypt every note files recursively:
-	FOR_EACH_NOTE (note)
+	if(result)
 	{
-		if(!note->saveAgain())
-			return false;
+		FOR_EACH_NOTE (note)
+		{
+			result = note->saveAgain();
+			if(!result)
+				break;
+		}
 	}
-	return true;
+	m_watcher->startScan();
+	return result;
 }
 
 bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)
