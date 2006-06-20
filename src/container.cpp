@@ -2641,6 +2641,7 @@ void Container::updateNotesActions()
 	bool isLocked             = currentBasket()->isLocked();
 	bool oneSelected          = currentBasket()->countSelecteds() == 1;
 	bool oneOrSeveralSelected = currentBasket()->countSelecteds() >= 1;
+	bool severalSelected      = currentBasket()->countSelecteds() >= 2;
 
 	// FIXME: m_actCheckNotes is also modified in void Container::areSelectedNotesCheckedChanged(bool checked)
 	//        bool Basket::areSelectedNotesChecked() should return false if bool Basket::showCheckBoxes() is false
@@ -2663,7 +2664,7 @@ void Container::updateNotesActions()
 	m_actOpenNote        ->setEnabled(              oneOrSeveralSelected );
 	m_actOpenNoteWith    ->setEnabled(              oneSelected          ); // TODO: oneOrSeveralSelected IF SAME TYPE
 	m_actSaveNoteAs      ->setEnabled(              oneSelected          ); // IDEM?
-	m_actGroup           ->setEnabled( !isLocked && oneOrSeveralSelected );
+	m_actGroup           ->setEnabled( !isLocked && severalSelected && !currentBasket()->selectionIsOneGroup() );
 	m_actUngroup         ->setEnabled( !isLocked && oneSelected          );
 	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected );

@@ -355,12 +355,17 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("E&xport tags in texts"), page1);
 	m_exportTextTags->setChecked(Settings::exportTextTags());
+
+
+	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
+	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	HelpLabel *hLabel = new HelpLabel(
 			i18n("When does this apply?"),
 			i18n("<p>It does apply when you copy and paste, or drag and drop notes to a text editor.</p>"
 			     "<p>If enabled, this property allows you to paste the tags as textual equivalents.<br>"
 			     "For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
-			     "representing an empty  checkbox and a checked box.</p>"),
+			     "representing an empty  checkbox and a checked box.</p>") +
+			"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
 			page1);
 	hLay->addWidget(m_exportTextTags);
 	hLay->addWidget(hLabel);
@@ -598,7 +603,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
 	HelpLabel *helpV = new HelpLabel(i18n("How to group a new note?"),
 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
-		"<p><img src=\"__resource_help_insertion_line.png\"></p>" +
+		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
 		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
 		     "Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
 		     "Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"), m_groupOnInsertionLineWidget);
