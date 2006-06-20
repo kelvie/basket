@@ -292,6 +292,7 @@ class Basket : public QScrollView, public QToolTip
 	bool save();
   public:
 	bool isEncrypted();
+	bool isFileEncrypted();
 	bool isLocked()        { return m_locked;          };
 	void lock();
 	bool isLoaded()        { return m_loaded;          };

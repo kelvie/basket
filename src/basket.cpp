@@ -2826,7 +2826,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	// Start the load the first time the basket is shown:
 	if (!m_loadingLaunched)
 	{
-		if(!isEncrypted())
+		if(!isFileEncrypted())
 			QTimer::singleShot( 0, this, SLOT(load()) );
 		else
 			m_locked = true;
@@ -4970,7 +4970,10 @@ bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocal
 bool Basket::isEncrypted()
 {
 	return (m_encryptionType != NoEncryption);
-	/*
+}
+
+bool Basket::isFileEncrypted()
+{
 	QFile file(fullPath() + "/.basket");
 
 	if (file.open(IO_ReadOnly)){
@@ -4978,10 +4981,9 @@ bool Basket::isEncrypted()
 
 		file.readLine(line, 32);
 		if(line.startsWith("-----BEGIN PGP MESSAGE-----"))
-			return true;
+		return true;
 	}
 	return false;
-	*/
 }
 
 bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
