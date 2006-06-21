@@ -2629,6 +2629,20 @@ Note* Note::firstSelected()
 	return first;
 }
 
+Note* Note::lastSelected()
+{
+	if (isSelected())
+		return this;
+
+	Note *last = 0, *tmp = 0;
+	FOR_EACH_CHILD (child) {
+		tmp = child->lastSelected();
+		if (tmp)
+			last = tmp;
+	}
+	return last;
+}
+
 Note* Note::selectedGroup()
 {
 	if (isGroup() && allSelected() && count() == basket()->countSelecteds())

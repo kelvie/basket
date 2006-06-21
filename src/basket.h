@@ -485,11 +485,14 @@ class Basket : public QScrollView, public QToolTip
 	void noteMoveOnBottom();
 	void noteMoveNoteUp();
 	void noteMoveNoteDown();
+	void moveSelectionTo(Note *here, bool below);
   public:
 	enum CopyMode { CopyToClipboard, CopyToSelection, CutToClipboard };
 	void doCopy(CopyMode copyMode);
 	bool selectionIsOneGroup();
 	Note* selectedGroup();
+	Note* firstSelected();
+	Note* lastSelected();
 
 /// NOTES EDITION:
   private:

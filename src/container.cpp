@@ -2669,7 +2669,7 @@ void Container::updateNotesActions()
 	m_actGroup           ->setEnabled( !isLocked && !selectedGroup );
 	m_actUngroup         ->setEnabled( !isLocked &&  selectedGroup && !selectedGroup->isColumn());
 	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected );
-	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected );
+	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected ); // TODO: Disable when unavailable!
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveOnBottom    ->setEnabled( !isLocked && oneOrSeveralSelected );
 

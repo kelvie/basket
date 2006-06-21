@@ -4036,6 +4036,28 @@ bool Basket::selectionIsOneGroup()
 	return (selectedGroup() != 0);
 }
 
+Note* Basket::firstSelected()
+{
+	Note *first = 0;
+	FOR_EACH_NOTE (note) {
+		first = note->firstSelected();
+		if (first)
+			return first;
+	}
+	return 0;
+}
+
+Note* Basket::lastSelected()
+{
+	Note *last = 0, *tmp = 0;
+	FOR_EACH_NOTE (note) {
+		tmp = note->lastSelected();
+		if (tmp)
+			last = tmp;
+	}
+	return last;
+}
+
 void Basket::noteGroup()
 {
 	// Nothing to do?
@@ -4047,12 +4069,7 @@ void Basket::noteGroup()
 		return;
 
 	// Get the first selected note: we will group selected items just before:
-	Note *first = 0;
-	FOR_EACH_NOTE (note) {
-		first = note->firstSelected();
-		if (first)
-			break;
-	}
+	Note *first = firstSelected();
 
 	m_loaded = false; // Hack to avoid notes to be unselected and new notes to be selected:
 
@@ -4174,12 +4191,44 @@ void Basket::noteMoveOnBottom()
 	save();
 }
 
+void Basket::moveSelectionTo(Note *here, bool below/* = true*/)
+{
+	NoteSelection *selection = selectedNotes();
+	unplugSelection(selection);
+	// Replug the notes:
+	Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
+	if (isColumnsLayout())
+		insertNote(fakeNote, here, (below ? Note::BottomInsert : Note::TopInsert), QPoint(), /*animateNewPosition=*/false);
+	else {
+		// TODO: Also allow to move notes on top of a group!!!!!!!
+		insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+	}
+	insertSelection(selection, fakeNote);
+	unplugNote(fakeNote);
+	selectSelection(selection);
+	relayoutNotes(true);
+	save();
+}
+
 void Basket::noteMoveNoteUp()
 {
+
+	// TODO: Move between columns, even if they are empty !!!!!!!
+
+	// TODO: if first note of a group, move just above the group! And let that even if there is no note before that group!!!
+
+	Note *first    = firstSelected();
+	Note *previous = first->prevShownInStack();
+	if (previous)
+		moveSelectionTo(previous, /*below=*/false);
 }
 
 void Basket::noteMoveNoteDown()
 {
+	Note *first = lastSelected();
+	Note *next  = first->nextShownInStack();
+	if (next)
+		moveSelectionTo(next, /*below=*/true);
 }
 
 void Basket::wheelEvent(QWheelEvent *event)

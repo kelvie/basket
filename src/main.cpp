@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
 
 	/******* ALPHA 1 ***********/
-	KConfig *config = KGlobal::config();
+	/*KConfig *config = KGlobal::config();
 	config->setGroup("Development Version");
 	QString keyName = "bnp060b1__messagesAlreadyShown";
 	if (!config->readBoolEntry(keyName, false)) {
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 		if (reply != KMessageBox::Yes)
 			exit(0);
 		config->writeEntry(keyName, true);
-	}
+	}*/
 	/***************************/
 
 
