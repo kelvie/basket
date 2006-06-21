@@ -203,6 +203,7 @@ class Basket : public QScrollView, public QToolTip
 	inline bool  isFreeLayout()    { return m_columnsCount <= 0;         }
 	inline bool  isMindMap()       { return isFreeLayout() && m_mindMap; }
 	Note* resizingNote()           { return m_resizingNote;              }
+	void  deleteNotes();
 	Note* lastNote();
 	void setDisposition(int disposition, int columnCount);
 	void equalizeColumnSizes();

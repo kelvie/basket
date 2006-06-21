@@ -151,6 +151,8 @@ class Note
 	QString lastModificationStringDate();
 	QString toText(const QString &cuttedFullPath);
 	bool saveAgain();
+	void deleteChilds();
+
   protected:
 	void setContent(NoteContent *content);
 	friend class NoteContent;

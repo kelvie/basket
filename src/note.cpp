@@ -80,6 +80,8 @@ Note::Note(Basket *parent)
 
 Note::~Note()
 {
+	delete m_content;
+	deleteChilds();
 }
 
 QString Note::addedStringDate()
@@ -2777,6 +2779,18 @@ Note* Note::parentPrimaryNote()
 	while (primary->parentNote())
 		primary = primary->parentNote();
 	return primary;
+}
+
+void Note::deleteChilds()
+{
+	Note *child = firstChild();
+
+	while (child)
+	{
+		Note *tmp = child->next();
+		delete child;
+		child = tmp;
+	}
 }
 
 bool Note::saveAgain()

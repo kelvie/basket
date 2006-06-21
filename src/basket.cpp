@@ -1126,6 +1126,7 @@ void Basket::load()
 
 	loadProperties(properties); // Since we are loading, this time the background image will also be loaded!
 	// Now that the background image is loaded and subscribed, we display it during the load process:
+	delete doc;
 	updateContents();
 	kapp->processEvents();
 
@@ -2708,6 +2709,19 @@ Note* Basket::lastNote()
 	return note;
 }
 
+void Basket::deleteNotes()
+{
+	Note *note = m_firstNote;
+
+	while (note)
+	{
+		Note *tmp = note->next();
+		delete note;
+		note = tmp;
+	}
+	m_firstNote = 0;
+}
+
 Note* Basket::noteAt(int x, int y)
 {
 //NO:
@@ -2759,7 +2773,7 @@ Basket::~Basket()
 #ifdef HAVE_LIBGPGME
 	delete m_gpg;
 #endif
-	// TODO: Delete Notes (and then NoteContents)!
+	deleteNotes();
 }
 
 void Basket::viewportResizeEvent(QResizeEvent *event)
@@ -5083,8 +5097,7 @@ void Basket::lock()
 	m_gpg->clearCache();
 	m_locked = true;
 	enableActions();
-	// TODO: delete notes here;
-	m_firstNote = 0;
+	deleteNotes();
 	m_loaded = false;
 	m_loadingLaunched = false;
 	updateContents();
