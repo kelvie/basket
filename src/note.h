@@ -314,7 +314,7 @@ class Note
 	Note* parentPrimaryNote(); // TODO: There are places in the code where this methods is hand-copied / hand-inlined instead of called.
 
 	Note* firstSelected();
-	bool selectionIsOneGroup();
+	Note* selectedGroup();
 	void groupIn(Note *group);
 
 	bool tryExpandParent();

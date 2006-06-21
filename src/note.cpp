@@ -2629,18 +2629,18 @@ Note* Note::firstSelected()
 	return first;
 }
 
-bool Note::selectionIsOneGroup()
+Note* Note::selectedGroup()
 {
 	if (isGroup() && allSelected() && count() == basket()->countSelecteds())
-		return true;
+		return this;
 
 	FOR_EACH_CHILD (child) {
-		bool oneGroupSelected = child->selectionIsOneGroup();
-		if (oneGroupSelected)
-			return true;
+		Note *selectedGroup = child->selectedGroup();
+		if (selectedGroup)
+			return selectedGroup;
 	}
 
-	return false;
+	return 0;
 }
 
 void Note::groupIn(Note *group)

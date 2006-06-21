@@ -1087,7 +1087,7 @@ bool Basket::save()
 	// Write to Disk:
 	if(!saveToFile(fullPath() + "/.basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
 	{
-		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
+		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to save</font>!";
 		return false;
 	}
 	return true;
@@ -1107,28 +1107,26 @@ void Basket::load()
 	if (loadFromFile(fullPath() + "/.basket", &content)) {
 		doc = new QDomDocument("basket");
 		if ( ! doc->setContent(content) ) {
+			DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to parse XML</font>!";
 			delete doc;
 			doc = 0;
 		}
 	}
 	if(isEncrypted())
 	{
-		m_button->setDown(false);
+		m_locked = false;
 		DEBUG_WIN << "Basket is encrypted.";
 	}
 	if ( ! doc) {
-		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
+		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to load</font>!";
 		return;
 	}
-
-	m_locked = false;
 
 	QDomElement docElem = doc->documentElement();
 	QDomElement properties = XMLWork::getElement(docElem, "properties");
 
 	loadProperties(properties); // Since we are loading, this time the background image will also be loaded!
 	// Now that the background image is loaded and subscribed, we display it during the load process:
-	delete doc;
 	updateContents();
 	kapp->processEvents();
 
@@ -2511,7 +2509,8 @@ void Basket::doHoverEffects(const QPoint &pos)
 
 void Basket::mouseEnteredEditorWidget()
 {
-	doHoverEffects(editedNote(), Note::Content, QPoint());
+	if (!m_lockedHovering && !kapp->activePopupWidget())
+		doHoverEffects(editedNote(), Note::Content, QPoint());
 }
 
 void Basket::removeInserter()
@@ -2711,27 +2710,6 @@ Note* Basket::lastNote()
 	return note;
 }
 
-void Basket::deleteNotes()
-{
-	Note *note = m_firstNote;
-
-	while (note)
-	{
-		Note *tmp = note->next();
-		delete note;
-		note = tmp;
-	}
-	m_firstNote = 0;
-	m_resizingNote = 0;
-	m_movingNote = 0;
-	m_focusedNote = 0;
-	m_startOfShiftSelectionNote = 0;
-	m_tagPopupNote = 0;
-	m_clickedToInsert = 0;
-	m_savedClickedToInsert = 0;
-	m_hoveredNote = 0;
-}
-
 Note* Basket::noteAt(int x, int y)
 {
 //NO:
@@ -2783,7 +2761,7 @@ Basket::~Basket()
 #ifdef HAVE_LIBGPGME
 	delete m_gpg;
 #endif
-	deleteNotes();
+	// TODO: Delete Notes (and then NoteContents)!
 }
 
 void Basket::viewportResizeEvent(QResizeEvent *event)
@@ -2898,6 +2876,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		}
 		if(m_decryptBox->isHidden())
 		{
+			m_button->setDown(false);
 			m_decryptBox->show();
 		}
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
@@ -4042,14 +4021,19 @@ void Basket::noteSaveAs()
 	KIO::copy(url, KURL(fileName));
 }
 
-bool Basket::selectionIsOneGroup()
+Note* Basket::selectedGroup()
 {
 	FOR_EACH_NOTE (note) {
-		bool oneGroupSelected = note->selectionIsOneGroup();
-		if (oneGroupSelected)
-			return true;
+		Note *selectedGroup = note->selectedGroup();
+		if (selectedGroup)
+			return selectedGroup;
 	}
-	return false;
+	return 0;
+}
+
+bool Basket::selectionIsOneGroup()
+{
+	return (selectedGroup() != 0);
 }
 
 void Basket::noteGroup()
@@ -4097,14 +4081,97 @@ void Basket::noteGroup()
 
 void Basket::noteUngroup()
 {
+	Note *group = selectedGroup();
+	if (group && !group->isColumn())
+		ungroupNote(group);
+	save();
+}
+
+void Basket::unplugSelection(NoteSelection *selection)
+{
+	for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked())
+		unplugNote(toUnplug->note);
+}
+
+void Basket::insertSelection(NoteSelection *selection, Note *after)
+{
+	for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked()) {
+		if (toUnplug->note->isGroup()) {
+			Note *group = new Note(this);
+			insertNote(group, after, Note::BottomInsert, QPoint(), /*animateNewPosition=*/false);
+			Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
+			insertNote(fakeNote, group, Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+			insertSelection(toUnplug->firstChild, fakeNote);
+			unplugNote(fakeNote);
+			after = group;
+		} else {
+			Note *note = toUnplug->note;
+			note->setPrev(0);
+			note->setNext(0);
+			insertNote(note, after, Note::BottomInsert, QPoint(), /*animateNewPosition=*/true);
+			after = note;
+		}
+	}
+}
+
+void Basket::selectSelection(NoteSelection *selection)
+{
+	for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked()) {
+		if (toUnplug->note->isGroup())
+			selectSelection(toUnplug);
+		else
+			toUnplug->note->setSelected(true);
+	}
 }
 
 void Basket::noteMoveOnTop()
 {
+	// TODO: Get the group containing the selected notes and first move inside the group, then inside parent group, then in the basket
+	// TODO: Move on top/bottom... of the column or basjet
+
+	NoteSelection *selection = selectedNotes();
+	unplugSelection(selection);
+	// Replug the notes:
+	Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
+	if (isColumnsLayout()) {
+		if (firstNote()->firstChild())
+			insertNote(fakeNote, firstNote()->firstChild(), Note::TopInsert, QPoint(), /*animateNewPosition=*/false);
+		else
+			insertNote(fakeNote, firstNote(), Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+	} else {
+		// TODO: Also allow to move notes on top of a group!!!!!!!
+		insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+	}
+	insertSelection(selection, fakeNote);
+	unplugNote(fakeNote);
+	selectSelection(selection);
+	relayoutNotes(true);
+	save();
 }
 
 void Basket::noteMoveOnBottom()
 {
+
+	// TODO: Duplicate code: void noteMoveOn();
+
+	// TODO: Get the group containing the selected notes and first move inside the group, then inside parent group, then in the basket
+	// TODO: Move on top/bottom... of the column or basjet
+
+	NoteSelection *selection = selectedNotes();
+	unplugSelection(selection);
+	// Replug the notes:
+	Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
+	if (isColumnsLayout())
+		insertNote(fakeNote, firstNote(), Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+	else {
+		// TODO: Also allow to move notes on top of a group!!!!!!!
+		insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+	}
+	insertSelection(selection, fakeNote);
+	unplugNote(fakeNote);
+	selectSelection(selection);
+	relayoutNotes(true);
+	save();
 }
 
 void Basket::noteMoveNoteUp()
@@ -5106,7 +5173,8 @@ void Basket::lock()
 	m_gpg->clearCache();
 	m_locked = true;
 	enableActions();
-	deleteNotes();
+	// TODO: delete notes here;
+	m_firstNote = 0;
 	m_loaded = false;
 	m_loadingLaunched = false;
 	updateContents();

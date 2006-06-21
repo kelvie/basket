@@ -2649,6 +2649,8 @@ void Container::updateNotesActions()
 //	                             currentBasket()->areSelectedNotesChecked() &&
 //	                             currentBasket()->showCheckBoxes()             );
 
+	Note *selectedGroup = (severalSelected ? currentBasket()->selectedGroup() : 0);
+
 	m_actEditNote            ->setEnabled( !isLocked && oneSelected && !currentBasket()->isDuringEdit() );
 	if (currentBasket()->redirectEditActions()) {
 		m_actCutNote         ->setEnabled( currentBasket()->hasSelectedTextInEditor() );
@@ -2664,8 +2666,8 @@ void Container::updateNotesActions()
 	m_actOpenNote        ->setEnabled(              oneOrSeveralSelected );
 	m_actOpenNoteWith    ->setEnabled(              oneSelected          ); // TODO: oneOrSeveralSelected IF SAME TYPE
 	m_actSaveNoteAs      ->setEnabled(              oneSelected          ); // IDEM?
-	m_actGroup           ->setEnabled( !isLocked && severalSelected && !currentBasket()->selectionIsOneGroup() );
-	m_actUngroup         ->setEnabled( !isLocked && oneSelected          );
+	m_actGroup           ->setEnabled( !isLocked && !selectedGroup );
+	m_actUngroup         ->setEnabled( !isLocked &&  selectedGroup && !selectedGroup->isColumn());
 	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );

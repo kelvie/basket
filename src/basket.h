@@ -223,6 +223,10 @@ class Basket : public QScrollView, public QToolTip
 	/// And this one do almost all the above methods depending on the context:
 	void insertNote(Note *note, Note *clicked, int zone, const QPoint &pos = QPoint(), bool animateNewPosition = false);
 	void insertCreatedNote(Note *note);
+	/// And working with selections:
+	void unplugSelection(NoteSelection *selection);
+	void insertSelection(NoteSelection *selection, Note *after);
+	void selectSelection(NoteSelection *selection);
   private:
 	void preparePlug(Note *note);
   private:
@@ -485,6 +489,7 @@ class Basket : public QScrollView, public QToolTip
 	enum CopyMode { CopyToClipboard, CopyToSelection, CutToClipboard };
 	void doCopy(CopyMode copyMode);
 	bool selectionIsOneGroup();
+	Note* selectedGroup();
 
 /// NOTES EDITION:
   private:
