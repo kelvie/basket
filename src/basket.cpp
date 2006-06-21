@@ -1113,13 +1113,15 @@ void Basket::load()
 	}
 	if(isEncrypted())
 	{
-		m_locked = false;
+		m_button->setDown(false);
 		DEBUG_WIN << "Basket is encrypted.";
 	}
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED</font>!";
 		return;
 	}
+
+	m_locked = false;
 
 	QDomElement docElem = doc->documentElement();
 	QDomElement properties = XMLWork::getElement(docElem, "properties");
@@ -2720,6 +2722,14 @@ void Basket::deleteNotes()
 		note = tmp;
 	}
 	m_firstNote = 0;
+	m_resizingNote = 0;
+	m_movingNote = 0;
+	m_focusedNote = 0;
+	m_startOfShiftSelectionNote = 0;
+	m_tagPopupNote = 0;
+	m_clickedToInsert = 0;
+	m_savedClickedToInsert = 0;
+	m_hoveredNote = 0;
 }
 
 Note* Basket::noteAt(int x, int y)
@@ -2888,7 +2898,6 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		}
 		if(m_decryptBox->isHidden())
 		{
-			m_button->setDown(false);
 			m_decryptBox->show();
 		}
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
