@@ -98,7 +98,7 @@ class KGpgSelKey : public KDialogBase
 		}
 };
 
-KGpgMe::KGpgMe() : m_ctx(0)
+KGpgMe::KGpgMe() : m_ctx(0), m_useGnuPGAgent(true)
 {
 	init(GPGME_PROTOCOL_OpenPGP);
 	if(gpgme_new(&m_ctx)) {
@@ -356,10 +356,26 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 
 void KGpgMe::setPassphraseCb()
 {
-	char *agent_info = 0;
+	bool agent = false;
+	QString agent_info;
 
 	agent_info = getenv("GPG_AGENT_INFO");
-	if (!(agent_info && strchr (agent_info, ':')))
+
+	if(m_useGnuPGAgent)
+	{
+		if (agent_info.find(':'))
+			agent = true;
+		if(agent_info.startsWith("disable:"))
+			setenv("GPG_AGENT_INFO", agent_info.mid(8), 1);
+	}
+	else
+	{
+		if(!agent_info.startsWith("disable:"))
+			setenv("GPG_AGENT_INFO", "disable:" + agent_info, 1);
+	}
+	if (agent)
+		gpgme_set_passphrase_cb(m_ctx, 0, 0);
+	else
 		gpgme_set_passphrase_cb(m_ctx, passphraseCb, this);
 }
 

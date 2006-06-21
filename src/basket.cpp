@@ -5156,6 +5156,7 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
 			QByteArray tmp(*array);
 
 			tmp.detach();
+			m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent());
 			if(m_encryptionType == PrivateKeyEncryption)
 				m_gpg->setText(i18n("Password for Private Key:"), false);
 			else
@@ -5190,6 +5191,7 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 	{
 		QString key = QString::null;
 
+		m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent());
 		if(m_encryptionType == PrivateKeyEncryption)
 		{
 			key = m_encryptionKey;

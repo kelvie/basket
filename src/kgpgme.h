@@ -52,6 +52,7 @@ class KGpgMe
 		QString selectKey(QString previous = QString::null);
 		KGpgKeyList keys(bool privateKeys = false) const;
 		void setText(QString text, bool saving) { m_text = text; m_saving = saving; };
+		void setUseGnuPGAgent(bool use) { m_useGnuPGAgent = use; setPassphraseCb(); };
 		QString text() const { return m_text; };
 		bool saving() const { return m_saving; };
 		void clearCache();
@@ -66,6 +67,7 @@ class KGpgMe
 		gpgme_ctx_t m_ctx;
 		QString m_text;
 		bool m_saving;
+		bool m_useGnuPGAgent;
 		QCString m_cache;
 
 		void init(gpgme_protocol_t proto);

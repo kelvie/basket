@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -55,6 +55,7 @@ bool    Settings::s_playAnimations       = true;
 bool    Settings::s_showNotesToolTip     = true; // TODO: RENAME: useBasketTooltips
 bool    Settings::s_bigNotes             = false;
 bool    Settings::s_exportTextTags       = true;
+bool    Settings::s_useGnuPGAgent        = false;
 bool    Settings::s_treeOnLeft           = true;
 bool    Settings::s_filterOnTop          = true;
 int     Settings::s_defImageX            = 300;
@@ -120,6 +121,7 @@ void Settings::loadConfig()
 	setShowNotesToolTip(     config->readBoolEntry("showNotesToolTip",     true)  );
 	setBigNotes(             config->readBoolEntry("bigNotes",             false) );
 	setExportTextTags(       config->readBoolEntry("exportTextTags",       true)  );
+	setUseGnuPGAgent(        config->readBoolEntry("useGnuPGAgent",        false) );
 	setBlinkedFilter(        config->readBoolEntry("blinkedFilter",        false) );
 	setUseSystray(           config->readBoolEntry("useSystray",           true)  );
 	setShowIconInSystray(    config->readBoolEntry("showIconInSystray",    false) );
@@ -198,6 +200,7 @@ void Settings::saveConfig()
 	config->writeEntry( "showNotesToolTip",     showNotesToolTip()     );
 	config->writeEntry( "bigNotes",             bigNotes()             );
 	config->writeEntry( "exportTextTags",       exportTextTags()       );
+	config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
 	config->writeEntry( "blinkedFilter",        blinkedFilter()        );
 	config->writeEntry( "useSystray",           useSystray()           );
 	config->writeEntry( "showIconInSystray",    showIconInSystray()    );
@@ -356,7 +359,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	m_exportTextTags = new QCheckBox(i18n("E&xport tags in texts"), page1);
 	m_exportTextTags->setChecked(Settings::exportTextTags());
 
-
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	HelpLabel *hLabel = new HelpLabel(
@@ -371,6 +373,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	hLay->addWidget(hLabel);
 	hLay->addStretch();
 	layout->addLayout(hLay);
+
+	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG &agent in password protection"), page1);
+	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
+	layout->addWidget(m_useGnuPGAgent);
 
 	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
@@ -709,6 +715,7 @@ void SettingsDialog::slotApply()
 	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
 	Settings::setBigNotes(             m_bigNotes->isChecked()             );
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
+	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()       );
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()      );
 	Settings::setMiddleAction(         m_middleAction->currentItem()       );
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );

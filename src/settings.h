@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,7 +49,7 @@ class RunCommandRequester;
 class IconSizeCombo;
 
 /** Handle all global variables (to avoid lot of extern declarations)
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class Settings // FIXME: Distaptch new config events ?
 {
@@ -61,6 +61,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_showNotesToolTip;
 	static bool    s_bigNotes;
 	static bool    s_exportTextTags;
+	static bool    s_useGnuPGAgent;
 	static bool    s_usePassivePopup;
 	static int     s_middleAction;         // O:Nothing ; 1:Paste ; 2:Text ; 3:Html ; 4:Image ; 5:Link ; 6:Launcher ; 7:Color
 	static bool    s_groupOnInsertionLine;
@@ -107,6 +108,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline bool    showNotesToolTip()     { return s_showNotesToolTip;     }
 	static inline bool    bigNotes()             { return s_bigNotes;             }
 	static inline bool    exportTextTags()       { return s_exportTextTags;       }
+	static inline bool    useGnuPGAgent()        { return s_useGnuPGAgent;        }
 	static inline bool    blinkedFilter()        { return s_blinkedFilter;        }
 	static inline bool    useSystray()           { return s_useSystray;           }
 	static inline bool    showIconInSystray()    { return s_showIconInSystray;    }
@@ -191,6 +193,7 @@ class Settings // FIXME: Distaptch new config events ?
 	}
 	static void setBigNotes(bool big);
 	static inline void setExportTextTags(bool yes)              { s_exportTextTags       = yes;         }
+	static inline void setUseGnuPGAgent(bool yes)               { s_useGnuPGAgent        = yes;         }
 	static inline void setPlayAnimations(bool play)             { s_playAnimations       = play;        }
 	static inline void setBlinkedFilter(bool blinked)           { s_blinkedFilter        = blinked;     }
 	static inline void setStartDocked(bool docked)              { s_startDocked          = docked;      }
@@ -237,7 +240,7 @@ class Settings // FIXME: Distaptch new config events ?
 };
 
 /** Provide a dialog for modify application settings
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class SettingsDialog : public KDialogBase
 {
@@ -258,6 +261,7 @@ class SettingsDialog : public KDialogBase
 	QCheckBox           *m_showNotesToolTip;
 	QCheckBox           *m_bigNotes;
 	QCheckBox           *m_exportTextTags;
+	QCheckBox           *m_useGnuPGAgent;
 	QCheckBox           *m_usePassivePopup;
 	QComboBox           *m_middleAction;
 	QCheckBox           *m_groupOnInsertionLine;
