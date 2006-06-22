@@ -2712,6 +2712,26 @@ Note* Basket::lastNote()
 	return note;
 }
 
+void Basket::deleteNotes()
+{
+	Note *note = m_firstNote;
+
+	while (note){
+		Note *tmp = note->next();
+		delete note;
+		note = tmp;
+	}
+	m_firstNote = 0;
+	m_resizingNote = 0;
+	m_movingNote = 0;
+	m_focusedNote = 0;
+	m_startOfShiftSelectionNote = 0;
+	m_tagPopupNote = 0;
+	m_clickedToInsert = 0;
+	m_savedClickedToInsert = 0;
+	m_hoveredNote = 0;
+}
+
 Note* Basket::noteAt(int x, int y)
 {
 //NO:
@@ -2763,7 +2783,7 @@ Basket::~Basket()
 #ifdef HAVE_LIBGPGME
 	delete m_gpg;
 #endif
-	// TODO: Delete Notes (and then NoteContents)!
+	deleteNotes();
 }
 
 void Basket::viewportResizeEvent(QResizeEvent *event)
@@ -5226,8 +5246,7 @@ void Basket::lock()
 	m_gpg->clearCache();
 	m_locked = true;
 	enableActions();
-	// TODO: delete notes here;
-	m_firstNote = 0;
+	deleteNotes();
 	m_loaded = false;
 	m_loadingLaunched = false;
 	updateContents();
