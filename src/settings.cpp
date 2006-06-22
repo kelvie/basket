@@ -40,6 +40,7 @@
 #include <kaboutdata.h>
 #include <kmimetype.h>
 #include <kstandarddirs.h>
+#include <kgpgme.h>
 
 #include "linklabel.h"
 #include "settings.h"
@@ -201,7 +202,10 @@ void Settings::saveConfig()
 	config->writeEntry( "showNotesToolTip",     showNotesToolTip()     );
 	config->writeEntry( "bigNotes",             bigNotes()             );
 	config->writeEntry( "exportTextTags",       exportTextTags()       );
-	config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
+#ifdef HAVE_LIBGPGME
+	if(KGpgMe::isGnuPGAgentAvailable())
+		config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
+#endif
 	config->writeEntry( "blinkedFilter",        blinkedFilter()        );
 	config->writeEntry( "useSystray",           useSystray()           );
 	config->writeEntry( "showIconInSystray",    showIconInSystray()    );
@@ -379,6 +383,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &password protected baskets"), page1);
 	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
 	layout->addWidget(m_useGnuPGAgent);
+
+	if(KGpgMe::isGnuPGAgentAvailable())
+	{
+		m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
+	}
+	else
+	{
+		m_useGnuPGAgent->setChecked(false);
+		m_useGnuPGAgent->setEnabled(false);
+	}
 #endif
 	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
@@ -717,7 +731,7 @@ void SettingsDialog::slotApply()
 	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
 	Settings::setBigNotes(             m_bigNotes->isChecked()             );
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
-	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()       );
+	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()        );
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()      );
 	Settings::setMiddleAction(         m_middleAction->currentItem()       );
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
