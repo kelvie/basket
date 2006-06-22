@@ -1114,19 +1114,21 @@ void Basket::load()
 	}
 	if(isEncrypted())
 	{
-		m_locked = false;
+		m_button->setDown(false);
 		DEBUG_WIN << "Basket is encrypted.";
 	}
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to load</font>!";
 		return;
 	}
+	m_locked = false;
 
 	QDomElement docElem = doc->documentElement();
 	QDomElement properties = XMLWork::getElement(docElem, "properties");
 
 	loadProperties(properties); // Since we are loading, this time the background image will also be loaded!
 	// Now that the background image is loaded and subscribed, we display it during the load process:
+	delete doc;
 	updateContents();
 	kapp->processEvents();
 
