@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <config.h>
 #include <qlayout.h>
 #include <qhbox.h>
 #include <qvbox.h>
@@ -374,10 +375,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
+#ifdef HAVE_LIBGPGME
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &password protected baskets"), page1);
 	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
 	layout->addWidget(m_useGnuPGAgent);
-
+#endif
 	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
