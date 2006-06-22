@@ -374,7 +374,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
-	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG &agent in password protection"), page1);
+	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &password protected baskets"), page1);
 	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
 	layout->addWidget(m_useGnuPGAgent);
 

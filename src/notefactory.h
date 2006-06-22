@@ -45,7 +45,7 @@ namespace NoteFactory
 	  * In some cases, the returned note can be a group containing several notes or the first note of a chained list.
 	  * The method Basket::TODO() can insert several grouped or chained notes without problem.
 	  */
-	Note* createNoteText(     const QString &text,     Basket *parent);
+	Note* createNoteText(     const QString &text,     Basket *parent, bool reallyPlainText = false);
 	Note* createNoteHtml(     const QString &html,     Basket *parent);
 	Note* createNoteLink(     const KURL    &url,      Basket *parent);
 	Note* createNoteLink(     const KURL    &url,      const QString &title, Basket *parent);

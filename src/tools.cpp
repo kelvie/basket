@@ -34,7 +34,9 @@
 
 QString Tools::textToHTML(const QString &text)
 {
-	if (text.isEmpty() || text == " " || text == "&nbsp;")
+	if (text.isEmpty())
+		return "<p></p>";
+	if (/*text.isEmpty() ||*/ text == " " || text == "&nbsp;")
 		return "<p>&nbsp;</p>";
 
 	// convertFromPlainText() replace "\n\n" by "</p>\n<p>": we don't want that

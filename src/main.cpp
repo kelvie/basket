@@ -140,6 +140,16 @@ int main(int argc, char *argv[])
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 
 
+	/******* RICH TEXTS INSTEAD OF PLAIN TEXTS ***********/
+	KMessageBox::information(0,
+		"<h1>This version use rich text instead of plain text notes!</h1>"
+		"<p>Be rassured: every drawbacks of rich text notes have been solved. You can happily enjoy theire power.</p>"
+		"<p>This version is a <b>test to see how well people will receive the abandon of text notes, <u>in order to remove them completely in the final version</u></b>. "
+		"Please test the application during a few days. And then, if you are disapointed, please mail me, or click the colored hands bellow every window title bar to send your feedback.</p>",
+		"Rich Text Notes now Standard", "richTextNotesAreNowStandard");
+	/***************************/
+
+
 	/* Custom data folder */
 	QCString customDataFolder = KCmdLineArgs::parsedArgs()->getOption("data-folder");
 	if (customDataFolder != 0 && !customDataFolder.isEmpty())
@@ -218,11 +228,11 @@ int main(int argc, char *argv[])
 
 	globalAccel->insert( "global_note_add_text", i18n("Insert text note"),
 	                     i18n("Add a text note to the current basket without having to open main window."),
-	                     Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
+	                     "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
 	                     Global::mainContainer, SLOT(addNoteText()),        true, true );
 	globalAccel->insert( "global_note_add_html", i18n("Insert rich text note"),
 	                     i18n("Add a rich text note to the current basket without having to open main window."),
-	                     "", "",
+	                     Qt::CTRL+Qt::ALT+Qt::Key_H, Qt::CTRL+Qt::ALT+Qt::Key_H, //"", "",
 	                     Global::mainContainer, SLOT(addNoteHtml()),        true, true );
 	globalAccel->insert( "global_note_add_image", i18n("Insert image note"),
 	                     i18n("Add an image note to the current basket without having to open main window."),

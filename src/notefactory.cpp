@@ -63,12 +63,19 @@
 
 /** Create notes from scratch (just a content) */
 
-Note* NoteFactory::createNoteText(const QString &text, Basket *parent)
+Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool reallyPlainText/* = false*/)
 {
 	Note *note = new Note(parent);
-	TextContent *content = new TextContent(note, createFileForNewNote(parent, "txt"));
-	content->setText(text);
-	content->saveToFile();
+	if (reallyPlainText) {
+		TextContent *content = new TextContent(note, createFileForNewNote(parent, "txt"));
+		content->setText(text);
+		content->saveToFile();
+	} else {
+		HtmlContent *content = new HtmlContent(note, createFileForNewNote(parent, "html"));
+		QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
+		content->setHtml(html);
+		content->saveToFile();
+	}
 	return note;
 }
 
@@ -920,7 +927,7 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)
 	QPixmap *pixmap;
 	switch (type) {
 		case NoteType::Text:
-			return NoteFactory::createNoteText("", parent);
+			return NoteFactory::createNoteText("", parent, /*reallyPlainText=*/true);
 		case NoteType::Html:
 			return NoteFactory::createNoteHtml("", parent);
 		case NoteType::Image:

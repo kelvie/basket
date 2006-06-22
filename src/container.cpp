@@ -2035,8 +2035,8 @@ void Container::setupActions()
 	connect( insertEmptyMapper,  SIGNAL(mapped(int)), this, SLOT(insertEmpty(int))  );
 	connect( insertWizardMapper, SIGNAL(mapped(int)), this, SLOT(insertWizard(int)) );
 
-	m_actInsertText   = new KAction( i18n("&Text"),      "text",     "Insert", actionCollection(), "insert_text"     );
-	m_actInsertHtml   = new KAction( i18n("&Rich Text"), "html",     "Ctrl+H", actionCollection(), "insert_html"     );
+	m_actInsertText   = new KAction( i18n("&Text"),      "text",     "Ctrl+T", actionCollection(), "insert_text"     );
+	m_actInsertHtml   = new KAction( i18n("&Rich Text"), "html",     "Insert", actionCollection(), "insert_html"     );
 	m_actInsertLink   = new KAction( i18n("&Link"),      "link",     "Ctrl+Y", actionCollection(), "insert_link"     );
 	m_actInsertImage  = new KAction( i18n("&Image"),     "image",    "",       actionCollection(), "insert_image"    );
 	m_actInsertColor  = new KAction( i18n("&Color"),     "colorset", "",       actionCollection(), "insert_color"    );
