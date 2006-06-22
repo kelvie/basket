@@ -354,6 +354,15 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 	return (err == 0);
 }
 
+bool KGpgMe::isGnuPGAgentAvailable()
+{
+	QString agent_info = getenv("GPG_AGENT_INFO");
+
+	if (agent_info.find(':'))
+		return true;
+	return false;
+}
+
 void KGpgMe::setPassphraseCb()
 {
 	bool agent = false;

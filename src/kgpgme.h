@@ -62,6 +62,7 @@ class KGpgMe
 		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
 
 		static QString checkForUtf8(QString txt);
+		static bool isGnuPGAgentAvailable();
 
 	private:
 		gpgme_ctx_t m_ctx;
