@@ -65,6 +65,8 @@
 #include <qdesktopwidget.h>
 #include <kwin.h>
 
+#include <kprogress.h>
+
 #include "container.h"
 #include "basket.h"
 #include "basketproperties.h"
@@ -1057,6 +1059,32 @@ void BasketTree::closeAllEditors()
 		item->basket()->closeEditor();
 		++it;
 	}
+}
+
+bool BasketTree::convertTexts()
+{
+	bool convertedNotes = false;
+	KProgressDialog dialog(
+			/*parent=*/0,
+			/*name=*/"",
+			/*caption=*/i18n("Plain Text Notes Conversion"),
+			/*text=*/i18n("Converting plain text notes to rich text ones..."),
+			/*modal=*/true);
+	dialog.progressBar()->setTotalSteps(basketCount());
+	dialog.show(); //setMinimumDuration(50/*ms*/);
+
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = (BasketListViewItem*)(it.current());
+		if (item->basket()->convertTexts())
+			convertedNotes = true;
+		dialog.progressBar()->advance(1);
+		if (dialog.wasCancelled())
+			break;
+		++it;
+	}
+
+	return convertedNotes;
 }
 
 /** isRunning is to avoid recursive calls because this method can be called
@@ -2109,6 +2137,43 @@ void Container::setupActions()
 	actAppConfig = KStdAction::preferences( this, SLOT(showSettingsDialog()), actionCollection() );
 
 	InlineEditors::instance()->initToolBars(this);
+
+	// FOR_BETA_PURPOSE:
+	m_convertTexts = new KAction( i18n("Convert text notes to rich text notes"), "compfile", "",
+	                              this, SLOT(convertTexts()), actionCollection(), "beta_convert_texts" );
+}
+
+void Container::convertTexts()
+{
+	int result = KMessageBox::questionYesNoCancel(
+		this,
+		i18n(
+			"<p>This will convert every text notes into rich text notes.<br>"
+			"The content of the notes will not change and you will be able to apply formating to those notes.</p>"
+			"<p>This process cannot be reverted back: you will not be able to convert the rich text notes to plain text ones later.</p>"
+			"<p>As a beta-tester, you are strongly encouraged to do the convert process because it is to test if plain text notes are still needed.<br>"
+			"If nobody complain about not having plain text notes anymore, then the final version is likely to not support plain text notes anymore.</p>"
+			"<p><b>Which basket notes do you want to convert?</b></p>"
+		),
+		i18n("Convert Text Notes"),
+		KGuiItem(i18n("Only in the Current Basket")),
+		KGuiItem(i18n("In Every Baskets"))
+	);
+	if (result == KMessageBox::Cancel)
+		return;
+
+	// TODO: Please wait. This can take several minutes.
+
+	bool conversionsDone;
+	if (result == KMessageBox::Yes)
+		conversionsDone = currentBasket()->convertTexts();
+	else
+		conversionsDone = Global::basketTree->convertTexts();
+
+	if (conversionsDone)
+		KMessageBox::information(this, i18n("The text notes have been converted to rich text ones."), i18n("Conversion Finished"));
+	else
+		KMessageBox::information(this, i18n("There is no text notes to convert."), i18n("Conversion Finished"));
 }
 
 QPopupMenu* Container::popupMenu(const QString &menuName)

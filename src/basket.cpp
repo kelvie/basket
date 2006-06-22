@@ -4080,6 +4080,24 @@ Note* Basket::lastSelected()
 	return last;
 }
 
+bool Basket::convertTexts()
+{
+	m_watcher->stopScan();
+	bool convertedNotes = false;
+
+	if (!isLoaded())
+		load();
+
+	FOR_EACH_NOTE (note)
+		if (note->convertTexts())
+			convertedNotes = true;
+
+	if (convertedNotes)
+		save();
+	m_watcher->startScan();
+	return convertedNotes;
+}
+
 void Basket::noteGroup()
 {
 	// Nothing to do?

@@ -107,13 +107,15 @@
   <text>Main Toolbar</text>
   <Action name="basket_new_menu" />
   <Action name="basket_properties" />
-  <Separator lineSeparator="true" name="separator_1" />
+  <Separator lineSeparator="true" name="separator_0" />
   <Action name="edit_cut" />
   <Action name="edit_copy" />
   <Action name="edit_paste" />
   <Action name="edit_delete" />
-  <Separator lineSeparator="true" name="separator_2" />
+  <Separator lineSeparator="true" name="separator_1" />
   <Action name="note_group" />
+  <Separator lineSeparator="true" name="separator_2" />
+  <Action name="beta_convert_texts" />
  </ToolBar>
  <ToolBar newline="false" position="Bottom" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
   <text>Rich Text Edit Toolbar</text>
@@ -127,8 +129,7 @@
   <Separator lineSeparator="true" name="separator_2" />
   <Action name="richtext_super" />
   <Action name="richtext_sub" />
--->
-  <Separator lineSeparator="true" name="separator_3" />
+-->  <Separator lineSeparator="true" name="separator_3" />
   <Action name="richtext_left" />
   <Action name="richtext_center" />
   <Action name="richtext_right" />

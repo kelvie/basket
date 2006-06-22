@@ -324,6 +324,8 @@ class Note
 	int distanceOnLeftRight(Note *note, int side);
 	int distanceOnTopBottom(Note *note, int side);
 
+	bool convertTexts();
+
 	void debug();
 
   public:

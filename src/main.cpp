@@ -141,12 +141,14 @@ int main(int argc, char *argv[])
 
 
 	/******* RICH TEXTS INSTEAD OF PLAIN TEXTS ***********/
-	KMessageBox::information(0,
+	KMessageBox::information(0, i18n(
 		"<h1>This version use rich text instead of plain text notes!</h1>"
 		"<p>Be rassured: every drawbacks of rich text notes have been solved. You can happily enjoy theire power.</p>"
 		"<p>This version is a <b>test to see how well people will receive the abandon of text notes, <u>in order to remove them completely in the final version</u></b>. "
-		"Please test the application during a few days. And then, if you are disapointed, please mail me, or click the colored hands bellow every window title bar to send your feedback.</p>",
-		"Rich Text Notes now Standard", "richTextNotesAreNowStandard");
+		"Please test the application during a few days. And then, if you are disapointed, please mail me, or click the colored hands bellow every window title bar to send your feedback.</p>"
+		"<p>Your plain text notes were <b>not</b> converted.<br>"
+		"At any moment, you can click the last icon in the toolbar to <i>convert the notes of only one or all baskets</i>. You are even <u>encouraged</u> to do so.</p>"),
+		"Rich Text Notes now Standard", "richTextNotesNowStandard");
 	/***************************/
 
 

@@ -144,6 +144,7 @@ class BasketTree : public QSplitter
 	int basketCount(QListViewItem *parent = 0);
 	bool canFold();
 	bool canExpand();
+	bool convertTexts();
   public slots:
 	void updateBasketListViewItem(Basket *basket);
 	void save();
@@ -428,6 +429,7 @@ class Container : public KMainWindow
 	void slotNewToolbarConfig();
   public slots:
 	void countSelectedsChanged();
+	void convertTexts();
   public: // TODO: Migrate to private
 	KAction       *actNewBasket;
 	KAction       *actNewSubBasket;
@@ -492,6 +494,9 @@ class Container : public KMainWindow
 	KToggleAction *m_actShowStatusbar;
 	//
 	QPtrList<KAction> m_insertActions;
+
+	KAction       *m_convertTexts; // FOR_BETA_PURPOSE
+
   private:
 	QVBoxLayout        *m_layout;
 	BasketTree         *m_baskets;

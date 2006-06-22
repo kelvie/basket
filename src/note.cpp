@@ -2822,6 +2822,25 @@ bool Note::saveAgain()
 	return true;
 }
 
+bool Note::convertTexts()
+{
+	bool convertedNotes = false;
+
+	if (content() && content()->lowerTypeName() == "text") {
+		QString text = ((TextContent*)content())->text();
+		QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
+		basket()->saveToFile(fullPath(), html, /*isLocalEncoding=*/true);
+		setContent( new HtmlContent(this, content()->fileName()) );
+		convertedNotes = true;
+	}
+
+	FOR_EACH_CHILD (child)
+		if (child->convertTexts())
+			convertedNotes = true;
+
+	return convertedNotes;
+}
+
 #if 0
 
 /** Note */

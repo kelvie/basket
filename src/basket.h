@@ -591,6 +591,7 @@ class Basket : public QScrollView, public QToolTip
 /// REIMPLEMENTED:
   public:
 	void deleteFiles();
+	bool convertTexts();
 
 
   public:
