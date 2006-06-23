@@ -1113,12 +1113,10 @@ void Basket::load()
 		}
 	}
 	if(isEncrypted())
-	{
-		m_button->setDown(false);
 		DEBUG_WIN << "Basket is encrypted.";
-	}
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to load</font>!";
+		m_loadingLaunched = false;
 		return;
 	}
 	m_locked = false;
@@ -2874,7 +2872,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			m_button = new QPushButton( m_decryptBox, "button" );
 			m_button->setText( i18n( "&Unlock" ) );
 			layout->addWidget( m_button, 1, 2 );
-			connect( m_button, SIGNAL( pressed() ), this, SLOT( unlock() ) );
+			connect( m_button, SIGNAL( clicked() ), this, SLOT( unlock() ) );
 #endif
 			QLabel* label = new QLabel( m_decryptBox, "label" );
 			QString text = "<b>" + i18n("Password protected basket.") + "</b><br/><br/>";
@@ -2898,7 +2896,6 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		}
 		if(m_decryptBox->isHidden())
 		{
-			m_button->setDown(false);
 			m_decryptBox->show();
 		}
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
