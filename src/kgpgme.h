@@ -57,8 +57,8 @@ class KGpgMe
 		bool saving() const { return m_saving; };
 		void clearCache();
 
-		bool encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
-			QString keyid = QString::null) const;
+		bool encrypt(const QByteArray& inBuffer, Q_ULONG length,
+					 QByteArray* outBuffer, QString keyid = QString::null) const;
 		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
 
 		static QString checkForUtf8(QString txt);

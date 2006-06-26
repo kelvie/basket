@@ -5252,11 +5252,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		else
 			m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
 
-		// FIXME: Quite expensive!:
-		QByteArray ba = array;
-		ba.resize(length);
-		success = m_gpg->encrypt(ba, &tmp, key);
-		//success = m_gpg->encrypt(array, &tmp, key);
+		success = m_gpg->encrypt(array, length, &tmp, key);
 		length = tmp.size();
 	}
 	else

@@ -232,8 +232,8 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 	return keys;
 }
 
-bool KGpgMe::encrypt(const QByteArray& inBuffer, QByteArray* outBuffer,
-QString keyid /* = QString::null */) const
+bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
+					 QByteArray* outBuffer, QString keyid /* = QString::null */) const
 {
 	gpgme_error_t err = 0;
 	gpgme_data_t in = 0, out = 0;
@@ -243,7 +243,7 @@ QString keyid /* = QString::null */) const
 
 	outBuffer->resize(0);
 	if(m_ctx) {
-		err = gpgme_data_new_from_mem(&in, inBuffer.data(), inBuffer.size(), 1);
+		err = gpgme_data_new_from_mem(&in, inBuffer.data(), length, 1);
 		if(!err) {
 			err = gpgme_data_new(&out);
 			if(!err) {
