@@ -32,6 +32,7 @@
 #include <kdirwatch.h>
 #include <kaction.h>
 #include <kio/job.h>
+#include <kdialogbase.h>
 
 #include "filter.h"
 #include "note.h" // For Note::Zone
@@ -48,6 +49,21 @@ class Tag;
 #ifdef HAVE_LIBGPGME
 class KGpgMe;
 #endif
+
+/** Provide a dialog to avert the user the disk is full.
+  * This dialog is modal and is shown until the user has made space on the disk.
+  * @author S�astien Laot
+  */
+class DiskErrorDialog : public KDialogBase
+{
+  Q_OBJECT
+  public:
+	DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent = 0);
+	~DiskErrorDialog();
+  protected:
+	void closeEvent(QCloseEvent *event);
+	void keyPressEvent(QKeyEvent*);
+};
 
 
 /** A list of flags to set how notes are inserted/plugged in the basket
@@ -302,10 +318,14 @@ class Basket : public QScrollView, public QToolTip
 	void lock();
 	bool isLoaded()        { return m_loaded;          };
 	bool loadingLaunched() { return m_loadingLaunched; };
-	bool loadFromFile(const QString &fileName, QString* string, bool isLocalEncoding = false);
-	bool loadFromFile(const QString &fileName, QByteArray* array);
-	bool saveToFile(const QString& fileName, const QByteArray& array);
-	bool saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding = false);
+	bool loadFromFile(const QString &fullPath, QString* string, bool isLocalEncoding = false);
+	bool loadFromFile(const QString &fullPath, QByteArray* array);
+	bool saveToFile(const QString& fullPath, const QByteArray& array);
+	bool saveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	bool saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
+	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array);
+	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	static bool safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
 	bool setProtection(int type, QString key);
 	int  encryptionType()  { return m_encryptionType;  };
 	QString encryptionKey(){ return m_encryptionKey;   };

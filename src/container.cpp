@@ -831,15 +831,16 @@ void BasketTree::save()
 	save(m_tree->firstChild(), document, root);
 
 	// Write to Disk:
-	QFile file(Global::basketsFolder() + "baskets.xml");
-	if (file.open(IO_WriteOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
-		QString xml = document.toString();
-		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-		stream << xml;
-		file.close();
-	}
+	Basket::safelySaveToFile(Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
+// 	QFile file(Global::basketsFolder() + "baskets.xml");
+// 	if (file.open(IO_WriteOnly)) {
+// 		QTextStream stream(&file);
+// 		stream.setEncoding(QTextStream::UnicodeUTF8);
+// 		QString xml = document.toString();
+// 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+// 		stream << xml;
+// 		file.close();
+// 	}
 }
 
 void BasketTree::save(QListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement)

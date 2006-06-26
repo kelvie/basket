@@ -43,6 +43,10 @@
 #include <kfiledialog.h>
 #include <kaboutdata.h>
 #include <klineedit.h>
+#include <ksavefile.h>
+#include <qvbox.h>
+
+#include <unistd.h> // For sleep()
 
 #include <kpopupmenu.h>
 #include <kiconloader.h>
@@ -1085,7 +1089,7 @@ bool Basket::save()
 	root.appendChild(notes);
 
 	// Write to Disk:
-	if(!saveToFile(fullPath() + "/.basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+	if(!saveToFile(fullPath() + ".basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
 	{
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to save</font>!";
 		return false;
@@ -1104,7 +1108,7 @@ void Basket::load()
 	QDomDocument *doc = 0;
 	QString content;
 
-	if (loadFromFile(fullPath() + "/.basket", &content)) {
+	if (loadFromFile(fullPath() + ".basket", &content)) {
 		doc = new QDomDocument("basket");
 		if ( ! doc->setContent(content) ) {
 			DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to parse XML</font>!";
@@ -5141,11 +5145,11 @@ bool Basket::saveAgain()
 	return result;
 }
 
-bool Basket::loadFromFile(const QString &fileName, QString *string, bool isLocalEncoding)
+bool Basket::loadFromFile(const QString &fullPath, QString *string, bool isLocalEncoding)
 {
 	QByteArray array;
 
-	if(loadFromFile(fileName, &array)){
+	if(loadFromFile(fullPath, &array)){
 		if (isLocalEncoding)
 			*string = QString::fromLocal8Bit(array.data(), array.size());
 		else
@@ -5163,7 +5167,7 @@ bool Basket::isEncrypted()
 
 bool Basket::isFileEncrypted()
 {
-	QFile file(fullPath() + "/.basket");
+	QFile file(fullPath() + ".basket");
 
 	if (file.open(IO_ReadOnly)){
 		QString line;
@@ -5175,9 +5179,9 @@ bool Basket::isFileEncrypted()
 	return false;
 }
 
-bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
+bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 {
-	QFile file(fileName);
+	QFile file(fullPath);
 	bool encrypted = false;
 
 	if (file.open(IO_ReadOnly)){
@@ -5217,16 +5221,20 @@ bool Basket::loadFromFile(const QString &fileName, QByteArray *array)
 		return false;
 }
 
-bool Basket::saveToFile(const QString& fileName, const QString& string, bool isLocalEncoding)
+bool Basket::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
 	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
-	return saveToFile(fileName, bytes);
+	return saveToFile(fullPath, bytes, bytes.length() - 1);
 }
 
-bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
+bool Basket::saveToFile(const QString& fullPath, const QByteArray& array)
 {
-	QFile file(fileName);
-	bool result = true;
+	return saveToFile(fullPath, array, array.size());
+}
+
+bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+{
+	bool success = true;
 	QByteArray tmp;
 
 #ifdef HAVE_LIBGPGME
@@ -5244,21 +5252,143 @@ bool Basket::saveToFile(const QString& fileName, const QByteArray& array)
 		else
 			m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
 
-		result = m_gpg->encrypt(array, &tmp, key);
+		// FIXME: Quite expensive!:
+		QByteArray ba = array;
+		ba.resize(length);
+		success = m_gpg->encrypt(ba, &tmp, key);
+		//success = m_gpg->encrypt(array, &tmp, key);
+		length = tmp.size();
 	}
 	else
 		tmp = array;
 
 #else
-	result = !isEncrypted();
-	if(result)
+	success = !isEncrypted();
+	if(success)
 		tmp = array;
 #endif
-	if (result && (result = file.open(IO_WriteOnly))){
-		result = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
+	/*if (success && (success = file.open(IO_WriteOnly))){
+		success = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
 		file.close();
+	}*/
+
+	if (success)
+		return safelySaveToFile(fullPath, tmp, length);
+	else
+		return false;
+}
+
+/** Same as saveToFile(), but it is static, and does not crypt the data if needed.
+  * Basically, to save a file owned by a basket (a basket or a note file), use saveToFile().
+  * But to save another file (eg. the basket hierarchy), use this safelySaveToFile() static method.
+  */
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+{
+	// Here, we take a double protection:
+	// - We use KSaveFile to write atomically to the file (either it's a success or the file is untouched)
+	// - We show a modal dialog to the user when no disk space is left or access is denied and retry every couple of seconds
+
+	// Static, because safelySaveToFile() can be called a second time while blocked.
+	// Example:
+	// User type something and press Enter: safelySaveToFile() is called and block.
+	// Three seconds later, a timer ask to save changes, and this second safelySaveToFile() block too.
+	// Do not show the dialog twice in this case!
+	static DiskErrorDialog *dialog = 0;
+
+	//std::cout << "---------- Saving " << fullPath << ":" << std::endl;
+	bool openSuccess;
+	bool closeSuccess;
+	bool errorWhileWritting;
+	do {
+		KSaveFile saveFile(fullPath);
+		//std::cout << "==>>" << std::endl << "SAVE FILE CREATED: " << strerror(saveFile.status()) << std::endl;
+		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
+		if (openSuccess) {
+			saveFile.file()->writeBlock(array, length);
+			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
+			closeSuccess = saveFile.close();
+			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;
+		}
+		errorWhileWritting = (!openSuccess || !closeSuccess || saveFile.status() != 0);
+		if (errorWhileWritting) {
+			//std::cout << "ERROR DETECTED" << std::endl;
+			if (dialog == 0) {
+				//std::cout << "Opening dialog for " << fullPath << std::endl;
+				dialog = new DiskErrorDialog(
+					(openSuccess
+						? i18n("Insuficient Disk Space to Save Basket Data")
+						: i18n("Wrong Basket File Permissions")
+					),
+					(openSuccess
+						? i18n("Please remove files on the disk <b>%1</b> to let the application safely save your changes.")
+							.arg(KIO::findPathMountPoint(fullPath))
+						: i18n("File permissions are bad for <b>%1</b>. Please check you have write access to it and the parent folders.")
+							.arg(fullPath)
+					),
+					kapp->activeWindow()
+				);
+			}
+			if (!dialog->isShown())
+				dialog->show();
+			const int retryDelay = 1000/*ms*/;
+			const int sleepDelay = 50/*ms*/;
+			for (int i = 0; i < retryDelay / sleepDelay; ++i) {
+				kapp->processEvents();
+				usleep(sleepDelay);
+			}
+		}
+	} while (errorWhileWritting);
+	if (dialog) {
+		delete dialog;
+		dialog = 0;
 	}
-	return result;
+
+	return true; // Hum...?!
+}
+
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
+{
+	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
+}
+
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array)
+{
+	return safelySaveToFile(fullPath, array, array.size());
+}
+
+DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent)
+ : KDialogBase(KDialogBase::Plain, i18n("Save Error"),
+               (KDialogBase::ButtonCode)0, (KDialogBase::ButtonCode)0, parent, /*name=*/"DiskError")
+{
+	//enableButtonCancel(false);
+	//enableButtonClose(false);
+	//enableButton(Close, false);
+	//enableButtonOK(false);
+	setModal(true);
+	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
+	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIcon::NoGroup, 64, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+	QLabel *iconLabel  = new QLabel(plainPage());
+	iconLabel->setPixmap(icon);
+	iconLabel->setFixedSize(iconLabel->sizeHint());
+	QLabel *label = new QLabel("<p><nobr><b><font size='+1'>" + titleMessage + "</font></b></nobr></p><p>" + message + "</p>", plainPage());
+	if (!icon.isNull())
+		layout->addWidget(iconLabel);
+	layout->addWidget(label);
+}
+
+DiskErrorDialog::~DiskErrorDialog()
+{
+}
+
+void DiskErrorDialog::closeEvent(QCloseEvent *event)
+{
+	event->ignore();
+}
+
+void DiskErrorDialog::keyPressEvent(QKeyEvent*)
+{
+	// Escape should not close the window...
 }
 
 void Basket::lock()
