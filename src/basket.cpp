@@ -5224,7 +5224,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 bool Basket::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
 	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
-	return saveToFile(fullPath, bytes, bytes.length() - 1);
+	return saveToFile(fullPath, bytes, bytes.length());
 }
 
 bool Basket::saveToFile(const QString& fullPath, const QByteArray& array)
