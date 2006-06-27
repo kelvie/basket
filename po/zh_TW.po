@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
-"POT-Creation-Date: 2006-06-18 16:49+0200\n"
+"POT-Creation-Date: 2006-06-27 22:21+0200\n"
 "PO-Revision-Date: 2004-05-05 23:27+0800\n"
 "Last-Translator: Rex <rexforce@hotmail.com>\n"
 "Language-Team: 正體中文 <zh@li.org>\n"
@@ -16,260 +16,284 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.3.1\n"
 
-#: basket.cpp:517
+#: basket.cpp:521
 msgid "The new note does not match the filter and is hidden."
 msgstr ""
 
-#: basket.cpp:518
+#: basket.cpp:522
 msgid "A new note does not match the filter and is hidden."
 msgstr ""
 
-#: basket.cpp:519
+#: basket.cpp:523
 msgid "Some new notes do not match the filter and are hidden."
 msgstr ""
 
-#: basket.cpp:520
+#: basket.cpp:524
 msgid "The new notes do not match the filter and are hidden."
 msgstr ""
 
-#: basket.cpp:1500
+#: basket.cpp:1508
 msgid ""
 "_: The verb (Group New Note)\n"
 "Group"
 msgstr ""
 
-#: basket.cpp:1500
+#: basket.cpp:1508
 msgid ""
 "_: The verb (Insert New Note)\n"
 "Insert"
 msgstr ""
 
-#: basket.cpp:2193
+#: basket.cpp:2201
 msgid ""
 "This message should never appear. If it's the case, this program is buggy! "
 "Please report the bug to the developer."
 msgstr ""
 
-#: basket.cpp:2609 basket.cpp:2654 basket.cpp:2657
+#: basket.cpp:2618 basket.cpp:2663 basket.cpp:2666
 msgid ""
 "Insert note here\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2627
+#: basket.cpp:2636
 msgid "Resize those columns"
 msgstr ""
 
-#: basket.cpp:2629
+#: basket.cpp:2638
 msgid "Resize this group"
 msgstr ""
 
-#: basket.cpp:2630
+#: basket.cpp:2639
 #, fuzzy
 msgid "Resize this note"
 msgstr "確認刪除"
 
-#: basket.cpp:2631
+#: basket.cpp:2640
 #, fuzzy
 msgid "Select or move this note"
 msgstr "確認刪除"
 
-#: basket.cpp:2632
+#: basket.cpp:2641
 msgid "Select or move this group"
 msgstr ""
 
-#: basket.cpp:2633
+#: basket.cpp:2642
 #, fuzzy
 msgid "Assign or remove tags from this note"
 msgstr "確認刪除"
 
-#: basket.cpp:2635
+#: basket.cpp:2644
 #, c-format
 msgid "<b>Assigned Tags</b>: %1"
 msgstr ""
 
-#: basket.cpp:2642
+#: basket.cpp:2651
 msgid "%1, %2"
 msgstr ""
 
-#: basket.cpp:2649
+#: basket.cpp:2658
 msgid "Expand this group"
 msgstr ""
 
-#: basket.cpp:2650
+#: basket.cpp:2659
 msgid "Collapse this group"
 msgstr ""
 
-#: basket.cpp:2655
+#: basket.cpp:2664
 msgid ""
 "Group note with the one below\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2656
+#: basket.cpp:2665
 msgid ""
 "Group note with the one above\n"
 "Right click for more options"
 msgstr ""
 
-#: basket.cpp:2672
+#: basket.cpp:2681
 msgid "Added"
 msgstr ""
 
-#: basket.cpp:2673
+#: basket.cpp:2682
 msgid "Last Modification"
 msgstr ""
 
-#: basket.cpp:2681
+#: basket.cpp:2690
 msgid ""
 "_: of the form 'key: value'\n"
 "<b>%1</b>: %2"
 msgstr ""
 
-#: basket.cpp:2684
+#: basket.cpp:2693
 msgid "Click on the right to group instead of insert"
 msgstr ""
 
-#: basket.cpp:2686
+#: basket.cpp:2695
 msgid "Click on the left to insert instead of group"
 msgstr ""
 
-#: basket.cpp:2848
+#: basket.cpp:2877
 #, fuzzy
 msgid "&Unlock"
 msgstr "鎖定(&L)\"%1\""
 
-#: basket.cpp:2853
+#: basket.cpp:2882
 msgid "Password protected basket."
 msgstr ""
 
-#: basket.cpp:2855
+#: basket.cpp:2884
 msgid "Press Unlock to view it."
 msgstr ""
 
-#: basket.cpp:2857
+#: basket.cpp:2886
 #, c-format
 msgid "Encryption is not supported by<br/>this version of %1."
 msgstr ""
 
-#: basket.cpp:2898 container.cpp:2610 container.cpp:3053
+#: basket.cpp:2926 container.cpp:2676 container.cpp:3122
 msgid "Loading..."
 msgstr ""
 
-#: basket.cpp:3139 basket.cpp:3160 basket.cpp:3271
+#: basket.cpp:3167 basket.cpp:3188 basket.cpp:3299
 #, fuzzy
 msgid "&Customize..."
 msgstr "預覽(&V)"
 
-#: basket.cpp:3141 basket.cpp:3162
+#: basket.cpp:3169 basket.cpp:3190
 msgid "&Filter by this Tag"
 msgstr ""
 
-#: basket.cpp:3163
+#: basket.cpp:3191
 msgid "Filter by this &State"
 msgstr ""
 
-#: basket.cpp:3245
+#: basket.cpp:3273
 #, fuzzy
 msgid "Tags"
 msgstr "儲存目標"
 
-#: basket.cpp:3269
+#: basket.cpp:3297
 msgid "&Assign new Tag..."
 msgstr ""
 
-#: basket.cpp:3270
+#: basket.cpp:3298
 #, fuzzy
 msgid "&Remove All"
 msgstr "新建basket"
 
-#: basket.cpp:3796
+#: basket.cpp:3824
 #, fuzzy, c-format
 msgid ""
 "_n: <qt>Do you really want to delete this note?</qt>\n"
 "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
 msgstr "<qt>您真的確定要刪除<b>%1</b> ?</qt>"
 
-#: basket.cpp:3798
+#: basket.cpp:3826
 msgid ""
 "_n: Delete Note\n"
 "Delete Notes"
 msgstr ""
 
-#: basket.cpp:3896
+#: basket.cpp:3924
 #, fuzzy
 msgid ""
 "_n: Copied note to clipboard.\n"
 "Copied notes to clipboard."
 msgstr "複製至剪貼簿"
 
-#: basket.cpp:3897
+#: basket.cpp:3925
 #, fuzzy
 msgid ""
 "_n: Cut note to clipboard.\n"
 "Cut notes to clipboard."
 msgstr "複製至剪貼簿"
 
-#: basket.cpp:3898
+#: basket.cpp:3926
 #, fuzzy
 msgid ""
 "_n: Copied note to selection.\n"
 "Copied notes to selection."
 msgstr "貼上至所選擇"
 
-#: basket.cpp:3944 basket.cpp:3993
+#: basket.cpp:3972 basket.cpp:4021
 #, fuzzy
 msgid "Unable to open this note."
 msgstr "確認刪除"
 
-#: basket.cpp:3968
+#: basket.cpp:3996
 msgid "You are not authorized to open this file."
 msgstr ""
 
-#: basket.cpp:4010
+#: basket.cpp:4038
 #, fuzzy
 msgid "Save to File"
 msgstr "載入自檔案(&d)"
 
-#: basket.cpp:4263 basket.cpp:4264
+#: basket.cpp:4446 basket.cpp:4447
 msgid ""
 "_: HTML export folder (files)\n"
 "%1_files"
 msgstr ""
 
-#: basket.cpp:4270 basket.cpp:4271
+#: basket.cpp:4453 basket.cpp:4454
 msgid ""
 "_: HTML export folder (icons)\n"
 "icons"
 msgstr ""
 
-#: basket.cpp:4272 basket.cpp:4273
+#: basket.cpp:4455 basket.cpp:4456
 msgid ""
 "_: HTML export folder (images)\n"
 "images"
 msgstr ""
 
-#: basket.cpp:4274 basket.cpp:4275
+#: basket.cpp:4457 basket.cpp:4458
 msgid ""
 "_: HTML export folder (data)\n"
 "data"
 msgstr ""
 
-#: basket.cpp:4398
+#: basket.cpp:4581
 msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr ""
 
-#: basket.cpp:4435
+#: basket.cpp:4618
 msgid ""
 "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
 
-#: basket.cpp:4991
+#: basket.cpp:5208
 msgid "Password for Private Key:"
 msgstr ""
 
-#: basket.cpp:4993 basket.cpp:5032
+#: basket.cpp:5210 basket.cpp:5253
 msgid "Password for '%1'-basket:"
+msgstr ""
+
+#: basket.cpp:5315
+msgid "Insuficient Disk Space to Save Basket Data"
+msgstr ""
+
+#: basket.cpp:5316
+msgid "Wrong Basket File Permissions"
+msgstr ""
+
+#: basket.cpp:5319
+msgid ""
+"Please remove files on the disk <b>%1</b> to let the application safely save "
+"your changes."
+msgstr ""
+
+#: basket.cpp:5321
+msgid ""
+"File permissions are bad for <b>%1</b>. Please check you have write access "
+"to it and the parent folders."
+msgstr ""
+
+#: basket.cpp:5357
+msgid "Save Error"
 msgstr ""
 
 #: basketfactory.cpp:60
@@ -382,24 +406,24 @@ msgstr ""
 msgid "S&witch to this basket (global shortcut)"
 msgstr ""
 
-#: container.cpp:375
+#: container.cpp:377
 msgid "%1+%2+"
 msgstr ""
 
-#: container.cpp:377
+#: container.cpp:379
 msgid "%1+"
 msgstr ""
 
-#: container.cpp:380
+#: container.cpp:382
 msgid "%1+%2"
 msgstr ""
 
-#: container.cpp:714
+#: container.cpp:716
 #, fuzzy
 msgid "Baskets"
 msgstr "BasKet"
 
-#: container.cpp:748
+#: container.cpp:750
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -407,281 +431,332 @@ msgid ""
 "clicking a basket to open it, or reorganize them using drag and drop."
 msgstr ""
 
-#: container.cpp:1260 container.cpp:1852 settings.cpp:325
+#: container.cpp:1071
+msgid "Plain Text Notes Conversion"
+msgstr ""
+
+#: container.cpp:1072
+msgid "Converting plain text notes to rich text ones..."
+msgstr ""
+
+#: container.cpp:1289 container.cpp:1881 settings.cpp:333
 #, fuzzy
 msgid "General"
 msgstr "置中"
 
-#: container.cpp:1519
+#: container.cpp:1548
 msgid ""
 "<p>Closing the main window will keep %1 running in the system tray. Use "
 "<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
 msgstr ""
 
-#: container.cpp:1565 container.cpp:1570
+#: container.cpp:1594 container.cpp:1599
 msgid "Docking in System Tray"
 msgstr "置於系統列"
 
-#: container.cpp:1618
+#: container.cpp:1647
 #, fuzzy
 msgid "Pasted selection to basket <i>%1</i>"
 msgstr "貼上所選擇(%1)至basket <i>%2</i>"
 
-#: container.cpp:1639
+#: container.cpp:1668
 msgid "&Minimize"
 msgstr ""
 
-#: container.cpp:1641
+#: container.cpp:1670
 msgid "&Restore"
 msgstr ""
 
-#: container.cpp:1698
+#: container.cpp:1727
 #, fuzzy
 msgid "Dropped to basket <i>%1</i>"
 msgstr "放置(%1)至basket <i>%2</i>"
 
-#: container.cpp:1786
+#: container.cpp:1815
 msgid "%1 (Locked)"
 msgstr ""
 
-#: container.cpp:1907
+#: container.cpp:1936
 #, fuzzy
 msgid "&New Basket..."
 msgstr "新建basket"
 
-#: container.cpp:1909
+#: container.cpp:1938
 #, fuzzy
 msgid "New &Sub-Basket..."
 msgstr "新建basket"
 
-#: container.cpp:1911
+#: container.cpp:1940
 #, fuzzy
 msgid "New Si&bling Basket..."
 msgstr "新建basket"
 
-#: container.cpp:1914
+#: container.cpp:1943
 #, fuzzy
 msgid "&New"
 msgstr "新建basket(&N)..."
 
-#: container.cpp:1922
+#: container.cpp:1951
 #, fuzzy
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
 msgstr "新建basket"
 
-#: container.cpp:1925
+#: container.cpp:1954
 msgid ""
 "_: Password protection\n"
 "&Password..."
 msgstr ""
 
-#: container.cpp:1927
+#: container.cpp:1956
 #, fuzzy
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
 msgstr "新建basket"
 
-#: container.cpp:1931
+#: container.cpp:1960
 msgid "&Export to HTML..."
 msgstr ""
 
-#: container.cpp:1933
+#: container.cpp:1962
 #, fuzzy
 msgid "K&Notes"
 msgstr "加入物件"
 
-#: container.cpp:1935
+#: container.cpp:1964
 msgid "K&Jots"
 msgstr ""
 
-#: container.cpp:1937
+#: container.cpp:1966
 msgid "&KnowIt..."
 msgstr ""
 
-#: container.cpp:1939
+#: container.cpp:1968
 msgid "Tux&Cards..."
 msgstr ""
 
-#: container.cpp:1941
+#: container.cpp:1970
 msgid "&Sticky Notes"
 msgstr ""
 
-#: container.cpp:1943
+#: container.cpp:1972
 #, fuzzy
 msgid "&Tomboy"
 msgstr "高"
 
-#: container.cpp:1946
+#: container.cpp:1975
 #, fuzzy
 msgid "&Hide Window"
 msgstr "隱藏主視窗(&H)"
 
-#: container.cpp:1965
+#: container.cpp:1994
 msgid "D&elete"
 msgstr ""
 
-#: container.cpp:1969
+#: container.cpp:1998
 msgid "Selects all notes"
 msgstr ""
 
-#: container.cpp:1970
+#: container.cpp:1999
 msgid "U&nselect All"
 msgstr ""
 
-#: container.cpp:1972
+#: container.cpp:2001
 msgid "Unselects all selected notes"
 msgstr ""
 
-#: container.cpp:1973
+#: container.cpp:2002
 msgid "&Invert Selection"
 msgstr ""
 
-#: container.cpp:1976
+#: container.cpp:2005
 msgid "Inverts the current selection of notes"
 msgstr ""
 
-#: container.cpp:1978
+#: container.cpp:2007
 msgid "&Filter"
 msgstr ""
 
-#: container.cpp:1982
+#: container.cpp:2011
 #, fuzzy
 msgid "Filter all &Baskets"
 msgstr "新建basket"
 
-#: container.cpp:1986
+#: container.cpp:2015
 msgid "&Reset Filter"
 msgstr ""
 
-#: container.cpp:1991
+#: container.cpp:2020
 #, fuzzy
 msgid "&Previous Basket"
 msgstr "切換至上一個basket"
 
-#: container.cpp:1993
+#: container.cpp:2022
 #, fuzzy
 msgid "&Next Basket"
 msgstr "新建basket"
 
-#: container.cpp:1995
+#: container.cpp:2024
 #, fuzzy
 msgid "&Fold Basket"
 msgstr "BasKet"
 
-#: container.cpp:1997
+#: container.cpp:2026
 #, fuzzy
 msgid "&Expand Basket"
 msgstr "新建basket"
 
-#: container.cpp:2002
+#: container.cpp:2031
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
 msgstr ""
 
-#: container.cpp:2007
+#: container.cpp:2036
 #, fuzzy
 msgid "&Open"
 msgstr "開啟(&O)%1"
 
-#: container.cpp:2010
+#: container.cpp:2039
 #, fuzzy
 msgid "Open &With..."
 msgstr "開啟自(&w),,,%1"
 
-#: container.cpp:2014
+#: container.cpp:2043
 #, fuzzy
 msgid "&Save to File..."
 msgstr "載入自檔案(&d)"
 
-#: container.cpp:2017
+#: container.cpp:2046
 msgid "&Group"
 msgstr ""
 
-#: container.cpp:2019
+#: container.cpp:2048
 msgid "U&ngroup"
 msgstr ""
 
-#: container.cpp:2022
+#: container.cpp:2051
 msgid "Move on &Top"
 msgstr ""
 
-#: container.cpp:2024
+#: container.cpp:2053
 msgid "Move &Up"
 msgstr ""
 
-#: container.cpp:2026
+#: container.cpp:2055
 msgid "Move &Down"
 msgstr ""
 
-#: container.cpp:2028
+#: container.cpp:2057
 #, fuzzy
 msgid "Move on &Bottom"
 msgstr "在底部"
 
-#: container.cpp:2038 settings.cpp:408
+#: container.cpp:2067 settings.cpp:435
 msgid "&Text"
 msgstr "文字(&T)"
 
-#: container.cpp:2039
+#: container.cpp:2068
 #, fuzzy
 msgid "&Rich Text"
 msgstr "豐富文字(HTML)"
 
-#: container.cpp:2040
+#: container.cpp:2069
 #, fuzzy
 msgid "&Link"
 msgstr "連結"
 
-#: container.cpp:2041
+#: container.cpp:2070
 #, fuzzy
 msgid "&Image"
 msgstr "影像"
 
-#: container.cpp:2042
+#: container.cpp:2071
 #, fuzzy
 msgid "&Color"
 msgstr "顏色"
 
-#: container.cpp:2043
+#: container.cpp:2072
 msgid "L&auncher"
 msgstr ""
 
-#: container.cpp:2045
+#: container.cpp:2074
 msgid "Import Launcher from &KDE Menu..."
 msgstr ""
 
-#: container.cpp:2046
+#: container.cpp:2075
 #, fuzzy
 msgid "Im&port Icon..."
 msgstr "匯入一個圖示(&p)"
 
-#: container.cpp:2047
+#: container.cpp:2076
 #, fuzzy
 msgid "Load From &File..."
 msgstr "載入自檔案(&d)"
 
-#: container.cpp:2070
+#: container.cpp:2099
 msgid "C&olor from Screen"
 msgstr ""
 
-#: container.cpp:2075
+#: container.cpp:2104
 msgid "Grab Screen &Zone"
 msgstr ""
 
-#: container.cpp:2096
+#: container.cpp:2125
 msgid "Hide &Toolbar"
 msgstr ""
 
-#: container.cpp:2102
+#: container.cpp:2131
 #, fuzzy
 msgid "Configure &Global Shortcuts..."
 msgstr "設定全域快捷鍵(&g)..."
 
-#: container.cpp:2120
+#: container.cpp:2143
+msgid "Convert text notes to rich text notes"
+msgstr ""
+
+#: container.cpp:2152
+msgid ""
+"<p>This will convert every text notes into rich text notes.<br>The content "
+"of the notes will not change and you will be able to apply formating to "
+"those notes.</p><p>This process cannot be reverted back: you will not be "
+"able to convert the rich text notes to plain text ones later.</p><p>As a "
+"beta-tester, you are strongly encouraged to do the convert process because "
+"it is to test if plain text notes are still needed.<br>If nobody complain "
+"about not having plain text notes anymore, then the final version is likely "
+"to not support plain text notes anymore.</p><p><b>Which basket notes do you "
+"want to convert?</b></p>"
+msgstr ""
+
+#: container.cpp:2159
+msgid "Convert Text Notes"
+msgstr ""
+
+#: container.cpp:2160
+#, fuzzy
+msgid "Only in the Current Basket"
+msgstr "新建basket"
+
+#: container.cpp:2161
+#, fuzzy
+msgid "In Every Baskets"
+msgstr "新建basket"
+
+#: container.cpp:2175
+msgid "The text notes have been converted to rich text ones."
+msgstr ""
+
+#: container.cpp:2175 container.cpp:2177
+msgid "Conversion Finished"
+msgstr ""
+
+#: container.cpp:2177
+msgid "There is no text notes to convert."
+msgstr ""
+
+#: container.cpp:2186
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of "
@@ -692,29 +767,29 @@ msgid ""
 "try to remove the file %5basketui.rc</p>"
 msgstr ""
 
-#: container.cpp:2131
+#: container.cpp:2197
 msgid "Ressource not Found"
 msgstr ""
 
-#: container.cpp:2178 container.cpp:2187
+#: container.cpp:2244 container.cpp:2253
 msgid "Cannot add note."
 msgstr ""
 
-#: container.cpp:2249
+#: container.cpp:2315
 #, fuzzy
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr "放置(%1)至basket <i>%2</i>"
 
-#: container.cpp:2290
+#: container.cpp:2356
 #, fuzzy
 msgid "Picked color to basket <i>%1</i>"
 msgstr "放置(%1)至basket <i>%2</i>"
 
-#: container.cpp:2361
+#: container.cpp:2427
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
 msgstr ""
 
-#: container.cpp:2402
+#: container.cpp:2468
 msgid ""
 "<p>%1 let you to collect a wide variety of objects and keep them all in one "
 "place.</p><p>You can group things for different purposes in tabs by creating "
@@ -725,139 +800,139 @@ msgid ""
 "shop-lists...</p>"
 msgstr ""
 
-#: container.cpp:2438
+#: container.cpp:2504
 #, fuzzy
 msgid "Delete Basket"
 msgstr "新建basket"
 
-#: container.cpp:2441
+#: container.cpp:2507
 #, fuzzy
 msgid "Delete Only that Basket"
 msgstr "新建basket"
 
-#: container.cpp:2442
+#: container.cpp:2508
 msgid "Delete With its Childs"
 msgstr ""
 
-#: container.cpp:2450 container.cpp:2456
+#: container.cpp:2516 container.cpp:2522
 #, fuzzy
 msgid "<qt>Do you really want to remove <b>%1</b> and its contents?</qt>"
 msgstr "<qt>您真的確定要刪除<b>%1</b> ?</qt>"
 
-#: container.cpp:2458
+#: container.cpp:2524
 #, fuzzy
 msgid "Remove Basket"
 msgstr "新建basket"
 
-#: container.cpp:2460
+#: container.cpp:2526
 #, fuzzy
 msgid "&Remove Basket"
 msgstr "新建basket"
 
-#: container.cpp:2471
+#: container.cpp:2537
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
 msgstr ""
 
-#: container.cpp:2474
+#: container.cpp:2540
 msgid "Remove Child Baskets"
 msgstr ""
 
-#: container.cpp:2476
+#: container.cpp:2542
 #, fuzzy
 msgid "&Remove Child Baskets"
 msgstr "新建basket"
 
-#: container.cpp:2589
+#: container.cpp:2655
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr ""
 
-#: container.cpp:2594
+#: container.cpp:2660
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr ""
 
-#: container.cpp:2612
+#: container.cpp:2678
 #, fuzzy
 msgid "No notes"
 msgstr "加入物件"
 
-#: container.cpp:2614
+#: container.cpp:2680
 #, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
 msgstr ""
 
-#: container.cpp:2615
+#: container.cpp:2681
 #, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
 msgstr ""
 
-#: container.cpp:2616
+#: container.cpp:2682
 msgid "all matches"
 msgstr ""
 
-#: container.cpp:2616
+#: container.cpp:2682
 #, fuzzy
 msgid "no filter"
 msgstr "加入物件"
 
-#: container.cpp:2618
+#: container.cpp:2684
 #, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
 msgstr ""
 
-#: container.cpp:2620
+#: container.cpp:2686
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr ""
 
-#: container.cpp:2841
+#: container.cpp:2910
 #, fuzzy
 msgid "<p>Do you really want to quit %1?</p>"
 msgstr "您真的確定要退出Basket?"
 
-#: container.cpp:2843
+#: container.cpp:2912
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session: it will be reloaded the next time you log in.</p>"
 msgstr ""
 
-#: container.cpp:2846
+#: container.cpp:2915
 #, fuzzy
 msgid "Quit Confirm"
 msgstr "確認退出"
 
-#: container.cpp:2882
+#: container.cpp:2951
 #, fuzzy
 msgid "Basket"
 msgstr "BasKet"
 
-#: container.cpp:2965
+#: container.cpp:3034
 #, fuzzy
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr "自剪貼簿(%1)貼上至basket<i>%2</i>"
 
-#: container.cpp:2973
+#: container.cpp:3042
 #, fuzzy
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "所選擇的(%1)貼上至basket<i>%2</i>"
 
-#: container.cpp:2985
+#: container.cpp:3054
 msgid "No note was added."
 msgstr ""
 
-#: container.cpp:3012
+#: container.cpp:3081
 msgid "Basket <i>%1</i> is locked"
 msgstr ""
 
-#: container.cpp:3037
+#: container.cpp:3106
 msgid "(Locked)"
 msgstr ""
 
@@ -1006,7 +1081,7 @@ msgstr ""
 msgid "Unsupported algorithm"
 msgstr ""
 
-#: kgpgme.cpp:384
+#: kgpgme.cpp:409
 msgid "<b>Password was not accepted.</b><br><br>"
 msgstr ""
 
@@ -1032,7 +1107,7 @@ msgstr ""
 msgid "Actions"
 msgstr "應用程式快捷列"
 
-#: kicondialog.cpp:136 settings.cpp:327
+#: kicondialog.cpp:136 settings.cpp:335
 #, fuzzy
 msgid "Applications"
 msgstr "應用程式快捷列"
@@ -1320,24 +1395,38 @@ msgstr ""
 msgid "Only english and french languages are accepted."
 msgstr ""
 
-#: main.cpp:189
+#: main.cpp:145
+msgid ""
+"<h1>This version use rich text instead of plain text notes!</h1><p>Be "
+"rassured: every drawbacks of rich text notes have been solved. You can "
+"happily enjoy theire power.</p><p>This version is a <b>test to see how well "
+"people will receive the abandon of text notes, <u>in order to remove them "
+"completely in the final version</u></b>. Please test the application during "
+"a few days. And then, if you are disapointed, please mail me, or click the "
+"colored hands bellow every window title bar to send your "
+"feedback.</p><p>Your plain text notes were <b>not</b> converted.<br>At any "
+"moment, you can click the last icon in the toolbar to <i>convert the notes "
+"of only one or all baskets</i>. You are even <u>encouraged</u> to do so.</p>"
+msgstr ""
+
+#: main.cpp:201
 #, fuzzy
 msgid "Show/hide main window"
 msgstr "顯示/隱藏主視窗"
 
-#: main.cpp:190
+#: main.cpp:202
 #, fuzzy
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
 msgstr "允許您在主視窗隱藏時顯示之,而在顯示時隱藏之。"
 
-#: main.cpp:193
+#: main.cpp:205
 #, fuzzy
 msgid "Paste clipboard contents in current basket"
 msgstr "貼上剪貼簿內容至目前的basket"
 
-#: main.cpp:194
+#: main.cpp:206
 #, fuzzy
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
@@ -1345,21 +1434,21 @@ msgid ""
 msgstr ""
 "允許您貼上剪貼簿內容至目前的basket而不用另開新視窗。"
 
-#: main.cpp:197
+#: main.cpp:209
 msgid "Show current basket name"
 msgstr ""
 
-#: main.cpp:198
+#: main.cpp:210
 #, fuzzy
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "允許您貼上剪貼簿內容至目前的basket而不用另開新視窗。"
 
-#: main.cpp:201
+#: main.cpp:213
 msgid "Paste selection in current basket"
 msgstr "貼上所選擇在目前的basket"
 
-#: main.cpp:202
+#: main.cpp:214
 #, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
@@ -1367,55 +1456,55 @@ msgid ""
 msgstr ""
 "允許您貼上剪貼簿所選擇至目前的basket而不用另開新視窗"
 
-#: main.cpp:205
+#: main.cpp:217
 msgid "Create a new basket"
 msgstr "新建一個basket"
 
-#: main.cpp:206
+#: main.cpp:218
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
 "paste selection in this new basket)."
 msgstr ""
 
-#: main.cpp:209
+#: main.cpp:221
 msgid "Go to previous basket"
 msgstr "切換至上一個basket"
 
-#: main.cpp:210
+#: main.cpp:222
 #, fuzzy
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr "允許您切換目前的basket至上一個而不用另開新視窗。"
 
-#: main.cpp:213
+#: main.cpp:225
 msgid "Go to next basket"
 msgstr "切換至下一個basket"
 
-#: main.cpp:214
+#: main.cpp:226
 #, fuzzy
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
 msgstr "允許您切換目前的basket至下一個而不用另開新視窗。"
 
-#: main.cpp:219 settings.cpp:616
+#: main.cpp:231 settings.cpp:643
 msgid "Insert text note"
 msgstr ""
 
-#: main.cpp:220
+#: main.cpp:232
 #, fuzzy
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:223 settings.cpp:617
+#: main.cpp:235 settings.cpp:644
 msgid "Insert rich text note"
 msgstr ""
 
-#: main.cpp:224
+#: main.cpp:236
 #, fuzzy
 msgid ""
 "Add a rich text note to the current basket without having to open main "
@@ -1423,44 +1512,44 @@ msgid ""
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:227 settings.cpp:618
+#: main.cpp:239 settings.cpp:645
 msgid "Insert image note"
 msgstr ""
 
-#: main.cpp:228
+#: main.cpp:240
 #, fuzzy
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:231 settings.cpp:619
+#: main.cpp:243 settings.cpp:646
 msgid "Insert link note"
 msgstr ""
 
-#: main.cpp:232
+#: main.cpp:244
 #, fuzzy
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:235 settings.cpp:621
+#: main.cpp:247 settings.cpp:648
 msgid "Insert color note"
 msgstr ""
 
-#: main.cpp:236
+#: main.cpp:248
 #, fuzzy
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:239
+#: main.cpp:251
 msgid "Pick color from screen"
 msgstr ""
 
-#: main.cpp:240
+#: main.cpp:252
 #, fuzzy
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
@@ -1468,11 +1557,11 @@ msgid ""
 msgstr ""
 "允許您建立一個新物件至目前的basket而不用另開新視窗。"
 
-#: main.cpp:244
+#: main.cpp:256
 msgid "Grab screen zone"
 msgstr ""
 
-#: main.cpp:245
+#: main.cpp:257
 #, fuzzy
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
@@ -1625,311 +1714,311 @@ msgstr ""
 msgid "Edit this unknown object"
 msgstr "應用程式快捷列"
 
-#: notecontent.cpp:548
+#: notecontent.cpp:550
 #, fuzzy
 msgid "Opening text..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:549
+#: notecontent.cpp:551
 #, fuzzy
 msgid "Opening texts..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:550
+#: notecontent.cpp:552
 #, fuzzy
 msgid "Opening text with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:551
+#: notecontent.cpp:553
 #, fuzzy
 msgid "Opening texts with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:552
+#: notecontent.cpp:554
 #, fuzzy
 msgid "Open text with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:553
+#: notecontent.cpp:555
 #, fuzzy
 msgid "Open texts with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:631
+#: notecontent.cpp:635
 #, fuzzy
 msgid "Opening rich text..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:632
+#: notecontent.cpp:636
 #, fuzzy
 msgid "Opening rich texts..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:633
+#: notecontent.cpp:637
 #, fuzzy
 msgid "Opening rich text with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:634
+#: notecontent.cpp:638
 #, fuzzy
 msgid "Opening rich texts with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:635
+#: notecontent.cpp:639
 msgid "Open rich text with:"
 msgstr ""
 
-#: notecontent.cpp:636
+#: notecontent.cpp:640
 msgid "Open rich texts with:"
 msgstr ""
 
-#: notecontent.cpp:732 notecontent.cpp:931
+#: notecontent.cpp:740 notecontent.cpp:943
 msgid "Size"
 msgstr ""
 
-#: notecontent.cpp:733 variouswidgets.cpp:146
+#: notecontent.cpp:741 variouswidgets.cpp:146
 msgid "%1 by %2 pixels"
 msgstr "%1 高 %2 像素"
 
-#: notecontent.cpp:739
+#: notecontent.cpp:747
 #, fuzzy
 msgid "Opening image..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:740
+#: notecontent.cpp:748
 #, fuzzy
 msgid "Opening images..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:741
+#: notecontent.cpp:749
 #, fuzzy
 msgid "Opening image with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:742
+#: notecontent.cpp:750
 #, fuzzy
 msgid "Opening images with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:743
+#: notecontent.cpp:751
 #, fuzzy
 msgid "Open image with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:744
+#: notecontent.cpp:752
 #, fuzzy
 msgid "Open images with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:768
+#: notecontent.cpp:776
 msgid "Click for full size view"
 msgstr ""
 
-#: notecontent.cpp:823
+#: notecontent.cpp:832
 #, fuzzy
 msgid "Opening animation..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:824
+#: notecontent.cpp:833
 #, fuzzy
 msgid "Opening animations..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:825
+#: notecontent.cpp:834
 #, fuzzy
 msgid "Opening animation with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:826
+#: notecontent.cpp:835
 #, fuzzy
 msgid "Opening animations with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:827
+#: notecontent.cpp:836
 msgid "Open animation with:"
 msgstr ""
 
-#: notecontent.cpp:828
+#: notecontent.cpp:837
 msgid "Open animations with:"
 msgstr ""
 
-#: notecontent.cpp:936
+#: notecontent.cpp:948
 msgid "Type"
 msgstr ""
 
-#: notecontent.cpp:974
+#: notecontent.cpp:986
 #, fuzzy
 msgid "Open this file"
 msgstr "切換至下一個basket"
 
-#: notecontent.cpp:993
+#: notecontent.cpp:1005
 #, fuzzy
 msgid "Opening file..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:994
+#: notecontent.cpp:1006
 #, fuzzy
 msgid "Opening files..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:995
+#: notecontent.cpp:1007
 #, fuzzy
 msgid "Opening file with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:996
+#: notecontent.cpp:1008
 #, fuzzy
 msgid "Opening files with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:997
+#: notecontent.cpp:1009
 #, fuzzy
 msgid "Open file with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:998
+#: notecontent.cpp:1010
 #, fuzzy
 msgid "Open files with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1069
+#: notecontent.cpp:1081
 #, fuzzy
 msgid "Open this sound"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1106
+#: notecontent.cpp:1118
 #, fuzzy
 msgid "Opening sound..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1107
+#: notecontent.cpp:1119
 #, fuzzy
 msgid "Opening sounds..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1108
+#: notecontent.cpp:1120
 #, fuzzy
 msgid "Opening sound with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1109
+#: notecontent.cpp:1121
 #, fuzzy
 msgid "Opening sounds with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1110
+#: notecontent.cpp:1122
 #, fuzzy
 msgid "Open sound with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1111
+#: notecontent.cpp:1123
 #, fuzzy
 msgid "Open sounds with:"
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1149
+#: notecontent.cpp:1161
 #, fuzzy
 msgid "Target"
 msgstr "儲存目標"
 
-#: notecontent.cpp:1172
+#: notecontent.cpp:1184
 #, fuzzy
 msgid "Open this link"
 msgstr "切換至下一個basket"
 
-#: notecontent.cpp:1198
+#: notecontent.cpp:1210
 msgid "Link have no URL to open."
 msgstr ""
 
-#: notecontent.cpp:1201
+#: notecontent.cpp:1213
 #, fuzzy
 msgid "Opening link target..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1202
+#: notecontent.cpp:1214
 #, fuzzy
 msgid "Opening link targets..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1203
+#: notecontent.cpp:1215
 #, fuzzy
 msgid "Opening link target with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1204
+#: notecontent.cpp:1216
 #, fuzzy
 msgid "Opening link targets with..."
 msgstr "開啟自(&w),,,%1"
 
-#: notecontent.cpp:1205
+#: notecontent.cpp:1217
 msgid "Open link target with:"
 msgstr ""
 
-#: notecontent.cpp:1206
+#: notecontent.cpp:1218
 msgid "Open link targets with:"
 msgstr ""
 
-#: notecontent.cpp:1331
+#: notecontent.cpp:1344
 msgid "%1 <i>(run in terminal)</i>"
 msgstr ""
 
-#: notecontent.cpp:1334
+#: notecontent.cpp:1347
 msgid "Comment"
 msgstr ""
 
-#: notecontent.cpp:1338
+#: notecontent.cpp:1351
 msgid "Command"
 msgstr ""
 
-#: notecontent.cpp:1361
+#: notecontent.cpp:1374
 msgid "Launch this application"
 msgstr ""
 
-#: notecontent.cpp:1382
+#: notecontent.cpp:1395
 msgid "The launcher have no command to run."
 msgstr ""
 
-#: notecontent.cpp:1385
+#: notecontent.cpp:1398
 msgid "Launching application..."
 msgstr ""
 
-#: notecontent.cpp:1386
+#: notecontent.cpp:1399
 msgid "Launching applications..."
 msgstr ""
 
-#: notecontent.cpp:1473
+#: notecontent.cpp:1486
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
 msgstr ""
 
-#: notecontent.cpp:1474
+#: notecontent.cpp:1487
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
 msgstr ""
 
-#: notecontent.cpp:1476
+#: notecontent.cpp:1489
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
 msgstr ""
 
-#: notecontent.cpp:1477
+#: notecontent.cpp:1490
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
 msgstr ""
 
-#: notecontent.cpp:1630
+#: notecontent.cpp:1643
 msgid "CSS Color Name"
 msgstr ""
 
-#: notecontent.cpp:1640
+#: notecontent.cpp:1653
 msgid "CSS Extended Color Name"
 msgstr ""
 
-#: notecontent.cpp:1646
+#: notecontent.cpp:1659
 msgid "Is Web Color"
 msgstr ""
 
-#: note.cpp:2809
+#: note.cpp:2863
 #, fuzzy
 msgid "(Image)"
 msgstr "影像"
@@ -2045,7 +2134,7 @@ msgstr "靠右"
 msgid "Justified"
 msgstr "兩端對齊"
 
-#: notefactory.cpp:438
+#: notefactory.cpp:445
 msgid ""
 "<p>%1 doesn't support the data you've dropped.<br>It however created a "
 "generic note, allowing you to drag or copy it to an application that "
@@ -2054,40 +2143,40 @@ msgid ""
 "Drop Database</a>.</p>"
 msgstr ""
 
-#: notefactory.cpp:442
+#: notefactory.cpp:449
 msgid "Unsupported MIME Type(s)"
 msgstr ""
 
-#: notefactory.cpp:496
+#: notefactory.cpp:503
 msgid "&Move Here\tShift"
 msgstr ""
 
-#: notefactory.cpp:497
+#: notefactory.cpp:504
 msgid "&Copy Here\tCtrl"
 msgstr ""
 
-#: notefactory.cpp:498
+#: notefactory.cpp:505
 msgid "&Link Here\tCtrl+Shift"
 msgstr ""
 
-#: notefactory.cpp:500
+#: notefactory.cpp:507
 msgid "C&ancel\tEscape"
 msgstr ""
 
-#: notefactory.cpp:966
+#: notefactory.cpp:973
 msgid "Import Icon as Image"
 msgstr ""
 
-#: notefactory.cpp:966
+#: notefactory.cpp:973
 msgid "Choose the size of the icon to import as an image:"
 msgstr ""
 
-#: notefactory.cpp:979
+#: notefactory.cpp:986
 msgid "Load File Content into a Note"
 msgstr ""
 
 #. i18n: file passwordlayout.ui line 16
-#: password.cpp:35 passwordlayout.cpp:94 rc.cpp:45
+#: password.cpp:36 passwordlayout.cpp:94 rc.cpp:45
 #, no-c-format
 msgid "Password Protection"
 msgstr ""
@@ -2132,9 +2221,7 @@ msgstr ""
 msgid "Alt+K"
 msgstr ""
 
-#. i18n: file passwordlayout.ui line 97
-#: passwordlayout.cpp:102 rc.cpp:67
-#, no-c-format
+#: passwordlayout.cpp:102
 msgid ""
 "<qt><b>Always encrypt with:</b><br />\n"
 "<p>This ensures all files/messages will also be encrypted with the chosen "
@@ -2142,15 +2229,13 @@ msgid ""
 "key will override the \"Always encrypt with:\" selection.</p></qt>"
 msgstr ""
 
-#. i18n: file passwordlayout.ui line 113
-#: passwordlayout.cpp:104 rc.cpp:71 variouswidgets.cpp:46
-#, fuzzy, no-c-format
+#: passwordlayout.cpp:104 variouswidgets.cpp:46
+#, fuzzy
 msgid "..."
 msgstr "新建basket(&N)..."
 
-#. i18n: file passwordlayout.ui line 121
-#: passwordlayout.cpp:105 rc.cpp:74
-#, fuzzy, no-c-format
+#: passwordlayout.cpp:105
+#, fuzzy
 msgid "C&hange..."
 msgstr "瀏覽(&B)..."
 
@@ -2178,53 +2263,53 @@ msgstr ""
 msgid "&Note"
 msgstr "加入物件"
 
-#. i18n: file basketui.rc line 119
+#. i18n: file basketui.rc line 121
 #: rc.cpp:30
 #, no-c-format
 msgid "Rich Text Edit Toolbar"
 msgstr ""
 
-#: settings.cpp:326
+#: settings.cpp:334
 msgid "Notes Look"
 msgstr ""
 
-#: settings.cpp:328
+#: settings.cpp:336
 msgid "Addictive Features"
-msgstr ""
-
-#: settings.cpp:335
-#, fuzzy
-msgid "Doc&k in system tray"
-msgstr "置於系統列"
-
-#: settings.cpp:339
-msgid "&Use balloons to report results of global actions"
 msgstr ""
 
 #: settings.cpp:343
 #, fuzzy
+msgid "Doc&k in system tray"
+msgstr "置於系統列"
+
+#: settings.cpp:347
+msgid "&Use balloons to report results of global actions"
+msgstr ""
+
+#: settings.cpp:351
+#, fuzzy
 msgid "Ani&mate changes in baskets"
 msgstr "新建一個basket"
 
-#: settings.cpp:347
+#: settings.cpp:355
 #, fuzzy
 msgid "Sho&w tooltips in baskets"
 msgstr "即刻顯示工具提示(包括了物件註釋...)(&i)"
 
-#: settings.cpp:351
+#: settings.cpp:359
 #, fuzzy
 msgid "Bi&g notes"
 msgstr "加入物件"
 
-#: settings.cpp:356
+#: settings.cpp:364
 msgid "E&xport tags in texts"
 msgstr ""
 
-#: settings.cpp:359
+#: settings.cpp:370
 msgid "When does this apply?"
 msgstr ""
 
-#: settings.cpp:360
+#: settings.cpp:371
 msgid ""
 "<p>It does apply when you copy and paste, or drag and drop notes to a text "
 "editor.</p><p>If enabled, this property allows you to paste the tags as "
@@ -2233,181 +2318,185 @@ msgid ""
 "<b>[x]</b>, representing an empty  checkbox and a checked box.</p>"
 msgstr ""
 
-#: settings.cpp:375
+#: settings.cpp:383
+msgid "Use GnuPG agent for &password protected baskets"
+msgstr ""
+
+#: settings.cpp:402
 #, fuzzy
 msgid "On left"
 msgstr "在頂端"
 
-#: settings.cpp:376
+#: settings.cpp:403
 msgid "On right"
 msgstr ""
 
-#: settings.cpp:378
+#: settings.cpp:405
 #, fuzzy
 msgid "Bask&ets tree position:"
 msgstr "於滑鼠指標位置放置物件(&D)"
 
-#: settings.cpp:384 settings.cpp:395
+#: settings.cpp:411 settings.cpp:422
 #, fuzzy
 msgid "On top"
 msgstr "在頂端"
 
-#: settings.cpp:385 settings.cpp:396
+#: settings.cpp:412 settings.cpp:423
 #, fuzzy
 msgid "On bottom"
 msgstr "在底部"
 
-#: settings.cpp:387
+#: settings.cpp:414
 #, fuzzy
 msgid "&Filter bar position:"
 msgstr "於滑鼠指標位置放置物件(&D)"
 
-#: settings.cpp:394
+#: settings.cpp:421
 msgid "New notes &place:"
 msgstr ""
 
-#: settings.cpp:397
+#: settings.cpp:424
 msgid "At current note"
 msgstr ""
 
-#: settings.cpp:407
+#: settings.cpp:434
 msgid "View Content of Added Files for the Following Types"
 msgstr ""
 
-#: settings.cpp:409
+#: settings.cpp:436
 msgid "&HTML page"
 msgstr ""
 
-#: settings.cpp:410
+#: settings.cpp:437
 msgid "&Image or animation"
 msgstr ""
 
-#: settings.cpp:411
+#: settings.cpp:438
 msgid "&Sound"
 msgstr ""
 
-#: settings.cpp:424
+#: settings.cpp:451
 msgid "&New images size:"
 msgstr ""
 
-#: settings.cpp:431
+#: settings.cpp:458
 #, fuzzy
 msgid "&by"
 msgstr "高"
 
-#: settings.cpp:434
+#: settings.cpp:461
 msgid "pixels"
 msgstr "像素"
 
-#: settings.cpp:436
+#: settings.cpp:463
 msgid "&Visualize..."
 msgstr "預覽(&V)"
 
-#: settings.cpp:448
+#: settings.cpp:475
 msgid "Customize look of file, sound, link and launcher notes:"
 msgstr ""
 
-#: settings.cpp:453
+#: settings.cpp:480
 msgid "Conference audio record"
 msgstr ""
 
-#: settings.cpp:454
+#: settings.cpp:481
 msgid "Annual report"
 msgstr ""
 
-#: settings.cpp:455
+#: settings.cpp:482
 msgid "Home folder"
 msgstr ""
 
-#: settings.cpp:457
+#: settings.cpp:484
 #, fuzzy, c-format
 msgid "Launch %1"
 msgstr "BasKet"
 
-#: settings.cpp:458
+#: settings.cpp:485
 msgid "&Sounds"
 msgstr ""
 
-#: settings.cpp:459
+#: settings.cpp:486
 msgid "&Files"
 msgstr ""
 
-#: settings.cpp:460
+#: settings.cpp:487
 msgid "&Local Links"
 msgstr ""
 
-#: settings.cpp:461
+#: settings.cpp:488
 #, fuzzy
 msgid "&Network Links"
 msgstr "尋找網路上的連結(&n)"
 
-#: settings.cpp:462
+#: settings.cpp:489
 msgid "Launc&hers"
 msgstr ""
 
-#: settings.cpp:467
+#: settings.cpp:494
 msgid "Open &text notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:468
+#: settings.cpp:495
 #, fuzzy
 msgid "Open text notes with:"
 msgstr "開啟自(&w),,,%1"
 
-#: settings.cpp:475
+#: settings.cpp:502
 msgid "Open &rich text notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:476
+#: settings.cpp:503
 #, fuzzy
 msgid "Open rich text notes with:"
 msgstr "開啟自(&w),,,%1"
 
-#: settings.cpp:483
+#: settings.cpp:510
 msgid "Open &image notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:484
+#: settings.cpp:511
 #, fuzzy
 msgid "Open image notes with:"
 msgstr "開啟自(&w),,,%1"
 
-#: settings.cpp:491
+#: settings.cpp:518
 msgid "Open a&nimation notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:492
+#: settings.cpp:519
 #, fuzzy
 msgid "Open animation notes with:"
 msgstr "開啟自(&w),,,%1"
 
-#: settings.cpp:499
+#: settings.cpp:526
 msgid "Open so&und notes with a custom application:"
 msgstr ""
 
-#: settings.cpp:500
+#: settings.cpp:527
 #, fuzzy
 msgid "Open sound notes with:"
 msgstr "開啟自(&w),,,%1"
 
-#: settings.cpp:508
+#: settings.cpp:535
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
 "Konqueror will be used.</p>"
 msgstr ""
 
-#: settings.cpp:518
+#: settings.cpp:545
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
 msgstr ""
 
-#: settings.cpp:542
+#: settings.cpp:569
 msgid "How to change the application used to open Web links?"
 msgstr ""
 
-#: settings.cpp:543
+#: settings.cpp:570
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -2425,11 +2514,11 @@ msgid ""
 "browser), read the second help link.</p>"
 msgstr ""
 
-#: settings.cpp:561
+#: settings.cpp:588
 msgid "How to change the applications used to open files and links?"
 msgstr ""
 
-#: settings.cpp:562
+#: settings.cpp:589
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applys to Web links if you choose not to open them systematically in a "
@@ -2447,28 +2536,28 @@ msgid ""
 "xhtml+xml\".</li></ul>"
 msgstr ""
 
-#: settings.cpp:589
+#: settings.cpp:616
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
 msgstr ""
 
-#: settings.cpp:595
+#: settings.cpp:622
 msgid "&Group a new note when clicking on the right of the insertion line"
 msgstr ""
 
-#: settings.cpp:599
+#: settings.cpp:626
 msgid "How to group a new note?"
 msgstr ""
 
-#: settings.cpp:600
+#: settings.cpp:627
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
 msgstr ""
 
-#: settings.cpp:602
+#: settings.cpp:629
 msgid ""
 "<p>Place your mouse between notes, where you want to add a new one.<br>Click "
 "on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
@@ -2476,47 +2565,47 @@ msgid ""
 "<b>below or above</b>, depending on where your mouse is.</p>"
 msgstr ""
 
-#: settings.cpp:614
+#: settings.cpp:641
 msgid "Do nothing"
 msgstr ""
 
-#: settings.cpp:615
+#: settings.cpp:642
 #, fuzzy
 msgid "Paste clipboard"
 msgstr "複製至剪貼簿"
 
-#: settings.cpp:620
+#: settings.cpp:647
 msgid "Insert launcher note"
 msgstr ""
 
-#: settings.cpp:623
+#: settings.cpp:650
 msgid "&Shift+middle-click:"
 msgstr ""
 
-#: settings.cpp:626
+#: settings.cpp:653
 #, fuzzy
 msgid "at cursor position"
 msgstr "於滑鼠指標位置放置物件(&D)"
 
-#: settings.cpp:628
+#: settings.cpp:655
 #, fuzzy
 msgid "System Tray Icon"
 msgstr "系統列圖示"
 
-#: settings.cpp:634
+#: settings.cpp:661
 msgid "Show c&urrent basket icon in system tray icon"
 msgstr ""
 
-#: settings.cpp:640
+#: settings.cpp:667
 #, fuzzy
 msgid "H&ide main window when mouse goes out of it for"
 msgstr "按下關閉鈕時隱藏主視窗(而非退出程式)(&H)"
 
-#: settings.cpp:643 settings.cpp:650
+#: settings.cpp:670 settings.cpp:677
 msgid " tenths of seconds"
 msgstr "/10 秒鐘後"
 
-#: settings.cpp:647
+#: settings.cpp:674
 #, fuzzy
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr "按下關閉鈕時隱藏主視窗(而非退出程式)(&H)"
