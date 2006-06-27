@@ -5390,6 +5390,7 @@ void DiskErrorDialog::keyPressEvent(QKeyEvent*)
 void Basket::lock()
 {
 #ifdef HAVE_LIBGPGME
+	closeEditor();
 	m_gpg->clearCache();
 	m_locked = true;
 	enableActions();
