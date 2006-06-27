@@ -154,6 +154,12 @@ QString Tools::htmlToText(const QString &html)
 		++pos;
 	}
 
+	text.replace("&gt;",   ">");
+	text.replace("&lt;",   "<");
+	text.replace("&quot;", "\"");
+	text.replace("&nbsp;", " ");
+	text.replace("&amp;",  "&"); // CONVERT IN LAST!!
+
 	return text;
 }
 
