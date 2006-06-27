@@ -358,7 +358,7 @@ bool KGpgMe::isGnuPGAgentAvailable()
 {
 	QString agent_info = getenv("GPG_AGENT_INFO");
 
-	if (agent_info.find(':'))
+	if (agent_info.find(':') > 0)
 		return true;
 	return false;
 }
