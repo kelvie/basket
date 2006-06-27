@@ -2732,6 +2732,12 @@ void Basket::deleteNotes()
 	m_clickedToInsert = 0;
 	m_savedClickedToInsert = 0;
 	m_hoveredNote = 0;
+	m_count = 0;
+	m_countFounds = 0;
+	m_countSelecteds = 0;
+
+	emit resetStatusBarText();
+	emit countsChanged(this);
 }
 
 Note* Basket::noteAt(int x, int y)

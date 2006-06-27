@@ -2672,7 +2672,9 @@ void Container::countSelectedsChanged() // TODO: rename to countChanged() or not
 	Basket *basket = currentBasket();
 
 	// Update statusbar message :
-	if (!basket->isLoaded())
+	if (currentBasket()->isLocked())
+		m_selectionStatus->setText(i18n("Locked"));
+	else if (!basket->isLoaded())
 		m_selectionStatus->setText(i18n("Loading..."));
 	else if (basket->count() == 0)
 		m_selectionStatus->setText(i18n("No notes"));
