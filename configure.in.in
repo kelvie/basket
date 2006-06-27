@@ -4,6 +4,8 @@ AM_INIT_AUTOMAKE(basket, '0.6.0Alpha2b')
 AC_C_BIGENDIAN
 AC_CHECK_KDEMAXPATHLEN
 
+KDE_CHECK_LARGEFILE
+
 dnl -----------------------------------------------------------------
 dnl AC_LIB_GPGME([ACTION-IF-TRUE], [ACTION-IF-FALSE])
 dnl -----------------------------------------------------------------
