@@ -34,8 +34,6 @@
 #include <locale.h>
 #include <errno.h>
 
-#define BUF_SIZE 512
-
 // KGpgSelKey class based on class in KGpg with the same name
 
 class KGpgSelKey : public KDialogBase
@@ -266,22 +264,7 @@ bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
 								.arg(result->invalid_recipients->fpr));
 						}
 						else {
-							char buf[BUF_SIZE + 2];
-							int ret;
-
-							ret = gpgme_data_seek(out, 0, SEEK_SET);
-							if(ret) {
-								err = gpgme_err_code_from_errno(errno);
-							}
-							else {
-								while((ret = gpgme_data_read(out, buf, BUF_SIZE)) > 0) {
-									uint size = outBuffer->size();
-									if(outBuffer->resize(size + ret))
-										memcpy(outBuffer->data() + size, buf, ret);
-								}
-								if(ret < 0)
-									err = gpgme_err_code_from_errno(errno);
-							}
+							err = readToBuffer(out, outBuffer);
 						}
 					}
 				}
@@ -322,22 +305,7 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 							.arg(result->unsupported_algorithm));
 					}
 					else {
-						char buf[BUF_SIZE + 2];
-						int ret;
-
-						ret = gpgme_data_seek(out, 0, SEEK_SET);
-						if(ret) {
-							err = gpgme_err_code_from_errno(errno);
-						}
-						else {
-							while((ret = gpgme_data_read(out, buf, BUF_SIZE)) > 0) {
-								uint size = outBuffer->size();
-								if(outBuffer->resize(size + ret))
-									memcpy(outBuffer->data() + size, buf, ret);
-							}
-							if(ret < 0)
-								err = gpgme_err_code_from_errno(errno);
-						}
+						err = readToBuffer(out, outBuffer);
 					}
 				}
 			}
@@ -352,6 +320,34 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 	if(out)
 		gpgme_data_release(out);
 	return (err == 0);
+}
+
+#define BUF_SIZE (32 * 1024)
+
+gpgme_error_t KGpgMe::readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const
+{
+	int ret;
+	gpgme_error_t err = GPG_ERR_NO_ERROR;
+
+	ret = gpgme_data_seek(in, 0, SEEK_SET);
+	if(ret) {
+		err = gpgme_err_code_from_errno(errno);
+	}
+	else {
+		char* buf = new char[BUF_SIZE + 2];
+
+		if(buf) {
+			while((ret = gpgme_data_read(in, buf, BUF_SIZE)) > 0) {
+				uint size = outBuffer->size();
+				if(outBuffer->resize(size + ret))
+					memcpy(outBuffer->data() + size, buf, ret);
+			}
+			if(ret < 0)
+				err = gpgme_err_code_from_errno(errno);
+			delete[] buf;
+		}
+	}
+	return err;
 }
 
 bool KGpgMe::isGnuPGAgentAvailable()
@@ -437,4 +433,4 @@ gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
 	write(fd, "\n", 1);
 	return res;
 }
-#endif																  // HAVE_LIBGPGME
+#endif	// HAVE_LIBGPGME

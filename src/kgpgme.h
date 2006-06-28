@@ -72,6 +72,7 @@ class KGpgMe
 		QCString m_cache;
 
 		void init(gpgme_protocol_t proto);
+		gpgme_error_t readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const;
 		void setPassphraseCb();
 		static gpgme_error_t passphraseCb(void *hook, const char *uid_hint,
 										  const char *passphrase_info,
