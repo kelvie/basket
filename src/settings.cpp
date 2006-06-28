@@ -731,7 +731,9 @@ void SettingsDialog::slotApply()
 	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
 	Settings::setBigNotes(             m_bigNotes->isChecked()             );
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
+#ifdef HAVE_LIBGPGME
 	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()        );
+#endif
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()      );
 	Settings::setMiddleAction(         m_middleAction->currentItem()       );
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
