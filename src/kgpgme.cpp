@@ -288,7 +288,7 @@ bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
 			}
 		}
 	}
-	if(err) {
+	if(err != GPG_ERR_NO_ERROR && err != GPG_ERR_CANCELED) {
 		KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
 			.arg(gpgme_strsource(err)).arg(gpgme_strerror(err)));
 	}
@@ -343,7 +343,7 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 			}
 		}
 	}
-	if(err) {
+	if(err != GPG_ERR_NO_ERROR && err != GPG_ERR_CANCELED) {
 		KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
 			.arg(gpgme_strsource(err)).arg(gpgme_strerror(err)));
 	}
