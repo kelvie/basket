@@ -85,8 +85,9 @@ int main(int argc, char *argv[])
 	                      "(c) 2003-2005, Sébastien Laoût", 0,
 	                      "http://basket.kde.org/",
 	                      "slaout@linux62.org"                              );
-	aboutData.addAuthor( "Sébastien Laoût", I18N_NOOP("Author, maintainer"), "slaout@linux62.org" );
-	aboutData.addAuthor( "Marco Martin",      I18N_NOOP("Icon"),               "m4rt@libero.it"     );
+	aboutData.addAuthor( "Sébastien Laoût", I18N_NOOP("Author, maintainer"),                 "slaout@linux62.org"   );
+	aboutData.addAuthor( "Petri Damsten",     I18N_NOOP("Basket encryption, KnowIt importer"), "petri.damsten@iki.fi" );
+	aboutData.addAuthor( "Marco Martin",      I18N_NOOP("Icon"),                               "m4rt@libero.it"       );
 
 	KCmdLineArgs::init(argc, argv, &aboutData);
 	KCmdLineArgs::addCmdLineOptions(options);

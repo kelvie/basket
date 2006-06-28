@@ -380,7 +380,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	layout->addLayout(hLay);
 
 #ifdef HAVE_LIBGPGME
-	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &password protected baskets"), page1);
+	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &password protected baskets") + " [DO NOT ENABLE: STILL BUGGY]", page1);
 	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
 	layout->addWidget(m_useGnuPGAgent);
 

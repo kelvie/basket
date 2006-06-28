@@ -2574,17 +2574,16 @@ void Container::doBasketDeletion(Basket *basket)
 void Container::password()
 {
 #ifdef HAVE_LIBGPGME
-	int result = KMessageBox::warningContinueCancel(0, "THIS FEATURE IS STILL YOUNG AND TERRIBLY BUGGY. USE IT AT YOUR OWN RISK. AT THE MOMENT, IT MAY RESULT IN DATA LOSS!", "Buggy Feature");
-	if (result == KMessageBox::Cancel)
-		return;
-
 	PasswordDlg dlg(this, "Password");
 	Basket *cur = currentBasket();
 
 	dlg.setType(cur->encryptionType());
 	dlg.setKey(cur->encryptionKey());
-	if(dlg.exec())
+	if(dlg.exec()) {
 		cur->setProtection(dlg.type(), dlg.key());
+		if (cur->encryptionType() != Basket::NoEncryption)
+			cur->lock();
+	}
 #endif
 }
 

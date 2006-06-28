@@ -1121,6 +1121,9 @@ void Basket::load()
 	if ( ! doc) {
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to load</font>!";
 		m_loadingLaunched = false;
+		if (isEncrypted())
+			m_locked = true;
+		Global::mainContainer->countSelectedsChanged(); // Show "Locked" instead of "Loading..." in the statusbar
 		return;
 	}
 	m_locked = false;
@@ -2860,8 +2863,10 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	{
 		if(!isFileEncrypted())
 			QTimer::singleShot( 0, this, SLOT(load()) );
-		else
+		else {
 			m_locked = true;
+			Global::mainContainer->countSelectedsChanged(); // Show "Locked" instead of "Loading..." in the statusbar
+		}
 	}
 
 	QBrush brush(backgroundColor()); // FIXME: share it for all the basket?
