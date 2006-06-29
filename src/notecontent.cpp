@@ -35,6 +35,7 @@
 #include <klocale.h>
 #include <kglobalsettings.h>
 #include <kpixmapeffect.h>
+#include <qbitmap.h>
 #include <kurifilter.h>
 #include <kstringhandler.h>
 #include <kfilemetainfo.h>
@@ -526,11 +527,17 @@ bool TextContent::loadFromFile()
 	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
 	QString content;
+	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 
-	bool result = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-	if(result)
+	if (success)
 		setText(content);
-	return result;
+	else {
+		std::cout << "FAILED TO LOAD TextContent: " << fullPath() << std::endl;
+		setText("");
+		if (!QFile::exists(fullPath()))
+			saveToFile(); // Reserve the fileName so no new note will have the same name!
+	}
+	return success;
 }
 
 bool TextContent::saveToFile()
@@ -611,11 +618,17 @@ bool HtmlContent::loadFromFile()
 	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
 	QString content;
+	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 
-	bool result = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-	if(result)
+	if (success)
 		setHtml(content);
-	return result;
+	else {
+		std::cout << "FAILED TO LOAD HtmlContent: " << fullPath() << std::endl;
+		setHtml("");
+		if (!QFile::exists(fullPath()))
+			saveToFile(); // Reserve the fileName so no new note will have the same name!
+	}
+	return success;
 }
 
 bool HtmlContent::saveToFile()
@@ -706,20 +719,28 @@ bool ImageContent::loadFromFile()
 
 	QByteArray content;
 
-	if(basket()->loadFromFile(fullPath(), &content))
+	if (basket()->loadFromFile(fullPath(), &content))
 	{
 		QBuffer buffer(content);
 
 		buffer.open(IO_ReadOnly);
 		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
 		buffer.close();
-		if (m_format)
+		if (m_format) {
 			m_pixmap.loadFromData(content);
-		else
-			m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
-		setPixmap(m_pixmap);
-		return true;
+			setPixmap(m_pixmap);
+			return true;
+		}
 	}
+
+	std::cout << "FAILED TO LOAD ImageContent: " << fullPath() << std::endl;
+	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
+	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
+	m_pixmap.fill();
+	m_pixmap.setMask(m_pixmap.createHeuristicMask());
+	setPixmap(m_pixmap);
+	if (!QFile::exists(fullPath()))
+		saveToFile(); // Reserve the fileName so no new note will have the same name!
 	return false;
 }
 
