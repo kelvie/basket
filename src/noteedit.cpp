@@ -315,9 +315,12 @@ void HtmlEditor::validate()
 
 	disconnect();
 	widget()->disconnect();
-	InlineEditors::instance()->disableRichTextToolBar();
-
-	InlineEditors::instance()->richTextToolBar()->hide();
+	if(InlineEditors::instance())
+	{
+		InlineEditors::instance()->disableRichTextToolBar();
+		if(InlineEditors::instance()->richTextToolBar())
+			InlineEditors::instance()->richTextToolBar()->hide();
+	}
 	delete widget();
 	setInlineEditor(0);
 }
