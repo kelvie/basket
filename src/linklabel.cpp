@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,6 +34,7 @@
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kdialogbase.h>
+#include <kcmodule.h>
 
 #include "linklabel.h"
 #include "variouswidgets.h"
@@ -548,22 +549,20 @@ QString LinkDisplay::toHtml(const HtmlExportData &exportData, const KURL &url, c
 
 /** LinkLookEditWidget **/
 
-LinkLookEditWidget::LinkLookEditWidget(LinkLook *look, const QString exTitle, const QString exIcon,
+LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, const QString exIcon,
                                        QWidget *parent, const char *name, WFlags fl)
  : QWidget(parent, name, fl)
 {
 	QLabel      *label;
 	QVBoxLayout *layout = new QVBoxLayout(this, KDialogBase::marginHint(), KDialogBase::spacingHint());
 
-	m_look = look;
-
 	m_italic = new QCheckBox(i18n("I&talic"), this);
-	m_italic->setChecked(look->italic());
 	layout->addWidget(m_italic);
+	connect(m_italic, SIGNAL(stateChanged(int)), module, SLOT(changed()));
 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
-	m_bold->setChecked(look->bold());
 	layout->addWidget(m_bold);
+	connect(m_bold, SIGNAL(stateChanged(int)), module, SLOT(changed()));
 
 	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
@@ -573,24 +572,25 @@ LinkLookEditWidget::LinkLookEditWidget(LinkLook *look, const QString exTitle, co
 	m_underlining->insertItem(i18n("Never"));
 	m_underlining->insertItem(i18n("On mouse hovering"));
 	m_underlining->insertItem(i18n("When mouse is outside"));
-	m_underlining->setCurrentItem(look->underlining());
 	label = new QLabel(m_underlining, i18n("&Underline:"), this);
 	gl->addWidget(label,         0, 0);
 	gl->addWidget(m_underlining, 0, 1);
+	connect(m_underlining, SIGNAL(textChanged(const QString &)), module, SLOT(changed()));
 
-	m_color = new KColorCombo2(m_look->color(), m_look->defaultColor(), this);
+	m_color = new KColorCombo2(QRgb(), this);
 	label = new QLabel(m_color, i18n("Colo&r:"), this);
 	gl->addWidget(label,   1, 0);
 	gl->addWidget(m_color, 1, 1);
+	connect(m_color, SIGNAL(changed(const QColor &)), module, SLOT(changed()));
 
-	m_hoverColor = new KColorCombo2(m_look->hoverColor(), m_look->defaultHoverColor(), this);
+	m_hoverColor = new KColorCombo2(QRgb(), this);
 	label = new QLabel(m_hoverColor, i18n("&Mouse hover color:"), this);
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
+	connect(m_hoverColor, SIGNAL(changed(const QColor &)), module, SLOT(changed()));
 
 	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
-	m_iconSize->setSize(look->iconSize());
 	icoLay->addWidget(m_iconSize);
 	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);
 	gl->addWidget(label,  3, 0);
@@ -601,9 +601,8 @@ LinkLookEditWidget::LinkLookEditWidget(LinkLook *look, const QString exTitle, co
 	m_preview->insertItem(i18n("Icon size"));
 	m_preview->insertItem(i18n("Twice the icon size"));
 	m_preview->insertItem(i18n("Three times the icon size"));
-	m_preview->setCurrentItem(look->preview());
-	label = new QLabel(m_preview, i18n("&Preview:"), this);
-	HelpLabel *hLabel = new HelpLabel(
+	m_label = new QLabel(m_preview, i18n("&Preview:"), this);
+	m_hLabel = new HelpLabel(
 		i18n("You disabled preview but still see images?"),
 		i18n("<p>This is normal because there are several type of notes.<br>"
 		     "This setting applies only to file and local link notes.<br>"
@@ -617,26 +616,20 @@ LinkLookEditWidget::LinkLookEditWidget(LinkLook *look, const QString exTitle, co
 		// TODO: Note: you can resize down maximum size of images...
 			.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName()),
 		this);
-	gl->addWidget(label,     4, 0);
+	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);
-	gl->addMultiCellWidget(hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
-	connect( m_preview, SIGNAL(activated(int)), this, SLOT(slotChangeLook(int)) );
-	if (!look->canPreview()) {
-		label->setEnabled(false);
-		hLabel->setEnabled(false);
-		m_preview->setEnabled(false);
-	}
+	gl->addMultiCellWidget(m_hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
+	connect(m_preview, SIGNAL(activated(int)), this, SLOT(slotChangeLook(int)) );
+	connect(m_preview, SIGNAL(textChanged(const QString &)), module, SLOT(changed()));
 
 	QGroupBox *gb = new QHGroupBox(i18n("Example"), this);
-	m_exLook = new LinkLook(*look);
+	m_exLook = new LinkLook;
 	m_example = new LinkLabel(exTitle, exIcon, m_exLook, 1, 1, gb);
 	m_example->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_example->setCursor(QCursor(Qt::PointingHandCursor));
 	layout->addWidget(gb);
 	m_exTitle = exTitle;
 	m_exIcon  = exIcon;
-
-	slotChangeLook();
 
 	connect( m_italic,      SIGNAL(clicked()),              this, SLOT(slotChangeLook())              );
 	connect( m_bold,        SIGNAL(clicked()),              this, SLOT(slotChangeLook())              );
@@ -646,6 +639,29 @@ LinkLookEditWidget::LinkLookEditWidget(LinkLook *look, const QString exTitle, co
 	connect( m_iconSize,    SIGNAL(activated(int)),         this, SLOT(slotChangeLook(int))           );
 }
 
+void LinkLookEditWidget::set(LinkLook *look)
+{
+	m_look = look;
+
+	m_italic->setChecked(look->italic());
+	m_bold->setChecked(look->bold());
+	m_underlining->setCurrentItem(look->underlining());
+	m_preview->setCurrentItem(look->preview());
+	m_color->setColor(m_look->color());
+	m_color->setDefaultColor(m_look->defaultColor());
+	m_hoverColor->setColor(m_look->hoverColor());
+	m_hoverColor->setDefaultColor(m_look->defaultHoverColor());
+	m_iconSize->setSize(look->iconSize());
+	m_exLook = new LinkLook(*look);
+	m_example->setLook(m_exLook);
+
+	if (!look->canPreview()) {
+		m_label->setEnabled(false);
+		m_hLabel->setEnabled(false);
+		m_preview->setEnabled(false);
+	}
+	slotChangeLook();
+}
 
 void LinkLookEditWidget::slotChangeLook(const QColor&)
 {

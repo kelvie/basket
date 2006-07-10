@@ -1,0 +1,26 @@
+# configure.in.bot
+# This file is used for printing important messages at the end of configure
+
+echo ""
+
+if test x$basket_warning_gpgme = xyes; then
+    echo " ===================================="
+    echo " ===  Basket Note Pads - WARNING  ==================================="
+    echo " ===================================="
+    echo " ="
+    echo " = Basket Note Pads requires gpgme version 1.0 and"
+    echo " = libgpg-error version 1.0"
+    echo " = Basket Note Pads will still be built, but there is no encryption."
+    echo " ="
+fi
+
+if test x$basket_warning_kontact = xyes; then
+    echo " ===================================="
+    echo " ===  Basket Note Pads - WARNING  ==================================="
+    echo " ===================================="
+    echo " ="
+    echo " = Basket requires kdepim"
+    echo " = Basket Note Pads will still be built, but there is no"
+    echo " = kontact plugin."
+    echo " ="
+fi

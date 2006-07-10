@@ -3,7 +3,7 @@
   <general>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
-    <version>0.6.0Beta1</version>
+    <version>0.6.0Alpha2b</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -47,7 +47,7 @@
         <cxxflags>-O2 -g0</cxxflags>
       </optimized>
       <debug>
-        <configargs>--enable-debug=full --without-arts</configargs>
+        <configargs>--enable-debug=full --without-arts --prefix=$HOME/kde-debug</configargs>
         <builddir>debug</builddir>
         <ccompiler>kdevgccoptions</ccompiler>
         <cxxcompiler>kdevgppoptions</cxxcompiler>
@@ -69,7 +69,7 @@
         <envvar value="1" name="WANT_AUTOCONF_2_5" />
         <envvar value="1" name="WANT_AUTOMAKE_1_6" />
       </envvars>
-      <abortonerror>false</abortonerror>
+      <abortonerror>true</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
       <makebin/>
@@ -149,10 +149,10 @@
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-dr-konquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -183,10 +183,7 @@
     <rshoptions/>
   </kdevcvs>
   <kdevcppsupport>
-    <references>
-      <pcs>KDElibs</pcs>
-      <pcs>Qt</pcs>
-    </references>
+    <references/>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
@@ -200,7 +197,7 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
@@ -231,7 +228,7 @@
     <bzip>false</bzip>
     <archname>basket-%v.tar.gz</archname>
     <appname>basket</appname>
-    <version>0.6.0Beta1</version>
+    <version>0.6.0AlphaE</version>
     <release/>
     <vendor/>
     <licence/>

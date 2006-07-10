@@ -33,6 +33,7 @@
 #include <ktoolbar.h>
 #include <kaction.h>
 #include <kurifilter.h>
+#include <kdebug.h>
 
 #include "noteedit.h"
 #include "notecontent.h"
@@ -727,7 +728,6 @@ void LauncherEditDialog::guessIcon()
 
 InlineEditors::InlineEditors()
 {
-	m_mainWindow = 0;
 }
 
 InlineEditors::~InlineEditors()
@@ -742,31 +742,28 @@ InlineEditors* InlineEditors::instance()
 	return instance;
 }
 
-void InlineEditors::initToolBars(KMainWindow *mainWindow)
+void InlineEditors::initToolBars(KActionCollection *actionCollection)
 {
-	m_mainWindow = mainWindow;
-
 	// Init the RichTextEditor Toolbar:
-
-	richTextFont = new FocusedFontCombo(mainWindow);
+	richTextFont = new FocusedFontCombo(Global::mainWindow());
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
 	KWidgetAction *action = new KWidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
-	                                          /*receiver=*/0, /*slot=*/"", mainWindow->actionCollection(), "richtext_font");
-	richTextColor = new FocusedColorCombo(mainWindow);
+	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font");
+	richTextColor = new FocusedColorCombo(Global::mainWindow());
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
-	action = new KWidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), mainWindow->actionCollection(), "richtext_color");
+	action = new KWidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
 
-	richTextBold      = new KToggleAction( i18n("Bold"),        "text_bold",   "Ctrl+B", mainWindow->actionCollection(), "richtext_bold"      );
-	richTextItalic    = new KToggleAction( i18n("Italic"),      "text_italic", "Ctrl+I", mainWindow->actionCollection(), "richtext_italic"    );
-	richTextUnderline = new KToggleAction( i18n("Underline"),   "text_under",  "Ctrl+U", mainWindow->actionCollection(), "richtext_underline" );
+	richTextBold      = new KToggleAction( i18n("Bold"),        "text_bold",   "Ctrl+B", actionCollection, "richtext_bold"      );
+	richTextItalic    = new KToggleAction( i18n("Italic"),      "text_italic", "Ctrl+I", actionCollection, "richtext_italic"    );
+	richTextUnderline = new KToggleAction( i18n("Underline"),   "text_under",  "Ctrl+U", actionCollection, "richtext_underline" );
 
-//	richTextSuper     = new KToggleAction( i18n("Superscript"), "text_super",  "",       mainWindow->actionCollection(), "richtext_super"     );
-//	richTextSub       = new KToggleAction( i18n("Subscript"),   "text_sub",    "",       mainWindow->actionCollection(), "richtext_sub"       );
+//	richTextSuper     = new KToggleAction( i18n("Superscript"), "text_super",  "",       actionCollection, "richtext_super"     );
+//	richTextSub       = new KToggleAction( i18n("Subscript"),   "text_sub",    "",       actionCollection, "richtext_sub"       );
 
-	richTextLeft      = new KToggleAction( i18n("Align Left"),  "text_left",   "",       mainWindow->actionCollection(), "richtext_left"      );
-	richTextCenter    = new KToggleAction( i18n("Centered"),    "text_center", "",       mainWindow->actionCollection(), "richtext_center"    );
-	richTextRight     = new KToggleAction( i18n("Align Right"), "text_right",  "",       mainWindow->actionCollection(), "richtext_right"     );
-	richTextJustified = new KToggleAction( i18n("Justified"),   "text_block",  "",       mainWindow->actionCollection(), "richtext_block"     );
+	richTextLeft      = new KToggleAction( i18n("Align Left"),  "text_left",   "",       actionCollection, "richtext_left"      );
+	richTextCenter    = new KToggleAction( i18n("Centered"),    "text_center", "",       actionCollection, "richtext_center"    );
+	richTextRight     = new KToggleAction( i18n("Align Right"), "text_right",  "",       actionCollection, "richtext_right"     );
+	richTextJustified = new KToggleAction( i18n("Justified"),   "text_block",  "",       actionCollection, "richtext_block"     );
 
 	richTextLeft->setExclusiveGroup("rt_justify");
 	richTextCenter->setExclusiveGroup("rt_justify");
@@ -778,9 +775,9 @@ void InlineEditors::initToolBars(KMainWindow *mainWindow)
 
 KToolBar* InlineEditors::richTextToolBar()
 {
-	if (m_mainWindow) {
-		m_mainWindow->toolBar(); // Make sure we create the main toolbar FIRST, so it will be on top of the edit toolbar!
-		return m_mainWindow->toolBar("richTextEditToolBar");
+	if (Global::mainWindow()) {
+		Global::mainWindow()->toolBar(); // Make sure we create the main toolbar FIRST, so it will be on top of the edit toolbar!
+		return Global::mainWindow()->toolBar("richTextEditToolBar");
 	} else
 		return 0;
 }

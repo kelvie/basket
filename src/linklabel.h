@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,9 +37,11 @@ class KColorCombo2;
 class IconSizeCombo;
 
 class HtmlExportData;
+class HelpLabel;
+class KCModule;
 
 /** Store the style of links
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class LinkLook
 {
@@ -93,7 +95,7 @@ class LinkLook
 
 /** Used to represent links with icon and specific look
   * Note : This label will appear blank while LinkLook willn't be set
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class LinkLabel : public QFrame
 {
@@ -133,7 +135,7 @@ class LinkLabel : public QFrame
 /** THE NEW CLASS TO DISPLAY Links FOR THE NEW BASKET ENGINE.
  * We should get ride of class LinkLabel soon.
  * And LinkLabel will be entirely rewritten to use this LinkDisplay as the drawing primitives.
- * @author Sébastien Laoût
+ * @author Sï¿½astien Laot
  */
 class LinkDisplay
 {
@@ -172,17 +174,18 @@ class LinkDisplay
 };
 
 /** A widget to edit a LinkLook, showing a live example to the user.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class LinkLookEditWidget : public QWidget
 {
   Q_OBJECT
   public:
-	LinkLookEditWidget(LinkLook *look, const QString exTitle, const QString exIcon,
-	                   QWidget *parent = 0, const char *name = 0, WFlags fl = 0);
+	LinkLookEditWidget(KCModule* module, const QString exTitle, const QString exIcon,
+					   QWidget *parent = 0, const char *name = 0, WFlags fl = 0);
 	~LinkLookEditWidget();
 	void saveChanges();
 	void saveToLook(LinkLook *look);
+	void set(LinkLook *look);
   private slots:
 	void slotChangeLook(const QColor&);
 	void slotChangeLook();
@@ -200,6 +203,8 @@ class LinkLookEditWidget : public QWidget
 	LinkLabel     *m_example;
 	QString        m_exTitle;
 	QString        m_exIcon;
+	HelpLabel     *m_hLabel;
+	QLabel        *m_label;
 };
 
 #endif // LINKLABEL_H

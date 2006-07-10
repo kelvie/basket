@@ -18,46 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef CLICKABLELABEL_H
+#define CLICKABLELABEL_H
 
-#include <qstring.h>
+#include <qlabel.h>
 
-class DebugWindow;
-class BackgroundManager;
-class ContainerSystemTray;
-class BNPView;
-class KGlobalAccel;
-class KMainWindow;
-
-/** Handle all global variables of the application.
-  * This file only declare classes : developer should include
-  * the .h files of variables he use.
+/** This class is a QLabel that can emit a clicked() signal when clicked !
   * @author S�astien Laot
   */
-class Global
+class ClickableLabel : public QLabel
 {
-  private:
-	static QString s_customSavesFolder;
+  Q_OBJECT
   public:
-	// Global Variables:
-	static DebugWindow         *debugWindow;
-	static BackgroundManager   *backgroundManager;
-	static ContainerSystemTray *tray;
-	static BNPView             *bnpView;
-	static KGlobalAccel        *globalAccel;
-
-	// Application Folders:
-	static void setCustomSavesFolder(const QString &folder);
-	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
-	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
-	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
-	static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
-	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
-
-	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
-	static KMainWindow* mainWindow();
+	/** Construtor, initializer and destructor */
+	ClickableLabel(QWidget *parent = 0, const char *name = 0)
+	 : QLabel(parent, name) {}
+	~ClickableLabel()       {}
+  signals:
+	void clicked();
+  protected:
+	virtual void mousePressEvent(QMouseEvent *event);
 };
 
-#endif // GLOBAL_H
+#endif // CLICKABLELABEL_H

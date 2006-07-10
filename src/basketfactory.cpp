@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,7 @@
 #include "basket.h"
 #include "xmlwork.h"
 #include "note.h" // For balanced column width computation
-#include "container.h"
+#include "bnpview.h"
 
 /** BasketFactory */
 
@@ -68,7 +68,7 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
-		Basket *currentBasket = Global::basketTree->currentBasket();
+		Basket *currentBasket = Global::bnpView->currentBasket();
 		int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns-1)*Note::RESIZER_WIDTH) / nbColumns : 0);
 		stream << QString( "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 		                   "<!DOCTYPE basket>\n"
@@ -155,5 +155,5 @@ void BasketFactory::newBasket(const QString &icon,
 	}
 
 	// Load it in the parent basket (it will save the tree and switch to this new basket):
-	Global::basketTree->loadNewBasket(folderName, properties, parent);
+	Global::bnpView->loadNewBasket(folderName, properties, parent);
 }

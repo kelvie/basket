@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,10 @@
 #include <iostream>
 
 #include "focusedwidgets.h"
+#include "bnpview.h"
+#include "global.h"
+#include "basket.h"
+
 
 /** class FocusedTextEdit */
 
@@ -107,10 +111,6 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-#include "global.h"
-#include "container.h"
-#include "basket.h"
-
 void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 {
 	if (event->delta() > 0 && contentsY() > 0) {
@@ -120,7 +120,7 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 		KTextEdit::wheelEvent(event);
 		return;
 	} else
-		Global::mainContainer->currentBasket()->wheelEvent(event);
+		Global::bnpView->currentBasket()->wheelEvent(event);
 }
 
 void FocusedTextEdit::enterEvent(QEvent *event)

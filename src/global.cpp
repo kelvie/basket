@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,19 +22,21 @@
 #include <kstandarddirs.h>
 #include <qstring.h>
 #include <kaction.h>
+#include <kapplication.h>
+#include <kmainwindow.h>
 #include <qdir.h>
+#include <kdebug.h>
 
 #include "global.h"
-#include "container.h"
+#include "bnpview.h"
 
 /** Define initial values for global variables : */
 
 QString              Global::s_customSavesFolder = "";
 DebugWindow         *Global::debugWindow         = 0L;
 BackgroundManager   *Global::backgroundManager   = 0L;
-Container           *Global::mainContainer       = 0L;
 ContainerSystemTray *Global::tray                = 0L;
-BasketTree          *Global::basketTree          = 0L;
+BNPView             *Global::bnpView             = 0L;
 KGlobalAccel        *Global::globalAccel         = 0L;
 
 void Global::setCustomSavesFolder(const QString &folder)
@@ -66,5 +68,16 @@ QString Global::tempCutFolder()     { return savesFolder() + "temp-cut/";    }
 
 QString Global::openNoteIcon()
 {
-	return Global::mainContainer->m_actOpenNote->icon();
+	return Global::bnpView->m_actOpenNote->icon();
+}
+
+KMainWindow* Global::mainWindow()
+{
+	QWidget* res = kapp->mainWidget();
+
+	if(res && res->inherits("KMainWindow"))
+	{
+		return static_cast<KMainWindow*>(res);
+	}
+	return 0;
 }

@@ -29,9 +29,13 @@
 #include <qcolor.h>
 #include <qpoint.h>
 #include <qsize.h>
+#include <kcmodule.h>
+#include <kaction.h>
+#include <kmainwindow.h>
 
 #include "global.h"
-#include "container.h"
+#include "bnpview.h"
+#include "systemtray.h"
 
 class QGroupBox;
 class QButtonGroup;
@@ -47,6 +51,114 @@ class LinkLook;
 class LinkLookEditWidget;
 class RunCommandRequester;
 class IconSizeCombo;
+
+class GeneralPage : public KCModule
+{
+	Q_OBJECT
+	public:
+		GeneralPage(QWidget * parent=0, const char * name=0);
+		GeneralPage() {};
+
+		virtual void load();
+		virtual void save();
+		virtual void defaults();
+
+	private slots:
+		void visualize();
+
+	private:
+	// Main window
+		QComboBox           *m_treeOnLeft;
+		QComboBox           *m_filterOnTop;
+		QCheckBox           *m_playAnimations;
+		QCheckBox           *m_showNotesToolTip;
+		QCheckBox           *m_bigNotes;
+		QCheckBox           *m_exportTextTags;
+		QCheckBox           *m_useGnuPGAgent;
+		QCheckBox           *m_usePassivePopup;
+	// Note Addition
+		QComboBox           *m_newNotesPlace;
+		QCheckBox           *m_viewTextFileContent;
+		QCheckBox           *m_viewHtmlFileContent;
+		QCheckBox           *m_viewImageFileContent;
+		QCheckBox           *m_viewSoundFileContent;
+	// Notes Default Values
+		KIntNumInput        *m_imgSizeX;
+		KIntNumInput        *m_imgSizeY;
+		QPushButton         *m_pushVisualize;
+
+		QCheckBox           *m_useSystray;
+};
+
+class NotesPage : public KCModule
+{
+	Q_OBJECT
+	public:
+		NotesPage(QWidget * parent=0, const char * name=0);
+		NotesPage() {};
+
+		virtual void load();
+		virtual void save();
+		virtual void defaults();
+
+	private:
+	// Links
+		LinkLookEditWidget  *m_soundLook;
+		LinkLookEditWidget  *m_fileLook;
+		LinkLookEditWidget  *m_localLinkLook;
+		LinkLookEditWidget  *m_networkLinkLook;
+		LinkLookEditWidget  *m_launcherLook;
+};
+
+class AppsPage : public KCModule
+{
+	Q_OBJECT
+	public:
+		AppsPage(QWidget * parent=0, const char * name=0);
+		AppsPage() {};
+
+		virtual void load();
+		virtual void save();
+		virtual void defaults();
+
+	private:
+	// Programs
+		QCheckBox           *m_textUseProg;
+		QCheckBox           *m_htmlUseProg;
+		QCheckBox           *m_imageUseProg;
+		QCheckBox           *m_animationUseProg;
+		QCheckBox           *m_soundUseProg;
+		RunCommandRequester *m_textProg;
+		RunCommandRequester *m_htmlProg;
+		RunCommandRequester *m_imageProg;
+		RunCommandRequester *m_animationProg;
+		RunCommandRequester *m_soundProg;
+};
+
+class FeaturesPage : public KCModule
+{
+	Q_OBJECT
+	public:
+		FeaturesPage(QWidget * parent=0, const char * name=0);
+		FeaturesPage() {};
+
+		virtual void load();
+		virtual void save();
+		virtual void defaults();
+
+	private:
+		QWidget             *m_groupOnInsertionLineWidget;
+		QCheckBox           *m_groupOnInsertionLine;
+		QComboBox           *m_middleAction;
+	// System Tray Icon
+		QCheckBox           *m_useSystray;
+		QCheckBox           *m_showIconInSystray;
+		QWidget             *m_systray;
+		QCheckBox           *m_hideOnMouseOut;
+		KIntNumInput        *m_timeToHideOnMouseOut;
+		QCheckBox           *m_showOnMouseIn;
+		KIntNumInput        *m_timeToShowOnMouseIn;
+};
 
 /** Handle all global variables (to avoid lot of extern declarations)
   * @author S�astien Laot
@@ -152,15 +264,15 @@ class Settings // FIXME: Distaptch new config events ?
 	static void setTreeOnLeft(bool onLeft)
 	{
 		s_treeOnLeft = onLeft;
-		if (Global::basketTree)
-			Global::basketTree->setTreePlacement(onLeft);
+		if (Global::bnpView)
+			Global::bnpView->setTreePlacement(onLeft);
 	}
 	static void setFilterOnTop(bool onTop)
 	{
 		if (s_filterOnTop != onTop) {
 			s_filterOnTop = onTop;
-			if (Global::basketTree)
-				Global::basketTree->filterPlacementChanged(onTop);
+			if (Global::bnpView)
+				Global::bnpView->filterPlacementChanged(onTop);
 		}
 	}
 	static void setShowNotesToolTip(bool show)
@@ -176,11 +288,11 @@ class Settings // FIXME: Distaptch new config events ?
 					Global::tray->show();
 				else {
 					Global::tray->hide();
-					Global::mainContainer->show();
+					if(Global::mainWindow()) Global::mainWindow()->show();
 				}
 			}
-			if (Global::mainContainer)
-				Global::mainContainer->m_actHideWindow->setEnabled(useSystray);
+			if (Global::bnpView)
+				Global::bnpView->m_actHideWindow->setEnabled(useSystray);
 		}
 	}
 	static void setShowIconInSystray(bool show)
@@ -237,70 +349,6 @@ class Settings // FIXME: Distaptch new config events ?
   protected:
 	static void loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook);
 	static void saveLinkLook(LinkLook *look, const QString &name);
-};
-
-/** Provide a dialog for modify application settings
-  * @author S�astien Laot
-  */
-class SettingsDialog : public KDialogBase
-{
-  Q_OBJECT
-  public:
-	SettingsDialog(QWidget *parent = 0);
-	~SettingsDialog();
-  protected slots:
-	void visualize();
-	void slotDefault();
-	void slotApply();
-	void slotOk();
-  private:
-	// Main window
-	QComboBox           *m_treeOnLeft;
-	QComboBox           *m_filterOnTop;
-	QCheckBox           *m_playAnimations;
-	QCheckBox           *m_showNotesToolTip;
-	QCheckBox           *m_bigNotes;
-	QCheckBox           *m_exportTextTags;
-	QCheckBox           *m_useGnuPGAgent;
-	QCheckBox           *m_usePassivePopup;
-	QComboBox           *m_middleAction;
-	QCheckBox           *m_groupOnInsertionLine;
-	QWidget             *m_groupOnInsertionLineWidget;
-	// System Tray Icon
-	QCheckBox           *m_useSystray;
-	QCheckBox           *m_showIconInSystray;
-	QWidget             *m_systray;
-	QCheckBox           *m_hideOnMouseOut;
-	KIntNumInput        *m_timeToHideOnMouseOut;
-	QCheckBox           *m_showOnMouseIn;
-	KIntNumInput        *m_timeToShowOnMouseIn;
-	// Notes Default Values
-	KIntNumInput        *m_imgSizeX;
-	KIntNumInput        *m_imgSizeY;
-	QPushButton         *m_pushVisualize;
-	// Links
-	LinkLookEditWidget  *m_soundLook;
-	LinkLookEditWidget  *m_fileLook;
-	LinkLookEditWidget  *m_localLinkLook;
-	LinkLookEditWidget  *m_networkLinkLook;
-	LinkLookEditWidget  *m_launcherLook;
-	// Programs
-	QCheckBox           *m_textUseProg;
-	QCheckBox           *m_htmlUseProg;
-	QCheckBox           *m_imageUseProg;
-	QCheckBox           *m_animationUseProg;
-	QCheckBox           *m_soundUseProg;
-	RunCommandRequester *m_textProg;
-	RunCommandRequester *m_htmlProg;
-	RunCommandRequester *m_imageProg;
-	RunCommandRequester *m_animationProg;
-	RunCommandRequester *m_soundProg;
-	// Note Addition
-	QComboBox           *m_newNotesPlace;
-	QCheckBox           *m_viewTextFileContent;
-	QCheckBox           *m_viewHtmlFileContent;
-	QCheckBox           *m_viewImageFileContent;
-	QCheckBox           *m_viewSoundFileContent;
 };
 
 #endif // SETTINGS_H

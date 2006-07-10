@@ -18,46 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef COLORPICKER_H
+#define COLORPICKER_H
 
-#include <qstring.h>
+#include <qdesktopwidget.h>
 
-class DebugWindow;
-class BackgroundManager;
-class ContainerSystemTray;
-class BNPView;
-class KGlobalAccel;
-class KMainWindow;
-
-/** Handle all global variables of the application.
-  * This file only declare classes : developer should include
-  * the .h files of variables he use.
+/** Class to pick a color on the screen
   * @author S�astien Laot
   */
-class Global
+class DesktopColorPicker : public QDesktopWidget
 {
-  private:
-	static QString s_customSavesFolder;
+  Q_OBJECT
   public:
-	// Global Variables:
-	static DebugWindow         *debugWindow;
-	static BackgroundManager   *backgroundManager;
-	static ContainerSystemTray *tray;
-	static BNPView             *bnpView;
-	static KGlobalAccel        *globalAccel;
-
-	// Application Folders:
-	static void setCustomSavesFolder(const QString &folder);
-	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
-	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
-	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
-	static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
-	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
-
-	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
-	static KMainWindow* mainWindow();
+	/** Construtor, initializer and destructor */
+	DesktopColorPicker();
+	~DesktopColorPicker();
+  public slots:
+	/** Begin color picking.
+	  * This function returns immediatly, and pickedColor() is emitted if user has
+	  * choosen a color, and not canceled the process (by pressing Escape).
+	  */
+	void pickColor();
+  signals:
+	/** When user picked a color, this signal is emitted.
+	  */
+	void pickedColor(const QColor &color);
+	/** When user cancel a picking (by pressing Escape), this signal is emitted.
+	  */
+	void canceledPick();
+  protected slots:
+	void slotDelayedPick();
+  protected:
+	void mouseReleaseEvent(QMouseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
+	bool m_gettingColorFromScreen;
 };
 
-#endif // GLOBAL_H
+#endif // COLORPICKER_H

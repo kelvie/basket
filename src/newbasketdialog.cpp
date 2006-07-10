@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,15 +32,17 @@
 #include <qpainter.h>
 #include <kapplication.h>
 #include <kiconloader.h>
+#include <kmainwindow.h>
 
 #include "newbasketdialog.h"
 #include "basketfactory.h"
-#include "container.h"
 #include "basket.h"
+#include "basketlistview.h"
 #include "variouswidgets.h"
 #include "kcolorcombo2.h"
 #include "tools.h"
 #include "global.h"
+#include "bnpview.h"
 
 /** class SingleSelectionKIconView: */
 
@@ -222,7 +224,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 	m_basketsMap.clear();
 	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
-	populateBasketsList(Global::basketTree->firstListViewItem(), /*indent=*/1, /*index=*/1);
+	populateBasketsList(Global::bnpView->firstListViewItem(), /*indent=*/1, /*index=*/1);
 
 	connect( m_templates, SIGNAL(doubleClicked(QIconViewItem*)), this, SLOT(slotOk())        );
 	connect( m_templates, SIGNAL(returnPressed(QIconViewItem*)), this, SLOT(returnPressed()) );
@@ -305,7 +307,7 @@ void NewBasketDialog::slotOk()
 	if (item->text() == i18n("Mind map"))
 		templateName = "mindmap";
 
-	Global::basketTree->closeAllEditors();
+	Global::bnpView->closeAllEditors();
 
 	QString backgroundImage;
 	QColor  textColor;
@@ -315,7 +317,7 @@ void NewBasketDialog::slotOk()
 	}
 
 	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
-	Global::mainContainer->show();
+	if(Global::mainWindow()) Global::mainWindow()->show();
 
 	KDialogBase::slotOk();
 }

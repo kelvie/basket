@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,7 @@
 #include "xmlwork.h"
 #include "global.h"
 #include "debugwindow.h"
-#include "container.h"
+#include "bnpview.h"
 #include "tools.h"
 #include "basket.h"
 
@@ -199,7 +199,7 @@ Tag::Tag()
 	static int tagNumber = 0;
 	++tagNumber;
 	QString sAction = "tag_shortcut_number_" + QString::number(tagNumber);
-	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), Global::mainContainer, SLOT(activatedTagShortcut()), Global::mainContainer->actionCollection(), sAction);
+	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), Global::bnpView, SLOT(activatedTagShortcut()), Global::bnpView->actionCollection(), sAction);
 	m_action->setShortcutConfigurable(false); // We do it in the tag properties dialog
 
 	m_inheritedBySiblings = false;

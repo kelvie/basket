@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -200,7 +200,7 @@ class DebuggedLineEdit : public QLineEdit
 };
 
 /** The dialog to edit Link Note content.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class LinkEditDialog : public KDialogBase
 {
@@ -228,7 +228,7 @@ class LinkEditDialog : public KDialogBase
 
 
 /** The dialog to edit Launcher Note content.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class LauncherEditDialog : public KDialogBase
 {
@@ -250,7 +250,7 @@ class LauncherEditDialog : public KDialogBase
 /** This class manage toolbars for the inline editors.
   * The toolbars should be created once at the application startup,
   * then KXMLGUI can manage them and save theire state and position...
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class InlineEditors : public QObject
 {
@@ -258,10 +258,9 @@ class InlineEditors : public QObject
   public:
 	InlineEditors();
 	~InlineEditors();
-	void initToolBars(KMainWindow *mainWindow);
+	void initToolBars(KActionCollection *actionCollection);
 	static InlineEditors* instance();
-  private:
-	KMainWindow *m_mainWindow;
+
   public:
 	// Rich Text ToolBar:
 	KToolBar* richTextToolBar();

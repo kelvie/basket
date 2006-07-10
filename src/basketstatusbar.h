@@ -17,47 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef BASKETSTATUSBAR_H
+#define BASKETSTATUSBAR_H
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#include <qobject.h>
 
-#include <qstring.h>
+class KStatusBar;
+namespace KParts { class StatusBarExtension; }
+class QWidget;
+class QLabel;
+class ClickableLabel;
 
-class DebugWindow;
-class BackgroundManager;
-class ContainerSystemTray;
-class BNPView;
-class KGlobalAccel;
-class KMainWindow;
-
-/** Handle all global variables of the application.
-  * This file only declare classes : developer should include
-  * the .h files of variables he use.
-  * @author S�astien Laot
-  */
-class Global
+/**
+	@author Sébastien Laoût <slaout@linux62.org>
+*/
+class BasketStatusBar : public QObject
 {
-  private:
-	static QString s_customSavesFolder;
+  Q_OBJECT
   public:
-	// Global Variables:
-	static DebugWindow         *debugWindow;
-	static BackgroundManager   *backgroundManager;
-	static ContainerSystemTray *tray;
-	static BNPView             *bnpView;
-	static KGlobalAccel        *globalAccel;
+    BasketStatusBar(KStatusBar *bar);
+	BasketStatusBar(KParts::StatusBarExtension *extension);
+	~BasketStatusBar();
 
-	// Application Folders:
-	static void setCustomSavesFolder(const QString &folder);
-	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
-	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
-	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
-	static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
-	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
+  public slots:
+	/** GUI Main Window actions **/
+	void setStatusBarHint(const QString &hint); /// << Set a specific message or update if hint is empty
+	void updateStatusBarHint();                 /// << Display the current state message (dragging, editing) or reset the startsbar message
+	void postStatusbarMessage(const QString &text);
+	void setSelectionStatus(const QString &s);
+	void setLockStatus(bool isLocked);
+	void setupStatusBar();
 
-	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
-	static KMainWindow* mainWindow();
+  private slots:
+	void privateSetupStatusBar();
+
+  protected:
+	  KStatusBar *statusBar () const;
+	  void addWidget(QWidget * widget, int stretch = 0, bool permanent = false);
+
+  private:
+	KStatusBar                 *m_bar;
+	KParts::StatusBarExtension *m_extension;
+	QLabel                     *m_selectionStatus;
+	QLabel                     *m_basketStatus;
+	ClickableLabel             *m_lockStatus;
 };
 
-#endif // GLOBAL_H
+#endif

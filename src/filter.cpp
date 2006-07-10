@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -38,7 +38,7 @@
 #include "filter.h"
 //#include "settings.h"
 #include "global.h"
-#include "container.h"
+#include "bnpview.h"
 #include "tools.h"
 #include "tag.h"
 #include "focusedwidgets.h"
@@ -100,7 +100,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	connect(  m_tagsBox,            SIGNAL(activated(int)),              this, SLOT(tagChanged(int))             );
 
 //	connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
-	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::basketTree, SLOT(toggleFilterAllBaskets(bool)) );
+	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)) );
 
 	connect( m_lineEdit, SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
 	connect( m_lineEdit, SIGNAL(returnPressed()),  this, SIGNAL(returnPressed()) );

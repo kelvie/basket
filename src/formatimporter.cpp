@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,7 @@
 #include "formatimporter.h"
 #include "notecontent.h"
 #include "notefactory.h"
-#include "container.h"
+#include "bnpview.h"
 #include "basket.h"
 #include "global.h"
 #include "xmlwork.h"
@@ -42,7 +42,7 @@
 bool FormatImporter::shouldImportBaskets()
 {
 	// We should import if the application have not successfully loaded any basket...
-	if (Global::basketTree->firstListViewItem())
+	if (Global::bnpView->firstListViewItem())
 		return false;
 
 	// ... And there is at least one folder in the save folder, with a ".basket" file inside that folder.

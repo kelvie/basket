@@ -195,9 +195,9 @@ DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, con
 	connect( m_filter, SIGNAL(escapePressed()),              m_basket, SLOT(cancelFilter())               );
 	connect( m_filter, SIGNAL(returnPressed()),              m_basket, SLOT(validateFilter())             );
 
-	connect( m_basket, SIGNAL(postMessage(const QString&)),      Global::mainContainer, SLOT(postStatusbarMessage(const QString&)) );
-	connect( m_basket, SIGNAL(setStatusBarText(const QString&)), Global::mainContainer, SLOT(setStatusBarHint(const QString&))     );
-	connect( m_basket, SIGNAL(resetStatusBarText()),             Global::mainContainer, SLOT(updateStatusBarHint())                );
+	connect( m_basket, SIGNAL(postMessage(const QString&)),      Global::bnpView, SLOT(postStatusbarMessage(const QString&)) );
+	connect( m_basket, SIGNAL(setStatusBarText(const QString&)), Global::bnpView, SLOT(setStatusBarHint(const QString&))     );
+	connect( m_basket, SIGNAL(resetStatusBarText()),             Global::bnpView, SLOT(updateStatusBarHint())                );
 }
 
 DecoratedBasket::~DecoratedBasket()
@@ -1060,8 +1060,8 @@ void Basket::equalizeColumnSizes()
 void Basket::enableActions()
 {
 #ifdef HAVE_LIBGPGME
-	Global::mainContainer->m_actLockBasket->setEnabled(!isLocked() && isEncrypted());
-	Global::mainContainer->m_actPassBasket->setEnabled(!isLocked());
+	Global::bnpView->m_actLockBasket->setEnabled(!isLocked() && isEncrypted());
+	Global::bnpView->m_actPassBasket->setEnabled(!isLocked());
 #endif
 
 }
@@ -1123,7 +1123,7 @@ void Basket::load()
 		m_loadingLaunched = false;
 		if (isEncrypted())
 			m_locked = true;
-		Global::mainContainer->countSelectedsChanged(); // Show "Locked" instead of "Loading..." in the statusbar
+		Global::bnpView->notesStateChanged(); // Show "Locked" instead of "Loading..." in the statusbar
 		return;
 	}
 	m_locked = false;
@@ -1161,7 +1161,7 @@ void Basket::load()
 	relayoutNotes(false);
 
 	// On application start, the current basket is not focused yet, so the focus rectangle is not shown when calling focusANote():
-	if (Global::basketTree->currentBasket() == this)
+	if (Global::bnpView->currentBasket() == this)
 		setFocus();
 	focusANote();
 
@@ -1196,7 +1196,7 @@ void Basket::newFilter(const FilterData &data)
 	if (m_focusedNote != 0L)
 		ensureNoteVisible(m_focusedNote);
 
-	Global::mainContainer->setFiltering(data.isFiltering);
+	Global::bnpView->setFiltering(data.isFiltering);
 }
 
 void Basket::cancelFilter()
@@ -1238,6 +1238,8 @@ QString Basket::fullPathForFileName(const QString &fileName)
 
 void Basket::setShortcut(KShortcut shortcut, int action)
 {
+	if(!Global::globalAccel)
+		return;
 	QString sAction = "global_basket_activate_" + folderName();
 	Global::globalAccel->remove(sAction);
 	Global::globalAccel->updateConnections();
@@ -1252,10 +1254,10 @@ void Basket::setShortcut(KShortcut shortcut, int action)
 
 void Basket::activatedShortcut()
 {
-	Global::mainContainer->setCurrentBasket(this);
+	Global::bnpView->setCurrentBasket(this);
 
 	if (m_shortcutAction == 1)
-		Global::mainContainer->setActive(true);
+		Global::bnpView->setActive(true);
 }
 
 void Basket::signalCountsChanged()
@@ -1293,7 +1295,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_focusedNote(0), m_startOfShiftSelectionNote(0)
 {
 	QString sAction = "local_basket_activate_" + folderName;
-	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), this, SLOT(activatedShortcut()), Global::mainContainer->actionCollection(), sAction);
+	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), this, SLOT(activatedShortcut()), Global::bnpView->actionCollection(), sAction);
 	m_action->setShortcutConfigurable(false); // We do it in the basket properties dialog (and keep it in sync with the global one)
 
 	if (!m_folderName.endsWith("/"))
@@ -1505,7 +1507,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		m_clickedToInsert = clicked;
 		m_zoneToInsert    = zone;
 		m_posToInsert     = event->pos();
-		KPopupMenu* menu = (KPopupMenu*)(Global::mainContainer->popupMenu("insert_popup"));
+		KPopupMenu* menu = (KPopupMenu*)(Global::bnpView->popupMenu("insert_popup"));
 		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeItem(/*id=*/120);
 		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18n("The verb (Group New Note)", "Group") : i18n("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
@@ -1531,7 +1533,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			clicked->setSelected(true);
 		}
 		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
-		QPopupMenu* menu = Global::mainContainer->popupMenu("note_popup");
+		QPopupMenu* menu = Global::bnpView->popupMenu("note_popup");
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 		doHoverEffects(clicked, zone); // In the case where another popup menu was open, we should do that manually!
@@ -1564,7 +1566,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;
-				Global::mainContainer->insertEmpty(type);
+				Global::bnpView->insertEmpty(type);
 			}
 		} else {
 			if (clicked)
@@ -1605,7 +1607,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 	if (event->reason() == QContextMenuEvent::Keyboard) {
 		if (countFounds/*countShown*/() == 0) { // TODO: Count shown!!
 			QRect basketRect( mapToGlobal(QPoint(0,0)), size() );
-			QPopupMenu *menu = Global::mainContainer->popupMenu("insert_popup");
+			QPopupMenu *menu = Global::bnpView->popupMenu("insert_popup");
 			setInsertPopupMenu();
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
@@ -1619,7 +1621,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 			setFocusedNote(m_focusedNote); /// /// ///
 			m_startOfShiftSelectionNote = (m_focusedNote->isGroup() ? m_focusedNote->firstRealChild() : m_focusedNote);
 			// Popup at bottom (or top) of the focused note, if visible :
-			QPopupMenu *menu = Global::mainContainer->popupMenu("note_popup");
+			QPopupMenu *menu = Global::bnpView->popupMenu("note_popup");
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 			doHoverEffects(m_focusedNote, Note::Content); // In the case where another popup menu was open, we should do that manually!
@@ -1773,7 +1775,7 @@ void Basket::clickedToInsert(QMouseEvent *event, Note *clicked, /*Note::Zone*/in
 void Basket::contentsDragEnterEvent(QDragEnterEvent *event)
 {
 	m_isDuringDrag = true;
-	Global::mainContainer->updateStatusBarHint();
+	Global::bnpView->updateStatusBarHint();
 	if (NoteDrag::basketOf(event) == this)
 		m_draggedNotes = NoteDrag::notesOf(event);
 }
@@ -1929,7 +1931,7 @@ void Basket::pasteNote(QClipboard::Mode mode)
 			m_editor->lineEdit()->paste();
 	} else {
 		if (!isLoaded()) {
-			Global::mainContainer->showPassiveLoading(this);
+			Global::bnpView->showPassiveLoading(this);
 			load();
 		}
 		closeEditor();
@@ -2498,7 +2500,7 @@ void Basket::doHoverEffects(const QPoint &pos)
 	// Ending the drag INSIDE the basket area will make NO hoverEffects() because m_underMouse is false.
 	// User need to leave the area and re-enter it to get effects.
 	// This hack solve that by dismissing the m_underMouse variable:
-	bool underMouse = Global::mainContainer->currentBasket() == this && QRect(contentsX(), contentsY(), visibleWidth(), visibleHeight()).contains(pos);
+	bool underMouse = Global::bnpView->currentBasket() == this && QRect(contentsX(), contentsY(), visibleWidth(), visibleHeight()).contains(pos);
 
 	// Don't do hover effects when a popup menu is opened.
 	// Primarily because the basket area will only receive mouseEnterEvent and mouveLeaveEvent.
@@ -2788,7 +2790,7 @@ Note* Basket::noteAt(int x, int y)
 
 Basket::~Basket()
 {
-	delete m_action;
+	//delete m_action;
 	if(m_decryptBox)
 		delete m_decryptBox;
 #ifdef HAVE_LIBGPGME
@@ -2865,7 +2867,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			QTimer::singleShot( 0, this, SLOT(load()) );
 		else {
 			m_locked = true;
-			Global::mainContainer->countSelectedsChanged(); // Show "Locked" instead of "Loading..." in the statusbar
+			Global::bnpView->notesStateChanged(); // Show "Locked" instead of "Loading..." in the statusbar
 		}
 	}
 
@@ -3503,7 +3505,7 @@ bool Basket::selectedAllTextInEditor()
 
 void Basket::selectionChangedInEditor()
 {
-	Global::mainContainer->countSelectedsChanged();
+	Global::bnpView->notesStateChanged();
 }
 
 void Basket::contentChangedInEditor()
@@ -3650,7 +3652,7 @@ bool Basket::closeEditor()
 	doHoverEffects();
 //	save();
 
-	Global::mainContainer->m_actEditNote->setEnabled( !isLocked() && countSelecteds() == 1 /*&& !isDuringEdit()*/ );
+	Global::bnpView->m_actEditNote->setEnabled( !isLocked() && countSelecteds() == 1 /*&& !isDuringEdit()*/ );
 
 	emit resetStatusBarText(); // Remove the "Editing. ... to validate." text.
 
@@ -3815,7 +3817,7 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 		filterAgain();
 		unselectAll();
 	}
-	Global::mainContainer->m_actEditNote->setEnabled(false);
+	Global::bnpView->m_actEditNote->setEnabled(false);
 }
 
 void Basket::noteDelete()

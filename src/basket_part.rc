@@ -22,9 +22,6 @@
     <Action name="basket_import_sticky_notes" />
     <Action name="basket_import_tomboy" />
    </Menu>
-   <Separator/>
-   <Action name="window_hide" />
-   <Action name="file_quit" />
   </Menu>
   <Menu name="edit" >
    <text>&amp;Edit</text>
@@ -117,7 +114,7 @@
   <Separator lineSeparator="true" name="separator_2" />
   <Action name="beta_convert_texts" />
  </ToolBar>
- <ToolBar newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
+ <ToolBar newline="false" position="Bottom" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
   <text>Rich Text Edit Toolbar</text>
   <Action name="richtext_font" />
   <Action name="richtext_color" />

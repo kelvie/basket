@@ -17,47 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef ABOUTDATA_H
+#define ABOUTDATA_H
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#include <kaboutdata.h>
 
-#include <qstring.h>
+/**
+	@author Sébastien Laoût <slaout@linux62.org>
+*/
 
-class DebugWindow;
-class BackgroundManager;
-class ContainerSystemTray;
-class BNPView;
-class KGlobalAccel;
-class KMainWindow;
-
-/** Handle all global variables of the application.
-  * This file only declare classes : developer should include
-  * the .h files of variables he use.
-  * @author S�astien Laot
-  */
-class Global
+class AboutData : public KAboutData
 {
-  private:
-	static QString s_customSavesFolder;
   public:
-	// Global Variables:
-	static DebugWindow         *debugWindow;
-	static BackgroundManager   *backgroundManager;
-	static ContainerSystemTray *tray;
-	static BNPView             *bnpView;
-	static KGlobalAccel        *globalAccel;
-
-	// Application Folders:
-	static void setCustomSavesFolder(const QString &folder);
-	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
-	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
-	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
-	static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
-	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
-
-	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
-	static KMainWindow* mainWindow();
+	AboutData();
 };
 
-#endif // GLOBAL_H
+#endif

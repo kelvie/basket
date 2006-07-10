@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�bastien Lao�t                                 *
+ *   Copyright (C) 2003 by S�astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,12 +33,13 @@
 #include <kconfig.h> // TMP IN ALPHA 1
 
 #include "backgroundmanager.h"
-#include "container.h"
+#include "mainwindow.h"
 #include "settings.h"
 #include "global.h"
 #include "debugwindow.h"
 #include "notedrag.h"
 #include "basket.h"
+#include "aboutdata.h"
 #include "likeback.h"
 
 #include "crashhandler.h"
@@ -57,8 +58,8 @@ class Application : public KUniqueApplication
 	Application() : KUniqueApplication(true, true, false) {}
 	virtual ~Application() {}
 	virtual int newInstance() {
-		if (Global::mainContainer)
-			Global::mainContainer->setActive(true);
+		if (win)
+			win->setActive(true);
 		return KUniqueApplication::newInstance();
 	}
 };
@@ -67,7 +68,6 @@ class Application : public KUniqueApplication
 int main(int argc, char *argv[])
 {
 	/* Application */
-	static const char description[] = I18N_NOOP("A set of baskets to keep a full range of data on hand.");
 	static KCmdLineOptions options[] =
 	{
 		{ "d", 0, 0 },
@@ -80,15 +80,7 @@ int main(int argc, char *argv[])
 		{ "use-dr-konquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
 		{ 0, 0, 0 }
 	};
-	KAboutData aboutData( "basket", I18N_NOOP("BasKet Note Pads"),
-	                      VERSION, description, KAboutData::License_GPL_V2,
-	                      "(c) 2003-2005, Sébastien Laoût", 0,
-	                      "http://basket.kde.org/",
-	                      "slaout@linux62.org"                              );
-	aboutData.addAuthor( "Sébastien Laoût", I18N_NOOP("Author, maintainer"),                 "slaout@linux62.org"   );
-	aboutData.addAuthor( "Petri Damsten",     I18N_NOOP("Basket encryption, KnowIt importer"), "petri.damsten@iki.fi" );
-	aboutData.addAuthor( "Marco Martin",      I18N_NOOP("Icon"),                               "m4rt@libero.it"       );
-
+	AboutData aboutData;
 	KCmdLineArgs::init(argc, argv, &aboutData);
 	KCmdLineArgs::addCmdLineOptions(options);
 
@@ -158,119 +150,23 @@ int main(int argc, char *argv[])
 	if (customDataFolder != 0 && !customDataFolder.isEmpty())
 		Global::setCustomSavesFolder(customDataFolder);
 
-	/* Settings */
-	Settings::loadConfig();
-
 	/* Debug window */
 	if ( KCmdLineArgs::parsedArgs()->isSet("debug") ) {
 		new DebugWindow();
 		Global::debugWindow->show();
 	}
 
-	// Needed when loading the baskets:
-	Global::globalAccel       = new KGlobalAccel(Global::mainContainer); // FIXME: Global::mainContainer is null at this point!
-	Global::backgroundManager = new BackgroundManager();
-
 	/* Main container */
-	/*Global::mainContainer = */new Container();
-	app.setMainWidget(Global::mainContainer);
-//	Global::basketTree->setTreePlacement(Settings::treeOnLeft());
+	MainWindow* win = new MainWindow();
+	app.setMainWidget(win);
+	win->show();
 
-	/* Self-test of the presence of basketui.rc (the only requiered file after basket executable) */
-	if (Global::mainContainer->popupMenu("basket") == 0L)
+	// Self-test of the presence of basketui.rc (the only requiered file after basket executable)
+	if (Global::bnpView->popupMenu("basket") == 0L)
 		// An error message will be show by Container::popupMenu()
 		return 1;
 
-	/* System tray icon */
-	Global::tray = new ContainerSystemTray(Global::mainContainer);
-	if (Settings::useSystray())
-		Global::tray->show();
-
-	if (Settings::useSystray() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
-		Global::mainContainer->hide();
-	else if (Settings::useSystray() && app.isRestored())
-		Global::mainContainer->setShown( !Settings::startDocked() );
-	else
-		Global::mainContainer->show();
-
-	// If the main window is hidden when session is saved, Container::queryClose()
-	//  isn't called and the last value would be kept
-	Settings::setStartDocked(true);
-
-	/* Global shortcuts */
-	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
-	globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
-	                     i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
-	                     Qt::CTRL+Qt::SHIFT+Qt::Key_W, Qt::CTRL+Qt::SHIFT+Qt::Key_W,
-	                     Global::mainContainer, SLOT(changeActive()),             true, true );
-	globalAccel->insert( "global_paste", i18n("Paste clipboard contents in current basket"),
-	                     i18n("Allows you to paste clipboard contents in the current basket without having to open main window."),
-	                     Qt::CTRL+Qt::ALT+Qt::Key_V, Qt::CTRL+Qt::ALT+Qt::Key_V,
-	                     Global::mainContainer, SLOT(globalPasteInCurrentBasket()), true, true );
-	globalAccel->insert( "global_show_current_basket", i18n("Show current basket name"),
-	                     i18n("Allows you to know basket is current without opening the main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(showPassiveContentForced()), true, true );
-	globalAccel->insert( "global_paste_selection", i18n("Paste selection in current basket"),
-	                     i18n("Allows you to paste clipboard selection in the current basket without having to open main window."),
-	                     Qt::CTRL+Qt::ALT+Qt::Key_S, Qt::CTRL+Qt::ALT+Qt::Key_S,
-	                     Global::mainContainer, SLOT(pasteSelInCurrentBasket()),  true, true );
-	globalAccel->insert( "global_new_basket", i18n("Create a new basket"),
-	                     i18n("Allows you to create a new basket without having to open main window (you then can use the other global shortcuts to add a note, paste clipboard or paste selection in this new basket)."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(askNewBasket()),       true, true );
-	globalAccel->insert( "global_previous_basket", i18n("Go to previous basket"),
-	                     i18n("Allows you to change current basket to the previous one without having to open main window."),
-	                     "", "",
-	                     Global::basketTree,    SLOT(goToPreviousBasket()), true, true );
-	globalAccel->insert( "global_next_basket", i18n("Go to next basket"),
-	                     i18n("Allows you to change current basket to the next one without having to open main window."),
-	                     "", "",
-	                     Global::basketTree,    SLOT(goToNextBasket()),     true, true );
-
-
-	globalAccel->insert( "global_note_add_text", i18n("Insert text note"),
-	                     i18n("Add a text note to the current basket without having to open main window."),
-	                     "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
-	                     Global::mainContainer, SLOT(addNoteText()),        true, true );
-	globalAccel->insert( "global_note_add_html", i18n("Insert rich text note"),
-	                     i18n("Add a rich text note to the current basket without having to open main window."),
-	                     Qt::CTRL+Qt::ALT+Qt::Key_H, Qt::CTRL+Qt::ALT+Qt::Key_H, //"", "",
-	                     Global::mainContainer, SLOT(addNoteHtml()),        true, true );
-	globalAccel->insert( "global_note_add_image", i18n("Insert image note"),
-	                     i18n("Add an image note to the current basket without having to open main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(addNoteImage()),       true, true );
-	globalAccel->insert( "global_note_add_link", i18n("Insert link note"),
-	                     i18n("Add a link note to the current basket without having to open main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(addNoteLink()),        true, true );
-	globalAccel->insert( "global_note_add_color", i18n("Insert color note"),
-	                     i18n("Add a color note to the current basket without having to open main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(addNoteColor()),       true, true );
-	globalAccel->insert( "global_note_pick_color", i18n("Pick color from screen"),
-	                     i18n("Add a color note picked from one pixel on screen to the current basket without "
-	                          "having to open main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(slotColorFromScreenGlobal()), true, true );
-	globalAccel->insert( "global_note_grab_screenshot", i18n("Grab screen zone"),
-	                     i18n("Grab a screen zone as an image in the current basket without "
-	                          "having to open main window."),
-	                     "", "",
-	                     Global::mainContainer, SLOT(grabScreenshotGlobal()), true, true );
-	globalAccel->readSettings();
-	globalAccel->updateConnections();
-
 	/* Go */
-	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
 	int result = app.exec();
-	//if (Global::mainContainer->currentBasket()->isDuringEdit())
-	//	Global::mainContainer->currentBasket()->closeEditor();
-//	Settings::setMainWindowPosition(Global::mainContainer->pos());
-//	Settings::setMainWindowSize(Global::mainContainer->size());
-	Settings::saveConfig();
-	delete Global::mainContainer; // We do it explicitly here, because the DesktopColorPicker need to be deleted to not crash!
-	NoteDrag::createAndEmptyCuttingTmpFolder(); // Clean the temporary folder we used
 	return result;
 }
