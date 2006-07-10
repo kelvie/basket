@@ -44,9 +44,9 @@ AC_DEFUN([AC_ENCRYPTION], [
 
 AC_ENCRYPTION([], [basket_warning_gpgme=yes])
 
-KONTACT_SUBDIR=KDE_CHECK_HEADER(kontact/core.h, KONTACT_SUBDIR=kontact)
+KDE_CHECK_HEADER(kontact/core.h, [KONTACT_SUBDIR="yes"], [KONTACT_SUBDIR="no"])
 
-if test -z "$KONTACT_SUBDIR"; then
+if test "$KONTACT_SUBDIR" = "no"; then
 	basket_warning_kontact=yes
 	DO_NOT_COMPILE="$DO_NOT_COMPILE kontact_plugin"
 fi
