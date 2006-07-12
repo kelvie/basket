@@ -12,6 +12,13 @@ if test x$basket_warning_gpgme = xyes; then
     echo " = libgpg-error version 1.0"
     echo " = Basket Note Pads will still be built, but there is no encryption."
     echo " ="
+    echo " = Packages needed:"
+    echo " = Suse         gpgme-devel"
+    echo " = Kubuntu      libgpgme11-dev"
+    echo " = Fedora Core  gpgme-devel"
+    echo " = Mandriva     libgpgme11-devel"
+    echo " = Gentoo       app-crypt/gpgme"
+    echo " ="
 fi
 
 if test x$basket_warning_kontact = xyes; then
@@ -22,5 +29,12 @@ if test x$basket_warning_kontact = xyes; then
     echo " = Basket requires kdepim"
     echo " = Basket Note Pads will still be built, but there is no"
     echo " = kontact plugin."
+    echo " ="
+    echo " = Packages needed:"
+    echo " = Suse         kdepim3-devel"
+    echo " = Kubuntu      kdepim-dev"
+    echo " = Fedora Core  kdepim-devel"
+    echo " = Mandriva     libkdepim2-common-devel & libkdepim2-kontact-devel"
+    echo " = Gentoo       kde-base/kontact"
     echo " ="
 fi
