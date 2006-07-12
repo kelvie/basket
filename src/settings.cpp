@@ -115,74 +115,74 @@ void Settings::loadConfig()
 	loadLinkLook(LinkLook::networkLinkLook, "Network Link Look", defaultNetworkLinkLook);
 	loadLinkLook(LinkLook::launcherLook,    "Launcher Look",     defaultLauncherLook   );
 
-	KConfig *config = KGlobal::config();
-	config->setGroup("Main window"); // TODO: Split with a "System tray icon" group !
-	setTreeOnLeft(           config->readBoolEntry("treeOnLeft",           true)  );
-	setFilterOnTop(          config->readBoolEntry("filterOnTop",          true)  );
-	setPlayAnimations(       config->readBoolEntry("playAnimations",       true)  );
-	setShowNotesToolTip(     config->readBoolEntry("showNotesToolTip",     true)  );
-	setBigNotes(             config->readBoolEntry("bigNotes",             false) );
-	setExportTextTags(       config->readBoolEntry("exportTextTags",       true)  );
-	setUseGnuPGAgent(        config->readBoolEntry("useGnuPGAgent",        false) );
-	setBlinkedFilter(        config->readBoolEntry("blinkedFilter",        false) );
-	setUseSystray(           config->readBoolEntry("useSystray",           true)  );
-	setShowIconInSystray(    config->readBoolEntry("showIconInSystray",    false) );
-	setStartDocked(          config->readBoolEntry("startDocked",          false) );
-	setMiddleAction(         config->readNumEntry( "middleAction",         0)     );
-	setGroupOnInsertionLine( config->readBoolEntry("groupOnInsertionLine", false) );
-	setSpellCheckTextNotes(  config->readBoolEntry("spellCheckTextNotes",  true)  );
-	setHideOnMouseOut(       config->readBoolEntry("hideOnMouseOut",       false) );
-	setTimeToHideOnMouseOut( config->readNumEntry( "timeToHideOnMouseOut", 0)     );
-	setShowOnMouseIn(        config->readBoolEntry("showOnMouseIn",        false) );
-	setTimeToShowOnMouseIn(  config->readNumEntry( "timeToShowOnMouseIn",  1)     );
-	setBasketTreeWidth(      config->readNumEntry( "basketTreeWidth",      -1)    );
-	setUsePassivePopup(      config->readBoolEntry("usePassivePopup",      true)  );
-	setMainWindowPosition(   config->readPointEntry("position"             )      );
-	setMainWindowSize(       config->readSizeEntry( "size"                 )      );
+	KConfig config("basketrc");
+	config.setGroup("Main window"); // TODO: Split with a "System tray icon" group !
+	setTreeOnLeft(           config.readBoolEntry("treeOnLeft",           true)  );
+	setFilterOnTop(          config.readBoolEntry("filterOnTop",          true)  );
+	setPlayAnimations(       config.readBoolEntry("playAnimations",       true)  );
+	setShowNotesToolTip(     config.readBoolEntry("showNotesToolTip",     true)  );
+	setBigNotes(             config.readBoolEntry("bigNotes",             false) );
+	setExportTextTags(       config.readBoolEntry("exportTextTags",       true)  );
+	setUseGnuPGAgent(        config.readBoolEntry("useGnuPGAgent",        false) );
+	setBlinkedFilter(        config.readBoolEntry("blinkedFilter",        false) );
+	setUseSystray(           config.readBoolEntry("useSystray",           true)  );
+	setShowIconInSystray(    config.readBoolEntry("showIconInSystray",    false) );
+	setStartDocked(          config.readBoolEntry("startDocked",          false) );
+	setMiddleAction(         config.readNumEntry( "middleAction",         0)     );
+	setGroupOnInsertionLine( config.readBoolEntry("groupOnInsertionLine", false) );
+	setSpellCheckTextNotes(  config.readBoolEntry("spellCheckTextNotes",  true)  );
+	setHideOnMouseOut(       config.readBoolEntry("hideOnMouseOut",       false) );
+	setTimeToHideOnMouseOut( config.readNumEntry( "timeToHideOnMouseOut", 0)     );
+	setShowOnMouseIn(        config.readBoolEntry("showOnMouseIn",        false) );
+	setTimeToShowOnMouseIn(  config.readNumEntry( "timeToShowOnMouseIn",  1)     );
+	setBasketTreeWidth(      config.readNumEntry( "basketTreeWidth",      -1)    );
+	setUsePassivePopup(      config.readBoolEntry("usePassivePopup",      true)  );
+	setMainWindowPosition(   config.readPointEntry("position"             )      );
+	setMainWindowSize(       config.readSizeEntry( "size"                 )      );
 
-	config->setGroup("Notification Messages");
-	setShowEmptyBasketInfo(  config->readBoolEntry("emptyBasketInfo",      true)  );
+	config.setGroup("Notification Messages");
+	setShowEmptyBasketInfo(  config.readBoolEntry("emptyBasketInfo",      true)  );
 
-	config->setGroup("Programs");
-	setIsTextUseProg(        config->readBoolEntry("textUseProg",          false)         );
-	setIsHtmlUseProg(        config->readBoolEntry("htmlUseProg",          false)         );
-	setIsImageUseProg(       config->readBoolEntry("imageUseProg",         true)          );
-	setIsAnimationUseProg(   config->readBoolEntry("animationUseProg",     true)          );
-	setIsSoundUseProg(       config->readBoolEntry("soundUseProg",         false)         );
-	setTextProg(             config->readEntry(    "textProg",             "")            );
-	setHtmlProg(             config->readEntry(    "htmlProg",             "quanta")      );
-	setImageProg(            config->readEntry(    "imageProg",            "kolourpaint") );
-	setAnimationProg(        config->readEntry(    "animationProg",        "gimp")        );
-	setSoundProg(            config->readEntry(    "soundProg",            "")            );
+	config.setGroup("Programs");
+	setIsTextUseProg(        config.readBoolEntry("textUseProg",          false)         );
+	setIsHtmlUseProg(        config.readBoolEntry("htmlUseProg",          false)         );
+	setIsImageUseProg(       config.readBoolEntry("imageUseProg",         true)          );
+	setIsAnimationUseProg(   config.readBoolEntry("animationUseProg",     true)          );
+	setIsSoundUseProg(       config.readBoolEntry("soundUseProg",         false)         );
+	setTextProg(             config.readEntry(    "textProg",             "")            );
+	setHtmlProg(             config.readEntry(    "htmlProg",             "quanta")      );
+	setImageProg(            config.readEntry(    "imageProg",            "kolourpaint") );
+	setAnimationProg(        config.readEntry(    "animationProg",        "gimp")        );
+	setSoundProg(            config.readEntry(    "soundProg",            "")            );
 
-	config->setGroup("Note Addition");
-	setNewNotesPlace(        config->readNumEntry( "newNotesPlace",        1)             );
-	setViewTextFileContent(  config->readBoolEntry("viewTextFileContent",  false)         );
-	setViewHtmlFileContent(  config->readBoolEntry("viewHtmlFileContent",  false)         );
-	setViewImageFileContent( config->readBoolEntry("viewImageFileContent", true)          );
-	setViewSoundFileContent( config->readBoolEntry("viewSoundFileContent", true)          );
+	config.setGroup("Note Addition");
+	setNewNotesPlace(        config.readNumEntry( "newNotesPlace",        1)             );
+	setViewTextFileContent(  config.readBoolEntry("viewTextFileContent",  false)         );
+	setViewHtmlFileContent(  config.readBoolEntry("viewHtmlFileContent",  false)         );
+	setViewImageFileContent( config.readBoolEntry("viewImageFileContent", true)          );
+	setViewSoundFileContent( config.readBoolEntry("viewSoundFileContent", true)          );
 
-	config->setGroup("Insert Note Default Values");
-	setDefImageX(   config->readNumEntry( "defImageX",   300) );
-	setDefImageY(   config->readNumEntry( "defImageY",   200) );
-	setDefIconSize( config->readNumEntry( "defIconSize", 32)  );
+	config.setGroup("Insert Note Default Values");
+	setDefImageX(   config.readNumEntry( "defImageX",   300) );
+	setDefImageY(   config.readNumEntry( "defImageY",   200) );
+	setDefIconSize( config.readNumEntry( "defIconSize", 32)  );
 
-	config->setGroup("MainWindow Toolbar mainToolBar");
+	config.setGroup("MainWindow Toolbar mainToolBar");
 	// The first time we start, we define "Text Alongside Icons" for the main toolbar.
 	// After that, the user is free to hide the text from the icons or customize as he/she want.
 	// But it is a good default (Fitt's Laws, better looking, less "empty"-feeling), especially for this application.
-//	if (!config->readBoolEntry("alreadySetIconTextRight", false)) {
-//		config->writeEntry( "IconText",                "IconTextRight" );
-//		config->writeEntry( "alreadySetIconTextRight", true            );
+//	if (!config.readBoolEntry("alreadySetIconTextRight", false)) {
+//		config.writeEntry( "IconText",                "IconTextRight" );
+//		config.writeEntry( "alreadySetIconTextRight", true            );
 //	}
-	if (!config->readBoolEntry("alreadySetToolbarSettings", false)) {
-		config->writeEntry("IconText", "IconOnly"); // In 0.6.0 Alpha versions, it was made "IconTextRight". We're back to IconOnly
-		config->writeEntry("Index",    "0");        // Make sure the main toolbar is the first...
-		config->setGroup("MainWindow Toolbar richTextEditToolBar");
-		config->writeEntry("Position", "Top");      // In 0.6.0 Alpha versions, it was made "Bottom"
-		config->writeEntry("Index",    "1");        // ... and the rich text toolbar is on the right of the main toolbar
-		config->setGroup("MainWindow Toolbar mainToolBar");
-		config->writeEntry("alreadySetToolbarSettings", true);
+	if (!config.readBoolEntry("alreadySetToolbarSettings", false)) {
+		config.writeEntry("IconText", "IconOnly"); // In 0.6.0 Alpha versions, it was made "IconTextRight". We're back to IconOnly
+		config.writeEntry("Index",    "0");        // Make sure the main toolbar is the first...
+		config.setGroup("MainWindow Toolbar richTextEditToolBar");
+		config.writeEntry("Position", "Top");      // In 0.6.0 Alpha versions, it was made "Bottom"
+		config.writeEntry("Index",    "1");        // ... and the rich text toolbar is on the right of the main toolbar
+		config.setGroup("MainWindow Toolbar mainToolBar");
+		config.writeEntry("alreadySetToolbarSettings", true);
 	}
 }
 
@@ -194,66 +194,66 @@ void Settings::saveConfig()
 	saveLinkLook(LinkLook::networkLinkLook, "Network Link Look");
 	saveLinkLook(LinkLook::launcherLook,    "Launcher Look"    );
 
-	KConfig *config = KGlobal::config();
-	config->setGroup("Main window");
-	config->writeEntry( "treeOnLeft",           treeOnLeft()           );
-	config->writeEntry( "filterOnTop",          filterOnTop()          );
-	config->writeEntry( "playAnimations",       playAnimations()       );
-	config->writeEntry( "showNotesToolTip",     showNotesToolTip()     );
-	config->writeEntry( "bigNotes",             bigNotes()             );
-	config->writeEntry( "exportTextTags",       exportTextTags()       );
+	KConfig config("basketrc");
+	config.setGroup("Main window");
+	config.writeEntry( "treeOnLeft",           treeOnLeft()           );
+	config.writeEntry( "filterOnTop",          filterOnTop()          );
+	config.writeEntry( "playAnimations",       playAnimations()       );
+	config.writeEntry( "showNotesToolTip",     showNotesToolTip()     );
+	config.writeEntry( "bigNotes",             bigNotes()             );
+	config.writeEntry( "exportTextTags",       exportTextTags()       );
 #ifdef HAVE_LIBGPGME
 	if(KGpgMe::isGnuPGAgentAvailable())
-		config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
+		config.writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
 #endif
-	config->writeEntry( "blinkedFilter",        blinkedFilter()        );
-	config->writeEntry( "useSystray",           useSystray()           );
-	config->writeEntry( "showIconInSystray",    showIconInSystray()    );
-	config->writeEntry( "startDocked",          startDocked()          );
-	config->writeEntry( "middleAction",         middleAction()         );
-	config->writeEntry( "groupOnInsertionLine", groupOnInsertionLine() );
-	config->writeEntry( "spellCheckTextNotes",  spellCheckTextNotes()  );
-	config->writeEntry( "hideOnMouseOut",       hideOnMouseOut()       );
-	config->writeEntry( "timeToHideOnMouseOut", timeToHideOnMouseOut() );
-	config->writeEntry( "showOnMouseIn",        showOnMouseIn()        );
-	config->writeEntry( "timeToShowOnMouseIn",  timeToShowOnMouseIn()  );
-	config->writeEntry( "basketTreeWidth",      basketTreeWidth()      );
-	config->writeEntry( "usePassivePopup",      usePassivePopup()      );
-	config->writeEntry( "position",             mainWindowPosition()   );
-	config->writeEntry( "size",                 mainWindowSize()       );
+	config.writeEntry( "blinkedFilter",        blinkedFilter()        );
+	config.writeEntry( "useSystray",           useSystray()           );
+	config.writeEntry( "showIconInSystray",    showIconInSystray()    );
+	config.writeEntry( "startDocked",          startDocked()          );
+	config.writeEntry( "middleAction",         middleAction()         );
+	config.writeEntry( "groupOnInsertionLine", groupOnInsertionLine() );
+	config.writeEntry( "spellCheckTextNotes",  spellCheckTextNotes()  );
+	config.writeEntry( "hideOnMouseOut",       hideOnMouseOut()       );
+	config.writeEntry( "timeToHideOnMouseOut", timeToHideOnMouseOut() );
+	config.writeEntry( "showOnMouseIn",        showOnMouseIn()        );
+	config.writeEntry( "timeToShowOnMouseIn",  timeToShowOnMouseIn()  );
+	config.writeEntry( "basketTreeWidth",      basketTreeWidth()      );
+	config.writeEntry( "usePassivePopup",      usePassivePopup()      );
+	config.writeEntry( "position",             mainWindowPosition()   );
+	config.writeEntry( "size",                 mainWindowSize()       );
 
-	config->setGroup("Notification Messages");
-	config->writeEntry( "emptyBasketInfo",      showEmptyBasketInfo()  );
+	config.setGroup("Notification Messages");
+	config.writeEntry( "emptyBasketInfo",      showEmptyBasketInfo()  );
 
-	config->setGroup("Programs");
-	config->writeEntry( "textUseProg",          isTextUseProg()        );
-	config->writeEntry( "htmlUseProg",          isHtmlUseProg()        );
-	config->writeEntry( "imageUseProg",         isImageUseProg()       );
-	config->writeEntry( "animationUseProg",     isAnimationUseProg()   );
-	config->writeEntry( "soundUseProg",         isSoundUseProg()       );
-	config->writeEntry( "textProg",             textProg()             );
-	config->writeEntry( "htmlProg",             htmlProg()             );
-	config->writeEntry( "imageProg",            imageProg()            );
-	config->writeEntry( "animationProg",        animationProg()        );
-	config->writeEntry( "soundProg",            soundProg()            );
+	config.setGroup("Programs");
+	config.writeEntry( "textUseProg",          isTextUseProg()        );
+	config.writeEntry( "htmlUseProg",          isHtmlUseProg()        );
+	config.writeEntry( "imageUseProg",         isImageUseProg()       );
+	config.writeEntry( "animationUseProg",     isAnimationUseProg()   );
+	config.writeEntry( "soundUseProg",         isSoundUseProg()       );
+	config.writeEntry( "textProg",             textProg()             );
+	config.writeEntry( "htmlProg",             htmlProg()             );
+	config.writeEntry( "imageProg",            imageProg()            );
+	config.writeEntry( "animationProg",        animationProg()        );
+	config.writeEntry( "soundProg",            soundProg()            );
 
-	config->setGroup("Note Addition");
-	config->writeEntry( "newNotesPlace",        newNotesPlace()        );
-	config->writeEntry( "viewTextFileContent",  viewTextFileContent()  );
-	config->writeEntry( "viewHtmlFileContent",  viewHtmlFileContent()  );
-	config->writeEntry( "viewImageFileContent", viewImageFileContent() );
-	config->writeEntry( "viewSoundFileContent", viewSoundFileContent() );
+	config.setGroup("Note Addition");
+	config.writeEntry( "newNotesPlace",        newNotesPlace()        );
+	config.writeEntry( "viewTextFileContent",  viewTextFileContent()  );
+	config.writeEntry( "viewHtmlFileContent",  viewHtmlFileContent()  );
+	config.writeEntry( "viewImageFileContent", viewImageFileContent() );
+	config.writeEntry( "viewSoundFileContent", viewSoundFileContent() );
 
-	config->setGroup("Insert Note Default Values");
-	config->writeEntry( "defImageX",         defImageX()         );
-	config->writeEntry( "defImageY",         defImageY()         );
-	config->writeEntry( "defIconSize",       defIconSize()       );
+	config.setGroup("Insert Note Default Values");
+	config.writeEntry( "defImageX",         defImageX()         );
+	config.writeEntry( "defImageY",         defImageY()         );
+	config.writeEntry( "defIconSize",       defIconSize()       );
 }
 
 void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook)
 {
-	KConfig *config = KGlobal::config();
-	config->setGroup(name);
+	KConfig config("basketrc");
+	config.setGroup(name);
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
 	QString defaultUnderliningString = underliningStrings[defaultLook.underlining()];
@@ -261,13 +261,13 @@ void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook 
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
 	QString defaultPreviewString = previewStrings[defaultLook.preview()];
 
-	bool    italic            = config->readBoolEntry(     "italic",      defaultLook.italic()     );
-	bool    bold              = config->readBoolEntry(     "bold",        defaultLook.bold()       );
-	QString underliningString = config->readEntry(         "underlining", defaultUnderliningString );
-	QColor  color             = config->readPropertyEntry( "color",       defaultLook.color()      ).asColor();
-	QColor  hoverColor        = config->readPropertyEntry( "hoverColor",  defaultLook.hoverColor() ).asColor();
-	int     iconSize          = config->readNumEntry(      "iconSize",    defaultLook.iconSize()   );
-	QString previewString     = config->readEntry(         "preview",     defaultPreviewString     );
+	bool    italic            = config.readBoolEntry(     "italic",      defaultLook.italic()     );
+	bool    bold              = config.readBoolEntry(     "bold",        defaultLook.bold()       );
+	QString underliningString = config.readEntry(         "underlining", defaultUnderliningString );
+	QColor  color             = config.readPropertyEntry( "color",       defaultLook.color()      ).asColor();
+	QColor  hoverColor        = config.readPropertyEntry( "hoverColor",  defaultLook.hoverColor() ).asColor();
+	int     iconSize          = config.readNumEntry(      "iconSize",    defaultLook.iconSize()   );
+	QString previewString     = config.readEntry(         "preview",     defaultPreviewString     );
 
 	int underlining = 0;
 	if      (underliningString == underliningStrings[1]) underlining = 1;
@@ -284,8 +284,8 @@ void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook 
 
 void Settings::saveLinkLook(LinkLook *look, const QString &name)
 {
-	KConfig *config = KGlobal::config();
-	config->setGroup(name);
+	KConfig config("basketrc");
+	config.setGroup(name);
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
 	QString underliningString = underliningStrings[look->underlining()];
@@ -293,13 +293,13 @@ void Settings::saveLinkLook(LinkLook *look, const QString &name)
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
 	QString previewString = previewStrings[look->preview()];
 
-	config->writeEntry( "italic",      look->italic()     );
-	config->writeEntry( "bold",        look->bold()       );
-	config->writeEntry( "underlining", underliningString  );
-	config->writeEntry( "color",       look->color()      );
-	config->writeEntry( "hoverColor",  look->hoverColor() );
-	config->writeEntry( "iconSize",    look->iconSize()   );
-	config->writeEntry( "preview",     previewString      );
+	config.writeEntry( "italic",      look->italic()     );
+	config.writeEntry( "bold",        look->bold()       );
+	config.writeEntry( "underlining", underliningString  );
+	config.writeEntry( "color",       look->color()      );
+	config.writeEntry( "hoverColor",  look->hoverColor() );
+	config.writeEntry( "iconSize",    look->iconSize()   );
+	config.writeEntry( "preview",     previewString      );
 }
 
 void Settings::setBigNotes(bool big)
