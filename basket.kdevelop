@@ -183,7 +183,10 @@
     <rshoptions/>
   </kdevcvs>
   <kdevcppsupport>
-    <references/>
+    <references>
+      <pcs>Qt</pcs>
+      <pcs>KDElibs</pcs>
+    </references>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
