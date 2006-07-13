@@ -189,6 +189,23 @@ void State::merge(const List &states, State *result, int *emblemsCount, bool *ha
 	}
 }
 
+void State::copyTo(State *other)
+{
+	other->m_id              = m_id;
+	other->m_name            = m_name;
+	other->m_emblem          = m_emblem;
+	other->m_bold            = m_bold;
+	other->m_italic          = m_italic;
+	other->m_underline       = m_underline;
+	other->m_strikeOut       = m_strikeOut;
+	other->m_textColor       = m_textColor;
+	other->m_fontName        = m_fontName;
+	other->m_fontSize        = m_fontSize;
+	other->m_backgroundColor = m_backgroundColor;
+	other->m_textEquivalent  = m_textEquivalent;
+	other->m_onAllTextLines  = m_onAllTextLines; // TODO
+	//TODO: other->m_parentTag;
+}
 
 /** class Tag: */
 
@@ -300,6 +317,13 @@ void Tag::loadTags()
 
 void Tag::saveTags()
 {
+}
+
+void Tag::copyTo(Tag *other)
+{
+	other->m_name = m_name;
+	other->m_action->setShortcut(m_action->shortcut());
+	other->m_inheritedBySiblings =  m_inheritedBySiblings;
 }
 
 void Tag::createDefaultTagsSet(const QString &fullPath)

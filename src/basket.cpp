@@ -68,6 +68,7 @@
 #include "notedrag.h"
 #include "notefactory.h"
 #include "noteedit.h"
+#include "tagsedit.h"
 #include "xmlwork.h"
 #include "global.h"
 #include "backgroundmanager.h"
@@ -3344,10 +3345,12 @@ void Basket::toggledTagInMenu(int id)
 		return;
 	}
 	if (id == 3) {
-		KMessageBox::information(viewport(),
+		/*KMessageBox::information(viewport(),
 			"<qt>This is not implemented yet.<br>In a future version, you will be able to add, remove or modify tags "
 			"by setting icon, states, background color, font, font size, bold, italic, underline, text color...<br>"
-			"But for now, I'm afraid you have to wait ;-)");
+			"But for now, I'm afraid you have to wait ;-)");*/
+		TagsEditDialog dialog(this);
+		dialog.exec();
 		return;
 	}
 

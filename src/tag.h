@@ -82,6 +82,7 @@ class State
 	QFont font(QFont base);
 	QString toCSS(const QString &gradientFolderPath, const QString &gradientFolderName, const QFont &baseFont);
 	static void merge(const List &states, State *result, int *emblemsCount, bool *haveInvisibleTags, const QColor &backgroundColor);
+	void copyTo(State *other);
   private:
 	/// PROPERTIES:
 	QString  m_id;
@@ -133,6 +134,7 @@ class Tag
 	bool         inheritedBySiblings() const { return m_inheritedBySiblings;  }
 	State::List& states()              const { return (State::List&)m_states; }
 	int          countStates()         const { return m_states.count();       }
+	void copyTo(Tag *other);
   private:
 	/// PROPERTIES:
 	QString      m_name;
