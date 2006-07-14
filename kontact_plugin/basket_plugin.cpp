@@ -21,7 +21,8 @@
 #include <kgenericfactory.h>
 #include <kparts/componentfactory.h>
 #include <kontact/core.h>
-
+#include <klocale.h>
+#include "basketdcopiface_stub.h"
 #include "basket_plugin.h"
 
 typedef KGenericFactory<BasketPlugin, Kontact::Core> BasketPluginFactory;
@@ -29,9 +30,14 @@ K_EXPORT_COMPONENT_FACTORY( libkontact_basket,
                             BasketPluginFactory( "kontact_basketplugin" ) )
 
 BasketPlugin::BasketPlugin( Kontact::Core *core, const char *, const QStringList& )
-  : Kontact::Plugin( core, core, "Basket" )
+  : Kontact::Plugin( core, core, "basket" )
 {
   setInstance( BasketPluginFactory::instance() );
+  insertNewAction(new KAction( i18n("&New Basket..."), "basket", CTRL+SHIFT+Key_B,
+				  this, SLOT(newBasket()), actionCollection(), "basket_new" ));
+
+	//mUniqueAppWatcher = new Kontact::UniqueAppWatcher(
+	//	  new Kontact::UniqueAppHandlerFactory<KMailUniqueAppHandler>(), this );
 }
 
 BasketPlugin::~BasketPlugin()
@@ -40,7 +46,23 @@ BasketPlugin::~BasketPlugin()
 
 KParts::ReadOnlyPart* BasketPlugin::createPart()
 {
-  return loadPart();
+	KParts::ReadOnlyPart *part = loadPart();
+	if(!part)
+		return 0;
+
+	m_stub = new BasketDcopInterface_stub(dcopClient(), "basket", "BasketIface");
+
+	return part;
+}
+
+void BasketPlugin::newBasket()
+{
+	(void) part(); // ensure part is loaded
+	Q_ASSERT( m_stub );
+	if ( m_stub ) {
+		kdDebug() << k_funcinfo << endl;
+		m_stub->newBasket();
+	}
 }
 
 #include "basket_plugin.moc"

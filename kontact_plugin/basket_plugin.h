@@ -24,6 +24,7 @@
 #include <klocale.h>
 #include <kparts/part.h>
 #include <kontact/plugin.h>
+#include "basketdcopiface_stub.h"
 
 class KAboutData;
 
@@ -38,8 +39,12 @@ class BasketPlugin : public Kontact::Plugin
 
     int weight() const { return 700; }
 
+  public slots:
+	void newBasket();
+
   protected:
     KParts::ReadOnlyPart *createPart();
+	BasketDcopInterface_stub *m_stub;
 };
 
 #endif
