@@ -1,7 +1,7 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 <kpartgui version="0.6.0-Alpha1HPrivate" name="basket" >
  <MenuBar noMerge="1" >
-  <Menu name="basket" >
+  <Menu name="file" >
    <text>&amp;Basket</text>
    <Action name="basket_new_menu" />
    <Separator/>
