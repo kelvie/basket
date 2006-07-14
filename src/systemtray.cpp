@@ -304,8 +304,7 @@ void ContainerSystemTray::mouseReleaseEvent(QMouseEvent *event)
 			{
 				if(win->isShown())
 				{
-					if (!Global::bnpView->isPart())
-						win->hide();
+					win->hide();
 				}
 				else
 				{
