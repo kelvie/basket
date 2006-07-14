@@ -168,7 +168,6 @@ class BNPView : public QSplitter
 		void doBasketDeletion(Basket *basket);
 		void password();
 		void lockBasket();
-		void changeActive();
 		void hideOnEscape();
 
 	private slots:

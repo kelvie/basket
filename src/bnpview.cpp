@@ -1817,20 +1817,6 @@ void BNPView::setActive(bool active)
 #endif
 }
 
-void BNPView::changeActive()
-{
-	KMainWindow* win = Global::mainWindow();
-	if(!win)
-		return;
-
-#if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
-	kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-	Global::tray->toggleActive();
-#else
-	win->setActive( ! win->isActiveWindow() );
-#endif
-}
-
 void BNPView::hideOnEscape()
 {
 	if (Settings::useSystray())

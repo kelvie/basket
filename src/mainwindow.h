@@ -79,6 +79,7 @@ class MainWindow : public KMainWindow
 	void showSettingsDialog();
 	void minimizeRestore();
 	void quit();
+	void changeActive();
 
   protected:
 	bool queryExit();

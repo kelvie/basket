@@ -416,4 +416,14 @@ void MainWindow::minimizeRestore()
 		show();
 }
 
+void MainWindow::changeActive()
+{
+#if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
+	kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
+	Global::tray->toggleActive();
+#else
+	setActive( ! isActiveWindow() );
+#endif
+}
+
 #include "mainwindow.moc"
