@@ -18,7 +18,7 @@ noinst_HEADERS = basket.h basketproperties.h mainwindow.h basket_part.h \
 		filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
 		kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
 		systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
-		formatimporter.h aboutdata.h basketstatusbar.h
+		formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h
 
 #########################################################################
 # COMMON FILES SECTION
@@ -44,7 +44,7 @@ libbasketcommon_la_SOURCES = \
 	kicondialogui.ui kicondialog.cpp kiconcanvas.cpp kgpgme.cpp likeback.cpp \
 	crashhandler.cpp passwordlayout.ui password.cpp colorpicker.cpp \
 	basketlistview.cpp debugwindow.cpp systemtray.cpp aboutdata.cpp \
-	basketstatusbar.cpp clickablelabel.cpp
+	basketstatusbar.cpp clickablelabel.cpp basketdcopiface.skel
 
 #########################################################################
 # APPLICATION SECTION

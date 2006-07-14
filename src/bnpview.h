@@ -26,7 +26,9 @@
 #include <qtimer.h>
 #include <qclipboard.h>
 #include <qsplitter.h>
+#include <dcopref.h>
 #include "global.h"
+#include "basketdcopiface.h"
 
  /// NEW:
 
@@ -44,7 +46,7 @@ class KPassivePopup;
 class QPopupMenu;
 class BasketStatusBar;
 
-class BNPView : public QSplitter
+class BNPView : public QSplitter, virtual public BasketDcopInterface
 {
 	Q_OBJECT
 	public:
@@ -244,6 +246,9 @@ class BNPView : public QSplitter
 		Basket* basketForFolderName(const QString &folderName);
 		QPopupMenu* popupMenu(const QString &menuName);
 		bool isPart();
+
+		// dcop calls
+		void newBasket();
 
 	public slots:
 		void setCaption(QString s);

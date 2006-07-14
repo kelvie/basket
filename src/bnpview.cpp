@@ -45,6 +45,7 @@
 #include <kcmdlineargs.h>
 #include <kglobalaccel.h>
 #include <kapplication.h>
+#include <dcopclient.h>
 #include <kdebug.h>
 #include <iostream>
 #include "bnpview.h"
@@ -73,7 +74,7 @@ const int BNPView::c_delayTooltipTime = 275;
 
 BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
-	: QSplitter(Qt::Horizontal, parent, name), m_loading(true), m_newBasketPopup(false),
+	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_loading(true), m_newBasketPopup(false),
 	m_regionGrabber(0), m_passivePopup(0L), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar)
 {
@@ -90,7 +91,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	setupGlobalShortcuts();
 	initialize();
 	m_statusbar->setupStatusBar();
-
 	QTimer::singleShot(0, this, SLOT(hideRichTextToolBar()));
 }
 
@@ -1826,6 +1826,12 @@ void BNPView::hideOnEscape()
 bool BNPView::isPart()
 {
 	return (strcmp(name(), "BNPViewPart") == 0);
+}
+
+void BNPView::newBasket()
+{
+	kdDebug() << k_funcinfo << endl;
+	askNewBasket();
 }
 
 #include "bnpview.moc"
