@@ -299,7 +299,19 @@ void ContainerSystemTray::mouseReleaseEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton)         // Show / hide main window
 		if ( rect().contains(event->pos()) ) {     // Accept only if released in systemTray
-			Global::bnpView->changeActive();
+			KMainWindow *win = Global::mainWindow();
+			if(win)
+			{
+				if(win->isShown())
+				{
+					if (!Global::bnpView->isPart())
+						win->hide();
+				}
+				else
+				{
+					win->show();
+				}
+			}
 			event->accept();
 		} else
 			event->ignore();
