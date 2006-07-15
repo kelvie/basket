@@ -22,8 +22,11 @@
 #include <kparts/componentfactory.h>
 #include <kontact/core.h>
 #include <klocale.h>
+#include <kcmdlineargs.h>
+#include <dcopref.h>
 #include "basketdcopiface_stub.h"
 #include "basket_plugin.h"
+#include "basket_options.h"
 
 typedef KGenericFactory<BasketPlugin, Kontact::Core> BasketPluginFactory;
 K_EXPORT_COMPONENT_FACTORY( libkontact_basket,
@@ -36,8 +39,8 @@ BasketPlugin::BasketPlugin( Kontact::Core *core, const char *, const QStringList
   insertNewAction(new KAction( i18n("&New Basket..."), "basket", CTRL+SHIFT+Key_B,
 				  this, SLOT(newBasket()), actionCollection(), "basket_new" ));
 
-	//mUniqueAppWatcher = new Kontact::UniqueAppWatcher(
-	//	  new Kontact::UniqueAppHandlerFactory<KMailUniqueAppHandler>(), this );
+	m_uniqueAppWatcher = new Kontact::UniqueAppWatcher(
+		new Kontact::UniqueAppHandlerFactory<BasketUniqueAppHandler>(), this);
 }
 
 BasketPlugin::~BasketPlugin()
@@ -58,11 +61,29 @@ KParts::ReadOnlyPart* BasketPlugin::createPart()
 void BasketPlugin::newBasket()
 {
 	(void) part(); // ensure part is loaded
-	Q_ASSERT( m_stub );
-	if ( m_stub ) {
+	Q_ASSERT(m_stub);
+	if (m_stub) {
 		kdDebug() << k_funcinfo << endl;
 		m_stub->newBasket();
 	}
+}
+
+void BasketUniqueAppHandler::loadCommandLineOptions()
+{
+	KCmdLineArgs::addCmdLineOptions(basket_options);
+}
+
+int BasketUniqueAppHandler::newInstance()
+{
+	(void)plugin()->part();
+	DCOPRef kmail("basket", "BasketIface");
+	DCOPReply reply = kmail.call("handleCommandLine", false);
+	if (reply.isValid()) {
+		bool handled = reply;
+		if ( !handled )
+			return Kontact::UniqueAppHandler::newInstance();
+	}
+	return 0;
 }
 
 #include "basket_plugin.moc"

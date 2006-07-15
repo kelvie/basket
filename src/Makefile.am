@@ -18,7 +18,7 @@ noinst_HEADERS = basket.h basketproperties.h mainwindow.h basket_part.h \
 		filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
 		kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
 		systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
-		formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h
+		formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h basket_options.h
 
 #########################################################################
 # COMMON FILES SECTION

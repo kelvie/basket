@@ -30,6 +30,7 @@ class BasketDcopInterface : virtual public DCOPObject
     K_DCOP
   k_dcop:
     virtual ASYNC newBasket() = 0;
+	virtual void handleCommandLine() = 0;
 };
 
 #endif

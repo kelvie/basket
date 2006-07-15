@@ -4,7 +4,8 @@ kde_module_LTLIBRARIES = libkontact_basket.la
 libkontact_basket_la_LDFLAGS = $(all_libraries) $(KDE_PLUGIN)
 libkontact_basket_la_LIBADD = -lkpinterfaces
 
-libkontact_basket_la_SOURCES = basket_plugin.cpp basketdcopiface.stub
+noinst_HEADERS = basket_plugin.h uniqueapphandler.h
+libkontact_basket_la_SOURCES = basket_plugin.cpp uniqueapphandler.cpp basketdcopiface.stub
 
 METASOURCES = AUTO
 

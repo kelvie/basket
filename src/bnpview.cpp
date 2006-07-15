@@ -67,6 +67,7 @@
 #include "basketstatusbar.h"
 #include "backgroundmanager.h"
 #include "noteedit.h" // To launch InlineEditors::initToolBars()
+#include "crashhandler.h"
 
 /** class BNPView: */
 
@@ -79,7 +80,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	m_guiClient(aGUIClient), m_statusbar(bar)
 {
 	/* Settings */
-	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
 	Settings::loadConfig();
 
 	Global::bnpView = this;
@@ -112,6 +112,7 @@ BNPView::~BNPView()
 
 void BNPView::lateInit()
 {
+	kdDebug() << k_funcinfo << endl;
 	InlineEditors* instance = InlineEditors::instance();
 
 	if(instance)
@@ -126,6 +127,26 @@ void BNPView::lateInit()
 	Global::tray = new ContainerSystemTray(Global::mainWindow());
 	if (Settings::useSystray())
 		Global::tray->show();
+
+	// Load baskets
+	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
+	Tag::loadTags(); // Tags should be ready before loading baskets, but tags need the mainContainer to be ready to create KActions!
+	load();
+
+	// If no basket has been found, try to import from an older version,
+	if (!firstListViewItem()) {
+		QDir dir;
+		dir.mkdir(Global::basketsFolder());
+		if (FormatImporter::shouldImportBaskets()) {
+			FormatImporter::importBaskets();
+			load();
+		}
+		if (!firstListViewItem()) {
+		// Create first basket:
+			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+		}
+	// TODO: Create Welcome Baskets:
+	}
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -272,24 +293,6 @@ void BNPView::initialize()
 	// If the main window is hidden when session is saved, Container::queryClose()
 	//  isn't called and the last value would be kept
 	Settings::setStartDocked(true);
-
-	Tag::loadTags(); // Tags should be ready before loading baskets, but tags need the mainContainer to be ready to create KActions!
-	load();
-
-	// If no basket has been found, try to import from an older version,
-	if (!firstListViewItem()) {
-		QDir dir;
-		dir.mkdir(Global::basketsFolder());
-		if (FormatImporter::shouldImportBaskets()) {
-			FormatImporter::importBaskets();
-			load();
-		}
-		if (!firstListViewItem()) {
-		// Create first basket:
-			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-		}
-	// TODO: Create Welcome Baskets:
-	}
 }
 
 void BNPView::setupActions()
@@ -580,6 +583,7 @@ void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement
 
 void BNPView::load()
 {
+	kdDebug() << k_funcinfo << Global::basketsFolder() << endl;
 	QDomDocument *doc = XMLWork::openFile("basketTree", Global::basketsFolder() + "baskets.xml");
 	//BEGIN Compatibility with 0.6.0 Pre-Alpha versions:
 	if (!doc)
@@ -1832,6 +1836,30 @@ void BNPView::newBasket()
 {
 	kdDebug() << k_funcinfo << endl;
 	askNewBasket();
+}
+
+void BNPView::handleCommandLine()
+{
+	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
+	/* Custom data folder */
+	QCString customDataFolder = args->getOption("data-folder");
+	if (customDataFolder != 0 && !customDataFolder.isEmpty())
+	{
+		kdDebug() << k_funcinfo << customDataFolder << endl;
+		Global::setCustomSavesFolder(customDataFolder);
+	}
+	/* Debug window */
+	if (args->isSet("debug")) {
+		new DebugWindow();
+		Global::debugWindow->show();
+	}
+
+	/* Crash Handler to Mail Developers when Crashing: */
+#ifndef BASKET_USE_DRKONQI
+	if (!args->isSet("use-dr-konquy"))
+		KCrash::setCrashHandler(Crash::crashHandler);
+#endif
 }
 
 #include "bnpview.moc"

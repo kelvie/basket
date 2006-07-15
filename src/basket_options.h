@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Petri Damsten                                   *
- *   damu@iki.fi                                                           *
+ *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,43 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASKET_PLUGIN_H
-#define BASKET_PLUGIN_H
+#ifndef BASKET_OPTIONS_H
+#define BASKET_OPTIONS_H
 
+#include <kcmdlineargs.h>
 #include <klocale.h>
-#include <kparts/part.h>
-#include <kontact/plugin.h>
-#include "uniqueapphandler.h"
-#include "basketdcopiface_stub.h"
 
-class KAboutData;
-
-class BasketUniqueAppHandler : public Kontact::UniqueAppHandler
+KCmdLineOptions basket_options[] =
 {
-	public:
-		BasketUniqueAppHandler( Kontact::Plugin* plugin ) : Kontact::UniqueAppHandler( plugin ) {}
-		virtual void loadCommandLineOptions();
-		virtual int newInstance();
+	{ "d", 0, 0 },
+	{ "debug", I18N_NOOP("Show the debug window"), 0 },
+	{ "f", 0, 0 },
+	{ "data-folder <folder>", I18N_NOOP("Custom folder where to load and save basket data and application data (useful for debugging purpose)"), 0 },
+	{ "h", 0, 0 },
+	{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
+	{ "k", 0, 0 },
+	{ "use-dr-konquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
+	{ 0, 0, 0 }
 };
 
-class BasketPlugin : public Kontact::Plugin
-{
-  Q_OBJECT
-
-  public:
-    BasketPlugin( Kontact::Core *core, const char *name,
-                       const QStringList & );
-    ~BasketPlugin();
-
-    int weight() const { return 700; }
-
-  public slots:
-	void newBasket();
-
-  protected:
-    KParts::ReadOnlyPart *createPart();
-	BasketDcopInterface_stub *m_stub;
-	Kontact::UniqueAppWatcher *m_uniqueAppWatcher;
-};
-
-#endif
+#endif // BASKET_OPTIONS_H
