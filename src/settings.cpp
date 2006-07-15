@@ -42,6 +42,7 @@
 #include <kmimetype.h>
 #include <kstandarddirs.h>
 #include <kgpgme.h>
+#include <kdebug.h>
 
 #include "linklabel.h"
 #include "settings.h"
@@ -452,9 +453,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	connect( m_pushVisualize, SIGNAL(clicked()), this, SLOT(visualize()) );
 	// TODO: Other might not be initialized yet
 	//connect( m_useSystray,     SIGNAL(toggled(bool)), gbSys,                  SLOT(setEnabled(bool)) );
-
 	layout->insertStretch(-1);
-
 	load();
 }
 
@@ -699,6 +698,7 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 	connect( m_imageUseProg,     SIGNAL(toggled(bool)), m_imageProg,     SLOT(setEnabled(bool)) );
 	connect( m_animationUseProg, SIGNAL(toggled(bool)), m_animationProg, SLOT(setEnabled(bool)) );
 	connect( m_soundUseProg,     SIGNAL(toggled(bool)), m_soundProg,     SLOT(setEnabled(bool)) );
+	load();
 }
 
 void AppsPage::load()
@@ -819,7 +819,7 @@ FeaturesPage::FeaturesPage(QWidget * parent, const char * name)
 
 	connect( m_hideOnMouseOut, SIGNAL(toggled(bool)), m_timeToHideOnMouseOut, SLOT(setEnabled(bool)) );
 	connect( m_showOnMouseIn,  SIGNAL(toggled(bool)), m_timeToShowOnMouseIn,  SLOT(setEnabled(bool)) );
-
+	load();
 }
 
 void FeaturesPage::load()
