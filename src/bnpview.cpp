@@ -129,6 +129,8 @@ void BNPView::lateInit()
 		Global::tray->show();
 
 	// Load baskets
+	DEBUG_WIN << "Baskets are loaded from " + Global::basketsFolder();
+
 	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
 	Tag::loadTags(); // Tags should be ready before loading baskets, but tags need the mainContainer to be ready to create KActions!
 	load();

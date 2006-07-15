@@ -101,8 +101,6 @@
 MainWindow::MainWindow(QWidget *parent, const char *name)
 	: KMainWindow(parent, name != 0 ? name : "MainWindow"), m_settings(0), m_quit(false)
 {
-	DEBUG_WIN << "Baskets are loaded from " + Global::basketsFolder();
-
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
 	setCentralWidget(m_baskets);
