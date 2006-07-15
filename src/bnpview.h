@@ -196,6 +196,9 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KAction       *actNewSubBasket;
 		KAction       *actNewSiblingBasket;
 		KAction       *m_actHideWindow;
+		KAction       *m_actExportToHtml;
+		KAction       *m_actPropBasket;
+		KAction       *m_actDelBasket;
 		KToggleAction *m_actFilterAllBaskets;
 
 	private:
@@ -229,8 +232,6 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KAction       *m_actLoadFile;
 		QPtrList<KAction> m_insertActions;
 		// Basket actions :
-		KAction       *m_actPropBasket;
-		KAction       *m_actDelBasket;
 		KToggleAction *m_actShowFilter;
 		KAction       *m_actResetFilter;
 		// Go actions :

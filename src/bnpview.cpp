@@ -308,7 +308,7 @@ void BNPView::setupActions()
 								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
 	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
 
-	new KAction( i18n("&Export to HTML..."), "fileexport", 0,
+	m_actExportToHtml = new KAction( i18n("&Export to HTML..."), "fileexport", 0,
 	             this, SLOT(exportToHTML()),      actionCollection(), "basket_export_html" );
 	new KAction( i18n("K&Notes"), "knotes", 0,
 	             this, SLOT(importKNotes()),      actionCollection(), "basket_import_knotes" );

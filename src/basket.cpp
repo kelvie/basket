@@ -1064,7 +1064,9 @@ void Basket::enableActions()
 	Global::bnpView->m_actLockBasket->setEnabled(!isLocked() && isEncrypted());
 	Global::bnpView->m_actPassBasket->setEnabled(!isLocked());
 #endif
-
+	Global::bnpView->m_actPropBasket->setEnabled(!isLocked());
+	Global::bnpView->m_actDelBasket->setEnabled(!isLocked());
+	Global::bnpView->m_actExportToHtml->setEnabled(!isLocked());
 }
 
 bool Basket::save()
