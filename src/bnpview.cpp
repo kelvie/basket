@@ -91,7 +91,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	setupGlobalShortcuts();
 	initialize();
 	m_statusbar->setupStatusBar();
-	QTimer::singleShot(0, this, SLOT(hideRichTextToolBar()));
+	QTimer::singleShot(0, this, SLOT(lateInit()));
 }
 
 BNPView::~BNPView()
@@ -110,7 +110,7 @@ BNPView::~BNPView()
 	NoteDrag::createAndEmptyCuttingTmpFolder(); // Clean the temporary folder we used
 }
 
-void BNPView::hideRichTextToolBar()
+void BNPView::lateInit()
 {
 	InlineEditors* instance = InlineEditors::instance();
 
@@ -121,6 +121,11 @@ void BNPView::hideRichTextToolBar()
 		if(toolbar)
 			toolbar->hide();
 	}
+
+	/* System tray icon */
+	Global::tray = new ContainerSystemTray(Global::mainWindow());
+	if (Settings::useSystray())
+		Global::tray->show();
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -253,11 +258,6 @@ void BNPView::initialize()
 					"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 
 	setTreePlacement(Settings::treeOnLeft());
-
-	/* System tray icon */
-	Global::tray = new ContainerSystemTray(this);
-	if (Settings::useSystray())
-		Global::tray->show();
 
 	if(!isPart())
 	{

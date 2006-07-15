@@ -178,7 +178,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void slotBasketChanged();
 		void currentBasketChanged();
 		void isLockedChanged();
-		void hideRichTextToolBar();
+		void lateInit();
 
 	public:
 		KAction       *m_actEditNote;
