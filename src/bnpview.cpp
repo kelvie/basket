@@ -889,7 +889,7 @@ void BNPView::newFilter()
 			BasketListViewItem *item = ((BasketListViewItem*)it.current());
 			if (item->basket() != current) {
 				Basket *basket = item->basket();
-				if (!basket->loadingLaunched())
+				if (!basket->loadingLaunched() && !basket->isLocked())
 					basket->load();
 				m_tree->triggerUpdate();
 				kapp->processEvents();

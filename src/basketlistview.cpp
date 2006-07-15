@@ -27,6 +27,7 @@
 #include <qpainter.h>
 #include <qbitmap.h>
 #include <iostream>
+#include <kdebug.h>
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"
@@ -382,9 +383,15 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	bool showLoadingIcon = false;
 	QPixmap countPixmap;
 	if (Global::bnpView->isFilteringAllBaskets() && Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering) {
-		showLoadingIcon = !m_basket->isLoaded() || haveHiddenChildsLoading();
-		countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading(),
-										countHiddenChildsFound(), listView()->font(), height() - 2 * MARGIN);
+		if(!m_basket->isLocked()) {
+			showLoadingIcon = !m_basket->isLoaded() || haveHiddenChildsLoading();
+			countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading(),
+											countHiddenChildsFound(), listView()->font(), height() - 2 * MARGIN);
+		}
+		else {
+			showLoadingIcon = false;
+			countPixmap = KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeSmall);
+		}
 	}
 	int effectiveWidth = width - (countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN) - (showLoadingIcon ? BASKET_ICON_SIZE + MARGIN : 0);
 

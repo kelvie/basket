@@ -1332,6 +1332,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 #ifdef HAVE_LIBGPGME
 	m_gpg = new KGpgMe();
 #endif
+	m_locked = isFileEncrypted();
 }
 
 void Basket::contentsMoved()
