@@ -35,6 +35,7 @@
 #include <kaboutdata.h>
 #include <kdialogbase.h>
 #include <kcmodule.h>
+#include <kdebug.h>
 
 #include "linklabel.h"
 #include "variouswidgets.h"
@@ -647,10 +648,10 @@ void LinkLookEditWidget::set(LinkLook *look)
 	m_bold->setChecked(look->bold());
 	m_underlining->setCurrentItem(look->underlining());
 	m_preview->setCurrentItem(look->preview());
-	m_color->setColor(m_look->color());
 	m_color->setDefaultColor(m_look->defaultColor());
-	m_hoverColor->setColor(m_look->hoverColor());
+	m_color->setColor(m_look->color());
 	m_hoverColor->setDefaultColor(m_look->defaultHoverColor());
+	m_hoverColor->setColor(m_look->hoverColor());
 	m_iconSize->setSize(look->iconSize());
 	m_exLook = new LinkLook(*look);
 	m_example->setLook(m_exLook);
