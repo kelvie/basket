@@ -172,6 +172,10 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void lockBasket();
 		void hideOnEscape();
 
+		void changedSelectedNotes();
+		void timeoutTryHide();
+		void timeoutHide();
+
 	private slots:
 		void updateNotesActions();
 		void slotBasketNumberChanged(int number);
@@ -274,6 +278,10 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void basketChanged();
 		void setWindowCaption(const QString &s);
 
+	protected:
+		void enterEvent(QEvent*);
+		void leaveEvent(QEvent*);
+
 	private:
 		KListView    *m_tree;
 		QWidgetStack *m_stack;
@@ -290,6 +298,8 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KActionCollection *m_actionCollection;
 		KXMLGUIClient *m_guiClient;
 		BasketStatusBar *m_statusbar;
+		QTimer             *m_tryHideTimer;
+		QTimer             *m_hideTimer;
 };
 
 #endif // BNPVIEW_H

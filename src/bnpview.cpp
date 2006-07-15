@@ -77,7 +77,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
 	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_loading(true), m_newBasketPopup(false),
 	m_regionGrabber(0), m_passivePopup(0L), m_actionCollection(actionCollection),
-	m_guiClient(aGUIClient), m_statusbar(bar)
+	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
 	/* Settings */
 	Settings::loadConfig();
@@ -147,6 +147,11 @@ void BNPView::lateInit()
 		}
 	// TODO: Create Welcome Baskets:
 	}
+
+	m_tryHideTimer = new QTimer(this);
+	m_hideTimer    = new QTimer(this);
+	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
+	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -1861,5 +1866,76 @@ void BNPView::handleCommandLine()
 		KCrash::setCrashHandler(Crash::crashHandler);
 #endif
 }
+
+/** Scenario of "Hide main window to system tray icon when mouse move out of the window" :
+ * - At enterEvent() we stop m_tryHideTimer
+ * - After that and before next, we are SURE cursor is hovering window
+ * - At leaveEvent() we restart m_tryHideTimer
+ * - Every 'x' ms, timeoutTryHide() seek if cursor hover a widget of the application or not
+ * - If yes, we musn't hide the window
+ * - But if not, we start m_hideTimer to hide main window after a configured elapsed time
+ * - timeoutTryHide() continue to be called and if cursor move again to one widget of the app, m_hideTimer is stopped
+ * - If after the configured time cursor hasn't go back to a widget of the application, timeoutHide() is called
+ * - It then hide the main window to systray icon
+ * - When the user will show it, enterEvent() will be called the first time he enter mouse to it
+ * - ...
+ */
+
+/** Why do as this ? Problems with the use of only enterEvent() and leaveEvent() :
+ * - Resize window or hover titlebar isn't possible : leave/enterEvent
+ *   are
+ *   > Use the grip or Alt+rightDND to resize window
+ *   > Use Alt+DND to move window
+ * - Each menu trigger the leavEvent
+ */
+
+void BNPView::enterEvent(QEvent*)
+{
+	if(m_tryHideTimer)
+		m_tryHideTimer->stop();
+	if(m_hideTimer)
+		m_hideTimer->stop();
+}
+
+void BNPView::leaveEvent(QEvent*)
+{
+	if (Settings::useSystray() && Settings::hideOnMouseOut())
+		m_tryHideTimer->start(50);
+}
+
+void BNPView::timeoutTryHide()
+{
+	// If a menu is displayed, do nothing for the moment
+	if (kapp->activePopupWidget() != 0L)
+		return;
+
+	if (kapp->widgetAt(QCursor::pos()) != 0L)
+		m_hideTimer->stop();
+	else if ( ! m_hideTimer->isActive() ) // Start only one time
+		m_hideTimer->start(Settings::timeToHideOnMouseOut() * 100, true);
+
+	// If a sub-dialog is oppened, we musn't hide the main window:
+	if (kapp->activeWindow() != 0L && kapp->activeWindow() != Global::mainWindow())
+		m_hideTimer->stop();
+}
+
+void BNPView::timeoutHide()
+{
+	// We check that because the setting can have been set to off
+	if (Settings::useSystray() && Settings::hideOnMouseOut())
+		setActive(false);
+	m_tryHideTimer->stop();
+}
+
+void BNPView::changedSelectedNotes()
+{
+//	tabChanged(0); // FIXME: NOT OPTIMIZED
+}
+
+/*void BNPView::areSelectedNotesCheckedChanged(bool checked)
+{
+	m_actCheckNotes->setChecked(checked && currentBasket()->showCheckBoxes());
+}*/
+
 
 #include "bnpview.moc"

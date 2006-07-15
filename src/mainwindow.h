@@ -80,41 +80,28 @@ class MainWindow : public KMainWindow
 	void minimizeRestore();
 	void quit();
 	void changeActive();
+	void slotNewToolbarConfig();
 
   protected:
 	bool queryExit();
 	bool queryClose();
-	void enterEvent(QEvent*);
-	void leaveEvent(QEvent*);
 	virtual void resizeEvent(QResizeEvent*);
 	virtual void moveEvent(QMoveEvent*);
   public:
 	void polish();
-  private slots:
-	/** User actions */
-	void changedSelectedNotes();
-	void timeoutTryHide();
-	void timeoutHide();
-	void slotNewToolbarConfig();
 
-  public: // TODO: Migrate to private
+  private:
+	// Settings actions :
+	KToggleAction *m_actShowToolbar;
+	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actConfigGlobalShortcuts;
 	KAction       *actAppConfig;
 	QPtrList<KAction> actBasketsList;
-  private:
-//	KAction       *m_actColorPicker;
-//	KAction       *m_actGrabScreenshot;
-	// Settings actions :
-	KToggleAction *m_actShowToolbar;
-	KToggleAction *m_actShowStatusbar;
-	//
 
   private:
 	QVBoxLayout        *m_layout;
 	BNPView            *m_baskets;
-	QTimer             *m_tryHideTimer;
-	QTimer             *m_hideTimer;
 	bool                m_startDocked;
 	KSettings::Dialog  *m_settings;
 	bool                m_quit;

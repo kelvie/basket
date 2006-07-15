@@ -116,13 +116,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 
 	m_actShowToolbar->setChecked(   toolBar()->isShown()   );
 	m_actShowStatusbar->setChecked( statusBar()->isShown() );
-
-	m_tryHideTimer = new QTimer(this);
-	m_hideTimer    = new QTimer(this);
-	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
-	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
 	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
-
 	createGUI("basketui.rc");
 }
 
@@ -232,16 +226,6 @@ void MainWindow::showGlobalShortcutsSettingsDialog()
 	Global::globalAccel->writeSettings();
 }
 
-void MainWindow::changedSelectedNotes()
-{
-//	tabChanged(0); // FIXME: NOT OPTIMIZED
-}
-
-/*void MainWindow::areSelectedNotesCheckedChanged(bool checked)
-{
-	m_actCheckNotes->setChecked(checked && currentBasket()->showCheckBoxes());
-}*/
-
 void MainWindow::polish()
 {
 	bool shouldSave = false;
@@ -296,72 +280,6 @@ bool MainWindow::queryExit()
 {
 	hide();
 	return true;
-}
-
-#include <qdesktopwidget.h>
-#include <qmime.h>
-#include <qpainter.h>
-// To know the program name:
-#include <kglobal.h>
-#include <kinstance.h>
-#include <kaboutdata.h>
-
-/** Scenario of "Hide main window to system tray icon when mouse move out of the window" :
-  * - At enterEvent() we stop m_tryHideTimer
-  * - After that and before next, we are SURE cursor is hovering window
-  * - At leaveEvent() we restart m_tryHideTimer
-  * - Every 'x' ms, timeoutTryHide() seek if cursor hover a widget of the application or not
-  * - If yes, we musn't hide the window
-  * - But if not, we start m_hideTimer to hide main window after a configured elapsed time
-  * - timeoutTryHide() continue to be called and if cursor move again to one widget of the app, m_hideTimer is stopped
-  * - If after the configured time cursor hasn't go back to a widget of the application, timeoutHide() is called
-  * - It then hide the main window to systray icon
-  * - When the user will show it, enterEvent() will be called the first time he enter mouse to it
-  * - ...
-  */
-
-/** Why do as this ? Problems with the use of only enterEvent() and leaveEvent() :
-  * - Resize window or hover titlebar isn't possible : leave/enterEvent
-  *   are
-  *   > Use the grip or Alt+rightDND to resize window
-  *   > Use Alt+DND to move window
-  * - Each menu trigger the leavEvent
-  */
-
-void MainWindow::enterEvent(QEvent*)
-{
-	m_tryHideTimer->stop();
-	m_hideTimer->stop();
-}
-
-void MainWindow::leaveEvent(QEvent*)
-{
-	if (Settings::useSystray() && Settings::hideOnMouseOut())
-		m_tryHideTimer->start(50);
-}
-
-void MainWindow::timeoutTryHide()
-{
-	// If a menu is displayed, do nothing for the moment
-	if (kapp->activePopupWidget() != 0L)
-		return;
-
-	if (kapp->widgetAt(QCursor::pos()) != 0L)
-		m_hideTimer->stop();
-	else if ( ! m_hideTimer->isActive() ) // Start only one time
-		m_hideTimer->start(Settings::timeToHideOnMouseOut() * 100, true);
-
-	// If a sub-dialog is oppened, we musn't hide the main window:
-	if (kapp->activeWindow() != 0L && kapp->activeWindow() != this)
-		m_hideTimer->stop();
-}
-
-void MainWindow::timeoutHide()
-{
-	// We check that because the setting can have been set to off
-	if (Settings::useSystray() && Settings::hideOnMouseOut())
-		m_baskets->setActive(false);
-	m_tryHideTimer->stop();
 }
 
 void MainWindow::quit()
