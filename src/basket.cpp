@@ -5111,7 +5111,8 @@ void Basket::updateModifiedNotes()
 bool Basket::setProtection(int type, QString key)
 {
 #ifdef HAVE_LIBGPGME
-	if(m_encryptionType != type || m_encryptionKey != key)
+	if(type == PasswordEncryption || // Ask a new password
+		m_encryptionType != type || m_encryptionKey != key)
 	{
 		int savedType = m_encryptionType;
 		QString savedKey = m_encryptionKey;
