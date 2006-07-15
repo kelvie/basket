@@ -35,9 +35,9 @@ K_EXPORT_COMPONENT_FACTORY( libkontact_basket,
 BasketPlugin::BasketPlugin( Kontact::Core *core, const char *, const QStringList& )
   : Kontact::Plugin( core, core, "basket" )
 {
-  setInstance( BasketPluginFactory::instance() );
-  insertNewAction(new KAction( i18n("&New Basket..."), "basket", CTRL+SHIFT+Key_B,
-				  this, SLOT(newBasket()), actionCollection(), "basket_new" ));
+	setInstance( BasketPluginFactory::instance() );
+	insertNewAction(new KAction( i18n("&New Basket..."), "basket", CTRL+SHIFT+Key_B,
+					this, SLOT(newBasket()), actionCollection(), "basket_new" ));
 
 	m_uniqueAppWatcher = new Kontact::UniqueAppWatcher(
 		new Kontact::UniqueAppHandlerFactory<BasketUniqueAppHandler>(), this);
@@ -66,6 +66,17 @@ void BasketPlugin::newBasket()
 		kdDebug() << k_funcinfo << endl;
 		m_stub->newBasket();
 	}
+}
+#if 0
+bool BasketPlugin::createDCOPInterface( const QString& serviceType )
+{
+	kdDebug() << k_funcinfo << serviceType << endl;
+	return false;
+}
+#endif
+bool BasketPlugin::isRunningStandalone()
+{
+	return m_uniqueAppWatcher->isRunningStandalone();
 }
 
 void BasketUniqueAppHandler::loadCommandLineOptions()

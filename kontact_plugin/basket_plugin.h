@@ -47,6 +47,8 @@ class BasketPlugin : public Kontact::Plugin
     ~BasketPlugin();
 
     int weight() const { return 700; }
+	virtual bool isRunningStandalone();
+	//virtual bool createDCOPInterface( const QString& serviceType );
 
   public slots:
 	void newBasket();

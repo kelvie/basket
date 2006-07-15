@@ -7,7 +7,11 @@ ServiceTypes=Kontact/Plugin,KPluginInfo
 X-KDE-Library=libkontact_basket
 X-KDE-KontactPluginVersion=4
 X-KDE-KontactPartLibraryName=libbasketpart
+X-KDE-KontactPartExecutableName=basket
+X-KDE-KontactPartLoadOnStart=true
+X-KDE-KontactPluginHasSummary=false
 
+X-KDE-PluginInfo-Website=http://basket.kde.org/
 X-KDE-PluginInfo-Name=kontact_basketplugin
 X-KDE-PluginInfo-Version=0.6.0Beta1
 X-KDE-PluginInfo-License=GPL
