@@ -5221,9 +5221,9 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 			tmp.detach();
 			m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent());
 			if(m_encryptionType == PrivateKeyEncryption)
-				m_gpg->setText(i18n("Password for Private Key:"), false);
+				m_gpg->setText(i18n("Please enter the password for the following private key:"), false);
 			else
-				m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), false);
+				m_gpg->setText(i18n("Please enter the password for the basket <b>%1</b>:").arg(basketName()), false); // Used when decrypting
 			return m_gpg->decrypt(tmp, array);
 		}
 #else
@@ -5266,7 +5266,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 			m_gpg->setText("", false);
 		}
 		else
-			m_gpg->setText(i18n("Password for '%1'-basket:").arg(basketName()), true);
+			m_gpg->setText(i18n("Please assign a password to the basket <b>%1</b>:").arg(basketName()), true); // Used when defining a new password
 
 		success = m_gpg->encrypt(array, length, &tmp, key);
 		length = tmp.size();

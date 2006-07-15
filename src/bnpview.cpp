@@ -1481,13 +1481,13 @@ void BNPView::delBasket()
 	basketsList.append("  Basket 4");
 	KMessageBox::createKMessageBox(
 			dialog, QMessageBox::Information,
-			i18n("<qt>Do you really want to remove <b>%1</b> and its contents?</qt>")
+			i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>")
 				.arg(Tools::textToHTMLWithoutP(basket->basketName())),
 			basketsList, /*ask=*/"", /*checkboxReturn=*/0, /*options=*/KMessageBox::Notify/*, const QString &details=QString::null*/);
 #endif
 
 	int really = KMessageBox::questionYesNo( this,
-											 i18n("<qt>Do you really want to remove <b>%1</b> and its contents?</qt>")
+											 i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>")
 													 .arg(Tools::textToHTMLWithoutP(basket->basketName())),
 											 i18n("Remove Basket")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x

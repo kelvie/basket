@@ -224,7 +224,7 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 		result = gpgme_op_keylist_result(m_ctx);
 		if (result->truncated) {
 			KMessageBox::error(kapp->activeWindow(),
-				i18n("Key listing unexpectedly truncated"));
+				i18n("Key listing unexpectedly truncated."));
 		}
 	}
 	return keys;
@@ -402,7 +402,7 @@ gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
 	int result;
 
 	if(last_was_bad){
-		s += i18n("<b>Password was not accepted.</b><br><br>") + "\n\n";
+		s += "<b>" + i18n("Wrong password.") + "</b><br><br>\n\n";
 		clearCache();
 	}
 

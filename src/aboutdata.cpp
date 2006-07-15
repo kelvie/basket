@@ -32,7 +32,7 @@ AboutData::AboutData()
 				  "http://basket.kde.org/",
 				  "slaout@linux62.org" )
 {
-	addAuthor( "S\303\251bastien Lao\303\273t", I18N_NOOP("Author, maintainer"),                 "slaout@linux62.org"   );
-	addAuthor( "Petri Damst\303\251n",          I18N_NOOP("Basket encryption, KnowIt importer"), "damu@iki.fi"          );
-	addAuthor( "Marco Martin",                  I18N_NOOP("Icon"),                               "m4rt@libero.it"       );
+	addAuthor( "S\303\251bastien Lao\303\273t", I18N_NOOP("Author, maintainer"),                                      "slaout@linux62.org"   );
+	addAuthor( "Petri Damst\303\251n",          I18N_NOOP("Basket encryption, Kontact integration, KnowIt importer"), "damu@iki.fi"          );
+	addAuthor( "Marco Martin",                  I18N_NOOP("Icon"),                                                    "m4rt@libero.it"       );
 }
