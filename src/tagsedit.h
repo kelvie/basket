@@ -29,10 +29,12 @@
 class QGroupBox;
 class QLineEdit;
 class QCheckBox;
+class KPushButton;
 class KKeyButton;
 class KIconButton;
 class KFontCombo;
 class QLabel;
+class KShortcut;
 
 class KColorCombo2;
 
@@ -85,6 +87,7 @@ class TagListViewItem : public QListViewItem
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
+	TagListViewItem* prevSibling();
   private:
 	TagCopy   *m_tagCopy;
 	StateCopy *m_stateCopy;
@@ -118,8 +121,12 @@ class TagsEditDialog : public KDialogBase
 	void moveUp();
 	void moveDown();
 	void deleteTag();
+	void capturedShortcut(const KShortcut &shortcut);
+	void removeShortcut();
+	void removeEmblem();
 	void modified();
 	void currentItemChanged(QListViewItem *item);
+	void slotOk();
   private:
 	void loadBlankState();
 	void loadStateFrom(State *state);
@@ -127,6 +134,9 @@ class TagsEditDialog : public KDialogBase
 	void saveStateTo(State *state);
 	void saveTagTo(Tag *tag);
 	QListView     *m_tags;
+	KPushButton   *m_moveUp;
+	KPushButton   *m_moveDown;
+	KPushButton   *m_deleteTag;
 	QLineEdit     *m_tagName;
 	KKeyButton    *m_shortcut;
 	QPushButton   *m_removeShortcut;
