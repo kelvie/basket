@@ -331,7 +331,7 @@ bool BasketListViewItem::haveChildsLoading()
 	QListViewItem *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
-		if (!childItem->basket()->isLoaded())
+		if (!childItem->basket()->isLoaded() && !childItem->basket()->isLocked())
 			return true;
 		if (childItem->haveChildsLoading())
 			return true;
@@ -345,6 +345,27 @@ bool BasketListViewItem::haveHiddenChildsLoading()
 	if (isOpen())
 		return false;
 	return haveChildsLoading();
+}
+
+bool BasketListViewItem::haveChildsLocked()
+{
+	QListViewItem *child = firstChild();
+	while (child) {
+		BasketListViewItem *childItem = (BasketListViewItem*)child;
+		if (!childItem->basket()->isLocked())
+			return true;
+		if (childItem->haveChildsLocked())
+			return true;
+		child = child->nextSibling();
+	}
+	return false;
+}
+
+bool BasketListViewItem::haveHiddenChildsLocked()
+{
+	if (isOpen())
+		return false;
+	return haveChildsLocked();
 }
 
 int BasketListViewItem::countChildsFound()
@@ -381,19 +402,17 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// If we are filtering all baskets, and are effectively filtering on something:
 	bool showLoadingIcon = false;
+	bool showEncryptedIcon = false;
 	QPixmap countPixmap;
 	if (Global::bnpView->isFilteringAllBaskets() && Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering) {
-		if(!m_basket->isLocked()) {
-			showLoadingIcon = !m_basket->isLoaded() || haveHiddenChildsLoading();
-			countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading(),
-											countHiddenChildsFound(), listView()->font(), height() - 2 * MARGIN);
-		}
-		else {
-			showLoadingIcon = false;
-			countPixmap = KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeSmall);
-		}
+		showLoadingIcon = (!m_basket->isLoaded() && !m_basket->isLocked()) || haveHiddenChildsLoading();
+		showEncryptedIcon = m_basket->isLocked() || haveHiddenChildsLocked();
+		countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading(),
+										countHiddenChildsFound(), listView()->font(), height() - 2 * MARGIN);
 	}
-	int effectiveWidth = width - (countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN) - (showLoadingIcon ? BASKET_ICON_SIZE + MARGIN : 0);
+	int effectiveWidth = width - (countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN)
+			- (showLoadingIcon ? BASKET_ICON_SIZE + MARGIN : 0)
+			- (showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0);
 
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
@@ -494,10 +513,18 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// If we are filtering all baskets, and are effectively filtering on something:
 	if (!countPixmap.isNull())
+	{
 		thePainter.drawPixmap(effectiveWidth, 1, countPixmap);
+		effectiveWidth += countPixmap.width() + MARGIN;
+	}
 	if (showLoadingIcon) {
-		QPixmap filterIcon = kapp->iconLoader()->loadIcon("find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
-		thePainter.drawPixmap(width - 16 - 1, 0, filterIcon);
+		QPixmap icon = kapp->iconLoader()->loadIcon("find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		thePainter.drawPixmap(effectiveWidth, 0, icon);
+		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
+	}
+	if (showEncryptedIcon) {
+		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
 
 	thePainter.end();

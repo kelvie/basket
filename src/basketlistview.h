@@ -57,6 +57,8 @@ class BasketListViewItem : public QListViewItem
 		QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
 		bool haveChildsLoading();
 		bool haveHiddenChildsLoading();
+		bool haveChildsLocked();
+		bool haveHiddenChildsLocked();
 		int countChildsFound();
 		int countHiddenChildsFound();
 		///
