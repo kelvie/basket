@@ -165,6 +165,14 @@ void HelpLabel::showMessage()
 	QWhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
 }
 
+void HelpLabel::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space)
+		showMessage();
+	else
+		KURLLabel::keyPressEvent(event);
+}
+
 /** class IconSizeDialog: */
 
 class UndraggableKIconView : public KIconView

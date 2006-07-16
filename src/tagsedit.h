@@ -154,6 +154,8 @@ class TagsEditDialog : public KDialogBase
 	KFontCombo    *m_font;
 	FontSizeCombo *m_fontSize;
 	KColorCombo2  *m_backgroundColor;
+	QLineEdit     *m_textEquivalent;
+	QCheckBox     *m_onEveryLines;
 
 	TagCopy::List      m_tagCopies;
 	QValueList<Tag*>   m_deletedTags;

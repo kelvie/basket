@@ -95,6 +95,8 @@ class HelpLabel : public KURLLabel
   public slots:
 	void setMessage(const QString &message) { m_message = message; }
 	void showMessage();
+  protected:
+	void keyPressEvent(QKeyEvent *event);
   private:
 	QString m_message;
 };

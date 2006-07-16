@@ -357,7 +357,7 @@ void Tag::saveTags()
 			fontNode.setAttribute( "name", state->fontName() );
 			fontNode.setAttribute( "size", state->fontSize() );
 			QString backgroundColor = (state->backgroundColor().isValid() ? state->backgroundColor().name() : "");
-			XMLWork::addElement( document, stateNode, "backgrdoundColor", backgroundColor );
+			XMLWork::addElement( document, stateNode, "backgroundColor", backgroundColor );
 			QDomElement textEquivalentNode = document.createElement("textEquivalent");
 			stateNode.appendChild(textEquivalentNode);
 			textEquivalentNode.setAttribute( "string",         state->textEquivalent()                       );

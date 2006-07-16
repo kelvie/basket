@@ -35,12 +35,15 @@
 #include <qvaluelist.h>
 #include <klocale.h>
 #include <qfontdatabase.h>
+#include <kstandarddirs.h>
+#include <kseparator.h>
 
 #include <iostream>
 
 #include "tag.h"
 #include "tagsedit.h"
 #include "kcolorcombo2.h"
+#include "variouswidgets.h"
 
 /** class FontSizeCombo: */
 
@@ -251,7 +254,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 
 	m_shortcut = new KKeyButton(tagWidget);
 	m_removeShortcut = new QPushButton(i18n("&Remove"), tagWidget);
-	QLabel *shortcutLabel = new QLabel(m_tagName, i18n("S&hortcut:"), tagWidget);
+	QLabel *shortcutLabel = new QLabel(m_shortcut, i18n("S&hortcut:"), tagWidget);
 	connect( m_shortcut,       SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
 	connect( m_removeShortcut, SIGNAL(clicked()),                          this, SLOT(removeShortcut())                   );
 
@@ -292,6 +295,13 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	emblemLayout->addWidget(m_emblem);
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
+
+	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), stateWidget);
+	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
+
+	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	backgroundColorLayout->addWidget(m_backgroundColor);
+	backgroundColorLayout->addStretch();
 
 	QIconSet boldIconSet = kapp->iconLoader()->loadIconSet("text_bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
@@ -335,20 +345,59 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	QLabel *fontLabel = new QLabel(m_font, i18n("&Font:"), stateWidget);
 
 	m_fontSize = new FontSizeCombo(/*rw=*/true, /*withDefault=*/true, stateWidget);
-	QLabel *fontSizeLabel = new QLabel(m_font, i18n("&Size:"), stateWidget);
+	QLabel *fontSizeLabel = new QLabel(m_fontSize, i18n("&Size:"), stateWidget);
 
-	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), stateWidget);
-	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
+	m_textEquivalent = new QLineEdit(stateWidget);
+	QLabel *textEquivalentLabel = new QLabel(m_textEquivalent, i18n("Te&xt equivalent:"), stateWidget);
+	QFont font = m_textEquivalent->font();
+	font.setFamily("monospace");
+	m_textEquivalent->setFont(font);
 
-	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
-	backgroundColorLayout->addWidget(m_backgroundColor);
-	backgroundColorLayout->addStretch();
+	QPixmap textEquivalentPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
+	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", textEquivalentPixmap);
+	HelpLabel *textEquivalentHelp = new HelpLabel(
+		i18n("When does this apply?"),
+		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
+		"<p>" + i18n("If filled, this property lets you paste this tag or this state as textual equivalent.") + "<br>" +
+		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
+		     "representing an empty checkbox and a checked box.") + "</p>" +
+		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
+		stateWidget);
+	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	textEquivalentHelpLayout->addWidget(textEquivalentHelp);
+	textEquivalentHelpLayout->addStretch(255);
 
-	QGridLayout *stateGrid = new QGridLayout(stateWidget, /*rows=*/5, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
+	m_onEveryLines = new QCheckBox(i18n("On ever&y lines"), stateWidget);
+
+	QPixmap onEveryLinesPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_on_every_lines_help.png"));
+	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export_on_every_lines.png", onEveryLinesPixmap);
+	HelpLabel *onEveryLinesHelp = new HelpLabel(
+		i18n("What does it mean?"),
+		"<p>" + i18n("When a note has several lines, you can choose to export the tag or the state on the first line or on every lines of the note.") + "</p>" +
+		"<p align='center'><img src=\"__resource_help_tag_export_on_every_lines.png\"></p>" +
+		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every lines of the note."),
+		stateWidget);
+	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	onEveryLinesHelpLayout->addWidget(onEveryLinesHelp);
+	onEveryLinesHelpLayout->addStretch(255);
+
+	QGridLayout *textEquivalentGrid = new QGridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	textEquivalentGrid->addWidget(textEquivalentLabel,      0, 0);
+	textEquivalentGrid->addWidget(m_textEquivalent,         0, 1);
+	textEquivalentGrid->addLayout(textEquivalentHelpLayout, 0, 2);
+	textEquivalentGrid->addWidget(m_onEveryLines,           1, 1);
+	textEquivalentGrid->addLayout(onEveryLinesHelpLayout,   1, 2);
+	textEquivalentGrid->setColStretch(/*col=*/3, /*stretch=*/255);
+
+	KSeparator *separator = new KSeparator(Qt::Horizontal, stateWidget);
+
+	QGridLayout *stateGrid = new QGridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
 	stateGrid->addWidget(m_stateNameLabel,     0, 0);
 	stateGrid->addMultiCellWidget(m_stateName,            /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/6);
 	stateGrid->addWidget(emblemLabel,          1, 0);
 	stateGrid->addMultiCellWidget(emblemWidget,           /*fromRow=*/1, /*toRow=*/1, /*fromCol=*/1, /*toCol=*/6);
+	stateGrid->addWidget(backgroundColorLabel, 1, 5);
+	stateGrid->addMultiCellLayout(backgroundColorLayout,  /*fromRow=*/1, /*toRow=*/1, /*fromCol=*/6, /*toCol=*/6);
 	stateGrid->addWidget(textLabel,            2, 0);
 	stateGrid->addMultiCellLayout(textLayout,             /*fromRow=*/2, /*toRow=*/2, /*fromCol=*/1, /*toCol=*/4);
 	stateGrid->addWidget(textColorLabel,       2, 5);
@@ -357,8 +406,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	stateGrid->addMultiCellWidget(m_font,                 /*fromRow=*/3, /*toRow=*/3, /*fromCol=*/1, /*toCol=*/4);
 	stateGrid->addWidget(fontSizeLabel,        3, 5);
 	stateGrid->addWidget(m_fontSize,           3, 6);
-	stateGrid->addWidget(backgroundColorLabel, 1, 5);
-	stateGrid->addMultiCellLayout(backgroundColorLayout,  /*fromRow=*/1, /*toRow=*/1, /*fromCol=*/6, /*toCol=*/6);
+	stateGrid->addMultiCellWidget(separator,              /*fromRow=*/4, /*toRow=*/4, /*fromCol=*/0, /*toCol=*/6);
+	stateGrid->addMultiCellLayout(textEquivalentGrid,     /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/0, /*toCol=*/6);
 
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget, /*margin=*/0, spacingHint());
 	rightLayout->addWidget(tagBox);
@@ -376,9 +425,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	maxWidth = QMAX(maxWidth, textLabel->sizeHint().width());
 	maxWidth = QMAX(maxWidth, fontLabel->sizeHint().width());
 	maxWidth = QMAX(maxWidth, backgroundColorLabel->sizeHint().width());
+	maxWidth = QMAX(maxWidth, textEquivalentLabel->sizeHint().width());
 
 	tagNameLabel->setFixedWidth(maxWidth);
 	m_stateNameLabel->setFixedWidth(maxWidth);
+	textEquivalentLabel->setFixedWidth(maxWidth);
 
 	// Load Tags:
 	for (Tag::List::iterator tagIt = Tag::all.begin(); tagIt != Tag::all.end(); ++tagIt)
@@ -424,12 +475,20 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	connect( m_textColor,       SIGNAL(changed(const QColor&)),             this, SLOT(modified()) );
 	connect( m_font,            SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_fontSize,        SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
+	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
+	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
 	connect( m_tags,            SIGNAL(currentChanged(QListViewItem*)),     this, SLOT(currentItemChanged(QListViewItem*)) );
 
-	if (m_tags->firstChild()) {
-		m_tags->firstChild()->setSelected(true);
-		currentItemChanged(m_tags->firstChild());
+	QListViewItem *firstItem = m_tags->firstChild();
+	// Select the first tag unless the first tag is a multi-state tag.
+	// In this case, select the first state, as it let customize the state AND the associated tag.
+	if (firstItem) {
+		if (firstItem->firstChild())
+			firstItem = firstItem->firstChild();
+		firstItem->setSelected(true);
+		m_tags->setCurrentItem(firstItem);
+		currentItemChanged(firstItem);
 		m_tags->setFocus();
 	}
 	// TODO: Disabled both boxes if no tag!!!
@@ -490,12 +549,12 @@ void TagsEditDialog::moveDown()
 
 	// Move in the value list:
 	if (tagItem->tagCopy()) {
-		int pos = m_tagCopies.findIndex(tagItem->tagCopy());
+		uint pos = m_tagCopies.findIndex(tagItem->tagCopy());
 		m_tagCopies.remove(tagItem->tagCopy());
 		if (pos == m_tagCopies.count() - 1) // Insert at end: iterator does not go there
 			m_tagCopies.append(tagItem->tagCopy());
 		else {
-			int i = 0;
+			uint i = 0;
 			for (TagCopy::List::iterator it = m_tagCopies.begin(); it != m_tagCopies.end(); ++it, ++i)
 				if (i == pos + 1) {
 					m_tagCopies.insert(it, tagItem->tagCopy());
@@ -504,12 +563,12 @@ void TagsEditDialog::moveDown()
 		}
 	} else {
 		StateCopy::List &stateCopies = ((TagListViewItem*)( tagItem->parent() ))->tagCopy()->states;
-		int pos = stateCopies.findIndex(tagItem->stateCopy());
+		uint pos = stateCopies.findIndex(tagItem->stateCopy());
 		stateCopies.remove(tagItem->stateCopy());
 		if (pos == stateCopies.count() - 1) // Insert at end: iterator does not go there
 			stateCopies.append(tagItem->stateCopy());
 		else {
-			int i = 0;
+			uint i = 0;
 			for (StateCopy::List::iterator it = stateCopies.begin(); it != stateCopies.end(); ++it, ++i)
 				if (i == pos + 1) {
 					stateCopies.insert(it, tagItem->stateCopy());
@@ -574,6 +633,7 @@ void TagsEditDialog::modified()
 
 	m_removeShortcut->setEnabled(!m_shortcut->shortcut().isNull());
 	m_removeEmblem->setEnabled(!m_emblem->icon().isEmpty());
+	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
 void TagsEditDialog::currentItemChanged(QListViewItem *item)
@@ -629,6 +689,8 @@ void TagsEditDialog::loadBlankState()
 	m_textColor->setColor(QColor());
 	m_font->setCurrentItem(0);
 	m_fontSize->setCurrentItem(0);
+	m_textEquivalent->setText("");
+	m_onEveryLines->setChecked(false);
 }
 
 void TagsEditDialog::loadStateFrom(State *state)
@@ -645,6 +707,8 @@ void TagsEditDialog::loadStateFrom(State *state)
 	m_italic->setOn(state->italic());
 	m_strike->setOn(state->strikeOut());
 	m_textColor->setColor(state->textColor());
+	m_textEquivalent->setText(state->textEquivalent());
+	m_onEveryLines->setChecked(state->onAllTextLines());
 
 	if (state->fontName().isEmpty())
 		m_font->setCurrentItem(0);
@@ -675,6 +739,8 @@ void TagsEditDialog::saveStateTo(State *state)
 	state->setItalic(m_italic->isOn());
 	state->setStrikeOut(m_strike->isOn());
 	state->setTextColor(m_textColor->color());
+	state->setTextEquivalent(m_textEquivalent->text());
+	state->setOnAllTextLines(m_onEveryLines->isChecked());
 
 	if (m_font->currentItem() == 0)
 		state->setFontName("");
@@ -700,28 +766,22 @@ void TagsEditDialog::slotOk()
 
 	Tag::all.clear();
 	for (TagCopy::List::iterator tagCopyIt = m_tagCopies.begin(); tagCopyIt != m_tagCopies.end(); ++tagCopyIt) {
-//	for (QListViewItem *tagItem = m_tags->firstChild(); tagItem; tagItem = tagItem->nextSibling()) {
 		TagCopy *tagCopy = *tagCopyIt;
-//		TagCopy *tagCopy = ((TagListViewItem*)tagItem)->tagCopy();
 		// Copy changes to the tag and append in the list of tags::
 		if (tagCopy->oldTag)
 			tagCopy->newTag->copyTo(tagCopy->oldTag);
 		Tag *tag = (tagCopy->oldTag ? tagCopy->oldTag : tagCopy->newTag);
-std::cout << "Tag " << tag->name() << std::endl;
 		Tag::all.append(tag);
 		// And change all states:
 		State::List &states = tag->states();
 		StateCopy::List &stateCopies = tagCopy->states;
 		states.clear();
 		for (StateCopy::List::iterator stateCopyIt = stateCopies.begin(); stateCopyIt != stateCopies.end(); ++stateCopyIt) {
-//		for (QListViewItem *stateItem = tagItem->firstChild(); stateItem; stateItem = stateItem->nextSibling()) {
 			StateCopy *stateCopy = *stateCopyIt;
-//			StateCopy *stateCopy = ((TagListViewItem*)stateItem)->stateCopy();
 			// Copy changes to the state and append in the list of tags:
 			if (stateCopy->oldState)
 				stateCopy->newState->copyTo(stateCopy->oldState);
 			State *state = (stateCopy->oldState ? stateCopy->oldState : stateCopy->newState);
-std::cout << "  State " << state->name() << std::endl;
 			states.append(state);
 			state->setParentTag(tag);
 		}

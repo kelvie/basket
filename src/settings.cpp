@@ -362,13 +362,13 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	HelpLabel *hLabel = new HelpLabel(
-			i18n("When does this apply?"),
-	i18n("<p>It does apply when you copy and paste, or drag and drop notes to a text editor.</p>"
-			"<p>If enabled, this property allows you to paste the tags as textual equivalents.<br>"
-			"For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
-			"representing an empty  checkbox and a checked box.</p>") +
-			"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
-	this);
+		i18n("When does this apply?"),
+		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
+		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +
+		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
+		     "representing an empty checkbox and a checked box.") + "</p>" +
+		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
+		this);
 	hLay->addWidget(m_exportTextTags);
 	hLay->addWidget(hLabel);
 	hLay->addStretch();
