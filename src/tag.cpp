@@ -317,6 +317,57 @@ void Tag::loadTags()
 
 void Tag::saveTags()
 {
+	DEBUG_WIN << "Saving tags...";
+
+	// Create Document:
+	QDomDocument document(/*doctype=*/"basketTags");
+	QDomElement root = document.createElement("basketTags");
+	document.appendChild(root);
+
+	// Save all tags:
+	for (List::iterator it = all.begin(); it != all.end(); ++it) {
+		Tag *tag = *it;
+		// Create tag node:
+		QDomElement tagNode = document.createElement("tag");
+		root.appendChild(tagNode);
+		// Save tag properties:
+		XMLWork::addElement( document, tagNode, "name",      tag->name()                                      );
+		XMLWork::addElement( document, tagNode, "shortcut",  tag->shortcut().toStringInternal()               );
+		XMLWork::addElement( document, tagNode, "inherited", XMLWork::trueOrFalse(tag->inheritedBySiblings()) );
+		// Save all states:
+		for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2) {
+			State *state = *it2;
+			// Create state node:
+			QDomElement stateNode = document.createElement("state");
+			tagNode.appendChild(stateNode);
+			// Save state properties:
+			stateNode.setAttribute("id", state->id());
+			XMLWork::addElement( document, stateNode, "name",   state->name()   );
+			XMLWork::addElement( document, stateNode, "emblem", state->emblem() );
+			QDomElement textNode = document.createElement("text");
+			stateNode.appendChild(textNode);
+			QString textColor = (state->textColor().isValid() ? state->textColor().name() : "");
+			textNode.setAttribute( "bold",      XMLWork::trueOrFalse(state->bold())      );
+			textNode.setAttribute( "italic",    XMLWork::trueOrFalse(state->italic())    );
+			textNode.setAttribute( "underline", XMLWork::trueOrFalse(state->underline()) );
+			textNode.setAttribute( "strikeOut", XMLWork::trueOrFalse(state->strikeOut()) );
+			textNode.setAttribute( "color",     textColor                                );
+			QDomElement fontNode = document.createElement("font");
+			stateNode.appendChild(fontNode);
+			fontNode.setAttribute( "name", state->fontName() );
+			fontNode.setAttribute( "size", state->fontSize() );
+			QString backgroundColor = (state->backgroundColor().isValid() ? state->backgroundColor().name() : "");
+			XMLWork::addElement( document, stateNode, "backgrdoundColor", backgroundColor );
+			QDomElement textEquivalentNode = document.createElement("textEquivalent");
+			stateNode.appendChild(textEquivalentNode);
+			textEquivalentNode.setAttribute( "string",         state->textEquivalent()                       );
+			textEquivalentNode.setAttribute( "onAllTextLines", XMLWork::trueOrFalse(state->onAllTextLines()) );
+		}
+	}
+
+	// Write to Disk:
+	if (!Basket::safelySaveToFile(Global::savesFolder() + "tags.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 
 void Tag::copyTo(Tag *other)
