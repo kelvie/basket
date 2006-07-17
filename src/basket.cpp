@@ -5216,7 +5216,9 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 			QByteArray tmp(*array);
 
 			tmp.detach();
-			m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent());
+			// Only use gpg-agent for private key encryption since it doesn't
+			// cache password used in symmetric encryption.
+			m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent() && m_encryptionType == PrivateKeyEncryption);
 			if(m_encryptionType == PrivateKeyEncryption)
 				m_gpg->setText(i18n("Please enter the password for the following private key:"), false);
 			else
@@ -5255,7 +5257,9 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 	{
 		QString key = QString::null;
 
-		m_gpg->setUseGnuPGAgent(Settings::useGnuPGAgent());
+		// We only use gpg-agent for private key encryption and saving without
+		// public key doesn't need one.
+		m_gpg->setUseGnuPGAgent(false);
 		if(m_encryptionType == PrivateKeyEncryption)
 		{
 			key = m_encryptionKey;
