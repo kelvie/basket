@@ -1060,13 +1060,7 @@ void Basket::equalizeColumnSizes()
 
 void Basket::enableActions()
 {
-#ifdef HAVE_LIBGPGME
-	Global::bnpView->m_actLockBasket->setEnabled(!isLocked() && isEncrypted());
-	Global::bnpView->m_actPassBasket->setEnabled(!isLocked());
-#endif
-	Global::bnpView->m_actPropBasket->setEnabled(!isLocked());
-	Global::bnpView->m_actDelBasket->setEnabled(!isLocked());
-	Global::bnpView->m_actExportToHtml->setEnabled(!isLocked());
+	Global::bnpView->enableActions();
 }
 
 bool Basket::save()
@@ -2867,10 +2861,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	// Start the load the first time the basket is shown:
 	if (!m_loadingLaunched)
 	{
-		if(!isFileEncrypted())
+		if(!m_locked)
 			QTimer::singleShot( 0, this, SLOT(load()) );
 		else {
-			m_locked = true;
 			Global::bnpView->notesStateChanged(); // Show "Locked" instead of "Loading..." in the statusbar
 		}
 	}

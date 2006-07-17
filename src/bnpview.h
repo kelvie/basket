@@ -72,6 +72,8 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		int basketCount(QListViewItem *parent = 0);
 		bool canFold();
 		bool canExpand();
+		void enableActions();
+
 	public slots:
 		void countsChanged(Basket *basket);
 		void notesStateChanged();

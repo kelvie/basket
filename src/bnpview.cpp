@@ -75,7 +75,8 @@ const int BNPView::c_delayTooltipTime = 275;
 
 BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
-	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_loading(true), m_newBasketPopup(false),
+	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
+	m_loading(true), m_newBasketPopup(false),
 	m_regionGrabber(0), m_passivePopup(0L), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
@@ -1939,5 +1940,22 @@ void BNPView::changedSelectedNotes()
 	m_actCheckNotes->setChecked(checked && currentBasket()->showCheckBoxes());
 }*/
 
+void BNPView::enableActions()
+{
+	Basket *basket = currentBasket();
+	if(!basket)
+		return;
+	if(m_actLockBasket)
+		m_actLockBasket->setEnabled(!basket->isLocked() && basket->isEncrypted());
+	if(m_actPassBasket)
+		m_actPassBasket->setEnabled(!basket->isLocked());
+	m_actPropBasket->setEnabled(!basket->isLocked());
+	m_actDelBasket->setEnabled(!basket->isLocked());
+	m_actExportToHtml->setEnabled(!basket->isLocked());
+	m_actShowFilter->setEnabled(!basket->isLocked());
+	m_actFilterAllBaskets->setEnabled(!basket->isLocked());
+	m_actResetFilter->setEnabled(!basket->isLocked());
+	basket->decoration()->filterBar()->setEnabled(!basket->isLocked());
+}
 
 #include "bnpview.moc"
