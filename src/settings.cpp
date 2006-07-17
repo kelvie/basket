@@ -375,7 +375,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addLayout(hLay);
 
 #ifdef HAVE_LIBGPGME
-	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets") + " [DO NOT ENABLE: STILL BUGGY]", this);
+	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), this);
 	layout->addWidget(m_useGnuPGAgent);
 	connect(m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 #endif
