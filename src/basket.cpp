@@ -1061,6 +1061,7 @@ void Basket::equalizeColumnSizes()
 void Basket::enableActions()
 {
 	Global::bnpView->enableActions();
+	setFocusPolicy(isLocked()?QWidget::NoFocus:QWidget::StrongFocus);
 }
 
 bool Basket::save()
@@ -2905,13 +2906,12 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			layout->addItem( spacer, 1, 1 );
 
 			m_decryptBox->resize(layout->sizeHint());
-
-			m_decryptBox->show();
 		}
 		if(m_decryptBox->isHidden())
 		{
 			m_decryptBox->show();
 		}
+		m_button->setFocus();
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
 							(visibleHeight() - m_decryptBox->height()) / 2);
 	}
