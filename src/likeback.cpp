@@ -254,7 +254,10 @@ void LikeBack::autoMove()
 	static QWidget *lastWindow = 0;
 
 	QWidget *window = kapp->activeWindow();
-	bool shouldShow = (enabled() && window);
+	// When a Kicker applet has the focus, like the Commandline QLineEdit,
+	// the systemtray icon indicates to be the current window and the LikeBack is shown next to the system tray icon.
+	// It's obviously bad ;-) :
+	bool shouldShow = (enabled() && window && !window->inherits("KSystemTray"));
 	if (shouldShow) {
 		//move(window->x() + window->width() - 100 - width(), window->y());
 		//move(window->x() + window->width() - 100 - width(), window->mapToGlobal(QPoint(0, 0)).y() - height());
