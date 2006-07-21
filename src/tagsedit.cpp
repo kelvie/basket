@@ -307,21 +307,21 @@ void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
 	// Ignore this event! Do not open/close first-level items!
 
 	// But trigger edit (change focus to name) when double-click an item:
-	if (itemAt(event->pos()))
+	if (itemAt(contentsToViewport(event->pos())) != 0)
 		emit doubleClickedItem();
 }
 
 void TagListView::contentsMousePressEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
-	if (itemAt(event->pos()) != 0)
+	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMousePressEvent(event);
 }
 
 void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
-	if (itemAt(event->pos()) != 0)
+	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMouseReleaseEvent(event);
 }
 
