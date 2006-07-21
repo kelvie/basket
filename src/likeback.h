@@ -26,6 +26,7 @@
 
 class QTextEdit;
 class QToolButton;
+class QPushButton;
 
 /**
   * @author Sébastien Laoût <slaout@linux62.org>
@@ -37,7 +38,7 @@ class LikeBack : public QWidget
 	enum Button { ILike = 0x01, IDoNotLike = 0x02, IFoundABug = 0x04, Configure = 0x10,
 	              AllButtons = ILike | IDoNotLike | IFoundABug | Configure };
 	enum WindowListing { NoListing, WarnUnnamedWindows, AllWindows };
-	LikeBack(Button buttons = AllButtons, WindowListing windowListing = AllWindows, const QString &customLanguageMessage = "");
+	LikeBack(Button buttons = AllButtons);
 	~LikeBack();
 	static void showInformationMessage();
 	static LikeBack* instance();
@@ -46,10 +47,18 @@ class LikeBack : public QWidget
 	static QString  remotePath();
 	static Q_UINT16 hostPort();
 	static void setServer(QString hostName, QString remotePath, Q_UINT16 hostPort = 80);
+	static void setWindowNamesListing(WindowListing windowListing);
+	static void setCustomLanguageMessage(const QString &message);
 	static bool enabled();
 	static void disable();
 	static void enable();
-	static bool userWantToParticipate();
+	static bool userWantToParticipate(); /// << @Returns true if the user have not disabled LikeBack for this version
+	static QString emailAddress(); /// << @Returns the email user address, or ask it to the user if he haven't provided or ignored it
+	static void setEmailAddress(const QString &address); /// << Calling emailAddress() will ask it to the user the first time
+	static bool isDevelopmentVersion(const QString &version = QString::null); /// << @Returns true if version is an alpha/beta/rc/svn/cvs version. Use kapp->aboutData()->version is @p version is empty
+	static void init(Button buttons = AllButtons); /// << Initialize the LikeBack system: enable it if the application version is a development one.
+	static void init(bool isDevelopmentVersion, Button buttons = AllButtons);  /// << Initialize the LikeBack system: enable it if @p isDevelopmentVersion is true.
+	static QString activeWindowPath();
   private slots:
 	void autoMove();
 	void iLike();
@@ -60,18 +69,18 @@ class LikeBack : public QWidget
 	void openConfigurePopup();
 	void doNotHelpAnymore();
 	void showWhatsThisMessage();
+	void askEMail();
   private:
-	QTimer         m_timer;
-	Button         m_buttons;
-	QToolButton   *m_configureButton;
-	WindowListing  m_windowListing;
-	bool           m_canShow;
-	static QString   s_hostName;
-	static QString   s_remotePath;
-	static Q_UINT16  s_hostPort;
-	static QString   s_customLanguageMessage;
-	static LikeBack *s_instance;
-	static int       s_disabledCount;
+	QTimer       m_timer;
+	Button       m_buttons;
+	QToolButton *m_configureButton;
+	static QString        s_hostName;
+	static QString        s_remotePath;
+	static Q_UINT16       s_hostPort;
+	static QString        s_customLanguageMessage;
+	static WindowListing  s_windowListing;
+	static LikeBack      *s_instance;
+	static int            s_disabledCount;
 };
 
 class LikeBackDialog : public KDialog
@@ -82,12 +91,14 @@ class LikeBackDialog : public KDialog
 	~LikeBackDialog();
   private:
 	LikeBack::Button  m_reason;
-	QTextEdit        *m_message;
+	QTextEdit        *m_comment;
+	QPushButton      *m_sendButton;
 	QString           m_windowName;
 	QString           m_context;
   private slots:
 	void send();
 	void requestFinished(int id, bool error);
+	void commentChanged();
 };
 
 #endif // LIKEBACK_H

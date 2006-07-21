@@ -1037,6 +1037,28 @@ void BNPView::relayoutAllBaskets()
 	}
 }
 
+void BNPView::recomputeAllStyles()
+{
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = ((BasketListViewItem*)it.current());
+		item->basket()->recomputeAllStyles();
+		item->basket()->unsetNotesWidth();
+		item->basket()->relayoutNotes(true);
+		++it;
+	}
+}
+
+void BNPView::removedStates(const QValueList<State*> &deletedStates)
+{
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = ((BasketListViewItem*)it.current());
+		item->basket()->removedStates(deletedStates);
+		++it;
+	}
+}
+
 void BNPView::linkLookChanged()
 {
 	QListViewItemIterator it(m_tree);

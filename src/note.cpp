@@ -2128,10 +2128,30 @@ void Note::recomputeStyle()
 void Note::recomputeAllStyles()
 {
 	if (content()) // We do the merge ourself, without calling recomputeStyle(), so there is no infinite recursion:
-		State::merge(m_states, &m_computedState, &m_emblemsCount, &m_haveInvisibleTags, basket()->backgroundColor());
+		//State::merge(m_states, &m_computedState, &m_emblemsCount, &m_haveInvisibleTags, basket()->backgroundColor());
+		recomputeStyle();
 	else if (isGroup())
 		FOR_EACH_CHILD (child)
 			child->recomputeAllStyles();
+}
+
+bool Note::removedStates(const QValueList<State*> &deletedStates)
+{
+	bool modifiedBasket = false;
+
+	if (!states().isEmpty()) {
+		for (QValueList<State*>::const_iterator it = deletedStates.begin(); it != deletedStates.end(); ++it)
+			if (hasState(*it)) {
+				removeState(*it);
+				modifiedBasket = true;
+			}
+	}
+
+	FOR_EACH_CHILD (child)
+		if (child->removedStates(deletedStates))
+			modifiedBasket = true;
+
+	return modifiedBasket;
 }
 
 

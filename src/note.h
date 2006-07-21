@@ -279,6 +279,7 @@ class Note
 	bool stateForTagFromSelectedNotes(Tag *tag, State **state);
 	void   recomputeStyle();
 	void   recomputeAllStyles();
+	bool   removedStates(const QValueList<State*> &deletedStates);
 	QFont  font(); // Computed!
 	QColor backgroundColor(); // Computed!
 	QColor textColor(); // Computed!

@@ -404,12 +404,13 @@ class Basket : public QScrollView, public QToolTip
 	State *stateForTagFromSelectedNotes(Tag *tag);
   public slots:
 	void activatedTagShortcut(Tag *tag);
+	void recomputeAllStyles();
+	void removedStates(const QValueList<State*> &deletedStates);
   private slots:
 	void toggledTagInMenu(int id);
 	void toggledStateInMenu(int id);
 	void unlockHovering();
 	void disableNextClick();
-	void recomputeAllStyles();
 	void contentsMoved();
   private:
 	Note  *m_tagPopupNote;

@@ -56,6 +56,7 @@ class StateCopy
   public:
 	typedef QValueList<StateCopy*> List;
 	StateCopy(State *old = 0);
+	~StateCopy();
 	State *oldState;
 	State *newState;
 	void copyBack();
@@ -66,6 +67,7 @@ class TagCopy
   public:
 	typedef QValueList<TagCopy*> List;
 	TagCopy(Tag *old = 0);
+	~TagCopy();
 	Tag *oldTag;
 	Tag *newTag;
 	QValueList<StateCopy*> states;
@@ -87,7 +89,14 @@ class TagListViewItem : public QListViewItem
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
+	bool isEmblemObligatory();
+	TagListViewItem* lastChild();
 	TagListViewItem* prevSibling();
+	TagListViewItem* parent() const; // Reimplemented to cast the return value
+	int width(const QFontMetrics &fontMetrics, const QListView *listView, int column) const;
+	void setup();
+	void paintCell(QPainter *painter, const QColorGroup &colorGroup, int column, int width, int align);
+
   private:
 	TagCopy   *m_tagCopy;
 	StateCopy *m_stateCopy;
@@ -100,7 +109,15 @@ class TagListView : public QListView
 	TagListView(QWidget *parent = 0, const char *name = 0, WFlags flags = 0);
 	~TagListView();
 	void keyPressEvent(QKeyEvent *event);
-	void contentsMouseDoubleClickEvent(QMouseEvent*);
+	void contentsMouseDoubleClickEvent(QMouseEvent *event);
+	void contentsMousePressEvent(QMouseEvent *event);
+	void contentsMouseReleaseEvent(QMouseEvent *event);
+	TagListViewItem* currentItem() const; // Reimplemented to cast the return value
+	TagListViewItem* firstChild() const; // Reimplemented to cast the return value
+	TagListViewItem* lastItem() const; // Reimplemented to cast the return value
+  signals:
+	void deletePressed();
+	void doubleClickedItem();
 };
 
 /**
@@ -110,30 +127,37 @@ class TagsEditDialog : public KDialogBase
 {
   Q_OBJECT
   public:
-	TagsEditDialog(QWidget *parent = 0, const char *name = 0);
+	TagsEditDialog(QWidget *parent = 0, State *state = 0, const char *name = 0);
 	~TagsEditDialog();
-	QValueList<Tag*>   deletedTags()   { return m_deletedTags;   }
 	QValueList<State*> deletedStates() { return m_deletedStates; }
 	QValueList<State*> addedStates()   { return m_addedStates;   }
+	TagListViewItem* itemForState(State *state);
   private slots:
 	void newTag();
 	void newState();
 	void moveUp();
 	void moveDown();
 	void deleteTag();
+	void renameIt();
 	void capturedShortcut(const KShortcut &shortcut);
 	void removeShortcut();
 	void removeEmblem();
 	void modified();
 	void currentItemChanged(QListViewItem *item);
 	void slotOk();
+	void selectUp();
+	void selectDown();
+	void selectLeft();
+	void selectRight();
+	void resetTreeSizeHint();
   private:
 	void loadBlankState();
 	void loadStateFrom(State *state);
 	void loadTagFrom(Tag *tag);
 	void saveStateTo(State *state);
 	void saveTagTo(Tag *tag);
-	QListView     *m_tags;
+	void ensureCurrentItemVisible();
+	TagListView   *m_tags;
 	KPushButton   *m_moveUp;
 	KPushButton   *m_moveDown;
 	KPushButton   *m_deleteTag;
@@ -158,7 +182,6 @@ class TagsEditDialog : public KDialogBase
 	QCheckBox     *m_onEveryLines;
 
 	TagCopy::List      m_tagCopies;
-	QValueList<Tag*>   m_deletedTags;
 	QValueList<State*> m_deletedStates;
 	QValueList<State*> m_addedStates;
 

@@ -74,43 +74,12 @@ int main(int argc, char *argv[])
 	KUniqueApplication::addCmdLineOptions();
 	KUniqueApplication app;
 
-	/******* ALPHA 1 ***********/
-	/*KConfig *config = KGlobal::config();
-	config->setGroup("Development Version");
-	QString keyName = "bnp060b1__messagesAlreadyShown";
-	if (!config->readBoolEntry(keyName, false)) {
-		int reply = KMessageBox::warningYesNo(0, QString(
-			"<p>It is recommanded for you to <b>backup your BasKet data</b> before using this pre-version.</p>"
-			"<p>Then, if you miss some older features that are not re-added in the product yet, you will be able to revert back to 0.5.0.</p>"
-			"<P>To backup, you just have to copy the folder <a href='file://%1'>%2</a> in a safe destination.</p>"
-			"<p>I, the developer, am using this version daily and haven't experienced any data-loss. You should be happy with it. "
-			"But some features are temporarily disabled or some bugs can to not have been found yet. "
-			"There is no way to come back from 0.6.0 to 0.5.0 except by recovering your backed up data.</p>"
-			"<p><b>The feature that is not fully re-added yet is Keyboard Navigation.</b></p>"
-			"<p>Note that some features have been removed and will not be re-added in the final release. "
-			"See <a href='http://basket.kde.org/usability-0.6.0.php'>this page</a> for more information.</p>"
-			"<p><b>IMPORTANT</b>: If you were a user of the private Pre-Alpha versions (Alpha 0.1 to 0.9), please remove the file %3tags.xml to be able to export tags in texts.</p>"
-			"<p>When you've done the required steps, you can continue.</p>")
-				.arg(Global::savesFolder(), Global::savesFolder(), Global::savesFolder()),
-			"Please Backup your Data", KStdGuiItem::cont(), KStdGuiItem::quit(), QString::null, KMessageBox::Notify | KMessageBox::AllowLink);
-		if (reply != KMessageBox::Yes)
-			exit(0);
-		config->writeEntry(keyName, true);
-	}*/
-	/***************************/
-
-
 	/* LikeBack */
-	QString version = VERSION;
-	// TODO: LikeBack::init() instead of all those if()s    [or implicitely called if not by hand?!]:
-	if (LikeBack::userWantToParticipate())
-		if ( version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
-		     version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
-		     version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
-		     version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1    ) // TODO: LikeBack::isDevelVersion
-			new LikeBack(LikeBack::AllButtons, LikeBack::NoListing, i18n("Only english and french languages are accepted."));
+	LikeBack::init();
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
-
+//	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
+	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
+	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
 
 	/******* RICH TEXTS INSTEAD OF PLAIN TEXTS ***********/
 	KMessageBox::information(0, i18n(

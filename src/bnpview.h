@@ -26,6 +26,7 @@
 #include <qtimer.h>
 #include <qclipboard.h>
 #include <qsplitter.h>
+#include <qlistview.h>
 #include <dcopref.h>
 #include "global.h"
 #include "basketdcopiface.h"
@@ -33,18 +34,22 @@
  /// NEW:
 
 class QWidgetStack;
-class Basket;
-class DecoratedBasket;
 class QDomDocument;
 class QDomElement;
-class DesktopColorPicker;
 class KToggleAction;
-class RegionGrabber;
-class BasketListViewItem;
-class NoteSelection;
 class KPassivePopup;
 class QPopupMenu;
+
+class DesktopColorPicker;
+class RegionGrabber;
+
+class Basket;
+class DecoratedBasket;
+class BasketListViewItem;
+class NoteSelection;
 class BasketStatusBar;
+class Tag;
+class State;
 
 class BNPView : public QSplitter, virtual public BasketDcopInterface
 {
@@ -57,6 +62,8 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 	/// MANAGE CONFIGURATION EVENTS!:
 		void setTreePlacement(bool onLeft);
 		void relayoutAllBaskets();
+		void recomputeAllStyles();
+		void removedStates(const QValueList<State*> &deletedStates);
 		void linkLookChanged();
 		void filterPlacementChanged(bool onTop);
 	/// MANAGE BASKETS:

@@ -211,6 +211,13 @@ void State::copyTo(State *other)
 
 Tag::List Tag::all = Tag::List();
 
+long Tag::nextStateUid = 1;
+
+long Tag::getNextStateUid()
+{
+	return nextStateUid++; // Return the next Uid and THEN increment the Uid
+}
+
 Tag::Tag()
 {
 	static int tagNumber = 0;
@@ -261,6 +268,7 @@ void Tag::loadTags()
 	}
 
 	QDomElement docElem = document->documentElement();
+	nextStateUid = docElem.attribute("nextStateUid", QString::number(nextStateUid)).toLong();
 	QDomNode node = docElem.firstChild();
 	while (!node.isNull()) {
 		QDomElement element = node.toElement();
@@ -322,6 +330,7 @@ void Tag::saveTags()
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");
 	QDomElement root = document.createElement("basketTags");
+	root.setAttribute("nextStateUid", nextStateUid);
 	document.appendChild(root);
 
 	// Save all tags:

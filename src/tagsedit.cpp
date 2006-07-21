@@ -37,6 +37,11 @@
 #include <qfontdatabase.h>
 #include <kstandarddirs.h>
 #include <kseparator.h>
+#include <kstringhandler.h>
+#include <qpainter.h>
+#include <qaction.h>
+#include <kmessagebox.h>
+#include <qtimer.h>
 
 #include <iostream>
 
@@ -44,6 +49,8 @@
 #include "tagsedit.h"
 #include "kcolorcombo2.h"
 #include "variouswidgets.h"
+#include "global.h"
+#include "bnpview.h"
 
 /** class FontSizeCombo: */
 
@@ -75,6 +82,10 @@ StateCopy::StateCopy(State *old/* = 0*/)
 		oldState->copyTo(newState);
 }
 
+StateCopy::~StateCopy()
+{
+}
+
 void StateCopy::copyBack()
 {
 }
@@ -93,6 +104,10 @@ TagCopy::TagCopy(Tag *old/* = 0*/)
 			states.append(new StateCopy(*it));
 	else
 		states.append(new StateCopy());
+}
+
+TagCopy::~TagCopy()
+{
 }
 
 void TagCopy::copyBack()
@@ -162,6 +177,23 @@ TagListViewItem::~TagListViewItem()
 {
 }
 
+TagListViewItem* TagListViewItem::lastChild()
+{
+	TagListViewItem *child = (TagListViewItem*)firstChild();
+	while (child) {
+		if (child->nextSibling())
+			child = (TagListViewItem*)(child->nextSibling());
+		else
+			return child;
+	}
+	return 0;
+}
+
+bool TagListViewItem::isEmblemObligatory()
+{
+	return m_stateCopy != 0; // It's a state of a multi-state
+}
+
 TagListViewItem* TagListViewItem::prevSibling()
 {
 	TagListViewItem *item = this;
@@ -171,6 +203,83 @@ TagListViewItem* TagListViewItem::prevSibling()
 		item = (TagListViewItem*)(item->itemAbove());
 	}
 	return 0;
+}
+
+TagListViewItem* TagListViewItem::parent() const
+{
+	return (TagListViewItem*) QListViewItem::parent();
+}
+
+// TODO: TagListViewItem::
+int TAG_ICON_SIZE = 16;
+int TAG_MARGIN = 1;
+
+int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
+{
+	return listView()->visibleWidth();
+}
+
+void TagListViewItem::setup()
+{
+	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());
+	State *state = (m_tagCopy ? m_tagCopy->states[0]->newState : m_stateCopy->newState);
+
+	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
+		text = i18n("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+
+	QFont font = state->font(listView()->font());
+
+	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop, text);
+
+	widthChanged();
+	int height = TAG_MARGIN + QMAX(TAG_ICON_SIZE, textRect.height()) + TAG_MARGIN;
+	setHeight(height);
+
+	repaint();
+}
+
+void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGroup*/, int /*column*/, int width, int /*align*/)
+{
+	bool withIcon = m_stateCopy || (m_tagCopy && !m_tagCopy->isMultiState());
+	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());
+	State *state = (m_tagCopy ? m_tagCopy->states[0]->newState : m_stateCopy->newState);
+
+	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
+		text = i18n("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+
+	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
+
+	QFontMetrics fontMetrics(font);
+	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop, text);
+
+	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
+
+	QColor backgroundColor = (isSelected() ? KGlobalSettings::highlightColor()
+	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
+	                                                                                         : listView()->paletteBackgroundColor()));
+	QColor textColor = (isSelected() ? KGlobalSettings::highlightedTextColor()
+	                                 : (withIcon && state->textColor().isValid() ? state->textColor()
+	                                                                             : listView()->paletteForegroundColor()));
+
+	// Bufferize the drawing of items (otherwize, resizing the splitter make the tree act like a Christmas Tree ;-D ):
+	QPixmap theBuffer(width, height());
+	theBuffer.fill(backgroundColor);
+	QPainter thePainter(&theBuffer);
+
+	if (withIcon)
+		thePainter.drawPixmap(TAG_MARGIN, (height() - emblem.height()) / 2, emblem);
+
+	int xText = TAG_MARGIN + (withIcon ? TAG_ICON_SIZE + TAG_MARGIN : 0);
+	thePainter.setPen(textColor);
+	thePainter.setFont(font);
+	int textWidth = width - xText;
+	if (thePainter.fontMetrics().width(text) > textWidth)
+		text = KStringHandler::rPixelSqueeze(text, fontMetrics, textWidth);
+	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignAuto | Qt::AlignVCenter | Qt::ShowPrefix, text);
+
+	// Apply the buffer:
+	thePainter.end();
+	painter->drawPixmap(0, 0, theBuffer);
 }
 
 /** class TagListView: */
@@ -186,21 +295,56 @@ TagListView::~TagListView()
 
 void TagListView::keyPressEvent(QKeyEvent *event)
 {
-	// Do not allow to open/close first-level items
-	if (event->key() != Qt::Key_Left || (selectedItem() && selectedItem()->parent()))
+	if (event->key() == Qt::Key_Delete)
+		emit deletePressed();
+	else if (event->key() != Qt::Key_Left || (selectedItem() && selectedItem()->parent()))
+		// Do not allow to open/close first-level items
 		QListView::keyPressEvent(event);
 }
 
-void TagListView::contentsMouseDoubleClickEvent(QMouseEvent*)
+void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
 {
 	// Ignore this event! Do not open/close first-level items!
+
+	// But trigger edit (change focus to name) when double-click an item:
+	if (itemAt(event->pos()))
+		emit doubleClickedItem();
+}
+
+void TagListView::contentsMousePressEvent(QMouseEvent *event)
+{
+	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
+	if (itemAt(event->pos()) != 0)
+		QListView::contentsMousePressEvent(event);
+}
+
+void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
+{
+	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
+	if (itemAt(event->pos()) != 0)
+		QListView::contentsMouseReleaseEvent(event);
+}
+
+TagListViewItem* TagListView::currentItem() const
+{
+	return (TagListViewItem*) QListView::currentItem();
+}
+
+TagListViewItem* TagListView::firstChild() const
+{
+	return (TagListViewItem*) QListView::firstChild();
+}
+
+TagListViewItem* TagListView::lastItem() const
+{
+	return (TagListViewItem*) QListView::lastItem();
 }
 
 /** class TagsEditDialog: */
 
-TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
+TagsEditDialog::TagsEditDialog(QWidget *parent, State *state, const char */*name*/)
  : KDialogBase(KDialogBase::Plain, i18n("Customize Tags"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Close, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
+               KDialogBase::Ok, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
    m_loading(false)
 {
 	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
@@ -209,6 +353,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 
 	QPushButton *newTag     = new QPushButton(i18n("Ne&w Tag"),   plainPage());
 	QPushButton *newState   = new QPushButton(i18n("New St&ate"), plainPage());
+
+	connect( newTag,   SIGNAL(clicked()), this, SLOT(newTag())   );
+	connect( newState, SIGNAL(clicked()), this, SLOT(newState()) );
 
 	m_tags = new TagListView(plainPage());
 	m_tags->header()->hide();
@@ -221,9 +368,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), plainPage() );
 	m_deleteTag = new KPushButton( KGuiItem("", "editdelete"), plainPage() );
 
-	QToolTip::add( m_moveUp,    i18n("Move Up")   );
-	QToolTip::add( m_moveDown,  i18n("Move Down") );
-	QToolTip::add( m_deleteTag, i18n("Delete")    );
+	QToolTip::add( m_moveUp,    i18n("Move Up (Ctrl+Shift+Up)")     );
+	QToolTip::add( m_moveDown,  i18n("Move Down (Ctrl+Shift+Down)") );
+	QToolTip::add( m_deleteTag, i18n("Delete")                      );
 
 	connect( m_moveUp,    SIGNAL(clicked()), this, SLOT(moveUp())    );
 	connect( m_moveDown,  SIGNAL(clicked()), this, SLOT(moveDown())  );
@@ -479,8 +626,15 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
 	connect( m_tags,            SIGNAL(currentChanged(QListViewItem*)),     this, SLOT(currentItemChanged(QListViewItem*)) );
+	connect( m_tags,            SIGNAL(deletePressed()),                    this, SLOT(deleteTag())                        );
+	connect( m_tags,            SIGNAL(doubleClickedItem()),                this, SLOT(renameIt())                         );
 
 	QListViewItem *firstItem = m_tags->firstChild();
+	if (state != 0) {
+		TagListViewItem *item = itemForState(state);
+		if (item)
+			firstItem = item;
+	}
 	// Select the first tag unless the first tag is a multi-state tag.
 	// In this case, select the first state, as it let customize the state AND the associated tag.
 	if (firstItem) {
@@ -489,26 +643,148 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, const char */*name*/)
 		firstItem->setSelected(true);
 		m_tags->setCurrentItem(firstItem);
 		currentItemChanged(firstItem);
+		if (state == 0)
+			m_tags->ensureVisible(0, 0);
 		m_tags->setFocus();
 	}
 	// TODO: Disabled both boxes if no tag!!!
+
+	// Some keyboard shortcuts:       // Ctrl+arrows instead of Alt+arrows (same as Go menu in the main window) because Alt+Down is for combo boxes
+	QAction *selectAbove = new QAction(this);
+	selectAbove->setAccel(QString("Ctrl+Up"));
+	connect( selectAbove, SIGNAL(activated()), this, SLOT(selectUp()) );
+
+	QAction *selectBelow = new QAction(this);
+	selectBelow->setAccel(QString("Ctrl+Down"));
+	connect( selectBelow, SIGNAL(activated()), this, SLOT(selectDown()) );
+
+	QAction *selectLeft = new QAction(this);
+	selectLeft->setAccel(QString("Ctrl+Left"));
+	connect( selectLeft, SIGNAL(activated()), this, SLOT(selectLeft()) );
+
+	QAction *selectRight = new QAction(this);
+	selectRight->setAccel(QString("Ctrl+Right"));
+	connect( selectRight, SIGNAL(activated()), this, SLOT(selectRight()) );
+
+	QAction *moveAbove = new QAction(this);
+	moveAbove->setAccel(QString("Ctrl+Shift+Up"));
+	connect( moveAbove, SIGNAL(activated()), this, SLOT(moveUp()) );
+
+	QAction *moveBelow = new QAction(this);
+	moveBelow->setAccel(QString("Ctrl+Shift+Down"));
+	connect( moveBelow, SIGNAL(activated()), this, SLOT(moveDown()) );
+
+	QAction *rename = new QAction(this);
+	rename->setAccel(QString("F2"));
+	connect( rename, SIGNAL(activated()), this, SLOT(renameIt()) );
+
+	m_tags->setMinimumSize(
+		m_tags->sizeHint().width() * 2,
+		tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
+	);
+	// Once the window initial size is computed and the window show, allow the user to resize it down:
+	QTimer::singleShot(0, this, SLOT(resetTreeSizeHint()) );
 }
 
 TagsEditDialog::~TagsEditDialog()
 {
 }
 
+void TagsEditDialog::resetTreeSizeHint()
+{
+	m_tags->setMinimumSize(m_tags->sizeHint());
+}
+
+TagListViewItem* TagsEditDialog::itemForState(State *state)
+{
+	// Browse all tags:
+	QListViewItemIterator it(m_tags);
+	while (it.current()) {
+		QListViewItem *item = it.current();
+
+		// Return if we found the tag item:
+		TagListViewItem *tagItem = (TagListViewItem*)item;
+		if (tagItem->tagCopy() && tagItem->tagCopy()->oldTag && tagItem->tagCopy()->states[0]->oldState == state)
+			return tagItem;
+
+		// Browser all sub-states:
+		QListViewItemIterator it2(item);
+		while (it2.current()) {
+			QListViewItem *subItem = it2.current();
+
+			// Return if we found the state item:
+			TagListViewItem *stateItem = (TagListViewItem*)subItem;
+			if (stateItem->stateCopy() && stateItem->stateCopy()->oldState && stateItem->stateCopy()->oldState == state)
+				return stateItem;
+
+			++it2;
+		}
+
+		++it;
+	}
+	return 0;
+}
+
 void TagsEditDialog::newTag()
 {
+	// Add to the "model":
+	TagCopy *newTagCopy = new TagCopy();
+	newTagCopy->states[0]->newState->setId("tag_state_" + QString::number( Tag::getNextStateUid() )); //TODO: Check if it's really unique
+	m_tagCopies.append(newTagCopy);
+
+	// Add to the "view":
+	TagListViewItem *item;
+	if (m_tags->firstChild())
+		item = new TagListViewItem(m_tags, m_tags->lastItem(), newTagCopy);
+	else
+		item = new TagListViewItem(m_tags, newTagCopy);
+
+	// Add to the "controler":
+	m_tags->setCurrentItem(item);
+	currentItemChanged(item);
+	m_tagName->setFocus();
 }
 
 void TagsEditDialog::newState()
 {
+	TagListViewItem *tagItem = m_tags->currentItem();
+	if (tagItem->parent())
+		tagItem = ((TagListViewItem*)(tagItem->parent()));
+	tagItem->setOpen(true); // Show sub-states if we're adding them for the first time!
+
+	State *firstState = tagItem->tagCopy()->states[0]->newState;
+
+	// Add the first state to the "view". From now on, it's a multi-state tag:
+	if (tagItem->firstChild() == 0) {
+		firstState->setName( tagItem->tagCopy()->newTag->name() );
+		// Force emblem to exists for multi-state tags:
+		if (firstState->emblem().isEmpty())
+			firstState->setEmblem("empty");
+		new TagListViewItem(tagItem, tagItem->tagCopy()->states[0]);
+	}
+
+	// Add to the "model":
+	StateCopy *newStateCopy = new StateCopy();
+	firstState->copyTo(newStateCopy->newState);
+	newStateCopy->newState->setId("tag_state_" + QString::number( Tag::getNextStateUid() )); //TODO: Check if it's really unique
+	newStateCopy->newState->setName(""); // We copied it too but it's likely the name will not be the same
+	tagItem->tagCopy()->states.append(newStateCopy);
+
+	// Add to the "view":
+	TagListViewItem *item = new TagListViewItem(tagItem, tagItem->lastChild(), newStateCopy);
+
+	// Add to the "controler":
+	m_tags->setCurrentItem(item);
+	currentItemChanged(item);
+	m_stateName->setFocus();
 }
 
 void TagsEditDialog::moveUp()
 {
-	TagListViewItem *tagItem     = ((TagListViewItem*)( m_tags->currentItem()  ));
+	if (!m_moveUp->isEnabled()) // Trggered by keyboard shortcut
+		return;
+
+	TagListViewItem *tagItem     = m_tags->currentItem();
 	TagListViewItem *prevTagItem = ((TagListViewItem*)( tagItem->prevSibling() ));
 
 	// Move in the list view:
@@ -536,13 +812,18 @@ void TagsEditDialog::moveUp()
 			}
 	}
 
+	ensureCurrentItemVisible();
+
 	m_moveDown->setEnabled( tagItem->nextSibling() != 0 );
 	m_moveUp->setEnabled(   tagItem->prevSibling() != 0 );
 }
 
 void TagsEditDialog::moveDown()
 {
-	TagListViewItem *tagItem = ((TagListViewItem*)( m_tags->currentItem() ));
+	if (!m_moveDown->isEnabled()) // Trggered by keyboard shortcut
+		return;
+
+	TagListViewItem *tagItem = m_tags->currentItem();
 
 	// Move in the list view:
 	tagItem->moveItem(tagItem->nextSibling());
@@ -577,15 +858,91 @@ void TagsEditDialog::moveDown()
 		}
 	}
 
+	ensureCurrentItemVisible();
+
 	m_moveDown->setEnabled( tagItem->nextSibling() != 0 );
 	m_moveUp->setEnabled(   tagItem->prevSibling() != 0 );
 }
 
+void TagsEditDialog::selectUp()
+{
+	QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Up, 0, 0);
+	QApplication::postEvent(m_tags, keyEvent);
+}
+
+void TagsEditDialog::selectDown()
+{
+	QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Down, 0, 0);
+	QApplication::postEvent(m_tags, keyEvent);
+}
+
+void TagsEditDialog::selectLeft()
+{
+	QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Left, 0, 0);
+	QApplication::postEvent(m_tags, keyEvent);
+}
+
+void TagsEditDialog::selectRight()
+{
+	QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Right, 0, 0);
+	QApplication::postEvent(m_tags, keyEvent);
+}
+
 void TagsEditDialog::deleteTag()
 {
-	//TagListViewItem *item = ((TagListViewItem*)(m_tags->currentItem()));
+	TagListViewItem *item = m_tags->currentItem();
 
-	//if (item->tagCopy())
+	int result;
+	if (item->tagCopy())
+		result = KMessageBox::warningContinueCancel(
+			this,
+			i18n("Deleting the tag will remove it from every notes it is currently assigned to."),
+			i18n("Confirm Delete Tag"),
+			KGuiItem(i18n("Delete Tag"), "editdelete")
+		);
+	else
+		result = KMessageBox::warningContinueCancel(
+			this,
+			i18n("Deleting the state will remove the tag from every notes the state is currently assigned to."),
+			i18n("Confirm Delete State"),
+			KGuiItem(i18n("Delete State"), "editdelete")
+		);
+	if (result != KMessageBox::Continue)
+		return;
+
+	if (item->tagCopy()) {
+		StateCopy::List stateCopies = item->tagCopy()->states;
+		for (StateCopy::List::iterator stateCopyIt = stateCopies.begin(); stateCopyIt != stateCopies.end(); ++stateCopyIt) {
+			StateCopy *stateCopy = *stateCopyIt;
+			if (stateCopy->oldState)
+				m_deletedStates.append(stateCopy->oldState);
+		}
+		m_tagCopies.remove(item->tagCopy());
+	} else {
+		if (item->stateCopy()->oldState) {
+			item->parent()->tagCopy()->states.remove(item->stateCopy());
+			m_deletedStates.append(item->stateCopy()->oldState);
+			if (item->parent()->childCount() == 2) {
+				TagListViewItem *parent = item->parent();
+				delete parent->firstChild();
+				delete parent->firstChild();
+				item = 0;
+				m_tags->setCurrentItem(parent);
+			}
+		}
+	}
+
+	delete item;
+	if (m_tags->currentItem())
+		m_tags->currentItem()->setSelected(true);
+}
+
+void TagsEditDialog::renameIt()
+{
+	if (m_tags->currentItem()->tagCopy())
+		m_tagName->setFocus();
+	else
+		m_stateName->setFocus();
 }
 
 void TagsEditDialog::capturedShortcut(const KShortcut &shortcut)
@@ -611,11 +968,7 @@ void TagsEditDialog::modified()
 	if (m_loading)
 		return;
 
-	static int cpt = 0;
-	std::cout << "modified " << cpt << std::endl;
-	cpt++;
-
-	TagListViewItem *tagItem = (TagListViewItem*)m_tags->currentItem();
+	TagListViewItem *tagItem = m_tags->currentItem();
 	if (tagItem == 0)
 		return;
 
@@ -631,8 +984,12 @@ void TagsEditDialog::modified()
 		saveStateTo(tagItem->stateCopy()->newState);
 	}
 
+	m_tags->currentItem()->setup();
+	if (m_tags->currentItem()->parent())
+		m_tags->currentItem()->parent()->setup();
+
 	m_removeShortcut->setEnabled(!m_shortcut->shortcut().isNull());
-	m_removeEmblem->setEnabled(!m_emblem->icon().isEmpty());
+	m_removeEmblem->setEnabled(!m_emblem->icon().isEmpty() && !m_tags->currentItem()->isEmblemObligatory());
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
@@ -670,10 +1027,26 @@ void TagsEditDialog::currentItemChanged(QListViewItem *item)
 		m_stateName->setEnabled(true);
 	}
 
-	m_moveDown->setEnabled( tagItem->nextSibling() != 0 );
-	m_moveUp->setEnabled(   tagItem->prevSibling() != 0 );
+	ensureCurrentItemVisible();
 
 	m_loading = false;
+}
+
+void TagsEditDialog::ensureCurrentItemVisible()
+{
+	TagListViewItem *tagItem = m_tags->currentItem();
+
+	// Ensure the tag and the states (if available) to be visible, but if there is a looooot of states,
+	// ensure the tag is still visible, even if the last states are not...
+	int y = m_tags->itemPos(tagItem);
+	int height = tagItem->totalHeight();
+	int bottom = y + QMIN(height, m_tags->visibleHeight());
+	int xMiddle = m_tags->contentsX() + m_tags->visibleWidth() / 2;
+	m_tags->ensureVisible( xMiddle, bottom, 0,0 );
+	m_tags->ensureVisible( xMiddle, y,      0,0 );
+
+	m_moveDown->setEnabled( tagItem->nextSibling() != 0 );
+	m_moveUp->setEnabled(   tagItem->prevSibling() != 0 );
 }
 
 void TagsEditDialog::loadBlankState()
@@ -700,7 +1073,7 @@ void TagsEditDialog::loadStateFrom(State *state)
 		m_emblem->resetIcon();
 	else
 		m_emblem->setIcon(state->emblem());
-	m_removeEmblem->setEnabled(!state->emblem().isEmpty());
+	m_removeEmblem->setEnabled(!state->emblem().isEmpty() && !m_tags->currentItem()->isEmblemObligatory());
 	m_backgroundColor->setColor(state->backgroundColor());
 	m_bold->setOn(state->bold());
 	m_underline->setOn(state->underline());
@@ -747,10 +1120,12 @@ void TagsEditDialog::saveStateTo(State *state)
 	else
 		state->setFontName(m_font->currentFont());
 
-	if (m_fontSize->currentItem() == 0)
-		state->setFontSize(-1);
+	bool conversionOk;
+	int fontSize = m_fontSize->currentText().toInt(&conversionOk);
+	if (conversionOk)
+		state->setFontSize(fontSize);
 	else
-		state->setFontSize(m_fontSize->currentText().toInt());
+		state->setFontSize(-1);
 }
 
 void TagsEditDialog::saveTagTo(Tag *tag)
@@ -762,8 +1137,6 @@ void TagsEditDialog::saveTagTo(Tag *tag)
 
 void TagsEditDialog::slotOk()
 {
-	// TODO: Notify removed states and tags, and then remove them
-
 	Tag::all.clear();
 	for (TagCopy::List::iterator tagCopyIt = m_tagCopies.begin(); tagCopyIt != m_tagCopies.end(); ++tagCopyIt) {
 		TagCopy *tagCopy = *tagCopyIt;
@@ -787,6 +1160,14 @@ void TagsEditDialog::slotOk()
 		}
 	}
 	Tag::saveTags();
+
+	// Notify removed states and tags, and then remove them:
+	if (!m_deletedStates.isEmpty())
+		Global::bnpView->removedStates(m_deletedStates);
+
+	// Update every notes (change colors, size because of font change or added/removed emblems...):
+	Global::bnpView->relayoutAllBaskets();
+	Global::bnpView->recomputeAllStyles();
 
 	KDialogBase::slotOk();
 }

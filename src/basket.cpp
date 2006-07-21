@@ -1673,6 +1673,18 @@ void Basket::recomputeAllStyles()
 		note->recomputeAllStyles();
 }
 
+void Basket::removedStates(const QValueList<State*> &deletedStates)
+{
+	bool modifiedBasket = false;
+
+	FOR_EACH_NOTE (note)
+		if (note->removedStates(deletedStates))
+			modifiedBasket = true;
+
+	if (modifiedBasket)
+		save();
+}
+
 void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, bool animateNewPosition)
 {
 	if (!note) {
@@ -3222,11 +3234,9 @@ void Basket::toggledStateInMenu(int id)
 		save();
 		return;
 	}
-	if (id == 2) {
-		KMessageBox::information(viewport(),
-			"<qt>This is not implemented yet.<br>In a future version, you will be able to add, remove or modify tags "
-			"by setting icon, states, background color, font, font size, bold, italic, underline, text color...<br>"
-			"But for now, I'm afraid you have to wait ;-)");
+	if (id == 2) { // Customize this State:
+		TagsEditDialog dialog(this, m_tagPopupNote->stateOfTag(m_tagPopup));
+		dialog.exec();
 		return;
 	}
 	if (id == 3) { // Filter by this Tag
@@ -3328,9 +3338,9 @@ void Basket::unlockHovering()
 void Basket::toggledTagInMenu(int id)
 {
 	if (id == 1) {
-		KMessageBox::information(viewport(),
-			"<qt>Sorry... Not implemented yet! Please come back later :-)<br>"
-			"This thing will allow to add a new tag and assign it to the note in one go.");
+		TagsEditDialog dialog(this);
+		dialog.exec();
+		//addStateToSelectedNotes();
 		return;
 	}
 	if (id == 2) {
@@ -3341,10 +3351,6 @@ void Basket::toggledTagInMenu(int id)
 		return;
 	}
 	if (id == 3) {
-		/*KMessageBox::information(viewport(),
-			"<qt>This is not implemented yet.<br>In a future version, you will be able to add, remove or modify tags "
-			"by setting icon, states, background color, font, font size, bold, italic, underline, text color...<br>"
-			"But for now, I'm afraid you have to wait ;-)");*/
 		TagsEditDialog dialog(this);
 		dialog.exec();
 		return;
