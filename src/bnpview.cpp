@@ -1924,7 +1924,7 @@ void BNPView::enterEvent(QEvent*)
 
 void BNPView::leaveEvent(QEvent*)
 {
-	if (Settings::useSystray() && Settings::hideOnMouseOut())
+	if (Settings::useSystray() && Settings::hideOnMouseOut() && m_tryHideTimer)
 		m_tryHideTimer->start(50);
 }
 
