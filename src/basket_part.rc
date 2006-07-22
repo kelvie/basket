@@ -102,7 +102,6 @@
  </MenuBar>
  <ToolBar newline="false" position="Top" noMerge="1" name="mainToolBar" fullWidth="true" >
   <text>Main Toolbar</text>
-  <Action name="basket_new_menu" />
   <Action name="basket_properties" />
   <Separator lineSeparator="true" name="separator_0" />
   <Action name="edit_cut" />
