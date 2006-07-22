@@ -558,7 +558,6 @@ class Basket : public QScrollView, public QToolTip
 	QValueList<Note*> m_draggedNotes;
   public:
 	static void acceptDropEvent(QDropEvent *event, bool preCond = true);
-//	void dropEvent(QDropEvent *event);
 	void contentsDropEvent(QDropEvent *event);
 	bool isDuringDrag() { return m_isDuringDrag; }
 	QValueList<Note*> draggedNotes() { return m_draggedNotes; }

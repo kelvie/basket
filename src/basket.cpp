@@ -44,6 +44,7 @@
 #include <kaboutdata.h>
 #include <klineedit.h>
 #include <ksavefile.h>
+#include <kdebug.h>
 #include <qvbox.h>
 
 #include <unistd.h> // For sleep()
@@ -1835,11 +1836,6 @@ void Basket::contentsDragLeaveEvent(QDragLeaveEvent*)
 	emit resetStatusBarText();
 	doHoverEffects();
 }
-
-/*void Basket::dropEvent(QDropEvent *event)
-{
-	QScrollView::dropEvent(event);
-}*/
 
 void Basket::contentsDropEvent(QDropEvent *event)
 {

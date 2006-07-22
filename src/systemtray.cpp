@@ -340,7 +340,7 @@ void ContainerSystemTray::dragLeaveEvent(QDragLeaveEvent*)
 void ContainerSystemTray::dropEvent(QDropEvent *event)
 {
 	m_showTimer->stop();
-	Global::bnpView->currentBasket()->dropEvent(event);
+	Global::bnpView->currentBasket()->contentsDropEvent(event);
 
 	if (Settings::usePassivePopup())
 		Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));

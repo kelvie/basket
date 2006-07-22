@@ -41,7 +41,6 @@ KGlobalAccel        *Global::globalAccel         = 0L;
 
 void Global::setCustomSavesFolder(const QString &folder)
 {
-	kdDebug() << k_funcinfo << folder << endl;
 	s_customSavesFolder = folder;
 }
 
