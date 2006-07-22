@@ -27,6 +27,7 @@
 #include "basketdcopiface_stub.h"
 #include "basket_plugin.h"
 #include "basket_options.h"
+#include "basket_part.h"
 
 typedef KGenericFactory<BasketPlugin, Kontact::Core> BasketPluginFactory;
 K_EXPORT_COMPONENT_FACTORY( libkontact_basket,
@@ -49,12 +50,12 @@ BasketPlugin::~BasketPlugin()
 
 KParts::ReadOnlyPart* BasketPlugin::createPart()
 {
-	KParts::ReadOnlyPart *part = loadPart();
+	BasketPart* part = static_cast<BasketPart*>(loadPart());
 	if(!part)
 		return 0;
 
 	m_stub = new BasketDcopInterface_stub(dcopClient(), "basket", "BasketIface");
-
+	connect(part, SIGNAL(showPart()), this, SLOT(showPart()));
 	return part;
 }
 
@@ -67,6 +68,12 @@ void BasketPlugin::newBasket()
 		m_stub->newBasket();
 	}
 }
+
+void BasketPlugin::showPart()
+{
+	core()->selectPlugin(this);
+}
+
 #if 0
 bool BasketPlugin::createDCOPInterface( const QString& serviceType )
 {

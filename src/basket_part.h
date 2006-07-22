@@ -48,6 +48,9 @@ public:
 
 	static KAboutData *createAboutData();
 
+  signals:
+	void showPart();
+
   protected:
     /**
 	 * This must be implemented by each part

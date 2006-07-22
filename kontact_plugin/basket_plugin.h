@@ -52,6 +52,7 @@ class BasketPlugin : public Kontact::Plugin
 
   public slots:
 	void newBasket();
+	void showPart();
 
   protected:
     KParts::ReadOnlyPart *createPart();

@@ -71,6 +71,8 @@ class ContainerSystemTray : public KSystemTray2
 	void updateToolTip();
   protected slots:
 	void updateToolTipDelayed();
+  signals:
+	void showPart();
   private:
 	QTimer    *m_showTimer;
 	QTimer    *m_autoShowTimer;

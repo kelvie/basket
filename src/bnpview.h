@@ -261,6 +261,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		QPopupMenu* popupMenu(const QString &menuName);
 		bool isPart();
 		bool isMainWindowActive();
+		void showMainWindow();
 
 		// dcop calls
 		virtual void newBasket();
@@ -288,6 +289,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void basketNumberChanged(int number);
 		void basketChanged();
 		void setWindowCaption(const QString &s);
+		void showPart();
 
 	protected:
 		void enterEvent(QEvent*);

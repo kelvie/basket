@@ -309,6 +309,7 @@ void ContainerSystemTray::mouseReleaseEvent(QMouseEvent *event)
 				else
 				{
 					win->show();
+					emit showPart();
 				}
 			}
 			event->accept();

@@ -125,6 +125,7 @@ void BNPView::lateInit()
 
 	/* System tray icon */
 	Global::tray = new ContainerSystemTray(Global::mainWindow());
+	connect(Global::tray, SIGNAL(showPart()), this, SIGNAL(showPart()));
 	if (Settings::useSystray())
 		Global::tray->show();
 
@@ -294,7 +295,7 @@ void BNPView::initialize()
 		else if (Settings::useSystray() && kapp->isRestored())
 			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
 		else
-			if(Global::mainWindow()) Global::mainWindow()->show();
+			showMainWindow();
 	}
 
 	// If the main window is hidden when session is saved, Container::queryClose()
@@ -1288,7 +1289,7 @@ void BNPView::colorPicked(const QColor &color)
 	currentBasket()->insertColor(color);
 
 	if (m_colorPickWasShown)
-		if(Global::mainWindow()) Global::mainWindow()->show();
+		showMainWindow();
 
 	if (Settings::usePassivePopup())
 		showPassiveDropped(i18n("Picked color to basket <i>%1</i>"));
@@ -1297,7 +1298,7 @@ void BNPView::colorPicked(const QColor &color)
 void BNPView::colorPickingCanceled()
 {
 	if (m_colorPickWasShown)
-		if(Global::mainWindow()) Global::mainWindow()->show();
+		showMainWindow();
 }
 
 void BNPView::slotConvertTexts()
@@ -1428,7 +1429,7 @@ void BNPView::screenshotGrabbed(const QPixmap &pixmap)
 	// Cancelled (pressed Escape):
 	if (pixmap.isNull()) {
 		if (m_colorPickWasShown)
-			if(Global::mainWindow()) Global::mainWindow()->show();
+			showMainWindow();
 		return;
 	}
 
@@ -1439,7 +1440,7 @@ void BNPView::screenshotGrabbed(const QPixmap &pixmap)
 	currentBasket()->insertImage(pixmap);
 
 	if (m_colorPickWasShown)
-		if(Global::mainWindow()) Global::mainWindow()->show();
+		showMainWindow();
 
 	if (Settings::usePassivePopup())
 		showPassiveDropped(i18n("Grabbed screen zone to basket <i>%1</i>"));
@@ -1755,11 +1756,11 @@ void BNPView::showPassiveLoading(Basket *basket)
 	m_passivePopup->show();
 }
 
-void BNPView::addNoteText()  { if(Global::mainWindow()) Global::mainWindow()->show(); currentBasket()->insertEmptyNote(NoteType::Text);  }
-void BNPView::addNoteHtml()  { if(Global::mainWindow()) Global::mainWindow()->show(); currentBasket()->insertEmptyNote(NoteType::Html);  }
-void BNPView::addNoteImage() { if(Global::mainWindow()) Global::mainWindow()->show(); currentBasket()->insertEmptyNote(NoteType::Image); }
-void BNPView::addNoteLink()  { if(Global::mainWindow()) Global::mainWindow()->show(); currentBasket()->insertEmptyNote(NoteType::Link);  }
-void BNPView::addNoteColor() { if(Global::mainWindow()) Global::mainWindow()->show(); currentBasket()->insertEmptyNote(NoteType::Color); }
+void BNPView::addNoteText()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Text);  }
+void BNPView::addNoteHtml()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Html);  }
+void BNPView::addNoteImage() { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Image); }
+void BNPView::addNoteLink()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);  }
+void BNPView::addNoteColor() { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Color); }
 
 void BNPView::aboutToHideNewBasketPopup()
 {
@@ -1982,6 +1983,12 @@ void BNPView::enableActions()
 	m_actFilterAllBaskets->setEnabled(!basket->isLocked());
 	m_actResetFilter->setEnabled(!basket->isLocked());
 	basket->decoration()->filterBar()->setEnabled(!basket->isLocked());
+}
+
+void BNPView::showMainWindow()
+{
+	if(Global::mainWindow()) Global::mainWindow()->show();
+	emit showPart();
 }
 
 #include "bnpview.moc"
