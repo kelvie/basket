@@ -260,6 +260,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		Basket* basketForFolderName(const QString &folderName);
 		QPopupMenu* popupMenu(const QString &menuName);
 		bool isPart();
+		bool isMainWindowActive();
 
 		// dcop calls
 		virtual void newBasket();

@@ -113,7 +113,6 @@ BNPView::~BNPView()
 
 void BNPView::lateInit()
 {
-	kdDebug() << k_funcinfo << endl;
 	InlineEditors* instance = InlineEditors::instance();
 
 	if(instance)
@@ -591,7 +590,6 @@ void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement
 
 void BNPView::load()
 {
-	kdDebug() << k_funcinfo << Global::basketsFolder() << endl;
 	QDomDocument *doc = XMLWork::openFile("basketTree", Global::basketsFolder() + "baskets.xml");
 	//BEGIN Compatibility with 0.6.0 Pre-Alpha versions:
 	if (!doc)
@@ -1262,7 +1260,7 @@ void BNPView::updateNotesActions()
 void BNPView::slotColorFromScreen(bool global)
 {
 	m_colorPickWasGlobal = global;
-	if (isActiveWindow()) {
+	if (isMainWindowActive()) {
 		if(Global::mainWindow()) Global::mainWindow()->hide();
 		m_colorPickWasShown = true;
 	} else
@@ -1403,10 +1401,10 @@ void BNPView::grabScreenshot(bool global)
 	// In this case, global is true, and we don't wait.
 	// In the future, if global is also defined for other cases, check for
 	// enum KAction::ActivationReason { UnknownActivation, EmulatedActivation, AccelActivation, PopupMenuActivation, ToolBarActivation };
-	int delay = (isActiveWindow() ? 500 : (global/*kapp->activePopupWidget()*/ ? 0 : 200));
+	int delay = (isMainWindowActive() ? 500 : (global/*kapp->activePopupWidget()*/ ? 0 : 200));
 
 	m_colorPickWasGlobal = global;
-	if (isActiveWindow()) {
+	if (isMainWindowActive()) {
 		if(Global::mainWindow()) Global::mainWindow()->hide();
 		m_colorPickWasShown = true;
 	} else
@@ -1689,7 +1687,7 @@ void BNPView::showPassiveDropped(const QString &title)
 
 void BNPView::showPassiveDroppedDelayed()
 {
-	if (isActiveWindow())
+	if (isMainWindowActive())
 		return;
 
 	QString title = m_passiveDroppedTitle;
@@ -1725,7 +1723,7 @@ void BNPView::showPassiveContentForced()
 
 void BNPView::showPassiveContent(bool forceShow/* = false*/)
 {
-	if (!forceShow && isActiveWindow())
+	if (!forceShow && isMainWindowActive())
 		return;
 
 	// FIXME: Duplicate code (2 times)
@@ -1745,7 +1743,7 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
 
 void BNPView::showPassiveLoading(Basket *basket)
 {
-	if (isActiveWindow())
+	if (isMainWindowActive())
 		return;
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
@@ -1862,9 +1860,16 @@ bool BNPView::isPart()
 	return (strcmp(name(), "BNPViewPart") == 0);
 }
 
+bool BNPView::isMainWindowActive()
+{
+	KMainWindow* main = Global::mainWindow();
+	if (main && main->isActiveWindow())
+		return true;
+	return false;
+}
+
 void BNPView::newBasket()
 {
-	kdDebug() << k_funcinfo << endl;
 	askNewBasket();
 }
 
@@ -1876,7 +1881,6 @@ void BNPView::handleCommandLine()
 	QCString customDataFolder = args->getOption("data-folder");
 	if (customDataFolder != 0 && !customDataFolder.isEmpty())
 	{
-		kdDebug() << k_funcinfo << customDataFolder << endl;
 		Global::setCustomSavesFolder(customDataFolder);
 	}
 	/* Debug window */
