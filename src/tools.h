@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,17 @@ class QString;
 class QColor;
 class QMimeSource;
 
+class StopWatch
+{
+  public:
+	static void start(uint id);
+	static void check(uint id);
+  private:
+	static QMemArray<QTime> starts;
+};
+
 /** Some useful functions for that application.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 namespace Tools
 {

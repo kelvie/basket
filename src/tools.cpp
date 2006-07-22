@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <kdebug.h>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qimage.h>
@@ -31,6 +32,23 @@
 #include <qfontinfo.h>
 
 #include "tools.h"
+
+QMemArray<QTime> StopWatch::starts;
+
+void StopWatch::start(uint id)
+{
+	if(id >= starts.size())
+		starts.resize(id + 1);
+	starts[id] = QTime::currentTime();
+}
+
+void StopWatch::check(uint id)
+{
+	if(id >= starts.size())
+		return;
+	kdDebug() << k_funcinfo << "Timer (" << id << "): " <<
+			starts[id].msecsTo(QTime::currentTime()) / 1000.0 << " s" <<  endl;
+}
 
 QString Tools::textToHTML(const QString &text)
 {
