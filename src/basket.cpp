@@ -1107,6 +1107,8 @@ void Basket::load()
 	QDomDocument *doc = 0;
 	QString content;
 
+	StopWatch::start(0);
+
 	if (loadFromFile(fullPath() + ".basket", &content)) {
 		doc = new QDomDocument("basket");
 		if ( ! doc->setContent(content) ) {
@@ -1145,6 +1147,9 @@ void Basket::load()
 	m_watcher->startScan();
 	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
 	//END
+
+	StopWatch::check(0);
+
 	signalCountsChanged();
 	if (isColumnsLayout()) {
 		// Count the number of columns:
