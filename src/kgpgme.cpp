@@ -27,6 +27,7 @@
 #include <kpassdlg.h>
 #include <kiconloader.h>
 #include <klistview.h>
+#include <kdebug.h>
 #include <qcheckbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -231,7 +232,7 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 }
 
 bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
-					 QByteArray* outBuffer, QString keyid /* = QString::null */) const
+					 QByteArray* outBuffer, QString keyid /* = QString::null */)
 {
 	gpgme_error_t err = 0;
 	gpgme_data_t in = 0, out = 0;
@@ -275,16 +276,18 @@ bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
 		KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
 			.arg(gpgme_strsource(err)).arg(gpgme_strerror(err)));
 	}
+	if(err != GPG_ERR_NO_ERROR)
+		clearCache();
 	if(keys[0])
 		gpgme_key_unref(keys[0]);
 	if(in)
 		gpgme_data_release(in);
 	if(out)
 		gpgme_data_release(out);
-	return (err == 0);
+	return (err == GPG_ERR_NO_ERROR);
 }
 
-bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
+bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer)
 {
 	gpgme_error_t err = 0;
 	gpgme_data_t in = 0, out = 0;
@@ -315,11 +318,13 @@ bool KGpgMe::decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const
 		KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
 			.arg(gpgme_strsource(err)).arg(gpgme_strerror(err)));
 	}
+	if(err != GPG_ERR_NO_ERROR)
+		clearCache();
 	if(in)
 		gpgme_data_release(in);
 	if(out)
 		gpgme_data_release(out);
-	return (err == 0);
+	return (err == GPG_ERR_NO_ERROR);
 }
 
 #define BUF_SIZE (32 * 1024)

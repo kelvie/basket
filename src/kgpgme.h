@@ -58,8 +58,8 @@ class KGpgMe
 		void clearCache();
 
 		bool encrypt(const QByteArray& inBuffer, Q_ULONG length,
-					 QByteArray* outBuffer, QString keyid = QString::null) const;
-		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer) const;
+					 QByteArray* outBuffer, QString keyid = QString::null);
+		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer);
 
 		static QString checkForUtf8(QString txt);
 		static bool isGnuPGAgentAvailable();
