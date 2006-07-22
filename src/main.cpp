@@ -42,7 +42,6 @@
 #include "basket.h"
 #include "aboutdata.h"
 #include "basket_options.h"
-#include "likeback.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -73,13 +72,6 @@ int main(int argc, char *argv[])
 
 	KUniqueApplication::addCmdLineOptions();
 	KUniqueApplication app;
-
-	/* LikeBack */
-	LikeBack::init();
-	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
-//	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
-	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
-	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
 
 	/******* RICH TEXTS INSTEAD OF PLAIN TEXTS ***********/
 	KMessageBox::information(0, i18n(

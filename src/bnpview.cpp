@@ -68,6 +68,7 @@
 #include "backgroundmanager.h"
 #include "noteedit.h" // To launch InlineEditors::initToolBars()
 #include "crashhandler.h"
+#include "likeback.h"
 
 /** class BNPView: */
 
@@ -155,6 +156,14 @@ void BNPView::lateInit()
 	m_hideTimer    = new QTimer(this);
 	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
 	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
+
+	/* LikeBack */
+	LikeBack::init();
+	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
+//	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
+	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
+	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
+
 }
 
 void BNPView::setupGlobalShortcuts()
