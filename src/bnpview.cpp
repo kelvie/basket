@@ -92,7 +92,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 
 	setupGlobalShortcuts();
 	initialize();
-	m_statusbar->setupStatusBar();
 	QTimer::singleShot(0, this, SLOT(lateInit()));
 }
 
@@ -167,6 +166,8 @@ void BNPView::onFirstShow()
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
 	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
+
+	m_statusbar->setupStatusBar();
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -2011,7 +2012,9 @@ void BNPView::showEvent(QShowEvent*)
 		onFirstShow();
 	}
 	if(isPart() && !LikeBack::enabled())
+	{
 		LikeBack::enable();
+	}
 }
 
 void BNPView::hideEvent(QHideEvent*)

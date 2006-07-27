@@ -48,9 +48,6 @@ class BasketStatusBar : public QObject
 	void setLockStatus(bool isLocked);
 	void setupStatusBar();
 
-  private slots:
-	void privateSetupStatusBar();
-
   protected:
 	  KStatusBar *statusBar () const;
 	  void addWidget(QWidget * widget, int stretch = 0, bool permanent = false);

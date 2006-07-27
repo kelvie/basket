@@ -62,17 +62,6 @@ void BasketStatusBar::addWidget(QWidget * widget, int stretch, bool permanent)
 
 void BasketStatusBar::setupStatusBar()
 {
-	// If using extension we must use singleShot because statusBar might not
-	// be ready yet, but why can't we use it when using mainwinow??
-	// Well this seems to work...
-	if(m_bar)
-		privateSetupStatusBar();
-	else
-		QTimer::singleShot(0, this, SLOT(privateSetupStatusBar()));
-}
-
-void BasketStatusBar::privateSetupStatusBar()
-{
 	QWidget* parent = statusBar();
 
 	m_basketStatus = new QLabel(parent);
