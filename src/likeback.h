@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Sébastien Laoût                                 *
+ *   Copyright (C) 2006 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +29,7 @@ class QToolButton;
 class QPushButton;
 
 /**
-  * @author Sébastien Laoût <slaout@linux62.org>
+  * @author Sï¿½astien Laot <slaout@linux62.org>
   */
 class LikeBack : public QWidget
 {

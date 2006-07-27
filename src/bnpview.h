@@ -192,6 +192,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void currentBasketChanged();
 		void isLockedChanged();
 		void lateInit();
+		void onFirstShow();
 
 	public:
 		KAction       *m_actEditNote;
@@ -294,12 +295,15 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 	protected:
 		void enterEvent(QEvent*);
 		void leaveEvent(QEvent*);
+		void showEvent(QShowEvent*);
+		void hideEvent(QHideEvent*);
 
 	private:
 		KListView    *m_tree;
 		QWidgetStack *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;
+		bool          m_firstShow;
 		DesktopColorPicker *m_colorPicker;
 		bool                m_colorPickWasShown;
 		bool                m_colorPickWasGlobal;

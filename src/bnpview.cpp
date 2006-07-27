@@ -77,7 +77,7 @@ const int BNPView::c_delayTooltipTime = 275;
 BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
 	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
-	m_loading(true), m_newBasketPopup(false),
+	m_loading(true), m_newBasketPopup(false), m_firstShow(true),
 	m_regionGrabber(0), m_passivePopup(0L), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
@@ -156,14 +156,17 @@ void BNPView::lateInit()
 	m_hideTimer    = new QTimer(this);
 	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
 	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
+}
 
+void BNPView::onFirstShow()
+{
+	// Don't enable LikeBack until bnpview is shown. This way it works better with kontact.
 	/* LikeBack */
 	LikeBack::init();
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
 	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
-
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -1998,6 +2001,23 @@ void BNPView::showMainWindow()
 {
 	if(Global::mainWindow()) Global::mainWindow()->show();
 	emit showPart();
+}
+
+void BNPView::showEvent(QShowEvent*)
+{
+	if(m_firstShow)
+	{
+		m_firstShow = false;
+		onFirstShow();
+	}
+	if(isPart() && !LikeBack::enabled())
+		LikeBack::enable();
+}
+
+void BNPView::hideEvent(QHideEvent*)
+{
+	if(isPart())
+		LikeBack::disable();
 }
 
 #include "bnpview.moc"

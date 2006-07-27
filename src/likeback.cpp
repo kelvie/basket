@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Sébastien Laoût                                 *
+ *   Copyright (C) 2006 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@
 #include <kiconloader.h>
 #include <kaboutdata.h>
 #include <klocale.h>
+#include <kdebug.h>
 #include <kmessagebox.h>
 #include <qlayout.h>
 #include <qtoolbutton.h>
@@ -41,6 +42,7 @@
 #include <iostream>
 
 #include "likeback.h"
+#include "aboutdata.h"
 
 LikeBack::LikeBack(Button buttons)
  : QWidget( 0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
@@ -125,9 +127,11 @@ void LikeBack::doNotHelpAnymore()
 		return;
 	}
 
-	KConfig *config = KGlobal::config();
-	config->setGroup("LikeBack");
-	config->writeEntry("userWantToParticipateForVersion_" + kapp->aboutData()->version(), false);
+	AboutData about;
+	KConfig config("basketrc");
+
+	config.setGroup("LikeBack");
+	config.writeEntry("userWantToParticipateForVersion_" + about.version(), false);
 	deleteLater();
 }
 
@@ -143,15 +147,19 @@ bool LikeBack::userWantToParticipate()
 	if (!kapp)
 		return true;
 
-	KConfig *config = KGlobal::config();
-	config->setGroup("LikeBack");
-	return config->readBoolEntry("userWantToParticipateForVersion_" + kapp->aboutData()->version(), true);
+	AboutData about;
+	KConfig config("basketrc");
+
+	config.setGroup("LikeBack");
+	return config.readBoolEntry("userWantToParticipateForVersion_" + about.version(), true);
 }
 
 // TODO: Only show relevant buttons!
 
 void LikeBack::showInformationMessage()
 {
+	AboutData about;
+
 	QPixmap likeIcon    = kapp->iconLoader()->loadIcon("likeback_like",    KIcon::Small);
 	QPixmap dislikeIcon = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
 	QPixmap bugIcon     = kapp->iconLoader()->loadIcon("bug", KIcon::Small);
@@ -159,7 +167,7 @@ void LikeBack::showInformationMessage()
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
 	KMessageBox::information(0,
-		"<p><b>" + i18n("Welcome to this testing version of %1.").arg(kapp->aboutData()->programName()) + "</b></p>"
+		"<p><b>" + i18n("Welcome to this testing version of %1.").arg(about.programName()) + "</b></p>"
 		"<p>" + i18n("To help us improve it, your comments are important.") + "</p>"
 		"<p>" + i18n("Each time you have a great or frustrating experience, "
 		             "please click the appropriate hand below the window title-bar, "
@@ -270,7 +278,6 @@ void LikeBack::autoMove()
 				std::cout << "LikeBack: Active Window: " << activeWindowPath() << std::endl;
 		lastWindow = window;
 	}
-
 	if (shouldShow && !isShown()) {
 		show();
 	} else if (!shouldShow && isShown())
@@ -331,28 +338,31 @@ void LikeBack::showDialog(Button button)
 
 QString LikeBack::emailAddress()
 {
-	KConfig *config = KGlobal::config();
-	config->setGroup("LikeBack");
+ KConfig config("basketrc");
 
-	if (config->readBoolEntry("emailAlreadyAsked", false) == false)
+	config.setGroup("LikeBack");
+
+	if (config.readBoolEntry("emailAlreadyAsked", false) == false)
 		instance()->askEMail();
 
-	return config->readEntry("emailAddress", "");
+	return config.readEntry("emailAddress", "");
 }
 
 void LikeBack::setEmailAddress(const QString &address)
 {
-	KConfig *config = KGlobal::config();
-	config->setGroup("LikeBack");
-	config->writeEntry("emailAddress",      address);
-	config->writeEntry("emailAlreadyAsked", true);
+ KConfig config("basketrc");
+
+	config.setGroup("LikeBack");
+	config.writeEntry("emailAddress",      address);
+	config.writeEntry("emailAlreadyAsked", true);
 }
 
 void LikeBack::askEMail()
 {
-	KConfig *config = KGlobal::config();
-	config->setGroup("LikeBack");
-	QString currentEMailAddress = config->readEntry("emailAddress", "");
+ KConfig config("basketrc");
+
+	config.setGroup("LikeBack");
+	QString currentEMailAddress = config.readEntry("emailAddress", "");
 
 	bool ok;
 
@@ -378,7 +388,8 @@ void LikeBack::askEMail()
 // FIXME: Should be moved to KAboutData? Cigogne will also need it.
 bool LikeBack::isDevelopmentVersion(const QString &version)
 {
-	QString theVersion = (version.isEmpty() ? kapp->aboutData()->version() : version);
+	AboutData about;
+	QString theVersion = (version.isEmpty() ? about.version() : version);
 
 	return theVersion.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
 	       theVersion.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
@@ -513,13 +524,14 @@ QHttp *http ;
 
 void LikeBackDialog::send()
 {
+	AboutData about;
 	QString emailAddress = LikeBack::instance()->emailAddress();
 
 	QString type = (m_reason == LikeBack::ILike ? "Like" : (m_reason == LikeBack::IDoNotLike ? "Dislike" : "Bug"));
 	QString data =
 			"protocol=" + KURL::encode_string("1.0")                         + "&" +
 			"type="     + KURL::encode_string(type)                          + "&" +
-			"version="  + KURL::encode_string(kapp->aboutData()->version())  + "&" +
+			"version="  + KURL::encode_string(about.version())  + "&" +
 			"locale="   + KURL::encode_string(KGlobal::locale()->language()) + "&" +
 			"window="   + KURL::encode_string(m_windowName)                  + "&" +
 			"context="  + KURL::encode_string(m_context)                     + "&" +
