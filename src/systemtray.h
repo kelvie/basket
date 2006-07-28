@@ -50,12 +50,12 @@ class KSystemTray2 : public KSystemTray
 /** This class provide a personalized system tray icon.
   * @author S�astien Laot
   */
-class ContainerSystemTray : public KSystemTray2
+class SystemTray : public KSystemTray2
 {
   Q_OBJECT
   public:
-	ContainerSystemTray(QWidget *parent = 0, const char *name = 0);
-	~ContainerSystemTray();
+	SystemTray(QWidget *parent = 0, const char *name = 0);
+	~SystemTray();
   protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);

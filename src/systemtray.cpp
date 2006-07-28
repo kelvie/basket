@@ -181,21 +181,21 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 
 		// Associate source to image and show the dialog:
 		QMimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
-		KMessageBox::information(this,
+		KMessageBox::information(kapp->activeWindow(),
 			message + "<p><center><img source=\"systray_shot\"></center></p>",
 			i18n("Docking in System Tray"), "hideOnCloseInfo");
 		QMimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
 	} else {
-		KMessageBox::information(this,
+		KMessageBox::information(kapp->activeWindow(),
 			message,
 			i18n("Docking in System Tray"), "hideOnCloseInfo");
 	}
 }
 
-/** ContainerSystemTray */
+/** SystemTray */
 
-ContainerSystemTray::ContainerSystemTray(QWidget *parent, const char *name)
-	: KSystemTray2(parent, name != 0 ? name : "ContainerSystemTray"), m_showTimer(0), m_autoShowTimer(0)
+SystemTray::SystemTray(QWidget *parent, const char *name)
+ : KSystemTray2(parent, name != 0 ? name : "SystemTray"), m_showTimer(0), m_autoShowTimer(0)
 {
 	setAcceptDrops(true);
 
@@ -219,11 +219,11 @@ ContainerSystemTray::ContainerSystemTray(QWidget *parent, const char *name)
 	updateToolTip(); // Set toolTip AND icon
 }
 
-ContainerSystemTray::~ContainerSystemTray()
+SystemTray::~SystemTray()
 {
 }
 
-void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
+void SystemTray::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() & Qt::LeftButton) {          // Prepare drag
 		m_pressPos = event->globalPos();
@@ -288,12 +288,12 @@ void ContainerSystemTray::mousePressEvent(QMouseEvent *event)
 		event->ignore();
 }
 
-void ContainerSystemTray::mouseMoveEvent(QMouseEvent *event)
+void SystemTray::mouseMoveEvent(QMouseEvent *event)
 {
 	event->ignore();
 }
 
-void ContainerSystemTray::mouseReleaseEvent(QMouseEvent *event)
+void SystemTray::mouseReleaseEvent(QMouseEvent *event)
 {
 	m_canDrag = false;
 
@@ -317,7 +317,7 @@ void ContainerSystemTray::mouseReleaseEvent(QMouseEvent *event)
 			event->ignore();
 }
 
-void ContainerSystemTray::dragEnterEvent(QDragEnterEvent *event)
+void SystemTray::dragEnterEvent(QDragEnterEvent *event)
 {
 	m_showTimer->start( Settings::dropTimeToShow() * 100, true );
 	Global::bnpView->currentBasket()->showFrameInsertTo();
@@ -325,12 +325,12 @@ void ContainerSystemTray::dragEnterEvent(QDragEnterEvent *event)
 	Basket::acceptDropEvent(event);
 }
 
-void ContainerSystemTray::dragMoveEvent(QDragMoveEvent *event)
+void SystemTray::dragMoveEvent(QDragMoveEvent *event)
 {
 	Basket::acceptDropEvent(event);
 }
 
-void ContainerSystemTray::dragLeaveEvent(QDragLeaveEvent*)
+void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
 {
 	m_showTimer->stop();
 	m_canDrag = false;
@@ -338,7 +338,7 @@ void ContainerSystemTray::dragLeaveEvent(QDragLeaveEvent*)
 	Global::bnpView->updateStatusBarHint();
 }
 
-void ContainerSystemTray::dropEvent(QDropEvent *event)
+void SystemTray::dropEvent(QDropEvent *event)
 {
 	m_showTimer->stop();
 	Global::bnpView->currentBasket()->contentsDropEvent(event);
@@ -394,7 +394,7 @@ static bool copyImage(QImage &dest, QImage &src, int x, int y)
 	return true;
 }
 
-void ContainerSystemTray::updateToolTip()
+void SystemTray::updateToolTip()
 {
 //	return; /////////////////////////////////////////////////////
 
@@ -428,7 +428,7 @@ void ContainerSystemTray::updateToolTip()
 	updateToolTipDelayed();
 }
 
-void ContainerSystemTray::updateToolTipDelayed()
+void SystemTray::updateToolTipDelayed()
 {
 	Basket *basket = Global::bnpView->currentBasket();
 
@@ -439,7 +439,7 @@ void ContainerSystemTray::updateToolTipDelayed()
 	QToolTip::add(this, tip);
 }
 
-void ContainerSystemTray::wheelEvent(QWheelEvent *event)
+void SystemTray::wheelEvent(QWheelEvent *event)
 {
 	if (event->delta() > 0)
 		Global::bnpView->goToPreviousBasket();
@@ -450,13 +450,13 @@ void ContainerSystemTray::wheelEvent(QWheelEvent *event)
 		Global::bnpView->showPassiveContent();
 }
 
-void ContainerSystemTray::enterEvent(QEvent*)
+void SystemTray::enterEvent(QEvent*)
 {
 	if (Settings::showOnMouseIn())
 		m_autoShowTimer->start(Settings::timeToShowOnMouseIn() * 100, true );
 }
 
-void ContainerSystemTray::leaveEvent(QEvent*)
+void SystemTray::leaveEvent(QEvent*)
 {
 	m_autoShowTimer->stop();
 }

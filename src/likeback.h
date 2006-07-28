@@ -27,6 +27,7 @@
 class QTextEdit;
 class QToolButton;
 class QPushButton;
+class KProcess;
 
 /**
   * @author S�astien Laot <slaout@linux62.org>
@@ -43,16 +44,19 @@ class LikeBack : public QWidget
 	static void showInformationMessage();
 	static LikeBack* instance();
 	static QString customLanguageMessage();
+	static bool allowFeatureWishes();
 	static QString  hostName();
 	static QString  remotePath();
 	static Q_UINT16 hostPort();
 	static void setServer(QString hostName, QString remotePath, Q_UINT16 hostPort = 80);
 	static void setWindowNamesListing(WindowListing windowListing);
 	static void setCustomLanguageMessage(const QString &message);
+	static void setAllowFeatureWishes(bool allow);
 	static bool enabled();
 	static void disable();
 	static void enable();
 	static bool userWantToParticipate(); /// << @Returns true if the user have not disabled LikeBack for this version
+	static bool emailAddressAlreadyProvided();
 	static QString emailAddress(); /// << @Returns the email user address, or ask it to the user if he haven't provided or ignored it
 	static void setEmailAddress(const QString &address); /// << Calling emailAddress() will ask it to the user the first time
 	static bool isDevelopmentVersion(const QString &version = QString::null); /// << @Returns true if version is an alpha/beta/rc/svn/cvs version. Use kapp->aboutData()->version is @p version is empty
@@ -70,14 +74,19 @@ class LikeBack : public QWidget
 	void doNotHelpAnymore();
 	void showWhatsThisMessage();
 	void askEMail();
+//	void beginFetchingEmail();
+	void endFetchingEmailFrom(); // static QString fetchingEmail();
   private:
 	QTimer       m_timer;
 	Button       m_buttons;
 	QToolButton *m_configureButton;
+	QString      m_fetchedEmail;
+	KProcess    *m_process;
 	static QString        s_hostName;
 	static QString        s_remotePath;
 	static Q_UINT16       s_hostPort;
 	static QString        s_customLanguageMessage;
+	static bool           s_allowFeatureWishes;
 	static WindowListing  s_windowListing;
 	static LikeBack      *s_instance;
 	static int            s_disabledCount;

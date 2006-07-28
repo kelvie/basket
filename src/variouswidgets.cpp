@@ -31,6 +31,7 @@
 #include <kiconview.h>
 #include <kiconloader.h>
 #include <qdragobject.h>
+#include <qfontdatabase.h>
 
 #include "variouswidgets.h"
 
@@ -257,6 +258,68 @@ void IconSizeDialog::slotCancel()
 {
 	m_iconSize = -1;
 	KDialogBase::slotCancel();
+}
+
+/** class FontSizeCombo: */
+
+FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const char *name)
+ : KComboBox(rw, parent, name), m_withDefault(withDefault)
+{
+	if (m_withDefault)
+		insertItem(i18n("(Default)"));
+
+	QFontDatabase fontDB;
+	QValueList<int> sizes = fontDB.standardSizes();
+	for (QValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
+		insertItem(QString::number(*it));
+
+//	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
+	connect( this, SIGNAL(textChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
+
+	// TODO: 01617 void KFontSizeAction::setFontSize( int size )
+}
+
+FontSizeCombo::~FontSizeCombo()
+{
+}
+
+void FontSizeCombo::textChangedInCombo(const QString &text)
+{
+	bool ok = false;
+	int size = text.toInt(&ok);
+	if (ok)
+		emit sizeChanged(size);
+}
+
+void FontSizeCombo::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape)
+		emit escapePressed();
+	else if (event->key() == Qt::Key_Return)
+		emit returnPressed2();
+	else
+		KComboBox::keyPressEvent(event);
+}
+
+void FontSizeCombo::setFontSize(int size)
+{
+	setCurrentText(QString::number(size));
+
+	// TODO: SEE KFontSizeAction::setFontSize( int size ) !!! for a more complete method!
+}
+
+int FontSizeCombo::fontSize()
+{
+	bool ok = false;
+	int size = currentText().toInt(&ok);
+	if (ok)
+		return size;
+
+	size = text(currentItem()).toInt(&ok);
+	if (ok)
+		return size;
+
+	return font().pointSize();
 }
 
 #include "variouswidgets.moc"

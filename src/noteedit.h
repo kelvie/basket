@@ -35,6 +35,8 @@ class KMainWindow;
 class KTooolBar;
 class KToggleAction;
 
+class FontSizeCombo;
+
 class Note;
 class RunCommandRequester;
 class FocusedFontCombo;
@@ -119,6 +121,7 @@ class HtmlEditor : public NoteEditor
 	HtmlContent *m_htmlContent;
   public slots:
 	void cursorPositionChanged();
+	void fontChanged(const QFont &font);
   protected slots:
 //	void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
 	void setBold();
@@ -267,6 +270,7 @@ class InlineEditors : public QObject
 	void enableRichTextToolBar();
 	void disableRichTextToolBar();
 	FocusedFontCombo  *richTextFont;
+	FontSizeCombo     *richTextFontSize;
 	FocusedColorCombo *richTextColor;
 	KToggleAction     *richTextBold;
 	KToggleAction     *richTextItalic;

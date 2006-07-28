@@ -39,6 +39,7 @@ class QDomElement;
 class KToggleAction;
 class KPassivePopup;
 class QPopupMenu;
+class KPopupMenu;
 
 class DesktopColorPicker;
 class RegionGrabber;
@@ -50,6 +51,7 @@ class NoteSelection;
 class BasketStatusBar;
 class Tag;
 class State;
+class Note;
 
 class BNPView : public QSplitter, virtual public BasketDcopInterface
 {
@@ -231,7 +233,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KAction       *m_actUnselectAll;
 		KAction       *m_actInvertSelection;
 		// Insert actions :
-		KAction       *m_actInsertText;
+//		KAction       *m_actInsertText;
 		KAction       *m_actInsertHtml;
 		KAction       *m_actInsertLink;
 		KAction       *m_actInsertImage;
@@ -249,7 +251,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KAction       *m_actNextBasket;
 		KAction       *m_actFoldBasket;
 		KAction       *m_actExpandBasket;
-		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
+//		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
 
 		Basket* loadBasket(const QString &folderName);
 		BasketListViewItem* appendBasket(Basket *basket, QListViewItem *parentItem);
@@ -277,6 +279,17 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void setStatusBarHint(const QString&);
 		void setActive(bool active = true);
 		KActionCollection *actionCollection() { return m_actionCollection; };
+
+		void populateTagsMenu();
+		void populateTagsMenu(KPopupMenu &menu, Note *referenceNote);
+		void connectTagsMenu();
+		void disconnectTagsMenu();
+		void disconnectTagsMenuDelayed();
+	protected:
+		void showEvent(QShowEvent*);
+		void hideEvent(QHideEvent*);
+	private:
+		KPopupMenu *m_lastOpenedTagsMenu;
 
 	private slots:
 		void slotPressed(QListViewItem *item, const QPoint &/*pos*/ = QPoint(), int /*column*/ = 0);

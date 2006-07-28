@@ -32,12 +32,12 @@
 
 /** Define initial values for global variables : */
 
-QString              Global::s_customSavesFolder = "";
-DebugWindow         *Global::debugWindow         = 0L;
-BackgroundManager   *Global::backgroundManager   = 0L;
-ContainerSystemTray *Global::tray                = 0L;
-BNPView             *Global::bnpView             = 0L;
-KGlobalAccel        *Global::globalAccel         = 0L;
+QString            Global::s_customSavesFolder = "";
+DebugWindow       *Global::debugWindow         = 0L;
+BackgroundManager *Global::backgroundManager   = 0L;
+SystemTray        *Global::systemTray          = 0L;
+BNPView           *Global::bnpView             = 0L;
+KGlobalAccel      *Global::globalAccel         = 0L;
 
 void Global::setCustomSavesFolder(const QString &folder)
 {
@@ -79,4 +79,10 @@ KMainWindow* Global::mainWindow()
 		return static_cast<KMainWindow*>(res);
 	}
 	return 0;
+}
+
+bool Global::runInsideKontact()
+{
+	QWidget *window = kapp->mainWidget();
+	return (window == 0 || !window->inherits("MainWindow"));
 }

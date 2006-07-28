@@ -714,6 +714,8 @@ void Basket::loadNotes(const QDomElement &notes, Note *parent)
 		if (e.tagName() == "note" || e.tagName() == "item") { // Keep compatible with 0.6.0 Alpha 1
 			note = new Note(this);      // Create the note...
 			NoteFactory__loadNode(XMLWork::getElement(e, "content"), e.attribute("type"), note); // ... Populate it with content...
+			if (e.attribute("type") == "text")
+				m_shouldConvertPlainTextNotes = true; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
 			appendNoteIn(note, parent); // ... And insert it.
 			// Load dates:
 			if (e.hasAttribute("added"))
@@ -1143,7 +1145,12 @@ void Basket::load()
 	if (notes.isNull())
 		notes = XMLWork::getElement(docElem, "items");
 	m_watcher->stopScan();
+	m_shouldConvertPlainTextNotes = false; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
+
 	loadNotes(notes, 0L);
+
+	if (m_shouldConvertPlainTextNotes)
+		convertTexts();
 	m_watcher->startScan();
 	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
 	//END
@@ -1188,6 +1195,9 @@ void Basket::filterAgainDelayed()
 
 void Basket::newFilter(const FilterData &data)
 {
+	if (!isLoaded())
+		return;
+
 	m_countFounds = 0;
 	for (Note *note = firstNote(); note; note = note->next())
 		m_countFounds += note->newFilter(data);
@@ -1562,12 +1572,12 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 					m_isInsertPopupMenu = true;
 					pasteNote();
 					break;
-				case 2: type = NoteType::Text;     break;
-				case 3: type = NoteType::Html;     break;
-				case 4: type = NoteType::Image;    break;
-				case 5: type = NoteType::Link;     break;
-				case 6: type = NoteType::Launcher; break;
-				case 7: type = NoteType::Color;    break;
+//				case 2: type = NoteType::Text;     break;
+//				case 3: type = NoteType::Html;     break;
+				case 2/*4*/: type = NoteType::Image;    break;
+				case 3/*5*/: type = NoteType::Link;     break;
+				case 4/*6*/: type = NoteType::Launcher; break;
+				case 5/*7*/: type = NoteType::Color;    break;
 			}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;
@@ -3292,39 +3302,41 @@ void Basket::popupTagsMenu(Note *note)
 
 	KPopupMenu menu(this);
 	menu.insertTitle(i18n("Tags"));
-	QValueList<Tag*>::iterator it;
-	Tag *currentTag;
-	State *currentState;
-	int i = 10;
-	for (it = Tag::all.begin(); it != Tag::all.end(); ++it) {
-		// Current tag and first state of it:
-		currentTag = *it;
-		currentState = currentTag->states().first();
-		QKeySequence sequence;
-		if (!currentTag->shortcut().isNull())
-			sequence = currentTag->shortcut().operator QKeySequence();
-		menu.insertItem(StateMenuItem::checkBoxIconSet(note->hasTag(currentTag), menu.colorGroup()), new StateMenuItem(currentState, sequence, true), i );
-		if (!currentTag->shortcut().isNull())
-			menu.setAccel(sequence, i);
-		++i;
-	}
+// 	QValueList<Tag*>::iterator it;
+// 	Tag *currentTag;
+// 	State *currentState;
+// 	int i = 10;
+// 	for (it = Tag::all.begin(); it != Tag::all.end(); ++it) {
+// 		// Current tag and first state of it:
+// 		currentTag = *it;
+// 		currentState = currentTag->states().first();
+// 		QKeySequence sequence;
+// 		if (!currentTag->shortcut().isNull())
+// 			sequence = currentTag->shortcut().operator QKeySequence();
+// 		menu.insertItem(StateMenuItem::checkBoxIconSet(note->hasTag(currentTag), menu.colorGroup()), new StateMenuItem(currentState, sequence, true), i );
+// 		if (!currentTag->shortcut().isNull())
+// 			menu.setAccel(sequence, i);
+// 		++i;
+// 	}
+//
+// 	menu.insertSeparator();
+// //	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign new Tag...", 1 );
+// 	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
+// 	//if (note->states().isEmpty())
+// 	//	menu.setItemEnabled(id, false);
+// //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
+// 	menu.insertItem( new IndentedMenuItem(i18n("&Assign new Tag...")),          1 );
+// 	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
+// 	menu.insertItem( new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
+//
+// 	if (!selectedNotesHaveTags())//note->states().isEmpty())
+// 		menu.setItemEnabled(2, false);
+//
+// 	connect( &menu, SIGNAL(activated(int)), this, SLOT(toggledTagInMenu(int)) );
+// 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())      );
+// 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())    );
 
-	menu.insertSeparator();
-//	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign new Tag...", 1 );
-	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
-	//if (note->states().isEmpty())
-	//	menu.setItemEnabled(id, false);
-//	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
-	menu.insertItem(      new IndentedMenuItem(i18n("&Assign new Tag...")),          1 );
-	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
-	menu.insertItem(      new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
-
-	if (!selectedNotesHaveTags())//note->states().isEmpty())
-		menu.setItemEnabled(2, false);
-
-	connect( &menu, SIGNAL(activated(int)), this, SLOT(toggledTagInMenu(int)) );
-	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())      );
-	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())    );
+	Global::bnpView->populateTagsMenu(menu, note);
 
 	m_lockedHovering = true;
 	menu.exec(QCursor::pos());
@@ -3338,20 +3350,27 @@ void Basket::unlockHovering()
 
 void Basket::toggledTagInMenu(int id)
 {
-	if (id == 1) {
-		TagsEditDialog dialog(this);
+	if (id == 1) { // Assign new Tag...
+		TagsEditDialog dialog(this, /*stateToEdit=*/0, /*addNewTag=*/true);
 		dialog.exec();
-		//addStateToSelectedNotes();
+		if (!dialog.addedStates().isEmpty()) {
+			State::List states = dialog.addedStates();
+			for (State::List::iterator itState = states.begin(); itState != states.end(); ++itState)
+				FOR_EACH_NOTE (note)
+					note->addStateToSelectedNotes(*itState);
+			updateEditorAppearance();
+			filterAgain();
+			save();
+		}
 		return;
 	}
-	if (id == 2) {
+	if (id == 2) { // Remove All
 		removeAllTagsFromSelectedNotes();
-		//m_tagPopupNote->setWidth(0); // To force a new layout computation
 		filterAgain();
 		save();
 		return;
 	}
-	if (id == 3) {
+	if (id == 3) { // Customize...
 		TagsEditDialog dialog(this);
 		dialog.exec();
 		return;
@@ -3838,15 +3857,17 @@ void Basket::noteDelete()
 
 	if (countSelecteds() <= 0)
 		return;
-	int really = KMessageBox::questionYesNo( this,
-		i18n("<qt>Do you really want to delete this note?</qt>",
-		     "<qt>Do you really want to delete those <b>%n</b> notes?</qt>",
-		     countSelecteds()),
-		i18n("Delete Note", "Delete Notes", countSelecteds())
+	int really = KMessageBox::Yes;
+	if (Settings::confirmNoteDeletion())
+		really = KMessageBox::questionYesNo( this,
+			i18n("<qt>Do you really want to delete this note?</qt>",
+			     "<qt>Do you really want to delete those <b>%n</b> notes?</qt>",
+			     countSelecteds()),
+			i18n("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
-		, KStdGuiItem::del(), KStdGuiItem::cancel());
+			, KStdGuiItem::del(), KStdGuiItem::cancel());
 #else
-		                    );
+		);
 #endif
 	if (really == KMessageBox::No)
 		return;

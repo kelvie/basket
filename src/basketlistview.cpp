@@ -76,14 +76,17 @@ void BasketListViewItem::dropped(QDropEvent *event)
 	Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
-int BasketListViewItem::width(const QFontMetrics &fontMetrics, const QListView */*listView*/, int column) const
+int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
 {
+	return listView()->visibleWidth() + 100;
+/*
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
 
-	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(column));
+	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(column));
 
 	return MARGIN + BASKET_ICON_SIZE + MARGIN + textRect.width() +   BASKET_ICON_SIZE/2   + MARGIN;
+*/
 }
 
 QString BasketListViewItem::escapedName(const QString &string)
@@ -352,7 +355,7 @@ bool BasketListViewItem::haveChildsLocked()
 	QListViewItem *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
-		if (!childItem->basket()->isLocked())
+		if (/*!*/childItem->basket()->isLocked())
 			return true;
 		if (childItem->haveChildsLocked())
 			return true;
@@ -393,8 +396,10 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	// Workaround a Qt bug:
 	// When the splitter is moved to hide the tree view and then the application is restarted,
 	// Qt try to draw items with a negative size!
-	if (width <= 0)
+	if (width <= 0) {
+		std::cout << "width <= 0" << std::endl;
 		return;
+	}
 
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
@@ -407,12 +412,12 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	if (Global::bnpView->isFilteringAllBaskets() && Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering) {
 		showLoadingIcon = (!m_basket->isLoaded() && !m_basket->isLocked()) || haveHiddenChildsLoading();
 		showEncryptedIcon = m_basket->isLocked() || haveHiddenChildsLocked();
-		countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading(),
+		countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading() || haveHiddenChildsLocked(),
 										countHiddenChildsFound(), listView()->font(), height() - 2 * MARGIN);
 	}
 	int effectiveWidth = width - (countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN)
-			- (showLoadingIcon ? BASKET_ICON_SIZE + MARGIN : 0)
-			- (showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0);
+			- (showLoadingIcon || showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0)/*
+			- (showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0)*/;
 
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
@@ -522,7 +527,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
 	}
-	if (showEncryptedIcon) {
+	if (showEncryptedIcon && !showLoadingIcon) {
 		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
@@ -538,7 +543,16 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 	: KListView(parent, name), m_autoOpenItem(0)
 {
+	setWFlags(Qt::WStaticContents | WNoAutoErase);
+	clearWFlags(Qt::WStaticContents | WNoAutoErase);
+	//viewport()->clearWFlags(Qt::WStaticContents);
 	connect( &m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()) );
+}
+
+void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
+{
+	KListView::viewportResizeEvent(event);
+	triggerUpdate();
 }
 
 void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)

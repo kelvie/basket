@@ -83,6 +83,7 @@ class BasketTreeListView : public KListView
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
 	protected:
 		void focusInEvent(QFocusEvent*);
+		void viewportResizeEvent(QResizeEvent *event);
 	private:
 		QTimer         m_autoOpenTimer;
 		QListViewItem *m_autoOpenItem;

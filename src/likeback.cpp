@@ -38,6 +38,10 @@
 #include <kurl.h>
 #include <kinputdialog.h>
 #include <qvalidator.h>
+#include <kdebug.h>
+#include <kprocess.h>
+
+#include <pwd.h>
 
 #include <iostream>
 
@@ -91,6 +95,10 @@ LikeBack::LikeBack(Button buttons)
 	configureMenu->insertItem( dontHelpIconSet, i18n("&Do not Help Anymore"), this , SLOT(doNotHelpAnymore()) );
 	m_configureButton->setPopup(configureMenu);
 	connect( m_configureButton, SIGNAL(pressed()), this, SLOT(openConfigurePopup()) );
+
+	if (!emailAddressAlreadyProvided())
+		//beginFetchingEmail(); // Begin before showing the message, so we have time!
+		endFetchingEmailFrom();
 
 	static const char *messageShown = "LikeBack_starting_information";
 	if (KMessageBox::shouldBeShownContinue(messageShown)) {
@@ -191,6 +199,7 @@ void LikeBack::showInformationMessage()
 }
 
 QString                 LikeBack::s_customLanguageMessage = QString();
+bool                    LikeBack::s_allowFeatureWishes    = false;
 LikeBack::WindowListing LikeBack::s_windowListing         = LikeBack::NoListing;
 QString                 LikeBack::s_hostName              = QString();
 QString                 LikeBack::s_remotePath            = QString();
@@ -255,6 +264,16 @@ void LikeBack::setWindowNamesListing(WindowListing windowListing)
 void LikeBack::setCustomLanguageMessage(const QString &message)
 {
 	s_customLanguageMessage = message;
+}
+
+void LikeBack::setAllowFeatureWishes(bool allow)
+{
+	s_allowFeatureWishes = allow;
+}
+
+bool LikeBack::allowFeatureWishes()
+{
+	return s_allowFeatureWishes;
 }
 
 void LikeBack::autoMove()
@@ -336,17 +355,39 @@ void LikeBack::showDialog(Button button)
 	enable();
 }
 
+bool LikeBack::emailAddressAlreadyProvided()
+{
+	KConfig config("basketrc");
+	return config->readBoolEntry("emailAlreadyAsked", false);
+}
+
+/*<<<<<<< .mine
 QString LikeBack::emailAddress()
 {
- KConfig config("basketrc");
-
+	if (!emailAddressAlreadyProvided())
+  =======
 	config.setGroup("LikeBack");
 
 	if (config.readBoolEntry("emailAlreadyAsked", false) == false)
+  >>>>>>> .r224
 		instance()->askEMail();
 
+  <<<<<<< .mine
+	KConfig *config = KGlobal::config();
+	return config->readEntry("emailAddress", "");
+  =======
+	return config.readEntry("emailAddress", "");
+  >>>>>>> .r224
+}*/
+QString LikeBack::emailAddress()
+{
+	if (!emailAddressAlreadyProvided())
+		instance()->askEMail();
+
+	KConfig config("basketrc");
 	return config.readEntry("emailAddress", "");
 }
+
 
 void LikeBack::setEmailAddress(const QString &address)
 {
@@ -360,6 +401,8 @@ void LikeBack::setEmailAddress(const QString &address)
 void LikeBack::askEMail()
 {
  KConfig config("basketrc");
+	if (!emailAddressAlreadyProvided() && !instance()->m_fetchedEmail.isEmpty())
+		currentEMailAddress = instance()->m_fetchedEmail;
 
 	config.setGroup("LikeBack");
 	QString currentEMailAddress = config.readEntry("emailAddress", "");
@@ -367,7 +410,9 @@ void LikeBack::askEMail()
 	bool ok;
 
 	QString mailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
-	QRegExp mailExp("^(|"+mailExpString+")$");
+	//QString namedMailExpString = "[.]*[ \\t]+<" + mailExpString + ">";
+	//QRegExp mailExp("^(|" + mailExpString + "|" + namedMailExpString + ")$");
+	QRegExp mailExp("^(|" + mailExpString + ")$");
 	QRegExpValidator emailValidator(mailExp, this);
 
 	disable();
@@ -375,9 +420,9 @@ void LikeBack::askEMail()
 			i18n("Set Email Address"),
 			"<p><b>" + i18n("Please provide your email address.") + "</b></p>" +
 			"<p>" + i18n("It will only be used to contact you back if more information are needed about your comments, how to reproduce the bugs you report, send bug corrections for you to test...") + "</p>" +
-			"<p>" + i18n("The email address is optionnal. If you do not provide any, your comments will be sent annonymously. Just click OK in that case.") + "</p>" +
+			"<p>" + i18n("The email address is optionnal. If you do not provide any, your comments will be sent anonymously. Just click OK in that case.") + "</p>" +
 			"<p>" + i18n("You can change or remove your email address whenever you want. For that, use the little arrow icon at the top-right corner of a window.") + "</p>" +
-			"<p>" + i18n("Your email address (keep empty to post comments annonymously):"),
+			"<p>" + i18n("Your email address (keep empty to post comments anonymously):"),
 			currentEMailAddress, &ok, kapp->activeWindow(), /*name=*/(const char*)0, &emailValidator);
 	enable();
 
@@ -408,6 +453,68 @@ void LikeBack::init(bool isDevelopmentVersion, Button buttons)
 	if (LikeBack::userWantToParticipate() && isDevelopmentVersion)
 		new LikeBack(buttons);
 }
+
+
+
+
+
+
+
+/**
+ * Code from KBugReport::slotConfigureEmail() in kdeui/kbugreport.cpp:
+ */
+/*void LikeBack::beginFetchingEmail()
+{
+	if (m_process)
+		return;
+	m_process = new KProcess();
+	*m_process << QString::fromLatin1("kcmshell") << QString::fromLatin1("kcm_useraccount");
+	connect( m_process, SIGNAL(processExited(KProcess*)), SLOT(endFetchingEmailFrom()) );
+	if (!m_process->start()) {
+		kdDebug() << "Couldn't start kcmshell.." << endl;
+		delete m_process;
+		m_process = 0;
+		return;
+	}
+//	m_configureEmail->setEnabled(false);
+}*/
+
+/**
+ * Code from KBugReport::slotSetFrom() in kdeui/kbugreport.cpp:
+ */
+void LikeBack::endFetchingEmailFrom()
+{
+//	delete m_process;
+//	m_process = 0;
+//	m_configureEmail->setEnabled(true);
+
+	// ### KDE4: why oh why is KEmailSettings in kio?
+	KConfig emailConf( QString::fromLatin1("emaildefaults") );
+
+	// find out the default profile
+	emailConf.setGroup(QString::fromLatin1("Defaults"));
+	QString profile = QString::fromLatin1("PROFILE_");
+	profile += emailConf.readEntry(QString::fromLatin1("Profile"), QString::fromLatin1("Default"));
+
+	emailConf.setGroup(profile);
+	QString fromaddr = emailConf.readEntry(QString::fromLatin1("EmailAddress"));
+	if (fromaddr.isEmpty()) {
+		struct passwd *p;
+		p = getpwuid(getuid());
+		m_fetchedEmail = QString::fromLatin1(p->pw_name);
+	} else {
+		QString name = emailConf.readEntry(QString::fromLatin1("FullName"));
+		if (!name.isEmpty())
+			m_fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
+	}
+//	m_from->setText( fromaddr );
+}
+
+
+
+
+
+
 
 /** class LikeBackDialog: */
 
@@ -507,7 +614,10 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 				i18n("Note that to improve this application, it's important to tell us the things you like as much as the things you dislike.") + " " :
 				""
 			) +
-			i18n("Do not ask for features: your wishes will be ignored.") + "</p>"
+			(LikeBack::allowFeatureWishes() ?
+				"" :
+				i18n("Do not ask for features: your wishes will be ignored.")
+			) + "</p>"
 	);
 
 	resize(kapp->desktop()->width() / 2, kapp->desktop()->height() / 3);

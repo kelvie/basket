@@ -27,7 +27,7 @@
 #include <qimage.h>
 #include <qbitmap.h>
 #include <qwhatsthis.h>
-#include <qpopupmenu.h>
+#include <kpopupmenu.h>
 #include <qsignalmapper.h>
 #include <qdir.h>
 #include <kicontheme.h>
@@ -103,8 +103,8 @@ BNPView::~BNPView()
 
 	Global::bnpView = 0;
 
-	delete Global::tray;
-	Global::tray = 0;
+	delete Global::systemTray;
+	Global::systemTray = 0;
 	delete m_colorPicker;
 	delete m_statusbar;
 
@@ -124,10 +124,10 @@ void BNPView::lateInit()
 	}
 
 	/* System tray icon */
-	Global::tray = new ContainerSystemTray(Global::mainWindow());
-	connect(Global::tray, SIGNAL(showPart()), this, SIGNAL(showPart()));
+	Global::systemTray = new SystemTray(Global::mainWindow());
+	connect( Global::systemTray, SIGNAL(showPart()), this, SIGNAL(showPart()) );
 	if (Settings::useSystray())
-		Global::tray->show();
+		Global::systemTray->show();
 
 	// Load baskets
 	DEBUG_WIN << "Baskets are loaded from " + Global::basketsFolder();
@@ -161,11 +161,23 @@ void BNPView::onFirstShow()
 {
 	// Don't enable LikeBack until bnpview is shown. This way it works better with kontact.
 	/* LikeBack */
-	LikeBack::init();
+	LikeBack::init(LikeBack::isDevelopmentVersion(VERSION));
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
-	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
+	LikeBack::setAllowFeatureWishes(true);
+//	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
+
+/*<<<<<<< .mine
+	// In late init, because we need kapp->mainWidget() to be set!
+	if (!Global::runInsideKontact())
+		connectTagsMenu();
+  =======
+	m_statusbar->setupStatusBar();
+  >>>>>>> .r224*/
+	// In late init, because we need kapp->mainWidget() to be set!
+	if (!Global::runInsideKontact())
+		connectTagsMenu();
 
 	m_statusbar->setupStatusBar();
 }
@@ -199,13 +211,13 @@ void BNPView::setupGlobalShortcuts()
 						 i18n("Allows you to change current basket to the next one without having to open main window."),
 						 "", "",
 						 Global::bnpView,    SLOT(goToNextBasket()),     true, true );
-	globalAccel->insert( "global_note_add_text", i18n("Insert text note"),
+//	globalAccel->insert( "global_note_add_text", i18n("Insert plain text note"),
+//						 i18n("Add a plain text note to the current basket without having to open main window."),
+//						 "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
+//						 Global::bnpView, SLOT(addNoteText()),        true, true );
+	globalAccel->insert( "global_note_add_html", i18n("Insert text note"),
 						 i18n("Add a text note to the current basket without having to open main window."),
-						 "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
-						 Global::bnpView, SLOT(addNoteText()),        true, true );
-	globalAccel->insert( "global_note_add_html", i18n("Insert rich text note"),
-						 i18n("Add a rich text note to the current basket without having to open main window."),
-						 Qt::CTRL+Qt::ALT+Qt::Key_H, Qt::CTRL+Qt::ALT+Qt::Key_H, //"", "",
+						 Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T, //"", "",
 						 Global::bnpView, SLOT(addNoteHtml()),        true, true );
 	globalAccel->insert( "global_note_add_image", i18n("Insert image note"),
 						 i18n("Add an image note to the current basket without having to open main window."),
@@ -395,24 +407,24 @@ void BNPView::setupActions()
 	connect( insertEmptyMapper,  SIGNAL(mapped(int)), this, SLOT(insertEmpty(int))  );
 	connect( insertWizardMapper, SIGNAL(mapped(int)), this, SLOT(insertWizard(int)) );
 
-	m_actInsertText   = new KAction( i18n("&Text"),      "text",     "Ctrl+T", actionCollection(), "insert_text"     );
-	m_actInsertHtml   = new KAction( i18n("&Rich Text"), "html",     "Insert", actionCollection(), "insert_html"     );
-	m_actInsertLink   = new KAction( i18n("&Link"),      "link",     "Ctrl+Y", actionCollection(), "insert_link"     );
-	m_actInsertImage  = new KAction( i18n("&Image"),     "image",    "",       actionCollection(), "insert_image"    );
-	m_actInsertColor  = new KAction( i18n("&Color"),     "colorset", "",       actionCollection(), "insert_color"    );
-	m_actInsertLauncher=new KAction( i18n("L&auncher"),  "launch",   "",       actionCollection(), "insert_launcher" );
+//	m_actInsertText   = new KAction( i18n("Plai&n Text"), "text",     "Ctrl+T", actionCollection(), "insert_text"     );
+	m_actInsertHtml   = new KAction( i18n("&Text"),       "html",     "Insert", actionCollection(), "insert_html"     );
+	m_actInsertLink   = new KAction( i18n("&Link"),       "link",     "Ctrl+Y", actionCollection(), "insert_link"     );
+	m_actInsertImage  = new KAction( i18n("&Image"),      "image",    "",       actionCollection(), "insert_image"    );
+	m_actInsertColor  = new KAction( i18n("&Color"),      "colorset", "",       actionCollection(), "insert_color"    );
+	m_actInsertLauncher=new KAction( i18n("L&auncher"),   "launch",   "",       actionCollection(), "insert_launcher" );
 
 	m_actImportKMenu  = new KAction( i18n("Import Launcher from &KDE Menu..."), "kmenu",      "", actionCollection(), "insert_kmenu"     );
 	m_actImportIcon   = new KAction( i18n("Im&port Icon..."),                   "icons",      "", actionCollection(), "insert_icon"      );
 	m_actLoadFile     = new KAction( i18n("Load From &File..."),                "fileimport", "", actionCollection(), "insert_from_file" );
 
-	connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+//	connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 	connect( m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 	connect( m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 	connect( m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 	connect( m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 	connect( m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
+//	insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
 	insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html    );
 	insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image   );
 	insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link    );
@@ -437,7 +449,7 @@ void BNPView::setupActions()
 	//connect( m_actGrabScreenshot, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)) );
 	//connect( m_colorPicker, SIGNAL(canceledPick()),             this, SLOT(colorPickingCanceled())     );
 
-	m_insertActions.append( m_actInsertText     );
+//	m_insertActions.append( m_actInsertText     );
 	m_insertActions.append( m_actInsertHtml     );
 	m_insertActions.append( m_actInsertLink     );
 	m_insertActions.append( m_actInsertImage    );
@@ -451,7 +463,18 @@ void BNPView::setupActions()
 
 	/** Basket : **************************************************************/
 
-	actNewBasket        = new KAction( i18n("&New Basket..."), "filenew", KStdAccel::shortcut(KStdAccel::New),
+	// At this stage, main.cpp has not set kapp->mainWidget(), so Global::runInsideKontact()
+	// returns true. We do it ourself:
+	bool runInsideKontact = true;
+	QWidget *parentWidget = (QWidget*) parent();
+	while (parentWidget) {
+		if (parentWidget->inherits("MainWindow"))
+			runInsideKontact = false;
+		parentWidget = (QWidget*) parentWidget->parent();
+	}
+
+	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
+	actNewBasket        = new KAction( i18n("&New Basket..."), (runInsideKontact ? "basket" : "filenew"), KStdAccel::shortcut(KStdAccel::New),
 									   this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
 	actNewSubBasket     = new KAction( i18n("New &Sub-Basket..."), "", "Ctrl+Shift+N",
 									   this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
@@ -469,7 +492,7 @@ void BNPView::setupActions()
 	m_actDelBasket  = new KAction( i18n("Remove Basket", "&Remove"), "", 0,
 								   this, SLOT(delBasket()), actionCollection(), "basket_remove" );
 #ifdef HAVE_LIBGPGME
-	m_actPassBasket = new KAction( i18n("Password protection", "&Password..."), "", 0,
+	m_actPassBasket = new KAction( i18n("Password protection", "Pass&word..."), "", 0,
 								   this, SLOT(password()), actionCollection(), "basket_password" );
 	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", 0,
 								   this, SLOT(lockBasket()), actionCollection(), "basket_lock" );
@@ -503,8 +526,8 @@ void BNPView::setupActions()
 	m_actExpandBasket   = new KAction( i18n( "&Expand Basket" ),   "forward", "Alt+Right",
 									   this, SLOT(expandBasket()),       actionCollection(), "go_basket_expand"   );
 	// FOR_BETA_PURPOSE:
-	m_convertTexts = new KAction( i18n("Convert text notes to rich text notes"), "compfile", "",
-								  this, SLOT(convertTexts()), actionCollection(), "beta_convert_texts" );
+//	m_convertTexts = new KAction( i18n("Convert text notes to rich text notes"), "compfile", "",
+//								  this, SLOT(convertTexts()), actionCollection(), "beta_convert_texts" );
 
 	InlineEditors::instance()->initToolBars(actionCollection());
 }
@@ -986,8 +1009,8 @@ void BNPView::setCurrentBasket(Basket *basket)
 		setCaption(item->basket()->basketName());
 		countsChanged(basket);
 		updateStatusBarHint();
-		if (Global::tray)
-			Global::tray->updateToolTip();
+		if (Global::systemTray)
+			Global::systemTray->updateToolTip();
 	}
 	m_tree->viewport()->update();
 	emit basketChanged();
@@ -1100,8 +1123,8 @@ void BNPView::updateBasketListViewItem(Basket *basket)
 
 	if (basket == currentBasket()) {
 		setCaption(basket->basketName());
-		if (Global::tray)
-			Global::tray->updateToolTip();
+		if (Global::systemTray)
+			Global::systemTray->updateToolTip();
 	}
 
 	// Don't save if we are loading!
@@ -1316,9 +1339,10 @@ void BNPView::colorPickingCanceled()
 
 void BNPView::slotConvertTexts()
 {
+/*
 	int result = KMessageBox::questionYesNoCancel(
-			this,
-	i18n(
+		this,
+		i18n(
 			"<p>This will convert every text notes into rich text notes.<br>"
 			"The content of the notes will not change and you will be able to apply formating to those notes.</p>"
 			"<p>This process cannot be reverted back: you will not be able to convert the rich text notes to plain text ones later.</p>"
@@ -1326,25 +1350,24 @@ void BNPView::slotConvertTexts()
 			"If nobody complain about not having plain text notes anymore, then the final version is likely to not support plain text notes anymore.</p>"
 			"<p><b>Which basket notes do you want to convert?</b></p>"
 		),
-	i18n("Convert Text Notes"),
-	KGuiItem(i18n("Only in the Current Basket")),
-	KGuiItem(i18n("In Every Baskets"))
-												 );
+		i18n("Convert Text Notes"),
+		KGuiItem(i18n("Only in the Current Basket")),
+		KGuiItem(i18n("In Every Baskets"))
+	);
 	if (result == KMessageBox::Cancel)
 		return;
-
-	// TODO: Please wait. This can take several minutes.
+*/
 
 	bool conversionsDone;
-	if (result == KMessageBox::Yes)
-		conversionsDone = currentBasket()->convertTexts();
-	else
+//	if (result == KMessageBox::Yes)
+//		conversionsDone = currentBasket()->convertTexts();
+//	else
 		conversionsDone = convertTexts();
 
 	if (conversionsDone)
-		KMessageBox::information(this, i18n("The text notes have been converted to rich text ones."), i18n("Conversion Finished"));
+		KMessageBox::information(this, i18n("The plain text notes have been converted to rich text ones."), i18n("Conversion Finished"));
 	else
-		KMessageBox::information(this, i18n("There is no text notes to convert."), i18n("Conversion Finished"));
+		KMessageBox::information(this, i18n("There is no plain text notes to convert."), i18n("Conversion Finished"));
 }
 
 QPopupMenu* BNPView::popupMenu(const QString &menuName)
@@ -1367,7 +1390,7 @@ QPopupMenu* BNPView::popupMenu(const QString &menuName)
 				i18n("Ressource not Found"), KMessageBox::AllowLink );
 		// This exits Kontact so it cannot be done anymore
 		// exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
-		menu = new QPopupMenu;
+		menu = new KPopupMenu;
 	}
 	return menu;
 }
@@ -1577,7 +1600,7 @@ void BNPView::doBasketDeletion(Basket *basket)
 void BNPView::password()
 {
 #ifdef HAVE_LIBGPGME
-	PasswordDlg dlg(this, "Password");
+	PasswordDlg dlg(kapp->activeWindow(), "Password");
 	Basket *cur = currentBasket();
 
 	dlg.setType(cur->encryptionType());
@@ -1707,7 +1730,7 @@ void BNPView::showPassiveDroppedDelayed()
 	QString title = m_passiveDroppedTitle;
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : this);
+	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
 	QPixmap contentsPixmap = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
 	QMimeSourceFactory::defaultFactory()->setPixmap("_passivepopup_image_", contentsPixmap);
 	m_passivePopup->setView(
@@ -1720,7 +1743,7 @@ void BNPView::showPassiveDroppedDelayed()
 void BNPView::showPassiveImpossible(const QString &message)
 {
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : (QWidget*)this);
+	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
 	m_passivePopup->setView(
 			QString("<font color=red>%1</font>")
 			.arg(i18n("Basket <i>%1</i> is locked"))
@@ -1744,7 +1767,7 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
 	QString message;
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : (QWidget*)this);
+	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
 	m_passivePopup->setView(
 			"<qt>" + kapp->makeStdCaption( currentBasket()->isLocked()
 			? QString("%1 <font color=gray30>%2</font>")
@@ -1761,7 +1784,7 @@ void BNPView::showPassiveLoading(Basket *basket)
 		return;
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::tray : (QWidget*)this);
+	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
 	m_passivePopup->setView(
 			Tools::textToHTMLWithoutP(basket->basketName()),
 	i18n("Loading..."),
@@ -1830,9 +1853,9 @@ void BNPView::setActive(bool active)
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
 	if (active) {
 		kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-		Global::tray->setActive();   //  FIXME: add this in the places it need
+		Global::systemTray->setActive();   //  FIXME: add this in the places it need
 	} else
-		Global::tray->setInactive();
+		Global::systemTray->setInactive();
 #elif KDE_IS_VERSION( 3, 1, 90 ) // KDE 3.2.x
 	// Code from Kopete (that seem to work, in waiting KSystemTray make puplic the toggleSHown) :
 	if (active) {
@@ -2000,10 +2023,138 @@ void BNPView::enableActions()
 
 void BNPView::showMainWindow()
 {
-	if(Global::mainWindow()) Global::mainWindow()->show();
+	if (Global::mainWindow())
+		Global::mainWindow()->show();
 	emit showPart();
 }
 
+<<<<<<< .mine
+void BNPView::populateTagsMenu()
+{
+	KPopupMenu *menu = (KPopupMenu*)(popupMenu("tags"));
+	menu->clear();
+
+	Note *referenceNote;
+	if (currentBasket()->focusedNote() && currentBasket()->focusedNote()->isSelected())
+		referenceNote = currentBasket()->focusedNote();
+	else
+		referenceNote = currentBasket()->firstSelected();
+
+	populateTagsMenu(*menu, referenceNote);
+
+	m_lastOpenedTagsMenu = menu;
+//	connect( menu, SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
+}
+
+void BNPView::populateTagsMenu(KPopupMenu &menu, Note *referenceNote)
+{
+	currentBasket()->m_tagPopupNote = referenceNote;
+	bool enable = currentBasket()->countSelecteds() > 0;
+
+	QValueList<Tag*>::iterator it;
+	Tag *currentTag;
+	State *currentState;
+	int i = 10;
+	for (it = Tag::all.begin(); it != Tag::all.end(); ++it) {
+		// Current tag and first state of it:
+		currentTag = *it;
+		currentState = currentTag->states().first();
+		QKeySequence sequence;
+		if (!currentTag->shortcut().isNull())
+			sequence = currentTag->shortcut().operator QKeySequence();
+		menu.insertItem(StateMenuItem::checkBoxIconSet(
+			(referenceNote ? referenceNote->hasTag(currentTag) : false),
+			menu.colorGroup()),
+			new StateMenuItem(currentState, sequence, true),
+			i
+		);
+		if (!currentTag->shortcut().isNull())
+			menu.setAccel(sequence, i);
+		menu.setItemEnabled(i, enable);
+		++i;
+	}
+
+	menu.insertSeparator();
+//	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign new Tag...", 1 );
+	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
+	//if (referenceNote->states().isEmpty())
+	//	menu.setItemEnabled(id, false);
+//	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
+	menu.insertItem( new IndentedMenuItem(i18n("&Assign new Tag...")),          1 );
+	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
+	menu.insertItem( new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
+
+	menu.setItemEnabled(1, enable);
+	if (!currentBasket()->selectedNotesHaveTags())
+		menu.setItemEnabled(2, false);
+
+	connect( &menu, SIGNAL(activated(int)), currentBasket(), SLOT(toggledTagInMenu(int)) );
+	connect( &menu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
+	connect( &menu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
+}
+
+void BNPView::connectTagsMenu()
+{
+	connect( popupMenu("tags"), SIGNAL(aboutToShow()), this, SLOT(populateTagsMenu())   );
+	connect( popupMenu("tags"), SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
+}
+
+/*
+ * The Tags menu is ONLY created once the BasKet KPart is first shown.
+ * So we can use this menu only from then?
+ * When the KPart is changed in Kontact, and then the BasKet KPart is shown again,
+ * Kontact created a NEW Tags menu. So we should connect again.
+ * But when Kontact main window is hidden and then re-shown, the menu does not change.
+ * So we disconnect at hide event to ensure only one connection: the next show event will not connects another time.
+ */
+
+void BNPView::showEvent(QShowEvent*)
+{
+	if (Global::runInsideKontact())
+		QTimer::singleShot( 0, this, SLOT(connectTagsMenu()) );
+}
+
+void BNPView::hideEvent(QHideEvent*)
+{
+	if (Global::runInsideKontact()) {
+		disconnect( popupMenu("tags"), SIGNAL(aboutToShow()), this, SLOT(populateTagsMenu())   );
+		disconnect( popupMenu("tags"), SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
+	}
+}
+
+void BNPView::disconnectTagsMenu()
+{
+	QTimer::singleShot( 0, this, SLOT(disconnectTagsMenuDelayed()) );
+}
+
+void BNPView::disconnectTagsMenuDelayed()
+{
+	disconnect( m_lastOpenedTagsMenu, SIGNAL(activated(int)), currentBasket(), SLOT(toggledTagInMenu(int)) );
+	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
+	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
+}
+
+/*=======
+void BNPView::showEvent(QShowEvent*)
+{
+	if(m_firstShow)
+	{
+		m_firstShow = false;
+		onFirstShow();
+	}
+	if(isPart() && !LikeBack::enabled())
+	{
+		LikeBack::enable();
+	}
+}
+
+void BNPView::hideEvent(QHideEvent*)
+{
+	if(isPart())
+		LikeBack::disable();
+}
+
+  >>>>>>> .r224*/
 void BNPView::showEvent(QShowEvent*)
 {
 	if(m_firstShow)

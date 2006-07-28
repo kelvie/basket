@@ -95,6 +95,7 @@
 #include "basketstatusbar.h"
 #include <iostream>
 #include <ksettings/dialog.h>
+#include <kcmultidialog.h>
 
 /** Container */
 
@@ -198,7 +199,9 @@ void MainWindow::configureNotifications()
 void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is clicked
 {
 	// ...if you use any action list, use plugActionList on each here...
-	createGUI();
+	createGUI(); // TODO: Reconnect tags menu aboutToShow() ??
+	if (!Global::runInsideKontact())
+		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
 	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
 	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 }
@@ -206,8 +209,13 @@ void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is cl
 void MainWindow::showSettingsDialog()
 {
 	if(m_settings == 0)
-		m_settings = new KSettings::Dialog( this );
-	m_settings->show();
+		m_settings = new KSettings::Dialog(kapp->activeWindow());
+	if (Global::mainWindow()) {
+		m_settings->dialog()->showButton(KDialogBase::Help,    false); // Not implemented!
+		m_settings->dialog()->showButton(KDialogBase::Default, false); // Not implemented!
+		m_settings->dialog()->exec();
+	} else
+		m_settings->show();
 }
 
 void MainWindow::showShortcutsSettingsDialog()
@@ -298,7 +306,7 @@ bool MainWindow::queryClose()
 	}
 
 	if (Settings::useSystray() && !m_quit) {
-		Global::tray->displayCloseMessage(i18n("Basket"));
+		Global::systemTray->displayCloseMessage(i18n("Basket"));
 		hide();
 		return false;
 	} else
@@ -336,7 +344,7 @@ void MainWindow::changeActive()
 {
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
 	kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-	Global::tray->toggleActive();
+	Global::systemTray->toggleActive();
 #else
 	setActive( ! isActiveWindow() );
 #endif

@@ -38,18 +38,10 @@ class KShortcut;
 
 class KColorCombo2;
 
+class FontSizeCombo;
+
 class Tag;
 class State;
-
-class FontSizeCombo : public KComboBox
-{
-  Q_OBJECT
-  public:
-	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0, const char *name = 0);
-	~FontSizeCombo();
-  private:
-	bool m_withDefault;
-};
 
 class StateCopy
 {
@@ -70,7 +62,7 @@ class TagCopy
 	~TagCopy();
 	Tag *oldTag;
 	Tag *newTag;
-	QValueList<StateCopy*> states;
+	StateCopy::List stateCopies;
 	void copyBack();
 	bool isMultiState();
 };
@@ -127,10 +119,10 @@ class TagsEditDialog : public KDialogBase
 {
   Q_OBJECT
   public:
-	TagsEditDialog(QWidget *parent = 0, State *state = 0, const char *name = 0);
+	TagsEditDialog(QWidget *parent = 0, State *stateToEdit = 0, bool addNewTag = false);
 	~TagsEditDialog();
-	QValueList<State*> deletedStates() { return m_deletedStates; }
-	QValueList<State*> addedStates()   { return m_addedStates;   }
+	State::List deletedStates() { return m_deletedStates; }
+	State::List addedStates()   { return m_addedStates;   }
 	TagListViewItem* itemForState(State *state);
   private slots:
 	void newTag();
@@ -181,9 +173,9 @@ class TagsEditDialog : public KDialogBase
 	QLineEdit     *m_textEquivalent;
 	QCheckBox     *m_onEveryLines;
 
-	TagCopy::List      m_tagCopies;
-	QValueList<State*> m_deletedStates;
-	QValueList<State*> m_addedStates;
+	TagCopy::List m_tagCopies;
+	State::List   m_deletedStates;
+	State::List   m_addedStates;
 
 	bool m_loading;
 };

@@ -22,7 +22,7 @@
 #define VARIOUSWIDGETS_H
 
 #include <qwidget.h>
-#include <qcombobox.h>
+#include <kcombobox.h>
 #include <qdialog.h>
 #include <kurllabel.h>
 #include <qstring.h>
@@ -123,6 +123,29 @@ class IconSizeDialog : public KDialogBase
 	KIconViewItem *m_size64;
 	KIconViewItem *m_size128;
 	int m_iconSize;
+};
+
+/**
+ * A missing class from KDE (and Qt): a combobox to select a font size!
+ */
+class FontSizeCombo : public KComboBox
+{
+  Q_OBJECT
+  public:
+	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0, const char *name = 0);
+	~FontSizeCombo();
+	void setFontSize(int size);
+	int fontSize();
+  protected:
+	void keyPressEvent(QKeyEvent *event);
+  signals:
+	void sizeChanged(int size);
+	void escapePressed();
+	void returnPressed2();
+  private slots:
+	void textChangedInCombo(const QString &text);
+  private:
+	bool m_withDefault;
 };
 
 #endif // VARIOUSWIDGETS_H

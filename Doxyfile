@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = basket.kdevelop
-PROJECT_NUMBER         = 0.6.0Beta1
+PROJECT_NUMBER         = 0.6.0Beta2
 OUTPUT_DIRECTORY       =
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO

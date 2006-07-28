@@ -56,6 +56,7 @@ bool    Settings::s_useSystray           = true;
 bool    Settings::s_usePassivePopup      = true;
 bool    Settings::s_playAnimations       = true;
 bool    Settings::s_showNotesToolTip     = true; // TODO: RENAME: useBasketTooltips
+bool    Settings::s_confirmNoteDeletion  = true;
 bool    Settings::s_bigNotes             = false;
 bool    Settings::s_exportTextTags       = true;
 bool    Settings::s_useGnuPGAgent        = false;
@@ -69,12 +70,12 @@ int     Settings::s_viewHtmlFileContent  = false;
 int     Settings::s_viewImageFileContent = false;
 int     Settings::s_viewSoundFileContent = false;
 // Applications:
-bool    Settings::s_textUseProg          = false; // TODO: RENAME: s_*App (with KService!)
-bool    Settings::s_htmlUseProg          = false;
+//bool    Settings::s_textUseProg          = false;
+bool    Settings::s_htmlUseProg          = false; // TODO: RENAME: s_*App (with KService!)
 bool    Settings::s_imageUseProg         = true;
 bool    Settings::s_animationUseProg     = true;
 bool    Settings::s_soundUseProg         = false;
-QString Settings::s_textProg             = "";
+//QString Settings::s_textProg             = "";
 QString Settings::s_htmlProg             = "quanta";
 QString Settings::s_imageProg            = "kolourpaint";
 QString Settings::s_animationProg        = "gimp";
@@ -123,6 +124,7 @@ void Settings::loadConfig()
 	setPlayAnimations(       config.readBoolEntry("playAnimations",       true)  );
 	setShowNotesToolTip(     config.readBoolEntry("showNotesToolTip",     true)  );
 	setBigNotes(             config.readBoolEntry("bigNotes",             false) );
+	setConfirmNoteDeletion(  config.readBoolEntry("confirmNoteDeletion",  true)  );
 	setExportTextTags(       config.readBoolEntry("exportTextTags",       true)  );
 	setUseGnuPGAgent(        config.readBoolEntry("useGnuPGAgent",        false) );
 	setBlinkedFilter(        config.readBoolEntry("blinkedFilter",        false) );
@@ -145,12 +147,12 @@ void Settings::loadConfig()
 	setShowEmptyBasketInfo(  config.readBoolEntry("emptyBasketInfo",      true)  );
 
 	config.setGroup("Programs");
-	setIsTextUseProg(        config.readBoolEntry("textUseProg",          false)         );
+//	setIsTextUseProg(        config.readBoolEntry("textUseProg",          false)         );
 	setIsHtmlUseProg(        config.readBoolEntry("htmlUseProg",          false)         );
 	setIsImageUseProg(       config.readBoolEntry("imageUseProg",         true)          );
 	setIsAnimationUseProg(   config.readBoolEntry("animationUseProg",     true)          );
 	setIsSoundUseProg(       config.readBoolEntry("soundUseProg",         false)         );
-	setTextProg(             config.readEntry(    "textProg",             "")            );
+//	setTextProg(             config.readEntry(    "textProg",             "")            );
 	setHtmlProg(             config.readEntry(    "htmlProg",             "quanta")      );
 	setImageProg(            config.readEntry(    "imageProg",            "kolourpaint") );
 	setAnimationProg(        config.readEntry(    "animationProg",        "gimp")        );
@@ -201,6 +203,7 @@ void Settings::saveConfig()
 	config.writeEntry( "filterOnTop",          filterOnTop()          );
 	config.writeEntry( "playAnimations",       playAnimations()       );
 	config.writeEntry( "showNotesToolTip",     showNotesToolTip()     );
+	config.writeEntry( "confirmNoteDeletion",  confirmNoteDeletion()  );
 	config.writeEntry( "bigNotes",             bigNotes()             );
 	config.writeEntry( "exportTextTags",       exportTextTags()       );
 #ifdef HAVE_LIBGPGME
@@ -227,12 +230,12 @@ void Settings::saveConfig()
 	config.writeEntry( "emptyBasketInfo",      showEmptyBasketInfo()  );
 
 	config.setGroup("Programs");
-	config.writeEntry( "textUseProg",          isTextUseProg()        );
+//	config.writeEntry( "textUseProg",          isTextUseProg()        );
 	config.writeEntry( "htmlUseProg",          isHtmlUseProg()        );
 	config.writeEntry( "imageUseProg",         isImageUseProg()       );
 	config.writeEntry( "animationUseProg",     isAnimationUseProg()   );
 	config.writeEntry( "soundUseProg",         isSoundUseProg()       );
-	config.writeEntry( "textProg",             textProg()             );
+//	config.writeEntry( "textProg",             textProg()             );
 	config.writeEntry( "htmlProg",             htmlProg()             );
 	config.writeEntry( "imageProg",            imageProg()            );
 	config.writeEntry( "animationProg",        animationProg()        );
@@ -351,6 +354,10 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addWidget(m_showNotesToolTip);
 	connect(m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
+	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), this);
+	layout->addWidget(m_confirmNoteDeletion);
+	connect(m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+
 	m_bigNotes = new QCheckBox(i18n("Bi&g notes"), this);
 	layout->addWidget(m_bigNotes);
 	connect(m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -417,7 +424,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 	// View File Content:
 	QVButtonGroup *buttonGroup = new QVButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
-	m_viewTextFileContent  = new QCheckBox( i18n("&Text"),               buttonGroup );
+	m_viewTextFileContent  = new QCheckBox( i18n("Plain &text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
@@ -463,6 +470,7 @@ void GeneralPage::load()
 	m_usePassivePopup->setChecked(Settings::usePassivePopup());
 	m_playAnimations->setChecked(Settings::playAnimations());
 	m_showNotesToolTip->setChecked(Settings::showNotesToolTip());
+	m_confirmNoteDeletion->setChecked(Settings::confirmNoteDeletion());
 	m_bigNotes->setChecked(Settings::bigNotes());
 	m_exportTextTags->setChecked(Settings::exportTextTags());
 	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
@@ -495,6 +503,7 @@ void GeneralPage::save()
 	Settings::setFilterOnTop(          ! m_filterOnTop->currentItem()      );
 	Settings::setPlayAnimations(       m_playAnimations->isChecked()       );
 	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
+	Settings::setConfirmNoteDeletion(  m_confirmNoteDeletion->isChecked()  );
 	Settings::setBigNotes(             m_bigNotes->isChecked()             );
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 #ifdef HAVE_LIBGPGME
@@ -580,16 +589,16 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 	/* Applications page */
 	QVBoxLayout *layout4 = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 
-	m_textUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
-	m_textProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
-	QHBoxLayout *hLayT = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
-	hLayT->insertSpacing(-1, 20);
-	hLayT->addWidget(m_textProg);
-	connect(m_textUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_textProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
+// 	m_textUseProg  = new QCheckBox(i18n("Open plai&n text notes with a custom application:"), this);
+// 	m_textProg     = new RunCommandRequester("", i18n("Open plain text notes with:"), this);
+// 	QHBoxLayout *hLayT = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+// 	hLayT->insertSpacing(-1, 20);
+// 	hLayT->addWidget(m_textProg);
+// 	connect(m_textUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+// 	connect(m_textProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
 
-	m_htmlUseProg  = new QCheckBox(i18n("Open &rich text notes with a custom application:"), this);
-	m_htmlProg     = new RunCommandRequester("", i18n("Open rich text notes with:"), this);
+	m_htmlUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
+	m_htmlProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
 	QHBoxLayout *hLayH = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	hLayH->insertSpacing(-1, 20);
 	hLayH->addWidget(m_htmlProg);
@@ -624,7 +633,7 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 			"<p>If checked, the application defined below will be used when opening that type of note.</p>"
 			"<p>Otherwise, the application you've configured to in Konqueror will be used.</p>");
 
-	QWhatsThis::add(m_textUseProg,      whatsthis);
+//	QWhatsThis::add(m_textUseProg,      whatsthis);
 	QWhatsThis::add(m_htmlUseProg,      whatsthis);
 	QWhatsThis::add(m_imageUseProg,     whatsthis);
 	QWhatsThis::add(m_animationUseProg, whatsthis);
@@ -634,14 +643,14 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 			"<p>Define the application to use for opening that type of note instead of the "
 			"application configured in Konqueror.</p>");
 
-	QWhatsThis::add(m_textProg,      whatsthis);
+//	QWhatsThis::add(m_textProg,      whatsthis);
 	QWhatsThis::add(m_htmlProg,      whatsthis);
 	QWhatsThis::add(m_imageProg,     whatsthis);
 	QWhatsThis::add(m_animationProg, whatsthis);
 	QWhatsThis::add(m_soundProg,     whatsthis);
 
-	layout4->addWidget(m_textUseProg);
-	layout4->addItem(hLayT);
+//	layout4->addWidget(m_textUseProg);
+//	layout4->addItem(hLayT);
 	layout4->addWidget(m_htmlUseProg);
 	layout4->addItem(hLayH);
 	layout4->addWidget(m_imageUseProg);
@@ -693,7 +702,7 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 	layout4->addLayout(hLay);
 	layout4->insertStretch(-1);
 
-	connect( m_textUseProg,      SIGNAL(toggled(bool)), m_textProg,      SLOT(setEnabled(bool)) );
+//	connect( m_textUseProg,      SIGNAL(toggled(bool)), m_textProg,      SLOT(setEnabled(bool)) );
 	connect( m_htmlUseProg,      SIGNAL(toggled(bool)), m_htmlProg,      SLOT(setEnabled(bool)) );
 	connect( m_imageUseProg,     SIGNAL(toggled(bool)), m_imageProg,     SLOT(setEnabled(bool)) );
 	connect( m_animationUseProg, SIGNAL(toggled(bool)), m_animationProg, SLOT(setEnabled(bool)) );
@@ -703,9 +712,9 @@ AppsPage::AppsPage(QWidget * parent, const char * name)
 
 void AppsPage::load()
 {
-	m_textProg->setRunCommand(Settings::textProg());
-	m_textUseProg->setChecked(Settings::isTextUseProg());
-	m_textProg->setEnabled(Settings::isTextUseProg());
+//	m_textProg->setRunCommand(Settings::textProg());
+//	m_textUseProg->setChecked(Settings::isTextUseProg());
+//	m_textProg->setEnabled(Settings::isTextUseProg());
 	m_htmlProg->setRunCommand(Settings::htmlProg());
 	m_htmlUseProg->setChecked(Settings::isHtmlUseProg());
 	m_htmlProg->setEnabled(Settings::isHtmlUseProg());
@@ -722,12 +731,12 @@ void AppsPage::load()
 
 void AppsPage::save()
 {
-	Settings::setIsTextUseProg(        m_textUseProg->isChecked()          );
+//	Settings::setIsTextUseProg(        m_textUseProg->isChecked()          );
 	Settings::setIsHtmlUseProg(        m_htmlUseProg->isChecked()          );
 	Settings::setIsImageUseProg(       m_imageUseProg->isChecked()         );
 	Settings::setIsAnimationUseProg(   m_animationUseProg->isChecked()     );
 	Settings::setIsSoundUseProg(       m_soundUseProg->isChecked()         );
-	Settings::setTextProg(             m_textProg->runCommand()            );
+//	Settings::setTextProg(             m_textProg->runCommand()            );
 	Settings::setHtmlProg(             m_htmlProg->runCommand()            );
 	Settings::setImageProg(            m_imageProg->runCommand()           );
 	Settings::setAnimationProg(        m_animationProg->runCommand()       );
@@ -770,14 +779,14 @@ FeaturesPage::FeaturesPage(QWidget * parent, const char * name)
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
 	m_middleAction = new QComboBox(this);
-	m_middleAction->insertItem( i18n("Do nothing")            );
-	m_middleAction->insertItem( i18n("Paste clipboard")       );
-	m_middleAction->insertItem( i18n("Insert text note")      );
-	m_middleAction->insertItem( i18n("Insert rich text note") );
-	m_middleAction->insertItem( i18n("Insert image note")     );
-	m_middleAction->insertItem( i18n("Insert link note")      );
-	m_middleAction->insertItem( i18n("Insert launcher note")  );
-	m_middleAction->insertItem( i18n("Insert color note")     );
+	m_middleAction->insertItem( i18n("Do nothing")             );
+	m_middleAction->insertItem( i18n("Paste clipboard")        );
+//	m_middleAction->insertItem( i18n("Insert plain text note") );
+//	m_middleAction->insertItem( i18n("Insert text note") );
+	m_middleAction->insertItem( i18n("Insert image note")      );
+	m_middleAction->insertItem( i18n("Insert link note")       );
+	m_middleAction->insertItem( i18n("Insert launcher note")   );
+	m_middleAction->insertItem( i18n("Insert color note")      );
 	QLabel *labelM = new QLabel(m_middleAction, i18n("&Shift+middle-click:"), this);
 	ga->addWidget(labelM,                                         0, 0);
 	ga->addWidget(m_middleAction,                                 0, 1);

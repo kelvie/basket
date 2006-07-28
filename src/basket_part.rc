@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui version="0.6.0-Alpha1HPrivate" name="basket" >
+<kpartgui version="0.6.0-Beta2" name="basket" >
  <MenuBar noMerge="1" >
   <Menu name="file" >
    <text>&amp;Basket</text>
@@ -60,9 +60,12 @@
    <Action name="note_move_down" />
    <Action name="note_move_bottom" />
   </Menu>
+  <Menu name="tags" >
+   <text>&amp;Tags</text>
+  </Menu>
   <Menu name="insert" >
    <text>&amp;Insert</text>
-   <Action name="insert_text" />
+<!--   <Action name="insert_text" />-->
    <Action name="insert_html" />
    <Action name="insert_image" />
    <Action name="insert_link" />
@@ -110,12 +113,17 @@
   <Action name="edit_delete" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="note_group" />
+<!--
   <Separator lineSeparator="true" name="separator_2" />
   <Action name="beta_convert_texts" />
+-->
  </ToolBar>
  <ToolBar hidden="true" newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
-  <text>Rich Text Edit Toolbar</text>
+  <text>Text Formating Toolbar</text>
   <Action name="richtext_font" />
+  <Separator lineSeparator="false" name="blank_1" />
+  <Action name="richtext_font_size" />
+  <Separator lineSeparator="false" name="blank_2" />
   <Action name="richtext_color" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="richtext_bold" />
@@ -160,7 +168,7 @@
   <Action name="edit_delete" />
  </Menu>
  <Menu noMerge="1" name="insert_popup" >
-  <Action name="insert_text" />
+<!--  <Action name="insert_text" />-->
   <Action name="insert_html" />
   <Action name="insert_image" />
   <Action name="insert_link" />

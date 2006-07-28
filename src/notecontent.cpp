@@ -169,16 +169,16 @@ NoteType::Id LauncherContent::type()  { return NoteType::Launcher;  }
 NoteType::Id ColorContent::type()     { return NoteType::Color;     }
 NoteType::Id UnknownContent::type()   { return NoteType::Unknown;   }
 
-QString TextContent::typeName()      { return i18n("Text");      }
-QString HtmlContent::typeName()      { return i18n("Rich Text"); }
-QString ImageContent::typeName()     { return i18n("Image");     }
-QString AnimationContent::typeName() { return i18n("Animation"); }
-QString SoundContent::typeName()     { return i18n("Sound");     }
-QString FileContent::typeName()      { return i18n("File");      }
-QString LinkContent::typeName()      { return i18n("Link");      }
-QString LauncherContent::typeName()  { return i18n("Launcher");  }
-QString ColorContent::typeName()     { return i18n("Color");     }
-QString UnknownContent::typeName()   { return i18n("Unknown");   }
+QString TextContent::typeName()      { return i18n("Plain Text"); }
+QString HtmlContent::typeName()      { return i18n("Text");       }
+QString ImageContent::typeName()     { return i18n("Image");      }
+QString AnimationContent::typeName() { return i18n("Animation");  }
+QString SoundContent::typeName()     { return i18n("Sound");      }
+QString FileContent::typeName()      { return i18n("File");       }
+QString LinkContent::typeName()      { return i18n("Link");       }
+QString LauncherContent::typeName()  { return i18n("Launcher");   }
+QString ColorContent::typeName()     { return i18n("Color");      }
+QString UnknownContent::typeName()   { return i18n("Unknown");    }
 
 QString TextContent::lowerTypeName()      { return "text";      }
 QString HtmlContent::lowerTypeName()      { return "html";      }
@@ -319,8 +319,8 @@ bool LauncherContent::match(const FilterData &data)      { return (exec().find(d
 bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
 bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
 
-QString TextContent::editToolTipText()      { return i18n("Edit this text");                   }
-QString HtmlContent::editToolTipText()      { return i18n("Edit this rich text");              }
+QString TextContent::editToolTipText()      { return i18n("Edit this plain text");             }
+QString HtmlContent::editToolTipText()      { return i18n("Edit this text");                   }
 QString ImageContent::editToolTipText()     { return i18n("Edit this image");                  }
 QString AnimationContent::editToolTipText() { return i18n("Edit this animation");              }
 QString SoundContent::editToolTipText()     { return i18n("Edit the file name of this sound"); }
@@ -351,7 +351,7 @@ void LauncherContent::fontChanged()  { setLauncher(name(), icon(), exec());     
 void ColorContent::fontChanged()     { setColor(color());                                        }
 void UnknownContent::fontChanged()   { loadFromFile();                                           } // TODO: Optimize: setMimeTypes()
 
-QString TextContent::customOpenCommand()      { return (Settings::isTextUseProg()      && ! Settings::textProg().isEmpty()      ? Settings::textProg()      : QString()); }
+//QString TextContent::customOpenCommand()      { return (Settings::isTextUseProg()      && ! Settings::textProg().isEmpty()      ? Settings::textProg()      : QString()); }
 QString HtmlContent::customOpenCommand()      { return (Settings::isHtmlUseProg()      && ! Settings::htmlProg().isEmpty()      ? Settings::htmlProg()      : QString()); }
 QString ImageContent::customOpenCommand()     { return (Settings::isImageUseProg()     && ! Settings::imageProg().isEmpty()     ? Settings::imageProg()     : QString()); }
 QString AnimationContent::customOpenCommand() { return (Settings::isAnimationUseProg() && ! Settings::animationProg().isEmpty() ? Settings::animationProg() : QString()); }
@@ -554,12 +554,12 @@ QString TextContent::linkAt(const QPoint &pos)
 QString TextContent::messageWhenOpenning(OpenMessage where)
 {
 	switch (where) {
-		case OpenOne:               return i18n("Opening text...");
-		case OpenSeveral:           return i18n("Opening texts...");
-		case OpenOneWith:           return i18n("Opening text with...");
-		case OpenSeveralWith:       return i18n("Opening texts with...");
-		case OpenOneWithDialog:     return i18n("Open text with:");
-		case OpenSeveralWithDialog: return i18n("Open texts with:");
+		case OpenOne:               return i18n("Opening plain text...");
+		case OpenSeveral:           return i18n("Opening plain texts...");
+		case OpenOneWith:           return i18n("Opening plain text with...");
+		case OpenSeveralWith:       return i18n("Opening plain texts with...");
+		case OpenOneWithDialog:     return i18n("Open plain text with:");
+		case OpenSeveralWithDialog: return i18n("Open plain texts with:");
 		default:                    return "";
 	}
 }
@@ -645,12 +645,12 @@ QString HtmlContent::linkAt(const QPoint &pos)
 QString HtmlContent::messageWhenOpenning(OpenMessage where)
 {
 	switch (where) {
-		case OpenOne:               return i18n("Opening rich text...");
-		case OpenSeveral:           return i18n("Opening rich texts...");
-		case OpenOneWith:           return i18n("Opening rich text with...");
-		case OpenSeveralWith:       return i18n("Opening rich texts with...");
-		case OpenOneWithDialog:     return i18n("Open rich text with:");
-		case OpenSeveralWithDialog: return i18n("Open rich texts with:");
+		case OpenOne:               return i18n("Opening text...");
+		case OpenSeveral:           return i18n("Opening texts...");
+		case OpenOneWith:           return i18n("Opening text with...");
+		case OpenSeveralWith:       return i18n("Opening texts with...");
+		case OpenOneWithDialog:     return i18n("Open text with:");
+		case OpenSeveralWithDialog: return i18n("Open texts with:");
 		default:                    return "";
 	}
 }

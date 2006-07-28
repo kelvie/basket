@@ -172,7 +172,7 @@ class TextContent : public NoteContent
 	QPixmap feedbackPixmap(int width, int height);
 	// Open Content or File:
 	QString messageWhenOpenning(OpenMessage where);
-	QString customOpenCommand();
+//	QString customOpenCommand();
 	// Content-Specific Methods:
 	void    setText(const QString &text); /// << Change the text note-content and relayout the note.
 	QString text() { return m_text; }     /// << @return the text note-content.

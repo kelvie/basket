@@ -54,7 +54,42 @@ void FocusedTextEdit::paste()
 {
 	adaptClipboardText(QClipboard::Selection);
 	adaptClipboardText(QClipboard::Clipboard);
+
+	// If we paste a application/x-qrichtext content starting with a "-" or a "*",
+	// then auto-bulletting will crash.
+	// So we insert a space to be sure what we paste will not trigger the auto-bulleting.
+
+//	enum AutoFormatting { AutoNone = 0, AutoBulletList = 0x00000001, AutoAll = 0xffffffff }
+//	uint oldAutoFormating = autoFormatting();
+//	setAutoFormatting(AutoNone);
+
+	QClipboard *clipboard = QApplication::clipboard();
+	int paragraph;
+	int index;
+	getCursorPosition(&paragraph, &index);
+
+	bool preventAutoBullet = (index == 0) &&
+		(clipboard->data(QClipboard::Selection)->provides("application/x-qrichtext") ||
+		 clipboard->data(QClipboard::Clipboard)->provides("application/x-qrichtext")   );
+
+	if (preventAutoBullet)
+		insert(" ");
+
 	KTextEdit::paste();
+
+	if (preventAutoBullet) {
+		int paragraph2;
+		int index2;
+		getCursorPosition(&paragraph2, &index2);
+		setSelection(paragraph, index, paragraph, index + 1);
+		removeSelectedText();
+		if (paragraph == paragraph2) // We removed one character in that paragraph, so we should move the cursor back to old position... minus one character
+			index2--;
+		setCursorPosition(paragraph2, index2);
+	}
+
+
+//	setAutoFormatting(oldAutoFormating);
 }
 
 /**

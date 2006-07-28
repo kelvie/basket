@@ -1,60 +1,31 @@
-# translation of es.po to
-# translation of es.po to
-# translation of es.po to
-# Copyright (C) 2005 Free Software Foundation, Inc.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# , 2005.
-# Sébastien Laoût <slaout@linux62.org>, 2005.
+# translation of cs.po to Czech
 #
+# Radomir Fojtik <radfoj@seznam.cz>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
+"Project-Id-Version: cs\n"
 "POT-Creation-Date: 2006-07-27 22:53+0200\n"
-"PO-Revision-Date: 2005-12-10 21:32+0100\n"
-"Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
-"Language-Team:  <fr@li.org>\n"
+"PO-Revision-Date: 2006-06-30 19:33+0200\n"
+"Last-Translator: Radomir Fojtik <radfoj@seznam.cz>\n"
+"Language-Team: Czech\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
-"Plural-Forms:  nplurals=2; plural=(n > 1);\n"
+"X-Generator: KBabel 1.11.2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: aboutdata.cpp:26
 msgid "A set of baskets to keep a full range of data on hand."
-msgstr ""
-"Un conjunto de cestas para mantener toda una gama de datos al alcance de la "
-"mano."
+msgstr "Soubor košíků k zachování velké škály dat na dlani."
 
 #: aboutdata.cpp:29
-#, fuzzy
 msgid "BasKet Note Pads"
-msgstr "Propiedades de la cesta"
+msgstr "BasKet Note Pads"
 
 #: aboutdata.cpp:35
-#, fuzzy
 msgid "Author, maintainer"
-msgstr "Autor, mantenedor"
+msgstr "Autor, maintainer"
 
 #: aboutdata.cpp:36
 msgid "Basket encryption, Kontact integration, KnowIt importer"
@@ -62,282 +33,260 @@ msgstr ""
 
 #: aboutdata.cpp:37 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
-msgstr "Icono"
+msgstr "Ikona"
 
 #: basket.cpp:523
-#, fuzzy
 msgid "The new note does not match the filter and is hidden."
-msgstr ""
-"El nuevo elemento no coincide con el criterio de búsqueda y por tanto no se "
-"muestra."
+msgstr "Nová poznámka neodpovídá filtru a je skrytá."
 
 #: basket.cpp:524
-#, fuzzy
 msgid "A new note does not match the filter and is hidden."
-msgstr ""
-"El nuevo elemento no coincide con el criterio de búsqueda y por tanto no se "
-"muestra."
+msgstr "Nová poznámka neodpovídá filtru a je skrytá."
 
 #: basket.cpp:525
-#, fuzzy
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
-"El nuevo elemento no coincide con el criterio de búsqueda y por tanto no se "
-"muestra."
+msgstr "Některé nové poznámky neodpovídají filtru a jsou skryty."
 
 #: basket.cpp:526
-#, fuzzy
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"El nuevo elemento no coincide con el criterio de búsqueda y por tanto no se "
-"muestra."
+msgstr "Nové poznámky neodpovídají filtru a jsou skryty."
 
 #: basket.cpp:1528
 msgid ""
 "_: The verb (Group New Note)\n"
 "Group"
-msgstr ""
+msgstr "Skupina"
 
 #: basket.cpp:1528
 msgid ""
 "_: The verb (Insert New Note)\n"
 "Insert"
-msgstr ""
+msgstr "Vložit"
 
 #: basket.cpp:2228
 msgid ""
 "This message should never appear. If it's the case, this program is buggy! "
 "Please report the bug to the developer."
 msgstr ""
+"Tato zpráva by se neměla zobrazit. Pokud je tomu tak, je tento program "
+"chybný! Prosím reportujte bug vývojáři."
 
 #: basket.cpp:2645 basket.cpp:2690 basket.cpp:2693
 msgid ""
 "Insert note here\n"
 "Right click for more options"
 msgstr ""
+"Vložit poznámku\n"
+"Klikněte pravým myšítkem pro více možností"
 
 #: basket.cpp:2663
 msgid "Resize those columns"
-msgstr ""
+msgstr "Změňte velikost těchto sloupců"
 
 #: basket.cpp:2665
 msgid "Resize this group"
-msgstr ""
+msgstr "Změňte velikost této skupiny"
 
 #: basket.cpp:2666
-#, fuzzy
 msgid "Resize this note"
-msgstr "&Borrar el elemento"
+msgstr "Změňte velikost této poznámky"
 
 #: basket.cpp:2667
-#, fuzzy
 msgid "Select or move this note"
-msgstr "&Borrar el elemento"
+msgstr "Vyberte nebo přesuňte tuto poznámku"
 
 #: basket.cpp:2668
 msgid "Select or move this group"
-msgstr ""
+msgstr "Vyberte nebo přesuňte tuto skupinu"
 
 #: basket.cpp:2669
-#, fuzzy
 msgid "Assign or remove tags from this note"
-msgstr "&Borrar el elemento"
+msgstr "Přiřaď nebo zruš značku pro tuto poznámku"
 
 #: basket.cpp:2671
 #, c-format
 msgid "<b>Assigned Tags</b>: %1"
-msgstr ""
+msgstr "<b>Přiřazené značky </b>: %1"
 
 #: basket.cpp:2678
 msgid "%1, %2"
-msgstr ""
+msgstr "%1, %2"
 
 #: basket.cpp:2685
 msgid "Expand this group"
-msgstr ""
+msgstr "Rozbalit tuto skupinu"
 
 #: basket.cpp:2686
 msgid "Collapse this group"
-msgstr ""
+msgstr "Sbalit tuto skupinu"
 
 #: basket.cpp:2691
 msgid ""
 "Group note with the one below\n"
 "Right click for more options"
 msgstr ""
+"Seskupit poznámku spoznámkou níže\n"
+"Klikněte pravým myšítkem pro více možností"
 
 #: basket.cpp:2692
 msgid ""
 "Group note with the one above\n"
 "Right click for more options"
 msgstr ""
+"Seskupit poznámku spoznámkou výše\n"
+"Klikněte pravým myšítkem pro více možností"
 
 #: basket.cpp:2708
 msgid "Added"
-msgstr ""
+msgstr "Přidáno"
 
 #: basket.cpp:2709
 msgid "Last Modification"
-msgstr ""
+msgstr "Poslední změna"
 
 #: basket.cpp:2717
 msgid ""
 "_: of the form 'key: value'\n"
 "<b>%1</b>: %2"
-msgstr ""
+msgstr "<b>%1</b>: %2"
 
 #: basket.cpp:2720
 msgid "Click on the right to group instead of insert"
-msgstr ""
+msgstr "Klikněte napravo pro seskupení místo vložení"
 
 #: basket.cpp:2722
 msgid "Click on the left to insert instead of group"
-msgstr ""
+msgstr "Klikněte nalevo pro vložení místo seskupení"
 
 #: basket.cpp:2911
 msgid "&Unlock"
-msgstr ""
+msgstr "&Odemknout"
 
 #: basket.cpp:2916
 msgid "Password protected basket."
-msgstr ""
+msgstr "Heslem chráněný košík."
 
 #: basket.cpp:2918
 msgid "Press Unlock to view it."
-msgstr ""
+msgstr "Zmáčkněte Odemknout pro zobrazení."
 
 #: basket.cpp:2920
 #, c-format
 msgid "Encryption is not supported by<br/>this version of %1."
-msgstr ""
+msgstr "Šifrování není podporováno <br/>touto verzí %1."
 
 #: basket.cpp:2959 bnpview.cpp:1192 bnpview.cpp:1778
 msgid "Loading..."
-msgstr ""
+msgstr "Načítám..."
 
 #: basket.cpp:3200 basket.cpp:3221 bnpview.cpp:2072
-#, fuzzy
 msgid "&Customize..."
-msgstr "&Visualizar..."
+msgstr "&Přizpůsobit..."
 
 #: basket.cpp:3202 basket.cpp:3223
 msgid "&Filter by this Tag"
-msgstr ""
+msgstr "&Filtrovat touto značkou"
 
 #: basket.cpp:3224
 msgid "Filter by this &State"
-msgstr ""
+msgstr "Filtrovat tímto &stavem"
 
 #: basket.cpp:3304
-#, fuzzy
 msgid "Tags"
-msgstr "Guardar destino"
+msgstr "Značky"
 
 #: basket.cpp:3864
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: <qt>Do you really want to delete this note?</qt>\n"
 "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
 msgstr ""
-"_n: <qt>¿Realmente desea eliminar este elemento?</qt>\n"
-"<qt>¿Desea realmente eliminar todos estos <b>%n</b> elementos?</qt>"
+"<qt>Opravdu chcete smazat tuto poznámku?</qt>\n"
+"<qt>Opravdu chcete smazat tyto <b>%n</b> poznámky?</qt>\n"
+"<qt>Opravdu chcete smazat těchto <b>%n</b> poznámek?</qt>"
 
 #: basket.cpp:3866
-#, fuzzy
 msgid ""
 "_n: Delete Note\n"
 "Delete Notes"
 msgstr ""
-"_n: Eliminar elemento\n"
-"Eliminar elementos"
+" Smazat poznámku\n"
+"Smazat poznámky\n"
+"Smazat poznámky"
 
 #: basket.cpp:3964
-#, fuzzy
 msgid ""
 "_n: Copied note to clipboard.\n"
 "Copied notes to clipboard."
 msgstr ""
-"_n: Elemento copiado al portapapeles.\n"
-"Elementos copiados al portapapeles."
+"Poznámka zkopírována do schránky.\n"
+"Poznámky zkopírovány  do schránky.\n"
+"Poznámky zkopírovány  do schránky."
 
 #: basket.cpp:3965
-#, fuzzy
 msgid ""
 "_n: Cut note to clipboard.\n"
 "Cut notes to clipboard."
 msgstr ""
-"_n: Elemento cortado al portapapeles.\n"
-"Elementos cortados hacia el portapapeles."
+"Poznámka vyjmuta do schránky.\n"
+"Poznámky vyjmuty do schránky.\n"
+"Poznámky vyjmuty do schránky."
 
 #: basket.cpp:3966
-#, fuzzy
 msgid ""
 "_n: Copied note to selection.\n"
 "Copied notes to selection."
 msgstr ""
-"_n: Elemento copiado a la selección.\n"
-"Elementos copiados a la selección."
+" Zkopírována poznámka do výběru.\n"
+"Zkopírovány poznámky do výběru.\n"
+"Zkopírovány poznámky do výběru."
 
 #: basket.cpp:4012 basket.cpp:4061
-#, fuzzy
 msgid "Unable to open this note."
-msgstr "&Borrar el elemento"
+msgstr "Nelze otevřít tuto poznámku."
 
 #: basket.cpp:4036
 msgid "You are not authorized to open this file."
-msgstr ""
+msgstr "Nejste oprávněni otevřít tento soubor."
 
 #: basket.cpp:4078
-#, fuzzy
 msgid "Save to File"
-msgstr "Cargar desde &Fichero..."
+msgstr "Uložit do souboru"
 
 #: basket.cpp:4486 basket.cpp:4487
-#, fuzzy
 msgid ""
 "_: HTML export folder (files)\n"
 "%1_files"
-msgstr ""
-"_: Carpeta donde exportar HTML\n"
-"%1_ficheros"
+msgstr "%1_files"
 
 #: basket.cpp:4493 basket.cpp:4494
-#, fuzzy
 msgid ""
 "_: HTML export folder (icons)\n"
 "icons"
-msgstr ""
-"_: Carpeta donde exportar HTML\n"
-"%1_ficheros"
+msgstr "ikons"
 
 #: basket.cpp:4495 basket.cpp:4496
-#, fuzzy
 msgid ""
 "_: HTML export folder (images)\n"
 "images"
-msgstr ""
-"_: Carpeta donde exportar HTML\n"
-"%1_ficheros"
+msgstr "images"
 
 #: basket.cpp:4497 basket.cpp:4498
-#, fuzzy
 msgid ""
 "_: HTML export folder (data)\n"
 "data"
-msgstr ""
-"_: Carpeta donde exportar HTML\n"
-"%1_ficheros"
+msgstr "data"
 
 #: basket.cpp:4621
 msgid "Notes matching the filter &quot;%1&quot;:"
-msgstr ""
+msgstr "Poznámky odpovídající filtru &quot;%1&quot;:"
 
 #: basket.cpp:4658
 msgid ""
 "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
-"Creado con %1, una herramienta para tomar notas y mantener gran variedad de "
-"datos al alcance de la mano."
+"Vytvořeno pomocí %1, KDE nástroj pro zachytávání poznámek a "
+"udržování velkého množství dat na dlani."
 
 #: basket.cpp:5251
 msgid "Please enter the password for the following private key:"
@@ -346,123 +295,124 @@ msgstr ""
 #: basket.cpp:5253
 #, fuzzy
 msgid "Please enter the password for the basket <b>%1</b>:"
-msgstr "Contenido del portapeles (%1) pegado en la cesta <i>%2</i>"
+msgstr "Obsah schránky vložen do košíku <i>%1</i>"
 
 #: basket.cpp:5298
 #, fuzzy
 msgid "Please assign a password to the basket <b>%1</b>:"
-msgstr "Selección (%1) pegada en la cesta <i>%2</i>"
+msgstr "Výběr vložen do košíku <i>%1</i>"
 
 #: basket.cpp:5360
 msgid "Insuficient Disk Space to Save Basket Data"
-msgstr ""
+msgstr "Nedostatečné místo na disku pro uložení dat košíku"
 
 #: basket.cpp:5361
 msgid "Wrong Basket File Permissions"
-msgstr ""
+msgstr "Špatné práva souboru košíku"
 
 #: basket.cpp:5364
 msgid ""
 "Please remove files on the disk <b>%1</b> to let the application safely save "
 "your changes."
 msgstr ""
+"Prosím odstraňte soubory na disku <b>%1</b>, aby aplikace bezpečně "
+"uložila Vámi provedené změny."
 
 #: basket.cpp:5366
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check you have write access "
 "to it and the parent folders."
 msgstr ""
+"Práva k souboru jsou špatná pro <b>%1</b>. Prosím zkontrolujte, zda "
+"máte právo zápisu."
 
 #: basket.cpp:5402
 msgid "Save Error"
-msgstr ""
+msgstr "Chyba ukládání"
 
 #: basketfactory.cpp:60
 msgid "Sorry, but the folder creation for this new basket has failed."
 msgstr ""
+"Promiňte, ale vytvoření adresáře pro tento košíš se nezdařilo."
 
 #: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
-#, fuzzy
 msgid "Basket Creation Failed"
-msgstr "Nombre de la cesta"
+msgstr "Vytvoření košíku se nezdařilo"
 
 #: basketfactory.cpp:90
 msgid "Sorry, but the template copying for this new basket has failed."
 msgstr ""
+"Promiňte, ale kopírování šablony pro tento nový košík se nezdařilo."
 
 #: basketfactory.cpp:111
 msgid "Sorry, but the template customization for this new basket has failed."
 msgstr ""
+"Promiňte, ale přizpůsobení šablony pro tento nový košík se "
+"nezdařilo."
 
 #: basketlistview.cpp:317
 msgid "%1+%2+"
-msgstr ""
+msgstr "%1+%2+"
 
 #: basketlistview.cpp:319
 msgid "%1+"
-msgstr ""
+msgstr "%1+"
 
 #: basketlistview.cpp:322
 msgid "%1+%2"
-msgstr ""
+msgstr "%1+%2"
 
 #: basketproperties.cpp:46
 msgid "Basket Properties"
-msgstr "Propiedades de la cesta"
+msgstr "Vlastnosti košíku"
 
 #: basketproperties.cpp:64 kgpgme.cpp:60 newbasketdialog.cpp:108
-#, fuzzy
 msgid "Name"
-msgstr "&Nombre:"
+msgstr "Jméno"
 
 #: basketproperties.cpp:76
-#, fuzzy
 msgid "Background &Image:"
-msgstr "Color de &Fondo:"
+msgstr "&Obrázek na pozadí:"
 
 #: basketproperties.cpp:77
-#, fuzzy
 msgid "&Background Color:"
-msgstr "Color de &Fondo:"
+msgstr "&Barva pozadí:"
 
 #: basketproperties.cpp:78
-#, fuzzy
 msgid "&Text Color:"
-msgstr "&Color"
+msgstr "Barva &textu:"
 
 #: basketproperties.cpp:87
 msgid "(None)"
-msgstr ""
+msgstr "(Žádná)"
 
 #: basketproperties.cpp:101 kcolorcombo2.cpp:138
 msgid "Other..."
-msgstr ""
+msgstr "Jiná..."
 
 #: basketproperties.cpp:107
-#, fuzzy
 msgid "Disposition"
-msgstr "en la posición del cursor"
+msgstr "Uspořádání"
 
 #: basketproperties.cpp:110
-#, fuzzy
 msgid "Col&umns:"
-msgstr "Colo&r:"
+msgstr "Slo&upce:"
 
 #: basketproperties.cpp:118
 msgid "&Free-form"
-msgstr ""
+msgstr "&Volně"
 
 #: basketproperties.cpp:119
 msgid "&Mind map"
-msgstr ""
+msgstr "&Myšlenková mapa"
 
 #: basketproperties.cpp:128
 msgid "&Keyboard Shortcut"
-msgstr ""
+msgstr "&Klávesové zkratky"
 
 #: basketproperties.cpp:133
 msgid "Learn some tips..."
-msgstr ""
+msgstr "Získej několik tipů..."
 
 #: basketproperties.cpp:134
 msgid ""
@@ -479,205 +429,198 @@ msgid ""
 "useful in addition to the configurable global shortcuts to eg. paste the "
 "clipboard or the selection into the current basket from anywhere.</p>"
 msgstr ""
+"<p><strong>Jednoduché zapamatování zkratek</strong>:<br>První volbou "
+"přiřadíte košíku zkratku kombinací kláves "
+"<strong>Alt+písmeno</strong>, přičemž toto písmeno bude ve stromu "
+"košíků podtrženo.<br>Například, pokud přiřadíte zkratku "
+"<i>Alt+T</i> košíku s názvem <i>Tipy</i>, košík bude ve stromu "
+"košíků zobrazen jako <i><u>T</u>ipy</i>. Pomůže to znázornit zkratku k "
+"jejímu rychlejšímu zapamatování.</p><p><strong>Lokální vs "
+"Globální</strong>:<br>První možnost umožní zobrazit košík když je  "
+"hlavní okno aktivní. Globální zkratky jsou platné odkudkoliv, dokonce "
+"pokud je okno schované.</p><p><strong>Zobrazit vs "
+"Přepnout</strong>:<br>Poslední možnost učiní tento košík současným "
+"bez otevírání hlavního okna. Je to užitečné spolu s nastavením "
+"globálních zkratek např. pro vložení  schránky nebo výběru do "
+"současného košíku, a to odkudkoliv.</p>"
 
 #: basketproperties.cpp:149
-#, fuzzy
 msgid "S&how this basket"
-msgstr "Ir a la cesta anterior"
+msgstr "&Zobrazit tento košík"
 
 #: basketproperties.cpp:150
 msgid "Show this basket (&global shortcut)"
-msgstr ""
+msgstr "Zobrazit tento košík (&globální zkratka)"
 
 #: basketproperties.cpp:151
 msgid "S&witch to this basket (global shortcut)"
-msgstr ""
+msgstr "Přepnout do tohoto košíku (&globální zkratka)"
 
 #: basketstatusbar.cpp:117
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
 msgstr ""
-"Ctrl+arrastrar: copiar, Mayús+arrastrar: mover, Mayús+Ctrl+arrastrar: "
-"enlazar."
+"Ctrl+pustit: kopírovat, Shift+pustit: přesunout, Shift+Ctrl+pustit: odkaz."
 
 #: basketstatusbar.cpp:138
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr ""
-"<p>Esta cesta ha sido <b>bloqueada</b>.<br>Pulse para desbloquearla.</p>"
+"<p>Tento košík je <b>zamknutý</b>.<br>Klikněte k jeho odemknutí.</p>"
 
 #: basketstatusbar.cpp:143
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
-msgstr "<p>Esta cesta está <b>desbloqueada</b>.<br>Pulse para bloquearla.</p>"
+msgstr ""
+"<p>Tento košík je <b>odemknutý</b>.<br>Klikněte k jeho uzamčení.</p>"
 
 #: bnpview.cpp:150 bnpview.cpp:1034
 msgid "General"
-msgstr "General"
+msgstr "Obecné"
 
 #: bnpview.cpp:164
 msgid "Only english and french languages are accepted."
-msgstr ""
+msgstr "Pouze anglický a francouzský jazyk je akceptován."
 
 #: bnpview.cpp:178
-#, fuzzy
 msgid "Paste clipboard contents in current basket"
-msgstr "Pegar el contenido actual del portapapeles en la cesta actual"
+msgstr "Vložit obsah schránky do současného košíku"
 
 #: bnpview.cpp:179
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
 msgstr ""
-"Permite pegar el contenido del portapapeles en la cesta actual sin necesidad "
-"de abrir la ventana principal."
+"Umožní vložit obsah schránky do současného košíku bez nutnosti "
+"otevírat hlavní okno."
 
 #: bnpview.cpp:182
-#, fuzzy
 msgid "Show current basket name"
-msgstr "Mostrar el icono act&ual en la bandeja del sistema"
+msgstr "Zobrazit název současného košíku"
 
 #: bnpview.cpp:183
-#, fuzzy
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
-"Permite pegar el contenido del portapapeles en la cesta actual sin necesidad "
-"de abrir la ventana principal."
+"Umožní zjistit současný košík bez nutnosti otevírat hlavní okno."
 
 #: bnpview.cpp:186
 msgid "Paste selection in current basket"
-msgstr "Pegar la selección en la cesta actual"
+msgstr "Vložit výběr do současného košíku"
 
 #: bnpview.cpp:187
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
 msgstr ""
-"Permite pegar la selección del portapapeles en la cesta actual sin "
-"necesidad de abrir la ventana principal."
+"Umožní vkládat výběr ze schránky do současného košíku bez nutnosti "
+"otevírat hlavní okno."
 
 #: bnpview.cpp:190
 msgid "Create a new basket"
-msgstr "Crear una nueva cesta"
+msgstr "Vytvořit nový košík"
 
 #: bnpview.cpp:191
-#, fuzzy
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
 "paste selection in this new basket)."
 msgstr ""
-"Permite crear una nueva cesta sin necesidad de abrir la ventana principal (a "
-"continuación puede usar alguno de los otros atajos globales para añadir un "
-"elemento ó pegar el contenido del portapapeles ó la selección actual en "
-"esta nueva cesta)."
+"Umožní vytvořit nový košík bez nutnosti mít otevřené hlavní okno "
+"(můžete pak použít jinou globální zkratku pro přidání poznámky, "
+"vložení schránky nebo vložení výběru v tomto novém košíku)."
 
 #: bnpview.cpp:194
 msgid "Go to previous basket"
-msgstr "Ir a la cesta anterior"
+msgstr "Přejít do předešlého košíku"
 
 #: bnpview.cpp:195
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr ""
-"Permite cambiar la cesta actual a la anterior sin necesidad de abrir la "
-"ventana principal."
+"Umožní změnit současný košík na předchozí bez nutnosti mít "
+"otevřené hlavní okno."
 
 #: bnpview.cpp:198
 msgid "Go to next basket"
-msgstr "Ir a la cesta siguiente"
+msgstr "Přejít do následujícího košíku"
 
 #: bnpview.cpp:199
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
 msgstr ""
-"Permite cambiar la cesta actual por la siguiente sin necesidad de abrir la "
-"ventana principal."
+"Umožní změnit současný košík na další bez nutnosti mít otevřené "
+"hlavní okno."
 
 #: bnpview.cpp:206
-#, fuzzy
 msgid "Insert text note"
-msgstr "Insertar elemento de texto"
+msgstr "Vložit textovou poznámku"
 
 #: bnpview.cpp:207
-#, fuzzy
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
-"Añadir un elemento de texto sin necesidad de abrir la ventana principal."
+"Přodat textovou poznámku do současného košíku bez nutnosti mít "
+"otevřené hlavní okno."
 
 #: bnpview.cpp:210 settings.cpp:786
-#, fuzzy
 msgid "Insert image note"
-msgstr "Insertar elemento imagen"
+msgstr "Vložit obrázek"
 
 #: bnpview.cpp:211
-#, fuzzy
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
-"Añadir un elemento de imagen a la cesta actual sin necesidad de abrir la "
-"ventana principal."
+"Přidat obrázek do současného košíku bez nutnosti mít otevřené "
+"hlavní okno."
 
 #: bnpview.cpp:214 settings.cpp:787
-#, fuzzy
 msgid "Insert link note"
-msgstr "Insertar elemento 'enlace'"
+msgstr "Vložit odkaz"
 
 #: bnpview.cpp:215
-#, fuzzy
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
-"Añadir un elemento de enlace a la cesta actual sin necesidad de abrir la "
-"ventana principal."
+"Přidat odkaz do současného košíku bez nutnosti mít otevřené hlavní "
+"okno."
 
 #: bnpview.cpp:218 settings.cpp:789
-#, fuzzy
 msgid "Insert color note"
-msgstr "Insertar elemento 'color'"
+msgstr "Vložit barvu"
 
 #: bnpview.cpp:219
-#, fuzzy
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
-"Añadir un elemento 'color' a la cesta actual sin necesidad de abrir la "
-"ventana principal."
+"Přidá poznámku barby do současného košíku bez nutnosti otevírat "
+"hlavní okno."
 
 #: bnpview.cpp:222
 msgid "Pick color from screen"
-msgstr "Capturar un color de la pantalla"
+msgstr "Zachytit barvu z obrazovky"
 
 #: bnpview.cpp:223
-#, fuzzy
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
 msgstr ""
-"Añadir un elemento de color capturado de un punto de la pantalla a la cesta "
-"actual sin necesidad de abrir la ventana principal."
+"Přidat barvu vybranou z jednoho pixelu na obrazovce do současného "
+"košíku bez nutnosti otevírat hlavní okno."
 
 #: bnpview.cpp:227
 msgid "Grab screen zone"
-msgstr ""
+msgstr "Sejmou část obrazovky"
 
 #: bnpview.cpp:228
-#, fuzzy
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
 msgstr ""
-"Añadir un elemento de imagen a la cesta actual sin necesidad de abrir la "
-"ventana principal."
+"Zachytí oblast obrazovky jako obrázek v současném košíku bez "
+"otevírání hlavího okna."
 
 #: bnpview.cpp:240
-#, fuzzy
 msgid "Baskets"
-msgstr "Cesta"
+msgstr "Košíky"
 
 #: bnpview.cpp:296
 msgid ""
@@ -686,19 +629,23 @@ msgid ""
 "by creating new baskets inside others. You can browse between them by "
 "clicking a basket to open it, or reorganize them using drag and drop."
 msgstr ""
+"<h2>Strom košíků</h2>Zde je seznam Vašich košíků. Můžete svá date "
+"organizovat přesouváním do jiných košíků. Můžete seskupovat "
+"košíky podle předmětu vytvořením nového košíku uvnitř jiných. "
+"Můžete mezi nimi přecházet kliknutím na příslušný koš, nebo "
+"přeuspořádat je použitím funkce táhní a pust."
 
 #: bnpview.cpp:321
 msgid "&Hide Window"
-msgstr "&Ocultar ventana"
+msgstr "&Skrýt okno"
 
 #: bnpview.cpp:325
 msgid "&Export to HTML..."
-msgstr "&Exportar a HTML..."
+msgstr "&Exportovat do HTML..."
 
 #: bnpview.cpp:327
-#, fuzzy
 msgid "K&Notes"
-msgstr "&KNotes"
+msgstr "K&Notes"
 
 #: bnpview.cpp:329
 msgid "K&Jots"
@@ -706,294 +653,269 @@ msgstr "K&Jots"
 
 #: bnpview.cpp:331
 msgid "&KnowIt..."
-msgstr ""
+msgstr "&KnowIt..."
 
 #: bnpview.cpp:333
 msgid "Tux&Cards..."
-msgstr ""
+msgstr "Tux&Cards..."
 
 #: bnpview.cpp:335
 msgid "&Sticky Notes"
-msgstr "&Notas adhesivas"
+msgstr "&Sticky Notes"
 
 #: bnpview.cpp:337
-#, fuzzy
 msgid "&Tomboy"
-msgstr "&por"
+msgstr "&Tomboy"
 
 #: bnpview.cpp:342
 msgid "D&elete"
-msgstr "&Borrar"
+msgstr "&Smazat"
 
 #: bnpview.cpp:348
-#, fuzzy
 msgid "Selects all notes"
-msgstr "Seleccionar todos los elementos"
+msgstr "Vybere všechny poznámky"
 
 #: bnpview.cpp:349
 msgid "U&nselect All"
-msgstr "&Deseleccionar todos"
+msgstr "Odz&načit vše"
 
 #: bnpview.cpp:351
-#, fuzzy
 msgid "Unselects all selected notes"
-msgstr "Deseleccionar todos los elementos marcados"
+msgstr "Odznačí všechny označené poznámky"
 
 #: bnpview.cpp:352
 msgid "&Invert Selection"
-msgstr "&Invertir la selección"
+msgstr "&Obrátit výběr"
 
 #: bnpview.cpp:355
-#, fuzzy
 msgid "Inverts the current selection of notes"
-msgstr "Invertir la selección actual de elementos"
+msgstr "Obrátí současně označené poznámky"
 
 #: bnpview.cpp:357
-#, fuzzy
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
-msgstr ""
-"_: Verbo; no Menú\n"
-"&Editar..."
+msgstr "&Upravit..."
 
 #: bnpview.cpp:362
 msgid "&Open"
-msgstr "&Abrir"
+msgstr "&Otevřít"
 
 #: bnpview.cpp:365
 msgid "Open &With..."
-msgstr "Abri &con..."
+msgstr "Otevřít &s..."
 
 #: bnpview.cpp:369
-#, fuzzy
 msgid "&Save to File..."
-msgstr "Cargar desde &Fichero..."
+msgstr "&Uložit do souboru..."
 
 #: bnpview.cpp:372
-#, fuzzy
 msgid "&Group"
-msgstr "I&r"
+msgstr "&Seskupit"
 
 #: bnpview.cpp:374
 msgid "U&ngroup"
-msgstr ""
+msgstr "&Rozdělit"
 
 #: bnpview.cpp:377
 msgid "Move on &Top"
-msgstr "Mover al &frente"
+msgstr "Posunout &nahoru"
 
 #: bnpview.cpp:379
 msgid "Move &Up"
-msgstr "&Subir"
+msgstr "Posunout &výš"
 
 #: bnpview.cpp:381
 msgid "Move &Down"
-msgstr "&Bajar"
+msgstr "Posunout &níž"
 
 #: bnpview.cpp:383
 msgid "Move on &Bottom"
-msgstr "Llevar al f&ondo"
+msgstr "Posunout &dolů"
 
 #: bnpview.cpp:399
 msgid "&Text"
-msgstr "&Texto"
+msgstr "&Text"
 
 #: bnpview.cpp:400
 msgid "&Link"
-msgstr "En&lace"
+msgstr "&Odkaz"
 
 #: bnpview.cpp:401
 msgid "&Image"
-msgstr "&Imagen"
+msgstr "&Obrázek"
 
 #: bnpview.cpp:402
 msgid "&Color"
-msgstr "&Color"
+msgstr "&Barva"
 
 #: bnpview.cpp:403
 msgid "L&auncher"
-msgstr "Lan&zador"
+msgstr "&Spouštěč"
 
 #: bnpview.cpp:405
-#, fuzzy
 msgid "Import Launcher from &KDE Menu..."
-msgstr "Importar lanzador de &KMenu..."
+msgstr "Importovat spouštěč z &KDE nabídky..."
 
 #: bnpview.cpp:406
-#, fuzzy
 msgid "Im&port Icon..."
-msgstr "Im&portar un icono..."
+msgstr "Im&portovat ikonu..."
 
 #: bnpview.cpp:407
-#, fuzzy
 msgid "Load From &File..."
-msgstr "Cargar desde &Fichero..."
+msgstr "Načíst ze &souboru..."
 
 #: bnpview.cpp:430
-#, fuzzy
 msgid "C&olor from Screen"
-msgstr "C&olor desde la pantalla"
+msgstr "&Barva z obrazovky"
 
 #: bnpview.cpp:435
 msgid "Grab Screen &Zone"
-msgstr ""
+msgstr "Sejmou část &obrazovky"
 
 #: bnpview.cpp:465
-#, fuzzy
 msgid "&New Basket..."
-msgstr "Cesta &siguiente"
+msgstr "&Nový košík..."
 
 #: bnpview.cpp:467
-#, fuzzy
 msgid "New &Sub-Basket..."
-msgstr "Cesta &siguiente"
+msgstr "Nový &podřazený košík..."
 
 #: bnpview.cpp:469
-#, fuzzy
 msgid "New Si&bling Basket..."
-msgstr "Cesta &siguiente"
+msgstr "Nový &sourozenecký košík..."
 
 #: bnpview.cpp:472
-#, fuzzy
 msgid "&New"
-msgstr "&Nuevo..."
+msgstr "&Nový"
 
 #: bnpview.cpp:480
-#, fuzzy
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
-msgstr "Cesta &siguiente"
+msgstr "&Odstranit"
 
 #: bnpview.cpp:483
+#, fuzzy
 msgid ""
 "_: Password protection\n"
 "Pass&word..."
-msgstr ""
+msgstr "&Heslo..."
 
 #: bnpview.cpp:485
-#, fuzzy
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
-msgstr "Cesta &siguiente"
+msgstr "&Zamknout"
 
 #: bnpview.cpp:495
-#, fuzzy
 msgid "&Filter"
-msgstr "&Ficheros"
+msgstr "&Filtrovat"
 
 #: bnpview.cpp:499
-#, fuzzy
 msgid "Filter all &Baskets"
-msgstr "Borrar la cesta"
+msgstr "Filtrovat všechny &košíky"
 
 #: bnpview.cpp:503
-#, fuzzy
 msgid "&Reset Filter"
-msgstr "&Restablecer búsqueda"
+msgstr "&Vyčistit filtr"
 
 #: bnpview.cpp:508
 msgid "&Previous Basket"
-msgstr "Cesta &anterior"
+msgstr "&Předešlý košík"
 
 #: bnpview.cpp:510
 msgid "&Next Basket"
-msgstr "Cesta &siguiente"
+msgstr "&Další košík"
 
 #: bnpview.cpp:512
-#, fuzzy
 msgid "&Fold Basket"
-msgstr "&Cesta"
+msgstr "&Rozbalit košík"
 
 #: bnpview.cpp:514
-#, fuzzy
 msgid "&Expand Basket"
-msgstr "Cesta &siguiente"
+msgstr "&Sbalit košík"
 
 #: bnpview.cpp:816
 msgid "Plain Text Notes Conversion"
-msgstr ""
+msgstr "Převod poznámek prostého textu"
 
 #: bnpview.cpp:817
 msgid "Converting plain text notes to rich text ones..."
-msgstr ""
+msgstr "Převádím poznámky v prostém textu do formátovatelných..."
 
 #: bnpview.cpp:1190
 #, fuzzy
 msgid "Locked"
-msgstr "(Bloqueada)"
+msgstr "(Uzamčen)"
 
 #: bnpview.cpp:1194
-#, fuzzy
 msgid "No notes"
-msgstr "sin elementos"
+msgstr "Žádné poznámky"
 
 #: bnpview.cpp:1196
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
 msgstr ""
-"_n: %n elemento\n"
-"%n elementos"
+" %n poznámka\n"
+"%n poznámky\n"
+"%n poznámek"
 
 #: bnpview.cpp:1197
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
 msgstr ""
-"_n: %n seleccionado\n"
-"%n seleccionados"
+" %n vybraná\n"
+" %n vybrané\n"
+" %n vybraných"
 
 #: bnpview.cpp:1198
 msgid "all matches"
-msgstr ""
+msgstr "všechny odpovídající"
 
 #: bnpview.cpp:1198
-#, fuzzy
 msgid "no filter"
-msgstr "&Ficheros"
+msgstr "žádný filtr"
 
 #: bnpview.cpp:1200
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
 msgstr ""
-"_n: %n elemento\n"
-"%n elementos"
+"%n odpovídá\n"
+"%n odpovídají\n"
+"%n odpovídajících"
 
 #: bnpview.cpp:1202
-#, fuzzy
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
-msgstr ""
-"_: por ej. \"18 elementos, 10 encontrados, 5 seleccionados\"\n"
-"%1, %2, %3"
+msgstr "%1, %2, %3"
 
 #: bnpview.cpp:1319
 msgid "Picked color to basket <i>%1</i>"
-msgstr "Tomado color en la cesta <i>%1</i>"
+msgstr "Vybrána barva do košíku <i>%1</i>"
 
 #: bnpview.cpp:1356
 #, fuzzy
 msgid "The plain text notes have been converted to rich text ones."
-msgstr "Insertar elemento de texto enriquecido"
+msgstr "Textové poznámky byly převedeny do formátovatelných."
 
 #: bnpview.cpp:1356 bnpview.cpp:1358
 msgid "Conversion Finished"
-msgstr ""
+msgstr "Převod ukončen"
 
 #: bnpview.cpp:1358
+#, fuzzy
 msgid "There is no plain text notes to convert."
-msgstr ""
+msgstr "Nejsou žádné textové poznámky k převedení."
 
 #: bnpview.cpp:1367
-#, fuzzy
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of "
@@ -1003,100 +925,95 @@ msgid ""
 "sure the application is well installed but you had a preview version of it, "
 "try to remove the file %5basketui.rc</p>"
 msgstr ""
-"<p><b>El fichero 'basketui.rc' parece no existir ó es demasiado "
-"antiguo.</b><br>BasKet no puede continuar sin él.</p><p>Por favor, revise "
-"su instalación de BasKet.<br> Si no tiene acceso de administrador al "
-"sistema, puede copiar el fichero basketui.rc en la carpeta %1."
+"<p><b>Soubor basketui.rc zdá se že neexistuje nebo je příliš "
+"starý.<br>%1 nemůže bez něj běžet a zastaví se.</b></p><p>Prosím "
+"zkontrolujte Vaší instalaci %2.</p><p>Pokud nemáte administrátorská "
+"práva k instalaci, můžete zkopírovat soubor basketui.rc z instalačního "
+"archivu do adresáře <a href='file://%3'>%4</a>.</p><p>Pokud jste si jisti, "
+"že je správně naistalována, ale měli jste nainstalovanou předešlou "
+"preview verzi, zkuste odstranit %5basketui.rc</p>"
 
 #: bnpview.cpp:1378
 msgid "Ressource not Found"
-msgstr "Recurso no encontrado"
+msgstr "Zdroj nenalezen"
 
 #: bnpview.cpp:1399 bnpview.cpp:1408
-#, fuzzy
 msgid "Cannot add note."
-msgstr "No se pudo añadir el elemento."
+msgstr "Nelze přidat poznámku."
 
 #: bnpview.cpp:1470
-#, fuzzy
 msgid "Grabbed screen zone to basket <i>%1</i>"
-msgstr "Tomado color en la cesta <i>%1</i>"
+msgstr "Zachycená část obrazovky do košíku <i>%1</i>"
 
 #: bnpview.cpp:1518
 msgid "Delete Basket"
-msgstr "Borrar la cesta"
+msgstr "Smazat košík"
 
 #: bnpview.cpp:1521
-#, fuzzy
 msgid "Delete Only that Basket"
-msgstr "Borrar la cesta"
+msgstr "Smazat pouze ten košík"
 
 #: bnpview.cpp:1522
 msgid "Delete With its Childs"
-msgstr ""
+msgstr "Smazat s jeho dětmi"
 
 #: bnpview.cpp:1530 bnpview.cpp:1536
 #, fuzzy
 msgid ""
 "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr "<qt>¿Desea realmente eliminar <b>%1</b> y sus contenidos?</qt>"
+msgstr "<qt>Opravdu chcete odstranit košík <b>%1</b> a jeho obsah?</qt>"
 
 #: bnpview.cpp:1538
-#, fuzzy
 msgid "Remove Basket"
-msgstr "Cesta &siguiente"
+msgstr "Odstranit košík"
 
 #: bnpview.cpp:1540
-#, fuzzy
 msgid "&Remove Basket"
-msgstr "Cesta &siguiente"
+msgstr "&Odstranit košík"
 
 #: bnpview.cpp:1551
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
 msgstr ""
+"<qt><b>%1</b> má následující podřazený košík.<br>Chcete ho také "
+"odstranit?</qt>"
 
 #: bnpview.cpp:1554
 msgid "Remove Child Baskets"
-msgstr ""
+msgstr "Odstranit podřazený košík"
 
 #: bnpview.cpp:1556
-#, fuzzy
 msgid "&Remove Child Baskets"
-msgstr "Cesta &siguiente"
+msgstr "Odstranit &podřazený košík"
 
 #: bnpview.cpp:1690
-#, fuzzy
 msgid "Clipboard content pasted to basket <i>%1</i>"
-msgstr "Contenido del portapeles (%1) pegado en la cesta <i>%2</i>"
+msgstr "Obsah schránky vložen do košíku <i>%1</i>"
 
 #: bnpview.cpp:1698
-#, fuzzy
 msgid "Selection pasted to basket <i>%1</i>"
-msgstr "Selección (%1) pegada en la cesta <i>%2</i>"
+msgstr "Výběr vložen do košíku <i>%1</i>"
 
 #: bnpview.cpp:1710
-#, fuzzy
 msgid "No note was added."
-msgstr "No se añadieron elementos."
+msgstr "Nebyla přidána žádná poznámka."
 
 #: bnpview.cpp:1737
 msgid "Basket <i>%1</i> is locked"
-msgstr "La cesta <i>%1</i> está bloqueada"
+msgstr "Košík <i>%1</i> je uzamčen"
 
 #: bnpview.cpp:1762
 msgid "(Locked)"
-msgstr "(Bloqueada)"
+msgstr "(Uzamčen)"
 
 #: bnpview.cpp:2070
 msgid "&Assign new Tag..."
-msgstr ""
+msgstr "&Přidělit novou značku..."
 
 #: bnpview.cpp:2071
-#, fuzzy
 msgid "&Remove All"
-msgstr "Cesta &siguiente"
+msgstr "&Odstranit vše"
 
 #: crashhandler.cpp:80
 msgid ""
@@ -1108,12 +1025,22 @@ msgid ""
 "\n"
 "Many thanks."
 msgstr ""
+"%1 zhavaroval! Omlouváme se za to.\n"
+"\n"
+"Vše ale není ztraceno! Můžete nám pomoci vyřešit tento pád. "
+"Informace popisující pád jsou zachyceny níže, tak pouze klikněte "
+"poslat, nebo pokud máte čas, napište přesný popis jak ke krachu "
+"došlo.\n"
+"\n"
+"Mnohokrát díky."
 
 #: crashhandler.cpp:87
 msgid ""
 "The information below is to help the developers identify the problem, please "
 "do not modify it."
 msgstr ""
+"Informace níže mohou pomoci vývojářům identifikovat problém, prosím, "
+"nemodifikujte je."
 
 #: crashhandler.cpp:206
 msgid ""
@@ -1122,80 +1049,79 @@ msgid ""
 "But, all is not lost! Perhaps an upgrade is already available which fixes "
 "the problem. Please check your distribution's software repository."
 msgstr ""
+"%1 zhavaroval! Omlouváme se za to.\n"
+"\n"
+"Vše ale není ztraceno! Možná že aktualizace řešící tento problém "
+"je dostupná. Prosím, zkontrolujte repositář Vaší distribuce."
 
 #: debugwindow.cpp:34
 msgid "Debug Window"
-msgstr "Ventana de depuración"
+msgstr "Ladící okno"
 
 #: exporterdialog.cpp:37
 msgid "Export Basket to HTML"
-msgstr "Exportar cesta a HTML"
+msgstr "Exportovat košík do HTML"
 
 #: exporterdialog.cpp:46
 msgid "HTML Page Filename"
-msgstr "Nombre de fichero para la página HTML"
+msgstr "Název souboru HTML stránky"
 
 #: exporterdialog.cpp:49
 msgid "&Filename:"
-msgstr "&Fichero:"
+msgstr "&Název souboru:"
 
 #: exporterdialog.cpp:52
 msgid "&Embed linked local files"
-msgstr "&Embeber ficheros locales enlazados"
+msgstr "Vložit &odkazující lokální soubory"
 
 #: exporterdialog.cpp:53
 msgid "Embed &linked local folders"
-msgstr "Embeber carpetas locales en&lazadas"
+msgstr "Vložit &odkazující lokální adresáře"
 
 #: exporterdialog.cpp:54
-#, fuzzy
 msgid "Erase &previous files in target folder"
-msgstr "Borrar ficheros &antiguos en la carpeta destino"
+msgstr "&Vymazat předešlé soubory v cílovém adresáři"
 
 #: exporterdialog.cpp:55
 msgid "For&mat for impression"
-msgstr "For&mato de impresión"
+msgstr "For&mát pro lepší dojem"
 
 #: filter.cpp:60
-#, fuzzy
 msgid "Reset Filter"
-msgstr "&Restablecer búsqueda"
+msgstr "Vyčistit filtr"
 
 #: filter.cpp:64
-#, fuzzy
 msgid "&Filter: "
-msgstr "&Ficheros"
+msgstr "&Filtr: "
 
 #: filter.cpp:66
 #, fuzzy
 msgid "T&ag: "
-msgstr "Guardar destino"
+msgstr "&Značka: "
 
 #: filter.cpp:69
-#, fuzzy
 msgid "Filter all Baskets"
-msgstr "Borrar la cesta"
+msgstr "Filtrovat všechny košíky"
 
 #: filter.cpp:149
 msgid "(Not tagged)"
-msgstr ""
+msgstr "(Neoznačené)"
 
 #: filter.cpp:150
-#, fuzzy
 msgid "(Tagged)"
-msgstr "(Imagen) "
+msgstr "(Označené)"
 
 #: focusedwidgets.cpp:178
 msgid "Auto Spell Check"
-msgstr ""
+msgstr "Automatická kontrola pravopisu"
 
 #: focusedwidgets.cpp:178
 msgid "Check Spelling..."
-msgstr ""
+msgstr "Kontroluji pravopis..."
 
 #: focusedwidgets.cpp:181
 msgid "Allow Tabulations"
-msgstr ""
+msgstr "Povolit tabelace"
 
 #: formatimporter.cpp:123
 msgid ""
@@ -1206,111 +1132,117 @@ msgid ""
 "But remember that modifying one will not modify the other anymore as they "
 "are now separate entities.</p>"
 msgstr ""
+"<p>Zrcadlení adresářů již není možné (viz <a "
+"href='http://basket.kde.org/'>basket.kde.org</a> pro více "
+"informací).</p><p>Adresář <b>%1</b> byl zkopírován pro potřeby "
+"košíku. Můžete buď smazat tento adresář nebo smazat košík, nebo "
+"použít obě možnosti . Ale nezapomeňte, že modifikací jednoho již "
+"nedojde k modifikací druhého, protože jsou to tyní oddlělené "
+"entity.</p>"
 
 #: formatimporter.cpp:125
 msgid "Folder Mirror Import"
-msgstr ""
+msgstr "Import zrcadlení adresáře"
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
 msgid "(Default)"
-msgstr ""
+msgstr "(Výchozí)"
 
 #: kgpgme.cpp:49
 msgid "Private Key List"
-msgstr ""
+msgstr "Seznam osobních klíčů"
 
 #: kgpgme.cpp:61
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: kgpgme.cpp:62
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: kgpgme.cpp:67
 msgid "Choose a secret key:"
-msgstr ""
+msgstr "Zvolte tajný klíč:"
 
 #: kgpgme.cpp:228
+#, fuzzy
 msgid "Key listing unexpectedly truncated."
-msgstr ""
+msgstr "Výčet klíčů se nečekaně zkrátil"
 
 #: kgpgme.cpp:264
 msgid "Invalid recipient encountered"
-msgstr ""
+msgstr "Neplatný adresát "
 
 #: kgpgme.cpp:307
 msgid "Unsupported algorithm"
-msgstr ""
+msgstr "Nepodporovaný algoritmus"
 
 #: kgpgme.cpp:410
+#, fuzzy
 msgid "Wrong password."
-msgstr ""
+msgstr "&Bez hesla"
 
 #: kicondialog.cpp:84 kicondialog.cpp:94
 msgid "Select Icon"
-msgstr ""
+msgstr "Vybrat ikonu"
 
 #: kicondialog.cpp:121
 msgid "&Browse..."
-msgstr ""
+msgstr "&Procházet..."
 
 #: kicondialog.cpp:133
 msgid "(All Icons)"
-msgstr ""
+msgstr "(Všechny ikony)"
 
 #: kicondialog.cpp:134
 msgid "(Recent)"
-msgstr ""
+msgstr "(Poslední)"
 
 #: kicondialog.cpp:135
-#, fuzzy
 msgid "Actions"
-msgstr "Aplicaciones"
+msgstr "Akce"
 
 #: kicondialog.cpp:136
 msgid "Applications"
-msgstr "Aplicaciones"
+msgstr "Aplikace"
 
 #: kicondialog.cpp:137
 msgid "Devices"
-msgstr ""
+msgstr "Zařízení"
 
 #: kicondialog.cpp:138
-#, fuzzy
 msgid "Filesystem"
-msgstr "&Ficheros"
+msgstr "Souborový systém"
 
 #: kicondialog.cpp:139
-#, fuzzy
 msgid "File Types"
-msgstr "&Ficheros"
+msgstr "Typy souborů"
 
 #: kicondialog.cpp:356
 msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
-msgstr ""
+msgstr "*.png *.xpm *.svg *.svgz|ikony (*.png *.xpm *.svg *.svgz)"
 
 #: likeback.cpp:62
 msgid "I Like..."
-msgstr ""
+msgstr "Líbí se mi..."
 
 #: likeback.cpp:69
 #, fuzzy
 msgid "I Do not Like..."
-msgstr "&Visualizar..."
+msgstr "Nelíbí se mi..."
 
 #: likeback.cpp:76
 msgid "I Found a Bug..."
-msgstr ""
+msgstr "Nalezl jsem bug..."
 
 #: likeback.cpp:83
 msgid "Configure..."
-msgstr ""
+msgstr "Nastavit..."
 
 #: likeback.cpp:89
 msgid "What's &This?"
-msgstr ""
+msgstr "Co je &toto?"
 
 #: likeback.cpp:91
 msgid "&Change or Remove Email Address..."
@@ -1318,17 +1250,18 @@ msgstr ""
 
 #: likeback.cpp:93
 msgid "&Do not Help Anymore"
-msgstr ""
+msgstr "&Již více nepomáhat"
 
 #: likeback.cpp:129
 msgid ""
 "Are you sure you do not want to participate anymore in the application "
 "enhancing program?"
 msgstr ""
+"Jste si jistí, že se dále nechcete podílet na vylepšování aplikace?"
 
 #: likeback.cpp:130
 msgid "Do not Help Anymore"
-msgstr ""
+msgstr "Již více nepomáhat"
 
 #: likeback.cpp:170
 #, c-format
@@ -1355,11 +1288,11 @@ msgstr ""
 #: likeback.cpp:177
 #, fuzzy
 msgid "Examples:"
-msgstr "Ejemplo"
+msgstr "Příklad"
 
 #: likeback.cpp:179 likeback.cpp:518
 msgid "I like..."
-msgstr ""
+msgstr "Líbí se mi..."
 
 #: likeback.cpp:180
 msgid ""
@@ -1373,7 +1306,7 @@ msgstr ""
 
 #: likeback.cpp:182 likeback.cpp:525
 msgid "I do not like..."
-msgstr ""
+msgstr "Nelíbí se mi..."
 
 #: likeback.cpp:183
 msgid ""
@@ -1387,7 +1320,7 @@ msgstr ""
 
 #: likeback.cpp:185 likeback.cpp:532
 msgid "I found a bug..."
-msgstr ""
+msgstr "Nalezl jsem bug..."
 
 #: likeback.cpp:186
 msgid ""
@@ -1397,7 +1330,7 @@ msgstr ""
 
 #: likeback.cpp:188
 msgid "Help Improve the Application"
-msgstr ""
+msgstr "Pomozte vylepšit aplikaci"
 
 #: likeback.cpp:393
 msgid "Set Email Address"
@@ -1432,125 +1365,126 @@ msgstr ""
 
 #: likeback.cpp:519
 msgid "Please briefly describe what you like."
-msgstr ""
+msgstr "Stručně prosím popiště co se Vám líbí."
 
 #: likeback.cpp:526
 msgid "Please briefly describe what you do not like."
-msgstr ""
+msgstr "Stručně prosím popište, co se Vám nelíbí."
 
 #: likeback.cpp:533
 msgid "Please briefly describe the bug you encountered."
-msgstr ""
+msgstr "Stručně prosím popište, na jaký chybu jste narazili."
 
 #: likeback.cpp:570
-#, fuzzy
 msgid "Send"
-msgstr "Sonido"
+msgstr "Poslat"
 
 #: likeback.cpp:582
 msgid "Only english language is accepted."
-msgstr ""
+msgstr "Pouze anglický jazyk je akceptován."
 
 #: likeback.cpp:586
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
 msgstr ""
+"Pamatujte, že pro zlepšení této aplikace je důležité říci nám "
+"věci, které se Vám líbí stejně jako věci které se Vám nelíbí."
 
 #: likeback.cpp:591
+#, fuzzy
 msgid "Do not ask for features: your wishes will be ignored."
-msgstr ""
+msgstr "Neptejte se na novou vlastnost, Vaše přání bude ignorováno."
 
 #: likeback.cpp:597
 #, fuzzy
 msgid "Send a Comment"
-msgstr "Coman&do:"
+msgstr "Komentář"
 
 #: likeback.cpp:645
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
-msgstr ""
+msgstr "<p>Chyba při posílání zprávy.</p><p>Prosím, zkuste později.</p>"
 
 #: likeback.cpp:645
 msgid "Transfer Error"
-msgstr ""
+msgstr "Chyba přenosu"
 
 #: likeback.cpp:647
 msgid ""
 "<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
 "will help improve the application.</p>"
 msgstr ""
+"<p>Váš komentář byl úspěšně odeslán.</p><p>Díky za Váš čas. "
+"Pomůže to ke zlepšení aplikace.</p>"
 
 #: likeback.cpp:647
 #, fuzzy
 msgid "Comment Sent"
-msgstr "Coman&do:"
+msgstr "Komentář"
 
 #: linklabel.cpp:560
 msgid "I&talic"
-msgstr "&Cursiva"
+msgstr "S&kloněné"
 
 #: linklabel.cpp:564
 msgid "&Bold"
-msgstr "&Negrilla"
+msgstr "&Tučné"
 
 #: linklabel.cpp:572
 msgid "Always"
-msgstr "Siempre"
+msgstr "Vždy"
 
 #: linklabel.cpp:573
 msgid "Never"
-msgstr "Nunca"
+msgstr "Nikdy"
 
 #: linklabel.cpp:574
 msgid "On mouse hovering"
-msgstr "Cuando el ratón pase por encima"
+msgstr "Po přejetí myší"
 
 #: linklabel.cpp:575
 msgid "When mouse is outside"
-msgstr "Cuando el cursor esté fuera"
+msgstr "Pokud myš opustí"
 
 #: linklabel.cpp:576
 msgid "&Underline:"
-msgstr "S&ubrayado:"
+msgstr "&Podtrhnout:"
 
 #: linklabel.cpp:582
 msgid "Colo&r:"
-msgstr "Colo&r:"
+msgstr "Ba&rva:"
 
 #: linklabel.cpp:588
 msgid "&Mouse hover color:"
-msgstr "Color cuando el ratón pase por enci&ma:"
+msgstr "Barva po přejetí &myší:"
 
 #: linklabel.cpp:596
-#, fuzzy
 msgid "&Icon size:"
-msgstr "&Icono:"
+msgstr "Velikost &ikony:"
 
 #: linklabel.cpp:601
 msgid "None"
-msgstr ""
+msgstr "Žádný"
 
 #: linklabel.cpp:602
-#, fuzzy
 msgid "Icon size"
-msgstr "Al lado"
+msgstr "Velikost ikony"
 
 #: linklabel.cpp:603
 msgid "Twice the icon size"
-msgstr ""
+msgstr "Dvojitá velikost ikony"
 
 #: linklabel.cpp:604
 msgid "Three times the icon size"
-msgstr ""
+msgstr "Trojitá velikost ikony"
 
 #: linklabel.cpp:605
-#, fuzzy
 msgid "&Preview:"
-msgstr "&Propiedades"
+msgstr "&Náhled:"
 
 #: linklabel.cpp:607
 msgid "You disabled preview but still see images?"
-msgstr ""
+msgstr "Stále vidíte obrázky i po zakázání náhledů?"
 
 #: linklabel.cpp:608
 msgid ""
@@ -1567,107 +1501,112 @@ msgid ""
 "\"Image or animation\" in the \"View Content of Added Files for the "
 "Following Types\" group.</p>"
 msgstr ""
+"<p>To je normální protože existuje několik typů poznámek.<br>Tohle "
+"nastavení ovlivní pouze soubory a lokální odkazy.<br>A obrázky které "
+"vidíte jsou obrázkové poznámky, ne souborové poznámky.<br>Souborové "
+"poznámky jsou obecné dokumenty, zatímco obrázkové poznámky jsou "
+"obrázky, které můžete vtáhnout.</p><p>Když upouštíte soubory do "
+"košíků, %1 zjistí jejich typ a zobrazí obsah souborů.<br>Například, "
+"když upustíte obrázek nebo textový soubor, obrázkové a textové "
+"poznámky jsou pro ně vytvořeny.<br>Pro typy souborů které %2 nezná, "
+"jsou zobrazeny jako obecné souborové poznámky pouze s ikonou nebo "
+"náhledem souboru a názvem.</p><p>Pokud nechcete, aby aplikace tvořila "
+"poznámky závisející na obsahu souboru, který upustíte, jděte na kartu "
+"\"Obecné\" a odšktněte \"Obrázek nebo animace\" ve skupině \"Zobraz "
+"obsah přidaného souboru pro následující typy\".</p>"
 
 #: linklabel.cpp:626
 msgid "Example"
-msgstr "Ejemplo"
+msgstr "Příklad"
 
 #: mainwindow.cpp:132
 msgid "Show/hide main window"
-msgstr "Mostrar/Ocultar la ventana principal"
+msgstr "Zobrazit/skrýt hlavní okno"
 
 #: mainwindow.cpp:133
-#, fuzzy
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
 msgstr ""
-"Permite mostrar la ventana principal si está oculta, ocultarla si fuera "
-"visible."
+"Umožní zobrazit hlavní okno, pokud je skryto a skrýt ho, pokud je "
+"zobrazeno."
 
 #: mainwindow.cpp:141
 #, fuzzy
 msgid "Minimize"
-msgstr "&Minimizar"
+msgstr "&Minimalizovat"
 
 #: mainwindow.cpp:147
-#, fuzzy
 msgid "Hide &Toolbar"
-msgstr "&Ocultar barra de menú"
+msgstr "Skrýt &nástrojovou lištu"
 
 #: mainwindow.cpp:153
 msgid "Configure &Global Shortcuts..."
-msgstr "Configurar accesos &globales..."
+msgstr "Nastavit g&lobální zkratky..."
 
 #: mainwindow.cpp:309
 msgid "Basket"
-msgstr "Cesta"
+msgstr "Košík"
 
 #: mainwindow.cpp:318
-#, fuzzy
 msgid "<p>Do you really want to quit %1?</p>"
-msgstr "<p>¿Desea realmente cerrar BasKet?</p>"
+msgstr "<p>Opravdu chcete skončit %1?</p>"
 
 #: mainwindow.cpp:320
-#, fuzzy
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session: it will be reloaded the next time you log in.</p>"
 msgstr ""
-"<p>Por favor, note que no necesita cerrar BasKet antes de terminar su "
-"sesión con KDE. Será recargado automáticamente la próxima vez que inicie "
-"sesión.</p>"
+"<p>Mějte na paměti, že nemusíte ukončit aplikaci před koncem Vaší "
+"KDE relace: Aplikace bude nahrána když se znova přihlásíte.</p>"
 
 #: mainwindow.cpp:323
 msgid "Quit Confirm"
-msgstr "Confirmar Salir"
+msgstr "Potvrdit ukončení"
 
 #: newbasketdialog.cpp:88
-#, fuzzy
 msgid "New Basket"
-msgstr "Cesta &siguiente"
+msgstr "Nový košík"
 
 #: newbasketdialog.cpp:113
-#, fuzzy
 msgid "Background color"
-msgstr "Color de &Fondo:"
+msgstr "Barva pozadí"
 
 #: newbasketdialog.cpp:120
 msgid "&Manage Templates..."
-msgstr ""
+msgstr "S&pravovat šablony..."
 
 #: newbasketdialog.cpp:154 newbasketdialog.cpp:299
 msgid "One column"
-msgstr ""
+msgstr "Jeden sloupec"
 
 #: newbasketdialog.cpp:165 newbasketdialog.cpp:301
 msgid "Two columns"
-msgstr ""
+msgstr "Dva sloupce"
 
 #: newbasketdialog.cpp:177 newbasketdialog.cpp:303
 msgid "Three columns"
-msgstr ""
+msgstr "Tři sloupce"
 
 #: newbasketdialog.cpp:187
 msgid "Free"
-msgstr ""
+msgstr "Volně"
 
 #: newbasketdialog.cpp:202
 msgid "&Template:"
-msgstr ""
+msgstr "&Šablona:"
 
 #: newbasketdialog.cpp:211
-#, fuzzy
 msgid "(Baskets)"
-msgstr "Cesta"
+msgstr "(Košíky)"
 
 #: newbasketdialog.cpp:212
 msgid "C&reate in:"
-msgstr ""
+msgstr "Vyt&vořit v:"
 
 #: newbasketdialog.cpp:213
 msgid "How is it useful?"
-msgstr ""
+msgstr "Jak je to užitečné?"
 
 #: newbasketdialog.cpp:214
 msgid ""
@@ -1678,539 +1617,482 @@ msgid ""
 "pages;</li><li>Making group of baskets to export together (to eg. email them "
 "to people).</li></ul>"
 msgstr ""
+"<p>Vytváření košíků uvnitř jiných košíků umožňuje jejich "
+"lepší organizaci, např.:</p><ul><li>Seskupení košíků dle témat nebo "
+"námětů;</li><li>Seskupení v adresářích pro rozdílné "
+"projekty;</li><li>Vytvoření sekce s podřízenými košíky "
+"reprezentujících kapitoly nebo stránky;</li><li>Vytvoření skupin "
+"košíků pro společný export (např. poslat je emailem).</li></ul>"
 
 #: newbasketdialog.cpp:305
 msgid "Free-form"
-msgstr ""
+msgstr "Volná forma"
 
 #: newbasketdialog.cpp:307
 msgid "Mind map"
-msgstr ""
+msgstr "Myšlenková mapa"
 
 #: notecontent.cpp:172
 #, fuzzy
 msgid "Plain Text"
-msgstr "Texto Enriquecido"
+msgstr "Formátovatelný text"
 
 #: notecontent.cpp:173
 msgid "Text"
-msgstr "Texto"
+msgstr "Text"
 
 #: notecontent.cpp:174
 msgid "Image"
-msgstr "Imagen"
+msgstr "Obrázek"
 
 #: notecontent.cpp:175
 msgid "Animation"
-msgstr "Animación"
+msgstr "Animace"
 
 #: notecontent.cpp:176
 msgid "Sound"
-msgstr "Sonido"
+msgstr "Zvuk"
 
 #: notecontent.cpp:178
 msgid "Link"
-msgstr "Enlace"
+msgstr "Odkaz"
 
 #: notecontent.cpp:179
 msgid "Launcher"
-msgstr "Lanzador"
+msgstr "Spouštěč"
 
 #: notecontent.cpp:180 noteedit.cpp:772
 msgid "Color"
-msgstr "Color"
+msgstr "Barva"
 
 #: notecontent.cpp:181
 msgid "Unknown"
-msgstr "desconocido"
+msgstr "Neznámý"
 
 #: notecontent.cpp:322
 #, fuzzy
 msgid "Edit this plain text"
-msgstr "Lanzador de &Aplicaciones"
+msgstr "Upravit tento text"
 
 #: notecontent.cpp:323
 msgid "Edit this text"
-msgstr ""
+msgstr "Upravit tento text"
 
 #: notecontent.cpp:324
 msgid "Edit this image"
-msgstr ""
+msgstr "Editovat tento obrázek"
 
 #: notecontent.cpp:325
-#, fuzzy
 msgid "Edit this animation"
-msgstr "¿Qué es esta aplicación?"
+msgstr "Editovat tuto animaci"
 
 #: notecontent.cpp:326
 msgid "Edit the file name of this sound"
-msgstr ""
+msgstr "Upravit název tohoto zvuku"
 
 #: notecontent.cpp:327
 msgid "Edit the name of this file"
-msgstr ""
+msgstr "Upravit název tohoto souboru"
 
 #: notecontent.cpp:328
 msgid "Edit this link"
-msgstr ""
+msgstr "Upravit tento odkaz"
 
 #: notecontent.cpp:329
-#, fuzzy
 msgid "Edit this launcher"
-msgstr "Lanzador de &Aplicaciones"
+msgstr "Upravit tento spouštěč"
 
 #: notecontent.cpp:330
 msgid "Edit this color"
-msgstr ""
+msgstr "Upravit tuto barvu"
 
 #: notecontent.cpp:331
-#, fuzzy
 msgid "Edit this unknown object"
-msgstr "Lanzador de &Aplicaciones"
+msgstr "Upravit tento neznámý objekt"
 
 #: notecontent.cpp:557
 #, fuzzy
 msgid "Opening plain text..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám cíl odkazu..."
 
 #: notecontent.cpp:558
 #, fuzzy
 msgid "Opening plain texts..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám cíl odkazů..."
 
 #: notecontent.cpp:559
 #, fuzzy
 msgid "Opening plain text with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám text s..."
 
 #: notecontent.cpp:560
 #, fuzzy
 msgid "Opening plain texts with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám texty s..."
 
 #: notecontent.cpp:561
 #, fuzzy
 msgid "Open plain text with:"
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevřít cíl odkazu s:"
 
 #: notecontent.cpp:562
 #, fuzzy
 msgid "Open plain texts with:"
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevřít cíl odkazů s:"
 
 #: notecontent.cpp:648
-#, fuzzy
 msgid "Opening text..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám text..."
 
 #: notecontent.cpp:649
-#, fuzzy
 msgid "Opening texts..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám texty..."
 
 #: notecontent.cpp:650
-#, fuzzy
 msgid "Opening text with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám text s..."
 
 #: notecontent.cpp:651
-#, fuzzy
 msgid "Opening texts with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám texty s..."
 
 #: notecontent.cpp:652
-#, fuzzy
 msgid "Open text with:"
-msgstr "Abrir elementos de texto con:"
+msgstr "Otevřít text s:"
 
 #: notecontent.cpp:653
-#, fuzzy
 msgid "Open texts with:"
-msgstr "Abrir elementos de texto con:"
+msgstr "Otevřít text s:"
 
 #: notecontent.cpp:761 notecontent.cpp:964
-#, fuzzy
 msgid "Size"
-msgstr "Ta&maño:"
+msgstr "Velikost"
 
 #: notecontent.cpp:762 variouswidgets.cpp:147
 msgid "%1 by %2 pixels"
-msgstr "%1 x %2 píxeles"
+msgstr "%1 x %2 pixelů"
 
 #: notecontent.cpp:768
-#, fuzzy
 msgid "Opening image..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám obrázek..."
 
 #: notecontent.cpp:769
-#, fuzzy
 msgid "Opening images..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám obrázky..."
 
 #: notecontent.cpp:770
-#, fuzzy
 msgid "Opening image with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám obrázek s..."
 
 #: notecontent.cpp:771
-#, fuzzy
 msgid "Opening images with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám obrázky s..."
 
 #: notecontent.cpp:772
-#, fuzzy
 msgid "Open image with:"
-msgstr "Abrir elementos de imagen con:"
+msgstr "Otevřít obrázek s:"
 
 #: notecontent.cpp:773
-#, fuzzy
 msgid "Open images with:"
-msgstr "Abrir elementos de imagen con:"
+msgstr "Otevřít obrázky s:"
 
 #: notecontent.cpp:797
 msgid "Click for full size view"
-msgstr ""
+msgstr "Klikněte pro náhled v plné velikosti"
 
 #: notecontent.cpp:853
-#, fuzzy
 msgid "Opening animation..."
-msgstr "Abriendo fichero asociado al elemento..."
+msgstr "Otevírám animaci..."
 
 #: notecontent.cpp:854
-#, fuzzy
 msgid "Opening animations..."
-msgstr "Abriendo fichero asociado al elemento..."
+msgstr "Otevírám animace..."
 
 #: notecontent.cpp:855
-#, fuzzy
 msgid "Opening animation with..."
-msgstr "Abriendo el fichero asociado al elemento con ..."
+msgstr "Otevírám animaci s..."
 
 #: notecontent.cpp:856
-#, fuzzy
 msgid "Opening animations with..."
-msgstr "Abriendo el fichero asociado al elemento con ..."
+msgstr "Otevírám animace s..."
 
 #: notecontent.cpp:857
-#, fuzzy
 msgid "Open animation with:"
-msgstr "Abrir animaciones con:"
+msgstr "Otevřít animaci s:"
 
 #: notecontent.cpp:858
-#, fuzzy
 msgid "Open animations with:"
-msgstr "Abrir animaciones con:"
+msgstr "Otevřít animace s:"
 
 #: notecontent.cpp:969
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: notecontent.cpp:1007
-#, fuzzy
 msgid "Open this file"
-msgstr "Abriendo fichero asociado al elemento..."
+msgstr "Otevřít tento soubor"
 
 #: notecontent.cpp:1026
-#, fuzzy
 msgid "Opening file..."
-msgstr "Abriendo fichero asociado al elemento..."
+msgstr "Otevírám soubor..."
 
 #: notecontent.cpp:1027
-#, fuzzy
 msgid "Opening files..."
-msgstr "Abriendo fichero asociado al elemento..."
+msgstr "Otevírám soubory..."
 
 #: notecontent.cpp:1028
-#, fuzzy
 msgid "Opening file with..."
-msgstr "Abriendo el fichero asociado al elemento con ..."
+msgstr "Otevírám soubory s..."
 
 #: notecontent.cpp:1029
-#, fuzzy
 msgid "Opening files with..."
-msgstr "Abriendo el fichero asociado al elemento con ..."
+msgstr "Otevírám soubory s..."
 
 #: notecontent.cpp:1030
-#, fuzzy
 msgid "Open file with:"
-msgstr "Abrir elementos de texto con:"
+msgstr "Otevřít soubor s:"
 
 #: notecontent.cpp:1031
-#, fuzzy
 msgid "Open files with:"
-msgstr "Abrir elementos de texto con:"
+msgstr "Otevřít soubory s:"
 
 #: notecontent.cpp:1102
-#, fuzzy
 msgid "Open this sound"
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevřít tento zvuk"
 
 #: notecontent.cpp:1139
-#, fuzzy
 msgid "Opening sound..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám zvuk..."
 
 #: notecontent.cpp:1140
-#, fuzzy
 msgid "Opening sounds..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám zvuky..."
 
 #: notecontent.cpp:1141
-#, fuzzy
 msgid "Opening sound with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám zvuk s..."
 
 #: notecontent.cpp:1142
-#, fuzzy
 msgid "Opening sounds with..."
-msgstr "Abrir elementos de sonido con:"
+msgstr "Otevírám zvuky s..."
 
 #: notecontent.cpp:1143
-#, fuzzy
 msgid "Open sound with:"
-msgstr "Abrir elementos de sonido con:"
+msgstr "Otevřít zvuk s:"
 
 #: notecontent.cpp:1144
-#, fuzzy
 msgid "Open sounds with:"
-msgstr "Abrir elementos de sonido con:"
+msgstr "Otevřít zvuky s:"
 
 #: notecontent.cpp:1182
-#, fuzzy
 msgid "Target"
-msgstr "Guardar destino"
+msgstr "Cíl"
 
 #: notecontent.cpp:1205
-#, fuzzy
 msgid "Open this link"
-msgstr "Abrir una cesta existente"
+msgstr "Otevřít tento odkaz"
 
 #: notecontent.cpp:1231
-#, fuzzy
 msgid "Link have no URL to open."
-msgstr "El enlace no tiene URL asociada para abrir."
+msgstr "Odkaz nemá URL, kterou otevřít."
 
 #: notecontent.cpp:1234
-#, fuzzy
 msgid "Opening link target..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám cíl odkazu..."
 
 #: notecontent.cpp:1235
-#, fuzzy
 msgid "Opening link targets..."
-msgstr "Abriendo destino del enlace..."
+msgstr "Otevírám cíl odkazů..."
 
 #: notecontent.cpp:1236
-#, fuzzy
 msgid "Opening link target with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám cíl odkazu s..."
 
 #: notecontent.cpp:1237
-#, fuzzy
 msgid "Opening link targets with..."
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevírám cíl odkazů s..."
 
 #: notecontent.cpp:1238
-#, fuzzy
 msgid "Open link target with:"
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevřít cíl odkazu s:"
 
 #: notecontent.cpp:1239
-#, fuzzy
 msgid "Open link targets with:"
-msgstr "Abriendo destino del enlace con..."
+msgstr "Otevřít cíl odkazů s:"
 
 #: notecontent.cpp:1365
 msgid "%1 <i>(run in terminal)</i>"
-msgstr ""
+msgstr "%1 <i>(spustit v terminálu)</i>"
 
 #: notecontent.cpp:1368
-#, fuzzy
 msgid "Comment"
-msgstr "Coman&do:"
+msgstr "Komentář"
 
 #: notecontent.cpp:1372
-#, fuzzy
 msgid "Command"
-msgstr "Coman&do:"
+msgstr "Příkaz"
 
 #: notecontent.cpp:1395
-#, fuzzy
 msgid "Launch this application"
-msgstr "Lanzando aplicación..."
+msgstr "Spustit tuto aplikaci"
 
 #: notecontent.cpp:1416
-#, fuzzy
 msgid "The launcher have no command to run."
-msgstr "El lanzador no apunta a ninguna aplicación."
+msgstr "Spouštěč nemá příkaz, který spustit."
 
 #: notecontent.cpp:1419
 msgid "Launching application..."
-msgstr "Lanzando aplicación..."
+msgstr "Spouštím aplikaci..."
 
 #: notecontent.cpp:1420
-#, fuzzy
 msgid "Launching applications..."
-msgstr "Lanzando aplicación..."
+msgstr "Spouštím aplikace..."
 
 #: notecontent.cpp:1507
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
-msgstr ""
+msgstr "RGB"
 
 #: notecontent.cpp:1508
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
-msgstr ""
+msgstr "<i>Červená</i>: %1, <i>Zelená</i>: %2, <i>Modrá</i>: %3,"
 
 #: notecontent.cpp:1510
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
-msgstr ""
+msgstr "HSV"
 
 #: notecontent.cpp:1511
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
-msgstr ""
+msgstr "<i>Odstín</i>: %1, <i>Sytost</i>: %2, <i>Hodnota</i>: %3,"
 
 #: notecontent.cpp:1664
 msgid "CSS Color Name"
-msgstr ""
+msgstr "Název CSS barvy"
 
 #: notecontent.cpp:1674
 msgid "CSS Extended Color Name"
-msgstr ""
+msgstr "Název rozšířené CSS barvy"
 
 #: notecontent.cpp:1680
 msgid "Is Web Color"
-msgstr ""
+msgstr "Je webová barva"
 
 #: note.cpp:2883
 msgid "(Image)"
-msgstr "(Imagen) "
+msgstr "(Obrázek)"
 
 #: noteedit.cpp:346
-#, fuzzy
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
-"<center>No hay editor para este elemento de tipo desconocido.<br>No "
-"obstante, puede arrastrarlo ó copiarlo a una aplicación que lo "
-"entienda.</center>"
+"Obrázky zde momentálně nemohou být editovány (příští verze bude "
+"zahrnovat editor obrázků).\n"
+"Chcete je otevřít s aplikací, která to dokáže?"
 
 #: noteedit.cpp:348
-#, fuzzy
 msgid "Edit Image Note"
-msgstr "Insertar 'lanzador'"
+msgstr "Upravit obrázek"
 
 #: noteedit.cpp:362
-#, fuzzy
 msgid ""
 "This animated image can not be edited here.\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
-"<center>No hay editor para este elemento de tipo desconocido.<br>No "
-"obstante, puede arrastrarlo ó copiarlo a una aplicación que lo "
-"entienda.</center>"
+"Tento animovaný obrázek zde nemůže být upraven.\n"
+"Chcete ho otevřít s aplikací, která to umí?"
 
 #: noteedit.cpp:364
-#, fuzzy
 msgid "Edit Animation Note"
-msgstr "Animación"
+msgstr "Upravit animaci"
 
 #: noteedit.cpp:441
-#, fuzzy
 msgid "Edit Color Note"
-msgstr "Insertar elemento 'color'"
+msgstr "Upravit barvu"
 
 #: noteedit.cpp:464
-#, fuzzy
 msgid ""
 "The type of this note is unknown and can not be edited here.\n"
 "You however can drag or copy the note into an application that understands "
 "it."
 msgstr ""
-"<center>No hay editor para este elemento de tipo desconocido.<br>No "
-"obstante, puede arrastrarlo ó copiarlo a una aplicación que lo "
-"entienda.</center>"
+"Typ této poznámky je neznámý a nemůže zde být editován.\n"
+"Můžete ale chytnout nebo kopírovat poznámku do aplikace, která ji "
+"rozumí."
 
 #: noteedit.cpp:466
-#, fuzzy
 msgid "Edit Unknown Note"
-msgstr "Insertar elemento 'enlace'"
+msgstr "Upravit neznámou poznámku"
 
 #: noteedit.cpp:495
-#, fuzzy
 msgid "Edit Link Note"
-msgstr "Insertar elemento 'enlace'"
+msgstr "Upravit odkaz"
 
 #: noteedit.cpp:507 noteedit.cpp:520
 msgid "Auto"
-msgstr "Automático "
+msgstr "Automaticky"
 
 #: noteedit.cpp:516 noteedit.cpp:669
 msgid "&Icon:"
-msgstr "&Icono:"
+msgstr "&Icona:"
 
 #: noteedit.cpp:540
-#, fuzzy
 msgid "Ta&rget:"
-msgstr "Guardar destino"
+msgstr "&Cíl:"
 
 #: noteedit.cpp:541
 msgid "&Title:"
-msgstr "&Título:"
+msgstr "&Titulek:"
 
 #: noteedit.cpp:654
-#, fuzzy
 msgid "Edit Launcher Note"
-msgstr "Insertar 'lanzador'"
+msgstr "Upravit spouštěč"
 
 #: noteedit.cpp:663
 msgid "Choose a command to run:"
-msgstr "Comando a ejecutar:"
+msgstr "Vyberte příkaz k vykonání:"
 
 #: noteedit.cpp:672
 msgid "&Guess"
-msgstr "Adi&vinar"
+msgstr "&Odhad"
 
 #: noteedit.cpp:688
 msgid "Comman&d:"
-msgstr "Coman&do:"
+msgstr "Pří&kaz:"
 
 #: noteedit.cpp:689 tagsedit.cpp:379
 msgid "&Name:"
-msgstr "&Nombre:"
+msgstr "&Název:"
 
 #: noteedit.cpp:774 tagsedit.cpp:437
 msgid "Bold"
-msgstr "Negrilla"
+msgstr "Tučné"
 
 #: noteedit.cpp:776 tagsedit.cpp:443
 msgid "Underline"
-msgstr "Subrayado"
+msgstr "Podtržené"
 
 #: noteedit.cpp:781
 msgid "Align Left"
-msgstr ""
+msgstr "Zarovnat vlevo"
 
 #: noteedit.cpp:782
 msgid "Centered"
-msgstr "Centrado"
+msgstr "Zarovnat na střed"
 
 #: noteedit.cpp:783
-#, fuzzy
 msgid "Align Right"
-msgstr "Destacado"
+msgstr "Zarovnat vpravo"
 
 #: noteedit.cpp:784
 msgid "Justified"
-msgstr "Justificado"
+msgstr "Zarovnat do bloku"
 
 #: notefactory.cpp:445
-#, fuzzy
 msgid ""
 "<p>%1 doesn't support the data you've dropped.<br>It however created a "
 "generic note, allowing you to drag or copy it to an application that "
@@ -2218,186 +2100,175 @@ msgid ""
 "developer or visit the <a href=\"http://basket.kde.org/dropdb.php\">BasKet "
 "Drop Database</a>.</p>"
 msgstr ""
-"<p>BasKet no soporta el tipo de datos que ha arrastrado.<br>Sin embargo, se "
-"ha creado un elemento 'genérico', que le permitirá arrastrar ó copiar los "
-"datos a una aplicación que los entienda. </p>Si desea que BasKet lo "
-"soporte, por favor contacte con el desarrollador ó visite la <a "
-"href=\"http://basket.kde.org/dropdb.php\">Base de datos de tipos de BasKet "
-"</a>.</p>"
+"<p>%1 nepodporuje data která jste upustila.<br>Ale vytvořila obecnou "
+"poznámku, umožňující Vám ji chytnou nebo kopírovatit do aplikace, "
+"která ji rozumí.</p><p>Pokud chcete podporu pro tyto date, prosím "
+"kontaktujte vývojáře nebo navštivte <a "
+"href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>"
 
 #: notefactory.cpp:449
 msgid "Unsupported MIME Type(s)"
-msgstr "Tipo(s) MIME no soportados"
+msgstr "Nepodporoané MIME typy"
 
 #: notefactory.cpp:503
-#, fuzzy
 msgid "&Move Here\tShift"
-msgstr "&Mover aquí"
+msgstr "&Přesunout zde\tShift"
 
 #: notefactory.cpp:504
-#, fuzzy
 msgid "&Copy Here\tCtrl"
-msgstr "&Copiar aquí"
+msgstr "&Kopírovat zde\tCtrl"
 
 #: notefactory.cpp:505
-#, fuzzy
 msgid "&Link Here\tCtrl+Shift"
-msgstr "En&lazar aquí"
+msgstr "&Odkazovat zde\tCtrl+Shift"
 
 #: notefactory.cpp:507
-#, fuzzy
 msgid "C&ancel\tEscape"
-msgstr "C&ancelar"
+msgstr "&Zrušit\tEscape"
 
 #: notefactory.cpp:973
 msgid "Import Icon as Image"
-msgstr ""
+msgstr "Importovat ikonu jako obrázek"
 
 #: notefactory.cpp:973
 msgid "Choose the size of the icon to import as an image:"
-msgstr ""
+msgstr "Zvolte velikost ikony k importu jako obrázek:"
 
 #: notefactory.cpp:986
-#, fuzzy
 msgid "Load File Content into a Note"
-msgstr "Cargar el contenido de un fichero en un Elemento"
+msgstr "Nahrát obsah souboru do poznámky"
 
 #. i18n: file passwordlayout.ui line 16
 #: password.cpp:36 rc.cpp:81
 #, no-c-format
 msgid "Password Protection"
-msgstr ""
+msgstr "Ochrana heslem"
 
 #: password.cpp:53
 msgid "No private key selected."
-msgstr ""
+msgstr "Nebyl vybrán osobní klíč."
 
 #. i18n: file basket_part.rc line 5
 #: rc.cpp:3 rc.cpp:36
 #, no-c-format
 msgid "&Basket"
-msgstr "&Cesta"
+msgstr "&Košík"
 
 #. i18n: file basket_part.rc line 16
 #: rc.cpp:6 rc.cpp:39
 #, no-c-format
 msgid "&Import"
-msgstr "&Importar"
+msgstr "&Importovat"
 
 #. i18n: file basket_part.rc line 42
 #: rc.cpp:12 rc.cpp:45
 #, no-c-format
 msgid "&Go"
-msgstr "I&r"
+msgstr "&Přejít"
 
 #. i18n: file basket_part.rc line 49
 #: rc.cpp:15 rc.cpp:48
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Note"
-msgstr "&KNotes"
+msgstr "&Poznámka"
 
 #. i18n: file basket_part.rc line 64
 #: rc.cpp:18 rc.cpp:51
 #, fuzzy, no-c-format
 msgid "&Tags"
-msgstr "Guardar destino"
+msgstr "Značky"
 
 #. i18n: file basket_part.rc line 122
 #: rc.cpp:33 rc.cpp:66
-#, no-c-format
+#, fuzzy, no-c-format
 msgid "Text Formating Toolbar"
-msgstr ""
+msgstr "Lišta editace formátovatelného textu"
 
 #. i18n: file kicondialogui.ui line 31
 #: rc.cpp:69
 #, no-c-format
 msgid "KIconDialogUI"
-msgstr ""
+msgstr "KIconDialogUI"
 
 #. i18n: file kicondialogui.ui line 105
 #: rc.cpp:72
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Fi&lter:"
-msgstr "&Ficheros"
+msgstr "Fi&ltr:"
 
 #. i18n: file kicondialogui.ui line 160
 #: rc.cpp:78
 #, no-c-format
 msgid "Alt+O"
-msgstr ""
+msgstr "Alt+O"
 
 #. i18n: file passwordlayout.ui line 44
 #: rc.cpp:85
 #, no-c-format
 msgid "&No password"
-msgstr ""
+msgstr "&Bez hesla"
 
 #. i18n: file passwordlayout.ui line 47
 #: rc.cpp:88
 #, no-c-format
 msgid "Alt+N"
-msgstr ""
+msgstr "Alt+N"
 
 #. i18n: file passwordlayout.ui line 55
 #: rc.cpp:91
 #, no-c-format
 msgid "Protect basket with a &password"
-msgstr ""
+msgstr "Chránit košík &heslem"
 
 #. i18n: file passwordlayout.ui line 58
 #: rc.cpp:94
 #, no-c-format
 msgid "Alt+P"
-msgstr ""
+msgstr "Alt+P"
 
 #. i18n: file passwordlayout.ui line 66
 #: rc.cpp:97
 #, no-c-format
 msgid "Protect basket with private &key"
-msgstr ""
+msgstr "Chránit košík osobním &klíčem"
 
 #. i18n: file passwordlayout.ui line 69
 #: rc.cpp:100
 #, no-c-format
 msgid "Alt+K"
-msgstr ""
+msgstr "Alt+K"
 
 #: settings.cpp:341
-#, fuzzy
 msgid "Doc&k in system tray"
-msgstr "&Fijar BasKet en la bandeja del sistema"
+msgstr "&Skrýt v systémové části panelu"
 
 #: settings.cpp:345
-#, fuzzy
 msgid "&Use balloons to report results of global actions"
-msgstr "Utilizar &globos para informar del resultado de las acciones globales"
+msgstr "&Používat bubliny pro ohlášení výsledku globálních akcí"
 
 #: settings.cpp:349
-#, fuzzy
 msgid "Ani&mate changes in baskets"
-msgstr "Crear una nueva cesta"
+msgstr "&Animovat změny v košících"
 
 #: settings.cpp:353
-#, fuzzy
 msgid "Sho&w tooltips in baskets"
-msgstr "Mostrar los consejos i&nstantáneamente"
+msgstr "Zobrazit &nástrojové tipy v košících"
 
 #: settings.cpp:357
 msgid "Ask confirmation before &deleting notes"
 msgstr ""
 
 #: settings.cpp:361
-#, fuzzy
 msgid "Bi&g notes"
-msgstr "sin elementos"
+msgstr "Vel&ké poznámky"
 
 #: settings.cpp:366
 msgid "E&xport tags in texts"
-msgstr ""
+msgstr "E&xportovat značky v textech"
 
 #: settings.cpp:372 tagsedit.cpp:485
 msgid "When does this apply?"
-msgstr ""
+msgstr "Kdy se to použije?"
 
 #: settings.cpp:373 tagsedit.cpp:486
 msgid ""
@@ -2411,55 +2282,60 @@ msgid ""
 msgstr ""
 
 #: settings.cpp:375 tagsedit.cpp:488
+#, fuzzy
 msgid ""
 "For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are "
 "exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, representing an "
 "empty checkbox and a checked box."
 msgstr ""
+"<p>To je užitečné když kopírujete a vkládáte, nebo chytnete a "
+"pustíte poznámky do textového editoru.</p><p>Pokud povoleno, tato "
+"vlastnost umožňuje vložit značky jako textové "
+"ekvivalenty.<br>Například, seznam poznámek se značkami <b>To Do</b> a "
+"<b>Hotovo</b> jsou exportovány jako řádky předcházející  <b>[ ]</b> "
+"nebo <b>[x]</b>, reprezentujících prázdný  rámeček a zaškrtnutý "
+"rámeček.</p>"
 
 #: settings.cpp:385
+#, fuzzy
 msgid "Use GnuPG agent for &private/public key protected baskets"
-msgstr ""
+msgstr "Použít GnuPG agenta pro &heslem chráněné košíky"
 
 #: settings.cpp:394
-#, fuzzy
 msgid "On left"
-msgstr "Arriba"
+msgstr "Vlevo"
 
 #: settings.cpp:395
 msgid "On right"
-msgstr ""
+msgstr "Vpravo"
 
 #: settings.cpp:396
-#, fuzzy
 msgid "Bask&ets tree position:"
-msgstr "Posición de la barra de &tabulaciones:"
+msgstr "Pozic&e stromu košíků:"
 
 #: settings.cpp:403 settings.cpp:414
 msgid "On top"
-msgstr "Arriba"
+msgstr "Nahoře"
 
 #: settings.cpp:404 settings.cpp:415
 msgid "On bottom"
-msgstr "Abajo"
+msgstr "Dole"
 
 #: settings.cpp:405
-#, fuzzy
 msgid "&Filter bar position:"
-msgstr "Posición de la barra de &búsqueda:"
+msgstr "Pozice nástrojové lišty pro &filtrování:"
 
 #: settings.cpp:413
-#, fuzzy
 msgid "New notes &place:"
-msgstr "&Posición de los nuevos elementos:"
+msgstr "Nové &umístění poznámky:"
 
 #: settings.cpp:416
 msgid "At current note"
-msgstr ""
+msgstr "V současné poznámce"
 
 #: settings.cpp:426
 msgid "View Content of Added Files for the Following Types"
-msgstr "Ver el contenido de los ficheros añadidos para los siguientes Tipos"
+msgstr "Zobrazit obsah přidaných souborů pro následující typy"
 
 #: settings.cpp:427
 msgid "Plain &text"
@@ -2467,140 +2343,128 @@ msgstr ""
 
 #: settings.cpp:428
 msgid "&HTML page"
-msgstr "Página &HTML"
+msgstr "&HTML stránka"
 
 #: settings.cpp:429
 msgid "&Image or animation"
-msgstr "&Imagen ó animación"
+msgstr "&Obrázek nebo animace"
 
 #: settings.cpp:430
-#, fuzzy
 msgid "&Sound"
-msgstr "&Sonidos"
+msgstr "&Zvuk"
 
 #: settings.cpp:443
-#, fuzzy
 msgid "&New images size:"
-msgstr "&Posición de los nuevos elementos:"
+msgstr "&Nová velikost obrázku:"
 
 #: settings.cpp:451
 msgid "&by"
-msgstr "&por"
+msgstr "&X"
 
 #: settings.cpp:454
 msgid "pixels"
-msgstr "pixels"
+msgstr "pixelů"
 
 #: settings.cpp:456
 msgid "&Visualize..."
-msgstr "&Visualizar..."
+msgstr "&Vizualizovat..."
 
 #: settings.cpp:544
-#, fuzzy
 msgid "Customize look of file, sound, link and launcher notes:"
 msgstr ""
-"Personalizar la apariencia de los elementos 'sonido', 'enlace' y 'lanzador':"
+"Přizpůsobit vzhled souborových, zvukových, odkazujících a "
+"spouštěcích poznámek:"
 
 #: settings.cpp:549
 msgid "Conference audio record"
-msgstr "Grabación de sonido de una conferencia"
+msgstr "Audio nahrávka z konference"
 
 #: settings.cpp:550
 msgid "Annual report"
-msgstr "Informe anual"
+msgstr "Roční zpráva"
 
 #: settings.cpp:551
 msgid "Home folder"
-msgstr "Carpeta Personal"
+msgstr "Domovský adresář"
 
 #: settings.cpp:553
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %1"
-msgstr "Lanzador %1"
+msgstr "Spustit %1"
 
 #: settings.cpp:554
 msgid "&Sounds"
-msgstr "&Sonidos"
+msgstr "&Zvuky"
 
 #: settings.cpp:555
 msgid "&Files"
-msgstr "&Ficheros"
+msgstr "&Soubory"
 
 #: settings.cpp:556
 msgid "&Local Links"
-msgstr "Enlaces &locales"
+msgstr "&Místní odkazy"
 
 #: settings.cpp:557
 msgid "&Network Links"
-msgstr "E&nlaces de red"
+msgstr "&Síťové odkazy"
 
 #: settings.cpp:558
 msgid "Launc&hers"
-msgstr "Lan&zadores"
+msgstr "S&pouštěče"
 
 #: settings.cpp:600
-#, fuzzy
 msgid "Open &text notes with a custom application:"
-msgstr "Abrir elementos de &texto con una aplicación específica:"
+msgstr "Otevřít &textové poznámky s aplikací:"
 
 #: settings.cpp:601
-#, fuzzy
 msgid "Open text notes with:"
-msgstr "Abrir elementos de texto con:"
+msgstr "Otevřít textové poznámky s:"
 
 #: settings.cpp:608
-#, fuzzy
 msgid "Open &image notes with a custom application:"
-msgstr "Abrir elementos '&imagen' con una aplicación específica:"
+msgstr "Otevřít &obrázkové poznámky s aplikací:"
 
 #: settings.cpp:609
-#, fuzzy
 msgid "Open image notes with:"
-msgstr "Abrir elementos de imagen con:"
+msgstr "Otevřít obrázky s:"
 
 #: settings.cpp:616
-#, fuzzy
 msgid "Open a&nimation notes with a custom application:"
-msgstr "Abrir elementos de ima&gen con una aplicación específica:"
+msgstr "Otevřít &animované poznámky s aplikací:"
 
 #: settings.cpp:617
-#, fuzzy
 msgid "Open animation notes with:"
-msgstr "Abrir animaciones con:"
+msgstr "Otevřít animace s:"
 
 #: settings.cpp:624
-#, fuzzy
 msgid "Open so&und notes with a custom application:"
-msgstr "Abrir so&nidos con una aplicación específica:"
+msgstr "Otevřít &zvukové poznámky s aplikací:"
 
 #: settings.cpp:625
-#, fuzzy
 msgid "Open sound notes with:"
-msgstr "Abrir elementos de sonido con:"
+msgstr "Otevřít zvukové poznámky s:"
 
 #: settings.cpp:633
-#, fuzzy
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
 "Konqueror will be used.</p>"
 msgstr ""
-"<p>Si se marca la opción, la aplicación definida más abajo será "
-"utilizada para abrir este tipo de elementos.</p><p> En otro caso, la "
-"aplicación que se haya configurado en Konqueror será usada.</p>"
+"<p>Pokud zatrženo, aplikace uvedená níže bude použita pro otevření "
+"tohoto typu poznámky.</p><p>Jinak bude použita aplikace nastavená v "
+"Konqueroru.</p>"
 
 #: settings.cpp:643
-#, fuzzy
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
 msgstr ""
-"<p>Defina la aplicación a usar para abrir este tipo de elementos en vez de "
-"la aplicación que se haya configurado en Konqueror.</p>"
+"<p>Zvolte aplikaci pro otevírání typů poznámek místo aplikací "
+"nastavených v Konqueroru.</p>"
 
 #: settings.cpp:667
 msgid "How to change the application used to open Web links?"
-msgstr ""
+msgstr "Jak změnit aplikaci použitou k otevření webových odkazů ?"
 
 #: settings.cpp:668
 msgid ""
@@ -2619,10 +2483,25 @@ msgid ""
 "more fine-grained configuration (like openning only Web pages in your Web "
 "browser), read the second help link.</p>"
 msgstr ""
+"<p>Webové odkazy jsou otvírány v různých aplikacích podle obsahu "
+"odkazu (webová stránka, obrázek, PDF dokument...), jako by to byly "
+"soubory na Vašem počítači.</p><p>Tady je možno udělat, pokud chcete "
+"aby se webové adresy otevíraly ve Vašem prohlížeči. Je to užitečné "
+"když nepoužíváte KDE (např. GNOME, XFCE...).</p><ul><li>Otevřete "
+"ovládací centrum KDE (pokud není dostupné, zkuste zadat \"kcontrol\" v "
+"příkazové řádce);</li><li>přejděte do\"KDE Komponenty\" a pak "
+"\"Výběr komponent\" sekce;</li><li>Vybrat \"webový prohlížeč\", "
+"zatrhněte \"v následujícím prohlížeči:\" a vložte název Vámi "
+"preferovaného prohlížeče (např. \"firefox\" nebo "
+"\"epiphany\").</li></ul><p>Nyní, když kliknete na <i>jakýkoliv</i> odkaz "
+"začínající \"http://...\", bude otevřen v prohlížeči, který jste si "
+"zvolili (např. Mozilla Firefox nebo Epiphany nebo...).</p><p>Pro a více "
+"jemnější konfiguraci (jako otevírání webových stránek ve Vašem "
+"prohlížeči), přečtěte si druhý odkaz nápovědy.</p>"
 
 #: settings.cpp:686
 msgid "How to change the applications used to open files and links?"
-msgstr ""
+msgstr "Jak změnit aplikaci použitou k otevření souborů a odkazů ?"
 
 #: settings.cpp:687
 msgid ""
@@ -2641,24 +2520,37 @@ msgid ""
 "first entry;</li><li>Do the same for the type \"application -> "
 "xhtml+xml\".</li></ul>"
 msgstr ""
+"<p>Tady se dozvíte, jak nastavit aplikace pro jednotlivé typy souborů. To "
+"platí i pro webové odkazy, pokud zvolíte neotevírat je systematicky ve "
+"webovém prohlížeči (viz první odkaz nápovědy). Výchozí nastavení "
+"může pro Vás být vhodné, ale tento tip je užitečný pokud "
+"používáte GNOME, XFCE, nebo jiné prostředí než KDE.</p><p>Tohle je "
+"příklad, jak otevírat HTML stránky ve webovém prohlížeči (a přitom "
+"používat další aplikace pro jiné adresy nebo soubory). Opakujte tyto "
+"kroky pro každý typ souboru, který chcete otevřít ve specifické "
+"aplikaci.</p><ul><li>Otevřete ovládací centrum KDE (pokud není "
+"dostupné, zkuste zadat \"kcontrol\" v příkazové "
+"řádce);</li><li>Přejděte do \"KDE Komponenty\" a pak do  \" Asociace "
+"souborů\";</li><li>Rozbalte strom \"text\" a klikněte \"html\";</li><li>V "
+"seznamu aplikací, přesuňte Váš prohlížeč na první "
+"pozici;</li><li>To samé platí typ \"aplikace -> xhtml+xml\".</li></ul>"
 
 #: settings.cpp:757
-#, fuzzy
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
 msgstr ""
-"Este grupo contiene opciones no-estándar que pueden ser muy potentes\n"
-" y eficientes en el contexto de BasKet una vez familiarizado con ellas:"
+"Tato stránka seskupí nestandardní volby, které jakmile se naučíte,\n"
+"mohou bý velmi užitečné a ušetří čas v kontextu %1:"
 
 #: settings.cpp:763
 msgid "&Group a new note when clicking on the right of the insertion line"
 msgstr ""
+"&Seskupit novou poznámku kliknutím na pravou stranu čáry pro vložení"
 
 #: settings.cpp:766
-#, fuzzy
 msgid "How to group a new note?"
-msgstr "¿Cómo insertar líneas nuevas?"
+msgstr "Jak seskupit novou poznámku?"
 
 #: settings.cpp:767
 msgid ""
@@ -2666,6 +2558,9 @@ msgid ""
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
 msgstr ""
+"<p>Pokud je tato volba povolena, čára pro vložení neumoňuje jen "
+"vkládat poznámky na pozici kurzoru, ale také umožňuje seskupovat nové "
+"poznámky s těmi, které se nacházejí pod pozicí kurzoru:</p>"
 
 #: settings.cpp:769
 msgid ""
@@ -2674,112 +2569,112 @@ msgid ""
 "note.<br>Click on the <b>right</b> to <b>group</b> a note, with the one "
 "<b>below or above</b>, depending on where your mouse is.</p>"
 msgstr ""
+"<p>Umístěte myš mezi poznámky, kde chcete přidat novou.<br>Klikněte na "
+"<b>levou</b> stranu vkládací čáry pro <b>vložení</b> "
+"poznámky.<br>Klikněte <b>vpravo</b> pro <b>seskupení</b> poznámky, s tou "
+"<b>pod nebo nad</b> - záleží na pozici Vaší myši.</p>"
 
 #: settings.cpp:782
 msgid "Do nothing"
-msgstr "No hacer nada"
+msgstr "Nedělej nic"
 
 #: settings.cpp:783
 msgid "Paste clipboard"
-msgstr "Pegar contenido del portapapeles"
+msgstr "Vložit schránku"
 
 #: settings.cpp:788
-#, fuzzy
 msgid "Insert launcher note"
-msgstr "Insertar 'lanzador'"
+msgstr "Vložit spouštěč"
 
 #: settings.cpp:790
 msgid "&Shift+middle-click:"
-msgstr "&Mayús.+ botón central:"
+msgstr "&Shift+prostřední klik:"
 
 #: settings.cpp:793
 msgid "at cursor position"
-msgstr "en la posición del cursor"
+msgstr "na pozici kurzoru"
 
 #: settings.cpp:796
 msgid "System Tray Icon"
-msgstr "Icono de la bandeja del sistema"
+msgstr "Ikona systémového panelu"
 
 #: settings.cpp:802
-#, fuzzy
 msgid "Show c&urrent basket icon in system tray icon"
-msgstr "Mostrar el icono act&ual en la bandeja del sistema"
+msgstr "Zobrazit ikonu &současného košíku v systémovém panelu"
 
 #: settings.cpp:810
-#, fuzzy
 msgid "H&ide main window when mouse goes out of it for"
-msgstr "Ocul&tar la ventana principal cuando el puntero la abandone durante"
+msgstr "&Skrýt hlavní okno, když ho opustí kurzor myši na"
 
 #: settings.cpp:812 settings.cpp:821
 msgid " tenths of seconds"
-msgstr "décimas de segundo"
+msgstr " desetiny sekundy"
 
 #: settings.cpp:819
-#, fuzzy
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr ""
-"Mostrar la ventana &principal cuando el ratón pase por encima del icono de "
-"la bandeja del sistema durante"
+"&Obnovit hlavní okno, když myš přejede přes ikonu v systémovém panelu "
+"na"
 
 #: softwareimporters.cpp:44
 msgid "Import Hierarchy"
-msgstr ""
+msgstr "Importovat strukturu"
 
 #: softwareimporters.cpp:50
-#, fuzzy
 msgid "How to Import the Notes?"
-msgstr "¿Cómo insertar líneas nuevas?"
+msgstr "Jak importovat poznámky?"
 
 #: softwareimporters.cpp:51
 msgid "&Keep original hierarchy (all notes in separate baskets)"
 msgstr ""
+"&Ponechat původní strukturu (všechny poznámky v odděleném košíku)"
 
 #: softwareimporters.cpp:52
 msgid "&First level notes in separate baskets"
-msgstr ""
+msgstr "&Poznámky první úrovně v oddělených košících"
 
 #: softwareimporters.cpp:53
-#, fuzzy
 msgid "&All notes in one basket"
-msgstr "Mostrar los consejos i&nstantáneamente"
+msgstr "&Všechny poznámky v jednom košíku"
 
 #: softwareimporters.cpp:180
-#, fuzzy
 msgid "From KJots"
-msgstr "K&Jots"
+msgstr "Z KJots"
 
 #: softwareimporters.cpp:268
-#, fuzzy
 msgid "From KNotes"
-msgstr "Notas de KNotes"
+msgstr "Z KNotes"
 
 #: softwareimporters.cpp:339
-#, fuzzy
 msgid "From Sticky Notes"
-msgstr "&Notas adhesivas"
+msgstr "Z Sticky Notes"
 
 #: softwareimporters.cpp:389
 msgid "From Tomboy"
-msgstr ""
+msgstr "Z Tomboy"
 
 #: softwareimporters.cpp:548
 msgid ""
 "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
+"Nemohu importovat tento soubor. Buď je poškozený, nebo nejde o soubor "
+"TuxCards."
 
 #: softwareimporters.cpp:548
 msgid "Bad File Format"
-msgstr ""
+msgstr "Špatný formát souboru"
 
 #: softwareimporters.cpp:576
 msgid ""
 "A note is encrypted. The importer do not support encrypted notes yet. Please "
 "remove the encryption with TuxCards and re-import the file."
 msgstr ""
+"Poznámka je šifrována. Import zatím nepodporuje šifrované poznámkyt. "
+"Prosím odstraňte šifrování s TuxCards a znovu naimportujte soubor."
 
 #: softwareimporters.cpp:576
 msgid "Encrypted Notes not Supported Yet"
-msgstr ""
+msgstr "Šifrované poznámky zatím nepodporovány"
 
 #: softwareimporters.cpp:578
 msgid ""
@@ -2787,173 +2682,172 @@ msgid ""
 "encrypted notes yet. Please remove the encryption with TuxCards and "
 "re-import the file.</font>"
 msgstr ""
+"<font color='red'><b>Poznámka k šifrování.</b><br>Import zatím "
+"nepodporuje šifrované poznámkyt. Prosím odstraňte šifrování s "
+"TuxCards a znovu naimportujte soubor.</font>"
 
 #: systemtray.cpp:140
-#, fuzzy
 msgid ""
 "<p>Closing the main window will keep %1 running in the system tray. Use "
 "<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
 msgstr ""
-"<p>Cerrar la ventana principal mantendrá %1 corriendo en la bandeja del "
-"sistema. Use <b>Salir</b> en el menú de <b>%2</b> para terminar el "
-"programa.</p>"
+"<p>Zavření hlavního okna nechá %1 spuštěný v systémovém panelu. "
+"Použijte <b>Ukončit</b> z menu <b>Košík</b> k ukončení aplikace.</p>"
 
 #: systemtray.cpp:186 systemtray.cpp:191
 msgid "Docking in System Tray"
-msgstr "Colocación en la bandeja del sistema"
+msgstr "Skrývání v systémovém panelu"
 
 #: systemtray.cpp:237
-#, fuzzy
 msgid "Pasted selection to basket <i>%1</i>"
-msgstr "Pegada la selección (%1) en la carpeta <i>%2</i>"
+msgstr "Vložen výběr do košíku <i>%1</i>"
 
 #: systemtray.cpp:272
 msgid "&Minimize"
-msgstr "&Minimizar"
+msgstr "&Minimalizovat"
 
 #: systemtray.cpp:274
 msgid "&Restore"
-msgstr "&Restaurar"
+msgstr "&Obnovit"
 
 #: systemtray.cpp:347
-#, fuzzy
 msgid "Dropped to basket <i>%1</i>"
-msgstr "Arrastrado (%1) a la cesta <i>%2</i>"
+msgstr "Upuštěno do košíku <i>%1</i>"
 
 #: systemtray.cpp:435
 msgid "%1 (Locked)"
-msgstr "%1 (Bloqueado)"
+msgstr "%1 (Zamčeno)"
 
 #: tag.cpp:80
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: tag.cpp:447
 msgid "To Do"
-msgstr "Por hacer"
+msgstr "To Do"
 
 #: tag.cpp:447
 msgid "Unchecked"
-msgstr "Sin marcar"
+msgstr "Nezkontrolováno"
 
 #: tag.cpp:447
 msgid "Done"
-msgstr "Hecho"
+msgstr "Hotovo"
 
 #: tag.cpp:448
 msgid "Progress"
-msgstr "Progreso"
+msgstr "Průběh"
 
 #: tag.cpp:448
 #, c-format
 msgid "0 %"
-msgstr "0%"
+msgstr "0 %"
 
 #: tag.cpp:448
 #, c-format
 msgid "25 %"
-msgstr "25%"
+msgstr "25 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "50 %"
-msgstr "50%"
+msgstr "50 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "75 %"
-msgstr "75%"
+msgstr "75 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "100 %"
-msgstr "100%"
+msgstr "100 %"
 
 #: tag.cpp:502
 msgid "Priority"
-msgstr "Prioridad"
+msgstr "Priorita"
 
 #: tag.cpp:502
 msgid "Low"
-msgstr "Baja"
+msgstr "Nízká"
 
 #: tag.cpp:502
 msgid "Medium"
-msgstr "Media"
+msgstr "Střední"
 
 #: tag.cpp:503
 msgid "High"
-msgstr "Alta"
+msgstr "Vysoká"
 
 #: tag.cpp:503
 msgid "Preference"
-msgstr "Preferencia"
+msgstr "Přednost"
 
 #: tag.cpp:503
 msgid "Bad"
-msgstr "Malo"
+msgstr "Špatné"
 
 #: tag.cpp:504
 msgid "Good"
-msgstr "Bueno"
+msgstr "Dobré"
 
 #: tag.cpp:504
 msgid "Excelent"
-msgstr "Excelente"
+msgstr "Excelentní"
 
 #: tag.cpp:504
 msgid "Highlight"
-msgstr "Destacado"
+msgstr "Zvýrazněné"
 
 #: tag.cpp:570
 msgid "Important"
-msgstr "Importante"
+msgstr "Důležité"
 
 #: tag.cpp:570
 msgid "Very Important"
-msgstr "Muy Importante"
+msgstr "Velmi důležité"
 
 #: tag.cpp:571
 msgid "Idea"
-msgstr "Idea"
+msgstr "Myšlenka"
 
 #: tag.cpp:571
 msgid ""
 "_: The initial of 'Idea'\n"
 "I."
-msgstr "I."
+msgstr "M."
 
 #: tag.cpp:571
 msgid "Title"
-msgstr "Título"
+msgstr "Titulek"
 
 #: tag.cpp:572
 msgid "Code"
-msgstr "Código"
+msgstr "Kód"
 
 #: tag.cpp:572
 msgid "Work"
-msgstr "Trabajo"
+msgstr "Práce"
 
 #: tag.cpp:572
 msgid ""
 "_: The initial of 'Work'\n"
 "W."
-msgstr "T."
+msgstr "P."
 
 #: tag.cpp:590
 msgid "Personal"
-msgstr "Personal"
+msgstr "Osobní"
 
 #: tag.cpp:590
 msgid ""
 "_: The initial of 'Personal'\n"
 "P."
-msgstr "P."
+msgstr "O."
 
 #: tag.cpp:590
 msgid "Funny"
-msgstr "Divertido"
+msgstr "Veselé"
 
 #: tagsedit.cpp:207 tagsedit.cpp:227
 msgid ""
@@ -2963,7 +2857,7 @@ msgstr ""
 
 #: tagsedit.cpp:325
 msgid "Customize Tags"
-msgstr ""
+msgstr "Přizpůsobit značky"
 
 #: tagsedit.cpp:333
 msgid "Ne&w Tag"
@@ -2972,7 +2866,7 @@ msgstr ""
 #: tagsedit.cpp:334
 #, fuzzy
 msgid "New St&ate"
-msgstr "Cesta &siguiente"
+msgstr "Nový košík"
 
 #: tagsedit.cpp:350
 msgid "Move Up (Ctrl+Shift+Up)"
@@ -2985,14 +2879,14 @@ msgstr ""
 #: tagsedit.cpp:375
 #, fuzzy
 msgid "Tag"
-msgstr "Guardar destino"
+msgstr "Značky"
 
 #: tagsedit.cpp:382
 #, fuzzy
 msgid ""
 "_: Remove tag shortcut\n"
 "&Remove"
-msgstr "Cesta &siguiente"
+msgstr "&Odstranit"
 
 #: tagsedit.cpp:383
 msgid "S&hortcut:"
@@ -3003,21 +2897,20 @@ msgid "&Inherited by new sibling notes"
 msgstr ""
 
 #: tagsedit.cpp:398 tagsedit.cpp:1005 tagsedit.cpp:1021
-#, fuzzy
 msgid "State"
-msgstr "Pila"
+msgstr ""
 
 #: tagsedit.cpp:402
 #, fuzzy
 msgid "Na&me:"
-msgstr "&Nombre:"
+msgstr "&Název:"
 
 #: tagsedit.cpp:409
 #, fuzzy
 msgid ""
 "_: Remove tag emblem\n"
 "Remo&ve"
-msgstr "Cesta &siguiente"
+msgstr "&Odstranit"
 
 #: tagsedit.cpp:410
 msgid "&Emblem:"
@@ -3026,7 +2919,7 @@ msgstr ""
 #: tagsedit.cpp:426
 #, fuzzy
 msgid "&Background:"
-msgstr "Color de &Fondo:"
+msgstr "&Barva pozadí:"
 
 #: tagsedit.cpp:455
 msgid "Strike Through"
@@ -3035,22 +2928,22 @@ msgstr ""
 #: tagsedit.cpp:457
 #, fuzzy
 msgid "&Text:"
-msgstr "&Texto"
+msgstr "&Text"
 
 #: tagsedit.cpp:467
 #, fuzzy
 msgid "Co&lor:"
-msgstr "Colo&r:"
+msgstr "Ba&rva:"
 
 #: tagsedit.cpp:471
 #, fuzzy
 msgid "&Font:"
-msgstr "&Icono:"
+msgstr "&Icona:"
 
 #: tagsedit.cpp:474
 #, fuzzy
 msgid "&Size:"
-msgstr "Ta&maño:"
+msgstr "Velikost"
 
 #: tagsedit.cpp:477
 msgid "Te&xt equivalent:"
@@ -3067,8 +2960,9 @@ msgid "On ever&y lines"
 msgstr ""
 
 #: tagsedit.cpp:501
+#, fuzzy
 msgid "What does it mean?"
-msgstr ""
+msgstr "Kdy se to použije?"
 
 #: tagsedit.cpp:502
 msgid ""
@@ -3095,7 +2989,7 @@ msgstr ""
 #: tagsedit.cpp:890
 #, fuzzy
 msgid "Delete Tag"
-msgstr "&Borrar"
+msgstr "&Smazat"
 
 #: tagsedit.cpp:895
 msgid ""
@@ -3110,141 +3004,99 @@ msgstr ""
 #: tagsedit.cpp:897
 #, fuzzy
 msgid "Delete State"
-msgstr "Borrar la cesta"
+msgstr "Smazat košík"
 
 #: _translatorinfo.cpp:1
 msgid ""
 "_: NAME OF TRANSLATORS\n"
 "Your names"
-msgstr ""
-"_: NOMBRE DE LOS TRADUCTORES\n"
-"José Luis Tallón"
+msgstr "Radomir Fojtik"
 
 #: _translatorinfo.cpp:3
 msgid ""
 "_: EMAIL OF TRANSLATORS\n"
 "Your emails"
-msgstr ""
-"_: DIRECCIONES DE LOS TRADUCTORES\n"
-"jltallon@adv-solutions.net"
+msgstr "radfoj@seznam.cz"
 
 #: variouswidgets.cpp:47
-#, fuzzy
 msgid "..."
-msgstr "&Nuevo..."
+msgstr "..."
 
 #: variouswidgets.cpp:84 variouswidgets.cpp:199
-#, fuzzy
 msgid "16 by 16 pixels"
-msgstr "16x16 píxeles"
+msgstr "16 x 16 pixelů"
 
 #: variouswidgets.cpp:85 variouswidgets.cpp:200
-#, fuzzy
 msgid "22 by 22 pixels"
-msgstr "22x22 píxeles"
+msgstr "22 x 22 pixelů"
 
 #: variouswidgets.cpp:86 variouswidgets.cpp:201
-#, fuzzy
 msgid "32 by 32 pixels"
-msgstr "32x32 píxeles"
+msgstr "32 x 32 pixelů"
 
 #: variouswidgets.cpp:87 variouswidgets.cpp:202
-#, fuzzy
 msgid "48 by 48 pixels"
-msgstr "48x48 píxeles"
+msgstr "48 x 48 pixelů"
 
 #: variouswidgets.cpp:88 variouswidgets.cpp:203
-#, fuzzy
 msgid "64 by 64 pixels"
-msgstr "64x64 píxeles"
+msgstr "64 x 64 pixelů"
 
 #: variouswidgets.cpp:89 variouswidgets.cpp:204
-#, fuzzy
 msgid "128 by 128 pixels"
-msgstr "%1 x %2 píxeles"
+msgstr "128 x 128 pixelů"
 
 #: variouswidgets.cpp:129
-#, fuzzy
 msgid ""
 "Resize the window to select the image size\n"
 "and close it or press Escape to accept changes."
 msgstr ""
-"Redimensione la ventana para escoger el tamaño de la imagen\n"
-"y ciérrela ó bien pulse Escape para validarla."
+"Změňte velikost okna pro vybrání\n"
+"velikosti obrázku a zavřete ho\n"
+"nebo stiskněte Esc pro uložení změny."
 
-#, fuzzy
-#~ msgid "Remo&ve"
-#~ msgstr "Cesta &siguiente"
+#~ msgid "Password for Private Key:"
+#~ msgstr "Heslo pro osobní klíč:"
 
-#, fuzzy
-#~ msgid "Insert rich text note"
-#~ msgstr "Insertar elemento de texto enriquecido"
-
-#, fuzzy
-#~ msgid ""
-#~ "Add a rich text note to the current basket without having to open main "
-#~ "window."
-#~ msgstr ""
-#~ "Añadir un elemento de texto enriquecido a la cesta actual sin necesidad de "
-#~ "abrir la ventana principal."
+#~ msgid "Password for '%1'-basket:"
+#~ msgstr "Heslo pro košík %1:"
 
 #~ msgid "&Rich Text"
-#~ msgstr "Texto en&riquecido"
+#~ msgstr "&Formátovatelný text"
 
-#, fuzzy
-#~ msgid "Convert Text Notes"
-#~ msgstr "Insertar elemento de texto"
+#~ msgid "Convert text notes to rich text notes"
+#~ msgstr "Převést textové poznámky do formátovatelných"
 
-#, fuzzy
-#~ msgid "Only in the Current Basket"
-#~ msgstr "Borrar la cesta"
-
-#, fuzzy
-#~ msgid "In Every Baskets"
-#~ msgstr "Cesta &siguiente"
-
-#, fuzzy
-#~ msgid "Opening rich text..."
-#~ msgstr "Abriendo destino del enlace..."
-
-#, fuzzy
-#~ msgid "Opening rich texts..."
-#~ msgstr "Abriendo destino del enlace..."
-
-#, fuzzy
-#~ msgid "Opening rich text with..."
-#~ msgstr "Abriendo destino del enlace con..."
-
-#, fuzzy
-#~ msgid "Opening rich texts with..."
-#~ msgstr "Abriendo destino del enlace con..."
-
-#, fuzzy
-#~ msgid "Open rich text with:"
-#~ msgstr "Abrir elementos de texto enriquecido con:"
-
-#, fuzzy
-#~ msgid "Open rich texts with:"
-#~ msgstr "Abrir elementos de texto enriquecido con:"
-
-#, fuzzy
-#~ msgid "Open &rich text notes with a custom application:"
+#~ msgid ""
+#~ "<p>This will convert every text notes into rich text notes.<br>The content "
+#~ "of the notes will not change and you will be able to apply formating to "
+#~ "those notes.</p><p>This process cannot be reverted back: you will not be "
+#~ "able to convert the rich text notes to plain text ones later.</p><p>As a "
+#~ "beta-tester, you are strongly encouraged to do the convert process because "
+#~ "it is to test if plain text notes are still needed.<br>If nobody complain "
+#~ "about not having plain text notes anymore, then the final version is likely "
+#~ "to not support plain text notes anymore.</p><p><b>Which basket notes do you "
+#~ "want to convert?</b></p>"
 #~ msgstr ""
-#~ "Abrir elementos de texto en&riquecido con una aplicación específica:"
+#~ "<p>Zde můžete konvertovat všechny textové poznámky do poznámek "
+#~ "formátovatelných.<br>Obsah poznámek se nezmění a budete schopni "
+#~ "aplikovat formátování na tyto poznámky.</p><p>Tento proces nemůže být "
+#~ "vrácen zpět: nebudete moci zpátky zkonvertovat formátovatelný text na "
+#~ "text prostý.</p><p>Jako beta-tester jste podporován projít touto "
+#~ "konverzí, protože je to test zda prostý text je stále "
+#~ "potřebný.<br>Pokud si nikdo nebude stěžovat  na neexistenci prostých "
+#~ "textů, finální verze je pravděpodobně nebude dále "
+#~ "podporovat.</p><p><b>Které poznámky chcete konvertovat?</b></p>"
 
-#, fuzzy
-#~ msgid "Open rich text notes with:"
-#~ msgstr "Abrir elementos de texto enriquecido con:"
+#~ msgid "Convert Text Notes"
+#~ msgstr "Převést textové poznámky"
 
-#, fuzzy
-#~ msgid "Move Up"
-#~ msgstr "&Subir"
+#~ msgid "Only in the Current Basket"
+#~ msgstr "Pouze v současném košíku"
 
-#, fuzzy
-#~ msgid "Move Down"
-#~ msgstr "&Bajar"
+#~ msgid "In Every Baskets"
+#~ msgstr "Ve všech košících"
 
-#, fuzzy
 #~ msgid ""
 #~ "<p>%1 let you to collect a wide variety of objects and keep them all in one "
 #~ "place.</p><p>You can group things for different purposes in tabs by creating "
@@ -3254,183 +3106,153 @@ msgstr ""
 #~ "replace your bookmarks, store links to applications you often use, create "
 #~ "shop-lists...</p>"
 #~ msgstr ""
-#~ "<p>BasKet le permite recopilar una amplia variedad de objetos y mantenerlos "
-#~ "todos en el mismo lugar.</p><p> Puede agrupar elementos para diferentes "
-#~ "propósitos en pestañas sin más que crear tantas nuevas cestas como "
-#~ "necesite.<br>Los elementos pueden ser re-colocados, se pueden asociar "
-#~ "anotaciones con ellos y se pueden arrastrar de vuelta a otras aplicaciones "
-#~ "cuando sean necesarios .</p><p>Puede utilizar cestas para tomar notas, "
-#~ "aligerar su escritorio reemplazar sus 'marcadores favoritos', almacenar "
-#~ "enlaces a programas que utilice a menudo ó incluso crear un gestor avanzado "
-#~ "del portapapeles.</p>"
+#~ "<p>%1 nechá sebrat širokou škálu objektů a nechat je všechny na jednom "
+#~ "míste.</p><p>Můžete věci seskupovat pro různé účely v záložkách "
+#~ "vytvořením tolika košíků, kolik jen chcete.<br>Poznámky mohou být "
+#~ "přeuspořádány, značky mohou být asociovány, a Vy je můžete táhnout "
+#~ "zpět do jiné aplikace, pokud je třeba.</p><p>Můžete používat košíky "
+#~ "to vzít poznámky, vyčistit desktop, nahradit záložky, ukládat odkazy k "
+#~ "aplikacím, které často používáte, vytvářet seznamy nákupů...</p>"
+
+#~ msgid "<b>Password was not accepted.</b><br><br>"
+#~ msgstr "<b>Heslo nebylo akceptováno.</b><br><br>"
+
+#~ msgid "I Dislike..."
+#~ msgstr "Nelíbí se mi..."
+
+#~ msgid ""
+#~ "<p><b>Welcome to this testing version of %1.</b></p><p>To help us improve "
+#~ "it, your comments are important.</p><p>Each time you are surprised with "
+#~ "something you like, or something you do not like, please click the "
+#~ "appropriate hand below the window title-bar, briefly describe the object of "
+#~ "your sentiment and click Send.</p><p>Follow the same principle to quickly "
+#~ "report a bug: just click the bug icon in the top-right corner of the window, "
+#~ "describe it and click Send.</p><p>Examples:</p><table><tr><td><nobr><b><img "
+#~ "source=\"likeback_icon_like\"> I like...</b></nobr><br>the nice new "
+#~ "artwork.<br>Very refreshing.</td><td><nobr><b><img "
+#~ "source=\"likeback_icon_dislike\"> I do not like...</b></nobr><br>the welcome "
+#~ "page of that wizard.<br>Too time consuming.</td><td><nobr><b><img "
+#~ "source=\"likeback_icon_bug\"> I found a bug...</b></nobr><br>when clicking "
+#~ "the Add button, nothing happens.</td></tr></table>"
+#~ msgstr ""
+#~ "<p><b>Vítejte v této testovací verzi %1.</b></p><p>Pro její vylepšení "
+#~ "jsou důležité Vaše komentáře.</p><p>Pokaždé když jste překvapení "
+#~ "něčím, co se Vám líbí, nebo něčím, co se Vám nelíbí, prosím "
+#~ "klikněte na patřičnou ručku pod titulkem okna, stručně popište vaše "
+#~ "pocity a klikněte Poslat.</p><p>Stejné principy platí k rychlému "
+#~ "nahlášení chyby: pouze stačí kliknou na ikonu Bugu v pravém horním "
+#~ "rohu okna, popište ji a klikněte "
+#~ "Poslat.</p><p>Příklady:</p><table><tr><td><nobr><b><img "
+#~ "source=\"likeback_icon_like\"> Líbí se mi...</b></nobr><br>hezký nový "
+#~ "design.<br>Velmi roztomilé.</td><td><nobr><b><img "
+#~ "source=\"likeback_icon_dislike\"> Nelíbí se mi...</b></nobr><br>uvítací "
+#~ "stránka tohoto wizardu.<br>Spotřebuje spoustu času.</td><td><nobr><b><img "
+#~ "source=\"likeback_icon_bug\"> Nalezl jsem bug...</b></nobr><br>když kliknu "
+#~ "na tlačítko Přidat, nic se nestane.</td></tr></table>"
+
+#~ msgid "The comment will be submitted annonymously."
+#~ msgstr "Příspěvek bude poslán anonymně."
+
+#~ msgid "Message Sent"
+#~ msgstr "Zpráva odeslána"
 
 #~ msgid "Show the debug window"
-#~ msgstr "Mostrar la ventana de depuración"
+#~ msgstr "Zobrazí ladící okno"
 
-#, fuzzy
-#~ msgid "Hide the main window in the system tray icon on startup"
+#~ msgid ""
+#~ "Custom folder where to load and save basket data and application data "
+#~ "(useful for debugging purpose)"
 #~ msgstr ""
-#~ "Mostrar la ventana &principal cuando el ratón pase por encima del icono de "
-#~ "la bandeja del sistema durante"
+#~ "Obvyklý adresář odkud načítáte a kam ukládáte data košíků a date "
+#~ "aplikací (užitečné pro ladící potřeby)"
 
-#, fuzzy
+#~ msgid "Hide the main window in the system tray icon on startup"
+#~ msgstr "Při startu skrýt hlavní okno v systémovém panelu"
+
+#~ msgid ""
+#~ "When crashing, use the standard KDE report dialog instead of sending an email"
+#~ msgstr ""
+#~ "Když spadne, použijte standardní KDE dialog hlášení chyb místo "
+#~ "poslání emailu"
+
+#~ msgid ""
+#~ "<h1>This version use rich text instead of plain text notes!</h1><p>Be "
+#~ "rassured: every drawbacks of rich text notes have been solved. You can "
+#~ "happily enjoy theire power.</p><p>This version is a <b>test to see how well "
+#~ "people will receive the abandon of text notes, <u>in order to remove them "
+#~ "completely in the final version</u></b>. Please test the application during "
+#~ "a few days. And then, if you are disapointed, please mail me, or click the "
+#~ "colored hands bellow every window title bar to send your "
+#~ "feedback.</p><p>Your plain text notes were <b>not</b> converted.<br>At any "
+#~ "moment, you can click the last icon in the toolbar to <i>convert the notes "
+#~ "of only one or all baskets</i>. You are even <u>encouraged</u> to do so.</p>"
+#~ msgstr ""
+#~ "<h1>Tato verze používá poznámky ve formátovatelném textu místo v "
+#~ "textu prostém!</h1><p> Všechny nedostatky poznámek formátovatelného "
+#~ "textu byly vyřešeny. Můžete si tedy užívat jejich síly.</p><p>Tato "
+#~ "verze je <b>testem, jak uživatelé přijmou opuštění poznámek v "
+#~ "prostém textu, <u>abychom je kompletně mohli odstranit pro finální "
+#~ "verzi.</u></b>. Prosím otestujte aplikaci v příštích několika dnech. A "
+#~ "poté, pokud budete zklamáni, prosím pošlete mi mail, nebo klikněte na "
+#~ "barevnou ručičku umístěnou pod každým titulkem s Vaší zpětnou "
+#~ "vazbou.</p><p>Vaše poznámky v prostém textu <b>nebyly</b> "
+#~ "konvertovány.<br>V kterémkoliv okamžiku, můžete kliknout na poslední "
+#~ "ikonu v nástrojové liště pro <i>konverzi poznámek jednoho nebo všech "
+#~ "košíků</i>. Jste dokonce <u>povzbuzeni</u> tak udělat.</p>"
+
+#~ msgid "Insert rich text note"
+#~ msgstr "Vložit formátovanou textovou poznámku"
+
+#~ msgid ""
+#~ "Add a rich text note to the current basket without having to open main "
+#~ "window."
+#~ msgstr ""
+#~ "Přidat formátovanou textovou poznámku do současného košíku bez "
+#~ "nutnosti otevírat hlavní okno."
+
+#~ msgid "Edit this rich text"
+#~ msgstr "Upravit tento formátovatelný text"
+
+#~ msgid "Opening rich text..."
+#~ msgstr "Otevírám formátovatelný text..."
+
+#~ msgid "Opening rich texts..."
+#~ msgstr "Otevírám formátovanané texty..."
+
+#~ msgid "Opening rich text with..."
+#~ msgstr "Otevírám formátovatelný text s..."
+
+#~ msgid "Opening rich texts with..."
+#~ msgstr "Otevírám formátovatelné texty s..."
+
+#~ msgid "Open rich text with:"
+#~ msgstr "Otevřít formátovatelný text s:"
+
+#~ msgid "Open rich texts with:"
+#~ msgstr "Otevřít formátovatelné texty s:"
+
+#~ msgid ""
+#~ "<qt><b>Always encrypt with:</b><br />\n"
+#~ "<p>This ensures all files/messages will also be encrypted with the chosen "
+#~ "key. However, if the \"Encrypt files with:\" option is selected that chosen "
+#~ "key will override the \"Always encrypt with:\" selection.</p></qt>"
+#~ msgstr ""
+#~ "<qt><b>Vždy šifrovat s:</b><br />\n"
+#~ "<p>Volba zajistí, že všechny soubory/zprávy budou také šifrovány "
+#~ "vybraným klíčem. Jinak, pokud je vybrána volba\"šifrovat soubory "
+#~ "s:\"přepíše \"Vždy šifrovat s:\" výběrem.</p></qt>"
+
+#~ msgid "C&hange..."
+#~ msgstr "Z&měnit..."
+
 #~ msgid "Notes Look"
-#~ msgstr "Aspecto de los elementos"
+#~ msgstr "Vzhled poznámek"
 
 #~ msgid "Addictive Features"
-#~ msgstr "Características adictivas"
+#~ msgstr "Návykové funkce"
 
-#, fuzzy
-#~ msgid "Filter &all Baskets"
-#~ msgstr "Borrar la cesta"
+#~ msgid "Open &rich text notes with a custom application:"
+#~ msgstr "Otevřít &formátovatelné textové poznámky s aplikací:"
 
-#, fuzzy
-#~ msgid "Editing. Press Escape, Return or click outside to confirm."
-#~ msgstr "Editando. Pulse Escape, Return ó haga click fuera para validar."
-
-#, fuzzy
-#~ msgid "Editing. Press Escape or click outside to confirm."
-#~ msgstr "Editando. Pulse Escape, ó haga click fuera para validar."
-
-#~ msgid "So&und"
-#~ msgstr "&Sonido"
-
-#, fuzzy
-#~ msgid "Co&nfirm changes with the Enter key in text editors"
-#~ msgstr "&Validar con Enter en los editores embebidos"
-
-#, fuzzy
-#~ msgid ""
-#~ "<p>If you choose to confirm changes with the Enter (Return) key, you still "
-#~ "can insert new lines by pressing Ctrl+Return in text editors.</p><p>Notice "
-#~ "that new paragraphs in rich text editors are inserted with Shift+Return.</p>"
-#~ msgstr ""
-#~ "<p>Si activa la validación mediante la tecla Enter, aún puede insertar "
-#~ "líneas nuevas pulsando Ctrl+Enter en los editores de texto.</p><p>Nótese "
-#~ "que en los editores de texto enriquecido, los párrafos se insertan mediante "
-#~ "Mayús.+Enter.</p>"
-
-#~ msgid "&When writing in a basket:"
-#~ msgstr "Cuando se escri&ba en una cesta:"
-
-#~ msgid "Do the same"
-#~ msgstr "Hacer lo mismo"
-
-#, fuzzy
-#~ msgid "&But begin writing with a comma (,):"
-#~ msgstr "Pero empezar a escribir con una co&ma (,):"
-
-#~ msgid "I&nsert"
-#~ msgstr "I&nsertar"
-
-#~ msgid "Search"
-#~ msgstr "Buscar"
-
-#~ msgid "<qt>Do you really want to delete <b>%1</b> and its contents?</qt>"
-#~ msgstr "<qt>¿Desea realmente eliminar <b>%1</b> y sus contenidos?</qt>"
-
-#~ msgid "all shown"
-#~ msgstr "se muestran todos"
-
-#, fuzzy
-#~ msgid ""
-#~ "_n: %n found\n"
-#~ "%n found"
-#~ msgstr ""
-#~ "_n: %n elemento encontrado\n"
-#~ "%n elementos encontrados"
-
-#, fuzzy
-#~ msgid "Non openable item."
-#~ msgstr "El elemento no se puede abrir."
-
-#~ msgid "Basket %1"
-#~ msgstr "Cesta %1"
-
-#~ msgid "Checklist"
-#~ msgstr "Lista de tareas"
-
-#~ msgid "Checklist %1"
-#~ msgstr "Lista de tareas %1"
-
-#~ msgid "Stack %1"
-#~ msgstr "Pila %1"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: like \"folderFoo mirror\"\n"
-#~ "%1 mirror"
-#~ msgstr ""
-#~ "_: como reflejo de \"carpetaFoo\"\n"
-#~ "reflejo de %1"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: like \"folderFoo mirror 2\"\n"
-#~ "%1 mirror %2"
-#~ msgstr ""
-#~ "_: como reflejo de  \"carpetaFoo 2\"\n"
-#~ "%1 refleja %2"
-
-#~ msgid "Launcher %1"
-#~ msgstr "Lanzador %1"
-
-#~ msgid "Clipboard manager"
-#~ msgstr "Gestor del portapapeles"
-
-#~ msgid "Clipboard manager %1"
-#~ msgstr "Gestor de portapapeles %1"
-
-#~ msgid "&Item"
-#~ msgstr "&Elemento"
-
-#, fuzzy
-#~ msgid "Validate item edition"
-#~ msgstr "&Validar con Enter en los editores embebidos"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: HTML exportation files folder\n"
-#~ "%1_files"
-#~ msgstr ""
-#~ "_: Carpeta donde exportar HTML\n"
-#~ "%1_ficheros"
-
-#~ msgid "Left Align"
-#~ msgstr "Alienado a la izquierda"
-
-#~ msgid "Right Align"
-#~ msgstr "Alineado a la derecha"
-
-#~ msgid "Notes from Sticky Notes"
-#~ msgstr "Notas de 'Sticky Notes'"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: e.g. \"Update: 1 loaded item and 3 removed items\"\n"
-#~ "Update: %1 and %2"
-#~ msgstr ""
-#~ "_: por ej.\"Actualización: 1 elemento cargado y 3 eliminados\"\n"
-#~ "Actualización: %1 y %2"
-
-#~ msgid ""
-#~ "_n: %n loaded item\n"
-#~ "%n loaded items"
-#~ msgstr ""
-#~ "_n: %n elemento cargado\n"
-#~ "%n elementos cargados"
-
-#~ msgid ""
-#~ "_n: %n removed item\n"
-#~ "%n removed items"
-#~ msgstr ""
-#~ "_n: %n elemento eliminado\n"
-#~ "%n elementos eliminados"
-
-#~ msgid "Up to date basket: no change done."
-#~ msgstr "La cesta ya estaba actualizada: No se realizaron cambios."
-
-#~ msgid "The new item do not match the search and isn't shown."
-#~ msgstr ""
-#~ "El nuevo elemento no coincide con el criterio de búsqueda y por tanto no se "
-#~ "muestra."
+#~ msgid "Open rich text notes with:"
+#~ msgstr "Otevřít formátovatelné textové poznámky s:"

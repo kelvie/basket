@@ -63,7 +63,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	m_lineEdit           = new FocusedLineEdit(this);
 	QLabel *label        = new QLabel(m_lineEdit, i18n("&Filter: "), this);
 	m_tagsBox            = new FocusedComboBox(this);
-	QLabel *label2       = new QLabel(m_tagsBox, i18n("&Tag: "), this);
+	QLabel *label2       = new QLabel(m_tagsBox, i18n("T&ag: "), this);
 	m_inAllBasketsButton = new QToolButton(this);
 	m_inAllBasketsButton->setIconSet(inAllIconSet);
 	m_inAllBasketsButton->setTextLabel(i18n("Filter all Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);

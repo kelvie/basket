@@ -293,6 +293,7 @@ class Basket : public QScrollView, public QToolTip
 	bool m_loaded;
 	bool m_loadingLaunched;
 	bool m_locked;
+	bool m_shouldConvertPlainTextNotes;
 	QFrame* m_decryptBox;
 	QPushButton* m_button;
 	int m_encryptionType;
@@ -412,8 +413,9 @@ class Basket : public QScrollView, public QToolTip
 	void unlockHovering();
 	void disableNextClick();
 	void contentsMoved();
-  private:
+  public:
 	Note  *m_tagPopupNote;
+  private:
 	Tag   *m_tagPopup;
 	QTime  m_lastDisableClick;
 
@@ -647,7 +649,7 @@ public slots:
 	void  computeInsertPlace(const QPoint &/*cursorPosition*/)    { }
   public:
 
-	friend class ContainerSystemTray;
+	friend class SystemTray;
 };
 
 

@@ -206,21 +206,27 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 
-	connect( textEdit,                                 SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
-	connect( textEdit,                                 SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
-//	connect( InlineEditors::instance()->richTextFont,  SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
-//	connect( InlineEditors::instance()->richTextColor, SIGNAL(escapePressed()), this, SLOT(slotFocusEditor()) );
+	connect( textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
+	connect( textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
 
-	connect( InlineEditors::instance()->richTextFont,  SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFamily(const QString&)) );
-	connect( InlineEditors::instance()->richTextColor, SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
+	connect( InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFamily(const QString&)) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(int)),            textEdit, SLOT(setPointSize(int))         );
+	connect( InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
 
-	connect( InlineEditors::instance()->richTextFont,  SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextFont,  SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextColor, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextColor, SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFont,     SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFont,     SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFont,     SIGNAL(activated(int)),   textEdit, SLOT(setFocus()) );
 
-	connect( textEdit,  SIGNAL(cursorPositionChanged(int, int)), this, SLOT(cursorPositionChanged()) );
-	connect( textEdit,  SIGNAL(clicked(int, int)),               this, SLOT(cursorPositionChanged()) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(activated(int)),   textEdit, SLOT(setFocus()) );
+
+	connect( InlineEditors::instance()->richTextColor,    SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextColor,    SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+
+	connect( textEdit,  SIGNAL(cursorPositionChanged(int, int)),  this, SLOT(cursorPositionChanged())   );
+	connect( textEdit,  SIGNAL(clicked(int, int)),                this, SLOT(cursorPositionChanged())   );
+	connect( textEdit,  SIGNAL(currentFontChanged(const QFont&)), this, SLOT(fontChanged(const QFont&)) );
 //	connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
 	connect( InlineEditors::instance()->richTextBold,      SIGNAL(activated()), this, SLOT(setBold())      );
@@ -233,6 +239,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 
 	InlineEditors::instance()->richTextToolBar()->show();
 	cursorPositionChanged();
+	fontChanged(textEdit->currentFont());
 	//QTimer::singleShot( 0, this, SLOT(cursorPositionChanged()) );
 	InlineEditors::instance()->enableRichTextToolBar();
 }
@@ -253,6 +260,11 @@ void HtmlEditor::cursorPositionChanged()
 		case 2/*Qt::AlignRight*/:    InlineEditors::instance()->richTextRight->setChecked(true);     break;
 		case -8/*Qt::AlignJustify*/: InlineEditors::instance()->richTextJustified->setChecked(true); break;
 	}
+}
+
+void HtmlEditor::fontChanged(const QFont &font)
+{
+	InlineEditors::instance()->richTextFontSize->setFontSize(font.pointSize());
 }
 
 /*void HtmlEditor::slotVe<rticalAlignmentChanged(QTextEdit::VerticalAlignment align)
@@ -752,6 +764,9 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
 	KWidgetAction *action = new KWidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
 	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font");
+	richTextFontSize = new FontSizeCombo(/*rw=*/true, Global::mainWindow());
+	action = new KWidgetAction(richTextFontSize, i18n("Font Size"), Qt::Key_F7,
+	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font_size");
 	richTextColor = new FocusedColorCombo(Global::mainWindow());
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	action = new KWidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
@@ -788,6 +803,7 @@ KToolBar* InlineEditors::richTextToolBar()
 void InlineEditors::enableRichTextToolBar()
 {
 	richTextFont->setEnabled(true);
+	richTextFontSize->setEnabled(true);
 	richTextColor->setEnabled(true);
 	richTextBold->setEnabled(true);
 	richTextItalic->setEnabled(true);
@@ -801,6 +817,7 @@ void InlineEditors::enableRichTextToolBar()
 void InlineEditors::disableRichTextToolBar()
 {
 	disconnect(richTextFont);
+	disconnect(richTextFontSize);
 	disconnect(richTextColor);
 	disconnect(richTextBold);
 	disconnect(richTextItalic);
@@ -811,6 +828,7 @@ void InlineEditors::disableRichTextToolBar()
 	disconnect(richTextJustified);
 
 	richTextFont->setEnabled(false);
+	richTextFontSize->setEnabled(false);
 	richTextColor->setEnabled(false);
 	richTextBold->setEnabled(false);
 	richTextItalic->setEnabled(false);

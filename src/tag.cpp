@@ -760,13 +760,16 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 
 	QColor menuBackgroundColor = (dynamic_cast<KStyle*>(&(kapp->style())) == NULL ? cg.background() : cg.background().light(103));
 
+	// Enabled, Not hovering
 	QPixmap  pixmap(width, height);
 	pixmap.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	QPainter painter(&pixmap);
 	int style = QStyle::Style_Enabled | QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
+	QColor background = cg.color(QColorGroup::Background);
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
+	// Enabled, Hovering
 	QPixmap  pixmapHover(width, height);
 	pixmapHover.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	painter.begin(&pixmapHover);
@@ -775,8 +778,18 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
+	// Disabled
+	QPixmap  pixmapDisabled(width, height);
+	pixmapDisabled.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
+	painter.begin(&pixmapDisabled);
+	style = /*QStyle::Style_Enabled | */QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
+	cg.setColor(QColorGroup::Background, background);
+	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
+	painter.end();
+
 	QIconSet iconSet(pixmap);
-	iconSet.setPixmap(pixmapHover, QIconSet::Automatic, QIconSet::Active);
+	iconSet.setPixmap(pixmapHover,         QIconSet::Automatic, QIconSet::Active);
+	iconSet.setPixmap(pixmapDisabled,      QIconSet::Automatic, QIconSet::Disabled);
 	return iconSet;
 }
 

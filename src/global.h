@@ -25,7 +25,7 @@
 
 class DebugWindow;
 class BackgroundManager;
-class ContainerSystemTray;
+class SystemTray;
 class BNPView;
 class KGlobalAccel;
 class KMainWindow;
@@ -41,11 +41,11 @@ class Global
 	static QString s_customSavesFolder;
   public:
 	// Global Variables:
-	static DebugWindow         *debugWindow;
-	static BackgroundManager   *backgroundManager;
-	static ContainerSystemTray *tray;
-	static BNPView             *bnpView;
-	static KGlobalAccel        *globalAccel;
+	static DebugWindow       *debugWindow;
+	static BackgroundManager *backgroundManager;
+	static SystemTray        *systemTray;
+	static BNPView           *bnpView;
+	static KGlobalAccel      *globalAccel;
 
 	// Application Folders:
 	static void setCustomSavesFolder(const QString &folder);
@@ -58,6 +58,7 @@ class Global
 	// Various Things:
 	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
 	static KMainWindow* mainWindow();
+	static bool runInsideKontact();
 };
 
 #endif // GLOBAL_H
