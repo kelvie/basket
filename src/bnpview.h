@@ -308,8 +308,6 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 	protected:
 		void enterEvent(QEvent*);
 		void leaveEvent(QEvent*);
-		void showEvent(QShowEvent*);
-		void hideEvent(QHideEvent*);
 
 	private:
 		KListView    *m_tree;

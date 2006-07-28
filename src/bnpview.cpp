@@ -2028,7 +2028,7 @@ void BNPView::showMainWindow()
 	emit showPart();
 }
 
-<<<<<<< .mine
+//<<<<<<< .mine // FIXME: What's this ?!!!!! I do not see equivalents!
 void BNPView::populateTagsMenu()
 {
 	KPopupMenu *menu = (KPopupMenu*)(popupMenu("tags"));
@@ -2112,6 +2112,14 @@ void BNPView::showEvent(QShowEvent*)
 {
 	if (Global::runInsideKontact())
 		QTimer::singleShot( 0, this, SLOT(connectTagsMenu()) );
+
+	if (m_firstShow) {
+		m_firstShow = false;
+		onFirstShow();
+	}
+	if (isPart() && !LikeBack::enabled()) {
+		LikeBack::enable();
+	}
 }
 
 void BNPView::hideEvent(QHideEvent*)
@@ -2120,6 +2128,9 @@ void BNPView::hideEvent(QHideEvent*)
 		disconnect( popupMenu("tags"), SIGNAL(aboutToShow()), this, SLOT(populateTagsMenu())   );
 		disconnect( popupMenu("tags"), SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
 	}
+
+	if (isPart())
+		LikeBack::disable();
 }
 
 void BNPView::disconnectTagsMenu()
@@ -2155,23 +2166,7 @@ void BNPView::hideEvent(QHideEvent*)
 }
 
   >>>>>>> .r224*/
-void BNPView::showEvent(QShowEvent*)
-{
-	if(m_firstShow)
-	{
-		m_firstShow = false;
-		onFirstShow();
-	}
-	if(isPart() && !LikeBack::enabled())
-	{
-		LikeBack::enable();
-	}
-}
 
-void BNPView::hideEvent(QHideEvent*)
-{
-	if(isPart())
-		LikeBack::disable();
-}
+// ^^ Re-added above, arround line 2111
 
 #include "bnpview.moc"

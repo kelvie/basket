@@ -358,7 +358,7 @@ void LikeBack::showDialog(Button button)
 bool LikeBack::emailAddressAlreadyProvided()
 {
 	KConfig config("basketrc");
-	return config->readBoolEntry("emailAlreadyAsked", false);
+	return config.readBoolEntry("emailAlreadyAsked", false);
 }
 
 /*<<<<<<< .mine
@@ -391,7 +391,7 @@ QString LikeBack::emailAddress()
 
 void LikeBack::setEmailAddress(const QString &address)
 {
- KConfig config("basketrc");
+	KConfig config("basketrc");
 
 	config.setGroup("LikeBack");
 	config.writeEntry("emailAddress",      address);
@@ -400,12 +400,12 @@ void LikeBack::setEmailAddress(const QString &address)
 
 void LikeBack::askEMail()
 {
- KConfig config("basketrc");
+	KConfig config("basketrc");
+	config.setGroup("LikeBack");
+
+	QString currentEMailAddress = config.readEntry("emailAddress", "");
 	if (!emailAddressAlreadyProvided() && !instance()->m_fetchedEmail.isEmpty())
 		currentEMailAddress = instance()->m_fetchedEmail;
-
-	config.setGroup("LikeBack");
-	QString currentEMailAddress = config.readEntry("emailAddress", "");
 
 	bool ok;
 
