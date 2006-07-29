@@ -326,6 +326,7 @@ void BNPView::initialize()
 	// If the main window is hidden when session is saved, Container::queryClose()
 	//  isn't called and the last value would be kept
 	Settings::setStartDocked(true);
+	Settings::saveConfig();
 }
 
 void BNPView::setupActions()
