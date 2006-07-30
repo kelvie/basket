@@ -26,6 +26,7 @@
 #include <kmainwindow.h>
 #include <qdir.h>
 #include <kdebug.h>
+#include <kconfig.h>
 
 #include "global.h"
 #include "bnpview.h"
@@ -38,6 +39,7 @@ BackgroundManager *Global::backgroundManager   = 0L;
 SystemTray        *Global::systemTray          = 0L;
 BNPView           *Global::bnpView             = 0L;
 KGlobalAccel      *Global::globalAccel         = 0L;
+KConfig           *Global::basketConfig       = 0L;
 
 void Global::setCustomSavesFolder(const QString &folder)
 {
@@ -85,4 +87,11 @@ bool Global::runInsideKontact()
 {
 	QWidget *window = kapp->mainWidget();
 	return (window == 0 || !window->inherits("MainWindow"));
+}
+
+KConfig* Global::config()
+{
+	if(!Global::basketConfig)
+		Global::basketConfig = KSharedConfig::openConfig("basketrc");
+	return Global::basketConfig;
 }

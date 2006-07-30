@@ -46,6 +46,7 @@ class Global
 	static SystemTray        *systemTray;
 	static BNPView           *bnpView;
 	static KGlobalAccel      *globalAccel;
+	static KConfig           *basketConfig;
 
 	// Application Folders:
 	static void setCustomSavesFolder(const QString &folder);
@@ -59,6 +60,7 @@ class Global
 	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
 	static KMainWindow* mainWindow();
 	static bool runInsideKontact();
+	static KConfig* config();
 };
 
 #endif // GLOBAL_H
