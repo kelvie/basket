@@ -46,7 +46,6 @@
 #include <iostream>
 
 #include "likeback.h"
-#include "aboutdata.h"
 
 LikeBack::LikeBack(Button buttons)
  : QWidget( 0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
@@ -135,11 +134,8 @@ void LikeBack::doNotHelpAnymore()
 		return;
 	}
 
-	AboutData about;
-	KConfig config("basketrc");
-
-	config.setGroup("LikeBack");
-	config.writeEntry("userWantToParticipateForVersion_" + about.version(), false);
+	s_config->setGroup("LikeBack");
+	s_config->writeEntry("userWantToParticipateForVersion_" + s_about->version(), false);
 	deleteLater();
 }
 
@@ -155,19 +151,14 @@ bool LikeBack::userWantToParticipate()
 	if (!kapp)
 		return true;
 
-	AboutData about;
-	KConfig config("basketrc");
-
-	config.setGroup("LikeBack");
-	return config.readBoolEntry("userWantToParticipateForVersion_" + about.version(), true);
+	s_config->setGroup("LikeBack");
+	return s_config->readBoolEntry("userWantToParticipateForVersion_" + s_about->version(), true);
 }
 
 // TODO: Only show relevant buttons!
 
 void LikeBack::showInformationMessage()
 {
-	AboutData about;
-
 	QPixmap likeIcon    = kapp->iconLoader()->loadIcon("likeback_like",    KIcon::Small);
 	QPixmap dislikeIcon = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
 	QPixmap bugIcon     = kapp->iconLoader()->loadIcon("bug", KIcon::Small);
@@ -175,7 +166,7 @@ void LikeBack::showInformationMessage()
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
 	KMessageBox::information(0,
-		"<p><b>" + i18n("Welcome to this testing version of %1.").arg(about.programName()) + "</b></p>"
+		"<p><b>" + i18n("Welcome to this testing version of %1.").arg(s_about->programName()) + "</b></p>"
 		"<p>" + i18n("To help us improve it, your comments are important.") + "</p>"
 		"<p>" + i18n("Each time you have a great or frustrating experience, "
 		             "please click the appropriate hand below the window title-bar, "
@@ -206,6 +197,8 @@ QString                 LikeBack::s_remotePath            = QString();
 Q_UINT16                LikeBack::s_hostPort              = 16;
 int                     LikeBack::s_disabledCount         = 0;
 LikeBack*               LikeBack::s_instance              = 0;
+KConfig*                LikeBack::s_config                = 0;
+KAboutData*             LikeBack::s_about                 = 0;
 
 LikeBack* LikeBack::instance()
 {
@@ -230,6 +223,11 @@ QString LikeBack::remotePath()
 Q_UINT16 LikeBack::hostPort()
 {
 	return s_hostPort;
+}
+
+KAboutData* LikeBack::about()
+{
+	return s_about;
 }
 
 void LikeBack::disable()
@@ -357,8 +355,7 @@ void LikeBack::showDialog(Button button)
 
 bool LikeBack::emailAddressAlreadyProvided()
 {
-	KConfig config("basketrc");
-	return config.readBoolEntry("emailAlreadyAsked", false);
+	return s_config->readBoolEntry("emailAlreadyAsked", false);
 }
 
 /*<<<<<<< .mine
@@ -366,9 +363,9 @@ QString LikeBack::emailAddress()
 {
 	if (!emailAddressAlreadyProvided())
   =======
-	config.setGroup("LikeBack");
+	s_config->setGroup("LikeBack");
 
-	if (config.readBoolEntry("emailAlreadyAsked", false) == false)
+	if (s_config->readBoolEntry("emailAlreadyAsked", false) == false)
   >>>>>>> .r224
 		instance()->askEMail();
 
@@ -376,7 +373,7 @@ QString LikeBack::emailAddress()
 	KConfig *config = KGlobal::config();
 	return config->readEntry("emailAddress", "");
   =======
-	return config.readEntry("emailAddress", "");
+	return s_config->readEntry("emailAddress", "");
   >>>>>>> .r224
 }*/
 QString LikeBack::emailAddress()
@@ -384,26 +381,22 @@ QString LikeBack::emailAddress()
 	if (!emailAddressAlreadyProvided())
 		instance()->askEMail();
 
-	KConfig config("basketrc");
-	return config.readEntry("emailAddress", "");
+	return s_config->readEntry("emailAddress", "");
 }
 
 
 void LikeBack::setEmailAddress(const QString &address)
 {
-	KConfig config("basketrc");
-
-	config.setGroup("LikeBack");
-	config.writeEntry("emailAddress",      address);
-	config.writeEntry("emailAlreadyAsked", true);
+	s_config->setGroup("LikeBack");
+	s_config->writeEntry("emailAddress",      address);
+	s_config->writeEntry("emailAlreadyAsked", true);
 }
 
 void LikeBack::askEMail()
 {
-	KConfig config("basketrc");
-	config.setGroup("LikeBack");
+	s_config->setGroup("LikeBack");
 
-	QString currentEMailAddress = config.readEntry("emailAddress", "");
+	QString currentEMailAddress = s_config->readEntry("emailAddress", "");
 	if (!emailAddressAlreadyProvided() && !instance()->m_fetchedEmail.isEmpty())
 		currentEMailAddress = instance()->m_fetchedEmail;
 
@@ -433,14 +426,20 @@ void LikeBack::askEMail()
 // FIXME: Should be moved to KAboutData? Cigogne will also need it.
 bool LikeBack::isDevelopmentVersion(const QString &version)
 {
-	AboutData about;
-	QString theVersion = (version.isEmpty() ? about.version() : version);
+	QString theVersion = (version.isEmpty() ? s_about->version() : version);
 
 	return theVersion.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
 	       theVersion.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
 	       theVersion.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
 	       theVersion.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1 ||
 	       theVersion.find("cvs",   /*index=*/0, /*caseSensitive=*/false) != -1;
+}
+
+void LikeBack::init(KConfig* config, KAboutData* about, Button buttons)
+{
+	s_config = config;
+	s_about = about;
+	init(isDevelopmentVersion(), buttons);
 }
 
 void LikeBack::init(Button buttons)
@@ -634,14 +633,13 @@ QHttp *http ;
 
 void LikeBackDialog::send()
 {
-	AboutData about;
 	QString emailAddress = LikeBack::instance()->emailAddress();
 
 	QString type = (m_reason == LikeBack::ILike ? "Like" : (m_reason == LikeBack::IDoNotLike ? "Dislike" : "Bug"));
 	QString data =
 			"protocol=" + KURL::encode_string("1.0")                         + "&" +
 			"type="     + KURL::encode_string(type)                          + "&" +
-			"version="  + KURL::encode_string(about.version())  + "&" +
+			"version="  + KURL::encode_string(LikeBack::about()->version())  + "&" +
 			"locale="   + KURL::encode_string(KGlobal::locale()->language()) + "&" +
 			"window="   + KURL::encode_string(m_windowName)                  + "&" +
 			"context="  + KURL::encode_string(m_context)                     + "&" +

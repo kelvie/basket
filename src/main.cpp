@@ -66,8 +66,7 @@ class Application : public KUniqueApplication
 
 int main(int argc, char *argv[])
 {
-	AboutData aboutData;
-	KCmdLineArgs::init(argc, argv, &aboutData);
+	KCmdLineArgs::init(argc, argv, Global::about());
 	KCmdLineArgs::addCmdLineOptions(basket_options);
 
 	KUniqueApplication::addCmdLineOptions();

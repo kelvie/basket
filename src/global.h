@@ -22,6 +22,7 @@
 #define GLOBAL_H
 
 #include <qstring.h>
+#include "aboutdata.h"
 
 class DebugWindow;
 class BackgroundManager;
@@ -29,6 +30,7 @@ class SystemTray;
 class BNPView;
 class KGlobalAccel;
 class KMainWindow;
+class KAboutData;
 
 /** Handle all global variables of the application.
   * This file only declare classes : developer should include
@@ -47,6 +49,7 @@ class Global
 	static BNPView           *bnpView;
 	static KGlobalAccel      *globalAccel;
 	static KConfig           *basketConfig;
+	static AboutData          basketAbout;
 
 	// Application Folders:
 	static void setCustomSavesFolder(const QString &folder);
@@ -61,6 +64,7 @@ class Global
 	static KMainWindow* mainWindow();
 	static bool runInsideKontact();
 	static KConfig* config();
+	static KAboutData* about() { return &basketAbout; };
 };
 
 #endif // GLOBAL_H

@@ -161,7 +161,7 @@ void BNPView::onFirstShow()
 {
 	// Don't enable LikeBack until bnpview is shown. This way it works better with kontact.
 	/* LikeBack */
-	LikeBack::init(LikeBack::isDevelopmentVersion(VERSION));
+	LikeBack::init(Global::config(), Global::about());
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));

@@ -39,7 +39,8 @@ BackgroundManager *Global::backgroundManager   = 0L;
 SystemTray        *Global::systemTray          = 0L;
 BNPView           *Global::bnpView             = 0L;
 KGlobalAccel      *Global::globalAccel         = 0L;
-KConfig           *Global::basketConfig       = 0L;
+KConfig           *Global::basketConfig        = 0L;
+AboutData          Global::basketAbout;
 
 void Global::setCustomSavesFolder(const QString &folder)
 {
