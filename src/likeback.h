@@ -62,7 +62,9 @@ class LikeBack : public QWidget
 	static bool isDevelopmentVersion(const QString &version = QString::null); /// << @Returns true if version is an alpha/beta/rc/svn/cvs version. Use kapp->aboutData()->version is @p version is empty
 	static void init(Button buttons = AllButtons); /// << Initialize the LikeBack system: enable it if the application version is a development one.
 	static void init(bool isDevelopmentVersion, Button buttons = AllButtons);  /// << Initialize the LikeBack system: enable it if @p isDevelopmentVersion is true.
+	static void init(KConfig* config, KAboutData* about, Button buttons = AllButtons);
 	static QString activeWindowPath();
+	static KAboutData* about();
   private slots:
 	void autoMove();
 	void iLike();
@@ -90,6 +92,8 @@ class LikeBack : public QWidget
 	static WindowListing  s_windowListing;
 	static LikeBack      *s_instance;
 	static int            s_disabledCount;
+	static KConfig       *s_config;
+	static KAboutData    *s_about;
 };
 
 class LikeBackDialog : public KDialog
