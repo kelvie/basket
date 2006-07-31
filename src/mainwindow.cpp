@@ -200,7 +200,7 @@ void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is cl
 {
 	// ...if you use any action list, use plugActionList on each here...
 	createGUI(); // TODO: Reconnect tags menu aboutToShow() ??
-	if (!Global::runInsideKontact())
+	if (!Global::bnpView->isPart())
 		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
 	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
 	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );

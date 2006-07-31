@@ -62,7 +62,6 @@ class Global
 	// Various Things:
 	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
 	static KMainWindow* mainWindow();
-	static bool runInsideKontact();
 	static KConfig* config();
 	static KAboutData* about() { return &basketAbout; };
 };

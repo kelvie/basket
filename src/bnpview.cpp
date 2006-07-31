@@ -176,7 +176,7 @@ void BNPView::onFirstShow()
 	m_statusbar->setupStatusBar();
   >>>>>>> .r224*/
 	// In late init, because we need kapp->mainWidget() to be set!
-	if (!Global::runInsideKontact())
+	if (!isPart())
 		connectTagsMenu();
 
 	m_statusbar->setupStatusBar();
@@ -2111,7 +2111,7 @@ void BNPView::connectTagsMenu()
 
 void BNPView::showEvent(QShowEvent*)
 {
-	if (Global::runInsideKontact())
+	if (isPart())
 		QTimer::singleShot( 0, this, SLOT(connectTagsMenu()) );
 
 	if (m_firstShow) {
@@ -2125,7 +2125,7 @@ void BNPView::showEvent(QShowEvent*)
 
 void BNPView::hideEvent(QHideEvent*)
 {
-	if (Global::runInsideKontact()) {
+	if (isPart()) {
 		disconnect( popupMenu("tags"), SIGNAL(aboutToShow()), this, SLOT(populateTagsMenu())   );
 		disconnect( popupMenu("tags"), SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
 	}

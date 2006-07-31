@@ -84,12 +84,6 @@ KMainWindow* Global::mainWindow()
 	return 0;
 }
 
-bool Global::runInsideKontact()
-{
-	QWidget *window = kapp->mainWidget();
-	return (window == 0 || !window->inherits("MainWindow"));
-}
-
 KConfig* Global::config()
 {
 	if(!Global::basketConfig)
