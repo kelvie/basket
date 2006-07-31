@@ -1366,7 +1366,14 @@ void BNPView::slotConvertTexts()
 
 QPopupMenu* BNPView::popupMenu(const QString &menuName)
 {
-	QPopupMenu *menu = (QPopupMenu *)m_guiClient->factory()->container(menuName, m_guiClient);
+	QPopupMenu *menu = 0;
+
+	if(m_guiClient)
+	{
+		KXMLGUIFactory* factory = m_guiClient->factory();
+		if(factory)
+			menu = (QPopupMenu *)factory->container(menuName, m_guiClient);
+	}
 	if (menu == 0) {
 		KStandardDirs stdDirs;
 		KMessageBox::error( this, i18n(
