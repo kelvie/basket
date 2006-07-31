@@ -21,21 +21,24 @@
 #include <kparts/statusbarextension.h>
 #include <kstatusbar.h>
 #include <klocale.h>
+#include <kdebug.h>
 #include <qlabel.h>
+#include <qobjectlist.h>
 #include "basketstatusbar.h"
 #include "clickablelabel.h"
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"
+#include "tools.h"
 #include <kiconloader.h>
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)
-	: m_bar(bar), m_extension(0), m_selectionStatus(0), m_basketStatus(0), m_lockStatus(0)
+	: m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0)
 {
 }
 
 BasketStatusBar::BasketStatusBar(KParts::StatusBarExtension *extension)
-	: m_bar(0), m_extension(extension), m_selectionStatus(0), m_basketStatus(0), m_lockStatus(0)
+	: m_bar(0), m_extension(extension), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0)
 {
 }
 
@@ -63,10 +66,18 @@ void BasketStatusBar::addWidget(QWidget * widget, int stretch, bool permanent)
 void BasketStatusBar::setupStatusBar()
 {
 	QWidget* parent = statusBar();
+	QObjectList* lst = parent->queryList("KRSqueezedTextLabel");
 
-	m_basketStatus = new QLabel(parent);
-	m_basketStatus->setSizePolicy( QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored, 0, 0, false) );
-	addWidget( m_basketStatus, 1, false ); // Fit all extra space and is hiddable
+	//Tools::printChildren(parent);
+	if(lst->count() == 0)
+	{
+		m_basketStatus = new QLabel(parent);
+		m_basketStatus->setSizePolicy( QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored, 0, 0, false) );
+		addWidget( m_basketStatus, 1, false ); // Fit all extra space and is hiddable
+	}
+	else
+		m_basketStatus = static_cast<QLabel*>(lst->at(0));
+	delete lst;
 
 	m_selectionStatus = new QLabel(parent);
 	addWidget( m_selectionStatus, 0, true );
@@ -84,22 +95,22 @@ void BasketStatusBar::postStatusbarMessage(const QString& text)
 		statusBar()->message(text, 2000);
 }
 
+void BasketStatusBar::setStatusText(const QString &txt)
+{
+	if(m_basketStatus && m_basketStatus->text() != txt)
+		m_basketStatus->setText(txt);
+}
+
 void BasketStatusBar::setStatusBarHint(const QString &hint)
 {
-	if(!m_basketStatus)
-		return;
-
 	if (hint.isEmpty())
 		updateStatusBarHint();
-	else if (m_basketStatus->text() != hint) // Avoid flicker
-		m_basketStatus->setText(hint);
+	else
+		setStatusText(hint);
 }
 
 void BasketStatusBar::updateStatusBarHint()
 {
-	if(!m_basketStatus)
-		return;
-
 	QString message = "";
 
 	if (Global::bnpView->currentBasket()->isDuringDrag())
@@ -112,8 +123,7 @@ void BasketStatusBar::updateStatusBarHint()
 	else if (Global::debugWindow)
 		message = "DEBUG: " + Global::bnpView->currentBasket()->folderName();
 
-	if (message != m_basketStatus->text()) // Avoid flicker
-		m_basketStatus->setText(message);
+	setStatusText(message);
 }
 
 void BasketStatusBar::setLockStatus(bool isLocked)

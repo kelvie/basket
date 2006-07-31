@@ -84,6 +84,9 @@ namespace Tools
 	  * @Return false if it was just a copy or if it was a drag.
 	  */
 	bool isAFileCut(QMimeSource *source);
+
+	// Debug
+	void printChildren(QObject* parent);
 }
 
 #endif // TOOLS_H

@@ -30,6 +30,7 @@
 #include <qmime.h>
 #include <qfont.h>
 #include <qfontinfo.h>
+#include <qobjectlist.h>
 
 #include "tools.h"
 
@@ -394,4 +395,16 @@ bool Tools::isAFileCut(QMimeSource *source)
 		return !array.isEmpty() && QCString(array.data(), array.size() + 1).at(0) == '1';
 	} else
 		return false;
+}
+
+void Tools::printChildren(QObject* parent)
+{
+	const QObjectList* objs = parent->children();
+	QObjectListIt it(*objs);
+	QObject *obj;
+
+	while((obj = it.current())!= 0){
+		++it;
+		kdDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
+	}
 }

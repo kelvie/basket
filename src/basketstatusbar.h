@@ -51,13 +51,14 @@ class BasketStatusBar : public QObject
   protected:
 	  KStatusBar *statusBar () const;
 	  void addWidget(QWidget * widget, int stretch = 0, bool permanent = false);
+	  void setStatusText(const QString &txt);
 
   private:
 	KStatusBar                 *m_bar;
 	KParts::StatusBarExtension *m_extension;
 	QLabel                     *m_selectionStatus;
-	QLabel                     *m_basketStatus;
 	ClickableLabel             *m_lockStatus;
+	QLabel                     *m_basketStatus;
 };
 
 #endif
