@@ -1367,31 +1367,42 @@ void BNPView::slotConvertTexts()
 QPopupMenu* BNPView::popupMenu(const QString &menuName)
 {
 	QPopupMenu *menu = 0;
+	bool hack = false; // TODO fix this
+	// When running in kontact and likeback Information message is shown
+	// factory is 0. Don't show error then and don't crash either :-)
 
 	if(m_guiClient)
 	{
 		KXMLGUIFactory* factory = m_guiClient->factory();
 		if(factory)
+		{
 			menu = (QPopupMenu *)factory->container(menuName, m_guiClient);
+		}
+		else
+			hack = isPart();
 	}
 	if (menu == 0) {
-		KStandardDirs stdDirs;
-		KMessageBox::error( this, i18n(
-				"<p><b>The file basketui.rc seems to not exist or is too old.<br>"
-						"%1 cannot run without it and will stop.</b></p>"
-						"<p>Please check your installation of %2.</p>"
-						"<p>If you haven't administrator access to install the application "
-						"system wide, you can copy the file basketui.rc from the installation "
-						"archive to the folder <a href='file://%3'>%4</a>.</p>"
-						"<p>In last ressort, if you are sure the application is well installed "
-						"but you had a preview version of it, try to remove the "
-						"file %5basketui.rc</p>")
-						.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName(),
-							 stdDirs.saveLocation("data", "basket/")).arg(stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
-				i18n("Ressource not Found"), KMessageBox::AllowLink );
-		// This exits Kontact so it cannot be done anymore
-		// exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
-		menu = new KPopupMenu;
+		if(!hack)
+		{
+			KStandardDirs stdDirs;
+			KMessageBox::error( this, i18n(
+					"<p><b>The file basketui.rc seems to not exist or is too old.<br>"
+							"%1 cannot run without it and will stop.</b></p>"
+							"<p>Please check your installation of %2.</p>"
+							"<p>If you haven't administrator access to install the application "
+							"system wide, you can copy the file basketui.rc from the installation "
+							"archive to the folder <a href='file://%3'>%4</a>.</p>"
+							"<p>In last ressort, if you are sure the application is well installed "
+							"but you had a preview version of it, try to remove the "
+							"file %5basketui.rc</p>")
+							.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName(),
+								stdDirs.saveLocation("data", "basket/")).arg(stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
+					i18n("Ressource not Found"), KMessageBox::AllowLink );
+		}
+		if(!isPart())
+			exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
+		else
+			menu = new KPopupMenu; // When running in kpart we cannot exit
 	}
 	return menu;
 }
@@ -2144,29 +2155,5 @@ void BNPView::disconnectTagsMenuDelayed()
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
 }
-
-/*=======
-void BNPView::showEvent(QShowEvent*)
-{
-	if(m_firstShow)
-	{
-		m_firstShow = false;
-		onFirstShow();
-	}
-	if(isPart() && !LikeBack::enabled())
-	{
-		LikeBack::enable();
-	}
-}
-
-void BNPView::hideEvent(QHideEvent*)
-{
-	if(isPart())
-		LikeBack::disable();
-}
-
-  >>>>>>> .r224*/
-
-// ^^ Re-added above, arround line 2111
 
 #include "bnpview.moc"
