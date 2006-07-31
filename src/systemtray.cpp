@@ -296,22 +296,10 @@ void SystemTray::mouseMoveEvent(QMouseEvent *event)
 void SystemTray::mouseReleaseEvent(QMouseEvent *event)
 {
 	m_canDrag = false;
-
 	if (event->button() == Qt::LeftButton)         // Show / hide main window
 		if ( rect().contains(event->pos()) ) {     // Accept only if released in systemTray
-			KMainWindow *win = Global::mainWindow();
-			if(win)
-			{
-				if(win->isShown())
-				{
-					win->hide();
-				}
-				else
-				{
-					win->show();
-					emit showPart();
-				}
-			}
+			toggleActive();
+			emit showPart();
 			event->accept();
 		} else
 			event->ignore();

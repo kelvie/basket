@@ -2035,8 +2035,13 @@ void BNPView::enableActions()
 
 void BNPView::showMainWindow()
 {
-	if (Global::mainWindow())
-		Global::mainWindow()->show();
+	KMainWindow *win = Global::mainWindow();
+
+	if (win)
+	{
+		win->show();
+	}
+	setActive(true);
 	emit showPart();
 }
 
