@@ -168,13 +168,6 @@ void BNPView::onFirstShow()
 	LikeBack::setAllowFeatureWishes(true);
 //	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
 
-/*<<<<<<< .mine
-	// In late init, because we need kapp->mainWidget() to be set!
-	if (!Global::runInsideKontact())
-		connectTagsMenu();
-  =======
-	m_statusbar->setupStatusBar();
-  >>>>>>> .r224*/
 	// In late init, because we need kapp->mainWidget() to be set!
 	if (!isPart())
 		connectTagsMenu();
@@ -2029,7 +2022,6 @@ void BNPView::showMainWindow()
 	emit showPart();
 }
 
-//<<<<<<< .mine // FIXME: What's this ?!!!!! I do not see equivalents!
 void BNPView::populateTagsMenu()
 {
 	KPopupMenu *menu = (KPopupMenu*)(popupMenu("tags"));

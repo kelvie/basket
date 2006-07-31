@@ -358,24 +358,6 @@ bool LikeBack::emailAddressAlreadyProvided()
 	return s_config->readBoolEntry("emailAlreadyAsked", false);
 }
 
-/*<<<<<<< .mine
-QString LikeBack::emailAddress()
-{
-	if (!emailAddressAlreadyProvided())
-  =======
-	s_config->setGroup("LikeBack");
-
-	if (s_config->readBoolEntry("emailAlreadyAsked", false) == false)
-  >>>>>>> .r224
-		instance()->askEMail();
-
-  <<<<<<< .mine
-	KConfig *config = KGlobal::config();
-	return config->readEntry("emailAddress", "");
-  =======
-	return s_config->readEntry("emailAddress", "");
-  >>>>>>> .r224
-}*/
 QString LikeBack::emailAddress()
 {
 	if (!emailAddressAlreadyProvided())
@@ -383,7 +365,6 @@ QString LikeBack::emailAddress()
 
 	return s_config->readEntry("emailAddress", "");
 }
-
 
 void LikeBack::setEmailAddress(const QString &address)
 {
