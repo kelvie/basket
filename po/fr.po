@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "POT-Creation-Date: 2006-07-27 22:53+0200\n"
-"PO-Revision-Date: 2006-07-27 20:19+0200\n"
+"PO-Revision-Date: 2006-08-03 18:18+0200\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team:  <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,8 +47,7 @@ msgstr "Une nouvelle note ne correspond pas au filtre et est cachée."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
-"Certaines nouvelles notes ne correspondent pas au filtre et sont cachées."
+msgstr "Certaines nouvelles notes ne correspondent pas au filtre et sont cachées."
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
@@ -280,8 +279,7 @@ msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr "Notes correspondant au filtre &quot;%1&quot; :"
 
 #: basket.cpp:4658
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
 "Fait avec %1, un outil KDE pour prendre des notes et garder une grande "
 "variété de données sous la main."
@@ -329,8 +327,7 @@ msgstr "Erreur d'enregistrement"
 
 #: basketfactory.cpp:60
 msgid "Sorry, but the folder creation for this new basket has failed."
-msgstr ""
-"Désolé, mais la création d'un dossier pour ce nouveau panier a échouée."
+msgstr "Désolé, mais la création d'un dossier pour ce nouveau panier a échouée."
 
 #: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
 msgid "Basket Creation Failed"
@@ -459,13 +456,11 @@ msgstr "Ctrl+dépos : copier, Maj+dépos : déplacer, Maj+Ctrl+dépos : lier."
 
 #: basketstatusbar.cpp:138
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
-msgstr ""
-"<p>Ce panier est <b>vérouillé</b>.<br>Cliquez pour le dévérouiller.</p>"
+msgstr "<p>Ce panier est <b>vérouillé</b>.<br>Cliquez pour le dévérouiller.</p>"
 
 #: basketstatusbar.cpp:143
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
-msgstr ""
-"<p>Ce panier est <b>dévérouillé</b>.<br>Cliquez pour le vérouiller.</p>"
+msgstr "<p>Ce panier est <b>dévérouillé</b>.<br>Cliquez pour le vérouiller.</p>"
 
 #: bnpview.cpp:150 bnpview.cpp:1034
 msgid "General"
@@ -553,8 +548,7 @@ msgid "Insert text note"
 msgstr "Insérer une note texte"
 
 #: bnpview.cpp:207
-msgid ""
-"Add a text note to the current basket without having to open main window."
+msgid "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Ajouter un texte au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
@@ -564,8 +558,7 @@ msgid "Insert image note"
 msgstr "Insérer une note image"
 
 #: bnpview.cpp:211
-msgid ""
-"Add an image note to the current basket without having to open main window."
+msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une image au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
@@ -575,8 +568,7 @@ msgid "Insert link note"
 msgstr "Insérer une note lien"
 
 #: bnpview.cpp:215
-msgid ""
-"Add a link note to the current basket without having to open main window."
+msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Ajouter un lien au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
@@ -586,8 +578,7 @@ msgid "Insert color note"
 msgstr "Insérer une note couleur"
 
 #: bnpview.cpp:219
-msgid ""
-"Add a color note to the current basket without having to open main window."
+msgid "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une couleur au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
@@ -950,8 +941,7 @@ msgid "Delete With its Childs"
 msgstr "Supprimer avec ses fils"
 
 #: bnpview.cpp:1530 bnpview.cpp:1536
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
 msgstr ""
 "<qt>Voulez-vous réellement supprimer le panier <b>%1</b> et son contenu "
 "?</qt>"
@@ -2231,7 +2221,7 @@ msgstr "Alt+M"
 #: rc.cpp:97
 #, no-c-format
 msgid "Protect basket with private &key"
-msgstr "Protéger pas &clef privée"
+msgstr "Protéger par &clef privée"
 
 #. i18n: file passwordlayout.ui line 69
 #: rc.cpp:100
@@ -2280,8 +2270,7 @@ msgstr ""
 "notes dans un éditeur de texte."
 
 #: settings.cpp:374
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr ""
 "Si cette propriété est activée, elle vous permet de coller les marques en "
 "tant qu'équivalents texte."
@@ -2298,8 +2287,7 @@ msgstr ""
 
 #: settings.cpp:385
 msgid "Use GnuPG agent for &private/public key protected baskets"
-msgstr ""
-"Utiliser l'agent GnuPG pour les paniers prot&égés par clef privée/publique"
+msgstr "Utiliser l'agent GnuPG pour les paniers prot&égés par clef privée/publique"
 
 #: settings.cpp:394
 msgid "On left"
@@ -2549,8 +2537,7 @@ msgstr ""
 
 #: settings.cpp:763
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr ""
-"&Grouper une nouvelle note en cliquant sur la droite de la ligne d'insertion"
+msgstr "&Grouper une nouvelle note en cliquant sur la droite de la ligne d'insertion"
 
 #: settings.cpp:766
 msgid "How to group a new note?"
@@ -2632,8 +2619,7 @@ msgstr "Comment importer les notes ?"
 
 #: softwareimporters.cpp:51
 msgid "&Keep original hierarchy (all notes in separate baskets)"
-msgstr ""
-"&Garder la hierarchie original (toutes les notes dans des dossiers séparés)"
+msgstr "&Garder la hierarchie original (toutes les notes dans des dossiers séparés)"
 
 #: softwareimporters.cpp:52
 msgid "&First level notes in separate baskets"
@@ -2660,8 +2646,7 @@ msgid "From Tomboy"
 msgstr "Depuis Tomboy"
 
 #: softwareimporters.cpp:548
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "Impossible d'importer ce fichier. Il corrompu, ou ce n'est peut-être pas un "
 "fichier TuxCards."
@@ -2982,10 +2967,8 @@ msgstr ""
 "exportée sur chaque ligne de la note."
 
 #: tagsedit.cpp:888
-msgid ""
-"Deleting the tag will remove it from every notes it is currently assigned to."
-msgstr ""
-"Supprimer cette marque l'enlèvera de chaque note où elle est assignée."
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
+msgstr "Supprimer cette marque l'enlèvera de chaque note où elle est assignée."
 
 #: tagsedit.cpp:889
 msgid "Confirm Delete Tag"
@@ -3058,3 +3041,4 @@ msgid ""
 msgstr ""
 "Redimensionnez la fenêtre pour sélectionner la taille de l'image\n"
 "et fermez-là ou pressez Entrée pour valider."
+
