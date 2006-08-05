@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
-"POT-Creation-Date: 2006-07-27 22:53+0200\n"
+"POT-Creation-Date: 2006-08-05 14:39+0200\n"
 "PO-Revision-Date: 2006-07-29 02:19+0300\n"
 "Last-Translator: Serdar Soytetir <tulliana@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -29,7 +29,8 @@ msgstr "Yazar, geliştirici"
 
 #: aboutdata.cpp:36
 msgid "Basket encryption, Kontact integration, KnowIt importer"
-msgstr "Sepet şifrelemesi, Kontact entegrasyonu, KnowIt dosyalarını içe aktarma"
+msgstr ""
+"Sepet şifrelemesi, Kontact entegrasyonu, KnowIt dosyalarını içe aktarma"
 
 #: aboutdata.cpp:37 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
@@ -176,11 +177,11 @@ msgstr "Görmek için Kilidi Aç düğmesine tıklayın."
 msgid "Encryption is not supported by<br/>this version of %1."
 msgstr "%1 uygulamasının bu sürümünde<br/> şifreleme desteklenmiyor."
 
-#: basket.cpp:2959 bnpview.cpp:1192 bnpview.cpp:1778
+#: basket.cpp:2959 bnpview.cpp:1198 bnpview.cpp:1802
 msgid "Loading..."
 msgstr "Yükleniyor..."
 
-#: basket.cpp:3200 basket.cpp:3221 bnpview.cpp:2072
+#: basket.cpp:3200 basket.cpp:3221 bnpview.cpp:2101
 msgid "&Customize..."
 msgstr "&Özelleştir..."
 
@@ -201,7 +202,8 @@ msgstr "Etiketler"
 msgid ""
 "_n: <qt>Do you really want to delete this note?</qt>\n"
 "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
-msgstr "<qt>Gerçekten <b>%n</b> adet notu silmek istediğinizden emin misiniz?</qt>"
+msgstr ""
+"<qt>Gerçekten <b>%n</b> adet notu silmek istediğinizden emin misiniz?</qt>"
 
 #: basket.cpp:3866
 msgid ""
@@ -268,7 +270,8 @@ msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr "&quot;%1&quot; süzgecine uyan notlar:"
 
 #: basket.cpp:4658
-msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgid ""
+"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
 "Not almaya ve her çeşit veriyi el altında tutmaya yarayan bir KDE aracı "
 "olan %1 sürümü ile oluşturuldu."
@@ -437,29 +440,30 @@ msgstr "Bu sepeti seç (genel kısayol)"
 
 #: basketstatusbar.cpp:117
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
-msgstr "Ctrl+bırak: kopyala, Shift+bırak: taşı, Shift+Ctrl+bırak: bağlantı"
+msgstr ""
+"Ctrl+bırak: kopyala, Shift+bırak: taşı, Shift+Ctrl+bırak: bağlantı"
 
-#: basketstatusbar.cpp:138
+#: basketstatusbar.cpp:137
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr "<p>Bu sepet<b>kilitli</b>.<br>Kilidi açmak için tıklayın.</p>"
 
-#: basketstatusbar.cpp:143
+#: basketstatusbar.cpp:142
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr "<p>Bu sepet<b>kilitli değil</b>.<br>Kilitlemek için tıklayın.</p>"
 
-#: bnpview.cpp:150 bnpview.cpp:1034
+#: bnpview.cpp:149 bnpview.cpp:1040
 msgid "General"
 msgstr "Genel"
 
-#: bnpview.cpp:164
+#: bnpview.cpp:167
 msgid "Only english and french languages are accepted."
 msgstr "Sadece İngilizce ve Fransızca kabul edilir."
 
-#: bnpview.cpp:178
+#: bnpview.cpp:183
 msgid "Paste clipboard contents in current basket"
 msgstr "Pano içeriğini geçerli sepete yapıştır"
 
-#: bnpview.cpp:179
+#: bnpview.cpp:184
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -467,19 +471,19 @@ msgstr ""
 "Ana pencereyi açmadan pano içeriğini geçerli sepete yapıştırmanızı "
 "sağlar."
 
-#: bnpview.cpp:182
+#: bnpview.cpp:187
 msgid "Show current basket name"
 msgstr "Geçerli sepet adını göster"
 
-#: bnpview.cpp:183
+#: bnpview.cpp:188
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "Ana pencereyi açmadan geçerli sepeti bilmenizi sağlar."
 
-#: bnpview.cpp:186
+#: bnpview.cpp:191
 msgid "Paste selection in current basket"
 msgstr "Seçimi geçerli sepete yapıştır"
 
-#: bnpview.cpp:187
+#: bnpview.cpp:192
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -487,11 +491,11 @@ msgstr ""
 "Ana pencereyi açmadan pano seçimini geçerli sepete yapıştırmanızı "
 "sağlar."
 
-#: bnpview.cpp:190
+#: bnpview.cpp:195
 msgid "Create a new basket"
 msgstr "Yeni bir sepet oluştur"
 
-#: bnpview.cpp:191
+#: bnpview.cpp:196
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -501,11 +505,11 @@ msgstr ""
 "bu yeni sepete bir not ekle, panoyu ya da seçimi yapıştır gibi işlemler "
 "için genel kısayol atayabilirsiniz)."
 
-#: bnpview.cpp:194
+#: bnpview.cpp:199
 msgid "Go to previous basket"
 msgstr "Önceki sepete git"
 
-#: bnpview.cpp:195
+#: bnpview.cpp:200
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -513,11 +517,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepeti olarak önceki sepeti seçmenizi "
 "sağlar."
 
-#: bnpview.cpp:198
+#: bnpview.cpp:203
 msgid "Go to next basket"
 msgstr "Sonraki sepete git"
 
-#: bnpview.cpp:199
+#: bnpview.cpp:204
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -525,45 +529,52 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepeti olarak sonraki sepeti seçmenizi "
 "sağlar."
 
-#: bnpview.cpp:206
+#: bnpview.cpp:211
 msgid "Insert text note"
 msgstr "Metin notu ekle"
 
-#: bnpview.cpp:207
-msgid "Add a text note to the current basket without having to open main window."
-msgstr "Ana pencereyi açmadan geçerli sepete bir metin notu eklemenizi sağlar."
+#: bnpview.cpp:212
+msgid ""
+"Add a text note to the current basket without having to open main window."
+msgstr ""
+"Ana pencereyi açmadan geçerli sepete bir metin notu eklemenizi sağlar."
 
-#: bnpview.cpp:210 settings.cpp:786
+#: bnpview.cpp:215 settings.cpp:790
 msgid "Insert image note"
 msgstr "Resim notu ekle"
 
-#: bnpview.cpp:211
-msgid "Add an image note to the current basket without having to open main window."
-msgstr "Ana pencereyi açmadan geçerli sepete bir resim notu eklemenizi sağlar."
+#: bnpview.cpp:216
+msgid ""
+"Add an image note to the current basket without having to open main window."
+msgstr ""
+"Ana pencereyi açmadan geçerli sepete bir resim notu eklemenizi sağlar."
 
-#: bnpview.cpp:214 settings.cpp:787
+#: bnpview.cpp:219 settings.cpp:791
 msgid "Insert link note"
 msgstr "Bağlantı notu ekle"
 
-#: bnpview.cpp:215
-msgid "Add a link note to the current basket without having to open main window."
+#: bnpview.cpp:220
+msgid ""
+"Add a link note to the current basket without having to open main window."
 msgstr ""
 "Ana pencereyi açmadan geçerli sepete bir bağlantı notu eklemenizi "
 "sağlar."
 
-#: bnpview.cpp:218 settings.cpp:789
+#: bnpview.cpp:223 settings.cpp:793
 msgid "Insert color note"
 msgstr "Renk notu ekle"
 
-#: bnpview.cpp:219
-msgid "Add a color note to the current basket without having to open main window."
-msgstr "Ana pencereyi açmadan geçerli sepete bir renk notu eklemenizi sağlar."
+#: bnpview.cpp:224
+msgid ""
+"Add a color note to the current basket without having to open main window."
+msgstr ""
+"Ana pencereyi açmadan geçerli sepete bir renk notu eklemenizi sağlar."
 
-#: bnpview.cpp:222
+#: bnpview.cpp:227
 msgid "Pick color from screen"
 msgstr "Ekrandan renk al"
 
-#: bnpview.cpp:223
+#: bnpview.cpp:228
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -571,11 +582,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepete ekranın bir pikselinden alınan bir "
 "renk notu eklemenizi sağlar."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:232
 msgid "Grab screen zone"
 msgstr "Ekran görüntüsü yakala"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:233
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -583,11 +594,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepete yakalanan bir ekran görüntüsü "
 "notu eklemenizi sağlar."
 
-#: bnpview.cpp:240
+#: bnpview.cpp:245
 msgid "Baskets"
 msgstr "Sepetler"
 
-#: bnpview.cpp:296
+#: bnpview.cpp:301
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -600,274 +611,274 @@ msgstr ""
 "oluşturabilirsiniz. Sepetlerinize tıklayarak gözatabilirsiniz ya da "
 "sürükleyip bırakarak yeniden düzenleyebilirsiniz."
 
-#: bnpview.cpp:321
+#: bnpview.cpp:327
 msgid "&Hide Window"
 msgstr "&Pencereyi Gizle"
 
-#: bnpview.cpp:325
+#: bnpview.cpp:331
 msgid "&Export to HTML..."
 msgstr "&HTML olarak aktar..."
 
-#: bnpview.cpp:327
+#: bnpview.cpp:333
 msgid "K&Notes"
 msgstr "K&Notes"
 
-#: bnpview.cpp:329
+#: bnpview.cpp:335
 msgid "K&Jots"
 msgstr "&Kjots"
 
-#: bnpview.cpp:331
+#: bnpview.cpp:337
 msgid "&KnowIt..."
 msgstr "&KnowIt..."
 
-#: bnpview.cpp:333
+#: bnpview.cpp:339
 msgid "Tux&Cards..."
 msgstr "Tux&Cards..."
 
-#: bnpview.cpp:335
+#: bnpview.cpp:341
 msgid "&Sticky Notes"
 msgstr "&Yapışkan Notlar"
 
-#: bnpview.cpp:337
+#: bnpview.cpp:343
 msgid "&Tomboy"
 msgstr "&Tomboy"
 
-#: bnpview.cpp:342
+#: bnpview.cpp:348
 msgid "D&elete"
 msgstr "&Sil"
 
-#: bnpview.cpp:348
+#: bnpview.cpp:354
 msgid "Selects all notes"
 msgstr "Tüm notları seçer"
 
-#: bnpview.cpp:349
+#: bnpview.cpp:355
 msgid "U&nselect All"
 msgstr "Hiçbirsini Seçme"
 
-#: bnpview.cpp:351
+#: bnpview.cpp:357
 msgid "Unselects all selected notes"
 msgstr "Seçilen notların hiçbirisini seçme"
 
-#: bnpview.cpp:352
+#: bnpview.cpp:358
 msgid "&Invert Selection"
 msgstr "Seçimi Tersine &Çevir"
 
-#: bnpview.cpp:355
+#: bnpview.cpp:361
 msgid "Inverts the current selection of notes"
 msgstr "Şimdiki seçilen notların seçimini tersine çevirir"
 
-#: bnpview.cpp:357
+#: bnpview.cpp:363
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
 msgstr "&Düzenle..."
 
-#: bnpview.cpp:362
+#: bnpview.cpp:368
 msgid "&Open"
 msgstr "&Aç"
 
-#: bnpview.cpp:365
+#: bnpview.cpp:371
 msgid "Open &With..."
 msgstr "&Birlikte Aç..."
 
-#: bnpview.cpp:369
+#: bnpview.cpp:375
 msgid "&Save to File..."
 msgstr "Dosyaya Kay&det..."
 
-#: bnpview.cpp:372
+#: bnpview.cpp:378
 msgid "&Group"
 msgstr "&Grupla"
 
-#: bnpview.cpp:374
+#: bnpview.cpp:380
 msgid "U&ngroup"
 msgstr "Grubu Çö&z"
 
-#: bnpview.cpp:377
+#: bnpview.cpp:383
 msgid "Move on &Top"
 msgstr "En ü&ste Taşı"
 
-#: bnpview.cpp:379
+#: bnpview.cpp:385
 msgid "Move &Up"
 msgstr "&Yukarı Taşı"
 
-#: bnpview.cpp:381
+#: bnpview.cpp:387
 msgid "Move &Down"
 msgstr "A&şağı Taşı"
 
-#: bnpview.cpp:383
+#: bnpview.cpp:389
 msgid "Move on &Bottom"
 msgstr "En a&lta Taşı"
 
-#: bnpview.cpp:399
+#: bnpview.cpp:405
 msgid "&Text"
 msgstr "&Metin"
 
-#: bnpview.cpp:400
+#: bnpview.cpp:406
 msgid "&Link"
 msgstr "Bağla&ntı"
 
-#: bnpview.cpp:401
+#: bnpview.cpp:407
 msgid "&Image"
 msgstr "&Resim"
 
-#: bnpview.cpp:402
+#: bnpview.cpp:408
 msgid "&Color"
 msgstr "&Renk"
 
-#: bnpview.cpp:403
+#: bnpview.cpp:409
 msgid "L&auncher"
 msgstr "&Başlatıcı"
 
-#: bnpview.cpp:405
+#: bnpview.cpp:411
 msgid "Import Launcher from &KDE Menu..."
 msgstr "KDE Menüsünden &Başlatıcı..."
 
-#: bnpview.cpp:406
+#: bnpview.cpp:412
 msgid "Im&port Icon..."
 msgstr "Simge &Ekle..."
 
-#: bnpview.cpp:407
+#: bnpview.cpp:413
 msgid "Load From &File..."
 msgstr "Dosyadan &Yükle..."
 
-#: bnpview.cpp:430
+#: bnpview.cpp:436
 msgid "C&olor from Screen"
 msgstr "E&krandan Renk"
 
-#: bnpview.cpp:435
+#: bnpview.cpp:441
 msgid "Grab Screen &Zone"
 msgstr "Ekran &Görüntüsü Yakala"
 
-#: bnpview.cpp:465
+#: bnpview.cpp:471
 msgid "&New Basket..."
 msgstr "&Yeni Sepet..."
 
-#: bnpview.cpp:467
+#: bnpview.cpp:473
 msgid "New &Sub-Basket..."
 msgstr "Yeni &Alt-Sepet..."
 
-#: bnpview.cpp:469
+#: bnpview.cpp:475
 msgid "New Si&bling Basket..."
 msgstr "Yeni &Kardeş-Sepet..."
 
-#: bnpview.cpp:472
+#: bnpview.cpp:478
 msgid "&New"
 msgstr "&Yeni"
 
-#: bnpview.cpp:480
+#: bnpview.cpp:486
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
 msgstr "&Kaldır"
 
-#: bnpview.cpp:483
+#: bnpview.cpp:489
 msgid ""
 "_: Password protection\n"
 "Pass&word..."
 msgstr "Pa&rola..."
 
-#: bnpview.cpp:485
+#: bnpview.cpp:491
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
 msgstr "&Kilitle"
 
-#: bnpview.cpp:495
+#: bnpview.cpp:501
 msgid "&Filter"
 msgstr "&Süzgeç"
 
-#: bnpview.cpp:499
+#: bnpview.cpp:505
 msgid "Filter all &Baskets"
 msgstr "Tüm &Sepetleri Süz"
 
-#: bnpview.cpp:503
+#: bnpview.cpp:509
 msgid "&Reset Filter"
 msgstr "Süzgeci &Kaldır"
 
-#: bnpview.cpp:508
+#: bnpview.cpp:514
 msgid "&Previous Basket"
 msgstr "&Önceki Sepet"
 
-#: bnpview.cpp:510
+#: bnpview.cpp:516
 msgid "&Next Basket"
 msgstr "So&nraki Sepet"
 
-#: bnpview.cpp:512
+#: bnpview.cpp:518
 msgid "&Fold Basket"
 msgstr "Sepeti &Topla"
 
-#: bnpview.cpp:514
+#: bnpview.cpp:520
 msgid "&Expand Basket"
 msgstr "Sepeti &Genişlet"
 
-#: bnpview.cpp:816
+#: bnpview.cpp:822
 msgid "Plain Text Notes Conversion"
 msgstr "Düz Metin Notları Dönüştürme"
 
-#: bnpview.cpp:817
+#: bnpview.cpp:823
 msgid "Converting plain text notes to rich text ones..."
 msgstr "Düz metin notları zengin metin notlarına dönüştürülüyor..."
 
-#: bnpview.cpp:1190
+#: bnpview.cpp:1196
 msgid "Locked"
 msgstr "Kilitli"
 
-#: bnpview.cpp:1194
+#: bnpview.cpp:1200
 msgid "No notes"
 msgstr "Not yok"
 
-#: bnpview.cpp:1196
+#: bnpview.cpp:1202
 #, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
 msgstr "Toplam %n not"
 
-#: bnpview.cpp:1197
+#: bnpview.cpp:1203
 #, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
 msgstr "seçili %n"
 
-#: bnpview.cpp:1198
+#: bnpview.cpp:1204
 msgid "all matches"
 msgstr "tüm uyanlar"
 
-#: bnpview.cpp:1198
+#: bnpview.cpp:1204
 msgid "no filter"
 msgstr "süzgeç yok"
 
-#: bnpview.cpp:1200
+#: bnpview.cpp:1206
 #, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
 msgstr "süzgece uyan %n"
 
-#: bnpview.cpp:1202
+#: bnpview.cpp:1208
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr "%1, %2, %3"
 
-#: bnpview.cpp:1319
+#: bnpview.cpp:1325
 msgid "Picked color to basket <i>%1</i>"
 msgstr "Yakalanan renk <i>%1</i>sepetine eklendi."
 
-#: bnpview.cpp:1356
+#: bnpview.cpp:1362
 msgid "The plain text notes have been converted to rich text ones."
 msgstr "Düz metin notları zengin metin notlarına dönüştürüldü."
 
-#: bnpview.cpp:1356 bnpview.cpp:1358
+#: bnpview.cpp:1362 bnpview.cpp:1364
 msgid "Conversion Finished"
 msgstr "Düönüştürme İşlemi Bitti"
 
-#: bnpview.cpp:1358
+#: bnpview.cpp:1364
 msgid "There is no plain text notes to convert."
 msgstr "Dönüştürülecek düz metin notu yok."
 
-#: bnpview.cpp:1367
+#: bnpview.cpp:1389
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of "
@@ -885,43 +896,46 @@ msgstr ""
 "uygulamayı doğru kurduğunuzdan eminseniz ama bir deneme sürümünü "
 "kullanyorsanız %5basketui.rc dosyasını silmeyi deneyin</p>"
 
-#: bnpview.cpp:1378
+#: bnpview.cpp:1400
 msgid "Ressource not Found"
 msgstr "Kaynak Bulunamadı"
 
-#: bnpview.cpp:1399 bnpview.cpp:1408
+#: bnpview.cpp:1423 bnpview.cpp:1432
 msgid "Cannot add note."
 msgstr "Not eklenemez."
 
-#: bnpview.cpp:1470
+#: bnpview.cpp:1494
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr "Yakalanan ekran görüntüsü <i>%1</i>sepetine eklendi."
 
-#: bnpview.cpp:1518
+#: bnpview.cpp:1542
 msgid "Delete Basket"
 msgstr "Sepeti Sil"
 
-#: bnpview.cpp:1521
+#: bnpview.cpp:1545
 msgid "Delete Only that Basket"
 msgstr "Sadece şu sepetli Sil"
 
-#: bnpview.cpp:1522
+#: bnpview.cpp:1546
 msgid "Delete With its Childs"
 msgstr "Tüm alt sepetleriyle Sil"
 
-#: bnpview.cpp:1530 bnpview.cpp:1536
-msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr "<qt><b>%1</b> sepetini ve içeriğini silmek istediğinizden emin misiniz?</qt>"
+#: bnpview.cpp:1554 bnpview.cpp:1560
+msgid ""
+"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr ""
+"<qt><b>%1</b> sepetini ve içeriğini silmek istediğinizden emin "
+"misiniz?</qt>"
 
-#: bnpview.cpp:1538
+#: bnpview.cpp:1562
 msgid "Remove Basket"
 msgstr "Sepeti Kaldır"
 
-#: bnpview.cpp:1540
+#: bnpview.cpp:1564
 msgid "&Remove Basket"
 msgstr "&Sepeti Kaldır"
 
-#: bnpview.cpp:1551
+#: bnpview.cpp:1575
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
@@ -929,39 +943,39 @@ msgstr ""
 "<qt><b>%1</b> sepetinin alt sepetleri var.<br> Onları da silmek istiyor "
 "musunuz?</qt>"
 
-#: bnpview.cpp:1554
+#: bnpview.cpp:1578
 msgid "Remove Child Baskets"
 msgstr "Alt Sepetleri Kaldır"
 
-#: bnpview.cpp:1556
+#: bnpview.cpp:1580
 msgid "&Remove Child Baskets"
 msgstr "&Alt Sepetleri Kaldır"
 
-#: bnpview.cpp:1690
+#: bnpview.cpp:1714
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr "Pano içeriği <i>%1</i> sepete yapıştırıldı"
 
-#: bnpview.cpp:1698
+#: bnpview.cpp:1722
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "Seçilen <i>%1</i> sepete yapıştırıldı"
 
-#: bnpview.cpp:1710
+#: bnpview.cpp:1734
 msgid "No note was added."
 msgstr "Not eklendi."
 
-#: bnpview.cpp:1737
+#: bnpview.cpp:1761
 msgid "Basket <i>%1</i> is locked"
 msgstr "<i>%1</i> sepeti kilitli"
 
-#: bnpview.cpp:1762
+#: bnpview.cpp:1786
 msgid "(Locked)"
 msgstr "(Kilitli)"
 
-#: bnpview.cpp:2070
+#: bnpview.cpp:2099
 msgid "&Assign new Tag..."
 msgstr "Yeni E&tiket Ata..."
 
-#: bnpview.cpp:2071
+#: bnpview.cpp:2100
 msgid "&Remove All"
 msgstr "&Tümünü Kaldır"
 
@@ -1169,35 +1183,53 @@ msgstr "Dosya Türleri"
 msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
 msgstr "*.png *.xpm *.svg *.svgz|Sime Dosyaları (*.png *.xpm *.svg *.svgz)"
 
-#: likeback.cpp:62
+#. i18n: file kicondialogui.ui line 31
+#: kicondialogui.cpp:108 rc.cpp:69
+#, no-c-format
+msgid "KIconDialogUI"
+msgstr "KIconDialogUI"
+
+#. i18n: file kicondialogui.ui line 105
+#: kicondialogui.cpp:109 rc.cpp:72
+#, no-c-format
+msgid "Fi&lter:"
+msgstr "Sü&zgeç:"
+
+#. i18n: file kicondialogui.ui line 160
+#: kicondialogui.cpp:111 rc.cpp:78
+#, no-c-format
+msgid "Alt+O"
+msgstr "Alt+Z"
+
+#: likeback.cpp:63
 msgid "I Like..."
 msgstr "Hoşlandım..."
 
-#: likeback.cpp:69
+#: likeback.cpp:70
 msgid "I Do not Like..."
 msgstr "Hoşlanmadım..."
 
-#: likeback.cpp:76
+#: likeback.cpp:77
 msgid "I Found a Bug..."
 msgstr "Bir hata buldum..."
 
-#: likeback.cpp:83
+#: likeback.cpp:84
 msgid "Configure..."
 msgstr "Yapılandır..."
 
-#: likeback.cpp:89
+#: likeback.cpp:90
 msgid "What's &This?"
 msgstr "Bu &Nedir?"
 
-#: likeback.cpp:91
+#: likeback.cpp:92
 msgid "&Change or Remove Email Address..."
 msgstr "&E-posta adresini Değiştir ya da Kaldır..."
 
-#: likeback.cpp:93
+#: likeback.cpp:94
 msgid "&Do not Help Anymore"
 msgstr "Artık &Yardım Etme"
 
-#: likeback.cpp:129
+#: likeback.cpp:130
 msgid ""
 "Are you sure you do not want to participate anymore in the application "
 "enhancing program?"
@@ -1205,130 +1237,130 @@ msgstr ""
 "Uygulamanın gelişimine artık katkıda bulunmak istemediğinizden emin "
 "misiniz?"
 
-#: likeback.cpp:130
+#: likeback.cpp:131
 msgid "Do not Help Anymore"
 msgstr "Artık Yardım Etme"
 
-#: likeback.cpp:170
+#: likeback.cpp:169
 #, c-format
 msgid "Welcome to this testing version of %1."
 msgstr "%1 uygulamasının deneme sürümüne hoş geldiniz."
 
-#: likeback.cpp:171
+#: likeback.cpp:170
 msgid "To help us improve it, your comments are important."
 msgstr ""
 
-#: likeback.cpp:172
+#: likeback.cpp:171
 msgid ""
 "Each time you have a great or frustrating experience, please click the "
 "appropriate hand below the window title-bar, briefly describe what you like "
 "or dislike and click Send."
 msgstr ""
 
-#: likeback.cpp:175
+#: likeback.cpp:174
 msgid ""
 "Follow the same principle to quickly report a bug: just click the bug icon "
 "in the top-right corner of the window, describe it and click Send."
 msgstr ""
 
-#: likeback.cpp:177
+#: likeback.cpp:176
 msgid "Examples:"
 msgstr "Örnekler:"
 
-#: likeback.cpp:179 likeback.cpp:518
+#: likeback.cpp:178 likeback.cpp:526
 msgid "I like..."
 msgstr "Hoşlandım..."
 
-#: likeback.cpp:180
+#: likeback.cpp:179
 msgid ""
 "_: I like...\n"
 "the nice new artwork."
 msgstr "güzel sanatsal çalışmalar."
 
-#: likeback.cpp:181
+#: likeback.cpp:180
 msgid "Very refreshing."
 msgstr "Çok yenileme var."
 
-#: likeback.cpp:182 likeback.cpp:525
+#: likeback.cpp:181 likeback.cpp:533
 msgid "I do not like..."
 msgstr "Hoşlanmadım..."
 
-#: likeback.cpp:183
+#: likeback.cpp:182
 msgid ""
 "_: I do not like...\n"
 "the welcome page of that wizard."
 msgstr "sihirbazın hoş geldin sayfası."
 
-#: likeback.cpp:184
+#: likeback.cpp:183
 msgid "Too time consuming."
 msgstr "Çok zaman harcıyor."
 
-#: likeback.cpp:185 likeback.cpp:532
+#: likeback.cpp:184 likeback.cpp:540
 msgid "I found a bug..."
 msgstr "Bir hata buldum..."
 
-#: likeback.cpp:186
+#: likeback.cpp:185
 msgid ""
 "_: I found a bug...\n"
 "when clicking the Add button, nothing happens."
 msgstr "Ekle düğmesine tıkladığımda hiçbir şey olmuyor."
 
-#: likeback.cpp:188
+#: likeback.cpp:187
 msgid "Help Improve the Application"
 msgstr "Uygulamanın İyileştirilmesine Yardım Et"
 
-#: likeback.cpp:393
+#: likeback.cpp:394
 msgid "Set Email Address"
 msgstr "E-posta Adresini Ayarla"
 
-#: likeback.cpp:394
+#: likeback.cpp:395
 msgid "Please provide your email address."
 msgstr "Lütfen e-posta adresinizi girin."
 
-#: likeback.cpp:395
-msgid ""
-"It will only be used to contact you back if more information are needed "
-"about your comments, how to reproduce the bugs you report, send bug "
-"corrections for you to test..."
-msgstr ""
-
 #: likeback.cpp:396
 msgid ""
-"The email address is optionnal. If you do not provide any, your comments "
-"will be sent anonymously. Just click OK in that case."
+"It will only be used to contact you back if more information is needed about "
+"your comments, how to reproduce the bugs you report, send bug corrections "
+"for you to test..."
 msgstr ""
 
 #: likeback.cpp:397
+msgid ""
+"The email address is optional. If you do not provide any, your comments will "
+"be sent anonymously. Just click OK in that case."
+msgstr ""
+
+#: likeback.cpp:398
 msgid ""
 "You can change or remove your email address whenever you want. For that, use "
 "the little arrow icon at the top-right corner of a window."
 msgstr ""
 
-#: likeback.cpp:398
+#: likeback.cpp:399
 msgid "Your email address (keep empty to post comments anonymously):"
 msgstr ""
 
-#: likeback.cpp:519
+#: likeback.cpp:527
 msgid "Please briefly describe what you like."
 msgstr "Lütfen hoşlandığınız bölümleri kısaca anlatın."
 
-#: likeback.cpp:526
+#: likeback.cpp:534
 msgid "Please briefly describe what you do not like."
 msgstr "Lütfen hoşlanmadığınız bölümleri kısaca anlatın."
 
-#: likeback.cpp:533
+#: likeback.cpp:541
 msgid "Please briefly describe the bug you encountered."
 msgstr "Lütfen bulduğunuz hatayı kısaca anlatın."
 
-#: likeback.cpp:570
+#: likeback.cpp:578
 msgid "Send"
 msgstr "Gönder"
 
-#: likeback.cpp:582
+#: likeback.cpp:590
 msgid "Only english language is accepted."
 msgstr "Sadece İngilizce iletiler kabul edilir."
 
-#: likeback.cpp:586
+#: likeback.cpp:594
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
@@ -1336,34 +1368,35 @@ msgstr ""
 "Beğendiğiniz ve beğenmediğiniz yerleri bize anlatarak bu uygulamanın "
 "gelişmine katkıda bulunmanın önemli olduğunu unutmayın."
 
-#: likeback.cpp:591
+#: likeback.cpp:599
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr "Lütfen yeni özellikler istemeyin: istekleriniz kabul edilmeyecektir."
 
-#: likeback.cpp:597
+#: likeback.cpp:605
 msgid "Send a Comment"
 msgstr "Bir Yorum Gönder"
 
-#: likeback.cpp:645
+#: likeback.cpp:653
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>Hata raporu gönderilirken hata oluştu.</p><p>Lütfen daha sonra tekrar "
 "deneyin.</p>"
 
-#: likeback.cpp:645
+#: likeback.cpp:653
 msgid "Transfer Error"
 msgstr "Gönderme Hatası"
 
-#: likeback.cpp:647
+#: likeback.cpp:655
+#, fuzzy
 msgid ""
-"<p>Your comment has been sent successfully.</p><p>Thanks for your time. It "
-"will help improve the application.</p>"
+"<p>Your comment has been sent successfully. It will help improve the "
+"application.</p><p>Thanks for your time.</p>"
 msgstr ""
 "<p>Yorumunuz başarılı şekilde gönderilmiştir.</p><p>Zaman "
 "ayırdığınız için teşekkür ederiz. Yorumunuz uygulamanın gelişimine "
 "katkıda bulunacaktır.</p>"
 
-#: likeback.cpp:647
+#: likeback.cpp:655
 msgid "Comment Sent"
 msgstr "Yorum Gönerildi"
 
@@ -1472,7 +1505,8 @@ msgstr "Ana pencereyi göster/gizle"
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
-msgstr "Ana pencere gizli ise göstermenizi, görünüyor ise gizlemenizi sağlar."
+msgstr ""
+"Ana pencere gizli ise göstermenizi, görünüyor ise gizlemenizi sağlar."
 
 #: mainwindow.cpp:141
 msgid "Minimize"
@@ -2074,7 +2108,7 @@ msgid "Load File Content into a Note"
 msgstr "Dosya İçeriğini Bir Not İçine Yükle"
 
 #. i18n: file passwordlayout.ui line 16
-#: password.cpp:36 rc.cpp:81
+#: password.cpp:36 passwordlayout.cpp:75 rc.cpp:81
 #, no-c-format
 msgid "Password Protection"
 msgstr "Parola Koruması"
@@ -2082,6 +2116,42 @@ msgstr "Parola Koruması"
 #: password.cpp:53
 msgid "No private key selected."
 msgstr "Özel anahtar seçilmedi."
+
+#. i18n: file passwordlayout.ui line 44
+#: passwordlayout.cpp:77 rc.cpp:85
+#, no-c-format
+msgid "&No password"
+msgstr "&Parola Yok"
+
+#. i18n: file passwordlayout.ui line 47
+#: passwordlayout.cpp:78 rc.cpp:88
+#, no-c-format
+msgid "Alt+N"
+msgstr "Alt+P"
+
+#. i18n: file passwordlayout.ui line 55
+#: passwordlayout.cpp:79 rc.cpp:91
+#, no-c-format
+msgid "Protect basket with a &password"
+msgstr "Sepeti bir pa&rola ile koru"
+
+#. i18n: file passwordlayout.ui line 58
+#: passwordlayout.cpp:80 rc.cpp:94
+#, no-c-format
+msgid "Alt+P"
+msgstr "Alt+R"
+
+#. i18n: file passwordlayout.ui line 66
+#: passwordlayout.cpp:81 rc.cpp:97
+#, no-c-format
+msgid "Protect basket with private &key"
+msgstr "Sepeti bir özel anahtar ile &koru"
+
+#. i18n: file passwordlayout.ui line 69
+#: passwordlayout.cpp:82 rc.cpp:100
+#, no-c-format
+msgid "Alt+K"
+msgstr "Alt+K"
 
 #. i18n: file basket_part.rc line 5
 #: rc.cpp:3 rc.cpp:36
@@ -2119,103 +2189,50 @@ msgstr "E&tiketler"
 msgid "Text Formating Toolbar"
 msgstr "Metin Biçimlendirme Araç Çubuğu"
 
-#. i18n: file kicondialogui.ui line 31
-#: rc.cpp:69
-#, no-c-format
-msgid "KIconDialogUI"
-msgstr "KIconDialogUI"
-
-#. i18n: file kicondialogui.ui line 105
-#: rc.cpp:72
-#, no-c-format
-msgid "Fi&lter:"
-msgstr "Sü&zgeç:"
-
-#. i18n: file kicondialogui.ui line 160
-#: rc.cpp:78
-#, no-c-format
-msgid "Alt+O"
-msgstr "Alt+Z"
-
-#. i18n: file passwordlayout.ui line 44
-#: rc.cpp:85
-#, no-c-format
-msgid "&No password"
-msgstr "&Parola Yok"
-
-#. i18n: file passwordlayout.ui line 47
-#: rc.cpp:88
-#, no-c-format
-msgid "Alt+N"
-msgstr "Alt+P"
-
-#. i18n: file passwordlayout.ui line 55
-#: rc.cpp:91
-#, no-c-format
-msgid "Protect basket with a &password"
-msgstr "Sepeti bir pa&rola ile koru"
-
-#. i18n: file passwordlayout.ui line 58
-#: rc.cpp:94
-#, no-c-format
-msgid "Alt+P"
-msgstr "Alt+R"
-
-#. i18n: file passwordlayout.ui line 66
-#: rc.cpp:97
-#, no-c-format
-msgid "Protect basket with private &key"
-msgstr "Sepeti bir özel anahtar ile &koru"
-
-#. i18n: file passwordlayout.ui line 69
-#: rc.cpp:100
-#, no-c-format
-msgid "Alt+K"
-msgstr "Alt+K"
-
-#: settings.cpp:341
+#: settings.cpp:345
 msgid "Doc&k in system tray"
 msgstr "Sistem çekmecesine &küçült"
 
-#: settings.cpp:345
+#: settings.cpp:349
 msgid "&Use balloons to report results of global actions"
 msgstr "Genel işlemlerin sonuçlarını göstermek için &baloncuk kullan"
 
-#: settings.cpp:349
+#: settings.cpp:353
 msgid "Ani&mate changes in baskets"
 msgstr "Sepet içindeki değişiklikleri &canlandır"
 
-#: settings.cpp:353
+#: settings.cpp:357
 msgid "Sho&w tooltips in baskets"
 msgstr "Se&petler içerisinde ipuçlarını göster"
 
-#: settings.cpp:357
+#: settings.cpp:361
 msgid "Ask confirmation before &deleting notes"
 msgstr "Notları silmeden önce &kullanıcıya sor"
 
-#: settings.cpp:361
+#: settings.cpp:365
 msgid "Bi&g notes"
 msgstr "&Büyük notlar"
 
-#: settings.cpp:366
+#: settings.cpp:370
 msgid "E&xport tags in texts"
 msgstr "Me&tin içerisindeki etiketleri dışa aktar"
 
-#: settings.cpp:372 tagsedit.cpp:485
+#: settings.cpp:376 tagsedit.cpp:485
 msgid "When does this apply?"
 msgstr "Bu ne zaman uygulanır?"
 
-#: settings.cpp:373 tagsedit.cpp:486
+#: settings.cpp:377 tagsedit.cpp:486
 msgid ""
 "It does apply when you copy and paste, or drag and drop notes to a text "
 "editor."
 msgstr ""
 
-#: settings.cpp:374
-msgid "If enabled, this property lets you paste the tags as textual equivalents."
+#: settings.cpp:378
+msgid ""
+"If enabled, this property lets you paste the tags as textual equivalents."
 msgstr ""
 
-#: settings.cpp:375 tagsedit.cpp:488
+#: settings.cpp:379 tagsedit.cpp:488
 #, fuzzy
 msgid ""
 "For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are "
@@ -2231,155 +2248,155 @@ msgstr ""
 "işareti konulur. Bu işaretler boş ve dolu işaret kutularını temsil "
 "eder.</p>"
 
-#: settings.cpp:385
+#: settings.cpp:389
 #, fuzzy
 msgid "Use GnuPG agent for &private/public key protected baskets"
 msgstr "Parola &korumalı sepetler için GnuPG kullan"
 
-#: settings.cpp:394
+#: settings.cpp:398
 msgid "On left"
 msgstr "Solda"
 
-#: settings.cpp:395
+#: settings.cpp:399
 msgid "On right"
 msgstr "Sağda"
 
-#: settings.cpp:396
+#: settings.cpp:400
 msgid "Bask&ets tree position:"
 msgstr "Sepet ağacı konumu:"
 
-#: settings.cpp:403 settings.cpp:414
+#: settings.cpp:407 settings.cpp:418
 msgid "On top"
 msgstr "Üstte"
 
-#: settings.cpp:404 settings.cpp:415
+#: settings.cpp:408 settings.cpp:419
 msgid "On bottom"
 msgstr "Altta"
 
-#: settings.cpp:405
+#: settings.cpp:409
 msgid "&Filter bar position:"
 msgstr "Süzgeç &çubuğu konumu:"
 
-#: settings.cpp:413
+#: settings.cpp:417
 msgid "New notes &place:"
 msgstr "&Yeni notlar için yer:"
 
-#: settings.cpp:416
+#: settings.cpp:420
 msgid "At current note"
 msgstr "Geçerli notta"
 
-#: settings.cpp:426
+#: settings.cpp:430
 msgid "View Content of Added Files for the Following Types"
 msgstr "Aşağıdaki Dosya Tiplerinde Eklenen Dosyaların İçeriğini Göster"
 
-#: settings.cpp:427
+#: settings.cpp:431
 msgid "Plain &text"
 msgstr "Düz &metin"
 
-#: settings.cpp:428
+#: settings.cpp:432
 msgid "&HTML page"
 msgstr "&HTML sayfası"
 
-#: settings.cpp:429
+#: settings.cpp:433
 msgid "&Image or animation"
 msgstr "&Resim ya da animasyon"
 
-#: settings.cpp:430
+#: settings.cpp:434
 msgid "&Sound"
 msgstr "&Ses"
 
-#: settings.cpp:443
+#: settings.cpp:447
 msgid "&New images size:"
 msgstr "&Yeni resim boyutu:"
 
-#: settings.cpp:451
+#: settings.cpp:455
 msgid "&by"
 msgstr "&x"
 
-#: settings.cpp:454
+#: settings.cpp:458
 msgid "pixels"
 msgstr "piksel"
 
-#: settings.cpp:456
+#: settings.cpp:460
 msgid "&Visualize..."
 msgstr "&Göster..."
 
-#: settings.cpp:544
+#: settings.cpp:548
 msgid "Customize look of file, sound, link and launcher notes:"
 msgstr ""
 "Dosya, ses, bağlantı ve başlatıcı notların görünümünü "
 "özelleştir:"
 
-#: settings.cpp:549
+#: settings.cpp:553
 msgid "Conference audio record"
 msgstr "Konferans ses kaydı"
 
-#: settings.cpp:550
+#: settings.cpp:554
 msgid "Annual report"
 msgstr "Yıllık rapor"
 
-#: settings.cpp:551
+#: settings.cpp:555
 msgid "Home folder"
 msgstr "Ev Dizini"
 
-#: settings.cpp:553
+#: settings.cpp:557
 #, c-format
 msgid "Launch %1"
 msgstr "Çalıştır %1"
 
-#: settings.cpp:554
+#: settings.cpp:558
 msgid "&Sounds"
 msgstr "&Sesler"
 
-#: settings.cpp:555
+#: settings.cpp:559
 msgid "&Files"
 msgstr "&Dosyalar"
 
-#: settings.cpp:556
+#: settings.cpp:560
 msgid "&Local Links"
 msgstr "&Yerel Bağlantılar"
 
-#: settings.cpp:557
+#: settings.cpp:561
 msgid "&Network Links"
 msgstr "&Ağ Bağlantıları"
 
-#: settings.cpp:558
+#: settings.cpp:562
 msgid "Launc&hers"
 msgstr "&Başlatıcılar"
 
-#: settings.cpp:600
+#: settings.cpp:604
 msgid "Open &text notes with a custom application:"
 msgstr "M&etin notlarını özel bir uygulama ile aç:"
 
-#: settings.cpp:601
+#: settings.cpp:605
 msgid "Open text notes with:"
 msgstr "Metin notlarını birlikte aç:"
 
-#: settings.cpp:608
+#: settings.cpp:612
 msgid "Open &image notes with a custom application:"
 msgstr "&Resim notlarını özel bir uygulama ile aç:"
 
-#: settings.cpp:609
+#: settings.cpp:613
 msgid "Open image notes with:"
 msgstr "Resim notlarını birlikte aç:"
 
-#: settings.cpp:616
+#: settings.cpp:620
 msgid "Open a&nimation notes with a custom application:"
 msgstr "A&nimasyon notlarını özel bir uygulama ile aç:"
 
-#: settings.cpp:617
+#: settings.cpp:621
 msgid "Open animation notes with:"
 msgstr "Animasyon notarını birlikte aç:"
 
-#: settings.cpp:624
+#: settings.cpp:628
 msgid "Open so&und notes with a custom application:"
 msgstr "&Ses notlarını özel bir uygulama ile aç:"
 
-#: settings.cpp:625
+#: settings.cpp:629
 msgid "Open sound notes with:"
 msgstr "Ses notlarını birlikte aç:"
 
-#: settings.cpp:633
+#: settings.cpp:637
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
@@ -2389,7 +2406,7 @@ msgstr ""
 "uygulama kullanılır.</p><p>Aksi durumda ise, Konqueror "
 "yapılandırmasında seçtiğiniz uygulama kullanılacaktır.</p>"
 
-#: settings.cpp:643
+#: settings.cpp:647
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
@@ -2397,13 +2414,13 @@ msgstr ""
 "<p>Bu tip notları Konqueror yapılandırmasında tanımlanan dışında bir "
 "uygulama ile açmak için bir uygulama tanımlayın.</p>"
 
-#: settings.cpp:667
+#: settings.cpp:671
 msgid "How to change the application used to open Web links?"
 msgstr ""
 "Web bağlantılarını açmak için kullanılan uygulamalar nasıl "
 "değiştirilir?"
 
-#: settings.cpp:668
+#: settings.cpp:672
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -2435,13 +2452,13 @@ msgstr ""
 "tarayıcınızla açılacaktır.</p><p> Daha ayrıntılı bir yapılandırma "
 "yardımı için takip eden yardımı tıklayın.</p>"
 
-#: settings.cpp:686
+#: settings.cpp:690
 msgid "How to change the applications used to open files and links?"
 msgstr ""
 "Dosya ve bağlantıları açmak için kullanılan uygulamalar nasıl "
 "değiştirilir?"
 
-#: settings.cpp:687
+#: settings.cpp:691
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applys to Web links if you choose not to open them systematically in a "
@@ -2475,7 +2492,7 @@ msgstr ""
 "Aynı işlemi \"application -> xhtml+xml\" tipi için de "
 "uygulayın.</li></ul>"
 
-#: settings.cpp:757
+#: settings.cpp:761
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
@@ -2484,15 +2501,16 @@ msgstr ""
 "özelliklere ait seçeneklerdir.\n"
 "Bir kez öğrenildiğinde %1 kullanırken zaman kazanmanzı sağlar."
 
-#: settings.cpp:763
+#: settings.cpp:767
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr "&Girdi satırının sağına tıklandığında yeni bir notu gruplandır."
+msgstr ""
+"&Girdi satırının sağına tıklandığında yeni bir notu gruplandır."
 
-#: settings.cpp:766
+#: settings.cpp:770
 msgid "How to group a new note?"
 msgstr "Yeni bir not nasıl gruplanır?"
 
-#: settings.cpp:767
+#: settings.cpp:771
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
@@ -2502,7 +2520,7 @@ msgstr ""
 "not girmenizi sağlamaz. Ayrıca bu yeni notu imlecin altındaki diğer not "
 "ile gruplamanıza da izin verir.</p>"
 
-#: settings.cpp:769
+#: settings.cpp:773
 msgid ""
 "<p>Place your mouse between notes, where you want to add a new one.<br>Click "
 "on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
@@ -2515,43 +2533,43 @@ msgstr ""
 "imlecin konumuna göre notu <b> üstteki ya da alttaki </b> bir not ile <b> "
 "gruplandırın</b>.</p>"
 
-#: settings.cpp:782
+#: settings.cpp:786
 msgid "Do nothing"
 msgstr "Hiçbir şey yapma"
 
-#: settings.cpp:783
+#: settings.cpp:787
 msgid "Paste clipboard"
 msgstr "Panoyu yapıştır"
 
-#: settings.cpp:788
+#: settings.cpp:792
 msgid "Insert launcher note"
 msgstr "Başlatıcı notu ekle"
 
-#: settings.cpp:790
+#: settings.cpp:794
 msgid "&Shift+middle-click:"
 msgstr "&Shift+orta-düğme:"
 
-#: settings.cpp:793
+#: settings.cpp:797
 msgid "at cursor position"
 msgstr "imleç konumunda"
 
-#: settings.cpp:796
+#: settings.cpp:800
 msgid "System Tray Icon"
 msgstr "Sistem Çekmecesi Simgesi"
 
-#: settings.cpp:802
+#: settings.cpp:806
 msgid "Show c&urrent basket icon in system tray icon"
 msgstr "Geçerli sepet simgesini sistem çekmecesinde &göster"
 
-#: settings.cpp:810
+#: settings.cpp:814
 msgid "H&ide main window when mouse goes out of it for"
 msgstr "Üzerinden &fare çekildikten sonra ana pencereyi gizlemek için bekle"
 
-#: settings.cpp:812 settings.cpp:821
+#: settings.cpp:816 settings.cpp:825
 msgid " tenths of seconds"
 msgstr "saniyenin onda biri"
 
-#: settings.cpp:819
+#: settings.cpp:823
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr ""
 "Sistem çekmecesindeki simge üzerine fare geldiğinde ana paencereyi "
@@ -2594,8 +2612,10 @@ msgid "From Tomboy"
 msgstr "Tomboy Uygulamasından"
 
 #: softwareimporters.cpp:548
-msgid "Can not import that file. It is either corrupted or not a TuxCards file."
-msgstr "Bu dosya içeriye aktarılamadı. Dosya bozuk ya da TuxCards dosyası değil."
+msgid ""
+"Can not import that file. It is either corrupted or not a TuxCards file."
+msgstr ""
+"Bu dosya içeriye aktarılamadı. Dosya bozuk ya da TuxCards dosyası değil."
 
 #: softwareimporters.cpp:548
 msgid "Bad File Format"
@@ -2649,11 +2669,11 @@ msgstr "&Küçült"
 msgid "&Restore"
 msgstr "&Geri Yükle"
 
-#: systemtray.cpp:347
+#: systemtray.cpp:335
 msgid "Dropped to basket <i>%1</i>"
 msgstr "<i>%1</i> sepete atıldı"
 
-#: systemtray.cpp:435
+#: systemtray.cpp:423
 msgid "%1 (Locked)"
 msgstr "%1 (Kilitli)"
 
@@ -2916,7 +2936,8 @@ msgid ""
 msgstr ""
 
 #: tagsedit.cpp:888
-msgid "Deleting the tag will remove it from every notes it is currently assigned to."
+msgid ""
+"Deleting the tag will remove it from every notes it is currently assigned to."
 msgstr ""
 
 #: tagsedit.cpp:889
@@ -2989,4 +3010,3 @@ msgid ""
 msgstr ""
 "Resim boyutunu seçmek için pencereyi boyutlandırın ve kapatın\n"
 "ya da Esc tuşuna basarak değişiklikleri kabul edin."
-

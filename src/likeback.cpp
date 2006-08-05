@@ -393,8 +393,8 @@ void LikeBack::askEMail()
 	QString email = KInputDialog::getText(
 			i18n("Set Email Address"),
 			"<p><b>" + i18n("Please provide your email address.") + "</b></p>" +
-			"<p>" + i18n("It will only be used to contact you back if more information are needed about your comments, how to reproduce the bugs you report, send bug corrections for you to test...") + "</p>" +
-			"<p>" + i18n("The email address is optionnal. If you do not provide any, your comments will be sent anonymously. Just click OK in that case.") + "</p>" +
+			"<p>" + i18n("It will only be used to contact you back if more information is needed about your comments, how to reproduce the bugs you report, send bug corrections for you to test...") + "</p>" +
+			"<p>" + i18n("The email address is optional. If you do not provide any, your comments will be sent anonymously. Just click OK in that case.") + "</p>" +
 			"<p>" + i18n("You can change or remove your email address whenever you want. For that, use the little arrow icon at the top-right corner of a window.") + "</p>" +
 			"<p>" + i18n("Your email address (keep empty to post comments anonymously):"),
 			currentEMailAddress, &ok, kapp->activeWindow(), /*name=*/(const char*)0, &emailValidator);
@@ -652,7 +652,7 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
 	if (error) {
 		KMessageBox::error(this, i18n("<p>Error while trying to send the report.</p><p>Please retry later.</p>"), i18n("Transfer Error"));
 	} else {
-		KMessageBox::information(this, i18n("<p>Your comment has been sent successfully.</p><p>Thanks for your time. It will help improve the application.</p>") /*+ QString(http->readAll())*/, i18n("Comment Sent"));
+		KMessageBox::information(this, i18n("<p>Your comment has been sent successfully. It will help improve the application.</p><p>Thanks for your time.</p>") /*+ QString(http->readAll())*/, i18n("Comment Sent"));
 		close();
 	}
 	LikeBack::enable();
