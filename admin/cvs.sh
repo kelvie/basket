@@ -32,7 +32,7 @@ check_autotool_versions()
 required_autoconf_version="2.53 or newer"
 AUTOCONF_VERSION=`$AUTOCONF --version | head -n 1`
 case $AUTOCONF_VERSION in
-  Autoconf*2.5* | autoconf*2.5* ) : ;;
+  Autoconf*2.5* | autoconf*2.5* | autoconf*2.6* ) : ;;
   "" )
     echo "*** AUTOCONF NOT FOUND!."
     echo "*** KDE requires autoconf $required_autoconf_version"
@@ -47,7 +47,7 @@ esac
 
 AUTOHEADER_VERSION=`$AUTOHEADER --version | head -n 1`
 case $AUTOHEADER_VERSION in
-  Autoconf*2.5* | autoheader*2.5* ) : ;;
+  Autoconf*2.5* | autoheader*2.5* | autoheader*2.6* ) : ;;
   "" )
     echo "*** AUTOHEADER NOT FOUND!."
     echo "*** KDE requires autoheader $required_autoconf_version"
@@ -94,7 +94,7 @@ unset required_automake_version
 cvs()
 {
 check_autotool_versions
-acinclude_m4 
+acinclude_m4
 
 ### Make new subdirs and configure.in.
 ### The make calls could be optimized away here,
@@ -106,7 +106,7 @@ if test -r configure.in.in; then
 
     if test -r Makefile.am.in; then
         echo "*** Creating Makefile.am"
-        if grep '\$(top_srcdir)/Makefile.am:' $makefile_am >/dev/null; then 
+        if grep '\$(top_srcdir)/Makefile.am:' $makefile_am >/dev/null; then
             strip_makefile
             $MAKE -f $makefile_wo top_srcdir=. ./Makefile.am || exit 1
         else
@@ -115,7 +115,7 @@ if test -r configure.in.in; then
      fi
      configure_files
      echo "*** Creating configure.in"
-     if grep '\$(top_srcdir)/configure.in:' $makefile_am >/dev/null; then 
+     if grep '\$(top_srcdir)/configure.in:' $makefile_am >/dev/null; then
        strip_makefile
        $MAKE -f $makefile_wo top_srcdir=. ./configure.in || exit 1
      else
@@ -167,7 +167,7 @@ if test -r configure.in.in; then
   create_subdirs
 
   if test -r Makefile.am.in; then
-    if grep '\$(top_srcdir)/Makefile.am:' $makefile_am >/dev/null; then 
+    if grep '\$(top_srcdir)/Makefile.am:' $makefile_am >/dev/null; then
       strip_makefile
       $MAKE -f $makefile_wo top_srcdir=. ./Makefile.am || exit 1
     else
@@ -175,7 +175,7 @@ if test -r configure.in.in; then
     fi
   fi
   configure_files
-  if grep '\$(top_srcdir)/configure.in:' $makefile_am >/dev/null; then 
+  if grep '\$(top_srcdir)/configure.in:' $makefile_am >/dev/null; then
     strip_makefile
     $MAKE -f $makefile_wo top_srcdir=. ./configure.in || exit 1
   else
@@ -238,7 +238,7 @@ kde_use_qt_param=
 test -f configure.files || { echo "need configure.files for configure.in"; exit 1; }
 list=`fgrep -v "configure.in.bot" < configure.files | fgrep -v "configure.in.mid"`
 : > configure.in.new
-for file in $list; do 
+for file in $list; do
   echo "dnl =======================================================" >> configure.in.new
   echo "dnl FILE: $file" >> configure.in.new
   echo "dnl =======================================================" >> configure.in.new
@@ -272,7 +272,7 @@ else
     done
 fi
 
-for topleveldir in $topleveldirs; do 
+for topleveldir in $topleveldirs; do
   if test -f $topleveldir/configure.in; then
 	continue
   fi
@@ -289,7 +289,7 @@ done
 
 files=`cat configure.files`
 list=`egrep '^dnl AC_OUTPUT\(.*\)' $files | sed -e "s#^.*dnl AC_OUTPUT(\(.*\))#\1#"`
-for file in $list; do 
+for file in $list; do
     echo "AC_CONFIG_FILES([ $file ])" >>  configure.in.new
 done
 
@@ -316,10 +316,10 @@ if test -z "$VERSION" || test "$VERSION" = "@VERSION@"; then
      VERSION="\"3.4.2\""
 fi
 if test -z "$modulename" || test "$modulename" = "@MODULENAME@"; then
-   modulename=`pwd`; 
+   modulename=`pwd`;
    modulename=`basename $modulename`
    esc_VERSION=`echo $VERSION | sed -e "s#[^.0-9a-zA-Z]##g"`
-   modulename=`echo $modulename | sed -e "s#-$esc_VERSION##"`   
+   modulename=`echo $modulename | sed -e "s#-$esc_VERSION##"`
 
 fi
 if test -n "$kde_use_qt_param"; then
@@ -372,7 +372,7 @@ fi
 
 create_subdirs()
 {
-if grep '\$(top_srcdir)/subdirs:' $makefile_am >/dev/null; then 
+if grep '\$(top_srcdir)/subdirs:' $makefile_am >/dev/null; then
     # as many modules contain rules to create subdirs without any
     # dependencies make won't create it unless there is no file.
     # so we check if that's a dummy rule or one that works
@@ -384,7 +384,7 @@ if grep '\$(top_srcdir)/subdirs:' $makefile_am >/dev/null; then
     $MAKE -f $makefile_wo top_srcdir=. ./subdirs || exit 1
     if test -f subdirs.cvs.sh.$$; then
 	if test -s subdirs; then
-	    rm subdirs.cvs.sh.$$ 
+	    rm subdirs.cvs.sh.$$
 	else
 	    mv subdirs.cvs.sh.$$ subdirs
 	fi
@@ -421,7 +421,7 @@ for d in $compilefirst; do
    echo $d >> ./_SUBDIRS
 done
 
-(for d in $dirs; do 
+(for d in $dirs; do
    list=`sed -ne "s#^COMPILE_BEFORE_$d""[ ]*=[ ]*##p" $makefile_am | head -n 1`
    for s in $list; do
       echo $s $d
@@ -468,7 +468,7 @@ if test -f Makefile.am.in; then
     adds=`ls -d -1 $adds 2>/dev/null`
     fgrep -v  '$(top_srcdir)/acinclude.m4:' Makefile.am.in > Makefile.am.in.adds
     str='$(top_srcdir)/acinclude.m4:'
-    for add in $adds; do 
+    for add in $adds; do
 	str="$str \$(top_srcdir)/$add"
     done
     echo $str >> Makefile.am.in.adds
@@ -488,7 +488,7 @@ acinclude_m4()
 {
   echo "*** Creating acinclude.m4"
   adds=
-  if grep '\$(top_srcdir)/acinclude.m4:' $makefile_am >/dev/null; then 
+  if grep '\$(top_srcdir)/acinclude.m4:' $makefile_am >/dev/null; then
     strip_makefile
     rm -f acinclude.m4
     adds=`grep '\$(top_srcdir)/acinclude.m4:' $makefile_wo | sed -e 's,^[^:]*: *,,; s,\$(top_srcdir),.,g'`
