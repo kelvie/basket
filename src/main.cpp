@@ -76,7 +76,8 @@ int main(int argc, char *argv[])
 	MainWindow* win = new MainWindow();
 	Global::bnpView->handleCommandLine();
 	app.setMainWidget(win);
-	win->show();
+	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
+		win->show();
 
 	// Self-test of the presence of basketui.rc (the only requiered file after basket executable)
 	if (Global::bnpView->popupMenu("basket") == 0L)

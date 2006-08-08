@@ -123,6 +123,21 @@ void BNPView::lateInit()
 			toolbar->hide();
 	}
 
+	if(!isPart())
+	{
+		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
+			if(Global::mainWindow()) Global::mainWindow()->hide();
+		else if (Settings::useSystray() && kapp->isRestored())
+			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
+		else
+			showMainWindow();
+	}
+
+	// If the main window is hidden when session is saved, Container::queryClose()
+	//  isn't called and the last value would be kept
+	Settings::setStartDocked(true);
+	Settings::saveConfig();
+
 	/* System tray icon */
 	Global::systemTray = new SystemTray(Global::mainWindow());
 	connect( Global::systemTray, SIGNAL(showPart()), this, SIGNAL(showPart()) );
@@ -305,21 +320,6 @@ void BNPView::initialize()
 					"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 
 	setTreePlacement(Settings::treeOnLeft());
-
-	if(!isPart())
-	{
-		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
-			if(Global::mainWindow()) Global::mainWindow()->hide();
-		else if (Settings::useSystray() && kapp->isRestored())
-			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
-		else
-			showMainWindow();
-	}
-
-	// If the main window is hidden when session is saved, Container::queryClose()
-	//  isn't called and the last value would be kept
-	Settings::setStartDocked(true);
-	Settings::saveConfig();
 }
 
 void BNPView::setupActions()
