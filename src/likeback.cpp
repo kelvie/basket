@@ -430,6 +430,11 @@ void LikeBack::init(Button buttons)
 
 void LikeBack::init(bool isDevelopmentVersion, Button buttons)
 {
+	if (s_config == 0)
+		s_config = kapp->config();
+	if (s_about == 0)
+		s_about = (KAboutData*) kapp->aboutData();
+
 	if (LikeBack::userWantToParticipate() && isDevelopmentVersion)
 		new LikeBack(buttons);
 }

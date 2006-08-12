@@ -5357,7 +5357,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 				//std::cout << "Opening dialog for " << fullPath << std::endl;
 				dialog = new DiskErrorDialog(
 					(openSuccess
-						? i18n("Insuficient Disk Space to Save Basket Data")
+						? i18n("Insufficient Disk Space to Save Basket Data")
 						: i18n("Wrong Basket File Permissions")
 					),
 					(openSuccess
