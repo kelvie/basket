@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"POT-Creation-Date: 2006-08-12 15:48+0200\n"
 "PO-Revision-Date: 2005-12-10 21:32+0100\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team:  <fr@li.org>\n"
@@ -354,7 +354,7 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Selección (%1) pegada en la cesta <i>%2</i>"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr ""
 
 #: basket.cpp:5361
@@ -508,20 +508,20 @@ msgstr ""
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr "<p>Esta cesta está <b>desbloqueada</b>.<br>Pulse para bloquearla.</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "General"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr ""
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 #, fuzzy
 msgid "Paste clipboard contents in current basket"
 msgstr "Pegar el contenido actual del portapapeles en la cesta actual"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 #, fuzzy
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
@@ -530,23 +530,23 @@ msgstr ""
 "Permite pegar el contenido del portapapeles en la cesta actual sin necesidad "
 "de abrir la ventana principal."
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 #, fuzzy
 msgid "Show current basket name"
 msgstr "Mostrar el icono act&ual en la bandeja del sistema"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 #, fuzzy
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "Permite pegar el contenido del portapapeles en la cesta actual sin necesidad "
 "de abrir la ventana principal."
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr "Pegar la selección en la cesta actual"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 #, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
@@ -555,11 +555,11 @@ msgstr ""
 "Permite pegar la selección del portapapeles en la cesta actual sin "
 "necesidad de abrir la ventana principal."
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "Crear una nueva cesta"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 #, fuzzy
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
@@ -571,11 +571,11 @@ msgstr ""
 "elemento ó pegar el contenido del portapapeles ó la selección actual en "
 "esta nueva cesta)."
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "Ir a la cesta anterior"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 #, fuzzy
 msgid ""
 "Allows you to change current basket to the previous one without having to "
@@ -584,11 +584,11 @@ msgstr ""
 "Permite cambiar la cesta actual a la anterior sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "Ir a la cesta siguiente"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 #, fuzzy
 msgid ""
 "Allows you to change current basket to the next one without having to open "
@@ -597,24 +597,24 @@ msgstr ""
 "Permite cambiar la cesta actual por la siguiente sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 #, fuzzy
 msgid "Insert text note"
 msgstr "Insertar elemento de texto"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 #, fuzzy
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Añadir un elemento de texto sin necesidad de abrir la ventana principal."
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 #, fuzzy
 msgid "Insert image note"
 msgstr "Insertar elemento imagen"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 #, fuzzy
 msgid ""
 "Add an image note to the current basket without having to open main window."
@@ -622,12 +622,12 @@ msgstr ""
 "Añadir un elemento de imagen a la cesta actual sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 #, fuzzy
 msgid "Insert link note"
 msgstr "Insertar elemento 'enlace'"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 #, fuzzy
 msgid ""
 "Add a link note to the current basket without having to open main window."
@@ -635,12 +635,12 @@ msgstr ""
 "Añadir un elemento de enlace a la cesta actual sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 #, fuzzy
 msgid "Insert color note"
 msgstr "Insertar elemento 'color'"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 #, fuzzy
 msgid ""
 "Add a color note to the current basket without having to open main window."
@@ -648,11 +648,11 @@ msgstr ""
 "Añadir un elemento 'color' a la cesta actual sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "Capturar un color de la pantalla"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 #, fuzzy
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
@@ -661,11 +661,11 @@ msgstr ""
 "Añadir un elemento de color capturado de un punto de la pantalla a la cesta "
 "actual sin necesidad de abrir la ventana principal."
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr ""
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 #, fuzzy
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
@@ -674,12 +674,12 @@ msgstr ""
 "Añadir un elemento de imagen a la cesta actual sin necesidad de abrir la "
 "ventana principal."
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 #, fuzzy
 msgid "Baskets"
 msgstr "Cesta"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1375,7 +1375,7 @@ msgstr ""
 msgid "Examples:"
 msgstr "Ejemplo"
 
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr ""
 
@@ -1389,7 +1389,7 @@ msgstr ""
 msgid "Very refreshing."
 msgstr ""
 
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr ""
 
@@ -1403,7 +1403,7 @@ msgstr ""
 msgid "Too time consuming."
 msgstr ""
 
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr ""
 
@@ -1448,57 +1448,57 @@ msgstr ""
 msgid "Your email address (keep empty to post comments anonymously):"
 msgstr ""
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr ""
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr ""
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr ""
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 #, fuzzy
 msgid "Send"
 msgstr "Sonido"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr ""
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
 msgstr ""
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr ""
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 #, fuzzy
 msgid "Send a Comment"
 msgstr "Coman&do:"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr ""
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
 "application.</p><p>Thanks for your time.</p>"
 msgstr ""
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 #, fuzzy
 msgid "Comment Sent"
 msgstr "Coman&do:"

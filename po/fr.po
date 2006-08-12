@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"POT-Creation-Date: 2006-08-12 15:48+0200\n"
 "PO-Revision-Date: 2006-08-05 14:40+0200\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team:  <fr@li.org>\n"
@@ -299,7 +299,8 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Veuillez assigner un mot de passe au panier <i>%1</i> :"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+#, fuzzy
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "Espace disque insuffisant pour enregistrer le panier"
 
 #: basket.cpp:5361
@@ -467,19 +468,19 @@ msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr ""
 "<p>Ce panier est <b>dévérouillé</b>.<br>Cliquez pour le vérouiller.</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "Général"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr "Seuls le français et l'anglais sont autorisés."
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 msgid "Paste clipboard contents in current basket"
 msgstr "Coller le contenu du presse-papier dans le panier courant"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -487,21 +488,21 @@ msgstr ""
 "Vous permet de coller le contenu du presse-papier dans le panier courant "
 "sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 msgid "Show current basket name"
 msgstr "Montrer le nom du panier courrant"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "Vous permet de connaître quel est le panier courant sans ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr "Coller la sélection dans le panier courant"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -509,11 +510,11 @@ msgstr ""
 "Vous permet de coller la sélection dans le panier courant sans avoir à "
 "ouvrir la fenêtre principale."
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "Crée un nouveau panier"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -524,11 +525,11 @@ msgstr ""
 "pour ajouter un objet, coller le contenu du presse-papier ou coller la "
 "sélection dans le panier courant)."
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "Aller au panier précédent"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -536,11 +537,11 @@ msgstr ""
 "Vous permet de changer le panier courant pour le précédent sans avoir à "
 "ouvrir la fenêtre principale."
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "Aller au panier suivant"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -548,55 +549,55 @@ msgstr ""
 "Vous permet de changer le panier courant pour le suivant sans avoir à "
 "ouvrir la fenêtre principale."
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 msgid "Insert text note"
 msgstr "Insérer une note texte"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Ajouter un texte au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
 msgstr "Insérer une note image"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une image au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
 msgstr "Insérer une note lien"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Ajouter un lien au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
 msgstr "Insérer une note couleur"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une couleur au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "Puiser une couleur sur l'écran"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -604,11 +605,11 @@ msgstr ""
 "Ajouter une couleur puisée sur un pixel à l'écran dans le panier courant "
 "sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr "Capturer une zone de l'écran"
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -616,11 +617,11 @@ msgstr ""
 "Capturer une zone de l'écran en tant qu'image dans le panier courant sans "
 "avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 msgid "Baskets"
 msgstr "Paniers"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1305,7 +1306,7 @@ msgstr ""
 msgid "Examples:"
 msgstr "Exemples :"
 
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr "J'aime..."
 
@@ -1319,7 +1320,7 @@ msgstr "la jolie nouvelle image."
 msgid "Very refreshing."
 msgstr "Assez rafraîchissant."
 
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr "Je n'aime pas..."
 
@@ -1333,7 +1334,7 @@ msgstr "la page de bienvenue de cet assistant."
 msgid "Too time consuming."
 msgstr "Une perte de temps inutile."
 
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr "J'ai trouvé un bogue..."
 
@@ -1388,27 +1389,27 @@ msgstr ""
 msgid "Your email address (keep empty to post comments anonymously):"
 msgstr "Votre adresse e-mail (laissez vide pour poster anonymement) :"
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr "Veuillez décrire rapidement ce que vous aimez."
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr "Veuillez décrire rapidement ce que vous n'aimez pas."
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr "Veuillez décrire rapidement le bogue que vous avez rencontré."
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 msgid "Send"
 msgstr "Envoyer"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr "Seul l'anglais est autorisé."
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
@@ -1416,25 +1417,25 @@ msgstr ""
 "Notez que pour améliorer cette application, il est important que vous nous "
 "faisiez part de ce que vous aimez autant que ce que vous n'aimez pas."
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr "Ne demandez pas de fonctionnalités : vos souhaits seront ignorés."
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 msgid "Send a Comment"
 msgstr "Envoyer un commentaire"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>Une erreur c'est produite lors de l'envoi du rapport.</p><p>Merci de "
 "réessayer plus tard.</p>"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr "Erreur de transmition"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
 "application.</p><p>Thanks for your time.</p>"
@@ -1442,7 +1443,7 @@ msgstr ""
 "<p>Votre commentaire a été envoyé avec succès. Il permettra d'aider à "
 "améliorer cette application.</p><p>Merci pour votre temps.</p>"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid "Comment Sent"
 msgstr "Commentaire envoyé"
 

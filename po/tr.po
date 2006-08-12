@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"POT-Creation-Date: 2006-08-12 15:48+0200\n"
 "PO-Revision-Date: 2006-07-29 02:19+0300\n"
 "Last-Translator: Serdar Soytetir <tulliana@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -289,7 +289,8 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Lütfen <b>%1</b> sepeti için bir parola atayın:"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+#, fuzzy
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "Sepet Verilerini Kaydetmek için Yetersiz Disk Alanı"
 
 #: basket.cpp:5361
@@ -451,19 +452,19 @@ msgstr "<p>Bu sepet<b>kilitli</b>.<br>Kilidi açmak için tıklayın.</p>"
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr "<p>Bu sepet<b>kilitli değil</b>.<br>Kilitlemek için tıklayın.</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "Genel"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr "Sadece İngilizce ve Fransızca kabul edilir."
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 msgid "Paste clipboard contents in current basket"
 msgstr "Pano içeriğini geçerli sepete yapıştır"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -471,19 +472,19 @@ msgstr ""
 "Ana pencereyi açmadan pano içeriğini geçerli sepete yapıştırmanızı "
 "sağlar."
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 msgid "Show current basket name"
 msgstr "Geçerli sepet adını göster"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "Ana pencereyi açmadan geçerli sepeti bilmenizi sağlar."
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr "Seçimi geçerli sepete yapıştır"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -491,11 +492,11 @@ msgstr ""
 "Ana pencereyi açmadan pano seçimini geçerli sepete yapıştırmanızı "
 "sağlar."
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "Yeni bir sepet oluştur"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -505,11 +506,11 @@ msgstr ""
 "bu yeni sepete bir not ekle, panoyu ya da seçimi yapıştır gibi işlemler "
 "için genel kısayol atayabilirsiniz)."
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "Önceki sepete git"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -517,11 +518,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepeti olarak önceki sepeti seçmenizi "
 "sağlar."
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "Sonraki sepete git"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -529,52 +530,52 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepeti olarak sonraki sepeti seçmenizi "
 "sağlar."
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 msgid "Insert text note"
 msgstr "Metin notu ekle"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Ana pencereyi açmadan geçerli sepete bir metin notu eklemenizi sağlar."
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
 msgstr "Resim notu ekle"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Ana pencereyi açmadan geçerli sepete bir resim notu eklemenizi sağlar."
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
 msgstr "Bağlantı notu ekle"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Ana pencereyi açmadan geçerli sepete bir bağlantı notu eklemenizi "
 "sağlar."
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
 msgstr "Renk notu ekle"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Ana pencereyi açmadan geçerli sepete bir renk notu eklemenizi sağlar."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "Ekrandan renk al"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -582,11 +583,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepete ekranın bir pikselinden alınan bir "
 "renk notu eklemenizi sağlar."
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr "Ekran görüntüsü yakala"
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -594,11 +595,11 @@ msgstr ""
 "Ana pencereyi açmadan geçerli sepete yakalanan bir ekran görüntüsü "
 "notu eklemenizi sağlar."
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 msgid "Baskets"
 msgstr "Sepetler"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1267,7 +1268,7 @@ msgstr ""
 msgid "Examples:"
 msgstr "Örnekler:"
 
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr "Hoşlandım..."
 
@@ -1281,7 +1282,7 @@ msgstr "güzel sanatsal çalışmalar."
 msgid "Very refreshing."
 msgstr "Çok yenileme var."
 
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr "Hoşlanmadım..."
 
@@ -1295,7 +1296,7 @@ msgstr "sihirbazın hoş geldin sayfası."
 msgid "Too time consuming."
 msgstr "Çok zaman harcıyor."
 
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr "Bir hata buldum..."
 
@@ -1340,27 +1341,27 @@ msgstr ""
 msgid "Your email address (keep empty to post comments anonymously):"
 msgstr ""
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr "Lütfen hoşlandığınız bölümleri kısaca anlatın."
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr "Lütfen hoşlanmadığınız bölümleri kısaca anlatın."
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr "Lütfen bulduğunuz hatayı kısaca anlatın."
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 msgid "Send"
 msgstr "Gönder"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr "Sadece İngilizce iletiler kabul edilir."
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
@@ -1368,25 +1369,25 @@ msgstr ""
 "Beğendiğiniz ve beğenmediğiniz yerleri bize anlatarak bu uygulamanın "
 "gelişmine katkıda bulunmanın önemli olduğunu unutmayın."
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr "Lütfen yeni özellikler istemeyin: istekleriniz kabul edilmeyecektir."
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 msgid "Send a Comment"
 msgstr "Bir Yorum Gönder"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>Hata raporu gönderilirken hata oluştu.</p><p>Lütfen daha sonra tekrar "
 "deneyin.</p>"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr "Gönderme Hatası"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 #, fuzzy
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
@@ -1396,7 +1397,7 @@ msgstr ""
 "ayırdığınız için teşekkür ederiz. Yorumunuz uygulamanın gelişimine "
 "katkıda bulunacaktır.</p>"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid "Comment Sent"
 msgstr "Yorum Gönerildi"
 

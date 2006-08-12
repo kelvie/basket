@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"POT-Creation-Date: 2006-08-12 15:48+0200\n"
 "PO-Revision-Date: 2006-07-29 12:57+0200\n"
 "Last-Translator: Radomir Fojtik <radfoj@seznam.cz>\n"
 "Language-Team: Czech\n"
@@ -301,7 +301,8 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Zvolte prosím heslo pro košík <i>%1</i>"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+#, fuzzy
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "Nedostatečné místo na disku pro uložení dat košíku"
 
 #: basket.cpp:5361
@@ -469,19 +470,19 @@ msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr ""
 "<p>Tento košík je <b>odemknutý</b>.<br>Klikněte k jeho uzamčení.</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "Obecné"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr "Pouze anglický a francouzský jazyk je akceptován."
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 msgid "Paste clipboard contents in current basket"
 msgstr "Vložit obsah schránky do současného košíku"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -489,20 +490,20 @@ msgstr ""
 "Umožní vložit obsah schránky do současného košíku bez nutnosti "
 "otevírat hlavní okno."
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 msgid "Show current basket name"
 msgstr "Zobrazit název současného košíku"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "Umožní zjistit současný košík bez nutnosti otevírat hlavní okno."
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr "Vložit výběr do současného košíku"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -510,11 +511,11 @@ msgstr ""
 "Umožní vkládat výběr ze schránky do současného košíku bez nutnosti "
 "otevírat hlavní okno."
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "Vytvořit nový košík"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -524,11 +525,11 @@ msgstr ""
 "(můžete pak použít jinou globální zkratku pro přidání poznámky, "
 "vložení schránky nebo vložení výběru v tomto novém košíku)."
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "Přejít do předešlého košíku"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -536,11 +537,11 @@ msgstr ""
 "Umožní změnit současný košík na předchozí bez nutnosti mít "
 "otevřené hlavní okno."
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "Přejít do následujícího košíku"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -548,55 +549,55 @@ msgstr ""
 "Umožní změnit současný košík na další bez nutnosti mít otevřené "
 "hlavní okno."
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 msgid "Insert text note"
 msgstr "Vložit textovou poznámku"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Přodat textovou poznámku do současného košíku bez nutnosti mít "
 "otevřené hlavní okno."
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
 msgstr "Vložit obrázek"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Přidat obrázek do současného košíku bez nutnosti mít otevřené "
 "hlavní okno."
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
 msgstr "Vložit odkaz"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Přidat odkaz do současného košíku bez nutnosti mít otevřené hlavní "
 "okno."
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
 msgstr "Vložit barvu"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Přidá poznámku barby do současného košíku bez nutnosti otevírat "
 "hlavní okno."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "Zachytit barvu z obrazovky"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -604,11 +605,11 @@ msgstr ""
 "Přidat barvu vybranou z jednoho pixelu na obrazovce do současného "
 "košíku bez nutnosti otevírat hlavní okno."
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr "Sejmou část obrazovky"
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -616,11 +617,11 @@ msgstr ""
 "Zachytí oblast obrazovky jako obrázek v současném košíku bez "
 "otevírání hlavího okna."
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 msgid "Baskets"
 msgstr "Košíky"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1302,7 +1303,7 @@ msgstr ""
 msgid "Examples:"
 msgstr "Příklady:"
 
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr "Líbí se mi..."
 
@@ -1316,7 +1317,7 @@ msgstr "pěkný nový artwork."
 msgid "Very refreshing."
 msgstr "Velmi roztomilé."
 
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr "Nelíbí se mi..."
 
@@ -1330,7 +1331,7 @@ msgstr "uvítací stránka tohoto wizardu."
 msgid "Too time consuming."
 msgstr "Spotřebuje spoustu času."
 
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr "Nalezl jsem bug..."
 
@@ -1386,27 +1387,27 @@ msgid "Your email address (keep empty to post comments anonymously):"
 msgstr ""
 "Vaše emailová adresa (nevyplňujte pro anonymní poslání komentáře):"
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr "Stručně prosím popiště co se Vám líbí."
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr "Stručně prosím popište, co se Vám nelíbí."
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr "Stručně prosím popište, na jaký chybu jste narazili."
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 msgid "Send"
 msgstr "Poslat"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr "Pouze anglický jazyk je akceptován."
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
@@ -1414,23 +1415,23 @@ msgstr ""
 "Pamatujte, že pro zlepšení této aplikace je důležité říci nám "
 "věci, které se Vám líbí stejně jako věci které se Vám nelíbí."
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr "Neptejte se na nové vlastnosti: Vaše přání budou ignorována."
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 msgid "Send a Comment"
 msgstr "Poslat komentář"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr "<p>Chyba při posílání zprávy.</p><p>Prosím, zkuste později.</p>"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr "Chyba přenosu"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 #, fuzzy
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
@@ -1439,7 +1440,7 @@ msgstr ""
 "<p>Váš komentář byl úspěšně odeslán.</p><p>Díky za Váš čas. "
 "Pomůže to ke zlepšení aplikace.</p>"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid "Comment Sent"
 msgstr "Komentář odeslán"
 

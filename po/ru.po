@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basket\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"POT-Creation-Date: 2006-08-12 15:48+0200\n"
 "PO-Revision-Date: 2006-07-28 16:27-0700\n"
 "Last-Translator: Danil Dotsenko <dd@accentsolution.com>\n"
 "Language-Team:  <ru@li.org>\n"
@@ -327,7 +327,8 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Введите пароль для корзины '%1':"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+#, fuzzy
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "Не достаточно места на диске"
 
 #: basket.cpp:5361
@@ -506,24 +507,24 @@ msgstr ""
 "<b>разблокирована</b>.<br>Щёлкните мышью для "
 "заблокирования</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "Общие"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr ""
 "Пожалуйста, для удобства автора "
 "программы, пользуйтесь английским или "
 "французким языком."
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 msgid "Paste clipboard contents in current basket"
 msgstr ""
 "Вставить содержимое буфера обмена в "
 "выбранную корзину"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -532,23 +533,23 @@ msgstr ""
 "обмена в выбранную корзину без "
 "необходимости открытия главного окна."
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 msgid "Show current basket name"
 msgstr "Показать имя выбранной корзины"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "Позволяет узнать которая корзина "
 "выбрана.без необходимости открытия "
 "главного окна."
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr ""
 "Вставить выделенное в выбранную корзину"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -557,11 +558,11 @@ msgstr ""
 "обмена в выбранную корзину без "
 "необходимости открытия главного окна."
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "Создать новую корзину"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -570,11 +571,11 @@ msgstr ""
 "Позволяет создать корзину без "
 "необходимости открытия главного окна."
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "Перейти к предыдущей корзине"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -582,11 +583,11 @@ msgstr ""
 "Позволяет перейти к предыдущей корзине "
 "без необходимости открытия главного окна."
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "Перейти к следующей корзине"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -594,11 +595,11 @@ msgstr ""
 "Позволяет перейти к следующей корзине "
 "без необходимости открытия главного окна."
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 msgid "Insert text note"
 msgstr "Вставить заметку из простого текста"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
@@ -606,33 +607,33 @@ msgstr ""
 "выбраную корзину без необходимости "
 "открытия главного окна."
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
 msgstr "Вставить рисунок"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Вставить рисунок в выбраную корзину без "
 "необходимости открытия главного окна."
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
 msgstr "Вставить ссылку"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Вставить ссылку в выбраную корзину без "
 "необходимости открытия главного окна."
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
 msgstr "Вставить цветную заметку"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
@@ -640,11 +641,11 @@ msgstr ""
 "корзину без необходимости открытия "
 "главного окна."
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "Выбрать цвет с точки экрана"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -653,11 +654,11 @@ msgstr ""
 "выбраную корзину без необходимости "
 "открытия главного окна."
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr "Сделать снимок зоны экрана"
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -666,11 +667,11 @@ msgstr ""
 "корзину без необходимости открытия "
 "главного окна."
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 msgid "Baskets"
 msgstr "Корзины"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1380,7 +1381,7 @@ msgstr ""
 msgid "Examples:"
 msgstr "Примеры:"
 
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr "Понравилось..."
 
@@ -1394,7 +1395,7 @@ msgstr "Прикольное новое оформление."
 msgid "Very refreshing."
 msgstr "Свежо."
 
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr "Непонравилось..."
 
@@ -1408,7 +1409,7 @@ msgstr "страница приглашения."
 msgid "Too time consuming."
 msgstr "Забирает много времени."
 
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr "Нашёл ошибку..."
 
@@ -1467,54 +1468,54 @@ msgstr ""
 "Ваш адрес электронной почты (оставьте "
 "пустым для анонимной отсылки):"
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr "Краткое описание."
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr "Краткое описание."
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr "Краткое описание."
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 msgid "Send"
 msgstr "Отправить"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr ""
 "Пожалуйста, для удобства автора "
 "программы, пользуйтесь английским языком."
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
 msgstr ""
 "Принимаются и плохие, и хорошие отзывы."
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr ""
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 msgid "Send a Comment"
 msgstr "Отправить Комментарий"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>Ошибка при отсылке "
 "отзыва.</p><p>Попробуйте снова позже.</p>"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr "Коммуникационная ошибка"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 #, fuzzy
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
@@ -1523,7 +1524,7 @@ msgstr ""
 "<p>Отзыв отослан успешно.</p><p>Большое "
 "спасибо за участие.</p>"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid "Comment Sent"
 msgstr "Комментарий отправлен"
 
