@@ -1,0 +1,2822 @@
+# Translation of nn to Norwegian Nynorsk
+#
+# Karl Ove Hufthammer <karl@huftis.org>, 2006.
+msgid ""
+msgstr ""
+"Project-Id-Version: nn\n"
+"POT-Creation-Date: 2006-08-05 14:39+0200\n"
+"PO-Revision-Date: 2006-08-12 16:22+0200\n"
+"Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
+"Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: aboutdata.cpp:26
+msgid "A set of baskets to keep a full range of data on hand."
+msgstr "Ei samling korger for lett tilgang til all slags informasjon."
+
+#: aboutdata.cpp:29
+msgid "BasKet Note Pads"
+msgstr "Korgnotat"
+
+#: aboutdata.cpp:35
+msgid "Author, maintainer"
+msgstr "Forfattar og vedlikeheldar."
+
+#: aboutdata.cpp:36
+msgid "Basket encryption, Kontact integration, KnowIt importer"
+msgstr "Krypteringsstøtte, Kontakt-integrering og KnowIt-import."
+
+#: aboutdata.cpp:37 basketproperties.cpp:61 newbasketdialog.cpp:103
+msgid "Icon"
+msgstr "Ikonet."
+
+#: basket.cpp:523
+msgid "The new note does not match the filter and is hidden."
+msgstr "Det nye notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+
+#: basket.cpp:524
+msgid "A new note does not match the filter and is hidden."
+msgstr "Eit nytt notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+
+#: basket.cpp:525
+msgid "Some new notes do not match the filter and are hidden."
+msgstr "Nokre nye notat er ikkje i samsvar med filteret, og vert derfor skjulte."
+
+#: basket.cpp:526
+msgid "The new notes do not match the filter and are hidden."
+msgstr "Dei nye notata er ikkje i samsvar med filteret, og vert derfor skjulte."
+
+#: basket.cpp:1528
+msgid ""
+"_: The verb (Group New Note)\n"
+"Group"
+msgstr "Grupper"
+
+#: basket.cpp:1528
+msgid ""
+"_: The verb (Insert New Note)\n"
+"Insert"
+msgstr "Set inn"
+
+#: basket.cpp:2228
+msgid ""
+"This message should never appear. If it's the case, this program is buggy! "
+"Please report the bug to the developer."
+msgstr "Denne meldinga skal aldri visast. Viss ho vert vist, er det ein feil i programmet. Meld derfor frå til utviklaren."
+
+#: basket.cpp:2645 basket.cpp:2690 basket.cpp:2693
+msgid ""
+"Insert note here\n"
+"Right click for more options"
+msgstr ""
+"Sett inn notat her.\n"
+"Høgreklikk for fleire val."
+
+#: basket.cpp:2663
+msgid "Resize those columns"
+msgstr "Endra storleik på kolonnane."
+
+#: basket.cpp:2665
+msgid "Resize this group"
+msgstr "Endra storleik på gruppa."
+
+#: basket.cpp:2666
+msgid "Resize this note"
+msgstr "Endra storleik på notatet."
+
+#: basket.cpp:2667
+msgid "Select or move this note"
+msgstr "Merk eller flytt dette notatet."
+
+#: basket.cpp:2668
+msgid "Select or move this group"
+msgstr "Merk eller flytt denne gruppa."
+
+#: basket.cpp:2669
+msgid "Assign or remove tags from this note"
+msgstr "Legg til eller fjern merkelappar frå dette notatet."
+
+#: basket.cpp:2671
+#, c-format
+msgid "<b>Assigned Tags</b>: %1"
+msgstr "<b>Merkelappar</b>: %1"
+
+#: basket.cpp:2678
+msgid "%1, %2"
+msgstr "%1, %2"
+
+#: basket.cpp:2685
+msgid "Expand this group"
+msgstr "Utvida gruppa."
+
+#: basket.cpp:2686
+msgid "Collapse this group"
+msgstr "Slå saman gruppa."
+
+#: basket.cpp:2691
+msgid ""
+"Group note with the one below\n"
+"Right click for more options"
+msgstr ""
+"Grupper med notatet nedanfor.\n"
+"Høgreklikk for fleire val."
+
+#: basket.cpp:2692
+msgid ""
+"Group note with the one above\n"
+"Right click for more options"
+msgstr ""
+"Grupper med notatet ovanfor.\n"
+"Høgreklikk for fleire val."
+
+#: basket.cpp:2708
+msgid "Added"
+msgstr "Lagt til"
+
+#: basket.cpp:2709
+msgid "Last Modification"
+msgstr "Siste endring"
+
+#: basket.cpp:2717
+msgid ""
+"_: of the form 'key: value'\n"
+"<b>%1</b>: %2"
+msgstr "<b>%1</b>: %2"
+
+#: basket.cpp:2720
+msgid "Click on the right to group instead of insert"
+msgstr "Trykk til høgre for å gruppera i staden for å setja inn."
+
+#: basket.cpp:2722
+msgid "Click on the left to insert instead of group"
+msgstr "Trykk til høgre for å setja inn i staden for å gruppera."
+
+#: basket.cpp:2911
+msgid "&Unlock"
+msgstr "&Lås opp"
+
+#: basket.cpp:2916
+msgid "Password protected basket."
+msgstr "Passordverna korg."
+
+#: basket.cpp:2918
+msgid "Press Unlock to view it."
+msgstr "Trykk «Lås opp» for å opna ho."
+
+#: basket.cpp:2920
+#, c-format
+msgid "Encryption is not supported by<br/>this version of %1."
+msgstr "Kryptering er ikkje støtta<br/>i denne versjonen av %1."
+
+#: basket.cpp:2959 bnpview.cpp:1198 bnpview.cpp:1802
+msgid "Loading..."
+msgstr "Lastar …"
+
+#: basket.cpp:3200 basket.cpp:3221 bnpview.cpp:2101
+msgid "&Customize..."
+msgstr "&Tilpass …"
+
+#: basket.cpp:3202 basket.cpp:3223
+msgid "&Filter by this Tag"
+msgstr "&Filtrer etter denne merkelappen"
+
+#: basket.cpp:3224
+msgid "Filter by this &State"
+msgstr "Filtrer etter denne &tilstanden"
+
+#: basket.cpp:3304
+msgid "Tags"
+msgstr "Merkelappar"
+
+#: basket.cpp:3864
+#, c-format
+msgid ""
+"_n: <qt>Do you really want to delete this note?</qt>\n"
+"<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
+msgstr ""
+"<qt>Er du sikker på at du vil sletta dette notatet?</qt>\n"
+"<qt>Er du sikker på at du vil sletta desse <b>%n</b> notata?</qt>"
+
+#: basket.cpp:3866
+msgid ""
+"_n: Delete Note\n"
+"Delete Notes"
+msgstr ""
+"Slett notat\n"
+"Slett notat"
+
+#: basket.cpp:3964
+msgid ""
+"_n: Copied note to clipboard.\n"
+"Copied notes to clipboard."
+msgstr ""
+"Kopierte notat til utklippstavla.\n"
+"Kopierte notat til utklippstavla."
+
+#: basket.cpp:3965
+msgid ""
+"_n: Cut note to clipboard.\n"
+"Cut notes to clipboard."
+msgstr ""
+"Klipte ut notat til utklippstavla.\n"
+"Klipte ut notat til utklippstavla."
+
+#: basket.cpp:3966
+msgid ""
+"_n: Copied note to selection.\n"
+"Copied notes to selection."
+msgstr ""
+"Kopierte notat til utval.\n"
+"Kopierte notat til utval."
+
+#: basket.cpp:4012 basket.cpp:4061
+msgid "Unable to open this note."
+msgstr "Klarte ikkje opna notatet."
+
+#: basket.cpp:4036
+msgid "You are not authorized to open this file."
+msgstr "Du har ikkje løyve til å opna denne fila."
+
+#: basket.cpp:4078
+msgid "Save to File"
+msgstr "Lagra til fil"
+
+#: basket.cpp:4486 basket.cpp:4487
+msgid ""
+"_: HTML export folder (files)\n"
+"%1_files"
+msgstr "%1-filer"
+
+#: basket.cpp:4493 basket.cpp:4494
+msgid ""
+"_: HTML export folder (icons)\n"
+"icons"
+msgstr "ikon"
+
+#: basket.cpp:4495 basket.cpp:4496
+msgid ""
+"_: HTML export folder (images)\n"
+"images"
+msgstr "bilete"
+
+#: basket.cpp:4497 basket.cpp:4498
+msgid ""
+"_: HTML export folder (data)\n"
+"data"
+msgstr "data"
+
+#: basket.cpp:4621
+msgid "Notes matching the filter &quot;%1&quot;:"
+msgstr "Notat i samsvar med filteret «%1»:"
+
+#: basket.cpp:4658
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr "Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
+
+#: basket.cpp:5251
+msgid "Please enter the password for the following private key:"
+msgstr "Skriv inn passordet for denne privatnøkkelen:"
+
+#: basket.cpp:5253
+msgid "Please enter the password for the basket <b>%1</b>:"
+msgstr "Skriv inn passordet for korga <b>%1</b>:"
+
+#: basket.cpp:5298
+msgid "Please assign a password to the basket <b>%1</b>:"
+msgstr "Vel eit passord for korga <b>%1</b>:"
+
+#: basket.cpp:5360
+msgid "Insuficient Disk Space to Save Basket Data"
+msgstr "Du har ikkje nok diskplass til å lagra korgdata"
+
+#: basket.cpp:5361
+msgid "Wrong Basket File Permissions"
+msgstr "Feil filløyve for korg"
+
+#: basket.cpp:5364
+msgid ""
+"Please remove files on the disk <b>%1</b> to let the application safely save "
+"your changes."
+msgstr "Du må sletta nokre filer frå disken <b>%1</b>, slik at programmet kan lagra endringane dine trygt."
+
+#: basket.cpp:5366
+msgid ""
+"File permissions are bad for <b>%1</b>. Please check you have write access "
+"to it and the parent folders."
+msgstr "Det er problem med filløyva for <b>%1</b>. Sjå til at du har skrivetilgang til fila og til mappene over."
+
+#: basket.cpp:5402
+msgid "Save Error"
+msgstr "Lagringsfeil"
+
+#: basketfactory.cpp:60
+msgid "Sorry, but the folder creation for this new basket has failed."
+msgstr "Klarte ikkje laga mappe for den nye korga."
+
+#: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
+msgid "Basket Creation Failed"
+msgstr "Feil ved oppretting av korg"
+
+#: basketfactory.cpp:90
+msgid "Sorry, but the template copying for this new basket has failed."
+msgstr "Klarte ikkje kopiera mal for den nye korga."
+
+#: basketfactory.cpp:111
+msgid "Sorry, but the template customization for this new basket has failed."
+msgstr "Klarte ikkje tilpassa mal for den nye korga."
+
+#: basketlistview.cpp:317
+msgid "%1+%2+"
+msgstr "%1+%2+"
+
+#: basketlistview.cpp:319
+msgid "%1+"
+msgstr "%1+"
+
+#: basketlistview.cpp:322
+msgid "%1+%2"
+msgstr "%1+%2"
+
+#: basketproperties.cpp:46
+msgid "Basket Properties"
+msgstr "Korgeigenskapar"
+
+#: basketproperties.cpp:64 kgpgme.cpp:60 newbasketdialog.cpp:108
+msgid "Name"
+msgstr "Namn"
+
+#: basketproperties.cpp:76
+msgid "Background &Image:"
+msgstr "Bakgrunns&bilete:"
+
+#: basketproperties.cpp:77
+msgid "&Background Color:"
+msgstr "&Bakgrunnsfarge:"
+
+#: basketproperties.cpp:78
+msgid "&Text Color:"
+msgstr "&Tekstfarge:"
+
+#: basketproperties.cpp:87
+msgid "(None)"
+msgstr "(Ingen)"
+
+#: basketproperties.cpp:101 kcolorcombo2.cpp:138
+msgid "Other..."
+msgstr "Annan …"
+
+#: basketproperties.cpp:107
+msgid "Disposition"
+msgstr "Disposisjon"
+
+#: basketproperties.cpp:110
+msgid "Col&umns:"
+msgstr "&Kolonnar:"
+
+#: basketproperties.cpp:118
+msgid "&Free-form"
+msgstr "&Flytande"
+
+#: basketproperties.cpp:119
+msgid "&Mind map"
+msgstr "&Tankekart"
+
+#: basketproperties.cpp:128
+msgid "&Keyboard Shortcut"
+msgstr "&Tastatursnarveg"
+
+#: basketproperties.cpp:133
+msgid "Learn some tips..."
+msgstr "Få nokre tips …"
+
+#: basketproperties.cpp:134
+msgid ""
+"<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
+"option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
+"will underline that letter in the basket tree.<br>For instance, if you are "
+"assigning the shortcut <i>Alt+T</i> to a basket named <i>Tips</i>, the "
+"basket will be displayed as <i><u>T</u>ips</i> in the tree. It helps you "
+"visualize the shortcuts to remember them more quickly.</p><p><strong>Local "
+"vs Global</strong>:<br>The first option allows to show the basket while the "
+"main window is active. Global shortcuts are valid from anywhere, even if the "
+"window is hidden.</p><p><strong>Show vs Switch</strong>:<br>The last option "
+"make this basket the current one without opening the main window. It is "
+"useful in addition to the configurable global shortcuts to eg. paste the "
+"clipboard or the selection into the current basket from anywhere.</p>"
+msgstr ""
+
+#: basketproperties.cpp:149
+msgid "S&how this basket"
+msgstr "&Vis denne korga"
+
+#: basketproperties.cpp:150
+msgid "Show this basket (&global shortcut)"
+msgstr "Vis denne korga (&global snarveg)"
+
+#: basketproperties.cpp:151
+msgid "S&witch to this basket (global shortcut)"
+msgstr "&Byt til denne korga (global snarveg)"
+
+#: basketstatusbar.cpp:117
+msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
+msgstr "«Ctrl + dra»: kopier, «Shift + dra»: flytt, «Shift + Ctrl + dra»: lag lenkje."
+
+#: basketstatusbar.cpp:137
+msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
+msgstr "<p>Denne korga er <b>låst</b>.<br>Trykk for å låsa ho opp.</p>"
+
+#: basketstatusbar.cpp:142
+msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
+msgstr "<p>Denne korga er <b>ikkje låst</b>.<br>Trykk for å låsa ho.</p>"
+
+#: bnpview.cpp:149 bnpview.cpp:1040
+msgid "General"
+msgstr "Generelt"
+
+#: bnpview.cpp:167
+msgid "Only english and french languages are accepted."
+msgstr "Skriv berre på engelsk eller fransk."
+
+#: bnpview.cpp:183
+msgid "Paste clipboard contents in current basket"
+msgstr "Lim inn innhald frå utklippstavla i korga"
+
+#: bnpview.cpp:184
+msgid ""
+"Allows you to paste clipboard contents in the current basket without having "
+"to open main window."
+msgstr "Lèt deg lim inn innhaldet frå utklippstavla til den valde korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:187
+msgid "Show current basket name"
+msgstr "Vis namn på gjeldande korg"
+
+#: bnpview.cpp:188
+msgid "Allows you to know basket is current without opening the main window."
+msgstr "Lèt deg sjå namnet på den gjeldande korga utan å opna hovudvindauget."
+
+#: bnpview.cpp:191
+msgid "Paste selection in current basket"
+msgstr "Lim inn utval i korg"
+
+#: bnpview.cpp:192
+msgid ""
+"Allows you to paste clipboard selection in the current basket without having "
+"to open main window."
+msgstr "Lèt deg lim inn utvalet på utklippstavla i gjeldande korg utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:195
+msgid "Create a new basket"
+msgstr "Lag ny korg"
+
+#: bnpview.cpp:196
+msgid ""
+"Allows you to create a new basket without having to open main window (you "
+"then can use the other global shortcuts to add a note, paste clipboard or "
+"paste selection in this new basket)."
+msgstr "Lèt deg laga ei ny korg utan å opna hovudvindauget. Etterpå kan du bruka andre globale snøggtastar for å leggja til notat, lim inn utklippstavle eller lima inn utval i den nye korga."
+
+#: bnpview.cpp:199
+msgid "Go to previous basket"
+msgstr "Gå til førre korg"
+
+#: bnpview.cpp:200
+msgid ""
+"Allows you to change current basket to the previous one without having to "
+"open main window."
+msgstr "Lèt deg byta frå gjeldande til den førre korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:203
+msgid "Go to next basket"
+msgstr "Gå til neste korg"
+
+#: bnpview.cpp:204
+msgid ""
+"Allows you to change current basket to the next one without having to open "
+"main window."
+msgstr "Lèt deg byta frå gjeldande til den neste korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:211
+msgid "Insert text note"
+msgstr "Set inn tekstnotat"
+
+#: bnpview.cpp:212
+msgid "Add a text note to the current basket without having to open main window."
+msgstr "Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:215 settings.cpp:790
+msgid "Insert image note"
+msgstr "Set inn biletnotat"
+
+#: bnpview.cpp:216
+msgid "Add an image note to the current basket without having to open main window."
+msgstr "Legg eit biletnotat til den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:219 settings.cpp:791
+msgid "Insert link note"
+msgstr "Set inn lenkjenotat"
+
+#: bnpview.cpp:220
+msgid "Add a link note to the current basket without having to open main window."
+msgstr "Legg eit lenkjenotat til den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:223 settings.cpp:793
+msgid "Insert color note"
+msgstr "Set inn fargenotat"
+
+#: bnpview.cpp:224
+msgid "Add a color note to the current basket without having to open main window."
+msgstr "Legg eit fargenotat til den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:227
+msgid "Pick color from screen"
+msgstr "Vel farge frå skjerm"
+
+#: bnpview.cpp:228
+msgid ""
+"Add a color note picked from one pixel on screen to the current basket "
+"without having to open main window."
+msgstr "Legg ein farge henta frå eit punkt på skjermen til den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:232
+msgid "Grab screen zone"
+msgstr "Hent skjermbilete"
+
+#: bnpview.cpp:233
+msgid ""
+"Grab a screen zone as an image in the current basket without having to open "
+"main window."
+msgstr "Hent eit område av skjermbiletet og legg dette i den gjeldande korga utan å måtta opna hovudvindauget."
+
+#: bnpview.cpp:245
+msgid "Baskets"
+msgstr "Korger"
+
+#: bnpview.cpp:301
+msgid ""
+"<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
+"data by putting them in different baskets. You can group baskets by subject "
+"by creating new baskets inside others. You can browse between them by "
+"clicking a basket to open it, or reorganize them using drag and drop."
+msgstr "<h2>Korgtre</h2>Her er oversikta over korgene dine. Du kan organisera notat ved å leggja dei i forskjellige korger. Du kan gruppera dei korger etter emne ved å leggja korger inni andre korger. Du kan sjå gjennom alle korgene ved å trykkja på dei, og du kan flytta rundta på dei ved å dra dei der du vil ha dei."
+
+#: bnpview.cpp:327
+msgid "&Hide Window"
+msgstr "&Skjul vindauge"
+
+#: bnpview.cpp:331
+msgid "&Export to HTML..."
+msgstr "&Eksporter til HTML …"
+
+#: bnpview.cpp:333
+msgid "K&Notes"
+msgstr "K&Notes"
+
+#: bnpview.cpp:335
+msgid "K&Jots"
+msgstr "K&Jots"
+
+#: bnpview.cpp:337
+msgid "&KnowIt..."
+msgstr "&KnowIt …"
+
+#: bnpview.cpp:339
+msgid "Tux&Cards..."
+msgstr "Tux&Cards …"
+
+#: bnpview.cpp:341
+msgid "&Sticky Notes"
+msgstr "&Sticky Notes"
+
+#: bnpview.cpp:343
+msgid "&Tomboy"
+msgstr "&Tomboy"
+
+#: bnpview.cpp:348
+msgid "D&elete"
+msgstr "&Slett"
+
+#: bnpview.cpp:354
+msgid "Selects all notes"
+msgstr "Merk alle notat"
+
+#: bnpview.cpp:355
+msgid "U&nselect All"
+msgstr "&Fjern all merking"
+
+#: bnpview.cpp:357
+msgid "Unselects all selected notes"
+msgstr "Fjern merking frå alle notata."
+
+#: bnpview.cpp:358
+msgid "&Invert Selection"
+msgstr "&Omvend merking"
+
+#: bnpview.cpp:361
+msgid "Inverts the current selection of notes"
+msgstr "Merk notat som ikkje er merkte, og fjern merking frå dei som er det."
+
+#: bnpview.cpp:363
+msgid ""
+"_: Verb; not Menu\n"
+"&Edit..."
+msgstr "&Rediger …"
+
+#: bnpview.cpp:368
+msgid "&Open"
+msgstr "&Opna"
+
+#: bnpview.cpp:371
+msgid "Open &With..."
+msgstr "Opna &med …"
+
+#: bnpview.cpp:375
+msgid "&Save to File..."
+msgstr "&Lagra til fil …"
+
+#: bnpview.cpp:378
+msgid "&Group"
+msgstr "&Grupper"
+
+#: bnpview.cpp:380
+msgid "U&ngroup"
+msgstr "&Løys opp gruppe"
+
+#: bnpview.cpp:383
+msgid "Move on &Top"
+msgstr "Flytt &øvst"
+
+#: bnpview.cpp:385
+msgid "Move &Up"
+msgstr "Flytt &opp"
+
+#: bnpview.cpp:387
+msgid "Move &Down"
+msgstr "Flytt &ned"
+
+#: bnpview.cpp:389
+msgid "Move on &Bottom"
+msgstr "Flytt &nedst"
+
+#: bnpview.cpp:405
+msgid "&Text"
+msgstr "&Tekst"
+
+#: bnpview.cpp:406
+msgid "&Link"
+msgstr "&Lenkje"
+
+#: bnpview.cpp:407
+msgid "&Image"
+msgstr "&Bilete"
+
+#: bnpview.cpp:408
+msgid "&Color"
+msgstr "&Farge"
+
+#: bnpview.cpp:409
+msgid "L&auncher"
+msgstr "&Program"
+
+#: bnpview.cpp:411
+msgid "Import Launcher from &KDE Menu..."
+msgstr "Hent program frå &KDE-menyen …"
+
+#: bnpview.cpp:412
+msgid "Im&port Icon..."
+msgstr "Im&porter ikon …"
+
+#: bnpview.cpp:413
+msgid "Load From &File..."
+msgstr "Hent frå &fil …"
+
+#: bnpview.cpp:436
+msgid "C&olor from Screen"
+msgstr "&Farge frå skjermen"
+
+#: bnpview.cpp:441
+msgid "Grab Screen &Zone"
+msgstr "Hent skjerm&bilete"
+
+#: bnpview.cpp:471
+msgid "&New Basket..."
+msgstr "&Ny korg …"
+
+#: bnpview.cpp:473
+msgid "New &Sub-Basket..."
+msgstr "Ny &underkorg …"
+
+#: bnpview.cpp:475
+msgid "New Si&bling Basket..."
+msgstr "Ny &søskenkorg …"
+
+#: bnpview.cpp:478
+msgid "&New"
+msgstr "&Ny"
+
+#: bnpview.cpp:486
+msgid ""
+"_: Remove Basket\n"
+"&Remove"
+msgstr "&Fjern"
+
+#: bnpview.cpp:489
+msgid ""
+"_: Password protection\n"
+"Pass&word..."
+msgstr "&Passord …"
+
+#: bnpview.cpp:491
+msgid ""
+"_: Lock Basket\n"
+"&Lock"
+msgstr "&Lås"
+
+#: bnpview.cpp:501
+msgid "&Filter"
+msgstr "&Filtrer"
+
+#: bnpview.cpp:505
+msgid "Filter all &Baskets"
+msgstr "Filtrer alle &korger"
+
+#: bnpview.cpp:509
+msgid "&Reset Filter"
+msgstr "&Fjern filter"
+
+#: bnpview.cpp:514
+msgid "&Previous Basket"
+msgstr "&Førre korg"
+
+#: bnpview.cpp:516
+msgid "&Next Basket"
+msgstr "&Neste korg"
+
+#: bnpview.cpp:518
+msgid "&Fold Basket"
+msgstr "&Slå saman korg"
+
+#: bnpview.cpp:520
+msgid "&Expand Basket"
+msgstr "&Utvid korg"
+
+#: bnpview.cpp:822
+msgid "Plain Text Notes Conversion"
+msgstr "Tekstomforming for reintekst"
+
+#: bnpview.cpp:823
+msgid "Converting plain text notes to rich text ones..."
+msgstr "Gjer reintekstnotat om til rik tekst …"
+
+#: bnpview.cpp:1196
+msgid "Locked"
+msgstr "Låst"
+
+#: bnpview.cpp:1200
+msgid "No notes"
+msgstr "Ingen notat"
+
+#: bnpview.cpp:1202
+#, c-format
+msgid ""
+"_n: %n note\n"
+"%n notes"
+msgstr ""
+"%n notat\n"
+"%n notat"
+
+#: bnpview.cpp:1203
+#, c-format
+msgid ""
+"_n: %n selected\n"
+"%n selected"
+msgstr ""
+"%n merkt\n"
+"%n merkte"
+
+#: bnpview.cpp:1204
+msgid "all matches"
+msgstr "alle treff"
+
+#: bnpview.cpp:1204
+msgid "no filter"
+msgstr "ingen filter"
+
+#: bnpview.cpp:1206
+#, c-format
+msgid ""
+"_n: %n match\n"
+"%n matches"
+msgstr ""
+"%n treff\n"
+"%n treff"
+
+#: bnpview.cpp:1208
+msgid ""
+"_: e.g. '18 notes, 10 matches, 5 selected'\n"
+"%1, %2, %3"
+msgstr "%1, %2 og %3"
+
+#: bnpview.cpp:1325
+msgid "Picked color to basket <i>%1</i>"
+msgstr "Henta farge til korga <i>%1</i>."
+
+#: bnpview.cpp:1362
+msgid "The plain text notes have been converted to rich text ones."
+msgstr "Reintekstnotata er no gjort om til riktekstnotat."
+
+#: bnpview.cpp:1362 bnpview.cpp:1364
+msgid "Conversion Finished"
+msgstr "Omgjering fullført"
+
+#: bnpview.cpp:1364
+msgid "There is no plain text notes to convert."
+msgstr "Det finst ingen reintekstnotat å gjera om."
+
+#: bnpview.cpp:1389
+msgid ""
+"<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
+"run without it and will stop.</b></p><p>Please check your installation of "
+"%2.</p><p>If you haven't administrator access to install the application "
+"system wide, you can copy the file basketui.rc from the installation archive "
+"to the folder <a href='file://%3'>%4</a>.</p><p>In last ressort, if you are "
+"sure the application is well installed but you had a preview version of it, "
+"try to remove the file %5basketui.rc</p>"
+msgstr ""
+"<p><b>Fila «basketui.rc» finst ikkje, eller er for gammal.<br>%1 kan ikkje køyra utan denne fila, og vert derfor stoppa.</b></p><p>Kontroller installeringa av "
+"%2.</p><p>Viss du ikkje har administratorløyve for å installera programmet over heile systemet, kan du kopiera fila «basketui.rc» frå installasjonsarkivet og til mappa <a href='file://%3'>%4</a>.</p><p>Som ein siste utveg, viss du er sikker på at programmet er rett installert, men du hadde tidlegare ei testutgåve av det, kan du prøva å fjerna fila «%5basketui.rc».</p>"
+
+#: bnpview.cpp:1400
+msgid "Ressource not Found"
+msgstr "Fann ikkje resurs"
+
+#: bnpview.cpp:1423 bnpview.cpp:1432
+msgid "Cannot add note."
+msgstr "Klarte ikkje leggja til notat"
+
+#: bnpview.cpp:1494
+msgid "Grabbed screen zone to basket <i>%1</i>"
+msgstr "Henta skjermbilete til korga <i>%1</i>."
+
+#: bnpview.cpp:1542
+msgid "Delete Basket"
+msgstr "Slett korg"
+
+#: bnpview.cpp:1545
+msgid "Delete Only that Basket"
+msgstr "Berre slett den korga"
+
+#: bnpview.cpp:1546
+msgid "Delete With its Childs"
+msgstr "Slett korga og underkorgar"
+
+#: bnpview.cpp:1554 bnpview.cpp:1560
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?</qt>"
+
+#: bnpview.cpp:1562
+msgid "Remove Basket"
+msgstr "Fjern korg"
+
+#: bnpview.cpp:1564
+msgid "&Remove Basket"
+msgstr "&Fjern korg"
+
+#: bnpview.cpp:1575
+msgid ""
+"<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
+"them too?</qt>"
+msgstr "<qt><b>%1</b> inneheld desse korgene.<br>Vil du òg fjerna desse?</qt>"
+
+#: bnpview.cpp:1578
+msgid "Remove Child Baskets"
+msgstr "Fjern underkorger"
+
+#: bnpview.cpp:1580
+msgid "&Remove Child Baskets"
+msgstr "&Fjern underkorger"
+
+#: bnpview.cpp:1714
+msgid "Clipboard content pasted to basket <i>%1</i>"
+msgstr "Innhaldet på utklippstavla er lagt til i korga <i>%1</i>."
+
+#: bnpview.cpp:1722
+msgid "Selection pasted to basket <i>%1</i>"
+msgstr "Utvalet er lim inn i korga <i>%1</i>."
+
+#: bnpview.cpp:1734
+msgid "No note was added."
+msgstr "Det var ikkje lagt til noko notat."
+
+#: bnpview.cpp:1761
+msgid "Basket <i>%1</i> is locked"
+msgstr "Korga <i>%1</i> er låst"
+
+#: bnpview.cpp:1786
+msgid "(Locked)"
+msgstr "(Låst)"
+
+#: bnpview.cpp:2099
+msgid "&Assign new Tag..."
+msgstr "&Legg til ny merkelapp …"
+
+#: bnpview.cpp:2100
+msgid "&Remove All"
+msgstr "&Fjern alle"
+
+#: crashhandler.cpp:80
+msgid ""
+"%1 has crashed! We're sorry about this.\n"
+"\n"
+"But, all is not lost! You could potentially help us fix the crash. "
+"Information describing the crash is below, so just click send, or if you "
+"have time, write a brief description of how the crash happened first.\n"
+"\n"
+"Many thanks."
+msgstr ""
+"%1 har dessverre krasja!\n"
+"\n"
+"Men alt er ikkje tapt! Du kan hjelpa oss å fiksa denne feilen. Nedanfor står informasjon om krasjet, som er nyttig for programutviklarane. Berre trykk send for å senda denne informasjonen, eller skriv ei kort skildring (på engelsk) av kva du gjorde før programmet krasja, om du har tid.\n"
+"\n"
+"På førehand takk!"
+
+#: crashhandler.cpp:87
+msgid ""
+"The information below is to help the developers identify the problem, please "
+"do not modify it."
+msgstr "Informasjonen nedanfor vil hjelpa utviklarane å identifisera problemet. Venlegst ikkje fjern han."
+
+#: crashhandler.cpp:206
+msgid ""
+"%1 has crashed! We're sorry about this.\n"
+"\n"
+"But, all is not lost! Perhaps an upgrade is already available which fixes "
+"the problem. Please check your distribution's software repository."
+msgstr ""
+"%1 har dessverre krasja!\n"
+"\n"
+"Men alt er ikkje tapt! Det finst kanskje ei programoppdatering som har retta opp denne feilen. Sjå etter i programarkivet til distribusjonen din."
+
+#: debugwindow.cpp:34
+msgid "Debug Window"
+msgstr "Feilsøkjingsvindauge"
+
+#: exporterdialog.cpp:37
+msgid "Export Basket to HTML"
+msgstr "Eksporter korg til HTML"
+
+#: exporterdialog.cpp:46
+msgid "HTML Page Filename"
+msgstr "HTML-filnamn"
+
+#: exporterdialog.cpp:49
+msgid "&Filename:"
+msgstr "&Filnamn:"
+
+#: exporterdialog.cpp:52
+msgid "&Embed linked local files"
+msgstr "&Bygg inne lenkja lokalfiler"
+
+#: exporterdialog.cpp:53
+msgid "Embed &linked local folders"
+msgstr "Bygg inne &lenkja lokalfiler"
+
+#: exporterdialog.cpp:54
+msgid "Erase &previous files in target folder"
+msgstr "Slett &tidlegare filer i målmappa"
+
+#: exporterdialog.cpp:55
+msgid "For&mat for impression"
+msgstr ""
+
+#: filter.cpp:60
+msgid "Reset Filter"
+msgstr "Fjern filter"
+
+#: filter.cpp:64
+msgid "&Filter: "
+msgstr "&Filter: "
+
+#: filter.cpp:66
+msgid "T&ag: "
+msgstr "&Merkelapp: "
+
+#: filter.cpp:69
+msgid "Filter all Baskets"
+msgstr "Filtrer alle korger."
+
+#: filter.cpp:149
+msgid "(Not tagged)"
+msgstr "(Ingen merkelapp)"
+
+#: filter.cpp:150
+msgid "(Tagged)"
+msgstr "(Merkelapp)"
+
+#: focusedwidgets.cpp:178
+msgid "Auto Spell Check"
+msgstr "Automatisk stavekontroll"
+
+#: focusedwidgets.cpp:178
+msgid "Check Spelling..."
+msgstr "Køyr stavekontroll …"
+
+#: focusedwidgets.cpp:181
+msgid "Allow Tabulations"
+msgstr "Tillèt tabulatorar"
+
+#: formatimporter.cpp:123
+msgid ""
+"<p>Folder mirroring is not possible anymore (see <a "
+"href='http://basket.kde.org/'>basket.kde.org</a> for more "
+"information).</p><p>The folder <b>%1</b> has been copied for the basket "
+"needs. You can either delete this folder or delete the basket, or use both. "
+"But remember that modifying one will not modify the other anymore as they "
+"are now separate entities.</p>"
+msgstr ""
+"<p>Mappespegling er ikkje lenger mogleg (sjå <a "
+"href='http://basket.kde.org/'>basket.kde.org</a> for meir informasjon).</p><p>Mappa <b>%1</b> er derfor kopiert til korga. Du kan anten sletta denne mappa, sletta korga eller bruka begge. Men merk at endringar i eine ikkje vil spegla seg i den andre, då dei no er to forskjellige objekt.</p>"
+
+#: formatimporter.cpp:125
+msgid "Folder Mirror Import"
+msgstr "Importering av mappespegel"
+
+#: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
+#: tagsedit.cpp:470 variouswidgets.cpp:269
+msgid "(Default)"
+msgstr "(Standard)"
+
+#: kgpgme.cpp:49
+msgid "Private Key List"
+msgstr "Privatnøkkel-liste"
+
+#: kgpgme.cpp:61
+msgid "Email"
+msgstr "E-post"
+
+#: kgpgme.cpp:62
+msgid "ID"
+msgstr "ID"
+
+#: kgpgme.cpp:67
+msgid "Choose a secret key:"
+msgstr "Vel ein hemmeleg nøkkel:"
+
+#: kgpgme.cpp:228
+msgid "Key listing unexpectedly truncated."
+msgstr "Nøkkeloversikta vart uventa forkorta."
+
+#: kgpgme.cpp:264
+msgid "Invalid recipient encountered"
+msgstr "Ugyldig mottakar"
+
+#: kgpgme.cpp:307
+msgid "Unsupported algorithm"
+msgstr "Ikkje støtta algoritme"
+
+#: kgpgme.cpp:410
+msgid "Wrong password."
+msgstr "Ugyldig passord."
+
+#: kicondialog.cpp:84 kicondialog.cpp:94
+msgid "Select Icon"
+msgstr "Vel ikon"
+
+#: kicondialog.cpp:121
+msgid "&Browse..."
+msgstr "&Bla gjennom …"
+
+#: kicondialog.cpp:133
+msgid "(All Icons)"
+msgstr "(Alle ikon)"
+
+#: kicondialog.cpp:134
+msgid "(Recent)"
+msgstr "(Nye)"
+
+#: kicondialog.cpp:135
+msgid "Actions"
+msgstr "Handlingar"
+
+#: kicondialog.cpp:136
+msgid "Applications"
+msgstr "Program"
+
+#: kicondialog.cpp:137
+msgid "Devices"
+msgstr "Einingar"
+
+#: kicondialog.cpp:138
+msgid "Filesystem"
+msgstr "Filsystem"
+
+#: kicondialog.cpp:139
+msgid "File Types"
+msgstr "Filtypar"
+
+#: kicondialog.cpp:356
+msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
+msgstr "*.png *.xpm *.svg *.svgz|Ikonfiler (*.png *.xpm *.svg *.svgz)"
+
+#. i18n: file kicondialogui.ui line 31
+#: kicondialogui.cpp:108 rc.cpp:69
+#, no-c-format
+msgid "KIconDialogUI"
+msgstr "KIconDialogUI"
+
+#. i18n: file kicondialogui.ui line 105
+#: kicondialogui.cpp:109 rc.cpp:72
+#, no-c-format
+msgid "Fi&lter:"
+msgstr "Fi&lter:"
+
+#. i18n: file kicondialogui.ui line 160
+#: kicondialogui.cpp:111 rc.cpp:78
+#, no-c-format
+msgid "Alt+O"
+msgstr "Alt + O"
+
+#: likeback.cpp:63
+msgid "I Like..."
+msgstr "Eg liker …"
+
+#: likeback.cpp:70
+msgid "I Do not Like..."
+msgstr "Eg liker ikkje …"
+
+#: likeback.cpp:77
+msgid "I Found a Bug..."
+msgstr "Eg fann ein feil …"
+
+#: likeback.cpp:84
+msgid "Configure..."
+msgstr "Set opp …"
+
+#: likeback.cpp:90
+msgid "What's &This?"
+msgstr "Kva er de&tte?"
+
+#: likeback.cpp:92
+msgid "&Change or Remove Email Address..."
+msgstr "&Byt eller fjern e-postadresse …"
+
+#: likeback.cpp:94
+msgid "&Do not Help Anymore"
+msgstr "&Ikkje hjelp til meir"
+
+#: likeback.cpp:130
+msgid ""
+"Are you sure you do not want to participate anymore in the application "
+"enhancing program?"
+msgstr "Er du sikker på at du ikkje lenger vil hjelpa til å forbetra programmet?"
+
+#: likeback.cpp:131
+msgid "Do not Help Anymore"
+msgstr "Ikkje hjelp til meir"
+
+#: likeback.cpp:169
+#, c-format
+msgid "Welcome to this testing version of %1."
+msgstr "Velkommen til denne testversjonen av %1."
+
+#: likeback.cpp:170
+msgid "To help us improve it, your comments are important."
+msgstr "Dine innspel er viktige for å hjelpa oss å forbetra programmet."
+
+#: likeback.cpp:171
+msgid ""
+"Each time you have a great or frustrating experience, please click the "
+"appropriate hand below the window title-bar, briefly describe what you like "
+"or dislike and click Send."
+msgstr "Kvar gong du har ei særs bra eller frustrerandes oppleving, kan du trykkja på den tilsvarande handa rett nedanfor tittellinja for å senda ei kort tilbakemelding på kva du likte eller mislikte – rett til programutviklaren."
+
+#: likeback.cpp:174
+msgid ""
+"Follow the same principle to quickly report a bug: just click the bug icon "
+"in the top-right corner of the window, describe it and click Send."
+msgstr "Du gjer det same om du vil melda frå om ein feil: Berre klikk på feilikonet øvst til høgre i vindauget, skriv inn feilrapporten og trykk «Send»."
+
+#: likeback.cpp:176
+msgid "Examples:"
+msgstr "Eksempel:"
+
+#: likeback.cpp:178 likeback.cpp:526
+msgid "I like..."
+msgstr "Eg liker …"
+
+#: likeback.cpp:179
+msgid ""
+"_: I like...\n"
+"the nice new artwork."
+msgstr "den flotte grafikken."
+
+#: likeback.cpp:180
+msgid "Very refreshing."
+msgstr "Han er veldig frisk og fin."
+
+#: likeback.cpp:181 likeback.cpp:533
+msgid "I do not like..."
+msgstr "Eg liker ikkje …"
+
+#: likeback.cpp:182
+msgid ""
+"_: I do not like...\n"
+"the welcome page of that wizard."
+msgstr "velkomstsida i vegvisaren."
+
+#: likeback.cpp:183
+msgid "Too time consuming."
+msgstr "Ho er for stor og tar for lang tid å lesa."
+
+#: likeback.cpp:184 likeback.cpp:540
+msgid "I found a bug..."
+msgstr "Eg fann ein feil …"
+
+#: likeback.cpp:185
+msgid ""
+"_: I found a bug...\n"
+"when clicking the Add button, nothing happens."
+msgstr "Når eg trykkjer på «Legg til»-knappen, så skjer det ingenting."
+
+#: likeback.cpp:187
+msgid "Help Improve the Application"
+msgstr "Hjelp til med å forbetra programmet"
+
+#: likeback.cpp:394
+msgid "Set Email Address"
+msgstr "Vel e-postadresse"
+
+#: likeback.cpp:395
+msgid "Please provide your email address."
+msgstr "Skriv inn e-postadressa di."
+
+#: likeback.cpp:396
+msgid ""
+"It will only be used to contact you back if more information is needed about "
+"your comments, how to reproduce the bugs you report, send bug corrections "
+"for you to test..."
+msgstr "E-postadressa vert berre brukt til å kontakta deg viss det trengst meir informasjon om tilbakemeldingane dine, informasjon om korleis ein kan utløysa feilane du har funne, senda feilrettingar som du kan testa og liknande."
+
+#: likeback.cpp:397
+msgid ""
+"The email address is optional. If you do not provide any, your comments will "
+"be sent anonymously. Just click OK in that case."
+msgstr "E-postadressa er valfri. Viss du lèt feltet stå tomt, vert tilbakemeldingane sendt anonymt. Viss du ønskjer dette, så berre trykk «OK»."
+
+#: likeback.cpp:398
+msgid ""
+"You can change or remove your email address whenever you want. For that, use "
+"the little arrow icon at the top-right corner of a window."
+msgstr "Du kan endra eller fjerna e-postadressa når som helst seinare. Berre trykk på det vesle pilikonet øvst til høgre i eitt av programvindauga."
+
+#: likeback.cpp:399
+msgid "Your email address (keep empty to post comments anonymously):"
+msgstr "E-postadressa di (la feltet stå tomt for å vera anonym):"
+
+#: likeback.cpp:527
+msgid "Please briefly describe what you like."
+msgstr "Skriv ei kort tilbakemelding på kva du liker."
+
+#: likeback.cpp:534
+msgid "Please briefly describe what you do not like."
+msgstr "Skriv ei kort tilbakemelding på kva du misliker."
+
+#: likeback.cpp:541
+msgid "Please briefly describe the bug you encountered."
+msgstr "Skriv ei kort skildring av feilen du har funne."
+
+#: likeback.cpp:578
+msgid "Send"
+msgstr "Send"
+
+#: likeback.cpp:590
+msgid "Only english language is accepted."
+msgstr "Skriv berre på engelsk."
+
+#: likeback.cpp:594
+msgid ""
+"Note that to improve this application, it's important to tell us the things "
+"you like as much as the things you dislike."
+msgstr "Hugs at det er like viktig for oss å få veta kva du liker med programmet som kva du ikkje liker."
+
+#: likeback.cpp:599
+msgid "Do not ask for features: your wishes will be ignored."
+msgstr "Men ikkje be om nye funksjonar. Slike førespurnader vert oversett."
+
+#: likeback.cpp:605
+msgid "Send a Comment"
+msgstr "Send tilbakemelding"
+
+#: likeback.cpp:653
+msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
+msgstr "<p>Feil ved sending av rapporten.</p><p>Prøv på nytt seinare.</p>"
+
+#: likeback.cpp:653
+msgid "Transfer Error"
+msgstr "Overføringsfeil"
+
+#: likeback.cpp:655
+msgid ""
+"<p>Your comment has been sent successfully. It will help improve the "
+"application.</p><p>Thanks for your time.</p>"
+msgstr "<p>Tilbakemeldinga di er no sendt, og vil hjelpa oss å gjera programmet betre.</p><p>Tusen takk for at du tok deg tid til dette!</p>"
+
+#: likeback.cpp:655
+msgid "Comment Sent"
+msgstr "Tilbakemelding sendt"
+
+#: linklabel.cpp:560
+msgid "I&talic"
+msgstr "K&ursiv"
+
+#: linklabel.cpp:564
+msgid "&Bold"
+msgstr "&Halvfeit"
+
+#: linklabel.cpp:572
+msgid "Always"
+msgstr "Alltid"
+
+#: linklabel.cpp:573
+msgid "Never"
+msgstr "Aldri"
+
+#: linklabel.cpp:574
+msgid "On mouse hovering"
+msgstr "Når peikaren er over"
+
+#: linklabel.cpp:575
+msgid "When mouse is outside"
+msgstr "Når peikaren er utanfor"
+
+#: linklabel.cpp:576
+msgid "&Underline:"
+msgstr "&Understrek:"
+
+#: linklabel.cpp:582
+msgid "Colo&r:"
+msgstr "Fa&rge:"
+
+#: linklabel.cpp:588
+msgid "&Mouse hover color:"
+msgstr "&Farge med peikar over:"
+
+#: linklabel.cpp:596
+msgid "&Icon size:"
+msgstr "&Ikonstorleik:"
+
+#: linklabel.cpp:601
+msgid "None"
+msgstr "Ingen"
+
+#: linklabel.cpp:602
+msgid "Icon size"
+msgstr "Ikonstorleik"
+
+#: linklabel.cpp:603
+msgid "Twice the icon size"
+msgstr "Dobbel ikonstorleik"
+
+#: linklabel.cpp:604
+msgid "Three times the icon size"
+msgstr "Trippel ikonstorleik"
+
+#: linklabel.cpp:605
+msgid "&Preview:"
+msgstr "&Førehandsvising:"
+
+#: linklabel.cpp:607
+msgid "You disabled preview but still see images?"
+msgstr "Har du slått av førehandsvising men ser framleis bilete?"
+
+#: linklabel.cpp:608
+msgid ""
+"<p>This is normal because there are several type of notes.<br>This setting "
+"applies only to file and local link notes.<br>And the images you see are "
+"image notes, not file notes.<br>File notes are generic documents, whereas "
+"image notes are pictures you can draw in.</p><p>When dropping files to "
+"baskets, %1 detects theire type and show you the content of the "
+"files.<br>For instance, when dropping image or text files, image and text "
+"notes are created for them.<br>For type of files %2 does not understand, "
+"they are shown as generic file notes with just an icon or file preview and a "
+"filename.</p><p>If you do not want the application to create notes depending "
+"on the content of the files you drop, go to the \"General\" page and uncheck "
+"\"Image or animation\" in the \"View Content of Added Files for the "
+"Following Types\" group.</p>"
+msgstr ""
+
+#: linklabel.cpp:626
+msgid "Example"
+msgstr "Eksempel"
+
+#: mainwindow.cpp:132
+msgid "Show/hide main window"
+msgstr "Vis/skjul hovudvindauge"
+
+#: mainwindow.cpp:133
+msgid ""
+"Allows you to show main Window if it is hidden, and to hide it if it is "
+"shown."
+msgstr ""
+
+#: mainwindow.cpp:141
+msgid "Minimize"
+msgstr "Minimer"
+
+#: mainwindow.cpp:147
+msgid "Hide &Toolbar"
+msgstr "Gøym &verktøylinje"
+
+#: mainwindow.cpp:153
+msgid "Configure &Global Shortcuts..."
+msgstr "Set opp &globale snarvegar …"
+
+#: mainwindow.cpp:309
+msgid "Basket"
+msgstr "Korg"
+
+#: mainwindow.cpp:318
+msgid "<p>Do you really want to quit %1?</p>"
+msgstr "<p>Er du sikker på at du vil avslutta %1?</p>"
+
+#: mainwindow.cpp:320
+msgid ""
+"<p>Notice that you do not have to quit the application before ending your "
+"KDE session: it will be reloaded the next time you log in.</p>"
+msgstr "<p>Merk at du ikkje treng avslutta programmet kvar gong du loggar ut. Viss du ikkje gjer det, vil det automatisk starta opp att når du loggar deg inn att.</p>"
+
+#: mainwindow.cpp:323
+msgid "Quit Confirm"
+msgstr "Stadfest avslutting"
+
+#: newbasketdialog.cpp:88
+msgid "New Basket"
+msgstr "Ny korg"
+
+#: newbasketdialog.cpp:113
+msgid "Background color"
+msgstr "Bakgrunnsfarge"
+
+#: newbasketdialog.cpp:120
+msgid "&Manage Templates..."
+msgstr "&Handter malar …"
+
+#: newbasketdialog.cpp:154 newbasketdialog.cpp:299
+msgid "One column"
+msgstr "Éin kolonne"
+
+#: newbasketdialog.cpp:165 newbasketdialog.cpp:301
+msgid "Two columns"
+msgstr "To kolonnar"
+
+#: newbasketdialog.cpp:177 newbasketdialog.cpp:303
+msgid "Three columns"
+msgstr "Tre kolonnar"
+
+#: newbasketdialog.cpp:187
+msgid "Free"
+msgstr "Flytande"
+
+#: newbasketdialog.cpp:202
+msgid "&Template:"
+msgstr "M&al:"
+
+#: newbasketdialog.cpp:211
+msgid "(Baskets)"
+msgstr "(Korger)"
+
+#: newbasketdialog.cpp:212
+msgid "C&reate in:"
+msgstr "&Lag i:"
+
+#: newbasketdialog.cpp:213
+msgid "How is it useful?"
+msgstr "Kva nytte har dette?"
+
+#: newbasketdialog.cpp:214
+msgid ""
+"<p>Creating baskets inside of other baskets to form a hierarchy allows you "
+"to be more organized by eg.:</p><ul><li>Groupping baskets by themes or "
+"topics;</li><li>Groupping baskets in folders for different "
+"projects;</li><li>Making sections with sub-baskets representing chapters or "
+"pages;</li><li>Making group of baskets to export together (to eg. email them "
+"to people).</li></ul>"
+msgstr ""
+
+#: newbasketdialog.cpp:305
+msgid "Free-form"
+msgstr "Flytande"
+
+#: newbasketdialog.cpp:307
+msgid "Mind map"
+msgstr "Tankekart"
+
+#: notecontent.cpp:172
+msgid "Plain Text"
+msgstr "Reintekst"
+
+#: notecontent.cpp:173
+msgid "Text"
+msgstr "Tekst"
+
+#: notecontent.cpp:174
+msgid "Image"
+msgstr "Bilete"
+
+#: notecontent.cpp:175
+msgid "Animation"
+msgstr "Animasjon"
+
+#: notecontent.cpp:176
+msgid "Sound"
+msgstr "Lyd"
+
+#: notecontent.cpp:178
+msgid "Link"
+msgstr "Lenkje"
+
+#: notecontent.cpp:179
+msgid "Launcher"
+msgstr "Program"
+
+#: notecontent.cpp:180 noteedit.cpp:772
+msgid "Color"
+msgstr "Farge"
+
+#: notecontent.cpp:181
+msgid "Unknown"
+msgstr "Ukjend"
+
+#: notecontent.cpp:322
+msgid "Edit this plain text"
+msgstr "Rediger denne reinteksten."
+
+#: notecontent.cpp:323
+msgid "Edit this text"
+msgstr "Rediger denne teksten."
+
+#: notecontent.cpp:324
+msgid "Edit this image"
+msgstr "Rediger dette biletet."
+
+#: notecontent.cpp:325
+msgid "Edit this animation"
+msgstr "Rediger denne animasjonen."
+
+#: notecontent.cpp:326
+msgid "Edit the file name of this sound"
+msgstr "Rediger filnamnet til denne lyden."
+
+#: notecontent.cpp:327
+msgid "Edit the name of this file"
+msgstr "Rediger namnet på denne fila."
+
+#: notecontent.cpp:328
+msgid "Edit this link"
+msgstr "Rediger denne lenkja."
+
+#: notecontent.cpp:329
+msgid "Edit this launcher"
+msgstr "Rediger denne programstartaren."
+
+#: notecontent.cpp:330
+msgid "Edit this color"
+msgstr "Rediger denne fargen."
+
+#: notecontent.cpp:331
+msgid "Edit this unknown object"
+msgstr "Rediger dette ukjente objektet."
+
+#: notecontent.cpp:557
+msgid "Opening plain text..."
+msgstr "Opnar reintekst …"
+
+#: notecontent.cpp:558
+msgid "Opening plain texts..."
+msgstr "Opnar reintekstar …"
+
+#: notecontent.cpp:559
+msgid "Opening plain text with..."
+msgstr "Opnar reintekst med …"
+
+#: notecontent.cpp:560
+msgid "Opening plain texts with..."
+msgstr "Opnar reintekstar med …"
+
+#: notecontent.cpp:561
+msgid "Open plain text with:"
+msgstr "Opna reintekst med:"
+
+#: notecontent.cpp:562
+msgid "Open plain texts with:"
+msgstr "Opna reintekstar med:"
+
+#: notecontent.cpp:648
+msgid "Opening text..."
+msgstr "Opnar tekst …"
+
+#: notecontent.cpp:649
+msgid "Opening texts..."
+msgstr "Opnar tekstar …"
+
+#: notecontent.cpp:650
+msgid "Opening text with..."
+msgstr "Opnar tekst med …"
+
+#: notecontent.cpp:651
+msgid "Opening texts with..."
+msgstr "Opnar tekstar med …"
+
+#: notecontent.cpp:652
+msgid "Open text with:"
+msgstr "Opna tekst med:"
+
+#: notecontent.cpp:653
+msgid "Open texts with:"
+msgstr "Opna tekstar med:"
+
+#: notecontent.cpp:761 notecontent.cpp:964
+msgid "Size"
+msgstr "Storleik"
+
+#: notecontent.cpp:762 variouswidgets.cpp:147
+msgid "%1 by %2 pixels"
+msgstr "%1 × %2 pikslar"
+
+#: notecontent.cpp:768
+msgid "Opening image..."
+msgstr "Opnar bilete …"
+
+#: notecontent.cpp:769
+msgid "Opening images..."
+msgstr "Opnar bilete …"
+
+#: notecontent.cpp:770
+msgid "Opening image with..."
+msgstr "Opnar bilete med …"
+
+#: notecontent.cpp:771
+msgid "Opening images with..."
+msgstr "Opnar bilete med …"
+
+#: notecontent.cpp:772
+msgid "Open image with:"
+msgstr "Opna bilete med:"
+
+#: notecontent.cpp:773
+msgid "Open images with:"
+msgstr "Opna bilete med:"
+
+#: notecontent.cpp:797
+msgid "Click for full size view"
+msgstr "Trykk for full storleik."
+
+#: notecontent.cpp:853
+msgid "Opening animation..."
+msgstr "Opnar animasjon …"
+
+#: notecontent.cpp:854
+msgid "Opening animations..."
+msgstr "Opnar animasjonar …"
+
+#: notecontent.cpp:855
+msgid "Opening animation with..."
+msgstr "Opnar animasjon med …"
+
+#: notecontent.cpp:856
+msgid "Opening animations with..."
+msgstr "Opnar animasjonar med …"
+
+#: notecontent.cpp:857
+msgid "Open animation with:"
+msgstr "Opna animasjon med:"
+
+#: notecontent.cpp:858
+msgid "Open animations with:"
+msgstr "Opna animasjonar med:"
+
+#: notecontent.cpp:969
+msgid "Type"
+msgstr "Type"
+
+#: notecontent.cpp:1007
+msgid "Open this file"
+msgstr "Opna denne fila."
+
+#: notecontent.cpp:1026
+msgid "Opening file..."
+msgstr "Opnar fil …"
+
+#: notecontent.cpp:1027
+msgid "Opening files..."
+msgstr "Opnar filer …"
+
+#: notecontent.cpp:1028
+msgid "Opening file with..."
+msgstr "Opnar fil med …"
+
+#: notecontent.cpp:1029
+msgid "Opening files with..."
+msgstr "Opnar filer med …"
+
+#: notecontent.cpp:1030
+msgid "Open file with:"
+msgstr "Opna fil med:"
+
+#: notecontent.cpp:1031
+msgid "Open files with:"
+msgstr "Opna filer med:"
+
+#: notecontent.cpp:1102
+msgid "Open this sound"
+msgstr "Opna denne lyden."
+
+#: notecontent.cpp:1139
+msgid "Opening sound..."
+msgstr "Opnar lyd …"
+
+#: notecontent.cpp:1140
+msgid "Opening sounds..."
+msgstr "Opnar lydar …"
+
+#: notecontent.cpp:1141
+msgid "Opening sound with..."
+msgstr "Opnar lyd med …"
+
+#: notecontent.cpp:1142
+msgid "Opening sounds with..."
+msgstr "Opnar lydar med …"
+
+#: notecontent.cpp:1143
+msgid "Open sound with:"
+msgstr "Opna lyd med:"
+
+#: notecontent.cpp:1144
+msgid "Open sounds with:"
+msgstr "Opna lydar med:"
+
+#: notecontent.cpp:1182
+msgid "Target"
+msgstr "Mål"
+
+#: notecontent.cpp:1205
+msgid "Open this link"
+msgstr "Opna denne lenkja."
+
+#: notecontent.cpp:1231
+msgid "Link have no URL to open."
+msgstr "Lenkja har ikkje noko adresse som kan opnast."
+
+#: notecontent.cpp:1234
+msgid "Opening link target..."
+msgstr "Opnar lenkjemål …"
+
+#: notecontent.cpp:1235
+msgid "Opening link targets..."
+msgstr "Opnar lenkjemål …"
+
+#: notecontent.cpp:1236
+msgid "Opening link target with..."
+msgstr "Opnar lenkjemål med …"
+
+#: notecontent.cpp:1237
+msgid "Opening link targets with..."
+msgstr "Opnar lenkjemål med …"
+
+#: notecontent.cpp:1238
+msgid "Open link target with:"
+msgstr "Opna lenkjemål med:"
+
+#: notecontent.cpp:1239
+msgid "Open link targets with:"
+msgstr "Opna lenkjemål med:"
+
+#: notecontent.cpp:1365
+msgid "%1 <i>(run in terminal)</i>"
+msgstr "%1 <i>(køyr i terminal)</i>"
+
+#: notecontent.cpp:1368
+msgid "Comment"
+msgstr "Merknad"
+
+#: notecontent.cpp:1372
+msgid "Command"
+msgstr "Kommando"
+
+#: notecontent.cpp:1395
+msgid "Launch this application"
+msgstr "Start dette programmet."
+
+#: notecontent.cpp:1416
+msgid "The launcher have no command to run."
+msgstr "Programstartaren inneheld ikkje nokon kommando å køyra."
+
+#: notecontent.cpp:1419
+msgid "Launching application..."
+msgstr "Startar program …"
+
+#: notecontent.cpp:1420
+msgid "Launching applications..."
+msgstr "Startar program …"
+
+#: notecontent.cpp:1507
+msgid ""
+"_: RGB Colorspace: Red/Green/Blue\n"
+"RGB"
+msgstr "RGB"
+
+#: notecontent.cpp:1508
+msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
+msgstr "<i>Raud</i>: %1, <i>Grøn</i>: %2, <i>Blå</i>: %3,"
+
+#: notecontent.cpp:1510
+msgid ""
+"_: HSV Colorspace: Hue/Saturation/Value\n"
+"HSV"
+msgstr "NMV"
+
+#: notecontent.cpp:1511
+msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
+msgstr "<i>Nyanse</i>: %1, <i>Metting</i>: %2, <i>Verdi</i>: %3,"
+
+#: notecontent.cpp:1664
+msgid "CSS Color Name"
+msgstr "CSS-fargenamn"
+
+#: notecontent.cpp:1674
+msgid "CSS Extended Color Name"
+msgstr "Utvida CSS-fargenamn"
+
+#: notecontent.cpp:1680
+msgid "Is Web Color"
+msgstr "Er ein vevfarge"
+
+#: note.cpp:2883
+msgid "(Image)"
+msgstr "(Bilete)"
+
+#: noteedit.cpp:346
+msgid ""
+"Images can not be edited here at the moment (the next version of BasKet Note "
+"Pads will include an image editor).\n"
+"Do you want to open it with an application that understands it?"
+msgstr ""
+"Bilete kan for tida ikkje redigerast her. (Den neste versjonen av programmet vil innehelda eit biletredigeringsprogram.)\n"
+"Vil du opna biletet i eit program som kan lesa det?"
+
+#: noteedit.cpp:348
+msgid "Edit Image Note"
+msgstr "Rediger biletnotat"
+
+#: noteedit.cpp:362
+msgid ""
+"This animated image can not be edited here.\n"
+"Do you want to open it with an application that understands it?"
+msgstr ""
+"Det animerte biletet kan ikkje redigerast her.\n"
+"Vil du opna biletet i eit program som kan lesa det?"
+
+#: noteedit.cpp:364
+msgid "Edit Animation Note"
+msgstr "Rediger animasjonsnotat"
+
+#: noteedit.cpp:441
+msgid "Edit Color Note"
+msgstr "Rediger fargenotat"
+
+#: noteedit.cpp:464
+msgid ""
+"The type of this note is unknown and can not be edited here.\n"
+"You however can drag or copy the note into an application that understands "
+"it."
+msgstr ""
+"Denne notattypen er ukjend, og kan ikkje redigerast her.\n"
+"Men du kan likevel dra eller kopiera notatet til eit program som forstår formatet."
+
+#: noteedit.cpp:466
+msgid "Edit Unknown Note"
+msgstr "Rediger ukjend notat"
+
+#: noteedit.cpp:495
+msgid "Edit Link Note"
+msgstr "Rediger lenkjenotat"
+
+#: noteedit.cpp:507 noteedit.cpp:520
+msgid "Auto"
+msgstr "Auto"
+
+#: noteedit.cpp:516 noteedit.cpp:669
+msgid "&Icon:"
+msgstr "&Ikon:"
+
+#: noteedit.cpp:540
+msgid "Ta&rget:"
+msgstr "&Mål:"
+
+#: noteedit.cpp:541
+msgid "&Title:"
+msgstr "&Tittel:"
+
+#: noteedit.cpp:654
+msgid "Edit Launcher Note"
+msgstr "Rediger programstartarnotat"
+
+#: noteedit.cpp:663
+msgid "Choose a command to run:"
+msgstr "Vel kommandoen som skal køyrast:"
+
+#: noteedit.cpp:672
+msgid "&Guess"
+msgstr "&Gjett"
+
+#: noteedit.cpp:688
+msgid "Comman&d:"
+msgstr "&Kommando:"
+
+#: noteedit.cpp:689 tagsedit.cpp:379
+msgid "&Name:"
+msgstr "&Namn:"
+
+#: noteedit.cpp:774 tagsedit.cpp:437
+msgid "Bold"
+msgstr "Halvfeit"
+
+#: noteedit.cpp:776 tagsedit.cpp:443
+msgid "Underline"
+msgstr "Understrek"
+
+#: noteedit.cpp:781
+msgid "Align Left"
+msgstr "Venstrejuster"
+
+#: noteedit.cpp:782
+msgid "Centered"
+msgstr "Midtstill"
+
+#: noteedit.cpp:783
+msgid "Align Right"
+msgstr "Høgrejuster"
+
+#: noteedit.cpp:784
+msgid "Justified"
+msgstr "Blokkjuster"
+
+#: notefactory.cpp:445
+msgid ""
+"<p>%1 doesn't support the data you've dropped.<br>It however created a "
+"generic note, allowing you to drag or copy it to an application that "
+"understand it.</p><p>If you want the support of these data, please contact "
+"developer or visit the <a href=\"http://basket.kde.org/dropdb.php\">BasKet "
+"Drop Database</a>.</p>"
+msgstr ""
+
+#: notefactory.cpp:449
+msgid "Unsupported MIME Type(s)"
+msgstr "Ikkje støtta MIME-type/-typar"
+
+#: notefactory.cpp:503
+msgid "&Move Here\tShift"
+msgstr "&Flytt her\tShift"
+
+#: notefactory.cpp:504
+msgid "&Copy Here\tCtrl"
+msgstr "&Kopier her\tCtrl"
+
+#: notefactory.cpp:505
+msgid "&Link Here\tCtrl+Shift"
+msgstr "&Lag lenkje her\tCtrl + Shift"
+
+#: notefactory.cpp:507
+msgid "C&ancel\tEscape"
+msgstr "&Avbryt\tEscape"
+
+#: notefactory.cpp:973
+msgid "Import Icon as Image"
+msgstr "Importer ikon som bilete"
+
+#: notefactory.cpp:973
+msgid "Choose the size of the icon to import as an image:"
+msgstr ""
+
+#: notefactory.cpp:986
+msgid "Load File Content into a Note"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 16
+#: password.cpp:36 passwordlayout.cpp:75 rc.cpp:81
+#, no-c-format
+msgid "Password Protection"
+msgstr "Passordvern"
+
+#: password.cpp:53
+msgid "No private key selected."
+msgstr "Ingen privatnøkkel vald."
+
+#. i18n: file passwordlayout.ui line 44
+#: passwordlayout.cpp:77 rc.cpp:85
+#, no-c-format
+msgid "&No password"
+msgstr "&Ikkje bruk passord"
+
+#. i18n: file passwordlayout.ui line 47
+#: passwordlayout.cpp:78 rc.cpp:88
+#, no-c-format
+msgid "Alt+N"
+msgstr "Alt+I"
+
+#. i18n: file passwordlayout.ui line 55
+#: passwordlayout.cpp:79 rc.cpp:91
+#, no-c-format
+msgid "Protect basket with a &password"
+msgstr "&Vern korga med passord"
+
+#. i18n: file passwordlayout.ui line 58
+#: passwordlayout.cpp:80 rc.cpp:94
+#, no-c-format
+msgid "Alt+P"
+msgstr "Alt+V"
+
+#. i18n: file passwordlayout.ui line 66
+#: passwordlayout.cpp:81 rc.cpp:97
+#, no-c-format
+msgid "Protect basket with private &key"
+msgstr "V&ern korga med privatnøkkel"
+
+#. i18n: file passwordlayout.ui line 69
+#: passwordlayout.cpp:82 rc.cpp:100
+#, no-c-format
+msgid "Alt+K"
+msgstr "Alt+E"
+
+#. i18n: file basket_part.rc line 5
+#: rc.cpp:3 rc.cpp:36
+#, no-c-format
+msgid "&Basket"
+msgstr "&Korg"
+
+#. i18n: file basket_part.rc line 16
+#: rc.cpp:6 rc.cpp:39
+#, no-c-format
+msgid "&Import"
+msgstr "&Importer"
+
+#. i18n: file basket_part.rc line 42
+#: rc.cpp:12 rc.cpp:45
+#, no-c-format
+msgid "&Go"
+msgstr "&Gå til"
+
+#. i18n: file basket_part.rc line 49
+#: rc.cpp:15 rc.cpp:48
+#, no-c-format
+msgid "&Note"
+msgstr "&Notat"
+
+#. i18n: file basket_part.rc line 64
+#: rc.cpp:18 rc.cpp:51
+#, no-c-format
+msgid "&Tags"
+msgstr "&Merkelappar"
+
+#. i18n: file basket_part.rc line 122
+#: rc.cpp:33 rc.cpp:66
+#, no-c-format
+msgid "Text Formating Toolbar"
+msgstr "Tekstformateringslinje"
+
+#: settings.cpp:345
+msgid "Doc&k in system tray"
+msgstr ""
+
+#: settings.cpp:349
+msgid "&Use balloons to report results of global actions"
+msgstr ""
+
+#: settings.cpp:353
+msgid "Ani&mate changes in baskets"
+msgstr ""
+
+#: settings.cpp:357
+msgid "Sho&w tooltips in baskets"
+msgstr ""
+
+#: settings.cpp:361
+msgid "Ask confirmation before &deleting notes"
+msgstr ""
+
+#: settings.cpp:365
+msgid "Bi&g notes"
+msgstr "&Store notat"
+
+#: settings.cpp:370
+msgid "E&xport tags in texts"
+msgstr "&Eksporter merkelappar i tekstar"
+
+#: settings.cpp:376 tagsedit.cpp:485
+msgid "When does this apply?"
+msgstr "Når vert dette brukt?"
+
+#: settings.cpp:377 tagsedit.cpp:486
+msgid ""
+"It does apply when you copy and paste, or drag and drop notes to a text "
+"editor."
+msgstr ""
+
+#: settings.cpp:378
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
+msgstr ""
+
+#: settings.cpp:379 tagsedit.cpp:488
+msgid ""
+"For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are "
+"exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, representing an "
+"empty checkbox and a checked box."
+msgstr ""
+
+#: settings.cpp:389
+msgid "Use GnuPG agent for &private/public key protected baskets"
+msgstr ""
+
+#: settings.cpp:398
+msgid "On left"
+msgstr "Til venstre"
+
+#: settings.cpp:399
+msgid "On right"
+msgstr "Til høgre"
+
+#: settings.cpp:400
+msgid "Bask&ets tree position:"
+msgstr ""
+
+#: settings.cpp:407 settings.cpp:418
+msgid "On top"
+msgstr "Øvst"
+
+#: settings.cpp:408 settings.cpp:419
+msgid "On bottom"
+msgstr "Nedst"
+
+#: settings.cpp:409
+msgid "&Filter bar position:"
+msgstr ""
+
+#: settings.cpp:417
+msgid "New notes &place:"
+msgstr ""
+
+#: settings.cpp:420
+msgid "At current note"
+msgstr ""
+
+#: settings.cpp:430
+msgid "View Content of Added Files for the Following Types"
+msgstr ""
+
+#: settings.cpp:431
+msgid "Plain &text"
+msgstr "&Reintekst"
+
+#: settings.cpp:432
+msgid "&HTML page"
+msgstr "&HTML-side"
+
+#: settings.cpp:433
+msgid "&Image or animation"
+msgstr "&Bilete eller animasjon"
+
+#: settings.cpp:434
+msgid "&Sound"
+msgstr "&Lyd"
+
+#: settings.cpp:447
+msgid "&New images size:"
+msgstr ""
+
+#: settings.cpp:455
+msgid "&by"
+msgstr ""
+
+#: settings.cpp:458
+msgid "pixels"
+msgstr "pikslar"
+
+#: settings.cpp:460
+msgid "&Visualize..."
+msgstr ""
+
+#: settings.cpp:548
+msgid "Customize look of file, sound, link and launcher notes:"
+msgstr ""
+
+#: settings.cpp:553
+msgid "Conference audio record"
+msgstr ""
+
+#: settings.cpp:554
+msgid "Annual report"
+msgstr "Årleg rapport"
+
+#: settings.cpp:555
+msgid "Home folder"
+msgstr "Heimemappe"
+
+#: settings.cpp:557
+#, c-format
+msgid "Launch %1"
+msgstr "Start %1"
+
+#: settings.cpp:558
+msgid "&Sounds"
+msgstr "&Lydar"
+
+#: settings.cpp:559
+msgid "&Files"
+msgstr "&Filer"
+
+#: settings.cpp:560
+msgid "&Local Links"
+msgstr "&Lokale lenkjer"
+
+#: settings.cpp:561
+msgid "&Network Links"
+msgstr "&Nettverkslenkjer"
+
+#: settings.cpp:562
+msgid "Launc&hers"
+msgstr "&Programstartarar"
+
+#: settings.cpp:604
+msgid "Open &text notes with a custom application:"
+msgstr ""
+
+#: settings.cpp:605
+msgid "Open text notes with:"
+msgstr ""
+
+#: settings.cpp:612
+msgid "Open &image notes with a custom application:"
+msgstr ""
+
+#: settings.cpp:613
+msgid "Open image notes with:"
+msgstr ""
+
+#: settings.cpp:620
+msgid "Open a&nimation notes with a custom application:"
+msgstr ""
+
+#: settings.cpp:621
+msgid "Open animation notes with:"
+msgstr ""
+
+#: settings.cpp:628
+msgid "Open so&und notes with a custom application:"
+msgstr ""
+
+#: settings.cpp:629
+msgid "Open sound notes with:"
+msgstr ""
+
+#: settings.cpp:637
+msgid ""
+"<p>If checked, the application defined below will be used when opening that "
+"type of note.</p><p>Otherwise, the application you've configured to in "
+"Konqueror will be used.</p>"
+msgstr ""
+
+#: settings.cpp:647
+msgid ""
+"<p>Define the application to use for opening that type of note instead of "
+"the application configured in Konqueror.</p>"
+msgstr ""
+
+#: settings.cpp:671
+msgid "How to change the application used to open Web links?"
+msgstr ""
+
+#: settings.cpp:672
+msgid ""
+"<p>When opening Web links, they are opened in different applications, "
+"depending on the content of the link (a Web page, an image, a PDF "
+"document...), like if they were files on your computer.</p><p>Here is how to "
+"do if you want every Web addresses to be opened in your Web browser. It is "
+"useful if you are not using KDE (if you are using eg. GNOME, "
+"XFCE...).</p><ul><li>Open the KDE Control Center (if it is not available, "
+"try to type \"kcontrol\" in a command line terminal);</li><li>Go to the "
+"\"KDE Components\" and then \"Components Selector\" section;</li><li>Choose "
+"\"Web Browser\", check \"In the following browser:\" and enter the name of "
+"your Web browser (like \"firefox\" or \"epiphany\").</li></ul><p>Now, when "
+"you click <i>any</i> link that start with \"http://...\", it will be opened "
+"in your Web browser (eg. Mozilla Firefox or Epiphany or...).</p><p>For a "
+"more fine-grained configuration (like openning only Web pages in your Web "
+"browser), read the second help link.</p>"
+msgstr ""
+
+#: settings.cpp:690
+msgid "How to change the applications used to open files and links?"
+msgstr ""
+
+#: settings.cpp:691
+msgid ""
+"<p>Here is how to set the application to be used for each type of file. This "
+"also applys to Web links if you choose not to open them systematically in a "
+"Web browser (see the first help link). The default settings should be good "
+"enough for you, but this tip is useful if you are using GNOME, XFCE, or "
+"another environment than KDE.</p><p>This is an exemple how to open HTML "
+"pages in your Web browser (and keep using the other applications for other "
+"addresses or files). Repeat those steps for each type of file you want to "
+"open in a specific application.</p><ul><li>Open the KDE Control Center (if "
+"it is not available, try to type \"kcontrol\" in a command line "
+"terminal);</li><li>Go to the \"KDE Components\" and then \"File "
+"Associations\" section;</li><li>In the tree, expand \"text\" and click "
+"\"html\";</li><li>In the applications list, add your Web browser as the "
+"first entry;</li><li>Do the same for the type \"application -> "
+"xhtml+xml\".</li></ul>"
+msgstr ""
+
+#: settings.cpp:761
+msgid ""
+"This page groups non-standard options that, once learned,\n"
+"can be very powerful and time saving in the context of %1:"
+msgstr ""
+
+#: settings.cpp:767
+msgid "&Group a new note when clicking on the right of the insertion line"
+msgstr ""
+
+#: settings.cpp:770
+msgid "How to group a new note?"
+msgstr ""
+
+#: settings.cpp:771
+msgid ""
+"<p>When this option is enabled, the insertion-line not only allows you to "
+"insert notes at the cursor position, but also allows you to group a new note "
+"with the one under the cursor:</p>"
+msgstr ""
+
+#: settings.cpp:773
+msgid ""
+"<p>Place your mouse between notes, where you want to add a new one.<br>Click "
+"on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a "
+"note.<br>Click on the <b>right</b> to <b>group</b> a note, with the one "
+"<b>below or above</b>, depending on where your mouse is.</p>"
+msgstr ""
+
+#: settings.cpp:786
+msgid "Do nothing"
+msgstr "Ikkje gjer noko"
+
+#: settings.cpp:787
+msgid "Paste clipboard"
+msgstr "Lim inn utklippstavle"
+
+#: settings.cpp:792
+msgid "Insert launcher note"
+msgstr "Set inn startarnotat"
+
+#: settings.cpp:794
+msgid "&Shift+middle-click:"
+msgstr "&Shift + midtklikk:"
+
+#: settings.cpp:797
+msgid "at cursor position"
+msgstr ""
+
+#: settings.cpp:800
+msgid "System Tray Icon"
+msgstr "Systemtrauikon"
+
+#: settings.cpp:806
+msgid "Show c&urrent basket icon in system tray icon"
+msgstr ""
+
+#: settings.cpp:814
+msgid "H&ide main window when mouse goes out of it for"
+msgstr ""
+
+#: settings.cpp:816 settings.cpp:825
+msgid " tenths of seconds"
+msgstr "tidels sekund"
+
+#: settings.cpp:823
+msgid "Show &main window when mouse hovers over the system tray icon for"
+msgstr ""
+
+#: softwareimporters.cpp:44
+msgid "Import Hierarchy"
+msgstr "Importer hierarki"
+
+#: softwareimporters.cpp:50
+msgid "How to Import the Notes?"
+msgstr "Korleis importera notat?"
+
+#: softwareimporters.cpp:51
+msgid "&Keep original hierarchy (all notes in separate baskets)"
+msgstr ""
+
+#: softwareimporters.cpp:52
+msgid "&First level notes in separate baskets"
+msgstr ""
+
+#: softwareimporters.cpp:53
+msgid "&All notes in one basket"
+msgstr ""
+
+#: softwareimporters.cpp:180
+msgid "From KJots"
+msgstr "Frå KJots"
+
+#: softwareimporters.cpp:268
+msgid "From KNotes"
+msgstr "Frå KNotes"
+
+#: softwareimporters.cpp:339
+msgid "From Sticky Notes"
+msgstr "Frå Sticky Notes"
+
+#: softwareimporters.cpp:389
+msgid "From Tomboy"
+msgstr "Frå Tomboy"
+
+#: softwareimporters.cpp:548
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
+msgstr ""
+
+#: softwareimporters.cpp:548
+msgid "Bad File Format"
+msgstr "Ugyldig filformat"
+
+#: softwareimporters.cpp:576
+msgid ""
+"A note is encrypted. The importer do not support encrypted notes yet. Please "
+"remove the encryption with TuxCards and re-import the file."
+msgstr ""
+
+#: softwareimporters.cpp:576
+msgid "Encrypted Notes not Supported Yet"
+msgstr ""
+
+#: softwareimporters.cpp:578
+msgid ""
+"<font color='red'><b>Encrypted note.</b><br>The importer do not support "
+"encrypted notes yet. Please remove the encryption with TuxCards and "
+"re-import the file.</font>"
+msgstr ""
+
+#: systemtray.cpp:140
+msgid ""
+"<p>Closing the main window will keep %1 running in the system tray. Use "
+"<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
+msgstr ""
+
+#: systemtray.cpp:186 systemtray.cpp:191
+msgid "Docking in System Tray"
+msgstr "Legg i systemtrauet"
+
+#: systemtray.cpp:237
+msgid "Pasted selection to basket <i>%1</i>"
+msgstr ""
+
+#: systemtray.cpp:272
+msgid "&Minimize"
+msgstr "&Minimer"
+
+#: systemtray.cpp:274
+msgid "&Restore"
+msgstr "&Gjenopprett"
+
+#: systemtray.cpp:335
+msgid "Dropped to basket <i>%1</i>"
+msgstr ""
+
+#: systemtray.cpp:423
+msgid "%1 (Locked)"
+msgstr "%1 (Låst)"
+
+#: tag.cpp:80
+msgid "%1: %2"
+msgstr "%1: %2"
+
+#: tag.cpp:447
+msgid "To Do"
+msgstr "Hugseliste"
+
+#: tag.cpp:447
+msgid "Unchecked"
+msgstr "Ikkje kryssa av"
+
+#: tag.cpp:447
+msgid "Done"
+msgstr "Fullført"
+
+#: tag.cpp:448
+msgid "Progress"
+msgstr "Framgang"
+
+#: tag.cpp:448
+#, c-format
+msgid "0 %"
+msgstr "0 %"
+
+#: tag.cpp:448
+#, c-format
+msgid "25 %"
+msgstr "25 %"
+
+#: tag.cpp:449
+#, c-format
+msgid "50 %"
+msgstr "50 %"
+
+#: tag.cpp:449
+#, c-format
+msgid "75 %"
+msgstr "75 %"
+
+#: tag.cpp:449
+#, c-format
+msgid "100 %"
+msgstr "100 %"
+
+#: tag.cpp:502
+msgid "Priority"
+msgstr "Prioritet"
+
+#: tag.cpp:502
+msgid "Low"
+msgstr "Låg"
+
+#: tag.cpp:502
+msgid "Medium"
+msgstr "Middels"
+
+#: tag.cpp:503
+msgid "High"
+msgstr "Høg"
+
+#: tag.cpp:503
+msgid "Preference"
+msgstr "Preferanse"
+
+#: tag.cpp:503
+msgid "Bad"
+msgstr "Dårleg"
+
+#: tag.cpp:504
+msgid "Good"
+msgstr "God"
+
+#: tag.cpp:504
+msgid "Excelent"
+msgstr "Fantastisk"
+
+#: tag.cpp:504
+msgid "Highlight"
+msgstr "Uthev"
+
+#: tag.cpp:570
+msgid "Important"
+msgstr "Viktig"
+
+#: tag.cpp:570
+msgid "Very Important"
+msgstr "Veldig viktig"
+
+#: tag.cpp:571
+msgid "Idea"
+msgstr "Idé"
+
+#: tag.cpp:571
+msgid ""
+"_: The initial of 'Idea'\n"
+"I."
+msgstr "I."
+
+#: tag.cpp:571
+msgid "Title"
+msgstr "Tittel"
+
+#: tag.cpp:572
+msgid "Code"
+msgstr "Kode"
+
+#: tag.cpp:572
+msgid "Work"
+msgstr "Arbeid"
+
+#: tag.cpp:572
+msgid ""
+"_: The initial of 'Work'\n"
+"W."
+msgstr "A."
+
+#: tag.cpp:590
+msgid "Personal"
+msgstr "Personleg"
+
+#: tag.cpp:590
+msgid ""
+"_: The initial of 'Personal'\n"
+"P."
+msgstr "P."
+
+#: tag.cpp:590
+msgid "Funny"
+msgstr "Morosamt"
+
+#: tagsedit.cpp:207 tagsedit.cpp:227
+msgid ""
+"_: Tag name (shortcut)\n"
+"%1 (%2)"
+msgstr "%1 (%2)"
+
+#: tagsedit.cpp:325
+msgid "Customize Tags"
+msgstr "Tilpass merkelappar"
+
+#: tagsedit.cpp:333
+msgid "Ne&w Tag"
+msgstr "&Ny merkelapp"
+
+#: tagsedit.cpp:334
+msgid "New St&ate"
+msgstr "Ny &tilstand"
+
+#: tagsedit.cpp:350
+msgid "Move Up (Ctrl+Shift+Up)"
+msgstr "Flytt opp («Ctrl + Shift + Pil opp»)"
+
+#: tagsedit.cpp:351
+msgid "Move Down (Ctrl+Shift+Down)"
+msgstr "Flytt ned («Ctrl + Shift + Pil ned»)"
+
+#: tagsedit.cpp:375
+msgid "Tag"
+msgstr "Merkelapp"
+
+#: tagsedit.cpp:382
+msgid ""
+"_: Remove tag shortcut\n"
+"&Remove"
+msgstr "&Fjern"
+
+#: tagsedit.cpp:383
+msgid "S&hortcut:"
+msgstr "&Snarveg:"
+
+#: tagsedit.cpp:387
+msgid "&Inherited by new sibling notes"
+msgstr ""
+
+#: tagsedit.cpp:398 tagsedit.cpp:1005 tagsedit.cpp:1021
+msgid "State"
+msgstr "Tilstand"
+
+#: tagsedit.cpp:402
+msgid "Na&me:"
+msgstr "Na&mn:"
+
+#: tagsedit.cpp:409
+msgid ""
+"_: Remove tag emblem\n"
+"Remo&ve"
+msgstr "&Fjern"
+
+#: tagsedit.cpp:410
+msgid "&Emblem:"
+msgstr ""
+
+#: tagsedit.cpp:426
+msgid "&Background:"
+msgstr "&Bakgrunn:"
+
+#: tagsedit.cpp:455
+msgid "Strike Through"
+msgstr "Strek gjennom"
+
+#: tagsedit.cpp:457
+msgid "&Text:"
+msgstr "&Tekst:"
+
+#: tagsedit.cpp:467
+msgid "Co&lor:"
+msgstr "&Farge:"
+
+#: tagsedit.cpp:471
+msgid "&Font:"
+msgstr "Skri&ft:"
+
+#: tagsedit.cpp:474
+msgid "&Size:"
+msgstr "&Storleik:"
+
+#: tagsedit.cpp:477
+msgid "Te&xt equivalent:"
+msgstr "&Tekstekvivalent:"
+
+#: tagsedit.cpp:487
+msgid ""
+"If filled, this property lets you paste this tag or this state as textual "
+"equivalent."
+msgstr ""
+
+#: tagsedit.cpp:496
+msgid "On ever&y lines"
+msgstr ""
+
+#: tagsedit.cpp:501
+msgid "What does it mean?"
+msgstr "Kva tyder dette?"
+
+#: tagsedit.cpp:502
+msgid ""
+"When a note has several lines, you can choose to export the tag or the state "
+"on the first line or on every lines of the note."
+msgstr ""
+
+#: tagsedit.cpp:504
+msgid ""
+"In the example above, the tag of the top note is only exported on the first "
+"line, while the tag of the bottom note is exported on every lines of the "
+"note."
+msgstr ""
+
+#: tagsedit.cpp:888
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
+msgstr ""
+
+#: tagsedit.cpp:889
+msgid "Confirm Delete Tag"
+msgstr "Stadfest fjerning av merkelapp"
+
+#: tagsedit.cpp:890
+msgid "Delete Tag"
+msgstr "Fjern merkelapp"
+
+#: tagsedit.cpp:895
+msgid ""
+"Deleting the state will remove the tag from every notes the state is "
+"currently assigned to."
+msgstr ""
+
+#: tagsedit.cpp:896
+msgid "Confirm Delete State"
+msgstr "Stadfest fjerning av tilstand"
+
+#: tagsedit.cpp:897
+msgid "Delete State"
+msgstr ""
+
+#: _translatorinfo.cpp:1
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr "Karl Ove Hufthammer"
+
+#: _translatorinfo.cpp:3
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr "karl@huftis.org"
+
+#: variouswidgets.cpp:47
+#, fuzzy
+msgid "..."
+msgstr " …"
+
+#: variouswidgets.cpp:84 variouswidgets.cpp:199
+msgid "16 by 16 pixels"
+msgstr "16 × 16 pikslar"
+
+#: variouswidgets.cpp:85 variouswidgets.cpp:200
+msgid "22 by 22 pixels"
+msgstr "22 × 22 pikslar"
+
+#: variouswidgets.cpp:86 variouswidgets.cpp:201
+msgid "32 by 32 pixels"
+msgstr "32 × 32 pikslar"
+
+#: variouswidgets.cpp:87 variouswidgets.cpp:202
+msgid "48 by 48 pixels"
+msgstr "48 × 48 pikslar"
+
+#: variouswidgets.cpp:88 variouswidgets.cpp:203
+msgid "64 by 64 pixels"
+msgstr "64 × 64 pikslar"
+
+#: variouswidgets.cpp:89 variouswidgets.cpp:204
+msgid "128 by 128 pixels"
+msgstr "128 × 128 pikslar"
+
+#: variouswidgets.cpp:129
+msgid ""
+"Resize the window to select the image size\n"
+"and close it or press Escape to accept changes."
+msgstr ""
+
