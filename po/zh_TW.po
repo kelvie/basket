@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
-"POT-Creation-Date: 2006-08-12 15:48+0200\n"
+"POT-Creation-Date: 2006-08-12 18:27+0200\n"
 "PO-Revision-Date: 2004-05-05 23:27+0800\n"
 "Last-Translator: Rex <rexforce@hotmail.com>\n"
 "Language-Team: 正體中文 <zh@li.org>\n"
@@ -1472,10 +1472,10 @@ msgstr ""
 #: linklabel.cpp:608
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
-"applies only to file and local link notes.<br>And the images you see are "
+"only applies to file and local link notes.<br>And the images you see are "
 "image notes, not file notes.<br>File notes are generic documents, whereas "
 "image notes are pictures you can draw in.</p><p>When dropping files to "
-"baskets, %1 detects theire type and show you the content of the "
+"baskets, %1 detects their type and shows you the content of the "
 "files.<br>For instance, when dropping image or text files, image and text "
 "notes are created for them.<br>For type of files %2 does not understand, "
 "they are shown as generic file notes with just an icon or file preview and a "
@@ -1527,7 +1527,8 @@ msgstr "您真的確定要退出Basket?"
 #: mainwindow.cpp:320
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
-"KDE session: it will be reloaded the next time you log in.</p>"
+"KDE session. If you end your session while the application is still running, "
+"the application will be reloaded the next time you log in.</p>"
 msgstr ""
 
 #: mainwindow.cpp:323
@@ -2738,7 +2739,7 @@ msgid "Good"
 msgstr ""
 
 #: tag.cpp:504
-msgid "Excelent"
+msgid "Excellent"
 msgstr ""
 
 #: tag.cpp:504

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basket_pt\n"
-"POT-Creation-Date: 2006-08-12 15:48+0200\n"
+"POT-Creation-Date: 2006-08-12 18:27+0200\n"
 "PO-Revision-Date: 2006-07-02 11:22+0100\n"
 "Last-Translator: Nuno J. Silva <nunojsg@gmail.com>\n"
 "Language-Team: Português <pt@li.org>\n"
@@ -1499,12 +1499,13 @@ msgid "You disabled preview but still see images?"
 msgstr "Desactivou a pré-visualização mas continua a ver imagens?"
 
 #: linklabel.cpp:608
+#, fuzzy
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
-"applies only to file and local link notes.<br>And the images you see are "
+"only applies to file and local link notes.<br>And the images you see are "
 "image notes, not file notes.<br>File notes are generic documents, whereas "
 "image notes are pictures you can draw in.</p><p>When dropping files to "
-"baskets, %1 detects theire type and show you the content of the "
+"baskets, %1 detects their type and shows you the content of the "
 "files.<br>For instance, when dropping image or text files, image and text "
 "notes are created for them.<br>For type of files %2 does not understand, "
 "they are shown as generic file notes with just an icon or file preview and a "
@@ -1566,9 +1567,11 @@ msgid "<p>Do you really want to quit %1?</p>"
 msgstr "<p>Deseja mesmo sair do %1?</p>"
 
 #: mainwindow.cpp:320
+#, fuzzy
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
-"KDE session: it will be reloaded the next time you log in.</p>"
+"KDE session. If you end your session while the application is still running, "
+"the application will be reloaded the next time you log in.</p>"
 msgstr ""
 "<p>Não necessita de sair do programa antes de terminar a sua sessão do "
 "KDE: ele será iniciado automaticamente da próxima vez que iniciar "
@@ -2791,7 +2794,8 @@ msgid "Good"
 msgstr "Boa"
 
 #: tag.cpp:504
-msgid "Excelent"
+#, fuzzy
+msgid "Excellent"
 msgstr "Excelente"
 
 #: tag.cpp:504

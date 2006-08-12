@@ -317,8 +317,8 @@ bool MainWindow::askForQuit()
 {
 	QString message = i18n("<p>Do you really want to quit %1?</p>").arg(kapp->aboutData()->programName());
 	if (Settings::useSystray())
-		message += i18n("<p>Notice that you do not have to quit the application before ending your KDE session: "
-				"it will be reloaded the next time you log in.</p>");
+		message += i18n("<p>Notice that you do not have to quit the application before ending your KDE session. "
+				"If you end your session while the application is still running, the application will be reloaded the next time you log in.</p>");
 
 	int really = KMessageBox::warningContinueCancel( this, message, i18n("Quit Confirm"),
 			KStdGuiItem::quit(), "confirmQuitAsking" );
