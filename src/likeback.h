@@ -37,9 +37,10 @@ class LikeBack : public QWidget
   Q_OBJECT
   public:
 	enum Button { ILike = 0x01, IDoNotLike = 0x02, IFoundABug = 0x04, Configure = 0x10,
-	              AllButtons = ILike | IDoNotLike | IFoundABug | Configure };
+	              AllButtons = ILike | IDoNotLike | IFoundABug | Configure,
+	              DefaultButtons = ILike | IDoNotLike | Configure };
 	enum WindowListing { NoListing, WarnUnnamedWindows, AllWindows };
-	LikeBack(Button buttons = AllButtons);
+	LikeBack(Button buttons = DefaultButtons);
 	~LikeBack();
 	static void showInformationMessage();
 	static LikeBack* instance();
@@ -60,9 +61,9 @@ class LikeBack : public QWidget
 	static QString emailAddress(); /// << @Returns the email user address, or ask it to the user if he haven't provided or ignored it
 	static void setEmailAddress(const QString &address); /// << Calling emailAddress() will ask it to the user the first time
 	static bool isDevelopmentVersion(const QString &version = QString::null); /// << @Returns true if version is an alpha/beta/rc/svn/cvs version. Use kapp->aboutData()->version is @p version is empty
-	static void init(Button buttons = AllButtons); /// << Initialize the LikeBack system: enable it if the application version is a development one.
-	static void init(bool isDevelopmentVersion, Button buttons = AllButtons);  /// << Initialize the LikeBack system: enable it if @p isDevelopmentVersion is true.
-	static void init(KConfig* config, KAboutData* about, Button buttons = AllButtons);
+	static void init(Button buttons = DefaultButtons); /// << Initialize the LikeBack system: enable it if the application version is a development one.
+	static void init(bool isDevelopmentVersion, Button buttons = DefaultButtons);  /// << Initialize the LikeBack system: enable it if @p isDevelopmentVersion is true.
+	static void init(KConfig* config, KAboutData* about, Button buttons = DefaultButtons);
 	static QString activeWindowPath();
 	static KAboutData* about();
   private slots:
@@ -78,9 +79,13 @@ class LikeBack : public QWidget
 	void askEMail();
 //	void beginFetchingEmail();
 	void endFetchingEmailFrom(); // static QString fetchingEmail();
+	void setButtonVisibility(Button buttons);
   private:
 	QTimer       m_timer;
 	Button       m_buttons;
+	QToolButton *m_likeButton;
+	QToolButton *m_dislikeButton;
+	QToolButton *m_bugButton;
 	QToolButton *m_configureButton;
 	QString      m_fetchedEmail;
 	KProcess    *m_process;

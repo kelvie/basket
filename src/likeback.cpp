@@ -48,7 +48,7 @@
 #include "likeback.h"
 
 LikeBack::LikeBack(Button buttons)
- : QWidget( 0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
+ : QWidget(0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
  , m_buttons(buttons)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -58,21 +58,21 @@ LikeBack::LikeBack(Button buttons)
 	QIconSet bugIconSet       = kapp->iconLoader()->loadIconSet("bug",                KIcon::Small);
 	QIconSet configureIconSet = kapp->iconLoader()->loadIconSet("likeback_configure", KIcon::Small);
 
-	QToolButton *m_likeButton = new QToolButton(this, "ilike");
+	m_likeButton = new QToolButton(this, "ilike");
 	m_likeButton->setIconSet(likeIconSet);
 	m_likeButton->setTextLabel(i18n("I Like..."));
 	m_likeButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(iLike()) );
 	layout->add(m_likeButton);
 
-	QToolButton *m_dislikeButton = new QToolButton(this, "idonotlike");
+	m_dislikeButton = new QToolButton(this, "idonotlike");
 	m_dislikeButton->setIconSet(dislikeIconSet);
 	m_dislikeButton->setTextLabel(i18n("I Do not Like..."));
 	m_dislikeButton->setAutoRaise(true);
 	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(iDoNotLike()) );
 	layout->add(m_dislikeButton);
 
-	QToolButton *m_bugButton = new QToolButton(this, "ifoundabug");
+	m_bugButton = new QToolButton(this, "ifoundabug");
 	m_bugButton->setIconSet(bugIconSet);
 	m_bugButton->setTextLabel(i18n("I Found a Bug..."));
 	m_bugButton->setAutoRaise(true);
@@ -98,6 +98,8 @@ LikeBack::LikeBack(Button buttons)
 	if (!emailAddressAlreadyProvided())
 		//beginFetchingEmail(); // Begin before showing the message, so we have time!
 		endFetchingEmailFrom();
+
+	setButtonVisibility(buttons);
 
 	static const char *messageShown = "LikeBack_starting_information";
 	if (KMessageBox::shouldBeShownContinue(messageShown)) {
@@ -495,11 +497,18 @@ void LikeBack::endFetchingEmailFrom()
 //	m_from->setText( fromaddr );
 }
 
+void LikeBack::setButtonVisibility(Button buttons)
+{
+	if (buttons == m_buttons)
+		return;
 
+	m_buttons = buttons;
 
-
-
-
+	m_likeButton->setShown(      m_buttons & ILike      );
+	m_dislikeButton->setShown(   m_buttons & IDoNotLike );
+	m_bugButton->setShown(       m_buttons & IFoundABug );
+	m_configureButton->setShown( m_buttons & ILike      );
+}
 
 /** class LikeBackDialog: */
 
@@ -547,6 +556,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 			break;
 		case LikeBack::Configure:
 		case LikeBack::AllButtons:
+		case LikeBack::DefaultButtons:
 			return;
 	}
 
