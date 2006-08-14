@@ -1,13 +1,13 @@
-# translation of ja.po to
-#
+# translation of baset.pot to Japanese
 # Yukiko Bando <ybando@k6.dion.ne.jp>, 2006.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
-"POT-Creation-Date: 2006-08-05 14:39+0200\n"
-"PO-Revision-Date: 2006-08-06 00:48+0900\n"
-"Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
-"Language-Team:  <ja@li.org>\n"
+"Project-Id-Version: basket-ja\n"
+"POT-Creation-Date: 2006-08-12 18:27+0200\n"
+"PO-Revision-Date: 2006-08-14 10:00+0900\n"
+"Last-Translator: Yukiko Bando\n"
+"Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -281,7 +281,7 @@ msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "バスケット「%1」のパスワードを設定してください:"
 
 #: basket.cpp:5360
-msgid "Insuficient Disk Space to Save Basket Data"
+msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "バスケットのデータを保存するディスク容量が足りません"
 
 #: basket.cpp:5361
@@ -448,47 +448,47 @@ msgstr ""
 "<p>このバスケットはロック解除されています。<br>ロックするにはクリックしてくだ"
 "さい。</p>"
 
-#: bnpview.cpp:149 bnpview.cpp:1040
+#: bnpview.cpp:164 bnpview.cpp:1040
 msgid "General"
 msgstr "General (雑多)"
 
-#: bnpview.cpp:167
+#: bnpview.cpp:182
 msgid "Only english and french languages are accepted."
 msgstr "英語またはフランス語でお願いします。"
 
-#: bnpview.cpp:183
+#: bnpview.cpp:198
 msgid "Paste clipboard contents in current basket"
 msgstr "クリップボードの内容を現在のバスケットに貼り付け"
 
-#: bnpview.cpp:184
+#: bnpview.cpp:199
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
 msgstr "メインウィンドウを開かずにクリップボードの内容を貼り付けることができます。"
 
-#: bnpview.cpp:187
+#: bnpview.cpp:202
 msgid "Show current basket name"
 msgstr "現在のバスケット名を表示"
 
-#: bnpview.cpp:188
+#: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "メインウィンドウを開かずに現在のバスケットがわかります。"
 
-#: bnpview.cpp:191
+#: bnpview.cpp:206
 msgid "Paste selection in current basket"
 msgstr "選択を現在のバスケットに貼り付け"
 
-#: bnpview.cpp:192
+#: bnpview.cpp:207
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
 msgstr "メインウィンドウを開かずにクリップボードの選択を貼り付けることができます。"
 
-#: bnpview.cpp:195
+#: bnpview.cpp:210
 msgid "Create a new basket"
 msgstr "新しいバスケットを作成"
 
-#: bnpview.cpp:196
+#: bnpview.cpp:211
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -498,69 +498,69 @@ msgstr ""
 "他のグローバルショートカットを使って、そのバスケットにメモを追加したりクリッ"
 "プボードの内容や選択したものを貼り付けることができます。"
 
-#: bnpview.cpp:199
+#: bnpview.cpp:214
 msgid "Go to previous basket"
 msgstr "前のバスケットへ移動"
 
-#: bnpview.cpp:200
+#: bnpview.cpp:215
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr "メインウィンドウを開かずに前のバスケットに切り替えることができます。"
 
-#: bnpview.cpp:203
+#: bnpview.cpp:218
 msgid "Go to next basket"
 msgstr "次のバスケットへ移動"
 
-#: bnpview.cpp:204
+#: bnpview.cpp:219
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
 msgstr "メインウィンドウを開かずに次のバスケットに切り替えることができます。"
 
-#: bnpview.cpp:211
+#: bnpview.cpp:226
 msgid "Insert text note"
 msgstr "テキストメモを挿入"
 
-#: bnpview.cpp:212
+#: bnpview.cpp:227
 msgid "Add a text note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットにテキストメモを追加することができ"
 "ます。"
 
-#: bnpview.cpp:215 settings.cpp:790
+#: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
 msgstr "画像メモを挿入"
 
-#: bnpview.cpp:216
+#: bnpview.cpp:231
 msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットに画像メモを追加することができま"
 "す。"
 
-#: bnpview.cpp:219 settings.cpp:791
+#: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
 msgstr "リンクメモを挿入"
 
-#: bnpview.cpp:220
+#: bnpview.cpp:235
 msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットにリンクメモを追加することができま"
 "す。"
 
-#: bnpview.cpp:223 settings.cpp:793
+#: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
 msgstr "色メモを挿入"
 
-#: bnpview.cpp:224
+#: bnpview.cpp:239
 msgid "Add a color note to the current basket without having to open main window."
 msgstr "メインウィンドウを開かずに現在のバスケットに色メモを追加することができます。"
 
-#: bnpview.cpp:227
+#: bnpview.cpp:242
 msgid "Pick color from screen"
 msgstr "スクリーンから色を採取"
 
-#: bnpview.cpp:228
+#: bnpview.cpp:243
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -568,11 +568,11 @@ msgstr ""
 "メインウィンドウを開かずに現在のバスケットにスクリーン上の 1 ピクセルから採取"
 "した色をメモとして追加することができます。"
 
-#: bnpview.cpp:232
+#: bnpview.cpp:247
 msgid "Grab screen zone"
 msgstr "スクリーンの領域を取り込む"
 
-#: bnpview.cpp:233
+#: bnpview.cpp:248
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -580,11 +580,11 @@ msgstr ""
 "メインウィンドウを開かずに現在のバスケットにスクリーンの領域を画像として取り"
 "込むことができます。"
 
-#: bnpview.cpp:245
+#: bnpview.cpp:260
 msgid "Baskets"
 msgstr "バスケット"
 
-#: bnpview.cpp:301
+#: bnpview.cpp:316
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -1254,7 +1254,7 @@ msgid "Examples:"
 msgstr "例:"
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
-#: likeback.cpp:178 likeback.cpp:526
+#: likeback.cpp:178 likeback.cpp:531
 msgid "I like..."
 msgstr "I like..."
 
@@ -1271,7 +1271,7 @@ msgid "Very refreshing."
 msgstr "Very refreshing."
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
-#: likeback.cpp:181 likeback.cpp:533
+#: likeback.cpp:181 likeback.cpp:538
 msgid "I do not like..."
 msgstr "I do not like..."
 
@@ -1288,7 +1288,7 @@ msgid "Too time consuming."
 msgstr "Too time consuming."
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
-#: likeback.cpp:184 likeback.cpp:540
+#: likeback.cpp:184 likeback.cpp:545
 msgid "I found a bug..."
 msgstr "I found a bug..."
 
@@ -1340,27 +1340,27 @@ msgstr ""
 msgid "Your email address (keep empty to post comments anonymously):"
 msgstr "あなたのメールアドレス (匿名で送信する場合は空白にしておいてください):"
 
-#: likeback.cpp:527
+#: likeback.cpp:532
 msgid "Please briefly describe what you like."
 msgstr "気に入った点を簡単に書いてください。"
 
-#: likeback.cpp:534
+#: likeback.cpp:539
 msgid "Please briefly describe what you do not like."
 msgstr "気に入らない点を簡単に書いてください。"
 
-#: likeback.cpp:541
+#: likeback.cpp:546
 msgid "Please briefly describe the bug you encountered."
 msgstr "発見したバグを簡単に説明してください。"
 
-#: likeback.cpp:578
+#: likeback.cpp:583
 msgid "Send"
 msgstr "送信"
 
-#: likeback.cpp:590
+#: likeback.cpp:595
 msgid "Only english language is accepted."
 msgstr "英語でお願いします。"
 
-#: likeback.cpp:594
+#: likeback.cpp:599
 msgid ""
 "Note that to improve this application, it's important to tell us the things "
 "you like as much as the things you dislike."
@@ -1368,25 +1368,25 @@ msgstr ""
 "このアプリケーションを改良するためには、気に入らない点だけでなく、気に入った"
 "点も報告して頂くことが重要です。"
 
-#: likeback.cpp:599
+#: likeback.cpp:604
 msgid "Do not ask for features: your wishes will be ignored."
 msgstr "新しい機能は要求しないでください: あなたの要望は無視されます。"
 
-#: likeback.cpp:605
+#: likeback.cpp:610
 msgid "Send a Comment"
 msgstr "コメントを送信"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr ""
 "<p>報告の送信中にエラーが発生しました。</p><p>後でもう一度試してください。</"
 "p>"
 
-#: likeback.cpp:653
+#: likeback.cpp:658
 msgid "Transfer Error"
 msgstr "転送エラー"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
 "application.</p><p>Thanks for your time.</p>"
@@ -1394,7 +1394,7 @@ msgstr ""
 "<p>あなたのコメントを送信しました。アプリケーションの改良に役立ちます。</p>"
 "<p>ご協力ありがとうございました。</p>"
 
-#: likeback.cpp:655
+#: likeback.cpp:660
 msgid "Comment Sent"
 msgstr "コメントを送信しました"
 
@@ -1465,10 +1465,10 @@ msgstr "プレビューを無効にしたのに画像が表示されます..."
 #: linklabel.cpp:608
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
-"applies only to file and local link notes.<br>And the images you see are "
+"only applies to file and local link notes.<br>And the images you see are "
 "image notes, not file notes.<br>File notes are generic documents, whereas "
 "image notes are pictures you can draw in.</p><p>When dropping files to "
-"baskets, %1 detects theire type and show you the content of the files."
+"baskets, %1 detects their type and shows you the content of the files."
 "<br>For instance, when dropping image or text files, image and text notes "
 "are created for them.<br>For type of files %2 does not understand, they are "
 "shown as generic file notes with just an icon or file preview and a filename."
@@ -1528,10 +1528,12 @@ msgstr "<p>本当に %1を終了しますか？</p>"
 #: mainwindow.cpp:320
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
-"KDE session: it will be reloaded the next time you log in.</p>"
+"KDE session. If you end your session while the application is still running, "
+"the application will be reloaded the next time you log in.</p>"
 msgstr ""
 "<p>KDE のセッションを終了する前にアプリケーションを終了する必要はありません。"
-"次回のログイン時に再読み込みされます。</p>"
+"セッション終了時に実行されていたアプリケーションは次回ログイン時に再び起動さ"
+"れます。</p>"
 
 #: mainwindow.cpp:323
 msgid "Quit Confirm"
@@ -2726,7 +2728,7 @@ msgid "Good"
 msgstr "良い"
 
 #: tag.cpp:504
-msgid "Excelent"
+msgid "Excellent"
 msgstr "素晴らしい"
 
 #: tag.cpp:504
