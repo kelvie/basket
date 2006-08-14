@@ -119,6 +119,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	QHBoxLayout *layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	KPushButton *button = new KPushButton( KGuiItem(i18n("&Manage Templates..."), "configure"), page );
 	connect( button, SIGNAL(clicked()), this, SLOT(manageTemplates()) );
+	button->hide();
 
 	// Compute the right template to use as the default:
 	QString defaultTemplate = "free";
@@ -212,8 +213,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	label = new QLabel(m_createIn, i18n("C&reate in:"), page);
 	HelpLabel *helpLabel = new HelpLabel(i18n("How is it useful?"), i18n(
 		"<p>Creating baskets inside of other baskets to form a hierarchy allows you to be more organized by eg.:</p><ul>"
-		"<li>Groupping baskets by themes or topics;</li>"
-		"<li>Groupping baskets in folders for different projects;</li>"
+		"<li>Grouping baskets by themes or topics;</li>"
+		"<li>Grouping baskets in folders for different projects;</li>"
 		"<li>Making sections with sub-baskets representing chapters or pages;</li>"
 		"<li>Making group of baskets to export together (to eg. email them to people).</li></ul>"), page);
 	layout->addWidget(label);

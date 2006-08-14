@@ -98,7 +98,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 			index++;
 		}
 	}
-	m_backgroundImage->insertItem(i18n("Other..."), -1);
+//	m_backgroundImage->insertItem(i18n("Other..."), -1);
 	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
 	m_backgroundImage->setSizeLimit(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
 	m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);

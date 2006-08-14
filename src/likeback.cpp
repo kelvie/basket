@@ -1,19 +1,19 @@
 /***************************************************************************
- *   Copyright (C) 2006 by S�astien Laot                                 *
+ *   Copyright (C) 2006 by Sabastien Laout                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   it under the terms of the GNU Library General Public License as       *
+ *   published by the Free Software Foundation; either version 2 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -249,7 +249,7 @@ bool LikeBack::enabled()
 	return s_disabledCount == 0;
 }
 
-void LikeBack::setServer(QString hostName, QString remotePath, Q_UINT16 hostPort)
+void LikeBack::setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort)
 {
 	s_hostName   = hostName;
 	s_remotePath = remotePath;
@@ -386,8 +386,8 @@ void LikeBack::askEMail()
 	bool ok;
 
 	QString mailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
-	//QString namedMailExpString = "[.]*[ \\t]+<" + mailExpString + ">";
-	//QRegExp mailExp("^(|" + mailExpString + "|" + namedMailExpString + ")$");
+	//QString namedMailExpString = "[.]*[ \\t]+<" + mailExpString + '>';
+	//QRegExp mailExp("^(|" + mailExpString + '|' + namedMailExpString + ")$");
 	QRegExp mailExp("^(|" + mailExpString + ")$");
 	QRegExpValidator emailValidator(mailExp, this);
 
@@ -512,7 +512,7 @@ void LikeBack::setButtonVisibility(Button buttons)
 
 /** class LikeBackDialog: */
 
-LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QString context)
+LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &windowName, const QString &context)
  : KDialog(kapp->activeWindow(), "_likeback_feedback_window_")
  , m_reason(reason)
  , m_windowName(windowName)
@@ -600,13 +600,13 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, QString windowName, QStr
 	coloredWidgetLayout->addLayout(commentLayout);
 
 	explainings->setText(
-			"<p>" + please + " " +
+			"<p>" + please + ' ' +
 			(LikeBack::customLanguageMessage().isEmpty() ?
 				i18n("Only english language is accepted.") :
 				LikeBack::customLanguageMessage()
-			)  + " " +
+			)  + ' ' +
 			(reason == LikeBack::ILike || reason == LikeBack::IDoNotLike ?
-				i18n("Note that to improve this application, it's important to tell us the things you like as much as the things you dislike.") + " " :
+				i18n("Note that to improve this application, it is important to tell us the things you like as much as the things you dislike.") + ' ' :
 				""
 			) +
 			(LikeBack::allowFeatureWishes() ?
@@ -633,13 +633,13 @@ void LikeBackDialog::send()
 
 	QString type = (m_reason == LikeBack::ILike ? "Like" : (m_reason == LikeBack::IDoNotLike ? "Dislike" : "Bug"));
 	QString data =
-			"protocol=" + KURL::encode_string("1.0")                         + "&" +
-			"type="     + KURL::encode_string(type)                          + "&" +
-			"version="  + KURL::encode_string(LikeBack::about()->version())  + "&" +
-			"locale="   + KURL::encode_string(KGlobal::locale()->language()) + "&" +
-			"window="   + KURL::encode_string(m_windowName)                  + "&" +
-			"context="  + KURL::encode_string(m_context)                     + "&" +
-			"comment="  + KURL::encode_string(m_comment->text())             + "&" +
+			"protocol=" + KURL::encode_string("1.0")                         + '&' +
+			"type="     + KURL::encode_string(type)                          + '&' +
+			"version="  + KURL::encode_string(LikeBack::about()->version())  + '&' +
+			"locale="   + KURL::encode_string(KGlobal::locale()->language()) + '&' +
+			"window="   + KURL::encode_string(m_windowName)                  + '&' +
+			"context="  + KURL::encode_string(m_context)                     + '&' +
+			"comment="  + KURL::encode_string(m_comment->text())             + '&' +
 			"email="    + KURL::encode_string(emailAddress);
 	//QByteArray *data = new QByteArray();
 	/*QHttp **/http = new QHttp(LikeBack::hostName(), LikeBack::hostPort());

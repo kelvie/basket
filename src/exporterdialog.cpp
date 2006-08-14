@@ -53,6 +53,7 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
 	m_embedLinkedFolders  = new QCheckBox(i18n("Embed &linked local folders"),            page);
 	m_erasePreviousFiles  = new QCheckBox(i18n("Erase &previous files in target folder"), page);
 	m_formatForImpression = new QCheckBox(i18n("For&mat for impression"),                 page);
+	m_formatForImpression->hide();
 
 	load();
 	m_url->lineEdit()->setFocus();
