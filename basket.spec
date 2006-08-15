@@ -1,5 +1,5 @@
 %define name basket
-%define version 0.6.0Beta2
+%define version 0.6.0Beta2.1
 %define release mantic0
 
 Summary: A set of baskets to keep a full range of data on hand.
