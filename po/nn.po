@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2006-08-12 18:27+0200\n"
-"PO-Revision-Date: 2006-08-13 22:28+0200\n"
+"PO-Revision-Date: 2006-08-17 22:29+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: aboutdata.cpp:26
 msgid "A set of baskets to keep a full range of data on hand."
-msgstr "Ei samling korger for lett tilgang til all slags informasjon."
+msgstr "Ei samling korger for lett til­gang til all slags informasjon."
 
 #: aboutdata.cpp:29
 msgid "BasKet Note Pads"
@@ -32,7 +32,7 @@ msgstr "Krypteringsstøtte, Kontakt-integrering og KnowIt-import."
 
 #: aboutdata.cpp:37 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
-msgstr "Ikonet."
+msgstr "Ikon."
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -100,7 +100,7 @@ msgstr "Merk eller flytt denne gruppa."
 
 #: basket.cpp:2669
 msgid "Assign or remove tags from this note"
-msgstr "Legg til eller fjern merkelappar frå dette notatet."
+msgstr "Legg til eller fjern merke­lappar på dette notatet."
 
 #: basket.cpp:2671
 #, c-format
@@ -155,7 +155,7 @@ msgstr "Trykk til høgre for å gruppera i staden for å setja inn."
 
 #: basket.cpp:2722
 msgid "Click on the left to insert instead of group"
-msgstr "Trykk til høgre for å setja inn i staden for å gruppera."
+msgstr "Trykk til venstre for å setja inn i staden for å gruppera."
 
 #: basket.cpp:2911
 msgid "&Unlock"
@@ -167,7 +167,7 @@ msgstr "Passordverna korg."
 
 #: basket.cpp:2918
 msgid "Press Unlock to view it."
-msgstr "Trykk «Lås opp» for å opna ho."
+msgstr "Trykk «Lås opp» for å låsa ho opp."
 
 #: basket.cpp:2920
 #, c-format
@@ -281,7 +281,7 @@ msgstr "Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informas
 
 #: basket.cpp:5251
 msgid "Please enter the password for the following private key:"
-msgstr "Skriv inn passordet for denne privatnøkkelen:"
+msgstr "Skriv inn passordet for denne privat­nøkkelen:"
 
 #: basket.cpp:5253
 msgid "Please enter the password for the basket <b>%1</b>:"
@@ -312,7 +312,7 @@ msgid ""
 "File permissions are bad for <b>%1</b>. Please check you have write access "
 "to it and the parent folders."
 msgstr ""
-"Det er problem med filløyva for <b>%1</b>. Sjå til at du har skrivetilgang "
+"Det er problem med fil­løyva for <b>%1</b>. Sjå til at du har skrive­tilgang "
 "til fila og til mappene over."
 
 #: basket.cpp:5402
@@ -357,11 +357,11 @@ msgstr "Namn"
 
 #: basketproperties.cpp:76
 msgid "Background &Image:"
-msgstr "Bakgrunns&bilete:"
+msgstr "&Bakgrunnsbilete:"
 
 #: basketproperties.cpp:77
 msgid "&Background Color:"
-msgstr "&Bakgrunnsfarge:"
+msgstr "Bakgrunns&farge:"
 
 #: basketproperties.cpp:78
 msgid "&Text Color:"
@@ -413,7 +413,7 @@ msgid ""
 "make this basket the current one without opening the main window. It is "
 "useful in addition to the configurable global shortcuts to eg. paste the "
 "clipboard or the selection into the current basket from anywhere.</p>"
-msgstr "<p><strong>Hugs snarvegane dine</strong>:<br>Det første valet vil gje korga ein snarveg på forma <strong>Alt + bokstav</strong>, som vil understreka den bokstaven i korgatreet.<br>Viss du for eksempel vel snarvegen <i>Alt + T</i> til korga <i>Tips</i>, vert korga vist som <i><u>T</u>ips</i> i treet. Dette vil hjelpa deg å hugsa snarvegane.</p><p><strong>Lokal eller global</strong>:<br>Med det første valet kan du visa korga mens hovudvindauget er ope. Globale snarvegar fungerer frå alle stader, sjølv om vindauget er skjult.</p><p><strong>Vis eller byt til</strong>:<br>Det siste valet gjer korga til den gjeldande utan å opna hovudvindauget. Dette er nyttig når du bruka globale snarvegar til å lima inn notat frå utklippstavla til gjeldande korg.</p>"
+msgstr "<p><strong>Hugs snar­vegane dine</strong>:<br>Det første valet vil gje korga ein snar­veg på forma <strong>Alt + bokstav</strong>, som vil under­streka den bokstaven i korg­treet.<br>Viss du for eksempel vel snar­vegen <i>Alt + T</i> til korga <i>Tips</i>, vert korga vist som <i><u>T</u>ips</i> i treet. Dette vil hjelpa deg å hugsa snar­vegane.</p><p><strong>Lokal eller global</strong>:<br>Med det første valet kan du visa korga mens hovud­vindauget er ope. Globale snar­vegar fungerer frå alle stader, sjølv om vindauget er skjult.</p><p><strong>Vis eller byt til</strong>:<br>Det siste valet gjer korga til den gjeldande utan å opna hovud­vindauget. Dette er nyttig når du brukar globale snar­vegar til å lima inn notat frå utklipps­tavla til gjeldande korg.</p>"
 
 #: basketproperties.cpp:149
 msgid "S&how this basket"
@@ -425,7 +425,7 @@ msgstr "Vis denne korga (&global snarveg)"
 
 #: basketproperties.cpp:151
 msgid "S&witch to this basket (global shortcut)"
-msgstr "&Byt til denne korga (global snarveg)"
+msgstr "B&yt til denne korga (global snarveg)"
 
 #: basketstatusbar.cpp:117
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
@@ -456,8 +456,8 @@ msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
 msgstr ""
-"Lèt deg lim inn innhaldet frå utklippstavla til den valde korga utan å måtta "
-"opna hovudvindauget."
+"Lèt deg lim inn innhaldet frå utklipps­tavla til den valde korga utan å måtta "
+"opna hovud­vindauget."
 
 #: bnpview.cpp:202
 msgid "Show current basket name"
@@ -465,7 +465,7 @@ msgstr "Vis namn på gjeldande korg"
 
 #: bnpview.cpp:203
 msgid "Allows you to know basket is current without opening the main window."
-msgstr "Lèt deg sjå namnet på den gjeldande korga utan å opna hovudvindauget."
+msgstr "Lèt deg sjå namnet på den gjeldande korga utan å opna hovud­vindauget."
 
 #: bnpview.cpp:206
 msgid "Paste selection in current basket"
@@ -476,8 +476,8 @@ msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
 msgstr ""
-"Lèt deg lim inn utvalet på utklippstavla i gjeldande korg utan å måtta opna "
-"hovudvindauget."
+"Lèt deg lim inn utvalet på utklipps­tavla i gjeldande korg utan å måtta opna "
+"hovud­vindauget."
 
 #: bnpview.cpp:210
 msgid "Create a new basket"
@@ -489,8 +489,8 @@ msgid ""
 "then can use the other global shortcuts to add a note, paste clipboard or "
 "paste selection in this new basket)."
 msgstr ""
-"Lèt deg laga ei ny korg utan å opna hovudvindauget. Etterpå kan du bruka "
-"andre globale snøggtastar for å leggja til notat, lim inn utklippstavle "
+"Lèt deg laga ei ny korg utan å opna hovud­vindauget. Etterpå kan du bruka "
+"andre globale snøgg­tastar for å leggja til notat, lima inn utklipps­tavle "
 "eller lima inn utval i den nye korga."
 
 #: bnpview.cpp:214
@@ -503,7 +503,7 @@ msgid ""
 "open main window."
 msgstr ""
 "Lèt deg byta frå gjeldande til den førre korga utan å måtta opna "
-"hovudvindauget."
+"hovud­vindauget."
 
 #: bnpview.cpp:218
 msgid "Go to next basket"
@@ -515,7 +515,7 @@ msgid ""
 "main window."
 msgstr ""
 "Lèt deg byta frå gjeldande til den neste korga utan å måtta opna "
-"hovudvindauget."
+"hovud­vindauget."
 
 #: bnpview.cpp:226
 msgid "Insert text note"
@@ -523,7 +523,7 @@ msgstr "Set inn tekstnotat"
 
 #: bnpview.cpp:227
 msgid "Add a text note to the current basket without having to open main window."
-msgstr "Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovudvindauget."
+msgstr "Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:230 settings.cpp:790
 msgid "Insert image note"
@@ -531,7 +531,7 @@ msgstr "Set inn biletnotat"
 
 #: bnpview.cpp:231
 msgid "Add an image note to the current basket without having to open main window."
-msgstr "Legg eit biletnotat til den gjeldande korga utan å måtta opna hovudvindauget."
+msgstr "Legg eit bilet­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:234 settings.cpp:791
 msgid "Insert link note"
@@ -540,8 +540,8 @@ msgstr "Set inn lenkjenotat"
 #: bnpview.cpp:235
 msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
-"Legg eit lenkjenotat til den gjeldande korga utan å måtta opna "
-"hovudvindauget."
+"Legg eit lenkje­notat til den gjeldande korga utan å måtta opna "
+"hovud­vindauget."
 
 #: bnpview.cpp:238 settings.cpp:793
 msgid "Insert color note"
@@ -549,7 +549,7 @@ msgstr "Set inn fargenotat"
 
 #: bnpview.cpp:239
 msgid "Add a color note to the current basket without having to open main window."
-msgstr "Legg eit fargenotat til den gjeldande korga utan å måtta opna hovudvindauget."
+msgstr "Legg eit farge­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:242
 msgid "Pick color from screen"
@@ -561,7 +561,7 @@ msgid ""
 "without having to open main window."
 msgstr ""
 "Legg ein farge henta frå eit punkt på skjermen til den gjeldande korga utan "
-"å måtta opna hovudvindauget."
+"å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:247
 msgid "Grab screen zone"
@@ -572,8 +572,8 @@ msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
 msgstr ""
-"Hent eit område av skjermbiletet og legg dette i den gjeldande korga utan å "
-"måtta opna hovudvindauget."
+"Hent eit område av skjerm­biletet og legg dette i den gjeldande korga utan å "
+"måtta opna hovud­vindauget."
 
 #: bnpview.cpp:260
 msgid "Baskets"
@@ -587,18 +587,18 @@ msgid ""
 "clicking a basket to open it, or reorganize them using drag and drop."
 msgstr ""
 "<h2>Korgtre</h2>Her er oversikta over korgene dine. Du kan organisera notat "
-"ved å leggja dei i forskjellige korger. Du kan gruppera dei korger etter "
+"ved å leggja dei i forskjellige korger. Du kan gruppera dei etter "
 "emne ved å leggja korger inni andre korger. Du kan sjå gjennom alle korgene "
-"ved å trykkja på dei, og du kan flytta rundta på dei ved å dra dei der du "
+"ved å trykkja på dei, og du kan flytta rundt på dei ved å dra dei der du "
 "vil ha dei."
 
 #: bnpview.cpp:327
 msgid "&Hide Window"
-msgstr "&Skjul vindauge"
+msgstr "Skjul &vindauge"
 
 #: bnpview.cpp:331
 msgid "&Export to HTML..."
-msgstr "&Eksporter til HTML …"
+msgstr "Eksporter til &HTML …"
 
 #: bnpview.cpp:333
 msgid "K&Notes"
@@ -634,7 +634,7 @@ msgstr "Merk alle notat"
 
 #: bnpview.cpp:355
 msgid "U&nselect All"
-msgstr "&Fjern all merking"
+msgstr "&Fjern merking"
 
 #: bnpview.cpp:357
 msgid "Unselects all selected notes"
@@ -656,7 +656,7 @@ msgstr "&Rediger …"
 
 #: bnpview.cpp:368
 msgid "&Open"
-msgstr "&Opna"
+msgstr "O&pna"
 
 #: bnpview.cpp:371
 msgid "Open &With..."
@@ -672,7 +672,7 @@ msgstr "&Grupper"
 
 #: bnpview.cpp:380
 msgid "U&ngroup"
-msgstr "&Løys opp gruppe"
+msgstr "Lø&ys opp gruppe"
 
 #: bnpview.cpp:383
 msgid "Move on &Top"
@@ -688,7 +688,7 @@ msgstr "Flytt &ned"
 
 #: bnpview.cpp:389
 msgid "Move on &Bottom"
-msgstr "Flytt &nedst"
+msgstr "Flytt n&edst"
 
 #: bnpview.cpp:405
 msgid "&Text"
@@ -712,27 +712,27 @@ msgstr "&Program"
 
 #: bnpview.cpp:411
 msgid "Import Launcher from &KDE Menu..."
-msgstr "Hent program frå &KDE-menyen …"
+msgstr "Hent frå &KDE-menyen …"
 
 #: bnpview.cpp:412
 msgid "Im&port Icon..."
-msgstr "Im&porter ikon …"
+msgstr "&Importer ikon …"
 
 #: bnpview.cpp:413
 msgid "Load From &File..."
-msgstr "Hent frå &fil …"
+msgstr "Hent frå f&il …"
 
 #: bnpview.cpp:436
 msgid "C&olor from Screen"
-msgstr "&Farge frå skjermen"
+msgstr "F&arge frå skjermen"
 
 #: bnpview.cpp:441
 msgid "Grab Screen &Zone"
-msgstr "Hent skjerm&bilete"
+msgstr "&Skjermbilete"
 
 #: bnpview.cpp:471
 msgid "&New Basket..."
-msgstr "&Ny korg …"
+msgstr "Ny &korg …"
 
 #: bnpview.cpp:473
 msgid "New &Sub-Basket..."
@@ -750,7 +750,7 @@ msgstr "&Ny"
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
-msgstr "&Fjern"
+msgstr "&Slett"
 
 #: bnpview.cpp:489
 msgid ""
@@ -766,15 +766,15 @@ msgstr "&Lås"
 
 #: bnpview.cpp:501
 msgid "&Filter"
-msgstr "&Filtrer"
+msgstr "F&iltrer"
 
 #: bnpview.cpp:505
 msgid "Filter all &Baskets"
-msgstr "Filtrer alle &korger"
+msgstr "Filtrer &alle korger"
 
 #: bnpview.cpp:509
 msgid "&Reset Filter"
-msgstr "&Fjern filter"
+msgstr "F&jern filter"
 
 #: bnpview.cpp:514
 msgid "&Previous Basket"
@@ -914,11 +914,11 @@ msgstr "<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?<
 
 #: bnpview.cpp:1562
 msgid "Remove Basket"
-msgstr "Fjern korg"
+msgstr "Slett korg"
 
 #: bnpview.cpp:1564
 msgid "&Remove Basket"
-msgstr "&Fjern korg"
+msgstr "&Slett korg"
 
 #: bnpview.cpp:1575
 msgid ""
@@ -1174,7 +1174,7 @@ msgstr "KIconDialogUI"
 #: kicondialogui.cpp:109 rc.cpp:72
 #, no-c-format
 msgid "Fi&lter:"
-msgstr "Fi&lter:"
+msgstr "&Filter:"
 
 #. i18n: file kicondialogui.ui line 160
 #: kicondialogui.cpp:111 rc.cpp:78
@@ -1236,16 +1236,16 @@ msgid ""
 "or dislike and click Send."
 msgstr ""
 "Kvar gong du har ei spesielt bra eller frustrerandes oppleving, kan du trykkja "
-"på den tilsvarande handa rett nedanfor tittellinja for å senda ei kort "
-"tilbakemelding på kva du likte eller mislikte – rett til programutviklaren."
+"på den tilsvarande handa rett nedanfor tittel­linja for å senda ei kort "
+"tilbake­melding på kva du likte eller mislikte – rett til program­utviklaren."
 
 #: likeback.cpp:174
 msgid ""
 "Follow the same principle to quickly report a bug: just click the bug icon "
 "in the top-right corner of the window, describe it and click Send."
 msgstr ""
-"Du gjer det same om du vil melda frå om ein feil: Berre klikk på feilikonet "
-"øvst til høgre i vindauget, skriv inn feilrapporten og trykk «Send»."
+"Du gjer det same om du vil melda frå om ein feil: Berre klikk på feil­ikonet "
+"øvst til høgre i vindauget, skriv inn feil­rapporten og trykk «Send»."
 
 #: likeback.cpp:176
 msgid "Examples:"
@@ -1390,7 +1390,7 @@ msgstr "Tilbakemelding sendt"
 
 #: linklabel.cpp:560
 msgid "I&talic"
-msgstr "K&ursiv"
+msgstr "&Kursiv"
 
 #: linklabel.cpp:564
 msgid "&Bold"
@@ -1422,7 +1422,7 @@ msgstr "Fa&rge:"
 
 #: linklabel.cpp:588
 msgid "&Mouse hover color:"
-msgstr "&Farge med peikar over:"
+msgstr "Farge &med peikar over:"
 
 #: linklabel.cpp:596
 msgid "&Icon size:"
@@ -1446,7 +1446,7 @@ msgstr "Trippel ikonstorleik"
 
 #: linklabel.cpp:605
 msgid "&Preview:"
-msgstr "&Førehandsvising:"
+msgstr "F&ørehandsvising:"
 
 #: linklabel.cpp:607
 msgid "You disabled preview but still see images?"
@@ -1467,9 +1467,8 @@ msgid ""
 "\"Image or animation\" in the \"View Content of Added Files for the "
 "Following Types\" group.</p>"
 msgstr ""
-"<p>Dette er normalt, då det finst fleire forskjellige typar notat.<br>Denne innstillinga gjeld berre filer og lokallenkje-notat.<br>Bileta du ser er biletnotat, ikkje filnotat.<br>Filnotat er generelle dokument, mens biletnotat er bilete du kan teikna på.</p><p>Når du drar filer til ei korg, vil %1 automatisk finna ut kva filtype dei er, og visa innhaldet i filene."
-"<br>For eksempel vert det laga bilet- og tekstnotat når du drar biletfiler og tekstfiler.<br>For filtypar som %2 ikkje kjenner til, vert dei vist som generelle filikon med berre eit ikon eller ei førehandsvising og eit filnamn."
-"</p><p>Viss du ikkje ønskjer at programmet skal laga notat avhengig av innhaldet i filene, kan du gå til «Generelt»-kategorien og fjerna krysset for «Bilete og animasjonar» i «Vis innhald nye filer for følgjande typar»-gruppa.</p>"
+"<p>Dette er normalt, då det finst fleire forskjellige typar notat. Denne inn­stillinga gjeld berre filer og lokal­lenkje­notat. Bileta du ser er bilet­notat, ikkje fil­notat. Fil­notat er generelle dokument, mens bilet­notat er bilete du kan teikna på.</p><p>Når du dreg filer til ei korg, vil %1 auto­matisk finna ut kva fil­type dei er, og visa inn­haldet i filene. For eksempel vert det laga bilet- og tekstnotat når du dreg bilet­filer og tekst­filer. For filtypar som %2 ikkje kjenner til, vert dei vist som generelle fil­ikon med berre eit ikon eller ei føre­hands­vising og eit fil­namn."
+"</p><p>Viss du ikkje ønskjer at programmet skal laga notat avhengig av inn­haldet i filene, kan du gå til «Generelt»-kategorien og fjerna krysset for «Bilete og animasjonar» under overskrifta «Vis innhald av filer av følgjande typa».</p>"
 
 #: linklabel.cpp:626
 msgid "Example"
@@ -1512,7 +1511,7 @@ msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session. If you end your session while the application is still running, "
 "the application will be reloaded the next time you log in.</p>"
-msgstr "<p>Merk at du ikkje treng avslutta programmet kvar gong du loggar ut. Viss du loggar ut og programmet ikkje er avslutta, vert det automatisk starta opp att når du loggar deg inn att.</p>"
+msgstr "<p>Merk at du ikkje treng avslutta programmet kvar gong du loggar ut. Viss du loggar ut og programmet ikkje er avslutta, vert det auto­matisk starta opp att når du loggar deg inn att.</p>"
 
 #: mainwindow.cpp:323
 msgid "Quit Confirm"
@@ -1548,7 +1547,7 @@ msgstr "Flytande"
 
 #: newbasketdialog.cpp:202
 msgid "&Template:"
-msgstr "M&al:"
+msgstr "&Mal:"
 
 #: newbasketdialog.cpp:211
 msgid "(Baskets)"
@@ -1556,7 +1555,7 @@ msgstr "(Korger)"
 
 #: newbasketdialog.cpp:212
 msgid "C&reate in:"
-msgstr "&Lag i:"
+msgstr "Legg &i:"
 
 #: newbasketdialog.cpp:213
 msgid "How is it useful?"
@@ -1571,8 +1570,8 @@ msgid ""
 "li><li>Making group of baskets to export together (to eg. email them to "
 "people).</li></ul>"
 msgstr ""
-"<p>Når du lagar ei hierarki ved å leggja korger inni andre korger, kan du betre organisera notata dine:</p><ul><li>Grupper korger er tema eller emne.</li><li>Grupper korger i mapper for forskjellige prosjekt.</"
-"li><li>Lag inndelingar med underkorger som representerer kapittel eller sider.</"
+"<p>Når du lagar eit hierarki ved å leggja korger inni andre korger, kan du betre organisera notata dine:</p><ul><li>Grupper korger etter tema eller emne.</li><li>Grupper korger i forskjellige mapper for forskjellige prosjekt.</"
+"li><li>Lag inn­delingar med under­korger som representerer kapittel eller sider.</"
 "li><li>Lag grupper med korger som skal eksporterast saman (for eksempel for å senda dei som e-postvedlegg til andre).</li></ul>"
 
 #: newbasketdialog.cpp:305
@@ -1934,7 +1933,7 @@ msgid ""
 "Do you want to open it with an application that understands it?"
 msgstr ""
 "Bilete kan for tida ikkje redigerast her. (Den neste versjonen av programmet "
-"vil innehelda eit biletredigeringsprogram.)\n"
+"vil innehelda eit bilet­redigerings­program.)\n"
 "Vil du opna biletet i eit program som kan lesa det?"
 
 #: noteedit.cpp:348
@@ -1963,7 +1962,7 @@ msgid ""
 "You however can drag or copy the note into an application that understands "
 "it."
 msgstr ""
-"Denne notattypen er ukjend, og kan ikkje redigerast her.\n"
+"Denne notat­typen er ukjend, og kan ikkje redigerast her.\n"
 "Men du kan likevel dra eller kopiera notatet til eit program som forstår "
 "formatet."
 
@@ -2042,7 +2041,7 @@ msgid ""
 "understand it.</p><p>If you want the support of these data, please contact "
 "developer or visit the <a href=\"http://basket.kde.org/dropdb.php\">BasKet "
 "Drop Database</a>.</p>"
-msgstr "<p>%1 støttar ikkje datatypen du har komme med.<br>Programmet har derfor oppretta eit generelt notat, som du kan dra eller kopiera til eit program som forstår det.</p><p>Viss du ønskjer at programmet skal støtta denne typen data, kan du kontakta programutviklaren eller vitja <a href=\"http://basket.kde.org/dropdb.php\">Datatype-basen for BasKet</a>.</p>"
+msgstr "<p>%1 støttar ikkje data­typen du har komme med.<br>Programmet har derfor oppretta eit generelt notat, som du kan dra eller kopiera til eit program som forstår det.</p><p>Viss du ønskjer at programmet skal støtta denne typen data, kan du kontakta program­utviklaren eller vitja <a href=\"http://basket.kde.org/dropdb.php\">datatype-basen for programet</a>.</p>"
 
 #: notefactory.cpp:449
 msgid "Unsupported MIME Type(s)"
@@ -2164,7 +2163,7 @@ msgstr "&Legg i systemtrauet"
 
 #: settings.cpp:349
 msgid "&Use balloons to report results of global actions"
-msgstr "&Vis resultatet av globale handling i ballonghjelp"
+msgstr "&Vis resultat av globale handling i ballonghjelp"
 
 #: settings.cpp:353
 msgid "Ani&mate changes in baskets"
@@ -2172,15 +2171,15 @@ msgstr "&Animer endringar i korger"
 
 #: settings.cpp:357
 msgid "Sho&w tooltips in baskets"
-msgstr "Vi&s verktøytips i korger"
+msgstr "V&is verktøytips i korger"
 
 #: settings.cpp:361
 msgid "Ask confirmation before &deleting notes"
-msgstr "Spør før &sletting av notat"
+msgstr "&Spør før sletting av notat"
 
 #: settings.cpp:365
 msgid "Bi&g notes"
-msgstr "&Store notat"
+msgstr "S&tore notat"
 
 #: settings.cpp:370
 msgid "E&xport tags in texts"
@@ -2195,12 +2194,12 @@ msgid ""
 "It does apply when you copy and paste, or drag and drop notes to a text "
 "editor."
 msgstr ""
-"Det vert ikkje brukt når du kopierer og lim in eller dreg notat til eit "
-"skriveprogram."
+"Tekst­­ekvivalenten vert brukt når du kopierer og lim inn eller dreg notat til eit "
+"skrive­­program."
 
 #: settings.cpp:378
 msgid "If enabled, this property lets you paste the tags as textual equivalents."
-msgstr "Lèt deg lima inn merkelappar som reintekstekvivalentar."
+msgstr "Lèt deg lima inn merke­lappar som rein­tekst­ekvivalentar."
 
 #: settings.cpp:379 tagsedit.cpp:488
 msgid ""
@@ -2214,7 +2213,7 @@ msgstr ""
 
 #: settings.cpp:389
 msgid "Use GnuPG agent for &private/public key protected baskets"
-msgstr "B&ruk GnuPG-agent for korger verna med privat-/offentlegnøkkel"
+msgstr "Br&uk GnuPG agent for korger verna med privat-/offentlegnøkkel"
 
 #: settings.cpp:398
 msgid "On left"
@@ -2262,7 +2261,7 @@ msgstr "&HTML-side"
 
 #: settings.cpp:433
 msgid "&Image or animation"
-msgstr "&Bilete eller animasjon"
+msgstr "Bilete &og animasjonar"
 
 #: settings.cpp:434
 msgid "&Sound"
@@ -2282,7 +2281,7 @@ msgstr "pikslar"
 
 #: settings.cpp:460
 msgid "&Visualize..."
-msgstr "&Visualiser …"
+msgstr "&Vel &direkte …"
 
 #: settings.cpp:548
 msgid "Customize look of file, sound, link and launcher notes:"
@@ -2343,7 +2342,7 @@ msgstr "Opna biletnotat med:"
 
 #: settings.cpp:620
 msgid "Open a&nimation notes with a custom application:"
-msgstr "Opna &animasjonsnotat med sjølvvald program:"
+msgstr "Opna ani&masjonsnotat med sjølvvald program:"
 
 #: settings.cpp:621
 msgid "Open animation notes with:"
@@ -2395,7 +2394,7 @@ msgid ""
 "browser (eg. Mozilla Firefox or Epiphany or...).</p><p>For a more fine-"
 "grained configuration (like openning only Web pages in your Web browser), "
 "read the second help link.</p>"
-msgstr "<p>Når du opnar nettadresser, vert desse opna i forskjellige program, avhengig av innhaldet til adressa (ei nettside, eit bilete, eit PDF-dokument eller anna), akkurat som om dei låg på maskina di.</p><p>Slik gjer du viss du vil at alle nettadressene skal opnast i nettlesaren din. Dette er nyttig om du ikkje brukar KDE (viss du brukar GNOME eller XFCE, for eksempel).</p><ul><li>Opna KDE-kontrollsenteret (viss det ikkje er tilgjengeleg, prøv å skriva «kcontrol» frå kommandolinja).</li><li>Gå til «Komponentar» og så til «Komponentveljar».</li><li>Vel «Nettlesar», kryss av for «i følgjande nettlesar» og skriv inn namnet på nettlesaren (eksempelvis «firefox» eller «epiphany»).</li></ul><p>Når du no trykkjer på ei lenkje som startar med «http://…», vert ho opna i nettlesaren din (eksempelvis Mozilla Firefox eller Epiphany).</p><p>Sjå den andre hjelpelenkja for eit meir fininndelt oppsett, der for eksempel berre nettsider vert opna i nettlesaren.</p>"
+msgstr "<p>Når du opnar nett­adresser, vert desse opna i forskjellige program, avhengig av inn­haldet til adressa (ei nett­side, eit bilete, eit PDF-dokument eller anna), akkurat som om dei låg på maskina di.</p><p>Slik gjer du viss du vil at alle nett­adressene skal opnast i nett­lesaren din. Dette er nyttig om du ikkje brukar KDE (viss du brukar GNOME eller XFCE, for eksempel).</p><ul><li>Opna KDE-kontroll­senteret (viss det ikkje er tilgjengeleg, prøv å skriva «kcontrol» frå kommando­linja).</li><li>Gå til «Komponentar» og så til «Komponentveljar».</li><li>Vel «Nettlesar», kryss av for «i følgjande nettlesar» og skriv inn kommando­namnet på nett­lesaren (eksempelvis «firefox» eller «epiphany»).</li></ul><p>Når du no trykkjer på ei lenkje som startar med «http://…», vert ho opna i nett­lesaren din (eksempel­vis Mozilla Firefox eller Epiphany).</p><p>Sjå den andre hjelpe­lenkja for eit meir fin­inndelt opp­sett, der for eksempel berre nett­sider vert opna i nett­lesaren.</p>"
 
 #: settings.cpp:690
 msgid "How to change the applications used to open files and links?"
@@ -2416,19 +2415,17 @@ msgid ""
 "li><li>In the tree, expand \"text\" and click \"html\";</li><li>In the "
 "applications list, add your Web browser as the first entry;</li><li>Do the "
 "same for the type \"application -> xhtml+xml\".</li></ul>"
-msgstr "<p>Slik gjer du viss du vil velja eit eige program kvar filtype. Dette gjeld og nettlenkjer viss du vel å alltid opna dei i ein nettlesar (sjå den første hjelpelenkja). Standardinnstillingane bør vera gode nok, men dette tipset er nyttig viss du brukar GNOME, XFCE eller eit anna miljø enn KDE.</p><p>Dette er eit eksempel på korleis du kan opna HTML-sider i nettlesaren (og halda fram med å bruka andre program for andre adresser eller filer). Gjenta desse stega for kvar filtype som du vil opna i eit eige program.</p><ul><li>Opna KDE-kontrollsenteret (viss det ikkje er tilgjengeleg, prøv å skriva «kcontrol» frå kommandolinja).</li><li>Gå til «Komponentar» og så til «Filtilknytingar».</li><li>Utvid «text» og trykk på «html».</li><li>Legg så nettlesaren din som første oppføring i programlista.</li><li>Gjer så det same for typen «application | xhtml+xml».</li></ul>"
+msgstr "<p>Slik gjer du viss du vil bruka eit eige program kvar filtype. Dette gjeld òg nett­lenkjer om du vel å alltid opna dei i ein nett­lesar (sjå den første hjelpe­lenkja). Standard­innstillingane bør vera gode nok, men dette tipset er nyttig viss du brukar GNOME, XFCE eller eit anna miljø enn KDE.</p><p>Her er eit eksempel på korleis du kan opna HTML-sider i nett­lesaren (og halda fram med å bruka andre program for andre adresser og filer). Gjenta desse stega for kvar fil­type som du vil opna i eit eige program.</p><ul><li>Opna KDE-kontroll­senteret (viss det ikkje er tilgjengeleg, prøv å skriva «kcontrol» frå kommando­linja).</li><li>Gå til «Komponentar», og så til «Filtilknytingar».</li><li>Utvid «text» og trykk på «html».</li><li>Legg nett­lesaren din som første opp­føring i program­lista.</li><li>Gjer så det same for typen «application / xhtml+xml».</li></ul>"
 
 #: settings.cpp:761
 msgid ""
 "This page groups non-standard options that, once learned,\n"
 "can be very powerful and time saving in the context of %1:"
-msgstr ""
-"Denne sida inneheld ymse ikkje-standard val som,\n"
-"når du har lært å bruka, kan vera veldig kraftige og tidsparande"
+msgstr "Denne sida inneheld ymse ikkje-standard val som, når du har lært å bruka dei, kan gjere bruken av %1 mykje meir effektiv:"
 
 #: settings.cpp:767
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr "&Grupper nye notat ved klikking til høgre på innsetjingslinja"
+msgstr "&Grupper nye notat ved å klikka til høgre på innsetjingslinja"
 
 #: settings.cpp:770
 msgid "How to group a new note?"
@@ -2439,7 +2436,7 @@ msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
-msgstr "<p>Lèt deg ikkje berre setja inn notat ved markørplasseringa, men lèt deg òg gruppera eit nytt notat med notatet nedanfor:</p>"
+msgstr "<p>Dette valet lèt deg ikkje berre setja inn notat ved markør­plasseringa, men lèt deg òg gruppera eit nytt notat med notatet nedan­for:</p>"
 
 #: settings.cpp:773
 msgid ""
@@ -2448,8 +2445,8 @@ msgid ""
 "<br>Click on the <b>right</b> to <b>group</b> a note, with the one <b>below "
 "or above</b>, depending on where your mouse is.</p>"
 msgstr ""
-"<p>Plasser peikaren mellom notata der du vil leggja til eit nytt.<br>Trykk til <b>venstre</b> for midtmerket til innsetjingslinja for å <b>setja inn</b> eit notat."
-"<br>Trykk til <b>høgre</b> for å <b>gruppera</b> eit notat med notatet <b>ovanfor eller nedanfor</b>, avhengig av kor peikaren er.</p>"
+"<p>Plasser peikaren mellom notata der du vil leggja til eit nytt.<br>Trykk til <b>venstre</b> for midt­merket til innsetjingslinja for å <b>setja inn</b> eit notat."
+"<br>Trykk til <b>høgre</b> for å <b>gruppera</b> eit notat med notatet <b>ovan­for eller nedan­for</b>, avhengig av kor peikaren er.</p>"
 
 #: settings.cpp:786
 msgid "Do nothing"
@@ -2457,11 +2454,11 @@ msgstr "Ikkje gjer noko"
 
 #: settings.cpp:787
 msgid "Paste clipboard"
-msgstr "Lim inn utklippstavle"
+msgstr "Lim inn frå utklippstavle"
 
 #: settings.cpp:792
 msgid "Insert launcher note"
-msgstr "Set inn startarnotat"
+msgstr "Set inn programnotat"
 
 #: settings.cpp:794
 msgid "&Shift+middle-click:"
@@ -2477,7 +2474,7 @@ msgstr "Systemtrauikon"
 
 #: settings.cpp:806
 msgid "Show c&urrent basket icon in system tray icon"
-msgstr "Vis ikon for &gjeldande korg i systemtrauet"
+msgstr "Vis &ikon for gjeldande korg i systemtrauet"
 
 #: settings.cpp:814
 msgid "H&ide main window when mouse goes out of it for"
@@ -2489,7 +2486,7 @@ msgstr " tidels sekund"
 
 #: settings.cpp:823
 msgid "Show &main window when mouse hovers over the system tray icon for"
-msgstr "Vis &hovudvindauget når muspeikaren er over systemtrauikonet i"
+msgstr "&Vis hovudvindauget når muspeikaren er over systemtrauikonet i"
 
 #: softwareimporters.cpp:44
 msgid "Import Hierarchy"
@@ -2734,7 +2731,7 @@ msgstr "Tilpass merkelappar"
 
 #: tagsedit.cpp:333
 msgid "Ne&w Tag"
-msgstr "&Ny merkelapp"
+msgstr "Ny &merkelapp"
 
 #: tagsedit.cpp:334
 msgid "New St&ate"
@@ -2764,7 +2761,7 @@ msgstr "&Snarveg:"
 
 #: tagsedit.cpp:387
 msgid "&Inherited by new sibling notes"
-msgstr "&Arva av søskennotat"
+msgstr "A&rva av søskennotat"
 
 #: tagsedit.cpp:398 tagsedit.cpp:1005 tagsedit.cpp:1021
 msgid "State"
@@ -2802,27 +2799,27 @@ msgstr "&Farge:"
 
 #: tagsedit.cpp:471
 msgid "&Font:"
-msgstr "Skri&ft:"
+msgstr "S&krift:"
 
 #: tagsedit.cpp:474
 msgid "&Size:"
-msgstr "&Storleik:"
+msgstr "St&orleik:"
 
 #: tagsedit.cpp:477
 msgid "Te&xt equivalent:"
-msgstr "&Tekstekvivalent:"
+msgstr "Tekstek&vivalent:"
 
 #: tagsedit.cpp:487
 msgid ""
 "If filled, this property lets you paste this tag or this state as textual "
 "equivalent."
 msgstr ""
-"Viss dette feltet inneheld tekst, kan du lima inn merkelappen eller "
-"tilstanden som reintekst."
+"Viss feltet inneheld tekst, kan du lima inn merke­lappen eller "
+"til­standen som rein­tekst."
 
 #: tagsedit.cpp:496
 msgid "On ever&y lines"
-msgstr "På &kvar linje"
+msgstr "&På kvar linje"
 
 #: tagsedit.cpp:501
 msgid "What does it mean?"
@@ -2833,7 +2830,7 @@ msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every lines of the note."
 msgstr ""
-"Når eit notat har fleire linjer, kan du velja å visa merkelappen eller "
+"Når eit notat har fleire linjer, kan du velja å visa merke­lappen eller "
 "tilstanden på anten første eller på alle linjene til notatet."
 
 #: tagsedit.cpp:504
