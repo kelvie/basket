@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2006-08-12 18:27+0200\n"
-"PO-Revision-Date: 2006-08-17 22:29+0200\n"
+"PO-Revision-Date: 2006-08-17 23:03+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -924,15 +924,15 @@ msgstr "&Slett korg"
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
-msgstr "<qt><b>%1</b> inneheld desse korgene.<br>Vil du òg fjerna desse?</qt>"
+msgstr "<qt><b>%1</b> inneheld desse korgene.<br>Vil du òg sletta dei?</qt>"
 
 #: bnpview.cpp:1578
 msgid "Remove Child Baskets"
-msgstr "Fjern underkorger"
+msgstr "Slett underkorger"
 
 #: bnpview.cpp:1580
 msgid "&Remove Child Baskets"
-msgstr "&Fjern underkorger"
+msgstr "&Slett underkorger"
 
 #: bnpview.cpp:1714
 msgid "Clipboard content pasted to basket <i>%1</i>"
