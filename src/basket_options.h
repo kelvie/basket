@@ -33,7 +33,7 @@ KCmdLineOptions basket_options[] =
 	{ "h", 0, 0 },
 	{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
 	{ "k", 0, 0 },
-	{ "use-dr-konquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
+	{ "use-drkonquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
 	{ 0, 0, 0 }
 };
 

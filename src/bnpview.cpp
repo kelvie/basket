@@ -1939,7 +1939,7 @@ void BNPView::handleCommandLine()
 
 	/* Crash Handler to Mail Developers when Crashing: */
 #ifndef BASKET_USE_DRKONQI
-	if (!args->isSet("use-dr-konquy"))
+	if (!args->isSet("use-drkonquy"))
 		KCrash::setCrashHandler(Crash::crashHandler);
 #endif
 }
