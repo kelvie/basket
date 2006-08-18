@@ -180,7 +180,6 @@ void BNPView::onFirstShow()
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
-	LikeBack::setAllowFeatureWishes(true);
 //	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
 
 	// In late init, because we need kapp->mainWidget() to be set!

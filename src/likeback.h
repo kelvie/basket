@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Sabastien Laout                                 *
+ *   Copyright (C) 2006 by Sebastien Laout                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,14 +30,14 @@ class QPushButton;
 class KProcess;
 
 /**
-  * @author S�astien Laot <slaout@linux62.org>
+  * @author Sebastien Laout <slaout@linux62.org>
   */
 class LikeBack : public QWidget
 {
   Q_OBJECT
   public:
-	enum Button { ILike = 0x01, IDoNotLike = 0x02, IFoundABug = 0x04, Configure = 0x10,
-	              AllButtons = ILike | IDoNotLike | IFoundABug | Configure,
+	enum Button { ILike = 0x01, IDoNotLike = 0x02, IFoundABug = 0x04, IWishAFeature = 0x10, Configure = 0x20,
+	              AllButtons = ILike | IDoNotLike | IFoundABug | IWishAFeature | Configure,
 	              DefaultButtons = ILike | IDoNotLike | Configure };
 	enum WindowListing { NoListing, WarnUnnamedWindows, AllWindows };
 	LikeBack(Button buttons = DefaultButtons);
@@ -45,14 +45,12 @@ class LikeBack : public QWidget
 	static void showInformationMessage();
 	static LikeBack* instance();
 	static QString customLanguageMessage();
-	static bool allowFeatureWishes();
 	static QString  hostName();
 	static QString  remotePath();
 	static Q_UINT16 hostPort();
 	static void setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort = 80);
 	static void setWindowNamesListing(WindowListing windowListing);
 	static void setCustomLanguageMessage(const QString &message);
-	static void setAllowFeatureWishes(bool allow);
 	static bool enabled();
 	static void disable();
 	static void enable();
@@ -66,11 +64,13 @@ class LikeBack : public QWidget
 	static void init(KConfig* config, KAboutData* about, Button buttons = DefaultButtons);
 	static QString activeWindowPath();
 	static KAboutData* about();
+	Button shownButtons();
   private slots:
 	void autoMove();
 	void iLike();
 	void iDoNotLike();
 	void iFoundABug();
+	void iWishAFeature();
 	void configure();
 	void showDialog(Button button);
 	void openConfigurePopup();
@@ -86,6 +86,7 @@ class LikeBack : public QWidget
 	QToolButton *m_likeButton;
 	QToolButton *m_dislikeButton;
 	QToolButton *m_bugButton;
+	QToolButton *m_wishButton;
 	QToolButton *m_configureButton;
 	QString      m_fetchedEmail;
 	KProcess    *m_process;
@@ -93,7 +94,6 @@ class LikeBack : public QWidget
 	static QString        s_remotePath;
 	static Q_UINT16       s_hostPort;
 	static QString        s_customLanguageMessage;
-	static bool           s_allowFeatureWishes;
 	static WindowListing  s_windowListing;
 	static LikeBack      *s_instance;
 	static int            s_disabledCount;
