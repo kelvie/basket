@@ -1094,6 +1094,8 @@ bool Basket::save()
 	{
 		DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to save</font>!";
 		return false;
+	} else {
+		postMessage(i18n("Basket saved."));
 	}
 	return true;
 }
