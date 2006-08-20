@@ -111,7 +111,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	statusBar()->show();
 	statusBar()->setSizeGripEnabled(true);
 
-	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*/false);
+	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
 
 	m_actShowToolbar->setChecked(   toolBar()->isShown()   );
 	m_actShowStatusbar->setChecked( statusBar()->isShown() );
@@ -126,13 +126,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupGlobalShortcuts()
 {
-	/* Global shortcuts */
-	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
+// FIXME: Petri: why did you added those lines there? I moved them back to BNPView::setupGlobalShortcuts()
 
-	globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
-							i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
-							Qt::CTRL+Qt::SHIFT+Qt::Key_W, Qt::CTRL+Qt::SHIFT+Qt::Key_W,
-							this, SLOT(changeActive()),             true, true );
+// 	/* Global shortcuts */
+// 	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
+//
+// 	globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
+// 							i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
+// 							Qt::CTRL+Qt::SHIFT+Qt::Key_W, Qt::CTRL+Qt::SHIFT+Qt::Key_W,
+// 							this, SLOT(changeActive()),             true, true );
 }
 
 void MainWindow::setupActions()

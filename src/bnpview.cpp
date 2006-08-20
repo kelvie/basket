@@ -194,9 +194,18 @@ void BNPView::setupGlobalShortcuts()
 	/* Global shortcuts */
 	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
 
+	// Ctrl+Shift+W only works when started standalone:
+	QWidget *basketMainWindow = (QWidget*) (Global::bnpView->parent()->inherits("MainWindow") ? Global::bnpView->parent() : 0);
+
+	if (basketMainWindow) {
+		globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
+							i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
+							Qt::CTRL + Qt::SHIFT + Qt::Key_W, Qt::CTRL + Qt::SHIFT + Qt::Key_W,
+							basketMainWindow, SLOT(changeActive()),           true, true );
+	}
 	globalAccel->insert( "global_paste", i18n("Paste clipboard contents in current basket"),
 						 i18n("Allows you to paste clipboard contents in the current basket without having to open main window."),
-						 Qt::CTRL+Qt::ALT+Qt::Key_V, Qt::CTRL+Qt::ALT+Qt::Key_V,
+						 Qt::CTRL + Qt::SHIFT + Qt::Key_V, Qt::CTRL + Qt::SHIFT + Qt::Key_V,
 						 Global::bnpView, SLOT(globalPasteInCurrentBasket()), true, true );
 	globalAccel->insert( "global_show_current_basket", i18n("Show current basket name"),
 						 i18n("Allows you to know basket is current without opening the main window."),
@@ -204,7 +213,7 @@ void BNPView::setupGlobalShortcuts()
 						 Global::bnpView, SLOT(showPassiveContentForced()), true, true );
 	globalAccel->insert( "global_paste_selection", i18n("Paste selection in current basket"),
 						 i18n("Allows you to paste clipboard selection in the current basket without having to open main window."),
-						 Qt::CTRL+Qt::ALT+Qt::Key_S, Qt::CTRL+Qt::ALT+Qt::Key_S,
+						 Qt::CTRL + Qt::SHIFT + Qt::Key_S, Qt::CTRL + Qt::SHIFT + Qt::Key_S,
 						 Global::bnpView, SLOT(pasteSelInCurrentBasket()),  true, true );
 	globalAccel->insert( "global_new_basket", i18n("Create a new basket"),
 						 i18n("Allows you to create a new basket without having to open main window (you then can use the other global shortcuts to add a note, paste clipboard or paste selection in this new basket)."),
