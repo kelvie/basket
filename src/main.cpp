@@ -76,7 +76,21 @@ int main(int argc, char *argv[])
 	MainWindow* win = new MainWindow();
 	Global::bnpView->handleCommandLine();
 	app.setMainWidget(win);
-	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
+//	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
+//		win->show();
+
+	if (Settings::useSystray()) {
+		// The user wanted to not show the window (but it is already hidden by default, so we do nothing):
+		if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
+			;
+		// When the application is restored by KDE session, restore its state:
+		else if (app.isRestored())
+			win->setShown(!Settings::startDocked());
+		// Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
+		else
+			win->show();
+	} else
+		// No system tray icon: always show:
 		win->show();
 
 	// Self-test of the presence of basketui.rc (the only requiered file after basket executable)
