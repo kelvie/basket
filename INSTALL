@@ -80,7 +80,7 @@ a Bourne-compatible shell, you can do that on the command line like
 this:
      CC=c89 CFLAGS=-O2 LIBS=-lposix ./configure
 
-Or on systems that have the `env' program, you can do it like this:
+Alternatively, on systems that have the `env' program, you can do it like this:
      env CPPFLAGS=-I/usr/local/include LDFLAGS=-s ./configure
 
 Compiling For Multiple Architectures
