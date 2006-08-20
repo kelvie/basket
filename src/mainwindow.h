@@ -65,7 +65,6 @@ class MainWindow : public KMainWindow
 	MainWindow(QWidget *parent = 0, const char *name = 0);
 	~MainWindow();
   private:
-	void setupGlobalShortcuts();
 	void setupActions();
   public slots:
 	bool askForQuit();

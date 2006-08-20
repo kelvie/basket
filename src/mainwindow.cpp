@@ -106,7 +106,6 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
 	setCentralWidget(m_baskets);
 
-	setupGlobalShortcuts();
 	setupActions();
 	statusBar()->show();
 	statusBar()->setSizeGripEnabled(true);
@@ -122,19 +121,6 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 MainWindow::~MainWindow()
 {
 	delete m_settings;
-}
-
-void MainWindow::setupGlobalShortcuts()
-{
-// FIXME: Petri: why did you added those lines there? I moved them back to BNPView::setupGlobalShortcuts()
-
-// 	/* Global shortcuts */
-// 	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
-//
-// 	globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
-// 							i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
-// 							Qt::CTRL+Qt::SHIFT+Qt::Key_W, Qt::CTRL+Qt::SHIFT+Qt::Key_W,
-// 							this, SLOT(changeActive()),             true, true );
 }
 
 void MainWindow::setupActions()
@@ -252,8 +238,8 @@ void MainWindow::polish()
 //		          << Settings::mainWindowPosition().x() << ", y=" << Settings::mainWindowPosition().y()
 //		          << ", width=" << Settings::mainWindowSize().width() << ", height=" << Settings::mainWindowSize().height()
 //		          << ")" << std::endl;
-		move(Settings::mainWindowPosition());
-		resize(Settings::mainWindowSize());
+		//move(Settings::mainWindowPosition());
+		//resize(Settings::mainWindowSize());
 	}
 
 	KMainWindow::polish();
@@ -269,19 +255,27 @@ void MainWindow::polish()
 	}
 }
 
-void MainWindow::resizeEvent(QResizeEvent*)
+void MainWindow::resizeEvent(QResizeEvent *event)
 {
 //	std::cout << "Main Window Position: Save size in resizeEvent(width=" << size().width() << ", height=" << size().height() << ") ; isMaximized="
 //	          << (isMaximized() ? "true" : "false") << std::endl;
 	Settings::setMainWindowSize(size());
 	Settings::saveConfig();
+
+	// Added to make it work (previous lines do not work):
+	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+	KMainWindow::resizeEvent(event);
 }
 
-void MainWindow::moveEvent(QMoveEvent*)
+void MainWindow::moveEvent(QMoveEvent *event)
 {
 //	std::cout << "Main Window Position: Save position in moveEvent(x=" << pos().x() << ", y=" << pos().y() << ")" << std::endl;
 	Settings::setMainWindowPosition(pos());
 	Settings::saveConfig();
+
+	// Added to make it work (previous lines do not work):
+	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+	KMainWindow::moveEvent(event);
 }
 
 bool MainWindow::queryExit()

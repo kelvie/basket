@@ -193,7 +193,7 @@ void Settings::loadConfig()
 
 void Settings::saveConfig()
 {
-	std::cout << "Settings::saveConfig()" << std::endl;
+//	std::cout << "Settings::saveConfig()" << std::endl;
 
 	saveLinkLook(LinkLook::soundLook,       "Sound Look"       );
 	saveLinkLook(LinkLook::fileLook,        "File Look"        );
