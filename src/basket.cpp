@@ -1102,6 +1102,7 @@ bool Basket::save()
 
 void Basket::load()
 {
+        fprintf(stderr,"basket is loading\n");
 	// Load only once:
 	if (m_loadingLaunched)
 		return;
@@ -1340,8 +1341,9 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	connect( &m_animationTimer,           SIGNAL(timeout()),   this, SLOT(animateObjects())           );
 	connect( &m_autoScrollSelectionTimer, SIGNAL(timeout()),   this, SLOT(doAutoScrollSelection())    );
 	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())     );
-	connect( &m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimout()) );
-	connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
+	connect( &m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimeout()) );
+        connect( &m_inactivityAutoLockTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoLockTimeout()) );
+        connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
 #ifdef HAVE_LIBGPGME
 	m_gpg = new KGpgMe();
 #endif
@@ -2882,6 +2884,11 @@ void Basket::unlock()
 	QTimer::singleShot( 0, this, SLOT(load()) );
 }
 
+void Basket::inactivityAutoLockTimeout()
+{
+        lock();
+}
+
 void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight)
 {
 	// Start the load the first time the basket is shown:
@@ -2915,9 +2922,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			connect( m_button, SIGNAL( clicked() ), this, SLOT( unlock() ) );
 #endif
 			QLabel* label = new QLabel( m_decryptBox, "label" );
-			QString text = "<b>" + i18n("Password protected basket.") + "</b><br/><br/>";
+			QString text = "<b>" + i18n("Password protected basket.") + "</b><br/>";
 #ifdef HAVE_LIBGPGME
-			label->setText( text + i18n("Press Unlock to view it.") );
+			label->setText( text + i18n("Press Unlock to access it.") );
 #else
 			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(kapp->aboutData()->programName()) );
 #endif
@@ -2929,6 +2936,12 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 
 			QSpacerItem* spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
 			layout->addItem( spacer, 1, 1 );
+
+			label = new QLabel(i18n("<small>To make the basket stay unlocked, change the<br>"
+									"automatic timeout in Settings|General.</small>"),
+							   m_decryptBox);
+			label->setAlignment( int( QLabel::AlignTop ) );
+			layout->addMultiCellWidget( label, 2,2,0,2 );
 
 			m_decryptBox->resize(layout->sizeHint());
 		}
@@ -2946,8 +2959,8 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			m_decryptBox->hide();
 	}
 
-	// Draw notes (but not when it's not loaded yet):
-	Note *note = (m_loaded ? m_firstNote : 0);
+	// Draw notes (but not when it's not loaded or locked yet):
+        Note *note = ((m_loaded || m_locked) ? m_firstNote : 0);
 	while (note) {
 		note->draw(painter, clipRect);
 		note = note->next();
@@ -3543,7 +3556,7 @@ void Basket::contentChangedInEditor()
 	m_inactivityAutoSaveTimer.start(3 * 1000, /*singleShot=*/true);
 }
 
-void Basket::inactivityAutoSaveTimout()
+void Basket::inactivityAutoSaveTimeout()
 {
 	if (m_editor)
 		m_editor->autoSave();
@@ -3624,6 +3637,7 @@ void Basket::closeEditorDelayed()
 
 bool Basket::closeEditor()
 {
+        fprintf(stderr,"Editor is being closed\n");
 	if (!isDuringEdit())
 		return true;
 
@@ -3691,6 +3705,23 @@ bool Basket::closeEditor()
 
 	// Return true if the note is still there:
 	return (note != 0);
+}
+
+void Basket::closeBasket()
+{
+  closeEditor();
+  if (isEncrypted()) {
+	if (Settings::enableReLockTimeout()) {
+	  int seconds = Settings::reLockTimeoutMinutes() * 60;
+	  m_inactivityAutoLockTimer.start(seconds * 1000, /*singleShot=*/true);
+	}
+  }
+}
+
+void Basket::openBasket()
+{
+        if (m_inactivityAutoLockTimer.isActive())
+                m_inactivityAutoLockTimer.stop();
 }
 
 Note* Basket::theSelectedNote()

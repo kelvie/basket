@@ -58,6 +58,7 @@ class GeneralPage : public KCModule
 	public:
 		GeneralPage(QWidget * parent=0, const char * name=0);
 		GeneralPage() {};
+  virtual ~GeneralPage() {}
 
 		virtual void load();
 		virtual void save();
@@ -89,6 +90,9 @@ class GeneralPage : public KCModule
 		QPushButton         *m_pushVisualize;
 
 		QCheckBox           *m_useSystray;
+  
+		QCheckBox           *m_enableReLockTimeoutMinutes;
+		KIntNumInput        *m_reLockTimeoutMinutes;
 };
 
 class NotesPage : public KCModule
@@ -185,6 +189,8 @@ class Settings // FIXME: Distaptch new config events ?
 	static QSize   s_mainWindowSize;
 	static bool    s_showEmptyBasketInfo;
 	static bool    s_blinkedFilter;
+	static bool    s_enableReLockTimeout;
+	static int     s_reLockTimeoutMinutes;
 	/** Note Addition */
 	static int     s_newNotesPlace;        // 0:OnTop ; 1:OnBottom ; 2:AtCurrentNote
 	static int     s_viewTextFileContent;
@@ -225,6 +231,8 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline bool    exportTextTags()       { return s_exportTextTags;       }
 	static inline bool    useGnuPGAgent()        { return s_useGnuPGAgent;        }
 	static inline bool    blinkedFilter()        { return s_blinkedFilter;        }
+	static inline bool    enableReLockTimeout()  { return s_enableReLockTimeout;  }
+	static inline int     reLockTimeoutMinutes() { return s_reLockTimeoutMinutes; }
 	static inline bool    useSystray()           { return s_useSystray;           }
 	static inline bool    showIconInSystray()    { return s_showIconInSystray;    }
 	static inline bool    startDocked()          { return s_startDocked;          }
@@ -312,6 +320,8 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline void setUseGnuPGAgent(bool yes)               { s_useGnuPGAgent        = yes;         }
 	static inline void setPlayAnimations(bool play)             { s_playAnimations       = play;        }
 	static inline void setBlinkedFilter(bool blinked)           { s_blinkedFilter        = blinked;     }
+	static inline void setEnableReLockTimeout(bool yes)         { s_enableReLockTimeout  = yes;     }
+	static inline void setReLockTimeoutMinutes(int minutes)     { s_reLockTimeoutMinutes = minutes;     }
 	static inline void setStartDocked(bool docked)              { s_startDocked          = docked;      }
 	static inline void setMiddleAction(int action)              { s_middleAction         = action;      }
 	static inline void setGroupOnInsertionLine(bool yes)        { s_groupOnInsertionLine = yes;         }

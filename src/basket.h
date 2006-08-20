@@ -301,13 +301,16 @@ class Basket : public QScrollView, public QToolTip
 #ifdef HAVE_LIBGPGME
 	KGpgMe* m_gpg;
 #endif
-	void enableActions();
+        QTimer      m_inactivityAutoLockTimer;
+        void enableActions();
 
   private slots:
 	void loadNotes(const QDomElement &notes, Note *parent);
 	void saveNotes(QDomDocument &document, QDomElement &element, Note *parent);
 	void unlock();
-  public slots:
+protected slots:
+        void inactivityAutoLockTimeout();
+public slots:
 	void load();
 	void loadProperties(const QDomElement &properties);
 	void saveProperties(QDomDocument &document, QDomElement &properties);
@@ -537,13 +540,15 @@ class Basket : public QScrollView, public QToolTip
   protected slots:
 	void selectionChangedInEditor();
 	void contentChangedInEditor();
-	void inactivityAutoSaveTimout();
+	void inactivityAutoSaveTimeout();
   public slots:
 	void placeEditor(bool andEnsureVisible = false);
 	void placeEditorAndEnsureVisible();
 	bool closeEditor();
 	void closeEditorDelayed();
 	void updateEditorAppearance();
+        void openBasket();
+        void closeBasket();
 
 /// FILTERING:
   public slots:

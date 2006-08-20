@@ -64,6 +64,8 @@ bool    Settings::s_treeOnLeft           = true;
 bool    Settings::s_filterOnTop          = true;
 int     Settings::s_defImageX            = 300;
 int     Settings::s_defImageY            = 200;
+bool    Settings::s_enableReLockTimeout  = true;
+int     Settings::s_reLockTimeoutMinutes = 0;
 int     Settings::s_newNotesPlace        = 1;
 int     Settings::s_viewTextFileContent  = false;
 int     Settings::s_viewHtmlFileContent  = false;
@@ -128,6 +130,8 @@ void Settings::loadConfig()
 	setExportTextTags(       config->readBoolEntry("exportTextTags",       true)  );
 	setUseGnuPGAgent(        config->readBoolEntry("useGnuPGAgent",        false) );
 	setBlinkedFilter(        config->readBoolEntry("blinkedFilter",        false) );
+	setEnableReLockTimeout(  config->readNumEntry( "enableReLockTimeout",  true)  );
+	setReLockTimeoutMinutes( config->readNumEntry( "reLockTimeoutMinutes", 0)     );
 	setUseSystray(           config->readBoolEntry("useSystray",           true)  );
 	setShowIconInSystray(    config->readBoolEntry("showIconInSystray",    false) );
 	setStartDocked(          config->readBoolEntry("startDocked",          false) );
@@ -215,6 +219,8 @@ void Settings::saveConfig()
 		config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
 #endif
 	config->writeEntry( "blinkedFilter",        blinkedFilter()        );
+	config->writeEntry( "enableReLockTimeout",  enableReLockTimeout()  );
+	config->writeEntry( "reLockTimeoutMinutes", reLockTimeoutMinutes() );
 	config->writeEntry( "useSystray",           useSystray()           );
 	config->writeEntry( "showIconInSystray",    showIconInSystray()    );
 	config->writeEntry( "startDocked",          startDocked()          );
@@ -462,6 +468,21 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 	connect( m_pushVisualize, SIGNAL(clicked()), this, SLOT(visualize()) );
+  
+	// Re-Lock timeout configuration
+	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("Automatically lock protected baskets when closed for"), this);
+	hLay->addWidget(m_enableReLockTimeoutMinutes);
+	m_reLockTimeoutMinutes = new KIntNumInput(this);
+	m_reLockTimeoutMinutes->setMinValue(0);
+	hLay->addWidget(m_reLockTimeoutMinutes);
+	label = new QLabel(i18n("minutes"), this);
+	hLay->addWidget(label);
+	hLay->addStretch();
+	layout->addLayout(hLay);
+	connect(m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect(m_reLockTimeoutMinutes, SIGNAL(valueChanged(int)), this, SLOT(changed()));
+	connect(m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)), m_reLockTimeoutMinutes, SLOT(setEnabled(bool)));
 	// TODO: Other might not be initialized yet
 	//connect( m_useSystray,     SIGNAL(toggled(bool)), gbSys,                  SLOT(setEnabled(bool)) );
 	layout->insertStretch(-1);
@@ -499,6 +520,10 @@ void GeneralPage::load()
 		m_useGnuPGAgent->setEnabled(false);
 	}
 #endif
+	// The correctness of this code depends on the default of enableReLockTimeout
+	// being true - otherwise, the reLockTimeoutMinutes widget is not disabled properly.
+	m_enableReLockTimeoutMinutes->setChecked(Settings::enableReLockTimeout());
+	m_reLockTimeoutMinutes->setValue(Settings::reLockTimeoutMinutes());
 }
 
 void GeneralPage::save()
@@ -525,6 +550,9 @@ void GeneralPage::save()
 
 	Settings::setDefImageX(            m_imgSizeX->value()                 );
 	Settings::setDefImageY(            m_imgSizeY->value()                 );
+  
+	Settings::setEnableReLockTimeout(  m_enableReLockTimeoutMinutes->isChecked());
+	Settings::setReLockTimeoutMinutes(m_reLockTimeoutMinutes->value());
 }
 
 void GeneralPage::defaults()
