@@ -87,6 +87,11 @@ void BasketStatusBar::setupStatusBar()
 	m_lockStatus->setAlignment(Qt::AlignCenter);
 //	addWidget( m_lockStatus, 0, true );
 	connect( m_lockStatus, SIGNAL(clicked()), Global::bnpView, SLOT(lockBasket()) );
+
+	m_savedStatus = new QLabel(parent);
+	m_savedStatus->setPixmap(SmallIcon("filesave.png"));
+	m_savedStatus->setEnabled(false);
+	addWidget( m_savedStatus, 0, true );
 }
 
 void BasketStatusBar::postStatusbarMessage(const QString& text)
@@ -148,6 +153,11 @@ void BasketStatusBar::setSelectionStatus(const QString &s)
 {
 	if(m_selectionStatus)
 		m_selectionStatus->setText(s);
+}
+
+void BasketStatusBar::setUnsavedStatus(bool is_unsaved)
+{
+  m_savedStatus->setEnabled(is_unsaved);
 }
 
 #include "basketstatusbar.moc"

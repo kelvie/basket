@@ -277,6 +277,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void setLockStatus(bool isLocked);
 		void postStatusbarMessage(const QString&);
 		void setStatusBarHint(const QString&);
+		void setUnsavedStatus(bool isUnsaved);
 		void setActive(bool active = true);
 		KActionCollection *actionCollection() { return m_actionCollection; };
 

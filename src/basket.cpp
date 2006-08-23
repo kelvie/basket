@@ -1097,6 +1097,8 @@ bool Basket::save()
 	} else {
 		postMessage(i18n("Basket saved."));
 	}
+
+	Global::bnpView->setUnsavedStatus(false);
 	return true;
 }
 
@@ -3554,6 +3556,8 @@ void Basket::contentChangedInEditor()
 		m_inactivityAutoSaveTimer.stop();
 
 	m_inactivityAutoSaveTimer.start(3 * 1000, /*singleShot=*/true);
+
+	Global::bnpView->setUnsavedStatus(true);
 }
 
 void Basket::inactivityAutoSaveTimeout()

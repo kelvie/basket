@@ -1865,6 +1865,11 @@ void BNPView::setStatusBarHint(const QString &hint)
 	m_statusbar->setStatusBarHint(hint);
 }
 
+void BNPView::setUnsavedStatus(bool isUnsaved)
+{
+	m_statusbar->setUnsavedStatus(isUnsaved);
+}
+
 void BNPView::setActive(bool active)
 {
 //	std::cout << "Main Window Position: setActive(" << (active ? "true" : "false") << ")" << std::endl;

@@ -47,6 +47,7 @@ class BasketStatusBar : public QObject
 	void setSelectionStatus(const QString &s);
 	void setLockStatus(bool isLocked);
 	void setupStatusBar();
+	void setUnsavedStatus(bool isUnsaved);
 
   protected:
 	  KStatusBar *statusBar () const;
@@ -59,6 +60,7 @@ class BasketStatusBar : public QObject
 	QLabel                     *m_selectionStatus;
 	ClickableLabel             *m_lockStatus;
 	QLabel                     *m_basketStatus;
+	QLabel                     *m_savedStatus;
 };
 
 #endif
