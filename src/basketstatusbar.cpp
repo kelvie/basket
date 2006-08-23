@@ -31,6 +31,7 @@
 #include "basket.h"
 #include "tools.h"
 #include <kiconloader.h>
+#include <qtooltip.h>
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)
 	: m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0)
@@ -92,6 +93,7 @@ void BasketStatusBar::setupStatusBar()
 	m_savedStatus->setPixmap(SmallIcon("filesave.png"));
 	m_savedStatus->setEnabled(false);
 	addWidget( m_savedStatus, 0, true );
+	QToolTip::add(m_savedStatus, i18n("Shows if there are changes that<br>have not been saved yet."));
 }
 
 void BasketStatusBar::postStatusbarMessage(const QString& text)
