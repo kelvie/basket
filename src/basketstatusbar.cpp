@@ -89,9 +89,10 @@ void BasketStatusBar::setupStatusBar()
 //	addWidget( m_lockStatus, 0, true );
 	connect( m_lockStatus, SIGNAL(clicked()), Global::bnpView, SLOT(lockBasket()) );
 
+	m_savedStatusIconSet = SmallIconSet("filesave");
 	m_savedStatus = new QLabel(parent);
-	m_savedStatus->setPixmap(SmallIcon("filesave"));
-	m_savedStatus->setEnabled(false);
+	m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, QIconSet::Disabled));
+	//m_savedStatus->setEnabled(false);
 	addWidget( m_savedStatus, 0, true );
 	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not been saved yet."));
 }
@@ -157,9 +158,10 @@ void BasketStatusBar::setSelectionStatus(const QString &s)
 		m_selectionStatus->setText(s);
 }
 
-void BasketStatusBar::setUnsavedStatus(bool is_unsaved)
+void BasketStatusBar::setUnsavedStatus(bool isUnsaved)
 {
-  m_savedStatus->setEnabled(is_unsaved);
+	//m_savedStatus->setEnabled(isUnsaved);
+	m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, isUnsaved));
 }
 
 #include "basketstatusbar.moc"

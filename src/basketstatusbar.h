@@ -21,6 +21,7 @@
 #define BASKETSTATUSBAR_H
 
 #include <qobject.h>
+#include <qiconset.h>
 
 class KStatusBar;
 namespace KParts { class StatusBarExtension; }
@@ -61,6 +62,7 @@ class BasketStatusBar : public QObject
 	ClickableLabel             *m_lockStatus;
 	QLabel                     *m_basketStatus;
 	QLabel                     *m_savedStatus;
+	QIconSet                    m_savedStatusIconSet;
 };
 
 #endif
