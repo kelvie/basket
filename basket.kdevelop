@@ -74,7 +74,7 @@
       <abortonerror>true</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
       <prio>0</prio>
       <runmultiplejobs>false</runmultiplejobs>
     </make>
@@ -150,11 +150,11 @@
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs>-d --nofork --use-dr-konquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -199,7 +199,7 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
@@ -220,9 +220,9 @@
   </cppsupportpart>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem/>
-      <docurl/>
-      <usermanualurl/>
+      <docsystem></docsystem>
+      <docurl></docurl>
+      <usermanualurl></usermanualurl>
     </projectdoc>
   </kdevdocumentation>
   <dist>

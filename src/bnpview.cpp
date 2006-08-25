@@ -176,11 +176,23 @@ void BNPView::onFirstShow()
 {
 	// Don't enable LikeBack until bnpview is shown. This way it works better with kontact.
 	/* LikeBack */
+/*	Global::likeBack = new LikeBack(LikeBack::AllButtons, / *showBarByDefault=* /true, Global::config(), Global::about());
+	Global::likeBack->setServer("basket.linux62.org", "/likeback/send.php");
+	Global:likeBack->setAcceptedLanguages(QStringList::split(";", "en;fr"), i18n("Only english and french languages are accepted."));
+	if (isPart())
+		Global::likeBack->disableBar(); // See BNPView::shown() and BNPView::hide().
+*/
+
+	if (isPart())
+		Global::likeBack->disableBar(); // See BNPView::shown() and BNPView::hide().
+
+/*
 	LikeBack::init(Global::config(), Global::about(), LikeBack::AllButtons);
 	LikeBack::setServer("basket.linux62.org", "/likeback/send.php");
 //	LikeBack::setServer("localhost", "/~seb/basket/likeback/send.php");
 	LikeBack::setCustomLanguageMessage(i18n("Only english and french languages are accepted."));
-//	LikeBack::setWindowNamesListing(LikeBack:: /*NoListing*/ /*WarnUnnamedWindows*/ AllWindows);
+//	LikeBack::setWindowNamesListing(LikeBack:: / *NoListing* / / *WarnUnnamedWindows* / AllWindows);
+*/
 
 	// In late init, because we need kapp->mainWidget() to be set!
 	if (!isPart())
@@ -317,6 +329,14 @@ void BNPView::initialize()
 	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
 	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
 
+	/* LikeBack */
+	Global::likeBack = new LikeBack(LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about());
+	Global::likeBack->setServer("basket.linux62.org", "/likeback/send.php");
+	Global::likeBack->setAcceptedLanguages(QStringList::split(";", "en;fr"), i18n("Please write in English or French."));
+//	if (isPart())
+//		Global::likeBack->disableBar(); // See BNPView::shown() and BNPView::hide().
+
+	Global::likeBack->sendACommentAction(actionCollection()); // Just create it!
 	setupActions();
 
 	/// What's This Help for the tree:
@@ -2148,8 +2168,8 @@ void BNPView::showEvent(QShowEvent*)
 		m_firstShow = false;
 		onFirstShow();
 	}
-	if (isPart() && !LikeBack::enabled()) {
-		LikeBack::enable();
+	if (isPart()/*TODO: && !LikeBack::enabledBar()*/) {
+		Global::likeBack->enableBar();
 	}
 }
 
@@ -2161,7 +2181,7 @@ void BNPView::hideEvent(QHideEvent*)
 	}
 
 	if (isPart())
-		LikeBack::disable();
+		Global::likeBack->disableBar();
 }
 
 void BNPView::disconnectTagsMenu()

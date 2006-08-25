@@ -34,6 +34,7 @@
 /** Define initial values for global variables : */
 
 QString            Global::s_customSavesFolder = "";
+LikeBack          *Global::likeBack            = 0L;
 DebugWindow       *Global::debugWindow         = 0L;
 BackgroundManager *Global::backgroundManager   = 0L;
 SystemTray        *Global::systemTray          = 0L;

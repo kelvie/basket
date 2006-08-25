@@ -100,7 +100,8 @@
    <Action name="help_whats_this" />
    <Action name="help_show_tip" />
    <Separator/>
-   <Action name="help_report_bug" />
+<!--   <Action name="help_report_bug" />-->
+   <Action name="likeback_send_a_comment" />
    <Separator/>
    <Action name="help_about_app" />
    <Action name="help_about_kde" />

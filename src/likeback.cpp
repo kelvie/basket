@@ -21,6 +21,7 @@
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kconfig.h>
+#include <kaction.h>
 #include <kiconloader.h>
 #include <kaboutdata.h>
 #include <klocale.h>
@@ -29,6 +30,10 @@
 #include <qlayout.h>
 #include <qtoolbutton.h>
 #include <kpushbutton.h>
+#include <qcheckbox.h>
+#include <qradiobutton.h>
+#include <qbuttongroup.h>
+#include <qvgroupbox.h>
 #include <kguiitem.h>
 #include <qpopupmenu.h>
 #include <qtextedit.h>
@@ -39,76 +44,179 @@
 #include <kurl.h>
 #include <kinputdialog.h>
 #include <qvalidator.h>
+#include <qaction.h>
 #include <kdebug.h>
-#include <kprocess.h>
 
 #include <pwd.h>
 
 #include <iostream>
 
 #include "likeback.h"
+#include "likeback_private.h"
 
-LikeBack::LikeBack(Button buttons)
- : QWidget(0, "LikeBack", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
- , m_buttons(buttons)
+/****************************************/
+/********** class LikeBackBar: **********/
+/****************************************/
+
+LikeBackBar::LikeBackBar(LikeBack *likeBack)
+ : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
+ , m_likeBack(likeBack)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	QIconSet likeIconSet      = kapp->iconLoader()->loadIconSet("likeback_like",      KIcon::Small);
-	QIconSet dislikeIconSet   = kapp->iconLoader()->loadIconSet("likeback_dislike",   KIcon::Small);
-	QIconSet bugIconSet       = kapp->iconLoader()->loadIconSet("likeback_bug",       KIcon::Small);
-	QIconSet wishIconSet      = kapp->iconLoader()->loadIconSet("likeback_wish",      KIcon::Small);
-	QIconSet configureIconSet = kapp->iconLoader()->loadIconSet("likeback_configure", KIcon::Small);
+	QIconSet likeIconSet    = kapp->iconLoader()->loadIconSet("likeback_like",    KIcon::Small);
+	QIconSet dislikeIconSet = kapp->iconLoader()->loadIconSet("likeback_dislike", KIcon::Small);
+	QIconSet bugIconSet     = kapp->iconLoader()->loadIconSet("likeback_bug",     KIcon::Small);
+	QIconSet featureIconSet = kapp->iconLoader()->loadIconSet("likeback_feature", KIcon::Small);
 
 	m_likeButton = new QToolButton(this, "ilike");
 	m_likeButton->setIconSet(likeIconSet);
 	m_likeButton->setTextLabel(i18n("I Like..."));
 	m_likeButton->setAutoRaise(true);
-	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(iLike()) );
+	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(clickedLike()) );
 	layout->add(m_likeButton);
 
-	m_dislikeButton = new QToolButton(this, "idonotlike");
+	m_dislikeButton = new QToolButton(this, "idislike");
 	m_dislikeButton->setIconSet(dislikeIconSet);
-	m_dislikeButton->setTextLabel(i18n("I Do not Like..."));
+	m_dislikeButton->setTextLabel(i18n("I Dislike..."));
 	m_dislikeButton->setAutoRaise(true);
-	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(iDoNotLike()) );
+	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(clickedDislike()) );
 	layout->add(m_dislikeButton);
 
 	m_bugButton = new QToolButton(this, "ifoundabug");
 	m_bugButton->setIconSet(bugIconSet);
 	m_bugButton->setTextLabel(i18n("I Found a Bug..."));
 	m_bugButton->setAutoRaise(true);
-	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(iFoundABug()) );
+	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(clickedBug()) );
 	layout->add(m_bugButton);
 
-	m_wishButton = new QToolButton(this, "iwishafeature");
-	m_wishButton->setIconSet(wishIconSet);
-	m_wishButton->setTextLabel(i18n("I Wish a Feature..."));
-	m_wishButton->setAutoRaise(true);
-	connect( m_wishButton, SIGNAL(clicked()), this, SLOT(iWishAFeature()) );
-	layout->add(m_wishButton);
+	m_featureButton = new QToolButton(this, "iwishafeature");
+	m_featureButton->setIconSet(featureIconSet);
+	m_featureButton->setTextLabel(i18n("I Wish a Feature..."));
+	m_featureButton->setAutoRaise(true);
+	connect( m_featureButton, SIGNAL(clicked()), this, SLOT(clickedFeature()) );
+	layout->add(m_featureButton);
 
-	m_configureButton = new QToolButton(this, "configure");
-	m_configureButton->setIconSet(configureIconSet);
-	m_configureButton->setTextLabel(i18n("Configure..."));
-	m_configureButton->setAutoRaise(true);
-	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(configure()) );
-	layout->add(m_configureButton);
+	connect( &m_timer, SIGNAL(timeout()), this, SLOT(autoMove()) );
 
-	QPopupMenu *configureMenu = new QPopupMenu(this);
-	configureMenu->insertItem( i18n("What's &This?"), this , SLOT(showWhatsThisMessage()) );
-	QIconSet changeEmailIconSet = kapp->iconLoader()->loadIconSet("mail_generic", KIcon::Small);
-	configureMenu->insertItem( changeEmailIconSet, i18n("&Change or Remove Email Address..."), this , SLOT(askEMail()) );
-	QIconSet dontHelpIconSet = kapp->iconLoader()->loadIconSet("stop", KIcon::Small);
-	configureMenu->insertItem( dontHelpIconSet, i18n("&Do not Help Anymore"), this , SLOT(doNotHelpAnymore()) );
-	m_configureButton->setPopup(configureMenu);
-	connect( m_configureButton, SIGNAL(pressed()), this, SLOT(openConfigurePopup()) );
+	LikeBack::Button buttons = likeBack->buttons();
+	m_likeButton->setShown(    buttons & LikeBack::Like    );
+	m_dislikeButton->setShown( buttons & LikeBack::Dislike );
+	m_bugButton->setShown(     buttons & LikeBack::Bug     );
+	m_featureButton->setShown( buttons & LikeBack::Feature );
+}
+
+LikeBackBar::~LikeBackBar()
+{
+}
+
+void LikeBackBar::startTimer()
+{
+	m_timer.start(10);
+}
+
+void LikeBackBar::stopTimer()
+{
+	m_timer.stop();
+}
+
+void LikeBackBar::autoMove()
+{
+	static QWidget *lastWindow = 0;
+
+	QWidget *window = kapp->activeWindow();
+	// When a Kicker applet has the focus, like the Commandline QLineEdit,
+	// the systemtray icon indicates to be the current window and the LikeBack is shown next to the system tray icon.
+	// It's obviously bad ;-) :
+	bool shouldShow = (m_likeBack->barShown() && m_likeBack->enabledBar() && window && !window->inherits("KSystemTray"));
+	if (shouldShow) {
+		//move(window->x() + window->width() - 100 - width(), window->y());
+		//move(window->x() + window->width() - 100 - width(), window->mapToGlobal(QPoint(0, 0)).y() - height());
+		move(window->mapToGlobal(QPoint(0, 0)).x() + window->width() - width(), window->mapToGlobal(QPoint(0, 0)).y() + 1);
+
+		if (window != lastWindow && m_likeBack->windowNamesListing() != LikeBack::NoListing)
+			if (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0)
+				std::cout << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << m_likeBack->activeWindowPath() << std::endl;
+		else if (m_likeBack->windowNamesListing() == LikeBack::AllWindows)
+				std::cout << "LikeBack: Active Window: " << m_likeBack->activeWindowPath() << std::endl;
+		lastWindow = window;
+	}
+	if (shouldShow && !isShown()) {
+		show();
+	} else if (!shouldShow && isShown())
+		hide();
+}
+
+void LikeBackBar::clickedLike()
+{
+	m_likeBack->execCommentDialog(LikeBack::Like);
+}
+
+void LikeBackBar::clickedDislike()
+{
+	m_likeBack->execCommentDialog(LikeBack::Dislike);
+}
+
+void LikeBackBar::clickedBug()
+{
+	m_likeBack->execCommentDialog(LikeBack::Bug);
+}
+
+void LikeBackBar::clickedFeature()
+{
+	m_likeBack->execCommentDialog(LikeBack::Feature);
+}
+
+/********************************************/
+/********** class LikeBackPrivate: **********/
+/********************************************/
+
+LikeBackPrivate::LikeBackPrivate()
+ : bar(0)
+ , config(0)
+ , aboutData(0)
+ , buttons(LikeBack::DefaultButtons)
+ , hostName()
+ , remotePath()
+ , hostPort(80)
+ , acceptedLocales()
+ , acceptedLanguagesMessage()
+ , windowListing(LikeBack::NoListing)
+ , showBar(false)
+ , disabledCount(0)
+ , fetchedEmail()
+{
+}
+
+LikeBackPrivate::~LikeBackPrivate()
+{
+	delete bar;
+}
+
+/*************************************/
+/********** class LikeBack: **********/
+/*************************************/
+
+LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, KAboutData *aboutData)
+ : QObject()
+{
+	d = new LikeBackPrivate();
+	d->buttons          = buttons;
+	d->config           = config;
+	d->aboutData        = aboutData;
+	d->showBarByDefault = showBarByDefault;
+	d->showBar          = barShown();
+
+	if (d->config == 0)
+		d->config = kapp->config();
+	if (d->aboutData == 0)
+		d->aboutData = (KAboutData*) kapp->aboutData();
 
 	if (!emailAddressAlreadyProvided())
-		//beginFetchingEmail(); // Begin before showing the message, so we have time!
 		endFetchingEmailFrom();
 
-	setButtonVisibility(buttons);
+	d->bar = new LikeBackBar(this);
+	d->bar->resize(d->bar->sizeHint());
 
 	static const char *messageShown = "LikeBack_starting_information";
 	if (KMessageBox::shouldBeShownContinue(messageShown)) {
@@ -116,113 +224,181 @@ LikeBack::LikeBack(Button buttons)
 		KMessageBox::saveDontShowAgainContinue(messageShown);
 	}
 
-	resize(sizeHint());
-
-	connect( &m_timer, SIGNAL(timeout()), this, SLOT(autoMove()) );
-	m_timer.start(10);
-
-	s_instance = this;
+	if (d->showBar)
+		QTimer::singleShot( 0, d->bar, SLOT(startTimer()) );
 }
 
 LikeBack::~LikeBack()
 {
+	delete d;
 }
 
-void LikeBack::openConfigurePopup()
+void LikeBack::setWindowNamesListing(WindowListing windowListing)
 {
-	m_configureButton->openPopup();
+	d->windowListing = windowListing;
 }
 
-void LikeBack::doNotHelpAnymore()
+LikeBack::WindowListing LikeBack::windowNamesListing()
 {
-	disable();
-	int result = KMessageBox::questionYesNo(
-			kapp->activeWindow(),
-			i18n("Are you sure you do not want to participate anymore in the application enhancing program?"),
-			i18n("Do not Help Anymore"));
-	if (result == KMessageBox::No) {
-		enable();
-		return;
+	return d->windowListing;
+}
+
+void LikeBack::setAcceptedLanguages(const QStringList &locales, const QString &message)
+{
+	d->acceptedLocales          = locales;
+	d->acceptedLanguagesMessage = message;
+}
+
+QStringList LikeBack::acceptedLocales()
+{
+	return d->acceptedLocales;
+}
+
+QString LikeBack::acceptedLanguagesMessage()
+{
+	return d->acceptedLanguagesMessage;
+}
+
+void LikeBack::setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort)
+{
+	d->hostName   = hostName;
+	d->remotePath = remotePath;
+	d->hostPort   = hostPort;
+}
+
+QString LikeBack::hostName()
+{
+	return d->hostName;
+}
+
+QString LikeBack::remotePath()
+{
+	return d->remotePath;
+}
+
+Q_UINT16 LikeBack::hostPort()
+{
+	return d->hostPort;
+}
+
+void LikeBack::disableBar()
+{
+	d->disabledCount++;
+	std::cout << "===== LikeBack ===== Disable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
+	if (d->bar && d->disabledCount > 0) {
+		d->bar->hide();
+		d->bar->stopTimer();
 	}
-
-	s_config->setGroup("LikeBack");
-	s_config->writeEntry("userWantToParticipateForVersion_" + s_about->version(), false);
-	deleteLater();
 }
 
-void LikeBack::showWhatsThisMessage()
+void LikeBack::enableBar()
 {
-	disable();
-	showInformationMessage();
-	enable();
-
-// Test every combinations to check if messages are OK:
-#if 1
-	disable();
-	m_buttons = (Button) (                                                  Configure); showInformationMessage();
-	m_buttons = (Button) (                                  IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (                     IFoundABug                 | Configure); showInformationMessage();
-	m_buttons = (Button) (                     IFoundABug | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (        IDoNotLike                              | Configure); showInformationMessage();
-	m_buttons = (Button) (        IDoNotLike              | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (        IDoNotLike | IFoundABug                 | Configure); showInformationMessage();
-	m_buttons = (Button) (        IDoNotLike | IFoundABug | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike                                           | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike                           | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike              | IFoundABug                 | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike              | IFoundABug | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike | IDoNotLike                              | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike | IDoNotLike              | IWishAFeature | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike | IDoNotLike | IFoundABug                 | Configure); showInformationMessage();
-	m_buttons = (Button) (ILike | IDoNotLike | IFoundABug | IWishAFeature | Configure); showInformationMessage();
-	enable();
-#endif
+	d->disabledCount--;
+	std::cout << "===== LikeBack ===== Enable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
+	if (d->disabledCount < 0)
+		std::cerr << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints." << std::endl;
+	if (d->bar && d->disabledCount <= 0) {
+		d->bar->startTimer();
+	}
 }
 
-bool LikeBack::userWantToParticipate()
+bool LikeBack::enabledBar()
 {
-	if (!kapp)
-		return true;
-
-	s_config->setGroup("LikeBack");
-	return s_config->readBoolEntry("userWantToParticipateForVersion_" + s_about->version(), true);
+	return d->disabledCount <= 0;
 }
 
-// TODO: Only show relevant buttons!
+void LikeBack::execCommentDialog(Button type, const QString &initialComment, const QString &windowPath, const QString &context)
+{
+	disableBar();
+	LikeBackDialog dialog(type, initialComment, windowPath, context, this);
+//	kapp->processEvents();
+	dialog.exec();
+	enableBar();
+}
+
+void LikeBack::execCommentDialogFromHelp()
+{
+	execCommentDialog(AllButtons, /*initialComment=*/"", /*windowPath=*/"HelpMenuAction");
+}
+
+LikeBack::Button LikeBack::buttons()
+{
+	return d->buttons;
+}
+
+KAboutData* LikeBack::aboutData()
+{
+	return d->aboutData;
+}
+
+KConfig* LikeBack::config()
+{
+	return d->config;
+}
+
+KAction* LikeBack::sendACommentAction(KActionCollection *parent)
+{
+	static KAction *action = 0;
+
+	if (action == 0)
+		action = new KAction(i18n("&Send a Comment to Developers"), /*icon=*/"mail_new", /*shortcut=*/"", this, SLOT(execCommentDialog()), parent, "likeback_send_a_comment");
+
+	return action;
+}
+
+bool LikeBack::barShown()
+{
+	d->config->setGroup("LikeBack");
+	return d->config->readBoolEntry("userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault);
+}
+
+void LikeBack::setUserWantsToShowBar(bool showBar)
+{
+	if (showBar == d->showBar)
+		return;
+
+	d->showBar = showBar;
+
+	d->config->setGroup("LikeBack");
+	d->config->writeEntry("userWantToShowBarForVersion_" + d->aboutData->version(), showBar);
+
+	if (showBar)
+		d->bar->startTimer();
+}
 
 void LikeBack::showInformationMessage()
 {
 	QPixmap likeIcon    = kapp->iconLoader()->loadIcon("likeback_like",    KIcon::Small);
 	QPixmap dislikeIcon = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
 	QPixmap bugIcon     = kapp->iconLoader()->loadIcon("likeback_bug",     KIcon::Small);
-	QPixmap wishIcon    = kapp->iconLoader()->loadIcon("likeback_wish",    KIcon::Small);
+	QPixmap featureIcon = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::Small);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
-	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_wish",    wishIcon);
-	LikeBack::Button buttons = LikeBack::instance()->shownButtons();
+	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
+	LikeBack::Button buttons = d->buttons;
 	KMessageBox::information(0,
-		"<p><b>" + (isDevelopmentVersion() ? i18n("Welcome to this testing version of %1.") : i18n("Welcome to %1")).arg(s_about->programName()) + "</b></p>"
+		"<p><b>" + (isDevelopmentVersion() ? i18n("Welcome to this testing version of %1.") : i18n("Welcome to %1")).arg(d->aboutData->programName()) + "</b></p>"
 		"<p>" + i18n("To help us improve it, your comments are important.") + "</p>"
 		"<p>" +
-			((buttons & LikeBack::ILike) && (buttons & LikeBack::IDoNotLike) ?
+			((buttons & LikeBack::Like) && (buttons & LikeBack::Dislike) ?
 				i18n("Each time you have a great or frustrating experience, "
 				     "please click the appropriate face below the window title-bar, "
 				     "briefly describe what you like or dislike and click Send.")
-			: (buttons & LikeBack::ILike ?
+			: (buttons & LikeBack::Like ?
 				i18n("Each time you have a great experience, "
 				     "please click the smiling face below the window title-bar, "
 				     "briefly describe what you like and click Send.")
-			: (buttons & LikeBack::IDoNotLike ?
+			: (buttons & LikeBack::Dislike ?
 				i18n("Each time you have a frustrating experience, "
 				     "please click the frowning face below the window title-bar, "
 				     "briefly describe what you dislike and click Send.")
 			:
 				QString()
 			))) + "</p>" +
-		(buttons & LikeBack::IFoundABug ?
+		(buttons & LikeBack::Bug ?
 			"<p>" +
-				(buttons & (LikeBack::ILike | LikeBack::IDoNotLike) ?
+				(buttons & (LikeBack::Like | LikeBack::Dislike) ?
 					i18n("Follow the same principle to quickly report a bug: "
 						"just click the broken-object icon in the top-right corner of the window, describe it and click Send.")
 				:
@@ -233,158 +409,28 @@ void LikeBack::showInformationMessage()
 			: "") +
 		"<p>" + i18n("Examples:") + "</p>"
 		"<table><tr>" +
-		(buttons & LikeBack::ILike ?
+		(buttons & LikeBack::Like ?
 			"<td><nobr><b><img source=\"likeback_icon_like\"> " + i18n("I like...") + "</b></nobr><br>" +
 			i18n("I like...", "the nice new artwork.") + "<br>" +
 			i18n("Very refreshing.") + "</td>"
 		: "") +
-		(buttons & LikeBack::IDoNotLike ?
-			"<td><nobr><b><img source=\"likeback_icon_dislike\"> " + i18n("I do not like...") + "</b></nobr><br>" +
-			i18n("I do not like...", "the welcome page of that wizard.") + "<br>" +
+		(buttons & LikeBack::Dislike ?
+			"<td><nobr><b><img source=\"likeback_icon_dislike\"> " + i18n("I dislike...") + "</b></nobr><br>" +
+			i18n("I dislike...", "the welcome page of that wizard.") + "<br>" +
 			i18n("Too time consuming.") + "</td>"
 		: "") +
-		(buttons & LikeBack::IFoundABug ?
+		(buttons & LikeBack::Bug ?
 			"<td><nobr><b><img source=\"likeback_icon_bug\"> " + i18n("I found a bug...") + "</b></nobr><br>" +
 			i18n("I found a bug...", "when clicking the Add button, nothing happens.") + "</td>"
 		: "") +
-		(buttons & LikeBack::IWishAFeature ?
-			"<td><nobr><b><img source=\"likeback_icon_wish\"> " + i18n("I wish a feature...") + "</b></nobr><br>" +
-			i18n("I wish a feature...", "allowing me to send my work by e-mail.") + "</td>"
+		(buttons & LikeBack::Feature ?
+			"<td><nobr><b><img source=\"likeback_icon_feature\"> " + i18n("I wish a feature...") + "</b></nobr><br>" +
+			i18n("I wish a feature...", "allowing me to send my work by email.") + "</td>"
 		: "") +
 		"</tr></table>",
 		i18n("Help Improve the Application"));
 	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_like", 0L);
 	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_dislike", 0L);
-}
-
-QString                 LikeBack::s_customLanguageMessage = QString();
-LikeBack::WindowListing LikeBack::s_windowListing         = LikeBack::NoListing;
-QString                 LikeBack::s_hostName              = QString();
-QString                 LikeBack::s_remotePath            = QString();
-Q_UINT16                LikeBack::s_hostPort              = 16;
-int                     LikeBack::s_disabledCount         = 0;
-LikeBack*               LikeBack::s_instance              = 0;
-KConfig*                LikeBack::s_config                = 0;
-KAboutData*             LikeBack::s_about                 = 0;
-
-LikeBack* LikeBack::instance()
-{
-	return s_instance;
-}
-
-QString LikeBack::customLanguageMessage()
-{
-	return s_customLanguageMessage;
-}
-
-QString LikeBack::hostName()
-{
-	return s_hostName;
-}
-
-QString LikeBack::remotePath()
-{
-	return s_remotePath;
-}
-
-Q_UINT16 LikeBack::hostPort()
-{
-	return s_hostPort;
-}
-
-KAboutData* LikeBack::about()
-{
-	return s_about;
-}
-
-LikeBack::Button LikeBack::shownButtons()
-{
-	return m_buttons;
-}
-
-void LikeBack::disable()
-{
-	s_disabledCount++;
-}
-
-void LikeBack::enable()
-{
-	s_disabledCount--;
-	if (s_disabledCount < 0)
-		std::cerr << "===== LikeBack ===== Enabled too many times (less than how many times it was disabled)" << std::endl;
-}
-
-bool LikeBack::enabled()
-{
-	return s_disabledCount == 0;
-}
-
-void LikeBack::setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort)
-{
-	s_hostName   = hostName;
-	s_remotePath = remotePath;
-	s_hostPort   = hostPort;
-}
-
-void LikeBack::setWindowNamesListing(WindowListing windowListing)
-{
-	s_windowListing = windowListing;
-}
-
-void LikeBack::setCustomLanguageMessage(const QString &message)
-{
-	s_customLanguageMessage = message;
-}
-
-void LikeBack::autoMove()
-{
-	static QWidget *lastWindow = 0;
-
-	QWidget *window = kapp->activeWindow();
-	// When a Kicker applet has the focus, like the Commandline QLineEdit,
-	// the systemtray icon indicates to be the current window and the LikeBack is shown next to the system tray icon.
-	// It's obviously bad ;-) :
-	bool shouldShow = (enabled() && window && !window->inherits("KSystemTray"));
-	if (shouldShow) {
-		//move(window->x() + window->width() - 100 - width(), window->y());
-		//move(window->x() + window->width() - 100 - width(), window->mapToGlobal(QPoint(0, 0)).y() - height());
-		move(window->mapToGlobal(QPoint(0, 0)).x() + window->width() - width(), window->mapToGlobal(QPoint(0, 0)).y() + 1);
-
-		if (window != lastWindow && s_windowListing != NoListing)
-			if (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0)
-				std::cout << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << activeWindowPath() << std::endl;
-			else if (s_windowListing == AllWindows)
-				std::cout << "LikeBack: Active Window: " << activeWindowPath() << std::endl;
-		lastWindow = window;
-	}
-	if (shouldShow && !isShown()) {
-		show();
-	} else if (!shouldShow && isShown())
-		hide();
-}
-
-void LikeBack::iLike()
-{
-	showDialog(ILike);
-}
-
-void LikeBack::iDoNotLike()
-{
-	showDialog(IDoNotLike);
-}
-
-void LikeBack::iFoundABug()
-{
-	showDialog(IFoundABug);
-}
-
-void LikeBack::iWishAFeature()
-{
-	showDialog(IWishAFeature);
-}
-
-void LikeBack::configure()
-{
 }
 
 QString LikeBack::activeWindowPath()
@@ -399,73 +445,106 @@ QString LikeBack::activeWindowPath()
 		window = dynamic_cast<QWidget*>(window->parent());
 	}
 
-	QString windowName;
+	QString windowPath;
 	for (int i = ((int)windowNames.count()) - 1; i >= 0; i--) {
-		if (windowName.isEmpty())
-			windowName = windowNames[i];
+		if (windowPath.isEmpty())
+			windowPath = windowNames[i];
 		else
-			windowName += QString("~~") + windowNames[i];
+			windowPath += QString("~~") + windowNames[i];
 	}
 
-	return windowName;
+	return windowPath;
 }
 
-void LikeBack::showDialog(Button button)
+
+
+
+
+
+
+
+
+
+
+/*void LikeBack::showWhatsThisMessage()
 {
-	LikeBackDialog dialog(button, activeWindowPath(), "");
 	disable();
-	hide();
-	kapp->processEvents();
-	dialog.exec();
+	showInformationMessage();
 	enable();
-}
+
+// Test every combinations to check if messages are OK:
+#if 1
+	disable();
+	d->buttons = (Button) (                              ); showInformationMessage();
+	d->buttons = (Button) (                       Feature); showInformationMessage();
+	d->buttons = (Button) (                 Bug          ); showInformationMessage();
+	d->buttons = (Button) (                 Bug | Feature); showInformationMessage();
+	d->buttons = (Button) (       Dislike                ); showInformationMessage();
+	d->buttons = (Button) (       Dislike       | Feature); showInformationMessage();
+	d->buttons = (Button) (       Dislike | Bug          ); showInformationMessage();
+	d->buttons = (Button) (       Dislike | Bug | Feature); showInformationMessage();
+	d->buttons = (Button) (Like                          ); showInformationMessage();
+	d->buttons = (Button) (Like                 | Feature); showInformationMessage();
+	d->buttons = (Button) (Like           | Bug          ); showInformationMessage();
+	d->buttons = (Button) (Like           | Bug | Feature); showInformationMessage();
+	d->buttons = (Button) (Like | Dislike                ); showInformationMessage();
+	d->buttons = (Button) (Like | Dislike       | Feature); showInformationMessage();
+	d->buttons = (Button) (Like | Dislike | Bug          ); showInformationMessage();
+	d->buttons = (Button) (Like | Dislike | Bug | Feature); showInformationMessage();
+	enable();
+#endif
+}*/
+
+
+
+
 
 bool LikeBack::emailAddressAlreadyProvided()
 {
-	return s_config->readBoolEntry("emailAlreadyAsked", false);
+	d->config->setGroup("LikeBack");
+	return d->config->readBoolEntry("emailAlreadyAsked", false);
 }
 
 QString LikeBack::emailAddress()
 {
 	if (!emailAddressAlreadyProvided())
-		instance()->askEMail();
+		askEmailAddress();
 
-	return s_config->readEntry("emailAddress", "");
+	d->config->setGroup("LikeBack");
+	return d->config->readEntry("emailAddress", "");
 }
 
 void LikeBack::setEmailAddress(const QString &address)
 {
-	s_config->setGroup("LikeBack");
-	s_config->writeEntry("emailAddress",      address);
-	s_config->writeEntry("emailAlreadyAsked", true);
+	d->config->setGroup("LikeBack");
+	d->config->writeEntry("emailAddress",      address);
+	d->config->writeEntry("emailAlreadyAsked", true);
 }
 
-void LikeBack::askEMail()
+void LikeBack::askEmailAddress()
 {
-	s_config->setGroup("LikeBack");
+	d->config->setGroup("LikeBack");
 
-	QString currentEMailAddress = s_config->readEntry("emailAddress", "");
-	if (!emailAddressAlreadyProvided() && !instance()->m_fetchedEmail.isEmpty())
-		currentEMailAddress = instance()->m_fetchedEmail;
+	QString currentEmailAddress = d->config->readEntry("emailAddress", "");
+	if (!emailAddressAlreadyProvided() && !d->fetchedEmail.isEmpty())
+		currentEmailAddress = d->fetchedEmail;
 
 	bool ok;
 
-	QString mailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
-	//QString namedMailExpString = "[.]*[ \\t]+<" + mailExpString + '>';
-	//QRegExp mailExp("^(|" + mailExpString + '|' + namedMailExpString + ")$");
-	QRegExp mailExp("^(|" + mailExpString + ")$");
-	QRegExpValidator emailValidator(mailExp, this);
+	QString emailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
+	//QString namedEmailExpString = "[.]*[ \\t]+<" + emailExpString + '>';
+	//QRegExp emailExp("^(|" + emailExpString + '|' + namedEmailExpString + ")$");
+	QRegExp emailExp("^(|" + emailExpString + ")$");
+	QRegExpValidator emailValidator(emailExp, this);
 
-	disable();
+	disableBar();
 	QString email = KInputDialog::getText(
-			i18n("Set Email Address"),
-			"<p><b>" + i18n("Please provide your email address.") + "</b></p>" +
-			"<p>" + i18n("It will only be used to contact you back if more information is needed about your comments, how to reproduce the bugs you report, send bug corrections for you to test...") + "</p>" +
-			"<p>" + i18n("The email address is optional. If you do not provide any, your comments will be sent anonymously. Just click OK in that case.") + "</p>" +
-			"<p>" + i18n("You can change or remove your email address whenever you want. For that, use the little arrow icon at the top-right corner of a window.") + "</p>" +
-			"<p>" + i18n("Your email address (keep empty to post comments anonymously):"),
-			currentEMailAddress, &ok, kapp->activeWindow(), /*name=*/(const char*)0, &emailValidator);
-	enable();
+		i18n("Email Address"),
+		"<p><b>" + i18n("Please provide your email address.") + "</b></p>" +
+		"<p>" + i18n("It will only be used to contact you back if more information is needed about your comments, ask you how to reproduce the bugs you report, send bug corrections for you to test, etc.") + "</p>" +
+		"<p>" + i18n("The email address is optional. If you do not provide any, your comments will be sent anonymously.") + "</p>",
+		currentEmailAddress, &ok, kapp->activeWindow(), /*name=*/(const char*)0, &emailValidator);
+	enableBar();
 
 	if (ok)
 		setEmailAddress(email);
@@ -474,36 +553,13 @@ void LikeBack::askEMail()
 // FIXME: Should be moved to KAboutData? Cigogne will also need it.
 bool LikeBack::isDevelopmentVersion(const QString &version)
 {
-	QString theVersion = (version.isEmpty() ? s_about->version() : version);
+//	QString theVersion = (version.isEmpty() ? d->aboutData->version() : version);
 
-	return theVersion.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       theVersion.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       theVersion.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       theVersion.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       theVersion.find("cvs",   /*index=*/0, /*caseSensitive=*/false) != -1;
-}
-
-void LikeBack::init(KConfig* config, KAboutData* about, Button buttons)
-{
-	s_config = config;
-	s_about = about;
-	init(isDevelopmentVersion(), buttons);
-}
-
-void LikeBack::init(Button buttons)
-{
-	init(isDevelopmentVersion(), buttons);
-}
-
-void LikeBack::init(bool isDevelopmentVersion, Button buttons)
-{
-	if (s_config == 0)
-		s_config = kapp->config();
-	if (s_about == 0)
-		s_about = (KAboutData*) kapp->aboutData();
-
-	if (LikeBack::userWantToParticipate() && isDevelopmentVersion)
-		new LikeBack(buttons);
+	return version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	       version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	       version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	       version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1 ||
+	       version.find("cvs",   /*index=*/0, /*caseSensitive=*/false) != -1;
 }
 
 
@@ -553,186 +609,213 @@ void LikeBack::endFetchingEmailFrom()
 	if (fromaddr.isEmpty()) {
 		struct passwd *p;
 		p = getpwuid(getuid());
-		m_fetchedEmail = QString::fromLatin1(p->pw_name);
+		d->fetchedEmail = QString::fromLatin1(p->pw_name);
 	} else {
 		QString name = emailConf.readEntry(QString::fromLatin1("FullName"));
 		if (!name.isEmpty())
-			m_fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
+			d->fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
 	}
 //	m_from->setText( fromaddr );
 }
 
-void LikeBack::setButtonVisibility(Button buttons)
-{
-	m_buttons = buttons;
+/*******************************************/
+/********** class LikeBackDialog: **********/
+/*******************************************/
 
-	m_likeButton->setShown(      m_buttons & ILike         );
-	m_dislikeButton->setShown(   m_buttons & IDoNotLike    );
-	m_bugButton->setShown(       m_buttons & IFoundABug    );
-	m_wishButton->setShown(      m_buttons & IWishAFeature );
-	m_configureButton->setShown( m_buttons & ILike         );
-}
-
-/** class LikeBackDialog: */
-
-LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &windowName, const QString &context)
- : KDialog(kapp->activeWindow(), "_likeback_feedback_window_")
- , m_reason(reason)
- , m_windowName(windowName)
+LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack)
+ : KDialogBase(KDialogBase::Swallow, i18n("Send a Comment to Developers"), KDialogBase::Ok | KDialogBase::Cancel | KDialogBase::Default,
+               KDialogBase::Ok, kapp->activeWindow(), /*name=*/"_likeback_feedback_window_", /*modal=*/true, /*separator=*/true)
+ , m_likeBack(likeBack)
+ , m_windowPath(windowPath)
  , m_context(context)
 {
-	setModal(true);
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-
-	QWidget *coloredWidget = new QWidget(this);
-	QLabel  *explainings = new QLabel(this);
-	QHBoxLayout *explainingLayout = new QHBoxLayout((QWidget*)0, KDialogBase::marginHint());
-	explainingLayout->addWidget(explainings);
-	mainLayout->addWidget(coloredWidget);
-
-	QColor  color;
-	QColor  lineColor;
-	QPixmap icon;
-	QString title;
-	QString please;
-	switch (reason) {
-		case LikeBack::ILike:
-			color     = QColor("#DFFFDF");
-			lineColor = Qt::green;
-			icon      = kapp->iconLoader()->loadIcon("likeback_like",    KIcon::Small);
-			title     = i18n("I like...");
-			please    = i18n("Please briefly describe what you like.");
-			break;
-		case LikeBack::IDoNotLike:
-			color     = QColor("#FFDFDF");
-			lineColor = Qt::red;
-			icon      = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
-			title     = i18n("I do not like...");
-			please    = i18n("Please briefly describe what you do not like.");
-			break;
-		case LikeBack::IFoundABug:
-			color     = QColor("#C0C0C0");
-			lineColor = Qt::black;
-			icon      = kapp->iconLoader()->loadIcon("likeback_bug",     KIcon::Small);
-			title     = i18n("I found a bug...");
-			please    = i18n("Please briefly describe the bug you encountered.");
-			break;
-		case LikeBack::IWishAFeature:
-			color     = QColor("#FFFFDF");
-			lineColor = Qt::yellow;
-			icon      = kapp->iconLoader()->loadIcon("likeback_wish",    KIcon::Small);
-			title     = i18n("I wish a feature...");
-			please    = i18n("Please briefly describe the feature you want.");
-			break;
-		case LikeBack::Configure:
-		case LikeBack::AllButtons:
-		case LikeBack::DefaultButtons:
-			return;
+	// If no specific "reason" is provided, choose the first one:
+	if (reason == LikeBack::AllButtons) {
+		LikeBack::Button buttons = m_likeBack->buttons();
+		int firstButton = 0;
+		if (firstButton == 0 && (buttons & LikeBack::Like))    firstButton = LikeBack::Like;
+		if (firstButton == 0 && (buttons & LikeBack::Dislike)) firstButton = LikeBack::Dislike;
+		if (firstButton == 0 && (buttons & LikeBack::Bug))     firstButton = LikeBack::Bug;
+		if (firstButton == 0 && (buttons & LikeBack::Feature)) firstButton = LikeBack::Feature;
+		reason = (LikeBack::Button) firstButton;
 	}
 
-	QWidget *line = new QWidget(this);
-	line->setPaletteBackgroundColor(lineColor);
-	line->setFixedHeight(1);
-	mainLayout->addWidget(line);
-	mainLayout->addLayout(explainingLayout);
+	// If no window path is provided, get the current active window path:
+	if (m_windowPath.isEmpty())
+		m_windowPath = m_likeBack->activeWindowPath();
 
-	QHBoxLayout *titleLayout = new QHBoxLayout(0);
-	coloredWidget->setPaletteBackgroundColor(color);
-	QLabel *iconLabel = new QLabel(coloredWidget);
-	iconLabel->setPixmap(icon);
-	QLabel *titleLabel = new QLabel(title, coloredWidget);
-	QFont font = titleLabel->font();
-	font.setBold(true);
-	titleLabel->setFont(font);
-	titleLabel->setPaletteForegroundColor(Qt::black);
-	titleLayout->addWidget(iconLabel);
-	titleLayout->addSpacing(4);
-	titleLayout->addWidget(titleLabel);
-	titleLayout->addStretch();
+	QWidget *page = new QWidget(this);
+	QVBoxLayout *pageLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
 
-	QVBoxLayout *coloredWidgetLayout = new QVBoxLayout(coloredWidget);
-	coloredWidgetLayout->setMargin(KDialogBase::marginHint());
-	coloredWidgetLayout->setSpacing(KDialogBase::spacingHint());
-	coloredWidgetLayout->addLayout(titleLayout);
+	// The introduction message:
+	QLabel *introduction = new QLabel(introductionText(), page);
+	pageLayout->addWidget(introduction);
 
-	QHBoxLayout *commentLayout = new QHBoxLayout((QWidget*)0);
-	commentLayout->setMargin(0);
-	commentLayout->setSpacing(KDialogBase::spacingHint());
-	m_comment = new QTextEdit(coloredWidget);
+	// The comment group:
+	m_group = new QButtonGroup(0);//i18n("Send Application Developers a Comment About:"), page);
+	QVGroupBox *box = new QVGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	pageLayout->addWidget(box);
+
+	// The radio buttons:
+	QWidget *buttons = new QWidget(box);
+	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
+	if (m_likeBack->buttons() & LikeBack::Like) {
+		QPixmap likePixmap = kapp->iconLoader()->loadIcon("likeback_like", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QLabel *likeIcon = new QLabel(buttons);
+		likeIcon->setPixmap(likePixmap);
+		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		QRadioButton *likeButton = new QRadioButton(i18n("Something I &like"), buttons);
+		buttonsGrid->addWidget(likeIcon,   /*row=*/0, /*column=*/0);
+		buttonsGrid->addWidget(likeButton, /*row=*/0, /*column=*/1);
+		m_group->insert(likeButton, LikeBack::Like);
+	}
+	if (m_likeBack->buttons() & LikeBack::Dislike) {
+		QPixmap dislikePixmap = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QLabel *dislikeIcon = new QLabel(buttons);
+		dislikeIcon->setPixmap(dislikePixmap);
+		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		QRadioButton *dislikeButton = new QRadioButton(i18n("Something I &dislike"), buttons);
+		buttonsGrid->addWidget(dislikeIcon,   /*row=*/1, /*column=*/0);
+		buttonsGrid->addWidget(dislikeButton, /*row=*/1, /*column=*/1);
+		m_group->insert(dislikeButton, LikeBack::Dislike);
+	}
+	if (m_likeBack->buttons() & LikeBack::Bug) {
+		QPixmap bugPixmap = kapp->iconLoader()->loadIcon("likeback_bug", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QLabel *bugIcon = new QLabel(buttons);
+		bugIcon->setPixmap(bugPixmap);
+		bugIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		QRadioButton *bugButton = new QRadioButton(i18n("An improper &behavior of this application"), buttons);
+		buttonsGrid->addWidget(bugIcon,   /*row=*/2, /*column=*/0);
+		buttonsGrid->addWidget(bugButton, /*row=*/2, /*column=*/1);
+		m_group->insert(bugButton, LikeBack::Bug);
+	}
+	if (m_likeBack->buttons() & LikeBack::Feature) {
+		QPixmap featurePixmap = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QLabel *featureIcon = new QLabel(buttons);
+		featureIcon->setPixmap(featurePixmap);
+		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		QRadioButton *featureButton = new QRadioButton(i18n("A new &feature I desire"), buttons);
+		buttonsGrid->addWidget(featureIcon,   /*row=*/3, /*column=*/0);
+		buttonsGrid->addWidget(featureButton, /*row=*/3, /*column=*/1);
+		m_group->insert(featureButton, LikeBack::Feature);
+	}
+	m_group->setButton(reason);
+
+	// The comment text box:
+	m_comment = new QTextEdit(box);
 	m_comment->setTabChangesFocus(true);
-	QIconSet sendIconSet = kapp->iconLoader()->loadIconSet("mail_send", KIcon::Toolbar);
-	m_sendButton = new QPushButton(sendIconSet, i18n("&Send"), coloredWidget);
-	m_sendButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_sendButton->setEnabled(false);
-	KPushButton *cancelButton = new KPushButton(KStdGuiItem::cancel(), coloredWidget);
-	connect( m_sendButton, SIGNAL(clicked()),     this, SLOT(send())           );
-	connect( cancelButton, SIGNAL(clicked()),     this, SLOT(close())          );
-	connect( m_comment,    SIGNAL(textChanged()), this, SLOT(commentChanged()) );
-	commentLayout->addWidget(m_comment, 1);
-	QVBoxLayout *buttonsLayout = new QVBoxLayout(commentLayout, KDialogBase::spacingHint());
-	buttonsLayout->addWidget(m_sendButton);
-	buttonsLayout->addWidget(cancelButton);
-	coloredWidgetLayout->addLayout(commentLayout);
+	m_comment->setTextFormat(QTextEdit::PlainText);
+	m_comment->setText(initialComment);
 
-	LikeBack::Button buttons = LikeBack::instance()->shownButtons();
-	explainings->setText(
-		"<p>" + please + ' ' +
-		(LikeBack::customLanguageMessage().isEmpty() ?
-			i18n("Only english language is accepted.") :
-			LikeBack::customLanguageMessage()
-		)  + ' ' +
-		// If both "I Like" and "I do not Like" buttons are shown and one is clicked:
-		((reason == LikeBack::ILike || reason == LikeBack::IDoNotLike) && (buttons & LikeBack::ILike) && (buttons & LikeBack::IDoNotLike) ?
-			i18n("Note that to improve this application, it is important to tell us the things you like as much as the things you do not like.") + ' ' :
-			""
-		) +
-		// If the button "I Wish a Feature" is not shown, no feature wish are accepted:
-		(buttons & LikeBack::IWishAFeature ?
-			"" :
-			i18n("Do <b>not</b> ask for new features: your wishes will be ignored.")
-		) + "</p>"
-	);
+	m_showButtons = new QCheckBox(i18n("Show comment buttons below &window titlebars"), page);
+	m_showButtons->setChecked(m_likeBack->barShown());
+	pageLayout->addWidget(m_showButtons);
 
-	resize(kapp->desktop()->width() / 2, kapp->desktop()->height() / 3);
+	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail_send"));
+	enableButtonOK(false);
+	connect( m_comment, SIGNAL(textChanged()), this, SLOT(commentChanged()) );
 
-	setCaption(kapp->makeStdCaption(i18n("Send a Comment")));
-	//	setMinimumSize(mainLayout->sizeHint()); // FIXME: Doesn't work!
+	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail_generic"));
+
+	resize(QSize(kapp->desktop()->width() * 1 / 2, kapp->desktop()->height() * 3 / 5).expandedTo(sizeHint()));
+
+	QAction *sendShortcut = new QAction(this);
+	sendShortcut->setAccel(QString("Ctrl+Return"));
+	connect( sendShortcut, SIGNAL(activated()), actionButton(Ok), SLOT(animateClick()) );
+
+	setMainWidget(page);
 }
 
 LikeBackDialog::~LikeBackDialog()
 {
 }
 
+QString LikeBackDialog::introductionText()
+{
+	QString text = "<p>" + i18n("Please provide a brief description of your opinion of this application.") + " ";
+
+	QString languagesMessage = "";
+	if (!m_likeBack->acceptedLocales().isEmpty() && !m_likeBack->acceptedLanguagesMessage().isEmpty()) {
+		languagesMessage = m_likeBack->acceptedLanguagesMessage();
+		QStringList locales = m_likeBack->acceptedLocales();
+		for (QStringList::Iterator it = locales.begin(); it != locales.end(); ++it) {
+			QString locale = *it;
+			if (KGlobal::locale()->language().startsWith(locale))
+				languagesMessage = "";
+		}
+	} else {
+		if (!KGlobal::locale()->language().startsWith("en"))
+			languagesMessage = i18n("Please write in English.");
+	}
+
+	if (!languagesMessage.isEmpty())
+		// TODO: Replace the URL with a localized one:
+		text += languagesMessage + " " + i18n("You may be able to use an <a href=\"http://www.google.fr/\">online translation tool</a>.") + " ";
+
+	// If both "I Like" and "I Dislike" buttons are shown and one is clicked:
+	if ((m_likeBack->buttons() & LikeBack::Like) && (m_likeBack->buttons() & LikeBack::Dislike))
+		text += i18n("To make the comments you send more useful in improving this application, try to send the same amount of positive and negative comments.") + " ";
+
+	if (!(m_likeBack->buttons() & LikeBack::Feature))
+		text += i18n("Do <b>not</b> ask for new features: your requests will be ignored.");
+
+	return text;
+}
+
+void LikeBackDialog::polish()
+{
+	KDialogBase::polish();
+	m_comment->setFocus();
+}
+
+void LikeBackDialog::slotDefault()
+{
+	m_likeBack->askEmailAddress();
+}
+
+void LikeBackDialog::slotOk()
+{
+	m_likeBack->setUserWantsToShowBar(m_showButtons->isChecked());
+	send();
+	//KDialogBase::slotOk();
+}
+
+void LikeBackDialog::commentChanged()
+{
+	QPushButton *sendButton = actionButton(Ok);
+	sendButton->setEnabled(!m_comment->text().isEmpty());
+}
+
 QHttp *http ;
 
 void LikeBackDialog::send()
 {
-	QString emailAddress = LikeBack::instance()->emailAddress();
+	QString emailAddress = m_likeBack->emailAddress();
 
-	QString type = (m_reason == LikeBack::ILike ? "Like" : (m_reason == LikeBack::IDoNotLike ? "Dislike" : (m_reason == LikeBack::IWishAFeature ? "Wish" : "Bug")));
+	int reason = m_group->selectedId();
+	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
 	QString data =
-			"protocol=" + KURL::encode_string("1.0")                         + '&' +
-			"type="     + KURL::encode_string(type)                          + '&' +
-			"version="  + KURL::encode_string(LikeBack::about()->version())  + '&' +
-			"locale="   + KURL::encode_string(KGlobal::locale()->language()) + '&' +
-			"window="   + KURL::encode_string(m_windowName)                  + '&' +
-			"context="  + KURL::encode_string(m_context)                     + '&' +
-			"comment="  + KURL::encode_string(m_comment->text())             + '&' +
-			"email="    + KURL::encode_string(emailAddress);
+		"protocol=" + KURL::encode_string("1.0")                              + '&' +
+		"type="     + KURL::encode_string(type)                               + '&' +
+		"version="  + KURL::encode_string(m_likeBack->aboutData()->version()) + '&' +
+		"locale="   + KURL::encode_string(KGlobal::locale()->language())      + '&' +
+		"window="   + KURL::encode_string(m_windowPath)                       + '&' +
+		"context="  + KURL::encode_string(m_context)                          + '&' +
+		"comment="  + KURL::encode_string(m_comment->text())                  + '&' +
+		"email="    + KURL::encode_string(emailAddress);
 	//QByteArray *data = new QByteArray();
-	/*QHttp **/http = new QHttp(LikeBack::hostName(), LikeBack::hostPort());
+	/*QHttp **/http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
 
-	std::cout << "http://" << LikeBack::hostName() << ":" << LikeBack::hostPort() << LikeBack::remotePath() << std::endl;
+	std::cout << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath() << std::endl;
 	std::cout << data << std::endl;
 	connect( http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)) );
 //	http->post(LikeBack::remotePath(), data.utf8());
 
-	QHttpRequestHeader header("POST", LikeBack::remotePath());
-	header.setValue("Host", LikeBack::hostName());
+	QHttpRequestHeader header("POST", m_likeBack->remotePath());
+	header.setValue("Host", m_likeBack->hostName());
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
-	http->setHost(LikeBack::hostName());
+	http->setHost(m_likeBack->hostName());
 	http->request(header, data.utf8());
-
 
 	m_comment->setEnabled(false);
 }
@@ -741,19 +824,18 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
 {
 	// TODO: Save to file if error (connection not present at the moment)
 	m_comment->setEnabled(true);
-	LikeBack::disable();
+	m_likeBack->disableBar();
 	if (error) {
 		KMessageBox::error(this, i18n("<p>Error while trying to send the report.</p><p>Please retry later.</p>"), i18n("Transfer Error"));
 	} else {
 		KMessageBox::information(this, i18n("<p>Your comment has been sent successfully. It will help improve the application.</p><p>Thanks for your time.</p>") /*+ QString(http->readAll())*/, i18n("Comment Sent"));
 		close();
 	}
-	LikeBack::enable();
+	m_likeBack->enableBar();
+
+	KDialogBase::slotOk();
+	//close();
 }
 
-void LikeBackDialog::commentChanged()
-{
-	m_sendButton->setEnabled(!m_comment->text().isEmpty());
-}
-
+#include "likeback_private.moc.cpp"
 #include "likeback.moc"

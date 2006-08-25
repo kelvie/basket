@@ -24,6 +24,7 @@
 #include <qstring.h>
 #include "aboutdata.h"
 
+class LikeBack;
 class DebugWindow;
 class BackgroundManager;
 class SystemTray;
@@ -43,6 +44,7 @@ class Global
 	static QString s_customSavesFolder;
   public:
 	// Global Variables:
+	static LikeBack          *likeBack;
 	static DebugWindow       *debugWindow;
 	static BackgroundManager *backgroundManager;
 	static SystemTray        *systemTray;
