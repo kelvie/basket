@@ -90,10 +90,10 @@ void BasketStatusBar::setupStatusBar()
 	connect( m_lockStatus, SIGNAL(clicked()), Global::bnpView, SLOT(lockBasket()) );
 
 	m_savedStatus = new QLabel(parent);
-	m_savedStatus->setPixmap(SmallIcon("filesave.png"));
+	m_savedStatus->setPixmap(SmallIcon("filesave"));
 	m_savedStatus->setEnabled(false);
 	addWidget( m_savedStatus, 0, true );
-	QToolTip::add(m_savedStatus, i18n("Shows if there are changes that<br>have not been saved yet."));
+	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not been saved yet."));
 }
 
 void BasketStatusBar::postStatusbarMessage(const QString& text)
