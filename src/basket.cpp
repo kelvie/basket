@@ -1102,7 +1102,7 @@ bool Basket::save()
 
 void Basket::load()
 {
-        fprintf(stderr,"basket is loading\n");
+	fprintf(stderr,"basket is loading\n");
 	// Load only once:
 	if (m_loadingLaunched)
 		return;
@@ -1338,12 +1338,12 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	connect( &m_watcherTimer, SIGNAL(timeout()),               this, SLOT(updateModifiedNotes())               );
 
 	// Various Connections:
-	connect( &m_animationTimer,           SIGNAL(timeout()),   this, SLOT(animateObjects())           );
-	connect( &m_autoScrollSelectionTimer, SIGNAL(timeout()),   this, SLOT(doAutoScrollSelection())    );
-	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())     );
+	connect( &m_animationTimer,           SIGNAL(timeout()),   this, SLOT(animateObjects())            );
+	connect( &m_autoScrollSelectionTimer, SIGNAL(timeout()),   this, SLOT(doAutoScrollSelection())     );
+	connect( &m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut())      );
 	connect( &m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimeout()) );
-        connect( &m_inactivityAutoLockTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoLockTimeout()) );
-        connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
+	connect( &m_inactivityAutoLockTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoLockTimeout()) );
+	connect( this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()) );
 #ifdef HAVE_LIBGPGME
 	m_gpg = new KGpgMe();
 #endif
@@ -2886,7 +2886,7 @@ void Basket::unlock()
 
 void Basket::inactivityAutoLockTimeout()
 {
-        lock();
+	lock();
 }
 
 void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight)
