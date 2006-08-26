@@ -164,10 +164,11 @@ void BasketStatusBar::setSelectionStatus(const QString &s)
 void BasketStatusBar::setUnsavedStatus(bool isUnsaved)
 {
 	if (isUnsaved) {
-		m_savedStatus->setPixmap(m_savedStatusPixmap);
-	} else {
+		if (m_savedStatus->pixmap() == 0)
+			m_savedStatus->setPixmap(m_savedStatusPixmap);
+	} else
 		m_savedStatus->clear();
-	}
+
 	//m_savedStatus->setEnabled(isUnsaved);
 	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, isUnsaved));
 }
