@@ -1630,6 +1630,8 @@ void BNPView::delBasket()
 
 void BNPView::doBasketDeletion(Basket *basket)
 {
+	basket->closeEditor();
+
 	QListViewItem *basketItem = listViewItemForBasket(basket);
 	QListViewItem *nextOne;
 	for (QListViewItem *child = basketItem->firstChild(); child; child = nextOne) {

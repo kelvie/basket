@@ -69,30 +69,30 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
 	QIconSet bugIconSet     = kapp->iconLoader()->loadIconSet("likeback_bug",     KIcon::Small);
 	QIconSet featureIconSet = kapp->iconLoader()->loadIconSet("likeback_feature", KIcon::Small);
 
-	m_likeButton = new QToolButton(this, "ilike");
+	m_likeButton = new QToolButton(this, "likeback_like");
 	m_likeButton->setIconSet(likeIconSet);
-	m_likeButton->setTextLabel(i18n("I Like..."));
+	m_likeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you like"));
 	m_likeButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(clickedLike()) );
 	layout->add(m_likeButton);
 
-	m_dislikeButton = new QToolButton(this, "idislike");
+	m_dislikeButton = new QToolButton(this, "likeback_dislike");
 	m_dislikeButton->setIconSet(dislikeIconSet);
-	m_dislikeButton->setTextLabel(i18n("I Dislike..."));
+	m_dislikeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you dislike"));
 	m_dislikeButton->setAutoRaise(true);
 	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(clickedDislike()) );
 	layout->add(m_dislikeButton);
 
-	m_bugButton = new QToolButton(this, "ifoundabug");
+	m_bugButton = new QToolButton(this, "likeback_bug");
 	m_bugButton->setIconSet(bugIconSet);
-	m_bugButton->setTextLabel(i18n("I Found a Bug..."));
+	m_bugButton->setTextLabel("<p>" + i18n("Send application developers a comment about an improper behavior of the application"));
 	m_bugButton->setAutoRaise(true);
 	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(clickedBug()) );
 	layout->add(m_bugButton);
 
-	m_featureButton = new QToolButton(this, "iwishafeature");
+	m_featureButton = new QToolButton(this, "likeback_feature");
 	m_featureButton->setIconSet(featureIconSet);
-	m_featureButton->setTextLabel(i18n("I Wish a Feature..."));
+	m_featureButton->setTextLabel("<p>" + i18n("Send application developers a comment about a new feature you desire"));
 	m_featureButton->setAutoRaise(true);
 	connect( m_featureButton, SIGNAL(clicked()), this, SLOT(clickedFeature()) );
 	layout->add(m_featureButton);
@@ -284,7 +284,7 @@ Q_UINT16 LikeBack::hostPort()
 void LikeBack::disableBar()
 {
 	d->disabledCount++;
-	std::cout << "===== LikeBack ===== Disable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
+//	std::cout << "===== LikeBack ===== Disable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
 	if (d->bar && d->disabledCount > 0) {
 		d->bar->hide();
 		d->bar->stopTimer();
@@ -294,7 +294,7 @@ void LikeBack::disableBar()
 void LikeBack::enableBar()
 {
 	d->disabledCount--;
-	std::cout << "===== LikeBack ===== Enable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
+//	std::cout << "===== LikeBack ===== Enable bar. Disabled " <<  d->disabledCount << " times." << std::endl;
 	if (d->disabledCount < 0)
 		std::cerr << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints." << std::endl;
 	if (d->bar && d->disabledCount <= 0) {
@@ -424,8 +424,8 @@ void LikeBack::showInformationMessage()
 			i18n("I found a bug...", "when clicking the Add button, nothing happens.") + "</td>"
 		: "") +
 		(buttons & LikeBack::Feature ?
-			"<td><nobr><b><img source=\"likeback_icon_feature\"> " + i18n("I wish a feature...") + "</b></nobr><br>" +
-			i18n("I wish a feature...", "allowing me to send my work by email.") + "</td>"
+			"<td><nobr><b><img source=\"likeback_icon_feature\"> " + i18n("I desire a feature...") + "</b></nobr><br>" +
+			i18n("I desire a feature...", "allowing me to send my work by email.") + "</td>"
 		: "") +
 		"</tr></table>",
 		i18n("Help Improve the Application"));
@@ -664,7 +664,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *likeIcon = new QLabel(buttons);
 		likeIcon->setPixmap(likePixmap);
 		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *likeButton = new QRadioButton(i18n("Something I &like"), buttons);
+		QRadioButton *likeButton = new QRadioButton(i18n("Something you &like"), buttons);
 		buttonsGrid->addWidget(likeIcon,   /*row=*/0, /*column=*/0);
 		buttonsGrid->addWidget(likeButton, /*row=*/0, /*column=*/1);
 		m_group->insert(likeButton, LikeBack::Like);
@@ -674,7 +674,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *dislikeIcon = new QLabel(buttons);
 		dislikeIcon->setPixmap(dislikePixmap);
 		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *dislikeButton = new QRadioButton(i18n("Something I &dislike"), buttons);
+		QRadioButton *dislikeButton = new QRadioButton(i18n("Something you &dislike"), buttons);
 		buttonsGrid->addWidget(dislikeIcon,   /*row=*/1, /*column=*/0);
 		buttonsGrid->addWidget(dislikeButton, /*row=*/1, /*column=*/1);
 		m_group->insert(dislikeButton, LikeBack::Dislike);
@@ -694,7 +694,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
 		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *featureButton = new QRadioButton(i18n("A new &feature I desire"), buttons);
+		QRadioButton *featureButton = new QRadioButton(i18n("A new &feature you desire"), buttons);
 		buttonsGrid->addWidget(featureIcon,   /*row=*/3, /*column=*/0);
 		buttonsGrid->addWidget(featureButton, /*row=*/3, /*column=*/1);
 		m_group->insert(featureButton, LikeBack::Feature);
