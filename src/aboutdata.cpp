@@ -28,7 +28,7 @@ static const char description[] = I18N_NOOP("A set of baskets to keep a full ran
 AboutData::AboutData()
 	: KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),
 				  VERSION, description, KAboutData::License_GPL_V2,
-				  "(c) 2003-2005, S\303\251bastien Lao\303\273t", 0,
+				  "(c) 2003-2006, S\303\251bastien Lao\303\273t", 0,
 				  "http://basket.kde.org/",
 				  "slaout@linux62.org" )
 {
