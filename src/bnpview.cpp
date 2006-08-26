@@ -45,6 +45,7 @@
 #include <kcmdlineargs.h>
 #include <kglobalaccel.h>
 #include <kapplication.h>
+#include <kkeydialog.h>
 #include <dcopclient.h>
 #include <kdebug.h>
 #include <iostream>
@@ -552,6 +553,11 @@ void BNPView::setupActions()
 //								  this, SLOT(convertTexts()), actionCollection(), "beta_convert_texts" );
 
 	InlineEditors::instance()->initToolBars(actionCollection());
+
+	actConfigGlobalShortcuts = KStdAction::keyBindings(this, SLOT(showGlobalShortcutsSettingsDialog()),
+			actionCollection(), "options_configure_global_keybinding");
+	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
+
 }
 
 QListViewItem* BNPView::firstListViewItem()
@@ -2194,6 +2200,13 @@ void BNPView::disconnectTagsMenuDelayed()
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(activated(int)), currentBasket(), SLOT(toggledTagInMenu(int)) );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
+}
+
+void BNPView::showGlobalShortcutsSettingsDialog()
+{
+	KKeyDialog::configure(Global::globalAccel);
+	//.setCaption(..)
+	Global::globalAccel->writeSettings();
 }
 
 #include "bnpview.moc"

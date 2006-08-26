@@ -136,10 +136,6 @@ void MainWindow::setupActions()
 
 	(void) KStdAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), actionCollection() );
 
-	actConfigGlobalShortcuts = KStdAction::keyBindings(this, SLOT(showGlobalShortcutsSettingsDialog()),
-	                                                   actionCollection(), "options_configure_global_keybinding");
-	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
-
 	(void) KStdAction::configureToolbars(this, SLOT(configureToolbars()), actionCollection() );
 
 	//KAction *actCfgNotifs = KStdAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection() );
@@ -211,13 +207,6 @@ void MainWindow::showShortcutsSettingsDialog()
 	KKeyDialog::configure(actionCollection(), "basketui.rc");
 	//.setCaption(..)
 	//actionCollection()->writeSettings();
-}
-
-void MainWindow::showGlobalShortcutsSettingsDialog()
-{
-	KKeyDialog::configure(Global::globalAccel);
-	//.setCaption(..)
-	Global::globalAccel->writeSettings();
 }
 
 void MainWindow::polish()

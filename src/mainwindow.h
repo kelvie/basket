@@ -72,7 +72,6 @@ class MainWindow : public KMainWindow
 	void toggleToolBar();
 	void toggleStatusBar();
 	void showShortcutsSettingsDialog();
-	void showGlobalShortcutsSettingsDialog();
 	void configureToolbars();
 	void configureNotifications();
 	void showSettingsDialog();
@@ -94,7 +93,6 @@ class MainWindow : public KMainWindow
 	KToggleAction *m_actShowToolbar;
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
-	KAction       *actConfigGlobalShortcuts;
 	KAction       *actAppConfig;
 	QPtrList<KAction> actBasketsList;
 

@@ -195,6 +195,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void isLockedChanged();
 		void lateInit();
 		void onFirstShow();
+		void showGlobalShortcutsSettingsDialog();
 
 	public:
 		KAction       *m_actEditNote;
@@ -252,6 +253,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KAction       *m_actFoldBasket;
 		KAction       *m_actExpandBasket;
 //		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
+		KAction       *actConfigGlobalShortcuts;
 
 		Basket* loadBasket(const QString &folderName);
 		BasketListViewItem* appendBasket(Basket *basket, QListViewItem *parentItem);
