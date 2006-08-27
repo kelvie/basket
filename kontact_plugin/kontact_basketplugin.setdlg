@@ -1,4 +1,6 @@
 [Basket]
-Name=Note Pads
-Comment=Basket Note Pads
+Name=Baskets
+Name[fr]=Paniers
+Comment=BasKet Note Pads component
+Comment[fr]=Composant Blocs notes BasKet
 Icon=basket

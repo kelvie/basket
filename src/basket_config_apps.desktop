@@ -14,4 +14,6 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=30
 
 Name=Applications
-Comment=Applications Setup
+Name[fr]=Applications
+Comment=Applications
+Comment[fr]=Applications

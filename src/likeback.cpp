@@ -378,7 +378,7 @@ void LikeBack::showInformationMessage()
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
 	LikeBack::Button buttons = d->buttons;
 	KMessageBox::information(0,
-		"<p><b>" + (isDevelopmentVersion() ? i18n("Welcome to this testing version of %1.") : i18n("Welcome to %1")).arg(d->aboutData->programName()) + "</b></p>"
+		"<p><b>" + (isDevelopmentVersion() ? i18n("Welcome to this testing version of %1.") : i18n("Welcome to %1.")).arg(d->aboutData->programName()) + "</b></p>"
 		"<p>" + i18n("To help us improve it, your comments are important.") + "</p>"
 		"<p>" +
 			((buttons & LikeBack::Like) && (buttons & LikeBack::Dislike) ?
@@ -416,7 +416,7 @@ void LikeBack::showInformationMessage()
 		: "") +
 		(buttons & LikeBack::Dislike ?
 			"<td><nobr><b><img source=\"likeback_icon_dislike\"> " + i18n("I dislike...") + "</b></nobr><br>" +
-			i18n("I dislike...", "the welcome page of that wizard.") + "<br>" +
+			i18n("I dislike...", "the welcome page of that assistant.") + "<br>" +
 			i18n("Too time consuming.") + "</td>"
 		: "") +
 		(buttons & LikeBack::Bug ?
@@ -750,7 +750,10 @@ QString LikeBackDialog::introductionText()
 
 	if (!languagesMessage.isEmpty())
 		// TODO: Replace the URL with a localized one:
-		text += languagesMessage + " " + i18n("You may be able to use an <a href=\"http://www.google.fr/\">online translation tool</a>.") + " ";
+		text += languagesMessage + " " +
+				i18n("You may be able to use an <a href=\"%1\">online translation tool</a>.")
+				.arg("http://www.google.com/language_tools?hl=" + KGlobal::locale()->language())
+				+ " ";
 
 	// If both "I Like" and "I Dislike" buttons are shown and one is clicked:
 	if ((m_likeBack->buttons() & LikeBack::Like) && (m_likeBack->buttons() & LikeBack::Dislike))

@@ -343,7 +343,6 @@ void Settings::setBigNotes(bool big)
 GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	: KCModule(parent, name)
 {
-	/* Main Window page */
 	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 	QHBoxLayout *hLay;
 	QLabel      *label;
@@ -391,11 +390,28 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
+	// Re-Lock timeout configuration
+	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("Automatically &lock protected baskets when closed for"), this);
+	hLay->addWidget(m_enableReLockTimeoutMinutes);
+	m_reLockTimeoutMinutes = new KIntNumInput(this);
+	m_reLockTimeoutMinutes->setMinValue(0);
+	m_reLockTimeoutMinutes->setSuffix(i18n(" minutes"));
+	hLay->addWidget(m_reLockTimeoutMinutes);
+	//label = new QLabel(i18n("minutes"), this);
+	//hLay->addWidget(label);
+	hLay->addStretch();
+	layout->addLayout(hLay);
+	connect(m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this,                   SLOT(changed()));
+	connect(m_reLockTimeoutMinutes,       SIGNAL(valueChanged(int)), this,                   SLOT(changed()));
+	connect(m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)),     m_reLockTimeoutMinutes, SLOT(setEnabled(bool)));
+
 #ifdef HAVE_LIBGPGME
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), this);
 	layout->addWidget(m_useGnuPGAgent);
 	connect(m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 #endif
+
 	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
@@ -468,21 +484,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 	connect( m_pushVisualize, SIGNAL(clicked()), this, SLOT(visualize()) );
-  
-	// Re-Lock timeout configuration
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
-	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("Automatically lock protected baskets when closed for"), this);
-	hLay->addWidget(m_enableReLockTimeoutMinutes);
-	m_reLockTimeoutMinutes = new KIntNumInput(this);
-	m_reLockTimeoutMinutes->setMinValue(0);
-	hLay->addWidget(m_reLockTimeoutMinutes);
-	label = new QLabel(i18n("minutes"), this);
-	hLay->addWidget(label);
-	hLay->addStretch();
-	layout->addLayout(hLay);
-	connect(m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_reLockTimeoutMinutes, SIGNAL(valueChanged(int)), this, SLOT(changed()));
-	connect(m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)), m_reLockTimeoutMinutes, SLOT(setEnabled(bool)));
+
 	// TODO: Other might not be initialized yet
 	//connect( m_useSystray,     SIGNAL(toggled(bool)), gbSys,                  SLOT(setEnabled(bool)) );
 	layout->insertStretch(-1);
@@ -550,7 +552,7 @@ void GeneralPage::save()
 
 	Settings::setDefImageX(            m_imgSizeX->value()                 );
 	Settings::setDefImageY(            m_imgSizeY->value()                 );
-  
+
 	Settings::setEnableReLockTimeout(  m_enableReLockTimeoutMinutes->isChecked());
 	Settings::setReLockTimeoutMinutes(m_reLockTimeoutMinutes->value());
 }

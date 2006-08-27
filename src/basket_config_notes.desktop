@@ -14,4 +14,6 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=20
 
 Name=Notes Look
-Comment=Notes Look Setup
+Name[fr]=Apparence des notes
+Comment=Notes Look
+Comment[fr]=Apparence des notes

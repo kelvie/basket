@@ -3,7 +3,7 @@
   <general>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
-    <version>0.6.0Beta2.1</version>
+    <version>0.6.0Beta2.2</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -151,10 +151,10 @@
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -202,7 +202,7 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet></prefixGet>
+      <prefixGet/>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
@@ -233,7 +233,7 @@
     <bzip>false</bzip>
     <archname>basket-%v.tar.gz</archname>
     <appname>basket</appname>
-    <version>0.6.0Beta2.1</version>
+    <version>0.6.0Beta2.2</version>
     <release/>
     <vendor/>
     <licence/>

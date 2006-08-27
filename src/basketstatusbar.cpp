@@ -80,7 +80,7 @@ void BasketStatusBar::setupStatusBar()
 		m_basketStatus = static_cast<QLabel*>(lst->at(0));
 	delete lst;
 
-	m_selectionStatus = new QLabel(parent);
+	m_selectionStatus = new QLabel(i18n("Loading..."), parent);
 	addWidget( m_selectionStatus, 0, true );
 
 	m_lockStatus = new ClickableLabel(0/*this*/);

@@ -1064,7 +1064,9 @@ void Basket::equalizeColumnSizes()
 void Basket::enableActions()
 {
 	Global::bnpView->enableActions();
-	setFocusPolicy(isLocked()?QWidget::NoFocus:QWidget::StrongFocus);
+	setFocusPolicy(isLocked() ? QWidget::NoFocus : QWidget::StrongFocus);
+	if (isLocked())
+		viewport()->setCursor(Qt::ArrowCursor); // When locking, the cursor stays the last form it was
 }
 
 bool Basket::save()
@@ -2937,9 +2939,11 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			QSpacerItem* spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
 			layout->addItem( spacer, 1, 1 );
 
-			label = new QLabel(i18n("<small>To make the basket stay unlocked, change the<br>"
-									"automatic timeout in Settings|General.</small>"),
-							   m_decryptBox);
+			label = new QLabel("<small>" +
+				i18n("To make baskets stay unlocked, change the automatic<br>"
+				     "locking duration in the application settings.") + "</small>",
+				m_decryptBox);
+			//label->setFixedWidth(label->sizeHint().width() / 2);
 			label->setAlignment( int( QLabel::AlignTop ) );
 			layout->addMultiCellWidget( label, 2,2,0,2 );
 
@@ -5099,7 +5103,11 @@ void Basket::selectRange(Note *start, Note *end, bool unselectOthers /*= true*/)
 
 void Basket::focusInEvent(QFocusEvent*)
 {
-	focusANote();      // hasFocus() is true at this stage, note will be focused
+	// Focus cannot be get with Tab when locked, but a click can focus the basket!
+	if (isLocked())
+		QTimer::singleShot( 0, m_button, SLOT(setFocus()) );
+	else
+		focusANote();      // hasFocus() is true at this stage, note will be focused
 }
 
 void Basket::focusOutEvent(QFocusEvent*)

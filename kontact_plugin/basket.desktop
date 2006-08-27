@@ -13,11 +13,11 @@ X-KDE-KontactPluginHasSummary=false
 
 X-KDE-PluginInfo-Website=http://basket.kde.org/
 X-KDE-PluginInfo-Name=kontact_basketplugin
-X-KDE-PluginInfo-Version=0.6.0Beta2.1
+X-KDE-PluginInfo-Version=0.6.0Beta2.2
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 
-Comment=BasKet Note Pads Plugin
-Comment[fr]=Module Blocs notes BasKet
-Name=Note Pads
-Name[fr]=Blocs notes
+Comment=BasKet Note Pads plugin for Kontact
+Comment[fr]=Module Blocs notes BasKet pour Kontact
+Name=Baskets
+Name[fr]=Paniers
