@@ -5104,9 +5104,10 @@ void Basket::selectRange(Note *start, Note *end, bool unselectOthers /*= true*/)
 void Basket::focusInEvent(QFocusEvent*)
 {
 	// Focus cannot be get with Tab when locked, but a click can focus the basket!
-	if (isLocked())
-		QTimer::singleShot( 0, m_button, SLOT(setFocus()) );
-	else
+	if (isLocked()) {
+		if (m_button)
+			QTimer::singleShot( 0, m_button, SLOT(setFocus()) );
+	} else
 		focusANote();      // hasFocus() is true at this stage, note will be focused
 }
 
