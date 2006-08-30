@@ -634,10 +634,6 @@ void BasketTreeListView::autoOpen()
 void BasketTreeListView::resizeEvent(QResizeEvent *event)
 {
 	KListView::resizeEvent(event);
-
-	int treeWidth = Global::bnpView->sizes()[Settings::treeOnLeft() ? 0 : 1];
-	Settings::setBasketTreeWidth(treeWidth);
-	Settings::saveConfig();
 }
 
 void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)

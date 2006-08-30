@@ -98,8 +98,13 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 
 BNPView::~BNPView()
 {
-	if (currentBasket() && currentBasket()->isDuringEdit())
+    int treeWidth = Global::bnpView->sizes()[Settings::treeOnLeft() ? 0 : 1];
+
+    Settings::setBasketTreeWidth(treeWidth);
+
+    if (currentBasket() && currentBasket()->isDuringEdit())
 		currentBasket()->closeEditor();
+
 	Settings::saveConfig();
 
 	Global::bnpView = 0;
@@ -200,6 +205,13 @@ void BNPView::onFirstShow()
 		connectTagsMenu();
 
 	m_statusbar->setupStatusBar();
+
+    int treeWidth = Settings::basketTreeWidth();
+    if (treeWidth < 0)
+      treeWidth = m_tree->fontMetrics().maxWidth() * 11;
+    QValueList<int> splitterSizes;
+    splitterSizes.append(treeWidth);
+    setSizes(splitterSizes);
 }
 
 void BNPView::setupGlobalShortcuts()
@@ -305,13 +317,6 @@ void BNPView::initialize()
 	setCollapsible(m_stack, false);
 	setResizeMode(m_tree,  QSplitter::KeepSize);
 	setResizeMode(m_stack, QSplitter::Stretch);
-
-	int treeWidth = Settings::basketTreeWidth();
-	if (treeWidth < 0)
-		treeWidth = m_tree->fontMetrics().maxWidth() * 11;
-	QValueList<int> sizes;
-	sizes.append(treeWidth);
-	setSizes(sizes);
 
 	/// Configure the List View Signals:
 	connect( m_tree, SIGNAL(returnPressed(QListViewItem*)),    this, SLOT(slotPressed(QListViewItem*)) );
