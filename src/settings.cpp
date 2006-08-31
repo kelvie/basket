@@ -349,31 +349,31 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 	m_useSystray = new QCheckBox(i18n("Doc&k in system tray"), this);
 	layout->addWidget(m_useSystray);
-	connect(m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
 	layout->addWidget(m_usePassivePopup);
-	connect(m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), this);
 	layout->addWidget(m_playAnimations);
-	connect(m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_showNotesToolTip = new QCheckBox(i18n("Sho&w tooltips in baskets"), this);
 	layout->addWidget(m_showNotesToolTip);
-	connect(m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), this);
 	layout->addWidget(m_confirmNoteDeletion);
-	connect(m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_bigNotes = new QCheckBox(i18n("Bi&g notes"), this);
 	layout->addWidget(m_bigNotes);
-	connect(m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("E&xport tags in texts"), this);
-	connect(m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
@@ -402,14 +402,14 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	//hLay->addWidget(label);
 	hLay->addStretch();
 	layout->addLayout(hLay);
-	connect(m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this,                   SLOT(changed()));
-	connect(m_reLockTimeoutMinutes,       SIGNAL(valueChanged(int)), this,                   SLOT(changed()));
-	connect(m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)),     m_reLockTimeoutMinutes, SLOT(setEnabled(bool)));
+	connect( m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this,                   SLOT(changed())        );
+	connect( m_reLockTimeoutMinutes,       SIGNAL(valueChanged(int)), this,                   SLOT(changed())        );
+	connect( m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)),     m_reLockTimeoutMinutes, SLOT(setEnabled(bool)) );
 
 #ifdef HAVE_LIBGPGME
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), this);
 	layout->addWidget(m_useGnuPGAgent);
-	connect(m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 #endif
 
 	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
@@ -422,7 +422,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	QLabel *label1 = new QLabel(m_treeOnLeft, i18n("Bask&ets tree position:"), this);
 	gl->addWidget(label1,       0, 0);
 	gl->addWidget(m_treeOnLeft, 0, 1);
-	connect(m_treeOnLeft, SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
+	connect( m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	// Filter bar Position:
 	m_filterOnTop = new QComboBox(this);
@@ -431,7 +431,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	QLabel *label9 = new QLabel(m_filterOnTop, i18n("&Filter bar position:"), this);
 	gl->addWidget(label9,        1, 0);
 	gl->addWidget(m_filterOnTop, 1, 1);
-	connect(m_filterOnTop, SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
+	connect( m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	// New Notes Place:
 	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
@@ -446,7 +446,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	//layout->addLayout(hLay);
 	label->hide();
 	m_newNotesPlace->hide();
-	connect(m_newNotesPlace, SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
+	connect( m_newNotesPlace, SIGNAL(textChanged(const QString &)), this, SLOT(changed()) );
 
 	// View File Content:
 	QVButtonGroup *buttonGroup = new QVButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
@@ -455,10 +455,10 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
 	layout->addWidget(buttonGroup);
-	connect(m_viewTextFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_viewHtmlFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_viewImageFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_viewSoundFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewImageFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewSoundFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	// New Images Size:
 	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
@@ -466,6 +466,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	m_imgSizeX->setMinValue(1);
 	m_imgSizeX->setMaxValue(4096);
 	m_imgSizeX->setReferencePoint(100);
+	connect( m_imgSizeX, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
 	label = new QLabel(m_imgSizeX, i18n("&New images size:"), this);
 	hLay->addWidget(label);
 	hLay->addWidget(m_imgSizeX);
@@ -473,7 +474,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	m_imgSizeY->setMinValue(1);
 	m_imgSizeY->setMaxValue(4096);
 	m_imgSizeY->setReferencePoint(100);
-	connect(m_imgSizeY, SIGNAL(valueChanged(int)), this, SLOT(changed()));
+	connect( m_imgSizeY, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
 	label = new QLabel(m_imgSizeY, i18n("&by"), this);
 	hLay->addWidget(label);
 	hLay->addWidget(m_imgSizeY);
@@ -797,12 +798,14 @@ FeaturesPage::FeaturesPage(QWidget * parent, const char * name)
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
 	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
-	HelpLabel *helpV = new HelpLabel(i18n("How to group a new note?"),
-									 i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
-											 "<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
-											 i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
-											 "Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
-											 "Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"), m_groupOnInsertionLineWidget);
+	HelpLabel *helpV = new HelpLabel(
+		i18n("How to group a new note?"),
+		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
+		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
+		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
+		"Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
+		"Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"),
+		m_groupOnInsertionLineWidget);
 	hLayV->addWidget(m_groupOnInsertionLine);
 	hLayV->addWidget(helpV);
 	hLayV->insertStretch(-1);
@@ -825,7 +828,7 @@ FeaturesPage::FeaturesPage(QWidget * parent, const char * name)
 	ga->addWidget(labelM,                                         0, 0);
 	ga->addWidget(m_middleAction,                                 0, 1);
 	ga->addWidget(new QLabel(i18n("at cursor position"), this),  0, 2);
-	connect(m_middleAction, SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
+	connect( m_middleAction, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	QGroupBox *gbSys = new QGroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
 	layout6->addWidget(gbSys);

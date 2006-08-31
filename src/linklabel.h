@@ -187,9 +187,7 @@ class LinkLookEditWidget : public QWidget
 	void saveToLook(LinkLook *look);
 	void set(LinkLook *look);
   private slots:
-	void slotChangeLook(const QColor&);
 	void slotChangeLook();
-	void slotChangeLook(int);
   protected:
 	LinkLook      *m_look;
 	QCheckBox     *m_italic;

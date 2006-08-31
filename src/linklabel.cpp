@@ -559,11 +559,9 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
-	connect(m_italic, SIGNAL(stateChanged(int)), module, SLOT(changed()));
 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
 	layout->addWidget(m_bold);
-	connect(m_bold, SIGNAL(stateChanged(int)), module, SLOT(changed()));
 
 	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
@@ -576,19 +574,16 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	label = new QLabel(m_underlining, i18n("&Underline:"), this);
 	gl->addWidget(label,         0, 0);
 	gl->addWidget(m_underlining, 0, 1);
-	connect(m_underlining, SIGNAL(textChanged(const QString &)), module, SLOT(changed()));
 
 	m_color = new KColorCombo2(QRgb(), this);
 	label = new QLabel(m_color, i18n("Colo&r:"), this);
 	gl->addWidget(label,   1, 0);
 	gl->addWidget(m_color, 1, 1);
-	connect(m_color, SIGNAL(changed(const QColor &)), module, SLOT(changed()));
 
 	m_hoverColor = new KColorCombo2(QRgb(), this);
 	label = new QLabel(m_hoverColor, i18n("&Mouse hover color:"), this);
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
-	connect(m_hoverColor, SIGNAL(changed(const QColor &)), module, SLOT(changed()));
 
 	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
@@ -620,8 +615,6 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);
 	gl->addMultiCellWidget(m_hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
-	connect(m_preview, SIGNAL(activated(int)), this, SLOT(slotChangeLook(int)) );
-	connect(m_preview, SIGNAL(textChanged(const QString &)), module, SLOT(changed()));
 
 	QGroupBox *gb = new QHGroupBox(i18n("Example"), this);
 	m_exLook = new LinkLook;
@@ -632,12 +625,21 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	m_exTitle = exTitle;
 	m_exIcon  = exIcon;
 
-	connect( m_italic,      SIGNAL(clicked()),              this, SLOT(slotChangeLook())              );
-	connect( m_bold,        SIGNAL(clicked()),              this, SLOT(slotChangeLook())              );
-	connect( m_underlining, SIGNAL(activated(int)),         this, SLOT(slotChangeLook(int))           );
-	connect( m_color,       SIGNAL(changed(const QColor&)), this, SLOT(slotChangeLook(const QColor&)) );
-	connect( m_hoverColor,  SIGNAL(changed(const QColor&)), this, SLOT(slotChangeLook(const QColor&)) );
-	connect( m_iconSize,    SIGNAL(activated(int)),         this, SLOT(slotChangeLook(int))           );
+	connect( m_italic,      SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()) );
+	connect( m_bold,        SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()) );
+	connect( m_underlining, SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
+	connect( m_color,       SIGNAL(changed(const QColor&)), this,   SLOT(slotChangeLook()) );
+	connect( m_hoverColor,  SIGNAL(changed(const QColor&)), this,   SLOT(slotChangeLook()) );
+	connect( m_iconSize,    SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
+	connect( m_preview,     SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
+
+	connect( m_italic,      SIGNAL(stateChanged(int)),      module, SLOT(changed())        );
+	connect( m_bold,        SIGNAL(stateChanged(int)),      module, SLOT(changed())        );
+	connect( m_underlining, SIGNAL(activated(int)),         module, SLOT(changed())        );
+	connect( m_color,       SIGNAL(changed(const QColor&)), module, SLOT(changed())        );
+	connect( m_hoverColor,  SIGNAL(changed(const QColor&)), module, SLOT(changed())        );
+	connect( m_iconSize,    SIGNAL(activated(int)),         module, SLOT(changed())        );
+	connect( m_preview,     SIGNAL(activated(int)),         module, SLOT(changed())        );
 }
 
 void LinkLookEditWidget::set(LinkLook *look)
@@ -664,20 +666,10 @@ void LinkLookEditWidget::set(LinkLook *look)
 	slotChangeLook();
 }
 
-void LinkLookEditWidget::slotChangeLook(const QColor&)
-{
-	slotChangeLook();
-}
-
 void LinkLookEditWidget::slotChangeLook()
 {
 	saveToLook(m_exLook);
 	m_example->setLink(m_exTitle, m_exIcon, m_exLook); // and can't reload it at another size
-}
-
-void LinkLookEditWidget::slotChangeLook(int)
-{
-	slotChangeLook();
 }
 
 LinkLookEditWidget::~LinkLookEditWidget()

@@ -34,7 +34,7 @@
 
 PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
 	:KDialogBase(Plain, i18n("Password Protection"), Ok|Cancel, Ok,
-				 parent, name, true, false), w(0)
+				 parent, name, /*modal=*/true, /*separator=*/true), w(0)
 {
 	QHBoxLayout* toplayout = new QHBoxLayout(plainPage(), 0, 0);
 	w = new Password(plainPage());

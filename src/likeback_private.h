@@ -30,6 +30,7 @@ class QToolButton;
 class QTextEdit;
 class QCheckBox;
 class QButtonGroup;
+class Kaction;
 
 class LikeBackPrivate
 {
@@ -50,6 +51,7 @@ class LikeBackPrivate
 	bool                     showBar;
 	int                      disabledCount;
 	QString                  fetchedEmail;
+	KAction                 *action;
 };
 
 class LikeBackBar : public QWidget
