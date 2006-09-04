@@ -121,6 +121,9 @@
  </ToolBar>
  <ToolBar hidden="true" newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
   <text>Text Formating Toolbar</text>
+  <Action name="richtext_undo" />
+  <Action name="richtext_redo" />
+  <Separator lineSeparator="true" name="separator_0" />
   <Action name="richtext_font" />
   <Separator lineSeparator="false" name="blank_1" />
   <Action name="richtext_font_size" />

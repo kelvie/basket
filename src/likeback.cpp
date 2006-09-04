@@ -245,6 +245,8 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, KAbou
 
 
 	disableBar();
+#if 0
+	// Alex: Oh, it drove me nuts
 	d->buttons = (Button) (                             0); showInformationMessage();
 	d->buttons = (Button) (                       Feature); showInformationMessage();
 	d->buttons = (Button) (                 Bug          ); showInformationMessage();
@@ -261,6 +263,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, KAbou
 	d->buttons = (Button) (Like | Dislike       | Feature); showInformationMessage();
 	d->buttons = (Button) (Like | Dislike | Bug          ); showInformationMessage();
 	d->buttons = (Button) (Like | Dislike | Bug | Feature); showInformationMessage();
+#endif
 	enableBar();
 
 

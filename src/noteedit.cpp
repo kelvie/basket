@@ -34,10 +34,12 @@
 #include <kaction.h>
 #include <kurifilter.h>
 #include <kdebug.h>
+#include <kstdaction.h>
 
 #include "noteedit.h"
 #include "notecontent.h"
-#include "notefactory.h" // Use Tools::
+ // Use Tools::
+#include "notefactory.h"
 #include "note.h"
 #include "basket.h"
 #include "settings.h"
@@ -229,9 +231,13 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( textEdit,  SIGNAL(currentFontChanged(const QFont&)), this, SLOT(fontChanged(const QFont&)) );
 //	connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
-	connect( InlineEditors::instance()->richTextBold,      SIGNAL(activated()), this, SLOT(setBold())      );
-	connect( InlineEditors::instance()->richTextItalic,    SIGNAL(activated()), this, SLOT(setItalic())    );
-	connect( InlineEditors::instance()->richTextUnderline, SIGNAL(activated()), this, SLOT(setUnderline()) );
+	connect( InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    textEdit, SLOT(setBold(bool)) );
+	connect( InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setItalic(bool)) );
+	connect( InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setUnderline(bool)) );
+	//REMOVE:
+	//connect( InlineEditors::instance()->richTextBold,      SIGNAL(activated()), this, SLOT(setBold())      );
+	//connect( InlineEditors::instance()->richTextItalic,    SIGNAL(activated()), this, SLOT(setItalic())    );
+	//connect( InlineEditors::instance()->richTextUnderline, SIGNAL(activated()), this, SLOT(setUnderline()) );
 	connect( InlineEditors::instance()->richTextLeft,      SIGNAL(activated()), this, SLOT(setLeft())      );
 	connect( InlineEditors::instance()->richTextCenter,    SIGNAL(activated()), this, SLOT(setCentered())  );
 	connect( InlineEditors::instance()->richTextRight,     SIGNAL(activated()), this, SLOT(setRight())     );
@@ -242,6 +248,14 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	fontChanged(textEdit->currentFont());
 	//QTimer::singleShot( 0, this, SLOT(cursorPositionChanged()) );
 	InlineEditors::instance()->enableRichTextToolBar();
+
+	connect( InlineEditors::instance()->richTextUndo,      SIGNAL(activated()), textEdit, SLOT(undo())         );
+	connect( InlineEditors::instance()->richTextRedo,      SIGNAL(activated()), textEdit, SLOT(redo())         );
+	connect( textEdit, SIGNAL(undoAvailable(bool)), InlineEditors::instance()->richTextUndo, SLOT(setEnabled(bool)) );
+	connect( textEdit, SIGNAL(redoAvailable(bool)), InlineEditors::instance()->richTextRedo, SLOT(setEnabled(bool)) );
+	connect( textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+	InlineEditors::instance()->richTextUndo->setEnabled(false);
+	InlineEditors::instance()->richTextRedo->setEnabled(false);
 }
 
 void HtmlEditor::cursorPositionChanged()
@@ -260,6 +274,16 @@ void HtmlEditor::cursorPositionChanged()
 		case 2/*Qt::AlignRight*/:    InlineEditors::instance()->richTextRight->setChecked(true);     break;
 		case -8/*Qt::AlignJustify*/: InlineEditors::instance()->richTextJustified->setChecked(true); break;
 	}
+}
+
+void HtmlEditor::textChanged()
+{
+	// The following is a workaround for an apparent Qt bug.
+	// When I start typing in a textEdit, the undo&redo actions are not enabled until I click
+	// or move the cursor - probably, the signal undoAvailable() is not emitted.
+	// So, I had to intervene and do that manually.
+	InlineEditors::instance()->richTextUndo->setEnabled(textEdit()->isUndoAvailable());
+	InlineEditors::instance()->richTextRedo->setEnabled(textEdit()->isRedoAvailable());
 }
 
 void HtmlEditor::fontChanged(const QFont &font)
@@ -297,9 +321,10 @@ void HtmlEditor::fontChanged(const QFont &font)
 			break;
 }*/
 
-void HtmlEditor::setBold()      { textEdit()->setBold(      InlineEditors::instance()->richTextBold->isChecked()      ); }
-void HtmlEditor::setItalic()    { textEdit()->setItalic(    InlineEditors::instance()->richTextItalic->isChecked()    ); }
-void HtmlEditor::setUnderline() { textEdit()->setUnderline( InlineEditors::instance()->richTextUnderline->isChecked() ); }
+ // REMOVE: These functions are unused - it's now done by direct connection to textEdit
+ //void HtmlEditor::setBold()      { textEdit()->setBold(      InlineEditors::instance()->richTextBold->isChecked()      ); }
+ //void HtmlEditor::setItalic()    { textEdit()->setItalic(    InlineEditors::instance()->richTextItalic->isChecked()    ); }
+ //void HtmlEditor::setUnderline() { textEdit()->setUnderline( InlineEditors::instance()->richTextUnderline->isChecked() ); }
 void HtmlEditor::setLeft()      { textEdit()->setAlignment(Qt::AlignLeft);    }
 void HtmlEditor::setCentered()  { textEdit()->setAlignment(Qt::AlignCenter);  }
 void HtmlEditor::setRight()     { textEdit()->setAlignment(Qt::AlignRight);   }
@@ -788,6 +813,10 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 	richTextRight->setExclusiveGroup("rt_justify");
 	richTextJustified->setExclusiveGroup("rt_justify");
 
+	richTextUndo      = new KAction( i18n("Undo"), "undo", "", actionCollection, "richtext_undo");
+	richTextRedo      = new KAction( i18n("Redo"), "redo", "", actionCollection, "richtext_redo");
+	std::cout << "Created the Undo/Redo actions!" << std::endl;
+
 	disableRichTextToolBar();
 }
 
@@ -812,6 +841,8 @@ void InlineEditors::enableRichTextToolBar()
 	richTextCenter->setEnabled(true);
 	richTextRight->setEnabled(true);
 	richTextJustified->setEnabled(true);
+	richTextUndo->setEnabled(true);
+	richTextRedo->setEnabled(true);
 }
 
 void InlineEditors::disableRichTextToolBar()
@@ -826,6 +857,8 @@ void InlineEditors::disableRichTextToolBar()
 	disconnect(richTextCenter);
 	disconnect(richTextRight);
 	disconnect(richTextJustified);
+	disconnect(richTextUndo);
+	disconnect(richTextRedo);
 
 	richTextFont->setEnabled(false);
 	richTextFontSize->setEnabled(false);
@@ -837,6 +870,8 @@ void InlineEditors::disableRichTextToolBar()
 	richTextCenter->setEnabled(false);
 	richTextRight->setEnabled(false);
 	richTextJustified->setEnabled(false);
+	richTextUndo->setEnabled(false);
+	richTextRedo->setEnabled(false);
 }
 
 #include "noteedit.moc"

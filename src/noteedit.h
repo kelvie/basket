@@ -121,12 +121,13 @@ class HtmlEditor : public NoteEditor
 	HtmlContent *m_htmlContent;
   public slots:
 	void cursorPositionChanged();
+	void textChanged();
 	void fontChanged(const QFont &font);
   protected slots:
 //	void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
-	void setBold();
-	void setItalic();
-	void setUnderline();
+	//	void setBold();
+	//	void setItalic();
+	//	void setUnderline();
 	void setLeft();
 	void setCentered();
 	void setRight();
@@ -281,6 +282,8 @@ class InlineEditors : public QObject
 	KToggleAction     *richTextCenter;
 	KToggleAction     *richTextRight;
 	KToggleAction     *richTextJustified;
+	KAction	  *richTextUndo;
+	KAction	  *richTextRedo;
 };
 
 #endif // NOTEEDIT_H
