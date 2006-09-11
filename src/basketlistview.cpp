@@ -26,6 +26,7 @@
 #include <kstringhandler.h>
 #include <qpainter.h>
 #include <qbitmap.h>
+#include <qpixmapcache.h>
 #include <iostream>
 #include <kdebug.h>
 #include "global.h"
@@ -247,6 +248,12 @@ extern void drawGradient( QPainter *p, const QColor &colorTop, const QColor & co
 
 QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color)
 {
+	QString key = QString("BLI-%1.%2.%3")
+		.arg(text).arg(font.toString()).arg(color.rgb());
+	if (QPixmap* cached=QPixmapCache::find(key)) {
+		return *cached;
+	}
+
 	// Compute the sizes of the image components:
 	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignAuto | Qt::AlignTop, text);
 	int xMargin = height / 6;
@@ -300,6 +307,9 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 	painter.setFont(font);
 	painter.drawText(0+1, 0, width, height, Qt::AlignHCenter | Qt::AlignVCenter, text);
 	painter.end();
+
+	QPixmapCache::insert(key, pmScaled);
+
 	return pmScaled;
 }
 
@@ -409,7 +419,9 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	bool showLoadingIcon = false;
 	bool showEncryptedIcon = false;
 	QPixmap countPixmap;
-	if (Global::bnpView->isFilteringAllBaskets() && Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering) {
+	bool showCountPixmap = Global::bnpView->isFilteringAllBaskets() &&
+		Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering;
+	if (showCountPixmap) {
 		showLoadingIcon = (!m_basket->isLoaded() && !m_basket->isLocked()) || haveHiddenChildsLoading();
 		showEncryptedIcon = m_basket->isLocked() || haveHiddenChildsLocked();
 		countPixmap = foundCountPixmap(!m_basket->isLoaded(), m_basket->countFounds(), haveHiddenChildsLoading() || haveHiddenChildsLocked(),
@@ -422,6 +434,26 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
 	QColor textColor = (drawRoundRect ? m_basket->textColor() : (isCurrentBasket() ? KGlobalSettings::highlightedTextColor() : KGlobalSettings::textColor()));
+
+	
+	BasketListViewItem *shownAbove = shownItemAbove();
+	BasketListViewItem *shownBelow = shownItemBelow();
+	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10")
+		.arg(effectiveWidth)
+		.arg(drawRoundRect)
+		.arg(textColor.rgb())
+		.arg(isCurrentBasket())
+		.arg(shownBelow && shownBelow->isCurrentBasket())
+		.arg(shownAbove && shownAbove->isCurrentBasket())
+		.arg(showLoadingIcon)
+		.arg(showEncryptedIcon)
+		.arg(showCountPixmap)
+		.arg(m_basket->basketName());
+	if (QPixmap* cached = QPixmapCache::find(key)) {
+		QPixmap cachedBuffer = *cached;
+		painter->drawPixmap(0, 0, cachedBuffer);
+		return;
+	}
 
 	// Bufferize the drawing of items (otherwize, resizing the splitter make the tree act like a Christmas Tree ;-D ):
 	QPixmap theBuffer(width, height());
@@ -481,7 +513,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		thePainter.drawPoint(0, height() - 3);
 	}
 	// Draw the bottom-right selection roundings:
-	BasketListViewItem *shownBelow = shownItemBelow();
+	//BasketListViewItem *shownBelow = shownItemBelow();
 	if (shownBelow && shownBelow->isCurrentBasket()) {
 		thePainter.setPen(selColor);
 		thePainter.drawPoint(width - 1, height() - 1);
@@ -492,7 +524,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		thePainter.drawPoint(width - 1, height() - 3);
 	}
 	// Draw the top-right selection roundings:
-	BasketListViewItem *shownAbove = shownItemAbove();
+	//	BasketListViewItem *shownAbove = shownItemAbove();
 	if (shownAbove && shownAbove->isCurrentBasket()) {
 		thePainter.setPen(selColor);
 		thePainter.drawPoint(width - 1, 0);
@@ -534,6 +566,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	thePainter.end();
 
+	QPixmapCache::insert(key, theBuffer);
 	// Apply the buffer:
 	painter->drawPixmap(0, 0, theBuffer);
 }
