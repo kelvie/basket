@@ -15,7 +15,10 @@
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
     <description>A set of baskets to keep a full range of data on hand.</description>
-    <ignoreparts/>
+    <ignoreparts>
+      <part>kdevfileview</part>
+      <part>kdevfileselector</part>
+    </ignoreparts>
     <secondaryLanguages/>
     <versioncontrol>kdevsubversion</versioncontrol>
   </general>
@@ -151,10 +154,10 @@
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -185,10 +188,7 @@
     <rshoptions/>
   </kdevcvs>
   <kdevcppsupport>
-    <references>
-      <pcs>KDElibs</pcs>
-      <pcs>Qt</pcs>
-    </references>
+    <references/>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
@@ -202,7 +202,7 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
