@@ -119,6 +119,7 @@ BNPView::~BNPView()
 
 void BNPView::lateInit()
 {
+/*
 	InlineEditors* instance = InlineEditors::instance();
 
 	if(instance)
@@ -128,7 +129,7 @@ void BNPView::lateInit()
 		if(toolbar)
 			toolbar->hide();
 	}
-
+*/
 	if(!isPart())
 	{
 		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))

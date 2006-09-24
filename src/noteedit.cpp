@@ -244,7 +244,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( InlineEditors::instance()->richTextRight,     SIGNAL(activated()), this, SLOT(setRight())     );
 	connect( InlineEditors::instance()->richTextJustified, SIGNAL(activated()), this, SLOT(setBlock())     );
 
-	InlineEditors::instance()->richTextToolBar()->show();
+//	InlineEditors::instance()->richTextToolBar()->show();
 	cursorPositionChanged();
 	fontChanged(textEdit->currentFont());
 	//QTimer::singleShot( 0, this, SLOT(cursorPositionChanged()) );
@@ -353,11 +353,11 @@ void HtmlEditor::validate()
 
 	disconnect();
 	widget()->disconnect();
-	if(InlineEditors::instance())
+	if (InlineEditors::instance())
 	{
 		InlineEditors::instance()->disableRichTextToolBar();
-		if(InlineEditors::instance()->richTextToolBar())
-			InlineEditors::instance()->richTextToolBar()->hide();
+//		if (InlineEditors::instance()->richTextToolBar())
+//			InlineEditors::instance()->richTextToolBar()->hide();
 	}
 	delete widget();
 	setInlineEditor(0);

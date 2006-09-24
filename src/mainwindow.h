@@ -69,7 +69,7 @@ class MainWindow : public KMainWindow
   public slots:
 	bool askForQuit();
 	/** Settings **/
-	void toggleToolBar();
+//	void toggleToolBar();
 	void toggleStatusBar();
 	void showShortcutsSettingsDialog();
 	void configureToolbars();
@@ -90,7 +90,7 @@ class MainWindow : public KMainWindow
 
   private:
 	// Settings actions :
-	KToggleAction *m_actShowToolbar;
+//	KToggleAction *m_actShowToolbar;
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;

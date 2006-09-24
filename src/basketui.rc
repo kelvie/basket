@@ -84,7 +84,11 @@
   </Menu>
   <Menu name="settings" >
    <text>&amp;Settings</text>
+<!--
    <Action name="options_show_toolbar" />
+   <Action name="options_show_format_toolbar" />
+-->
+   <Merge name="StandardToolBarMenuHandler" />
    <Action name="options_show_statusbar" />
    <Separator/>
    <Action name="options_configure_keybinding" />
@@ -118,20 +122,16 @@
   <Action name="edit_delete" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="note_group" />
-<!--
-  <Separator lineSeparator="true" name="separator_2" />
-  <Action name="beta_convert_texts" />
--->
  </ToolBar>
- <ToolBar hidden="true" newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
+ <ToolBar newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
   <text>Text Formating Toolbar</text>
   <Action name="richtext_undo" />
   <Action name="richtext_redo" />
-  <Separator lineSeparator="true" name="separator_0" />
+  <Separator lineSeparator="true" name="separator_4" />
   <Action name="richtext_font" />
-  <Separator lineSeparator="false" name="blank_1" />
+  <Separator lineSeparator="false" name="separator_3" />
   <Action name="richtext_font_size" />
-  <Separator lineSeparator="false" name="blank_2" />
+  <Separator lineSeparator="false" name="separator_2" />
   <Action name="richtext_color" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="richtext_bold" />
@@ -141,7 +141,8 @@
   <Separator lineSeparator="true" name="separator_2" />
   <Action name="richtext_super" />
   <Action name="richtext_sub" />
--->  <Separator lineSeparator="true" name="separator_3" />
+-->
+  <Separator lineSeparator="true" name="separator_0" />
   <Action name="richtext_left" />
   <Action name="richtext_center" />
   <Action name="richtext_right" />
@@ -176,8 +177,7 @@
   <Action name="edit_delete" />
  </Menu>
  <Menu noMerge="1" name="insert_popup" >
-<!--  <Action name="insert_text" />-->
-  <Action name="insert_html" />
+<!--  <Action name="insert_text" />-->  <Action name="insert_html" />
   <Action name="insert_image" />
   <Action name="insert_link" />
   <Action name="insert_launcher" />

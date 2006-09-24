@@ -73,6 +73,7 @@
 #include "basket.h"
 #include "basketproperties.h"
 #include "note.h"
+#include "noteedit.h"
 #include "settings.h"
 #include "global.h"
 //#include "addbasketwizard.h"
@@ -112,14 +113,19 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 
 	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
 
-	m_actShowToolbar->setChecked(   toolBar()->isShown()   );
+//	m_actShowToolbar->setChecked(   toolBar()->isShown()   );
 	m_actShowStatusbar->setChecked( statusBar()->isShown() );
 	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
+
+//	InlineEditors::instance()->richTextToolBar();
+	setStandardToolBarMenuEnabled(true);
+
 	createGUI("basketui.rc");
 }
 
 MainWindow::~MainWindow()
 {
+	saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
 	delete m_settings;
 }
 
@@ -129,10 +135,10 @@ void MainWindow::setupActions()
 	new KAction(i18n("Minimize"), "", 0,
 				this, SLOT(minimizeRestore()), actionCollection(), "minimizeRestore" );
 	/** Settings : ************************************************************/
-	m_actShowToolbar   = KStdAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
-    m_actShowStatusbar = KStdAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
+//	m_actShowToolbar   = KStdAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
+	m_actShowStatusbar = KStdAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
 
-	m_actShowToolbar->setCheckedState( KGuiItem(i18n("Hide &Toolbar")) );
+//	m_actShowToolbar->setCheckedState( KGuiItem(i18n("Hide &Toolbar")) );
 
 	(void) KStdAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), actionCollection() );
 
@@ -144,7 +150,7 @@ void MainWindow::setupActions()
 	actAppConfig = KStdAction::preferences( this, SLOT(showSettingsDialog()), actionCollection() );
 }
 
-void MainWindow::toggleToolBar()
+/*void MainWindow::toggleToolBar()
 {
 	if (toolBar()->isVisible())
 		toolBar()->hide();
@@ -152,7 +158,7 @@ void MainWindow::toggleToolBar()
 		toolBar()->show();
 
 	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
-}
+}*/
 
 void MainWindow::toggleStatusBar()
 {
