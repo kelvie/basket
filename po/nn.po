@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2006-08-27 15:33+0200\n"
-"PO-Revision-Date: 2006-08-17 23:03+0200\n"
+"PO-Revision-Date: 2006-09-24 15:15+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -36,23 +36,19 @@ msgstr "Ikon."
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
-msgstr ""
-"Det nye notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+msgstr "Det nye notatet er ikkje i samsvar med filteret, og vert derfor skjult."
 
 #: basket.cpp:524
 msgid "A new note does not match the filter and is hidden."
-msgstr ""
-"Eit nytt notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+msgstr "Eit nytt notatet er ikkje i samsvar med filteret, og vert derfor skjult."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
-"Nokre nye notat er ikkje i samsvar med filteret, og vert derfor skjulte."
+msgstr "Nokre nye notat er ikkje i samsvar med filteret, og vert derfor skjulte."
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"Dei nye notata er ikkje i samsvar med filteret, og vert derfor skjulte."
+msgstr "Dei nye notata er ikkje i samsvar med filteret, og vert derfor skjulte."
 
 #: basket.cpp:1532
 msgid ""
@@ -170,9 +166,8 @@ msgid "Password protected basket."
 msgstr "Passordverna korg."
 
 #: basket.cpp:2927
-#, fuzzy
 msgid "Press Unlock to access it."
-msgstr "Trykk «Lås opp» for å låsa ho opp."
+msgstr "Trykk «Lås opp» for å få tilgang til ho."
 
 #: basket.cpp:2929
 #, c-format
@@ -183,7 +178,7 @@ msgstr "Kryptering er ikkje støtta<br/>i denne versjonen av %1."
 msgid ""
 "To make baskets stay unlocked, change the automatic<br>locking duration in "
 "the application settings."
-msgstr ""
+msgstr "For å la korgene verta verande lås, kan du endra låseperioden i programoppsettet."
 
 #: basket.cpp:2976 basketstatusbar.cpp:83 bnpview.cpp:1234 bnpview.cpp:1840
 msgid "Loading..."
@@ -287,10 +282,8 @@ msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr "Notat i samsvar med filteret «%1»:"
 
 #: basket.cpp:4695
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
-msgstr ""
-"Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr "Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
 
 #: basket.cpp:5288
 msgid "Please enter the password for the following private key:"
@@ -449,7 +442,7 @@ msgstr "B&yt til denne korga (global snarveg)"
 
 #: basketstatusbar.cpp:100
 msgid "Shows if there are changes that have not been saved yet."
-msgstr ""
+msgstr "Viser om det finst endringar som ikkje er lagra enno."
 
 #: basketstatusbar.cpp:128
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
@@ -499,8 +492,7 @@ msgstr "Vis namn på gjeldande korg"
 
 #: bnpview.cpp:224
 msgid "Allows you to know basket is current without opening the main window."
-msgstr ""
-"Lèt deg sjå namnet på den gjeldande korga utan å opna hovud­vindauget."
+msgstr "Lèt deg sjå namnet på den gjeldande korga utan å opna hovud­vindauget."
 
 #: bnpview.cpp:227
 msgid "Paste selection in current basket"
@@ -557,8 +549,7 @@ msgid "Insert text note"
 msgstr "Set inn tekstnotat"
 
 #: bnpview.cpp:248
-msgid ""
-"Add a text note to the current basket without having to open main window."
+msgid "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Legg eit tekstnotat til den gjeldande korga utan å måtta opna "
 "hovud­vindauget."
@@ -568,8 +559,7 @@ msgid "Insert image note"
 msgstr "Set inn biletnotat"
 
 #: bnpview.cpp:252
-msgid ""
-"Add an image note to the current basket without having to open main window."
+msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Legg eit bilet­notat til den gjeldande korga utan å måtta opna "
 "hovud­vindauget."
@@ -579,8 +569,7 @@ msgid "Insert link note"
 msgstr "Set inn lenkjenotat"
 
 #: bnpview.cpp:256
-msgid ""
-"Add a link note to the current basket without having to open main window."
+msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Legg eit lenkje­notat til den gjeldande korga utan å måtta opna "
 "hovud­vindauget."
@@ -590,8 +579,7 @@ msgid "Insert color note"
 msgstr "Set inn fargenotat"
 
 #: bnpview.cpp:260
-msgid ""
-"Add a color note to the current basket without having to open main window."
+msgid "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Legg eit farge­notat til den gjeldande korga utan å måtta opna "
 "hovud­vindauget."
@@ -626,7 +614,7 @@ msgstr "Korger"
 
 #: bnpview.cpp:336
 msgid "Please write in English or French."
-msgstr ""
+msgstr "Skriv anten på engelsk eller på fransk."
 
 #: bnpview.cpp:345
 msgid ""
@@ -962,10 +950,8 @@ msgid "Delete With its Childs"
 msgstr "Slett korga og underkorgar"
 
 #: bnpview.cpp:1590 bnpview.cpp:1596
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr ""
-"<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?</qt>"
 
 #: bnpview.cpp:1598
 msgid "Remove Basket"
@@ -1245,26 +1231,25 @@ msgstr "Alt + O"
 
 #: likeback.cpp:74
 msgid "Send application developers a comment about something you like"
-msgstr ""
+msgstr "Send tilbakemelding til programutviklarane om noko du liker."
 
 #: likeback.cpp:81
 msgid "Send application developers a comment about something you dislike"
-msgstr ""
+msgstr "Send tilbakemelding til programutviklarane om noko du ikkje liker."
 
 #: likeback.cpp:88
 msgid ""
 "Send application developers a comment about an improper behavior of the "
 "application"
-msgstr ""
+msgstr "Send tilbakemelding til programutviklarane om ein feil i programmet."
 
 #: likeback.cpp:95
 msgid "Send application developers a comment about a new feature you desire"
-msgstr ""
+msgstr "Send tilbakemelding til programutviklarane med ønskje om ein ny funksjon."
 
 #: likeback.cpp:344
-#, fuzzy
 msgid "&Send a Comment to Developers"
-msgstr "Send tilbakemelding"
+msgstr "&Send tilbakemelding til utviklarane"
 
 #: likeback.cpp:381
 #, c-format
@@ -1274,49 +1259,42 @@ msgstr "Velkommen til denne testversjonen av %1."
 #: likeback.cpp:381
 #, c-format
 msgid "Welcome to %1."
-msgstr ""
+msgstr "Velkommen til %1."
 
 #: likeback.cpp:382
 msgid "To help us improve it, your comments are important."
-msgstr ""
-"Tilbakemeldingane dine er viktige for å hjelpa oss å forbetra programmet."
+msgstr "Tilbakemeldingane dine er viktige for å hjelpa oss å forbetra programmet."
 
 #: likeback.cpp:385
-#, fuzzy
 msgid ""
 "Each time you have a great or frustrating experience, please click the "
 "appropriate face below the window title-bar, briefly describe what you like "
 "or dislike and click Send."
 msgstr ""
 "Kvar gong du har ei spesielt bra eller frustrerandes oppleving, kan du "
-"trykkja på den tilsvarande handa rett nedanfor tittel­linja for å senda "
+"trykkja på det tilsvarande ansiktet rett nedanfor tittel­linja for å senda "
 "ei kort tilbake­melding på kva du likte eller mislikte – rett til "
-"program­utviklaren."
+"program­utviklarane."
 
 #: likeback.cpp:389
-#, fuzzy
 msgid ""
 "Each time you have a great experience, please click the smiling face below "
 "the window title-bar, briefly describe what you like and click Send."
 msgstr ""
-"Kvar gong du har ei spesielt bra eller frustrerandes oppleving, kan du "
-"trykkja på den tilsvarande handa rett nedanfor tittel­linja for å senda "
-"ei kort tilbake­melding på kva du likte eller mislikte – rett til "
-"program­utviklaren."
+"Kvar gong du har ei spesielt bra oppleving, kan du "
+"trykkja på smileansiktet rett nedanfor tittel­linja for å senda "
+"ei kort tilbake­melding rett til program­utviklarane."
 
 #: likeback.cpp:393
-#, fuzzy
 msgid ""
 "Each time you have a frustrating experience, please click the frowning face "
 "below the window title-bar, briefly describe what you dislike and click Send."
 msgstr ""
-"Kvar gong du har ei spesielt bra eller frustrerandes oppleving, kan du "
-"trykkja på den tilsvarande handa rett nedanfor tittel­linja for å senda "
-"ei kort tilbake­melding på kva du likte eller mislikte – rett til "
-"program­utviklaren."
+"Kvar gong du har ei spesielt frustrerandes oppleving, kan du "
+"trykkja på det sure ansiktet rett nedanfor tittel­linja for å senda "
+"ei kort tilbake­melding rett til program­utviklarane."
 
 #: likeback.cpp:402
-#, fuzzy
 msgid ""
 "Follow the same principle to quickly report a bug: just click the "
 "broken-object icon in the top-right corner of the window, describe it and "
@@ -1327,16 +1305,14 @@ msgstr ""
 "trykk «Send»."
 
 #: likeback.cpp:405
-#, fuzzy
 msgid ""
 "Each time you discover a bug in the application, please click the "
 "broken-object icon below the window title-bar, briefly describe what is the "
 "mis-behaviour and click Send."
 msgstr ""
-"Kvar gong du har ei spesielt bra eller frustrerandes oppleving, kan du "
-"trykkja på den tilsvarande handa rett nedanfor tittel­linja for å senda "
-"ei kort tilbake­melding på kva du likte eller mislikte – rett til "
-"program­utviklaren."
+"Kvar gong du oppdagar ein feil i programmet, kan du "
+"trykkja på øydelagt-ikonet rett nedanfor tittel­linja for å senda "
+"ei kort tilbake­melding rett til program­utviklarane."
 
 #: likeback.cpp:410
 msgid "Examples:"
@@ -1357,12 +1333,10 @@ msgid "Very refreshing."
 msgstr "Han er veldig frisk og fin."
 
 #: likeback.cpp:418
-#, fuzzy
 msgid "I dislike..."
-msgstr "Eg liker …"
+msgstr "Eg liker ikkje …"
 
 #: likeback.cpp:419
-#, fuzzy
 msgid ""
 "_: I dislike...\n"
 "the welcome page of that assistant."
@@ -1384,29 +1358,27 @@ msgstr "Når eg trykkjer på «Legg til»-knappen, så skjer det ingenting."
 
 #: likeback.cpp:427
 msgid "I desire a feature..."
-msgstr ""
+msgstr "Eg ønskjer ein ny funksjon …"
 
 #: likeback.cpp:428
 msgid ""
 "_: I desire a feature...\n"
 "allowing me to send my work by email."
-msgstr ""
+msgstr "Eg skulle ønskja det var mogleg å senda notata som e-post."
 
 #: likeback.cpp:431
 msgid "Help Improve the Application"
 msgstr "Hjelp til med å forbetra programmet"
 
 #: likeback.cpp:542
-#, fuzzy
 msgid "Email Address"
-msgstr "Vel e-postadresse"
+msgstr "E-postadresse"
 
 #: likeback.cpp:543
 msgid "Please provide your email address."
 msgstr "Skriv inn e-postadressa di."
 
 #: likeback.cpp:544
-#, fuzzy
 msgid ""
 "It will only be used to contact you back if more information is needed about "
 "your comments, ask you how to reproduce the bugs you report, send bug "
@@ -1418,76 +1390,69 @@ msgstr ""
 "liknande."
 
 #: likeback.cpp:545
-#, fuzzy
 msgid ""
 "The email address is optional. If you do not provide any, your comments will "
 "be sent anonymously."
-msgstr ""
-"E-postadressa er valfri. Viss du lèt feltet stå tomt, vert "
-"tilbakemeldingane sende anonymt."
+msgstr "E-postadressa er valfri. Viss du lèt feltet stå tomt, vert tilbakemeldingane sende anonymt."
 
 #: likeback.cpp:626
-#, fuzzy
 msgid "Send a Comment to Developers"
-msgstr "Send tilbakemelding"
+msgstr "Send tilbakemelding til utviklarane"
 
 #. i18n("Send Application Developers a Comment About:"), page);
 #: likeback.cpp:656
 msgid "Send Application Developers a Comment About:"
-msgstr ""
+msgstr "Send ei tilbakemelding til programutviklarane om:"
 
 #: likeback.cpp:667
 msgid "Something you &like"
-msgstr ""
+msgstr "Noko du &liker"
 
 #: likeback.cpp:677
 msgid "Something you &dislike"
-msgstr ""
+msgstr "Noko du &ikkje liker"
 
 #: likeback.cpp:687
 msgid "An improper &behavior of this application"
-msgstr ""
+msgstr "Ein &feil i programmet"
 
 #: likeback.cpp:697
 msgid "A new &feature you desire"
-msgstr ""
+msgstr "Ein ny funksjon du &ønskjer"
 
 #: likeback.cpp:710
 msgid "Show comment buttons below &window titlebars"
-msgstr ""
+msgstr "&Vis tilbakemeldingsknappar under tittellinja"
 
 #: likeback.cpp:714
-#, fuzzy
 msgid "&Send Comment"
-msgstr "Send tilbakemelding"
+msgstr "&Send tilbakemelding"
 
 #: likeback.cpp:718
-#, fuzzy
 msgid "&Email Address..."
-msgstr "Vel e-postadresse"
+msgstr "E-postadresse …"
 
 #: likeback.cpp:735
 msgid "Please provide a brief description of your opinion of this application."
-msgstr ""
+msgstr "Skriv ei kort tilbake­melding om kva du synest om dette programmet."
 
 #: likeback.cpp:748
 msgid "Please write in English."
-msgstr ""
+msgstr "Skriv på engelsk."
 
 #: likeback.cpp:754
 msgid "You may be able to use an <a href=\"%1\">online translation tool</a>."
-msgstr ""
+msgstr "Det kan vera du kan bruka eit <a href=\"%1\">auto­matisk om­settings­verktøy</a>."
 
 #: likeback.cpp:760
 msgid ""
 "To make the comments you send more useful in improving this application, try "
 "to send the same amount of positive and negative comments."
-msgstr ""
+msgstr "For at tilbake­meldingane skal vera mest mogleg nyttige for program­utviklarane, bør du helst prøva å senda både positive og negative meldingar."
 
 #: likeback.cpp:763
-#, fuzzy
 msgid "Do <b>not</b> ask for new features: your requests will be ignored."
-msgstr "Men ikkje be om nye funksjonar. Slike førespurnader vert oversett."
+msgstr "Men <b>ikkje</b> be om nye funksjonar. Slike føre­spurnader vert oversett."
 
 #: likeback.cpp:832
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
@@ -1680,7 +1645,6 @@ msgid "How is it useful?"
 msgstr "Kva nytte har dette?"
 
 #: newbasketdialog.cpp:215
-#, fuzzy
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or "
@@ -2326,8 +2290,7 @@ msgstr ""
 "notat til eit skrive­­program."
 
 #: settings.cpp:383
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr "Lèt deg lima inn merke­lappar som rein­tekst­ekvivalentar."
 
 #: settings.cpp:384 tagsedit.cpp:488
@@ -2342,12 +2305,11 @@ msgstr ""
 
 #: settings.cpp:395
 msgid "Automatically &lock protected baskets when closed for"
-msgstr ""
+msgstr "&Lås automatisk passordverna korger når dei har vore lukke i"
 
 #: settings.cpp:399
-#, fuzzy
 msgid " minutes"
-msgstr "Ingen notat"
+msgstr " minutt"
 
 #: settings.cpp:410
 msgid "Use GnuPG agent for &private/public key protected baskets"
@@ -2701,8 +2663,7 @@ msgid "From Tomboy"
 msgstr "Frå Tomboy"
 
 #: softwareimporters.cpp:548
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "Klarte ikkje importera fila. Ho er anten ugyldig, eller så er ho ikkje ei "
 "TuxCards-fil."
@@ -3021,10 +2982,8 @@ msgstr ""
 "linjene."
 
 #: tagsedit.cpp:888
-msgid ""
-"Deleting the tag will remove it from every notes it is currently assigned to."
-msgstr ""
-"Viss du slettar merkelappen, vert han fjerna frå alle notata som har han."
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
+msgstr "Viss du slettar merkelappen, vert han fjerna frå alle notata som har han."
 
 #: tagsedit.cpp:889
 msgid "Confirm Delete Tag"
@@ -3038,8 +2997,7 @@ msgstr "Fjern merkelapp"
 msgid ""
 "Deleting the state will remove the tag from every notes the state is "
 "currently assigned to."
-msgstr ""
-"Viss du slettar tilstanden, vert han fjerna frå alle notata som har han."
+msgstr "Viss du slettar tilstanden, vert han fjerna frå alle notata som har han."
 
 #: tagsedit.cpp:896
 msgid "Confirm Delete State"
@@ -3164,3 +3122,4 @@ msgstr ""
 #~ msgstr ""
 #~ "Hugs at det er like viktig for oss å få veta kva du liker med programmet "
 #~ "som kva du ikkje liker."
+
