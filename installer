@@ -172,7 +172,7 @@ else
   echo "            Please now enter the root password in order to install "
   echo "                        BasKet Note Pads on the system."
   echo ""
-  su -c "make install" || exit 1
+  sudo make install || exit 1
   echo ""
   echo ""
 fi
