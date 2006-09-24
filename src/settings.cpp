@@ -44,6 +44,7 @@
 #include <kgpgme.h>
 #include <kdebug.h>
 
+#include "basket.h"
 #include "linklabel.h"
 #include "settings.h"
 #include "variouswidgets.h"
@@ -58,6 +59,7 @@ bool    Settings::s_playAnimations       = true;
 bool    Settings::s_showNotesToolTip     = true; // TODO: RENAME: useBasketTooltips
 bool    Settings::s_confirmNoteDeletion  = true;
 bool    Settings::s_bigNotes             = false;
+bool    Settings::s_autoBullet           = true;
 bool    Settings::s_exportTextTags       = true;
 bool    Settings::s_useGnuPGAgent        = false;
 bool    Settings::s_treeOnLeft           = true;
@@ -127,6 +129,7 @@ void Settings::loadConfig()
 	setShowNotesToolTip(     config->readBoolEntry("showNotesToolTip",     true)  );
 	setBigNotes(             config->readBoolEntry("bigNotes",             false) );
 	setConfirmNoteDeletion(  config->readBoolEntry("confirmNoteDeletion",  true)  );
+	setAutoBullet(           config->readBoolEntry("autoBullet",           true)  );
 	setExportTextTags(       config->readBoolEntry("exportTextTags",       true)  );
 	setUseGnuPGAgent(        config->readBoolEntry("useGnuPGAgent",        false) );
 	setBlinkedFilter(        config->readBoolEntry("blinkedFilter",        false) );
@@ -213,10 +216,11 @@ void Settings::saveConfig()
 	config->writeEntry( "showNotesToolTip",     showNotesToolTip()     );
 	config->writeEntry( "confirmNoteDeletion",  confirmNoteDeletion()  );
 	config->writeEntry( "bigNotes",             bigNotes()             );
+	config->writeEntry( "autoBullet",           autoBullet()           );
 	config->writeEntry( "exportTextTags",       exportTextTags()       );
 #ifdef HAVE_LIBGPGME
-	if(KGpgMe::isGnuPGAgentAvailable())
-		config->writeEntry( "useGnuPGAgent",        useGnuPGAgent()        );
+	if (KGpgMe::isGnuPGAgentAvailable())
+		config->writeEntry( "useGnuPGAgent",    useGnuPGAgent()        );
 #endif
 	config->writeEntry( "blinkedFilter",        blinkedFilter()        );
 	config->writeEntry( "enableReLockTimeout",  enableReLockTimeout()  );
@@ -338,6 +342,14 @@ void Settings::setBigNotes(bool big)
 		Global::bnpView->relayoutAllBaskets();
 }
 
+void Settings::setAutoBullet(bool yes)
+{
+	s_autoBullet = yes;
+	if (Global::bnpView && Global::bnpView->currentBasket()) {
+		Global::bnpView->currentBasket()->editorPropertiesChanged();
+	}
+}
+
 /** SettingsDialog */
 
 GeneralPage::GeneralPage(QWidget * parent, const char * name)
@@ -370,6 +382,10 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	m_bigNotes = new QCheckBox(i18n("Bi&g notes"), this);
 	layout->addWidget(m_bigNotes);
 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+
+	m_autoBullet = new QCheckBox(i18n("Transform lines starting with * or - to lists in text editors"), this);
+	layout->addWidget(m_autoBullet);
+	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("E&xport tags in texts"), this);
@@ -500,6 +516,7 @@ void GeneralPage::load()
 	m_showNotesToolTip->setChecked(Settings::showNotesToolTip());
 	m_confirmNoteDeletion->setChecked(Settings::confirmNoteDeletion());
 	m_bigNotes->setChecked(Settings::bigNotes());
+	m_autoBullet->setChecked(Settings::autoBullet());
 	m_exportTextTags->setChecked(Settings::exportTextTags());
 	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
 	m_filterOnTop->setCurrentItem( (int)!Settings::filterOnTop() );
@@ -537,6 +554,7 @@ void GeneralPage::save()
 	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
 	Settings::setConfirmNoteDeletion(  m_confirmNoteDeletion->isChecked()  );
 	Settings::setBigNotes(             m_bigNotes->isChecked()             );
+	Settings::setAutoBullet(           m_autoBullet->isChecked()           );
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 #ifdef HAVE_LIBGPGME
 	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()        );

@@ -199,6 +199,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
 	textEdit->setTextFormat(Qt::RichText);
+	textEdit->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
 	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());

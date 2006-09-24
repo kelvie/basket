@@ -75,6 +75,7 @@ class GeneralPage : public KCModule
 		QCheckBox           *m_showNotesToolTip;
 		QCheckBox           *m_confirmNoteDeletion;
 		QCheckBox           *m_bigNotes;
+		QCheckBox           *m_autoBullet;
 		QCheckBox           *m_exportTextTags;
 		QCheckBox           *m_useGnuPGAgent;
 		QCheckBox           *m_usePassivePopup;
@@ -90,7 +91,7 @@ class GeneralPage : public KCModule
 		QPushButton         *m_pushVisualize;
 
 		QCheckBox           *m_useSystray;
-  
+
 		QCheckBox           *m_enableReLockTimeoutMinutes;
 		KIntNumInput        *m_reLockTimeoutMinutes;
 };
@@ -178,6 +179,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_showNotesToolTip;
 	static bool    s_confirmNoteDeletion;
 	static bool    s_bigNotes;
+	static bool    s_autoBullet;
 	static bool    s_exportTextTags;
 	static bool    s_useGnuPGAgent;
 	static bool    s_usePassivePopup;
@@ -228,6 +230,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline bool    showNotesToolTip()     { return s_showNotesToolTip;     }
 	static inline bool    confirmNoteDeletion()  { return s_confirmNoteDeletion;  }
 	static inline bool    bigNotes()             { return s_bigNotes;             }
+	static inline bool    autoBullet()           { return s_autoBullet;           }
 	static inline bool    exportTextTags()       { return s_exportTextTags;       }
 	static inline bool    useGnuPGAgent()        { return s_useGnuPGAgent;        }
 	static inline bool    blinkedFilter()        { return s_blinkedFilter;        }
@@ -316,11 +319,12 @@ class Settings // FIXME: Distaptch new config events ?
 	}
 	static inline void setConfirmNoteDeletion(bool confirm)     { s_confirmNoteDeletion  = confirm;     }
 	static void setBigNotes(bool big);
+	static void setAutoBullet(bool yes);
 	static inline void setExportTextTags(bool yes)              { s_exportTextTags       = yes;         }
 	static inline void setUseGnuPGAgent(bool yes)               { s_useGnuPGAgent        = yes;         }
 	static inline void setPlayAnimations(bool play)             { s_playAnimations       = play;        }
 	static inline void setBlinkedFilter(bool blinked)           { s_blinkedFilter        = blinked;     }
-	static inline void setEnableReLockTimeout(bool yes)         { s_enableReLockTimeout  = yes;     }
+	static inline void setEnableReLockTimeout(bool yes)         { s_enableReLockTimeout  = yes;         }
 	static inline void setReLockTimeoutMinutes(int minutes)     { s_reLockTimeoutMinutes = minutes;     }
 	static inline void setStartDocked(bool docked)              { s_startDocked          = docked;      }
 	static inline void setMiddleAction(int action)              { s_middleAction         = action;      }

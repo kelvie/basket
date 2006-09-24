@@ -547,8 +547,9 @@ public slots:
 	bool closeEditor();
 	void closeEditorDelayed();
 	void updateEditorAppearance();
-        void openBasket();
-        void closeBasket();
+	void editorPropertiesChanged();
+	void openBasket();
+	void closeBasket();
 
 /// FILTERING:
   public slots:

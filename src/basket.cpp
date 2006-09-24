@@ -3482,6 +3482,13 @@ void Basket::updateEditorAppearance()
 	}
 }
 
+void Basket::editorPropertiesChanged()
+{
+	if (isDuringEdit() && m_editor->note()->content()->type() == NoteType::Html) {
+		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
+	}
+}
+
 void Basket::changeStateOfSelectedNotes(State *state)
 {
 	FOR_EACH_NOTE (note)
