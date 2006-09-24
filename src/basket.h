@@ -566,6 +566,7 @@ public slots:
   public:
 	static void acceptDropEvent(QDropEvent *event, bool preCond = true);
 	void contentsDropEvent(QDropEvent *event);
+	void blindDrop(QDropEvent* event);
 	bool isDuringDrag() { return m_isDuringDrag; }
 	QValueList<Note*> draggedNotes() { return m_draggedNotes; }
   protected:

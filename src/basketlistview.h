@@ -61,12 +61,17 @@ class BasketListViewItem : public QListViewItem
 		bool haveHiddenChildsLocked();
 		int countChildsFound();
 		int countHiddenChildsFound();
+
+		void setUnderDrag(bool);
+		bool isAbbreviated();
 		///
 //	QDragObject* dragObject();
 //	bool acceptDrop ( const QMimeSource * mime ) const;
 	private:
 		Basket *m_basket;
 		int     m_width;
+		bool m_isUnderDrag;
+		bool m_isAbbreviated;
 };
 
 class BasketTreeListView : public KListView
@@ -89,6 +94,10 @@ class BasketTreeListView : public KListView
 		QListViewItem *m_autoOpenItem;
 	private slots:
 		void autoOpen();
+	private:
+		void setItemUnderDrag(BasketListViewItem* item);
+		BasketListViewItem* m_itemUnderDrag;
+
 };
 
 #endif // BASKETLISTVIEW_H

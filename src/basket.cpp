@@ -1860,6 +1860,9 @@ void Basket::contentsDragLeaveEvent(QDragLeaveEvent*)
 
 void Basket::contentsDropEvent(QDropEvent *event)
 {
+	QPoint pos = event->pos();
+	std::cout << "Contents Drop Event at position " << pos.x() << ":" << pos.y() << std::endl;
+
 	m_isDuringDrag = false;
 	emit resetStatusBarText();
 
@@ -1901,6 +1904,32 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	}
 
 	m_draggedNotes.clear();
+}
+
+// handles dropping of a note to basket that is not shown
+// (usually through its entry in the basket list)
+void Basket::blindDrop(QDropEvent* event)
+{
+	if (!m_isInsertPopupMenu && redirectEditActions()) {
+		if (m_editor->textEdit())
+			m_editor->textEdit()->paste();
+		else if (m_editor->lineEdit())
+			m_editor->lineEdit()->paste();
+	} else {
+		if (!isLoaded()) {
+			Global::bnpView->showPassiveLoading(this);
+			load();
+		}
+		closeEditor();
+		unselectAll();
+		Note *note = NoteFactory::dropNote( event, this, true, event->action(),
+											dynamic_cast<Note*>(event->source()) );
+		if (note) {
+			insertCreatedNote(note);
+			//unselectAllBut(note);
+		}
+	}
+	save();
 }
 
 void Basket::insertEmptyNote(int type)
@@ -5635,6 +5664,8 @@ void Basket::dragMoveEvent(QDragMoveEvent* event)
 
 void Basket::dropEvent(QDropEvent *event)
 {
+	QPoint pos = event->pos();
+	std::cout << "Drop Event at position " << pos.x() << ":" << pos.y() << std::endl;
 	m_isDuringDrag = false;
 	emit resetStatusBarText();
 

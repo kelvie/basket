@@ -27,6 +27,7 @@
 #include <qpainter.h>
 #include <qbitmap.h>
 #include <qpixmapcache.h>
+#include <qtooltip.h>
 #include <iostream>
 #include <kdebug.h>
 #include "global.h"
@@ -34,29 +35,38 @@
 #include "basket.h"
 #include "tools.h"
 #include "settings.h"
+#include "notedrag.h"
 
 /** class BasketListViewItem: */
 
 BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
 	: QListViewItem(parent), m_basket(basket)
+	, m_isUnderDrag(false)
+	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
 
 BasketListViewItem::BasketListViewItem(QListViewItem *parent, Basket *basket)
 	: QListViewItem(parent), m_basket(basket)
+	, m_isUnderDrag(false)
+	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
 
 BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, Basket *basket)
 	: QListViewItem(parent, after), m_basket(basket)
+	, m_isUnderDrag(false)
+	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
 
 BasketListViewItem::BasketListViewItem(QListViewItem *parent, QListViewItem *after, Basket *basket)
 	: QListViewItem(parent, after), m_basket(basket)
+	, m_isUnderDrag(false)
+	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
@@ -73,8 +83,9 @@ bool BasketListViewItem::acceptDrop(const QMimeSource *) const
 
 void BasketListViewItem::dropped(QDropEvent *event)
 {
-	std::cout << "drop" << std::endl;
-	Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
+	std::cout << "Dropping into basket " << m_basket->name() << std::endl;
+	m_basket->contentsDropEvent(event);
+	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
 int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
@@ -440,7 +451,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Don't forget to update the key computation if parameters
 	// affecting the rendering logic change
-	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10")
+	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11")
 		.arg(effectiveWidth)
 		.arg(drawRoundRect)
 		.arg(textColor.rgb())
@@ -450,6 +461,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		.arg(showLoadingIcon)
 		.arg(showEncryptedIcon)
 		.arg(showCountPixmap)
+		.arg(m_isUnderDrag)
 		.arg(m_basket->basketName());
 	if (QPixmap* cached = QPixmapCache::find(key)) {
 		// Qt's documentation recommends copying the pointer
@@ -546,8 +558,13 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	if (textWidth > 0) { // IF there is space left to draw the text:
 		int xText = MARGIN + BASKET_ICON_SIZE + MARGIN;
 		QString theText = m_basket->basketName();
-		if (painter->fontMetrics().width(theText) > textWidth)
+		if (painter->fontMetrics().width(theText) > textWidth) {
 			theText = KStringHandler::rPixelSqueeze(theText, painter->fontMetrics(), textWidth);
+			m_isAbbreviated = true;
+		}
+		else {
+			m_isAbbreviated = false;
+		}
 		theText = escapedName(theText);
 		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignAuto | Qt::AlignVCenter | Qt::ShowPrefix, theText);
 	}
@@ -568,6 +585,9 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
 
+	if (m_isUnderDrag) {
+		thePainter.drawWinFocusRect(0, 0, width, height());
+	}
 	thePainter.end();
 
 	QPixmapCache::insert(key, theBuffer);
@@ -575,15 +595,49 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	painter->drawPixmap(0, 0, theBuffer);
 }
 
+void BasketListViewItem::setUnderDrag(bool underDrag)
+{
+	m_isUnderDrag = underDrag;
+}
+
+bool BasketListViewItem::isAbbreviated()
+{
+	return m_isAbbreviated;
+}
+
+/** class BasketListViewToolTip: */
+
+class BasketTreeListView_ToolTip : public QToolTip {
+public:
+	BasketTreeListView_ToolTip(BasketTreeListView* basketView)
+		: QToolTip(basketView->viewport())
+		, m_basketView(basketView)
+	{}
+public:
+	void maybeTip(const QPoint& pos)
+	{
+		QListViewItem *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
+		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+		if (bitem && bitem->isAbbreviated()) {
+			tip(m_basketView->itemRect(bitem), bitem->basket()->basketName());
+		}
+	}
+private:
+	BasketTreeListView* m_basketView;
+};
+
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 	: KListView(parent, name), m_autoOpenItem(0)
+	, m_itemUnderDrag(0)
 {
 	setWFlags(Qt::WStaticContents | WNoAutoErase);
 	clearWFlags(Qt::WStaticContents | WNoAutoErase);
 	//viewport()->clearWFlags(Qt::WStaticContents);
 	connect( &m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()) );
+
+	new BasketTreeListView_ToolTip(this);
 }
 
 void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
@@ -628,17 +682,35 @@ void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 	std::cout << "BasketTreeListView::contentsDragLeaveEvent" << std::endl;
 	m_autoOpenItem = 0;
 	m_autoOpenTimer.stop();
+	setItemUnderDrag(0);
 	removeExpands();
 	KListView::contentsDragLeaveEvent(event);
 }
 
 void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 {
-	std::cout << "BasketTreeListView::contentsDropEvent" << std::endl;
-	KListView::contentsDropEvent(event);
+	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
+	if (event->provides("application/x-qlistviewitem"))
+	{
+		KListView::contentsDropEvent(event);
+	}
+	else {
+		std::cout << "Forwarding dropped data to the basket" << std::endl;
+		QListViewItem *item = itemAt(contentsToViewport(event->pos()));
+		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+		if (bitem) {
+			bitem->basket()->blindDrop(event);
+		}
+		else {
+			std::cout << "Forwarding failed: no bitem found" << std::endl;
+		}
+	}
+
 	m_autoOpenItem = 0;
 	m_autoOpenTimer.stop();
+	setItemUnderDrag(0);
 	removeExpands();
+
 	Global::bnpView->save(); // TODO: Don't save if it was not a basket drop...
 }
 
@@ -649,15 +721,37 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 		KListView::contentsDragMoveEvent(event);
 	else {
 		QListViewItem *item = itemAt(contentsToViewport(event->pos()));
+		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (m_autoOpenItem != item) {
 			m_autoOpenItem = item;
-			m_autoOpenTimer.start(700, /*singleShot=*/true);
+			m_autoOpenTimer.start(1700, /*singleShot=*/true);
 		}
 		if (item) {
 			event->acceptAction(true);
 			event->accept(true);
 		}
+		setItemUnderDrag(bitem);
+
 		KListView::contentsDragMoveEvent(event); // FIXME: ADDED
+	}
+}
+
+void BasketTreeListView::setItemUnderDrag(BasketListViewItem* item)
+{
+	if (m_itemUnderDrag != item) {
+		if (m_itemUnderDrag) {
+			// Remove drag status from the old item
+			m_itemUnderDrag->setUnderDrag(false);
+			repaintItem(m_itemUnderDrag);
+		}
+
+		m_itemUnderDrag = item;
+
+		if (m_itemUnderDrag) {
+			// add drag status to the new item
+			m_itemUnderDrag->setUnderDrag(true);
+			repaintItem(m_itemUnderDrag);
+		}
 	}
 }
 
