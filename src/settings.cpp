@@ -363,9 +363,34 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addWidget(m_useSystray);
 	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
+//	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
+//	layout->addWidget(m_usePassivePopup);
+//	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+
+
+
+
+	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
-	layout->addWidget(m_usePassivePopup);
 	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+
+	HelpLabel *hLabel = new HelpLabel(
+		i18n("What are global actions?"),
+		("<p>" + i18n("You can configure global shortcuts to do some actions without having to show the main window. For instance, you can paste the clipboard content, take a color from a point of the screen, etc. You can also use the mouse scroll wheel over the system tray icon to change the current basket. Or use the middle mouse button on that icon to paste the current selection.") + "</p>" +
+		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.") + "</p>" +
+		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>")
+				.arg(kapp->aboutData()->programName()),
+		this);
+	hLay->addWidget(m_usePassivePopup);
+	hLay->addWidget(hLabel);
+	hLay->addStretch();
+	layout->addLayout(hLay);
+
+
+
+
+
+
 
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), this);
 	layout->addWidget(m_playAnimations);
@@ -383,7 +408,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addWidget(m_bigNotes);
 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	m_autoBullet = new QCheckBox(i18n("Transform lines starting with * or - to lists in text editors"), this);
+	m_autoBullet = new QCheckBox(i18n("T&ransform lines starting with * or - to lists in text editors"), this);
 	layout->addWidget(m_autoBullet);
 	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
@@ -393,7 +418,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
-	HelpLabel *hLabel = new HelpLabel(
+	hLabel = new HelpLabel(
 		i18n("When does this apply?"),
 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
 		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +

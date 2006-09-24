@@ -261,7 +261,7 @@ bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
 						result = gpgme_op_encrypt_result(m_ctx);
 						if (result->invalid_recipients) {
 							KMessageBox::error(kapp->activeWindow(), QString("%1: %2")
-								.arg(i18n("Invalid recipient encountered"))
+								.arg(i18n("That public key is not meant for encryption"))
 								.arg(result->invalid_recipients->fpr));
 						}
 						else {

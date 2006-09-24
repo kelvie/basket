@@ -189,7 +189,7 @@ void MainWindow::configureNotifications()
 void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is clicked
 {
 	// ...if you use any action list, use plugActionList on each here...
-	createGUI(); // TODO: Reconnect tags menu aboutToShow() ??
+	createGUI("basketui.rc"); // TODO: Reconnect tags menu aboutToShow() ??
 	if (!Global::bnpView->isPart())
 		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
 	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
