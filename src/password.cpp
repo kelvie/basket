@@ -100,6 +100,7 @@ Password::Password(QWidget *parent, const char *name)
 		keyCombo->insertItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
 	}
 	publicPrivateRadioButton->setEnabled(keyCombo->count() > 0);
+	keyCombo->setEnabled(keyCombo->count() > 0);
 }
 
 
