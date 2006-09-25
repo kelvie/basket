@@ -35,6 +35,7 @@
 #include <kurifilter.h>
 #include <kdebug.h>
 #include <kstdaction.h>
+#include <kglobalsettings.h>
 
 #include "noteedit.h"
 #include "notecontent.h"
@@ -785,16 +786,26 @@ InlineEditors* InlineEditors::instance()
 
 void InlineEditors::initToolBars(KActionCollection *actionCollection)
 {
+	QFont defaultFont;
+	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
+		Global::bnpView->currentBasket()->textColor() :
+		KGlobalSettings::textColor());
+
 	// Init the RichTextEditor Toolbar:
 	richTextFont = new FocusedFontCombo(Global::mainWindow());
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
+	richTextFont->setCurrentFont(defaultFont.family());
 	KWidgetAction *action = new KWidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
 	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font");
+
 	richTextFontSize = new FontSizeCombo(/*rw=*/true, Global::mainWindow());
+	richTextFontSize->setFontSize(defaultFont.pointSize());
 	action = new KWidgetAction(richTextFontSize, i18n("Font Size"), Qt::Key_F7,
 	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font_size");
+
 	richTextColor = new FocusedColorCombo(Global::mainWindow());
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
+	richTextColor->setColor(textColor);
 	action = new KWidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
 
 	richTextBold      = new KToggleAction( i18n("Bold"),        "text_bold",   "Ctrl+B", actionCollection, "richtext_bold"      );
@@ -873,6 +884,22 @@ void InlineEditors::disableRichTextToolBar()
 	richTextJustified->setEnabled(false);
 	richTextUndo->setEnabled(false);
 	richTextRedo->setEnabled(false);
+
+	// Return to a "proper" state:
+	QFont defaultFont;
+	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
+		Global::bnpView->currentBasket()->textColor() :
+		KGlobalSettings::textColor());
+	richTextFont->setCurrentFont(defaultFont.family());
+	richTextFontSize->setFontSize(defaultFont.pointSize());
+	richTextColor->setColor(textColor);
+	richTextBold->setChecked(false);
+	richTextItalic->setChecked(false);
+	richTextUnderline->setChecked(false);
+	richTextLeft->setChecked(false);
+	richTextCenter->setChecked(false);
+	richTextRight->setChecked(false);
+	richTextJustified->setChecked(false);
 }
 
 #include "noteedit.moc"
