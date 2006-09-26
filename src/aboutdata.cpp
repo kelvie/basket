@@ -23,7 +23,7 @@
 #include <config.h>
 #endif
 
-static const char description[] = I18N_NOOP("A set of baskets to keep a full range of data on hand.");
+static const char description[] = I18N_NOOP("Taking care of your ideas.<br>TEST\n A note-taking application take make it easy to write down ideas as you think, and find them back later. Organising your notes has never been so easy, with basket tree, grouped notes, annotating notes with tags...");
 
 AboutData::AboutData()
 	: KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),

@@ -98,6 +98,7 @@ part_DATA = basket_part.rc
 
 kde_services_DATA = \
 	basket_config_general.desktop \
-	basket_config_apps.desktop \
-	basket_config_features.desktop \
-	basket_config_notes.desktop
+	basket_config_baskets.desktop \
+	basket_config_new_notes.desktop \
+	basket_config_notes_appearance.desktop \
+	basket_config_apps.desktop

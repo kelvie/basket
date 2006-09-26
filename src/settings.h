@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,116 +54,132 @@ class IconSizeCombo;
 
 class GeneralPage : public KCModule
 {
-	Q_OBJECT
-	public:
-		GeneralPage(QWidget * parent=0, const char * name=0);
-		GeneralPage() {};
-  virtual ~GeneralPage() {}
+  Q_OBJECT
+  public:
+	GeneralPage(QWidget * parent=0, const char * name=0);
+	GeneralPage() {};
+	virtual ~GeneralPage() {}
 
-		virtual void load();
-		virtual void save();
-		virtual void defaults();
+	virtual void load();
+	virtual void save();
+	virtual void defaults();
 
-	private slots:
-		void visualize();
+  private:
+	// General
+	QComboBox           *m_treeOnLeft;
+	QComboBox           *m_filterOnTop;
+	QCheckBox           *m_usePassivePopup;
 
-	private:
-	// Main window
-		QComboBox           *m_treeOnLeft;
-		QComboBox           *m_filterOnTop;
-		QCheckBox           *m_playAnimations;
-		QCheckBox           *m_showNotesToolTip;
-		QCheckBox           *m_confirmNoteDeletion;
-		QCheckBox           *m_bigNotes;
-		QCheckBox           *m_autoBullet;
-		QCheckBox           *m_exportTextTags;
-		QCheckBox           *m_useGnuPGAgent;
-		QCheckBox           *m_usePassivePopup;
-	// Note Addition
-		QComboBox           *m_newNotesPlace;
-		QCheckBox           *m_viewTextFileContent;
-		QCheckBox           *m_viewHtmlFileContent;
-		QCheckBox           *m_viewImageFileContent;
-		QCheckBox           *m_viewSoundFileContent;
-	// Notes Default Values
-		KIntNumInput        *m_imgSizeX;
-		KIntNumInput        *m_imgSizeY;
-		QPushButton         *m_pushVisualize;
-
-		QCheckBox           *m_useSystray;
-
-		QCheckBox           *m_enableReLockTimeoutMinutes;
-		KIntNumInput        *m_reLockTimeoutMinutes;
-};
-
-class NotesPage : public KCModule
-{
-	Q_OBJECT
-	public:
-		NotesPage(QWidget * parent=0, const char * name=0);
-		NotesPage() {};
-
-		virtual void load();
-		virtual void save();
-		virtual void defaults();
-
-	private:
-	// Links
-		LinkLookEditWidget  *m_soundLook;
-		LinkLookEditWidget  *m_fileLook;
-		LinkLookEditWidget  *m_localLinkLook;
-		LinkLookEditWidget  *m_networkLinkLook;
-		LinkLookEditWidget  *m_launcherLook;
-};
-
-class AppsPage : public KCModule
-{
-	Q_OBJECT
-	public:
-		AppsPage(QWidget * parent=0, const char * name=0);
-		AppsPage() {};
-
-		virtual void load();
-		virtual void save();
-		virtual void defaults();
-
-	private:
-	// Programs
-//		QCheckBox           *m_textUseProg;
-		QCheckBox           *m_htmlUseProg;
-		QCheckBox           *m_imageUseProg;
-		QCheckBox           *m_animationUseProg;
-		QCheckBox           *m_soundUseProg;
-//		RunCommandRequester *m_textProg;
-		RunCommandRequester *m_htmlProg;
-		RunCommandRequester *m_imageProg;
-		RunCommandRequester *m_animationProg;
-		RunCommandRequester *m_soundProg;
-};
-
-class FeaturesPage : public KCModule
-{
-	Q_OBJECT
-	public:
-		FeaturesPage(QWidget * parent=0, const char * name=0);
-		FeaturesPage() {};
-
-		virtual void load();
-		virtual void save();
-		virtual void defaults();
-
-	private:
-		QWidget             *m_groupOnInsertionLineWidget;
-		QCheckBox           *m_groupOnInsertionLine;
-		QComboBox           *m_middleAction;
 	// System Tray Icon
-		QCheckBox           *m_useSystray;
-		QCheckBox           *m_showIconInSystray;
-		QWidget             *m_systray;
-		QCheckBox           *m_hideOnMouseOut;
-		KIntNumInput        *m_timeToHideOnMouseOut;
-		QCheckBox           *m_showOnMouseIn;
-		KIntNumInput        *m_timeToShowOnMouseIn;
+	QCheckBox           *m_useSystray;
+	QWidget             *m_systray;
+	QCheckBox           *m_showIconInSystray;
+	QCheckBox           *m_hideOnMouseOut;
+	KIntNumInput        *m_timeToHideOnMouseOut;
+	QCheckBox           *m_showOnMouseIn;
+	KIntNumInput        *m_timeToShowOnMouseIn;
+};
+
+class BasketsPage : public KCModule
+{
+  Q_OBJECT
+  public:
+	BasketsPage(QWidget * parent=0, const char * name=0);
+	BasketsPage() {};
+
+	virtual void load();
+	virtual void save();
+	virtual void defaults();
+
+  private:
+	// Appearance
+	QCheckBox           *m_playAnimations;
+	QCheckBox           *m_showNotesToolTip;
+	QCheckBox           *m_bigNotes;
+
+	// Behavior
+	QCheckBox           *m_autoBullet;
+	QCheckBox           *m_confirmNoteDeletion;
+	QCheckBox           *m_exportTextTags;
+	QWidget             *m_groupOnInsertionLineWidget;
+	QCheckBox           *m_groupOnInsertionLine;
+	QComboBox           *m_middleAction;
+
+	// Protection
+	QCheckBox           *m_useGnuPGAgent;
+	QCheckBox           *m_enableReLockTimeoutMinutes;
+	KIntNumInput        *m_reLockTimeoutMinutes;
+};
+
+class NewNotesPage : public KCModule
+{
+  Q_OBJECT
+  public:
+	NewNotesPage(QWidget * parent=0, const char * name=0);
+	NewNotesPage() {};
+
+	virtual void load();
+	virtual void save();
+	virtual void defaults();
+
+  private slots:
+	void visualize();
+
+  private:
+	// Notes Image Size
+	KIntNumInput        *m_imgSizeX;
+	KIntNumInput        *m_imgSizeY;
+	QPushButton         *m_pushVisualize;
+
+	// Note Addition
+	QComboBox           *m_newNotesPlace;
+	QCheckBox           *m_viewTextFileContent;
+	QCheckBox           *m_viewHtmlFileContent;
+	QCheckBox           *m_viewImageFileContent;
+	QCheckBox           *m_viewSoundFileContent;
+};
+
+class NotesAppearancePage : public KCModule
+{
+  Q_OBJECT
+  public:
+	NotesAppearancePage(QWidget * parent=0, const char * name=0);
+	NotesAppearancePage() {};
+
+	virtual void load();
+	virtual void save();
+	virtual void defaults();
+
+  private:
+	// Link Looks
+	LinkLookEditWidget  *m_soundLook;
+	LinkLookEditWidget  *m_fileLook;
+	LinkLookEditWidget  *m_localLinkLook;
+	LinkLookEditWidget  *m_networkLinkLook;
+	LinkLookEditWidget  *m_launcherLook;
+};
+
+class ApplicationsPage : public KCModule
+{
+  Q_OBJECT
+  public:
+	ApplicationsPage(QWidget * parent=0, const char * name=0);
+	ApplicationsPage() {};
+
+	virtual void load();
+	virtual void save();
+	virtual void defaults();
+
+  private:
+	// Applications
+	QCheckBox           *m_htmlUseProg;
+	QCheckBox           *m_imageUseProg;
+	QCheckBox           *m_animationUseProg;
+	QCheckBox           *m_soundUseProg;
+	RunCommandRequester *m_htmlProg;
+	RunCommandRequester *m_imageProg;
+	RunCommandRequester *m_animationProg;
+	RunCommandRequester *m_soundProg;
 };
 
 /** Handle all global variables (to avoid lot of extern declarations)
@@ -208,12 +224,10 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_showOnMouseIn;
 	static int     s_timeToShowOnMouseIn;
 	/** Programs */
-//	static bool    s_textUseProg;
 	static bool    s_htmlUseProg;
 	static bool    s_imageUseProg;
 	static bool    s_animationUseProg;
 	static bool    s_soundUseProg;
-//	static QString s_textProg;
 	static QString s_htmlProg;
 	static QString s_imageProg;
 	static QString s_animationProg;
@@ -253,12 +267,10 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline QSize   mainWindowSize()       { return s_mainWindowSize;       }
 	static inline bool    showEmptyBasketInfo()  { return s_showEmptyBasketInfo;  }
 	/** Programs */
-//	static inline bool    isTextUseProg()        { return s_textUseProg;          }
 	static inline bool    isHtmlUseProg()        { return s_htmlUseProg;          }
 	static inline bool    isImageUseProg()       { return s_imageUseProg;         }
 	static inline bool    isAnimationUseProg()   { return s_animationUseProg;     }
 	static inline bool    isSoundUseProg()       { return s_soundUseProg;         }
-//	static inline QString textProg()             { return s_textProg;             }
 	static inline QString htmlProg()             { return s_htmlProg;             }
 	static inline QString imageProg()            { return s_imageProg;            }
 	static inline QString animationProg()        { return s_animationProg;        }
@@ -340,12 +352,10 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline void setMainWindowSize(const QSize &size)     { s_mainWindowSize       = size;        }
 	static inline void setShowEmptyBasketInfo(bool show)        { s_showEmptyBasketInfo  = show;        }
 	// Programs :
-//	static inline void setIsTextUseProg(bool useProg)           { s_textUseProg          = useProg;     }
 	static inline void setIsHtmlUseProg(bool useProg)           { s_htmlUseProg          = useProg;     }
 	static inline void setIsImageUseProg(bool useProg)          { s_imageUseProg         = useProg;     }
 	static inline void setIsAnimationUseProg(bool useProg)      { s_animationUseProg     = useProg;     }
 	static inline void setIsSoundUseProg(bool useProg)          { s_soundUseProg         = useProg;     }
-//	static inline void setTextProg(const QString &prog)         { s_textProg             = prog;        }
 	static inline void setHtmlProg(const QString &prog)         { s_htmlProg             = prog;        }
 	static inline void setImageProg(const QString &prog)        { s_imageProg            = prog;        }
 	static inline void setAnimationProg(const QString &prog)    { s_animationProg        = prog;        }

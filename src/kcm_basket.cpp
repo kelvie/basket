@@ -37,9 +37,27 @@ extern "C"
 
 extern "C"
 {
-	KDE_EXPORT KCModule *create_basket_config_notes(QWidget *parent, const char *)
+	KDE_EXPORT KCModule *create_basket_config_baskets(QWidget *parent, const char *)
 	{
-		NotesPage *page = new NotesPage(parent, "kcmbasket_config_notes");
+		BasketsPage *page = new BasketsPage(parent, "kcmbasket_config_baskets");
+		return page;
+	}
+}
+
+extern "C"
+{
+	KDE_EXPORT KCModule *create_basket_config_new_notes(QWidget *parent, const char *)
+	{
+		NewNotesPage *page = new NewNotesPage(parent, "kcmbasket_config_new_notes");
+		return page;
+	}
+}
+
+extern "C"
+{
+	KDE_EXPORT KCModule *create_basket_config_notes_appearance(QWidget *parent, const char *)
+	{
+		NotesAppearancePage *page = new NotesAppearancePage(parent, "kcmbasket_config_notes_appearance");
 		return page;
 	}
 }
@@ -48,16 +66,7 @@ extern "C"
 {
 	KDE_EXPORT KCModule *create_basket_config_apps(QWidget *parent, const char *)
 	{
-		AppsPage *page = new AppsPage(parent, "kcmbasket_config_apps");
-		return page;
-	}
-}
-
-extern "C"
-{
-	KDE_EXPORT KCModule *create_basket_config_features(QWidget *parent, const char *)
-	{
-		FeaturesPage *page = new FeaturesPage(parent, "kcmbasket_config_features");
+		ApplicationsPage *page = new ApplicationsPage(parent, "kcmbasket_config_apps");
 		return page;
 	}
 }

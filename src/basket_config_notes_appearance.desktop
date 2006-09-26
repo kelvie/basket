@@ -1,19 +1,19 @@
 [Desktop Entry]
 Encoding=UTF-8
-Icon=configure
+Icon=colorize
 Type=Service
 ServiceTypes=KCModule
 
 X-KDE-ModuleType=Library
 X-KDE-Library=basket
-X-KDE-FactoryName=basket_config_general
+X-KDE-FactoryName=basket_config_notes_appearance
 X-KDE-HasReadOnlyMode=false
 X-KDE-ParentApp=basket
 X-KDE-ParentComponents=basket,kontact_basketplugin
 X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=10
 
-Name=General
-Name[fr]=Général
-Comment=General
-Comment[fr]=Général
+Name=Notes Appearance
+Name[fr]=Apparence des notes
+Comment=Notes Appearance
+Comment[fr]=Apparence des notes

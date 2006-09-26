@@ -1,19 +1,19 @@
 [Desktop Entry]
 Encoding=UTF-8
-Icon=package_utilities
+Icon=filenew
 Type=Service
 ServiceTypes=KCModule
 
 X-KDE-ModuleType=Library
 X-KDE-Library=basket
-X-KDE-FactoryName=basket_config_features
+X-KDE-FactoryName=basket_config_new_notes
 X-KDE-HasReadOnlyMode=false
 X-KDE-ParentApp=basket
 X-KDE-ParentComponents=basket,kontact_basketplugin
 X-KDE-CfgDlgHierarchy=Basket
-X-KDE-Weight=40
+X-KDE-Weight=10
 
-Name=Addictive Features
-Name[fr]=Fonctions addictives
-Comment=Addictive Features
-Comment[fr]=Fonctions addictives
+Name=New Notes
+Name[fr]=Nouvelles notes
+Comment=New Notes
+Comment[fr]=Nouvelles notes
