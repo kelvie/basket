@@ -23,14 +23,19 @@
 #include <config.h>
 #endif
 
-static const char description[] = I18N_NOOP("Taking care of your ideas.<br>TEST\n A note-taking application take make it easy to write down ideas as you think, and find them back later. Organising your notes has never been so easy, with basket tree, grouped notes, annotating notes with tags...");
+static const char description[] = I18N_NOOP(
+	"<p><b>Taking care of your ideas.</b></p>"
+	"<p>A note-taking application that makes it easy to write down ideas as you think, and quickly find them back later. "
+	"Organizing your notes has never been so easy.</p>");
+
+	// Or how to make order of disorganized toughts.
 
 AboutData::AboutData()
-	: KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),
-				  VERSION, description, KAboutData::License_GPL_V2,
-				  "(c) 2003-2006, S\303\251bastien Lao\303\273t", 0,
-				  "http://basket.kde.org/",
-				  "slaout@linux62.org" )
+ : KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),
+   VERSION, description, KAboutData::License_GPL_V2,
+   "(c) 2003-2006, S\303\251bastien Lao\303\273t", 0,
+   "http://basket.kde.org/",
+   "slaout@linux62.org" )
 {
 	addAuthor( "S\303\251bastien Lao\303\273t",
 	           I18N_NOOP("Author, maintainer"),
