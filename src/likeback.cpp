@@ -210,19 +210,21 @@ LikeBackPrivate::~LikeBackPrivate()
 LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const KAboutData *aboutData)
  : QObject()
 {
-	// Initialize properties:
+	// Initialize properties (1/2):
 	d = new LikeBackPrivate();
 	d->buttons          = buttons;
 	d->config           = config;
 	d->aboutData        = aboutData;
 	d->showBarByDefault = showBarByDefault;
-	d->showBar          = userWantsToShowBar();
 
 	// Use default KApplication config and aboutData if not provided:
 	if (d->config == 0)
 		d->config = kapp->config();
 	if (d->aboutData == 0)
 		d->aboutData = kapp->aboutData();
+
+	// Initialize properties (2/2) [Needs aboutData to be set]:
+	d->showBar          = userWantsToShowBar();
 
 	// Fetch the KControl user email address as a default one:
 	if (!emailAddressAlreadyProvided())
