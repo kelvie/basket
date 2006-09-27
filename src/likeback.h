@@ -123,7 +123,7 @@ class LikeBack : public QObject
 	 *                         The version is used to store the button-bar visibility per version (can be shown in a development version but not in a final one...)
 	 *                         and to send with the comment, so you can filter per version and know if a comment refers the latest version of the application or not.
 	 */
-	LikeBack(Button buttons = DefaultButtons, bool showBarByDefault = false, KConfig *config = 0, KAboutData *aboutData = 0);
+	LikeBack(Button buttons = DefaultButtons, bool showBarByDefault = false, KConfig *config = 0, const KAboutData *aboutData = 0);
 
 	/**
 	 * Destructor.
@@ -326,7 +326,7 @@ class LikeBack : public QObject
 	 * @Returns A pointer to the KAboutData used to determin the application name and version.
 	 * @See The LikeBack constructor for more information.
 	 */
-	KAboutData *aboutData();
+	const KAboutData *aboutData();
 
 	/**
 	 * @Returns A pointer to the KConfig used to store user configuration (email address, if the button-bar should be shown).

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basket\n"
-"POT-Creation-Date: 2006-09-27 22:23+0200\n"
+"POT-Creation-Date: 2006-09-27 22:48+0200\n"
 "PO-Revision-Date: 2004-04-06 10:17+0200\n"
 "Last-Translator: Jasper van der Marel <jasper.van.der.marel@wanadoo.nl>\n"
 "Language-Team: Nederlands <Kde-i18n-nl@kde.org>\n"
@@ -1248,6 +1248,24 @@ msgstr ""
 msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
 msgstr ""
 
+#. i18n: file kicondialogui.ui line 31
+#: kicondialogui.cpp:104 rc.cpp:69
+#, no-c-format
+msgid "KIconDialogUI"
+msgstr ""
+
+#. i18n: file kicondialogui.ui line 105
+#: kicondialogui.cpp:105 rc.cpp:72
+#, fuzzy, no-c-format
+msgid "Fi&lter:"
+msgstr "Bestands&naam :"
+
+#. i18n: file kicondialogui.ui line 160
+#: kicondialogui.cpp:107 rc.cpp:78
+#, no-c-format
+msgid "Alt+O"
+msgstr ""
+
 #: likeback.cpp:74
 msgid "Send application developers a comment about something you like"
 msgstr ""
@@ -1405,7 +1423,8 @@ msgid "&Email Address..."
 msgstr ""
 
 #: likeback.cpp:744
-msgid "Please provide a brief description of your opinion of this application."
+#, c-format
+msgid "Please provide a brief description of your opinion of %1."
 msgstr ""
 
 #: likeback.cpp:757
@@ -2170,13 +2189,49 @@ msgid "Load File Content into a Note"
 msgstr ""
 
 #. i18n: file passwordlayout.ui line 16
-#: password.cpp:36 rc.cpp:81 settings.cpp:588
+#: password.cpp:36 passwordlayout.cpp:79 rc.cpp:81 settings.cpp:588
 #, no-c-format
 msgid "Password Protection"
 msgstr ""
 
 #: password.cpp:53
 msgid "No private key selected."
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 44
+#: passwordlayout.cpp:81 rc.cpp:85
+#, no-c-format
+msgid "&No protection"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 47
+#: passwordlayout.cpp:82 rc.cpp:88
+#, no-c-format
+msgid "Alt+N"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 55
+#: passwordlayout.cpp:83 rc.cpp:91
+#, no-c-format
+msgid "Protect basket with a &password"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 58
+#: passwordlayout.cpp:84 rc.cpp:94
+#, no-c-format
+msgid "Alt+P"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 82
+#: passwordlayout.cpp:85 rc.cpp:97
+#, no-c-format
+msgid "Protect basket with private &key:"
+msgstr ""
+
+#. i18n: file passwordlayout.ui line 85
+#: passwordlayout.cpp:86 rc.cpp:100
+#, no-c-format
+msgid "Alt+K"
 msgstr ""
 
 #. i18n: file basket_part.rc line 5
@@ -2213,60 +2268,6 @@ msgstr "Doel bewaren"
 #: rc.cpp:33 rc.cpp:66
 #, no-c-format
 msgid "Text Formating Toolbar"
-msgstr ""
-
-#. i18n: file kicondialogui.ui line 31
-#: rc.cpp:69
-#, no-c-format
-msgid "KIconDialogUI"
-msgstr ""
-
-#. i18n: file kicondialogui.ui line 105
-#: rc.cpp:72
-#, fuzzy, no-c-format
-msgid "Fi&lter:"
-msgstr "Bestands&naam :"
-
-#. i18n: file kicondialogui.ui line 160
-#: rc.cpp:78
-#, no-c-format
-msgid "Alt+O"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 44
-#: rc.cpp:85
-#, no-c-format
-msgid "&No protection"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 47
-#: rc.cpp:88
-#, no-c-format
-msgid "Alt+N"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 55
-#: rc.cpp:91
-#, no-c-format
-msgid "Protect basket with a &password"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 58
-#: rc.cpp:94
-#, no-c-format
-msgid "Alt+P"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 82
-#: rc.cpp:97
-#, no-c-format
-msgid "Protect basket with private &key:"
-msgstr ""
-
-#. i18n: file passwordlayout.ui line 85
-#: rc.cpp:100
-#, no-c-format
-msgid "Alt+K"
 msgstr ""
 
 #: settings.cpp:362

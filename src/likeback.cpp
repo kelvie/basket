@@ -207,7 +207,7 @@ LikeBackPrivate::~LikeBackPrivate()
 /********** class LikeBack: **********/
 /*************************************/
 
-LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, KAboutData *aboutData)
+LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const KAboutData *aboutData)
  : QObject()
 {
 	// Initialize properties:
@@ -222,7 +222,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, KAbou
 	if (d->config == 0)
 		d->config = kapp->config();
 	if (d->aboutData == 0)
-		d->aboutData = (KAboutData*) kapp->aboutData();
+		d->aboutData = kapp->aboutData();
 
 	// Fetch the KControl user email address as a default one:
 	if (!emailAddressAlreadyProvided())
@@ -365,7 +365,7 @@ LikeBack::Button LikeBack::buttons()
 	return d->buttons;
 }
 
-KAboutData* LikeBack::aboutData()
+const KAboutData* LikeBack::aboutData()
 {
 	return d->aboutData;
 }
@@ -741,7 +741,7 @@ LikeBackDialog::~LikeBackDialog()
 
 QString LikeBackDialog::introductionText()
 {
-	QString text = "<p>" + i18n("Please provide a brief description of your opinion of this application.") + " ";
+	QString text = "<p>" + i18n("Please provide a brief description of your opinion of %1.").arg(m_likeBack->aboutData()->programName()) + " ";
 
 	QString languagesMessage = "";
 	if (!m_likeBack->acceptedLocales().isEmpty() && !m_likeBack->acceptedLanguagesMessage().isEmpty()) {

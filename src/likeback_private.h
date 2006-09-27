@@ -39,7 +39,7 @@ class LikeBackPrivate
 	~LikeBackPrivate();
 	LikeBackBar             *bar;
 	KConfig                 *config;
-	KAboutData              *aboutData;
+	const KAboutData        *aboutData;
 	LikeBack::Button         buttons;
 	QString                  hostName;
 	QString                  remotePath;
