@@ -523,7 +523,7 @@ void BNPView::setupActions()
 #ifdef HAVE_LIBGPGME
 	m_actPassBasket = new KAction( i18n("Password protection", "Pass&word..."), "", 0,
 								   this, SLOT(password()), actionCollection(), "basket_password" );
-	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", 0,
+	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", "Ctrl+L",
 								   this, SLOT(lockBasket()), actionCollection(), "basket_lock" );
 #endif
 	/** Edit : ****************************************************************/
