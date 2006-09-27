@@ -245,9 +245,8 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 	if (d->showBar)
 		QTimer::singleShot( 0, d->bar, SLOT(startTimer()) );
 
-
-	disableBar();
 #if 0
+	disableBar();
 	// Alex: Oh, it drove me nuts
 	d->buttons = (Button) (                             0); showInformationMessage();
 	d->buttons = (Button) (                       Feature); showInformationMessage();
@@ -265,11 +264,8 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 	d->buttons = (Button) (Like | Dislike       | Feature); showInformationMessage();
 	d->buttons = (Button) (Like | Dislike | Bug          ); showInformationMessage();
 	d->buttons = (Button) (Like | Dislike | Bug | Feature); showInformationMessage();
-#endif
 	enableBar();
-
-
-
+#endif
 }
 
 LikeBack::~LikeBack()
@@ -721,6 +717,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	m_showButtons = new QCheckBox(i18n("Show comment buttons below &window titlebars"), page);
 	m_showButtons->setChecked(m_likeBack->userWantsToShowBar());
 	pageLayout->addWidget(m_showButtons);
+	connect( m_showButtons, SIGNAL(stateChanged(int)), this, SLOT(changeButtonBarVisible()) );
 
 	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail_send"));
 	enableButtonOK(false);
@@ -789,8 +786,12 @@ void LikeBackDialog::slotDefault()
 
 void LikeBackDialog::slotOk()
 {
-	m_likeBack->setUserWantsToShowBar(m_showButtons->isChecked());
 	send();
+}
+
+void LikeBackDialog::changeButtonBarVisible()
+{
+	m_likeBack->setUserWantsToShowBar(m_showButtons->isChecked());
 }
 
 void LikeBackDialog::commentChanged()

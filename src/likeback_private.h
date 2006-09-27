@@ -96,6 +96,7 @@ class LikeBackDialog : public KDialogBase
 	void polish();
 	void slotDefault();
 	void slotOk();
+	void changeButtonBarVisible();
 	void commentChanged();
 	void send();
 	void requestFinished(int id, bool error);
