@@ -1578,12 +1578,25 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 					m_isInsertPopupMenu = true;
 					pasteNote();
 					break;
-//				case 2: type = NoteType::Text;     break;
-//				case 3: type = NoteType::Html;     break;
-				case 2/*4*/: type = NoteType::Image;    break;
-				case 3/*5*/: type = NoteType::Link;     break;
-				case 4/*6*/: type = NoteType::Launcher; break;
-				case 5/*7*/: type = NoteType::Color;    break;
+				case 2: type = NoteType::Image;    break;
+				case 3: type = NoteType::Link;     break;
+				case 4: type = NoteType::Launcher; break;
+				case 5: type = NoteType::Color;    break;
+				case 6:
+					Global::bnpView->grabScreenshot();
+					break;
+				case 7:
+					Global::bnpView->slotColorFromScreen();
+					break;
+				case 8:
+					Global::bnpView->insertWizard(3); // loadFromFile
+					break;
+				case 9:
+					Global::bnpView->insertWizard(1); // importKMenuLauncher
+					break;
+				case 10:
+					Global::bnpView->insertWizard(2); // importIcon
+					break;
 			}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;

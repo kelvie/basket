@@ -566,12 +566,17 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
 	m_middleAction = new QComboBox(widget);
-	m_middleAction->insertItem( i18n("Do nothing")           );
-	m_middleAction->insertItem( i18n("Paste clipboard")      );
-	m_middleAction->insertItem( i18n("Insert image note")    );
-	m_middleAction->insertItem( i18n("Insert link note")     );
-	m_middleAction->insertItem( i18n("Insert launcher note") );
-	m_middleAction->insertItem( i18n("Insert color note")    );
+	m_middleAction->insertItem( i18n("Do nothing")                    );
+	m_middleAction->insertItem( i18n("Paste clipboard")               );
+	m_middleAction->insertItem( i18n("Insert image note")             );
+	m_middleAction->insertItem( i18n("Insert link note")              );
+	m_middleAction->insertItem( i18n("Insert launcher note")          );
+	/*m_middleAction->insertItem(*/ i18n("Insert color note")             /*)*/;
+	/*m_middleAction->insertItem(*/ i18n("Grab screen zone")              /*)*/;
+	/*m_middleAction->insertItem(*/ i18n("Insert color from screen")      /*)*/;
+	/*m_middleAction->insertItem(*/ i18n("Load note from file")           /*)*/;
+	/*m_middleAction->insertItem(*/ i18n("Import Launcher from KDE Menu") /*)*/;
+	/*m_middleAction->insertItem(*/ i18n("Import icon")                   /*)*/;
 	QLabel *labelM = new QLabel(m_middleAction, i18n("&Shift+middle-click anywhere:"), widget);
 	ga->addWidget(labelM,                                          0, 0);
 	ga->addWidget(m_middleAction,                                  0, 1);
