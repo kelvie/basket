@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
-"POT-Creation-Date: 2006-09-27 21:59+0200\n"
+"POT-Creation-Date: 2006-09-27 22:23+0200\n"
 "PO-Revision-Date: 2004-05-05 23:27+0800\n"
 "Last-Translator: Rex <rexforce@hotmail.com>\n"
 "Language-Team: 正體中文 <zh@li.org>\n"
@@ -2260,7 +2260,7 @@ msgstr ""
 
 #: settings.cpp:364
 #, fuzzy
-msgid "Bask&et tree position:"
+msgid "&Basket tree position:"
 msgstr "於滑鼠指標位置放置物件(&D)"
 
 #: settings.cpp:371 settings.cpp:686
@@ -2315,16 +2315,16 @@ msgstr "系統列圖示"
 
 #: settings.cpp:402
 #, fuzzy
-msgid "Doc&k in system tray"
+msgid "&Dock in system tray"
 msgstr "置於系統列"
 
 #: settings.cpp:411
-msgid "Show c&urrent basket icon in system tray icon"
+msgid "&Show current basket icon in system tray icon"
 msgstr ""
 
 #: settings.cpp:421
 #, fuzzy
-msgid "H&ide main window when mouse goes out of it for"
+msgid "&Hide main window when mouse goes out of it for"
 msgstr "按下關閉鈕時隱藏主視窗(而非退出程式)(&H)"
 
 #: settings.cpp:423 settings.cpp:434
@@ -2343,12 +2343,12 @@ msgstr "新建一個basket"
 
 #: settings.cpp:509
 #, fuzzy
-msgid "Sho&w tooltips in baskets"
+msgid "&Show tooltips in baskets"
 msgstr "即刻顯示工具提示(包括了物件註釋...)(&i)"
 
 #: settings.cpp:512
 #, fuzzy
-msgid "Bi&g notes"
+msgid "&Big notes"
 msgstr "加入物件"
 
 #: settings.cpp:517
@@ -2356,7 +2356,7 @@ msgid "Behavior"
 msgstr ""
 
 #: settings.cpp:520
-msgid "T&ransform lines starting with * or - to lists in text editors"
+msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
 
 #: settings.cpp:523
@@ -2364,8 +2364,9 @@ msgid "Ask confirmation before &deleting notes"
 msgstr ""
 
 #: settings.cpp:528
-msgid "E&xport tags in texts"
-msgstr ""
+#, fuzzy
+msgid "&Export tags in texts"
+msgstr "應用程式快捷列"
 
 #: settings.cpp:534 tagsedit.cpp:485
 msgid "When does this apply?"
@@ -2453,7 +2454,7 @@ msgid "at cursor position"
 msgstr "於滑鼠指標位置放置物件(&D)"
 
 #: settings.cpp:594
-msgid "Automatically &lock protected baskets when closed for"
+msgid "A&utomatically lock protected baskets when closed for"
 msgstr ""
 
 #: settings.cpp:598
@@ -2495,8 +2496,9 @@ msgid "View Content of Added Files for the Following Types"
 msgstr ""
 
 #: settings.cpp:727
-msgid "Plain &text"
-msgstr ""
+#, fuzzy
+msgid "&Plain text"
+msgstr "豐富文字(HTML)"
 
 #: settings.cpp:728
 msgid "&HTML page"

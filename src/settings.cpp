@@ -361,7 +361,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	m_treeOnLeft = new QComboBox(this);
 	m_treeOnLeft->insertItem(i18n("On left"));
 	m_treeOnLeft->insertItem(i18n("On right"));
-	label = new QLabel(m_treeOnLeft, i18n("Bask&et tree position:"), this);
+	label = new QLabel(m_treeOnLeft, i18n("&Basket tree position:"), this);
 	gl->addWidget(label,        0, 0);
 	gl->addWidget(m_treeOnLeft, 0, 1);
 	connect( m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()) );
@@ -399,7 +399,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialogBase::spacingHint());
 
 	// Dock in System Tray:
-	m_useSystray = new QCheckBox(i18n("Doc&k in system tray"), gbSys);
+	m_useSystray = new QCheckBox(i18n("&Dock in system tray"), gbSys);
 	sysLay->addWidget(m_useSystray);
 	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
@@ -408,7 +408,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	sysLay->addWidget(m_systray);
 
 	// Show Current Basket Icon in System Tray Icon:
-	m_showIconInSystray = new QCheckBox(i18n("Show c&urrent basket icon in system tray icon"), m_systray);
+	m_showIconInSystray = new QCheckBox(i18n("&Show current basket icon in system tray icon"), m_systray);
 	subSysLay->addWidget(m_showIconInSystray);
 	connect(m_showIconInSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
@@ -418,7 +418,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 	// Hide Main Window when Mouse Goes out of it for Some Time:
 	m_timeToHideOnMouseOut = new KIntNumInput(0, m_systray);
-	m_hideOnMouseOut = new QCheckBox(i18n("H&ide main window when mouse goes out of it for"), m_systray);
+	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse goes out of it for"), m_systray);
 	m_timeToHideOnMouseOut->setRange(0, 600, 1, false);
 	m_timeToHideOnMouseOut->setSuffix(i18n(" tenths of seconds"));
 	gs->addWidget(m_hideOnMouseOut,       0, 0);
@@ -506,10 +506,10 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
 	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	m_showNotesToolTip = new QCheckBox(i18n("Sho&w tooltips in baskets"), appearanceBox);
+	m_showNotesToolTip = new QCheckBox(i18n("&Show tooltips in baskets"), appearanceBox);
 	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	m_bigNotes = new QCheckBox(i18n("Bi&g notes"), appearanceBox);
+	m_bigNotes = new QCheckBox(i18n("&Big notes"), appearanceBox);
 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	// Behavior:
@@ -517,7 +517,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	QGroupBox *behaviorBox = new QGroupBox(5, Qt::Vertical, i18n("Behavior"), this);
 	layout->addWidget(behaviorBox);
 
-	m_autoBullet = new QCheckBox(i18n("T&ransform lines starting with * or - to lists in text editors"), behaviorBox);
+	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
 	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), behaviorBox);
@@ -525,7 +525,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	QWidget *widget = new QWidget(behaviorBox);
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
-	m_exportTextTags = new QCheckBox(i18n("E&xport tags in texts"), widget);
+	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
@@ -591,7 +591,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Re-Lock timeout configuration
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
-	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("Automatically &lock protected baskets when closed for"), widget);
+	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("A&utomatically lock protected baskets when closed for"), widget);
 	hLay->addWidget(m_enableReLockTimeoutMinutes);
 	m_reLockTimeoutMinutes = new KIntNumInput(widget);
 	m_reLockTimeoutMinutes->setMinValue(0);
@@ -724,7 +724,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 	// View File Content:
 
 	QVButtonGroup *buttonGroup = new QVButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
-	m_viewTextFileContent  = new QCheckBox( i18n("Plain &text"),         buttonGroup );
+	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );

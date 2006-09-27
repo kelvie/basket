@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
-"POT-Creation-Date: 2006-09-27 21:59+0200\n"
+"POT-Creation-Date: 2006-09-27 22:23+0200\n"
 "PO-Revision-Date: 2005-02-07 22:47+0100\n"
 "Last-Translator: Pawe�Kot <pkot@bezsensu.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -2267,7 +2267,7 @@ msgid "On right"
 msgstr "w prawo"
 
 #: settings.cpp:364
-msgid "Bask&et tree position:"
+msgid "&Basket tree position:"
 msgstr ""
 
 #: settings.cpp:371 settings.cpp:686
@@ -2317,15 +2317,15 @@ msgid "System Tray Icon"
 msgstr ""
 
 #: settings.cpp:402
-msgid "Doc&k in system tray"
+msgid "&Dock in system tray"
 msgstr ""
 
 #: settings.cpp:411
-msgid "Show c&urrent basket icon in system tray icon"
+msgid "&Show current basket icon in system tray icon"
 msgstr ""
 
 #: settings.cpp:421
-msgid "H&ide main window when mouse goes out of it for"
+msgid "&Hide main window when mouse goes out of it for"
 msgstr ""
 
 #: settings.cpp:423 settings.cpp:434
@@ -2343,12 +2343,12 @@ msgstr "Stwórz nowy kosz"
 
 #: settings.cpp:509
 #, fuzzy
-msgid "Sho&w tooltips in baskets"
+msgid "&Show tooltips in baskets"
 msgstr "Idź do nast�nego kosza"
 
 #: settings.cpp:512
 #, fuzzy
-msgid "Bi&g notes"
+msgid "&Big notes"
 msgstr "Brak pozycji"
 
 #: settings.cpp:517
@@ -2356,7 +2356,7 @@ msgid "Behavior"
 msgstr ""
 
 #: settings.cpp:520
-msgid "T&ransform lines starting with * or - to lists in text editors"
+msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
 
 #: settings.cpp:523
@@ -2364,8 +2364,9 @@ msgid "Ask confirmation before &deleting notes"
 msgstr ""
 
 #: settings.cpp:528
-msgid "E&xport tags in texts"
-msgstr ""
+#, fuzzy
+msgid "&Export tags in texts"
+msgstr "Uruchamianie &aplikacji"
 
 #: settings.cpp:534 tagsedit.cpp:485
 #, fuzzy
@@ -2456,7 +2457,7 @@ msgid "at cursor position"
 msgstr ""
 
 #: settings.cpp:594
-msgid "Automatically &lock protected baskets when closed for"
+msgid "A&utomatically lock protected baskets when closed for"
 msgstr ""
 
 #: settings.cpp:598
@@ -2497,8 +2498,9 @@ msgid "View Content of Added Files for the Following Types"
 msgstr ""
 
 #: settings.cpp:727
-msgid "Plain &text"
-msgstr ""
+#, fuzzy
+msgid "&Plain text"
+msgstr "Tekst wzbogacony"
 
 #: settings.cpp:728
 #, fuzzy

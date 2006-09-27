@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2006-09-27 21:59+0200\n"
-"PO-Revision-Date: 2006-09-27 22:00+0200\n"
+"POT-Creation-Date: 2006-09-27 22:23+0200\n"
+"PO-Revision-Date: 2006-09-27 22:24+0200\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2296,7 +2296,7 @@ msgid "On right"
 msgstr "À droite"
 
 #: settings.cpp:364
-msgid "Bask&et tree position:"
+msgid "&Basket tree position:"
 msgstr "&Position de l'arborescence des paniers :"
 
 #: settings.cpp:371 settings.cpp:686
@@ -2358,15 +2358,15 @@ msgid "System Tray Icon"
 msgstr "Icône de notifications"
 
 #: settings.cpp:402
-msgid "Doc&k in system tray"
+msgid "&Dock in system tray"
 msgstr "&Incruster dans la boîte à miniatures"
 
 #: settings.cpp:411
-msgid "Show c&urrent basket icon in system tray icon"
+msgid "&Show current basket icon in system tray icon"
 msgstr "Montrer l'icône d&u panier courant dans l'icône de notifications"
 
 #: settings.cpp:421
-msgid "H&ide main window when mouse goes out of it for"
+msgid "&Hide main window when mouse goes out of it for"
 msgstr "Cacher la fenêtre pr&incipale quand la souris sort pendant"
 
 #: settings.cpp:423 settings.cpp:434
@@ -2384,11 +2384,11 @@ msgid "Ani&mate changes in baskets"
 msgstr "Ani&mer les changements dans les paniers"
 
 #: settings.cpp:509
-msgid "Sho&w tooltips in baskets"
+msgid "&Show tooltips in baskets"
 msgstr "Montr&er les info-bulles dans les paniers"
 
 #: settings.cpp:512
-msgid "Bi&g notes"
+msgid "&Big notes"
 msgstr "&Grosses notes"
 
 #: settings.cpp:517
@@ -2396,7 +2396,7 @@ msgid "Behavior"
 msgstr "Comportement"
 
 #: settings.cpp:520
-msgid "T&ransform lines starting with * or - to lists in text editors"
+msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
 "T&ransformer les lignes commençant par * ou - en des listes dans les "
 "éditeurs de texte"
@@ -2406,7 +2406,7 @@ msgid "Ask confirmation before &deleting notes"
 msgstr "&Demander confirmation avant de supprimer des notes"
 
 #: settings.cpp:528
-msgid "E&xport tags in texts"
+msgid "&Export tags in texts"
 msgstr "E&xporter les marques dans les textes"
 
 #: settings.cpp:534 tagsedit.cpp:485
@@ -2506,7 +2506,7 @@ msgid "at cursor position"
 msgstr "à la position du curseur de la souris"
 
 #: settings.cpp:594
-msgid "Automatically &lock protected baskets when closed for"
+msgid "A&utomatically lock protected baskets when closed for"
 msgstr "&Verouiller automatiquement les paniers fermés pendant"
 
 #: settings.cpp:598
@@ -2546,7 +2546,7 @@ msgid "View Content of Added Files for the Following Types"
 msgstr "Voir le contenu des fichiers ajoutés pour les types suivants"
 
 #: settings.cpp:727
-msgid "Plain &text"
+msgid "&Plain text"
 msgstr "&Texte brut"
 
 #: settings.cpp:728

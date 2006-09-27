@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
-"POT-Creation-Date: 2006-09-27 21:59+0200\n"
+"POT-Creation-Date: 2006-09-27 22:23+0200\n"
 "PO-Revision-Date: 2006-02-14 12:21+0100\n"
 "Last-Translator: Florian Sievert <phobeus@Phobos>\n"
 "Language-Team:  <de@li.org>\n"
@@ -2282,7 +2282,7 @@ msgstr "Rechts"
 
 #: settings.cpp:364
 #, fuzzy
-msgid "Bask&et tree position:"
+msgid "&Basket tree position:"
 msgstr "Position der Korbansicht:"
 
 #: settings.cpp:371 settings.cpp:686
@@ -2334,15 +2334,18 @@ msgid "System Tray Icon"
 msgstr "Kontrollleistensymbol"
 
 #: settings.cpp:402
-msgid "Doc&k in system tray"
+#, fuzzy
+msgid "&Dock in system tray"
 msgstr "In der &Kontrollleiste andocken"
 
 #: settings.cpp:411
-msgid "Show c&urrent basket icon in system tray icon"
+#, fuzzy
+msgid "&Show current basket icon in system tray icon"
 msgstr "Zeige aktuelles &Korbsymbol in der Kontrollleiste"
 
 #: settings.cpp:421
-msgid "H&ide main window when mouse goes out of it for"
+#, fuzzy
+msgid "&Hide main window when mouse goes out of it for"
 msgstr "Hauptfenster &verstecken, wenn Mauszeiger außerhalb für"
 
 #: settings.cpp:423 settings.cpp:434
@@ -2358,11 +2361,13 @@ msgid "Ani&mate changes in baskets"
 msgstr "Änderungen in Körben animieren"
 
 #: settings.cpp:509
-msgid "Sho&w tooltips in baskets"
+#, fuzzy
+msgid "&Show tooltips in baskets"
 msgstr "Kurzhinweise in Körben anzeigen"
 
 #: settings.cpp:512
-msgid "Bi&g notes"
+#, fuzzy
+msgid "&Big notes"
 msgstr "Große Notizen"
 
 #: settings.cpp:517
@@ -2371,7 +2376,7 @@ msgstr ""
 
 #: settings.cpp:520
 #, fuzzy
-msgid "T&ransform lines starting with * or - to lists in text editors"
+msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr "Bestätige Änderungen mit &Enter beim Inline-Editor"
 
 #: settings.cpp:523
@@ -2379,7 +2384,8 @@ msgid "Ask confirmation before &deleting notes"
 msgstr ""
 
 #: settings.cpp:528
-msgid "E&xport tags in texts"
+#, fuzzy
+msgid "&Export tags in texts"
 msgstr "E&xportiere Embleme in Texte"
 
 #: settings.cpp:534 tagsedit.cpp:485
@@ -2477,7 +2483,7 @@ msgid "at cursor position"
 msgstr "beim Mauszeiger"
 
 #: settings.cpp:594
-msgid "Automatically &lock protected baskets when closed for"
+msgid "A&utomatically lock protected baskets when closed for"
 msgstr ""
 
 #: settings.cpp:598
@@ -2518,8 +2524,9 @@ msgid "View Content of Added Files for the Following Types"
 msgstr "Zeige den Inhalt von hinzugefügten Dateien folgender Typen"
 
 #: settings.cpp:727
-msgid "Plain &text"
-msgstr ""
+#, fuzzy
+msgid "&Plain text"
+msgstr "RichText"
 
 #: settings.cpp:728
 msgid "&HTML page"

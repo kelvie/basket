@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basket-ja\n"
-"POT-Creation-Date: 2006-09-27 21:59+0200\n"
+"POT-Creation-Date: 2006-09-27 22:23+0200\n"
 "PO-Revision-Date: 2006-08-29 22:00+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -2250,7 +2250,7 @@ msgstr "右"
 
 #: settings.cpp:364
 #, fuzzy
-msgid "Bask&et tree position:"
+msgid "&Basket tree position:"
 msgstr "バスケットツリーの位置(&E):"
 
 #: settings.cpp:371 settings.cpp:686
@@ -2300,15 +2300,18 @@ msgid "System Tray Icon"
 msgstr "システムトレイアイコン"
 
 #: settings.cpp:402
-msgid "Doc&k in system tray"
+#, fuzzy
+msgid "&Dock in system tray"
 msgstr "システムトレイにドッキング(&K)"
 
 #: settings.cpp:411
-msgid "Show c&urrent basket icon in system tray icon"
+#, fuzzy
+msgid "&Show current basket icon in system tray icon"
 msgstr "現在のバスケットのアイコンをシステムトレイに表示する(&U)"
 
 #: settings.cpp:421
-msgid "H&ide main window when mouse goes out of it for"
+#, fuzzy
+msgid "&Hide main window when mouse goes out of it for"
 msgstr "マウスが離れた後、次の時間が経過したらメインウィンドウを隠す(&I)"
 
 #: settings.cpp:423 settings.cpp:434
@@ -2324,11 +2327,13 @@ msgid "Ani&mate changes in baskets"
 msgstr "バスケット内の変更をアニメーション表示する(&M)"
 
 #: settings.cpp:509
-msgid "Sho&w tooltips in baskets"
+#, fuzzy
+msgid "&Show tooltips in baskets"
 msgstr "バスケット内でツールチップを表示する(&W)"
 
 #: settings.cpp:512
-msgid "Bi&g notes"
+#, fuzzy
+msgid "&Big notes"
 msgstr "大きなメモ(&G)"
 
 #: settings.cpp:517
@@ -2336,7 +2341,7 @@ msgid "Behavior"
 msgstr ""
 
 #: settings.cpp:520
-msgid "T&ransform lines starting with * or - to lists in text editors"
+msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
 
 #: settings.cpp:523
@@ -2344,7 +2349,8 @@ msgid "Ask confirmation before &deleting notes"
 msgstr "メモを削除する前に確認する(&D)"
 
 #: settings.cpp:528
-msgid "E&xport tags in texts"
+#, fuzzy
+msgid "&Export tags in texts"
 msgstr "タグをテキストとしてエクスポートする(&X)"
 
 #: settings.cpp:534 tagsedit.cpp:485
@@ -2448,7 +2454,8 @@ msgid "at cursor position"
 msgstr "(カーソル位置に)"
 
 #: settings.cpp:594
-msgid "Automatically &lock protected baskets when closed for"
+#, fuzzy
+msgid "A&utomatically lock protected baskets when closed for"
 msgstr "保護されたバスケットが次の時間閉じられていたら自動的にロックする(&L)"
 
 #: settings.cpp:598
@@ -2489,7 +2496,8 @@ msgid "View Content of Added Files for the Following Types"
 msgstr "以下のファイルが追加されたらファイルの内容を表示する"
 
 #: settings.cpp:727
-msgid "Plain &text"
+#, fuzzy
+msgid "&Plain text"
 msgstr "プレーンテキスト(&T)"
 
 #: settings.cpp:728
