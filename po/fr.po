@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "POT-Creation-Date: 2006-09-27 22:23+0200\n"
-"PO-Revision-Date: 2006-09-27 22:24+0200\n"
+"PO-Revision-Date: 2006-09-27 22:31+0200\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2363,11 +2363,11 @@ msgstr "&Incruster dans la boîte à miniatures"
 
 #: settings.cpp:411
 msgid "&Show current basket icon in system tray icon"
-msgstr "Montrer l'icône d&u panier courant dans l'icône de notifications"
+msgstr "&Montrer l'icône du panier courant dans l'icône de notifications"
 
 #: settings.cpp:421
 msgid "&Hide main window when mouse goes out of it for"
-msgstr "Cacher la fenêtre pr&incipale quand la souris sort pendant"
+msgstr "&Cacher la fenêtre principale quand la souris sort pendant"
 
 #: settings.cpp:423 settings.cpp:434
 msgid " tenths of seconds"
@@ -2398,7 +2398,7 @@ msgstr "Comportement"
 #: settings.cpp:520
 msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
-"T&ransformer les lignes commençant par * ou - en des listes dans les "
+"&Transformer les lignes commençant par * ou - en des listes dans les "
 "éditeurs de texte"
 
 #: settings.cpp:523
@@ -2551,7 +2551,7 @@ msgstr "&Texte brut"
 
 #: settings.cpp:728
 msgid "&HTML page"
-msgstr "Page &HTML"
+msgstr "&Page HTML"
 
 #: settings.cpp:729
 msgid "&Image or animation"
