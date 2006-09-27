@@ -3381,12 +3381,12 @@ void Basket::popupTagsMenu(Note *note)
 // 	}
 //
 // 	menu.insertSeparator();
-// //	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign new Tag...", 1 );
+// //	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign New Tag...", 1 );
 // 	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
 // 	//if (note->states().isEmpty())
 // 	//	menu.setItemEnabled(id, false);
 // //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
-// 	menu.insertItem( new IndentedMenuItem(i18n("&Assign new Tag...")),          1 );
+// 	menu.insertItem( new IndentedMenuItem(i18n("&Assign New Tag...")),          1 );
 // 	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
 // 	menu.insertItem( new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
 //

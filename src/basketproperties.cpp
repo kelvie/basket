@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -73,9 +73,9 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_backgroundImage = new QComboBox(appearanceWidget);
 	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), KGlobalSettings::baseColor(), appearanceWidget);
 	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       KGlobalSettings::textColor(), appearanceWidget);
-	QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &Image:"), appearanceWidget);
-	QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background Color:"), appearanceWidget);
-	QLabel *label3 = new QLabel(m_textColor,       i18n("&Text Color:"),       appearanceWidget);
+		QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &image:"), appearanceWidget);
+	QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background color:"), appearanceWidget);
+	QLabel *label3 = new QLabel(m_textColor,       i18n("&Text color:"),       appearanceWidget);
 	grid->addWidget(label1,            0, 0, Qt::AlignVCenter);
 	grid->addWidget(label2,            1, 0, Qt::AlignVCenter);
 	grid->addWidget(label3,            2, 0, Qt::AlignVCenter);
