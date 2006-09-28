@@ -2,7 +2,9 @@
 Name=Baskets
 Name[fr]=Paniers
 Name[ja]=バスケット
+Name[nn]=Korger
 Comment=BasKet Note Pads component
 Comment[fr]=Composant Blocs notes BasKet
 Comment[ja]=BasKet メモパッドコンポーネント
+Comment[nn]=Korgnotat-komponent
 Icon=basket
