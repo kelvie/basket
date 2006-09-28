@@ -14,7 +14,7 @@
     </keywords>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description>A set of baskets to keep a full range of data on hand.</description>
+    <description>Taking care of your ideas.</description>
     <ignoreparts>
       <part>kdevfileview</part>
       <part>kdevfileselector</part>
@@ -243,7 +243,7 @@
     <summary/>
     <group/>
     <packager/>
-    <description>A set of baskets to keep a full range of data on hand.</description>
+    <description>Taking care of your ideas.</description>
     <changelog/>
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>

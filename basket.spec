@@ -2,7 +2,7 @@
 %define version 0.6.0Beta2.2
 %define release mantic0
 
-Summary: A set of baskets to keep a full range of data on hand.
+Summary: Taking care of your ideas.
 Name: %{name}
 Version: %{version}
 Release: %{release}
@@ -15,13 +15,8 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 
 %description
-A set of baskets to keep a full range of data on hand.
-It offer virtual baskets where you can drop or paste every sort of content:
-text, rich text, image, animation, sound, file, link, app launcher, color...
-and you can edit, arrange or drag off those items.
-It's useful to take notes (not only text ones), but also to collect a lot of
-data (from internet, documents, conversations...) and its HTML exportation
-feature allow you to present the result of your search to everybody else...
+Taking care of your ideas.
+A note-taking application that makes it easy to write down ideas as you think, and quickly find them back later. Organizing your notes has never been so easy.
 
 %prep
 %setup
