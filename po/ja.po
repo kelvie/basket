@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: basket-ja\n"
 "POT-Creation-Date: 2006-09-27 22:48+0200\n"
-"PO-Revision-Date: 2006-08-29 22:00+0900\n"
+"PO-Revision-Date: 2006-09-28 20:00+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,9 @@ msgid ""
 "makes it easy to write down ideas as you think, and quickly find them back "
 "later. Organizing your notes has never been so easy.</p>"
 msgstr ""
+"<p>あなたのアイデアのお世話をします。</p><p>考えながらアイデアをメモして、そ"
+"れを後で見つけることを簡単にするためのアプリケーションです。メモの整理が今ま"
+"でになく楽になります。</p>"
 
 #: aboutdata.cpp:34
 msgid "BasKet Note Pads"
@@ -49,6 +52,8 @@ msgid ""
 "Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, "
 "drop to basket name"
 msgstr ""
+"バスケットの自動ロック、状態保存アイコン、HTML コピー/貼り付け、バスケット名"
+"のツールチップ、バスケット名にドロップ"
 
 #: aboutdata.cpp:53 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
@@ -381,17 +386,14 @@ msgid "Name"
 msgstr "名前"
 
 #: basketproperties.cpp:76
-#, fuzzy
 msgid "Background &image:"
 msgstr "背景画像(&I):"
 
 #: basketproperties.cpp:77
-#, fuzzy
 msgid "&Background color:"
 msgstr "背景色(&B):"
 
 #: basketproperties.cpp:78
-#, fuzzy
 msgid "&Text color:"
 msgstr "文字色(&T):"
 
@@ -1180,7 +1182,7 @@ msgstr "鍵のリストは完全ではありません。"
 
 #: kgpgme.cpp:264
 msgid "That public key is not meant for encryption"
-msgstr ""
+msgstr "その公開鍵は暗号化用ではありません"
 
 #: kgpgme.cpp:307
 msgid "Unsupported algorithm"
@@ -1333,32 +1335,33 @@ msgstr ""
 msgid ""
 "_n: Example:\n"
 "Examples:"
-msgstr ""
+msgstr "例:"
 
+# DO NOT TRANSLATE: This is an example of how to write reports.
 #: likeback.cpp:467
 msgid "<b>I like</b> the new artwork. Very refreshing."
-msgstr ""
+msgstr "<b>I like</b> the new artwork. Very refreshing."
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
 #: likeback.cpp:471
-#, fuzzy
 msgid ""
 "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
-msgstr "the welcome page of that assistant."
+msgstr ""
+"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
 #: likeback.cpp:475
-#, fuzzy
 msgid ""
 "<b>The application has an improper behaviour</b> when clicking the Add "
 "button. Nothing happens."
-msgstr "when clicking the Add button, nothing happens."
+msgstr ""
+"<b>The application has an improper behaviour</b> when clicking the Add "
+"button. Nothing happens."
 
 # DO NOT TRANSLATE: This is an example of how to write reports.
 #: likeback.cpp:479
-#, fuzzy
 msgid "<b>I desire a new feature</b> allowing me to send my work by email."
-msgstr "allowing me to send my work by email."
+msgstr "<b>I desire a new feature</b> allowing me to send my work by email."
 
 #: likeback.cpp:482
 msgid "Help Improve the Application"
@@ -1428,9 +1431,9 @@ msgid "&Email Address..."
 msgstr "メールアドレス(&E)..."
 
 #: likeback.cpp:744
-#, fuzzy, c-format
+#, c-format
 msgid "Please provide a brief description of your opinion of %1."
-msgstr "このアプリケーションに関するあなたの意見を簡単に書いてください。"
+msgstr "%1に関するあなたの意見を簡単に書いてください。"
 
 #: likeback.cpp:757
 msgid "Please write in English."
@@ -2171,9 +2174,9 @@ msgstr "秘密鍵が選択されていません。"
 
 #. i18n: file passwordlayout.ui line 44
 #: passwordlayout.cpp:81 rc.cpp:85
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&No protection"
-msgstr "パスワード保護"
+msgstr "保護しない(&N)"
 
 #. i18n: file passwordlayout.ui line 47
 #: passwordlayout.cpp:82 rc.cpp:88
@@ -2195,9 +2198,9 @@ msgstr "Alt+P"
 
 #. i18n: file passwordlayout.ui line 82
 #: passwordlayout.cpp:85 rc.cpp:97
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Protect basket with private &key:"
-msgstr "バスケットを秘密鍵で保護する(&K)"
+msgstr "バスケットを秘密鍵で保護する(&K):"
 
 #. i18n: file passwordlayout.ui line 85
 #: passwordlayout.cpp:86 rc.cpp:100
@@ -2250,9 +2253,8 @@ msgid "On right"
 msgstr "右"
 
 #: settings.cpp:364
-#, fuzzy
 msgid "&Basket tree position:"
-msgstr "バスケットツリーの位置(&E):"
+msgstr "バスケットツリーの位置(&B):"
 
 #: settings.cpp:371 settings.cpp:686
 msgid "On top"
@@ -2272,7 +2274,7 @@ msgstr "グローバルアクションの結果をバルーンを使って通知
 
 #: settings.cpp:383
 msgid "What are global actions?"
-msgstr ""
+msgstr "グローバルアクションって何？"
 
 #: settings.cpp:384
 msgid ""
@@ -2282,12 +2284,21 @@ msgid ""
 "wheel over the system tray icon to change the current basket. Or use the "
 "middle mouse button on that icon to paste the current selection."
 msgstr ""
+"一部のアクションにはメインウィンドウを表示させずに実行するためのグローバルシ"
+"ョートカットを設定することができます。例えば、クリップボードの内容を貼り付け"
+"たり、スクリーンのある場所から色を採取したりできます。システムトレイアイコン"
+"の上でマウスホイールを動かして他のバスケットをアクティブにすることもできます"
+"。また、そのアイコンをマウスの中ボタンでクリックすることによって、現在選択さ"
+"れているものをそのバスケットに貼り付けることもできます。"
 
 #: settings.cpp:387
 msgid ""
 "When doing so, %1 pops up a little balloon message to inform you the action "
 "has been successfully done. You can disable that balloon."
 msgstr ""
+"グローバルアクションを実行すると、 %1はそれが正しく実行されたことを知らせるた"
+"めに小さなバルーンメッセージをポップアップします。このバルーンは設定で無効に"
+"することができます。"
 
 #: settings.cpp:388
 msgid ""
@@ -2295,25 +2306,25 @@ msgid ""
 "is visible. This is because you already see the result of your actions in "
 "the main window."
 msgstr ""
+"これらのメッセージは、メインウィンドウが表示されているときには出ないようにな"
+"っています。なぜなら、あなたが実行したアクションの結果が既にメインウィンドウ"
+"に表示されているからです。"
 
 #: settings.cpp:397
 msgid "System Tray Icon"
 msgstr "システムトレイアイコン"
 
 #: settings.cpp:402
-#, fuzzy
 msgid "&Dock in system tray"
-msgstr "システムトレイにドッキング(&K)"
+msgstr "システムトレイにドッキング(&D)"
 
 #: settings.cpp:411
-#, fuzzy
 msgid "&Show current basket icon in system tray icon"
-msgstr "現在のバスケットのアイコンをシステムトレイに表示する(&U)"
+msgstr "現在のバスケットのアイコンをシステムトレイに表示する(&S)"
 
 #: settings.cpp:421
-#, fuzzy
 msgid "&Hide main window when mouse goes out of it for"
-msgstr "マウスが離れた後、次の時間が経過したらメインウィンドウを隠す(&I)"
+msgstr "マウスが離れた後、次の時間が経過したらメインウィンドウを隠す(&H)"
 
 #: settings.cpp:423 settings.cpp:434
 msgid " tenths of seconds"
@@ -2328,31 +2339,28 @@ msgid "Ani&mate changes in baskets"
 msgstr "バスケット内の変更をアニメーション表示する(&M)"
 
 #: settings.cpp:509
-#, fuzzy
 msgid "&Show tooltips in baskets"
-msgstr "バスケット内でツールチップを表示する(&W)"
+msgstr "バスケット内でツールチップを表示する(&S)"
 
 #: settings.cpp:512
-#, fuzzy
 msgid "&Big notes"
-msgstr "大きなメモ(&G)"
+msgstr "大きなメモ(&B)"
 
 #: settings.cpp:517
 msgid "Behavior"
-msgstr ""
+msgstr "挙動"
 
 #: settings.cpp:520
 msgid "&Transform lines starting with * or - to lists in text editors"
-msgstr ""
+msgstr "* または - で始まる行をテキストエディタでリストに変換する(&T)"
 
 #: settings.cpp:523
 msgid "Ask confirmation before &deleting notes"
 msgstr "メモを削除する前に確認する(&D)"
 
 #: settings.cpp:528
-#, fuzzy
 msgid "&Export tags in texts"
-msgstr "タグをテキストとしてエクスポートする(&X)"
+msgstr "タグをテキストとしてエクスポートする(&E)"
 
 #: settings.cpp:534 tagsedit.cpp:485
 msgid "When does this apply?"
@@ -2426,38 +2434,32 @@ msgid "Insert launcher note"
 msgstr "ランチャーメモを挿入"
 
 #: settings.cpp:576
-#, fuzzy
 msgid "Insert color from screen"
-msgstr "スクリーンから色を採取"
+msgstr "スクリーンから色を挿入"
 
 #: settings.cpp:577
-#, fuzzy
 msgid "Load note from file"
-msgstr "ファイルから読み込む(&F)..."
+msgstr "ファイルからメモを読み込む"
 
 #: settings.cpp:578
-#, fuzzy
 msgid "Import Launcher from KDE Menu"
-msgstr "KDE メニューからランチャーをインポート(&K)..."
+msgstr "KDE メニューからランチャーをインポート"
 
 #: settings.cpp:579
-#, fuzzy
 msgid "Import icon"
-msgstr "アイコンをインポート(&P)..."
+msgstr "アイコンをインポート"
 
 #: settings.cpp:580
-#, fuzzy
 msgid "&Shift+middle-click anywhere:"
-msgstr "&Shift+中クリック:"
+msgstr "&Shift キーを押しながらバスケット内を中クリック:"
 
 #: settings.cpp:583
 msgid "at cursor position"
 msgstr "(カーソル位置に)"
 
 #: settings.cpp:594
-#, fuzzy
 msgid "A&utomatically lock protected baskets when closed for"
-msgstr "保護されたバスケットが次の時間閉じられていたら自動的にロックする(&L)"
+msgstr "保護されたバスケットが次の時間閉じられていたら自動的にロックする(&U)"
 
 #: settings.cpp:598
 msgid " minutes"
@@ -2469,7 +2471,7 @@ msgstr "秘密鍵/公開鍵で保護されたバスケットに GnuPG エージ�
 
 #: settings.cpp:685
 msgid "&Place of new notes:"
-msgstr ""
+msgstr "新しいメモの場所(&P):"
 
 #: settings.cpp:688
 msgid "At current note"
@@ -2479,10 +2481,9 @@ msgstr "現在のメモ"
 msgid "&New images size:"
 msgstr "新しい画像サイズ(&N):"
 
-# ACCELERATOR removed by translator
 #: settings.cpp:713
 msgid "&by"
-msgstr "x"
+msgstr "&x"
 
 #: settings.cpp:716
 msgid "pixels"
@@ -2497,9 +2498,8 @@ msgid "View Content of Added Files for the Following Types"
 msgstr "以下のファイルが追加されたらファイルの内容を表示する"
 
 #: settings.cpp:727
-#, fuzzy
 msgid "&Plain text"
-msgstr "プレーンテキスト(&T)"
+msgstr "プレーンテキスト(&P)"
 
 #: settings.cpp:728
 msgid "&HTML page"
@@ -3093,61 +3093,3 @@ msgstr ""
 "画像のサイズを選択してください。\n"
 "ウィンドウを閉じるか Escape を\n"
 "押すと、変更が適用されます。"
-
-#~ msgid "A set of baskets to keep a full range of data on hand."
-#~ msgstr "様々なデータを手元に置いておくためのバスケット"
-
-#~ msgid "Invalid recipient encountered"
-#~ msgstr "受取人が無効です。"
-
-#~ msgid "Examples:"
-#~ msgstr "例:"
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "I like..."
-#~ msgstr "I like..."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid ""
-#~ "_: I like...\n"
-#~ "the nice new artwork."
-#~ msgstr "the nice new artwork."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "Very refreshing."
-#~ msgstr "Very refreshing."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "I dislike..."
-#~ msgstr "I dislike..."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "Too time consuming."
-#~ msgstr "Too time consuming."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "I found a bug..."
-#~ msgstr "I found a bug..."
-
-# DO NOT TRANSLATE: This is an example of how to write reports.
-#~ msgid "I desire a feature..."
-#~ msgstr "I desire a feature..."
-
-#~ msgid "Hide &Toolbar"
-#~ msgstr "ツールバーを隠す(&T)"
-
-#~ msgid "&No password"
-#~ msgstr "パスワードなし(&N)"
-
-#~ msgid "New notes &place:"
-#~ msgstr "新しいメモの位置(&P):"
-
-#~ msgid "Customize look of file, sound, link and launcher notes:"
-#~ msgstr "ファイル、サウンド、リンク、ランチャーメモの外観をカスタマイズ:"
-
-#~ msgid ""
-#~ "This page groups non-standard options that, once learned,\n"
-#~ "can be very powerful and time saving in the context of %1:"
-#~ msgstr ""
-#~ "このページには標準的ではないオプションを集めています。\n"
-#~ "これらのパワフルな機能の使い方を覚えると、%1を使う上で時間を節約できます。"

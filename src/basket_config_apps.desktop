@@ -15,5 +15,7 @@ X-KDE-Weight=30
 
 Name=Applications
 Name[fr]=Applications
+Name[ja]=アプリケーション
 Comment=Applications
 Comment[fr]=Applications
+Comment[ja]=アプリケーション
