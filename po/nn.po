@@ -31,7 +31,7 @@ msgid ""
 "<p><b>Taking care of your ideas.</b></p><p>A note-taking application that "
 "makes it easy to write down ideas as you think, and quickly find them back "
 "later. Organizing your notes has never been so easy.</p>"
-msgstr "<p><b>Ta vare på tankane dine.</b></p><p>Eit notatprogram som gjer det enkelt å skriva ned idéar og finna dei att seinare. Det har aldri vore lettare å halda orden.</p>"
+msgstr "<p><b>Ta vare på tankane dine.</b></p><p>Eit notatprogram som gjer det enkelt å skriva ned idéar og finna dei att seinare. Det har aldri vore lettare å halda orden i sysakene.</p>"
 
 #: aboutdata.cpp:34
 msgid "BasKet Note Pads"
@@ -2261,7 +2261,7 @@ msgstr "Plassering av &filterlinje:"
 
 #: settings.cpp:380
 msgid "&Use balloons to report results of global actions"
-msgstr "&Vis resultat av globale handling i ballonghjelp"
+msgstr "&Vis resultat av globale handlingar i ballonghjelp"
 
 #: settings.cpp:383
 msgid "What are global actions?"
@@ -2274,20 +2274,20 @@ msgid ""
 "color from a point of the screen, etc. You can also use the mouse scroll "
 "wheel over the system tray icon to change the current basket. Or use the "
 "middle mouse button on that icon to paste the current selection."
-msgstr "Du kan setja opp globale snarvegar til å utføra handlingar utan å visa hovudvindauget. Du kan for eksempel lima inn innhald frå utklippstavla eller henta ein farge frå eit punkt på skjermen. Du kan òg bruka mushjulet over ikonet i systemtrauet for å endra den gjeldande korga, eller bruka midtknappen på ikonet for å lima inn det gjeldande utvalet."
+msgstr "Du kan setja opp globale snar­vegar til å utføra handlingar utan å visa hovud­vindauget. Du kan for eksempel lima inn inn­hald frå utklipps­tavla eller henta ein farge frå eit punkt på skjermen. Du kan òg bruka mus­hjulet over ikonet i system­trauet for å endra den gjeldande korga, eller bruka midt­knappen på ikonet for å lima inn det gjeldande utvalet."
 
 #: settings.cpp:387
 msgid ""
 "When doing so, %1 pops up a little balloon message to inform you the action "
 "has been successfully done. You can disable that balloon."
-msgstr "Når du gjer dette, vil %1 visa ein liten tekstballong for å informera deg om at handlinga er utført. Du kan slå av denne ballongen om du ønskjer."
+msgstr "Når du gjer dette, vil %1 visa ein liten tekst­ballong for å informera deg om at handlinga er utført. Du kan slå av denne ballongen om du ønskjer."
 
 #: settings.cpp:388
 msgid ""
 "Note that those messages are smart enough to not appear if the main window "
 "is visible. This is because you already see the result of your actions in "
 "the main window."
-msgstr "Merk at programmet er smart nok til ikkje å visa tekstballongen når hovudvindauget alt er ope. Dette er fordi du då kan sjå resultatet av handlinga direkte."
+msgstr "Merk at programmet er smart nok til ikkje å visa tekst­ballongen når hovud­vindauget alt er ope. Dette er fordi du då kan sjå resultatet av handlinga direkte."
 
 #: settings.cpp:397
 msgid "System Tray Icon"
