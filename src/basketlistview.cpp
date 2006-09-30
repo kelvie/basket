@@ -451,7 +451,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Don't forget to update the key computation if parameters
 	// affecting the rendering logic change
-	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11")
+	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11.%12")
 		.arg(effectiveWidth)
 		.arg(drawRoundRect)
 		.arg(textColor.rgb())
@@ -462,7 +462,8 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		.arg(showEncryptedIcon)
 		.arg(showCountPixmap)
 		.arg(m_isUnderDrag)
-		.arg(m_basket->basketName());
+		.arg(m_basket->basketName())
+		.arg(m_basket->icon());
 	if (QPixmap* cached = QPixmapCache::find(key)) {
 		// Qt's documentation recommends copying the pointer
 		// into a QPixmap immediately
