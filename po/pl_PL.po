@@ -1,59 +1,57 @@
 # translation of pl_PL.po to Polish
-# translation of basket.po to Polish
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Pawe�Kot <pkot@bezsensu.pl>, 2005.
 #
+# Pawe�Kot <pkot@bezsensu.pl>, 2005.
+# Mikolaj Machowski <mikmach@wp.pl>, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "POT-Creation-Date: 2006-09-27 22:48+0200\n"
-"PO-Revision-Date: 2005-02-07 22:47+0100\n"
-"Last-Translator: Pawe�Kot <pkot@bezsensu.pl>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"PO-Revision-Date: 2006-10-05 22:58+0200\n"
+"Last-Translator: Mikolaj Machowski <mikmach@wp.pl>\n"
+"Language-Team: Polish <kde-transl@mer.chemia.polsl.gliwice.pl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: _translatorinfo.cpp:1
 msgid ""
 "_: NAME OF TRANSLATORS\n"
 "Your names"
-msgstr ""
+msgstr "Mikołaj Machowski"
 
 #: _translatorinfo.cpp:3
 msgid ""
 "_: EMAIL OF TRANSLATORS\n"
 "Your emails"
-msgstr ""
+msgstr "mikmach@wp.pl"
 
 #: aboutdata.cpp:27
 msgid ""
 "<p><b>Taking care of your ideas.</b></p><p>A note-taking application that "
 "makes it easy to write down ideas as you think, and quickly find them back "
 "later. Organizing your notes has never been so easy.</p>"
-msgstr ""
+msgstr "<p><b>Opieka nad twoimi pomysłami.</b></p><p>Program do robienia notatek, sprawiający że łatwo jest zapisać to co właśnie przyszło do głowy a później to odnaleźć. Organizowanie notatek nigdy nie było takie proste.</p>"
 
 #: aboutdata.cpp:34
-#, fuzzy
 msgid "BasKet Note Pads"
-msgstr "W��iwo�i kosza"
+msgstr "Koszyk notatek"
 
 #: aboutdata.cpp:41
-#, fuzzy
 msgid "Author, maintainer"
 msgstr "Autor, opiekun"
 
 #: aboutdata.cpp:45
 msgid "Basket encryption, Kontact integration, KnowIt importer"
-msgstr ""
+msgstr "szyfrowanie, integracja z Kontaktem, import z KnowIt"
 
 #: aboutdata.cpp:49
 msgid ""
 "Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, "
 "drop to basket name"
-msgstr ""
+msgstr "blokowanie koszyków, ikona statusu zapisu, kopiuj/wklej HTML, dymek z nazwą koszyka, upuszczanie na nazwę koszyka"
 
 #: aboutdata.cpp:53 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
@@ -61,370 +59,373 @@ msgstr "Ikona"
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
-msgstr ""
+msgstr "Nowa notatka nie pasuje do filtra i została ukryta."
 
 #: basket.cpp:524
 msgid "A new note does not match the filter and is hidden."
-msgstr ""
+msgstr "Nowa notatka nie pasuje do filtra i została ukryta."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
+msgstr "Niektóre nowe notatki nie pasują do filtra i zostały ukryte."
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
+msgstr "Nowe notatki nie pasują do filtra i zostały ukryte."
 
 #: basket.cpp:1534
 msgid ""
 "_: The verb (Group New Note)\n"
 "Group"
-msgstr ""
+msgstr "Grupuj"
 
 #: basket.cpp:1534
 msgid ""
 "_: The verb (Insert New Note)\n"
 "Insert"
-msgstr ""
+msgstr "Wstaw"
 
 #: basket.cpp:2276
 msgid ""
 "This message should never appear. If it's the case, this program is buggy! "
 "Please report the bug to the developer."
-msgstr ""
+msgstr "Ta wiadomość nie powinna się nigdy pojawić. Jeśli ją widzisz program ma błąd! Proszę zgłosić go do opiekuna."
 
 #: basket.cpp:2693 basket.cpp:2738 basket.cpp:2741
 msgid ""
 "Insert note here\n"
 "Right click for more options"
 msgstr ""
+"Wstaw notatkę\n"
+"Kliknij prawym przyciskiem myszy by poznać więcej możliwości"
 
 #: basket.cpp:2711
 msgid "Resize those columns"
-msgstr ""
+msgstr "Zmień rozmiar tych kolumn"
 
 #: basket.cpp:2713
 msgid "Resize this group"
-msgstr ""
+msgstr "Zmień rozmiar grupy"
 
 #: basket.cpp:2714
-#, fuzzy
 msgid "Resize this note"
-msgstr "Usu�pozycj�"
+msgstr "Zmień rozmiar notatki"
 
 #: basket.cpp:2715
-#, fuzzy
 msgid "Select or move this note"
-msgstr "Usu�pozycj�"
+msgstr "Wybierz lub przenieć tę notatkę"
 
 #: basket.cpp:2716
 msgid "Select or move this group"
-msgstr ""
+msgstr "Wybierz lub przenieć tę grupę"
 
 #: basket.cpp:2717
-#, fuzzy
 msgid "Assign or remove tags from this note"
-msgstr "Usu�pozycj�"
+msgstr "Dodaj lub usuń znaczniki z tej notatki"
 
 #: basket.cpp:2719
 #, c-format
 msgid "<b>Assigned Tags</b>: %1"
-msgstr ""
+msgstr "<b>Dodane znaczniki</b>: %1"
 
 #: basket.cpp:2726
 msgid "%1, %2"
-msgstr ""
+msgstr "%1, %2"
 
 #: basket.cpp:2733
 msgid "Expand this group"
-msgstr ""
+msgstr "Rozwiń grupę"
 
 #: basket.cpp:2734
 msgid "Collapse this group"
-msgstr ""
+msgstr "Zwiń grupę"
 
 #: basket.cpp:2739
 msgid ""
 "Group note with the one below\n"
 "Right click for more options"
 msgstr ""
+"Grupuj notatkę z notatką poniżej\n"
+"Kliknij prawym przyciskiem myszy by poznać więcej możliwości"
 
 #: basket.cpp:2740
 msgid ""
 "Group note with the one above\n"
 "Right click for more options"
 msgstr ""
+"Grupuj notatkę z notatką powyżej\n"
+"Kliknij prawym przyciskiem myszy by poznać więcej możliwości"
 
 #: basket.cpp:2756
 msgid "Added"
-msgstr ""
+msgstr "Dodano"
 
 #: basket.cpp:2757
 msgid "Last Modification"
-msgstr ""
+msgstr "Ostania zmiana"
 
 #: basket.cpp:2765
 msgid ""
 "_: of the form 'key: value'\n"
 "<b>%1</b>: %2"
-msgstr ""
+msgstr "<b>%1</b>: %2"
 
 #: basket.cpp:2768
 msgid "Click on the right to group instead of insert"
-msgstr ""
+msgstr "Kliknij po prawej by grupować zamiast wstawić"
 
 #: basket.cpp:2770
 msgid "Click on the left to insert instead of group"
-msgstr ""
+msgstr "Kliknij po lewej by wstawić zamiast grupować"
 
 #: basket.cpp:2964
-#, fuzzy
 msgid "&Unlock"
-msgstr "Zab&lokuj"
+msgstr "&Odblokuj"
 
 #: basket.cpp:2969
 msgid "Password protected basket."
-msgstr ""
+msgstr "Koszyk chroniony hasłem."
 
 #: basket.cpp:2971
 msgid "Press Unlock to access it."
-msgstr ""
+msgstr "Przyciśnij Odblokuj by uzyskać dostęp."
 
 #: basket.cpp:2973
 #, c-format
 msgid "Encryption is not supported by<br/>this version of %1."
 msgstr ""
+"Szyfrowanie nie jest wspierane <br/> "
+"w tej wersji %1."
 
 #: basket.cpp:2985
 msgid ""
 "To make baskets stay unlocked, change the automatic<br>locking duration in "
 "the application settings."
 msgstr ""
+"Aby koszyki pozostawały odblokowane, zmień czas<br> "
+"automatycznego blokowania w ustawieniach programu."
 
 #: basket.cpp:3020 basketstatusbar.cpp:83 bnpview.cpp:1240 bnpview.cpp:1846
 msgid "Loading..."
-msgstr ""
+msgstr "Wczytywanie..."
 
 #: basket.cpp:3261 basket.cpp:3282 bnpview.cpp:2150
 msgid "&Customize..."
-msgstr ""
+msgstr "&Własne ustawienia..."
 
 #: basket.cpp:3263 basket.cpp:3284
 msgid "&Filter by this Tag"
-msgstr ""
+msgstr "&Filtruj wg tego znacznika"
 
 #: basket.cpp:3285
 msgid "Filter by this &State"
-msgstr ""
+msgstr "Filtruj wg &Stanu"
 
 #: basket.cpp:3365
-#, fuzzy
 msgid "Tags"
-msgstr "Zapisz cel"
+msgstr "Znaczniki"
 
 #: basket.cpp:3952
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: <qt>Do you really want to delete this note?</qt>\n"
 "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
-msgstr "<qt>Czy na pewno chcesz usun� <b>%1</b> wraz z zawarto�i�</qt>"
+msgstr ""
+"<qt>Czy naprawdę chcesz usunąć notatkę?</qt>\n"
+"<qt>Czy naprawdę chcesz usunąć <b>%n</b> notatki</qt>\n"
+"<qt>Czy naprawdę chcesz usunąć <b>%n</b> notatek</qt>"
 
 #: basket.cpp:3954
 msgid ""
 "_n: Delete Note\n"
 "Delete Notes"
 msgstr ""
+"Usuń notatkę\n"
+"Usuń %n notatki\n"
+"Usuń %n notatek"
 
 #: basket.cpp:4052
-#, fuzzy
 msgid ""
 "_n: Copied note to clipboard.\n"
 "Copied notes to clipboard."
-msgstr "Pozycja zaznaczona."
+msgstr ""
+"Skopiowano notatkę do schowka.\n"
+"Skopiowano %n notatki do schowka.\n"
+"Skopiowano %n notatek do schowka."
 
 #: basket.cpp:4053
-#, fuzzy
 msgid ""
 "_n: Cut note to clipboard.\n"
 "Cut notes to clipboard."
-msgstr "Pozycja zaznaczona."
+msgstr ""
+"Wycięto notatkę do schowka.\n"
+"Wycięto %n notatki do schowka.\n"
+"Wycięto %n notatek do schowka."
 
 #: basket.cpp:4054
-#, fuzzy
 msgid ""
 "_n: Copied note to selection.\n"
 "Copied notes to selection."
-msgstr "Pozycja zaznaczona."
+msgstr ""
+"Skopiowano notatkę do zaznaczenia.\n"
+"Skopiowano %n notatki do zaznaczenia.\n"
+"Skopiowano %n notatek do zaznaczenia."
 
 #: basket.cpp:4100 basket.cpp:4149
-#, fuzzy
 msgid "Unable to open this note."
-msgstr "Usu�pozycj�"
+msgstr "Nie można otworzyć tej notatki."
 
 #: basket.cpp:4124
 msgid "You are not authorized to open this file."
-msgstr ""
+msgstr "Nie masz uprawnień by otworzyć ten plik."
 
 #: basket.cpp:4166
-#, fuzzy
 msgid "Save to File"
-msgstr "Za�duj z pliku..."
+msgstr "Zapisz do pliku"
 
 #: basket.cpp:4574 basket.cpp:4575
-#, fuzzy
 msgid ""
 "_: HTML export folder (files)\n"
 "%1_files"
-msgstr "Katalog do eksportu HTML"
+msgstr "%1_pliki"
 
 #: basket.cpp:4581 basket.cpp:4582
-#, fuzzy
 msgid ""
 "_: HTML export folder (icons)\n"
 "icons"
-msgstr "Katalog do eksportu HTML"
+msgstr "ikony"
 
 #: basket.cpp:4583 basket.cpp:4584
-#, fuzzy
 msgid ""
 "_: HTML export folder (images)\n"
 "images"
-msgstr "Katalog do eksportu HTML"
+msgstr "obrazki"
 
 #: basket.cpp:4585 basket.cpp:4586
-#, fuzzy
 msgid ""
 "_: HTML export folder (data)\n"
 "data"
-msgstr "Katalog do eksportu HTML"
+msgstr "dane"
 
 #: basket.cpp:4709
 msgid "Notes matching the filter &quot;%1&quot;:"
-msgstr ""
+msgstr "Notatki pasujące do filtra &quot;%1&quot;:"
 
 #: basket.cpp:4746
-#, fuzzy
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
-msgstr "Zbiór koszy do przechowywania pe�ego zakresu danych pod r��"
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr "Wykonane przez %1, narzędzie KDE do notowania i przechowywania różnego typu danych pod ręką."
 
 #: basket.cpp:5344
 msgid "Please enter the password for the following private key:"
-msgstr ""
+msgstr "Proszę podać hasło dla następującego klucza prywatnego:"
 
 #: basket.cpp:5346
 msgid "Please enter the password for the basket <b>%1</b>:"
-msgstr ""
+msgstr "Proszę podać hasło dla koszyka <b>%1</b>:"
 
 #: basket.cpp:5391
 msgid "Please assign a password to the basket <b>%1</b>:"
-msgstr ""
+msgstr "Proszę przydzielić hasło dla koszyka <b>%1</b>:"
 
 #: basket.cpp:5453
 msgid "Insufficient Disk Space to Save Basket Data"
-msgstr ""
+msgstr "Brak miejsca na dysku by zapisać dane Koszyka"
 
 #: basket.cpp:5454
 msgid "Wrong Basket File Permissions"
-msgstr ""
+msgstr "Złe prawa do pliku koszyka"
 
 #: basket.cpp:5457
 msgid ""
 "Please remove files on the disk <b>%1</b> to let the application safely save "
 "your changes."
-msgstr ""
+msgstr "Proszę usunąć pliki na dysku <b>%1</b> by pozwolić programowi na bezpieczne zapisanie zmian."
 
 #: basket.cpp:5459
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check you have write access "
 "to it and the parent folders."
-msgstr ""
+msgstr "Nieprawidłowe prawa dostępu dla pliku <b>%1</b>. Proszę sprawdzić czy masz prawa zapisu do pliku i katalogów."
 
 #: basket.cpp:5495
 msgid "Save Error"
-msgstr ""
+msgstr "Błąd zapisu"
 
 #: basketfactory.cpp:60
 msgid "Sorry, but the folder creation for this new basket has failed."
-msgstr ""
+msgstr "Niestety nie powiodło się utworzenie katalogu dla nowego koszyka."
 
 #: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
-#, fuzzy
 msgid "Basket Creation Failed"
-msgstr "Nazwa kosza"
+msgstr "Nie można utworzyć koszyka"
 
 #: basketfactory.cpp:90
 msgid "Sorry, but the template copying for this new basket has failed."
-msgstr ""
+msgstr "Niestety, ale nie można skopiować szablonu dla nowego koszyka."
 
 #: basketfactory.cpp:111
 msgid "Sorry, but the template customization for this new basket has failed."
-msgstr ""
+msgstr "Niestety, ale nie można zmodyfikować szablonu dla nowego koszyka."
 
 #: basketlistview.cpp:338
 msgid "%1+%2+"
-msgstr ""
+msgstr "%1+%2+"
 
 #: basketlistview.cpp:340
 msgid "%1+"
-msgstr ""
+msgstr "%1+"
 
 #: basketlistview.cpp:343
 msgid "%1+%2"
-msgstr ""
+msgstr "%1+%2"
 
 #: basketproperties.cpp:46
 msgid "Basket Properties"
-msgstr "W��iwo�i kosza"
+msgstr "Właściwości koszyka"
 
 #: basketproperties.cpp:64 kgpgme.cpp:60 newbasketdialog.cpp:108
-#, fuzzy
 msgid "Name"
-msgstr "&Nazwa:"
+msgstr "Nazwa"
 
 #: basketproperties.cpp:76
-#, fuzzy
 msgid "Background &image:"
-msgstr "Kolor t�:"
+msgstr "&Obrazek tła:"
 
 #: basketproperties.cpp:77
-#, fuzzy
 msgid "&Background color:"
-msgstr "Kolor t�:"
+msgstr "&Kolor tła:"
 
 #: basketproperties.cpp:78
-#, fuzzy
 msgid "&Text color:"
-msgstr "Kolor"
+msgstr "Kolor &tekstu:"
 
 #: basketproperties.cpp:87
 msgid "(None)"
-msgstr ""
+msgstr "(Brak)"
 
 #: basketproperties.cpp:107
 msgid "Disposition"
-msgstr ""
+msgstr "Dyspozycja"
 
 #: basketproperties.cpp:110
-#, fuzzy
 msgid "Col&umns:"
-msgstr "Kolo&r"
+msgstr "Kol&umny:"
 
 #: basketproperties.cpp:118
 msgid "&Free-form"
-msgstr ""
+msgstr "&Swobodny"
 
 #: basketproperties.cpp:119
 msgid "&Mind map"
-msgstr ""
+msgstr "&Mapa umysłu"
 
 #: basketproperties.cpp:128
 msgid "&Keyboard Shortcut"
-msgstr ""
+msgstr "Sk&rót klawiatury"
 
 #: basketproperties.cpp:133
 msgid "Learn some tips..."
-msgstr ""
+msgstr "Trochę wskazówek..."
 
 #: basketproperties.cpp:134
 msgid ""
@@ -441,35 +442,37 @@ msgid ""
 "useful in addition to the configurable global shortcuts to eg. paste the "
 "clipboard or the selection into the current basket from anywhere.</p>"
 msgstr ""
+"<p><strong>Łatwe zapamiętywanie skrótów</strong>:<br> "
+"Przy pomocy pierwszej opcji przypisanie koszykowi skrótu w formie <strong>Alt+Litera</strong> podkreśli tę literę w drzewie koszyków.<br> "
+"Na przykład jeśli przypiszesz skrót <i>Alt+W</i> do koszyka nazwanego <i>Wskazówki</i> koszyk zostanie pokazany jako <i><u>W</u>skazówki</i> w drzewie. Pomaga wizualizować skróty by je łatwiej zapamiętać.</p><p><strong>Lokalne czy globalne</strong>:<br>Pierwsza opcja pozwala na pokazanie koszyka kiedy główne okno jest aktywne. Skróty globalne działają wszędzie, nawet jeśli okno jest ukryte.</p><p><strong>Pokaż czy Przełącz</strong>:<br>Ostatnia opcja pozwala na uczynienie koszyka aktywnym bez otwierania głównego okna. Pożyteczne w połączeniu z konfiguracją skrótów globalnych np. pozwalających na wklejenie zawartości schowka lub zaznaczenia do bieżącego koszyka z każdego programu.</p>"
 
 #: basketproperties.cpp:149
-#, fuzzy
 msgid "S&how this basket"
-msgstr "Idź do poprzedniego kosza"
+msgstr "&Pokaż ten koszyk"
 
 #: basketproperties.cpp:150
 msgid "Show this basket (&global shortcut)"
-msgstr ""
+msgstr "Pokaż ten koszyk (skrót &globalny)"
 
 #: basketproperties.cpp:151
 msgid "S&witch to this basket (global shortcut)"
-msgstr ""
+msgstr "Przełącz &do tego koszyka (skrót globalny)"
 
 #: basketstatusbar.cpp:100
 msgid "Shows if there are changes that have not been saved yet."
-msgstr ""
+msgstr "Pokazuje czy są niezapisane zmiany."
 
 #: basketstatusbar.cpp:128
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
-msgstr ""
+msgstr "Ctrl+drop: kopiuj, Shift+drop: przenieś, Shift+Ctrl+drop: linkuj."
 
 #: basketstatusbar.cpp:148
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
-msgstr "<p>Ten kosz jest <b>zablokowany</b>.<br>Kliknij, aby odblokowa�</p>"
+msgstr "<p>Ten koszyk jest <b>zablokowany</b>.<br>Kliknij, aby odblokować</p>"
 
 #: basketstatusbar.cpp:153
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
-msgstr "<p>Ten kosz jest <b>odblokowany</b>.<br>Kliknij, aby zablokowa�</p>"
+msgstr "<p>Ten koszyk jest <b>odblokowany</b>.<br>Kliknij, aby zablokować</p>"
 
 #: bnpview.cpp:171 bnpview.cpp:1082
 msgid "General"
@@ -477,141 +480,132 @@ msgstr "Ogólne"
 
 #: bnpview.cpp:227
 msgid "Show/hide main window"
-msgstr "Pokať/ukryj g�wne okno"
+msgstr "Pokaż/ukryj główne okno"
 
 #: bnpview.cpp:228
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
-msgstr ""
+msgstr "Pokazuje główne okno jeśli jest ukryte i ukrywa jeśli je widać."
 
 #: bnpview.cpp:232
 msgid "Paste clipboard contents in current basket"
-msgstr ""
+msgstr "Wkleja zawartość schowka do bieżącego koszyka"
 
 #: bnpview.cpp:233
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
-msgstr ""
+msgstr "Wkleja zawartość schowka do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:236
 msgid "Show current basket name"
-msgstr ""
+msgstr "Pokaż nazwę bieżącego koszyka"
 
 #: bnpview.cpp:237
 msgid "Allows you to know basket is current without opening the main window."
-msgstr ""
+msgstr "Dzięki temu będzie można poznać nazwę bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:240
 msgid "Paste selection in current basket"
-msgstr ""
+msgstr "Wklej zaznaczenie do bieżącego koszyka"
 
 #: bnpview.cpp:241
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
-msgstr ""
+msgstr "Pozwala na wklejenie zawartość zaznaczenia do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:244
 msgid "Create a new basket"
-msgstr "Stwórz nowy kosz"
+msgstr "Utwórz nowy koszyk"
 
 #: bnpview.cpp:245
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
 "paste selection in this new basket)."
-msgstr ""
+msgstr "Pozwala na utworzenie nowego koszyka bez potrzeby otwierania głównego okna (można użyć skrótów globalnych by dodać notatkę, wkleić zawartość schowka lub zaznaczenia do nowego koszyka)."
 
 #: bnpview.cpp:248
 msgid "Go to previous basket"
-msgstr "Idź do poprzedniego kosza"
+msgstr "Idź do poprzedniego koszyka"
 
 #: bnpview.cpp:249
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
-msgstr ""
+msgstr "Pozwala na zmianę bieżącego koszyka na poprzedni bez potrzeby otwierania nowego okna."
 
 #: bnpview.cpp:252
 msgid "Go to next basket"
-msgstr "Idź do nast�nego kosza"
+msgstr "Idź do nastęnego koszyka"
 
 #: bnpview.cpp:253
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
-msgstr ""
+msgstr "Pozwala na zmianę bieżącego koszyka na następny bez potrzeby otwierania nowego okna."
 
 #: bnpview.cpp:260
-#, fuzzy
 msgid "Insert text note"
-msgstr "Wstaw pozycj�tekstow�"
+msgstr "Wstaw notatkę tekstową"
 
 #: bnpview.cpp:261
-msgid ""
-"Add a text note to the current basket without having to open main window."
-msgstr ""
+msgid "Add a text note to the current basket without having to open main window."
+msgstr "Dodaj notatkę tekstową do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:264 settings.cpp:571
-#, fuzzy
 msgid "Insert image note"
-msgstr "Wstaw pozycj�z obrazkiem"
+msgstr "Wstaw obrazek"
 
 #: bnpview.cpp:265
-msgid ""
-"Add an image note to the current basket without having to open main window."
-msgstr ""
+msgid "Add an image note to the current basket without having to open main window."
+msgstr "Dodaj obrazek do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:268 settings.cpp:572
-#, fuzzy
 msgid "Insert link note"
-msgstr "Wstaw pozycj�z odno�ikiem"
+msgstr "Wstaw odnośnik"
 
 #: bnpview.cpp:269
-msgid ""
-"Add a link note to the current basket without having to open main window."
-msgstr ""
+msgid "Add a link note to the current basket without having to open main window."
+msgstr "Dodaj odnośnik do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:272 settings.cpp:574
-#, fuzzy
 msgid "Insert color note"
-msgstr "Wstaw pozycj�z kolorem"
+msgstr "Wstaw kolor"
 
 #: bnpview.cpp:273
-msgid ""
-"Add a color note to the current basket without having to open main window."
-msgstr ""
+msgid "Add a color note to the current basket without having to open main window."
+msgstr "Dodaj kolor do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:276
 msgid "Pick color from screen"
-msgstr ""
+msgstr "Pobierz kolor z ekranu"
 
 #: bnpview.cpp:277
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
-msgstr ""
+msgstr "Dodaj kolor pobrany z jednego piksela ekranu do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:281 settings.cpp:575
 msgid "Grab screen zone"
-msgstr ""
+msgstr "Pobierz region ekranu"
 
 #: bnpview.cpp:282
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
-msgstr ""
+msgstr "Dodaj region ekranu jako obrazek do bieżącego koszyka bez potrzeby otwierania głównego okna."
 
 #: bnpview.cpp:294
-#, fuzzy
 msgid "Baskets"
-msgstr "Kosz"
+msgstr "Koszyki"
 
 #: bnpview.cpp:342
 msgid "Please write in English or French."
-msgstr ""
+msgstr "Proszę pisać po angielsku lub francusku."
 
 #: bnpview.cpp:351
 msgid ""
@@ -619,116 +613,105 @@ msgid ""
 "data by putting them in different baskets. You can group baskets by subject "
 "by creating new baskets inside others. You can browse between them by "
 "clicking a basket to open it, or reorganize them using drag and drop."
-msgstr ""
+msgstr "<h2>Drzewo koszyków</h2>Widać tutaj listę koszyków. Możesz organizować dane przez umieszczanie ich w różnych koszykach. Możez grupować koszyki wg przedmiotu poprzez tworzenie nowych koszyków w innych. Przegląda się je przez klikanie na koszyk aby otworzyć lub reorganizować metodą przyciągnij i upuść."
 
 #: bnpview.cpp:362
 msgid "&Hide Window"
-msgstr "Ukryj okno"
+msgstr "&Ukryj okno"
 
 #: bnpview.cpp:366
 msgid "&Export to HTML..."
 msgstr "&Eksportuj do HTML..."
 
 #: bnpview.cpp:368
-#, fuzzy
 msgid "K&Notes"
-msgstr "Brak pozycji"
+msgstr "Żółte k&arteczki"
 
 #: bnpview.cpp:370
 msgid "K&Jots"
-msgstr ""
+msgstr "K&Jots"
 
 #: bnpview.cpp:372
 msgid "&KnowIt..."
-msgstr ""
+msgstr "&KnowIt..."
 
 #: bnpview.cpp:374
 msgid "Tux&Cards..."
-msgstr ""
+msgstr "Tux&Cards..."
 
 #: bnpview.cpp:376
 msgid "&Sticky Notes"
-msgstr ""
+msgstr "&Sticky Notes"
 
 #: bnpview.cpp:378
 msgid "&Tomboy"
-msgstr ""
+msgstr "&Tomboy"
 
 #: bnpview.cpp:383
-#, fuzzy
 msgid "D&elete"
-msgstr "Usu�"
+msgstr "&Usuń"
 
 #: bnpview.cpp:389
-#, fuzzy
 msgid "Selects all notes"
-msgstr "Zaznacz wszystkie pozycje"
+msgstr "Zaznacz wszystkie notatki"
 
 #: bnpview.cpp:390
 msgid "U&nselect All"
-msgstr "Odznacz wszystkie"
+msgstr "O&dznacz wszystkie"
 
 #: bnpview.cpp:392
-#, fuzzy
 msgid "Unselects all selected notes"
 msgstr "Udznacz wszystkie zaznaczone pozycje"
 
 #: bnpview.cpp:393
 msgid "&Invert Selection"
-msgstr "Odwró�zaznaczenie"
+msgstr "Od&wróć zaznaczenie"
 
 #: bnpview.cpp:396
-#, fuzzy
 msgid "Inverts the current selection of notes"
-msgstr "Odwró�zaznaczenie wybranych pozycji"
+msgstr "Odwróć zaznaczenie wybranych pozycji"
 
 #: bnpview.cpp:398
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
-msgstr ""
+msgstr "&Edytuj..."
 
 #: bnpview.cpp:403
-#, fuzzy
 msgid "&Open"
-msgstr "Otwórz"
+msgstr "&Otwórz"
 
 #: bnpview.cpp:406
-#, fuzzy
 msgid "Open &With..."
-msgstr "Otwórz z..."
+msgstr "Otwórz &z..."
 
 #: bnpview.cpp:410
-#, fuzzy
 msgid "&Save to File..."
-msgstr "Za�duj z pliku..."
+msgstr "&Zapisz do pliku..."
 
 #: bnpview.cpp:413
-#, fuzzy
 msgid "&Group"
-msgstr "Idź do"
+msgstr "&Grupuj"
 
 #: bnpview.cpp:415
 msgid "U&ngroup"
-msgstr ""
+msgstr "&Rozgrupuj"
 
 #: bnpview.cpp:418
 msgid "Move on &Top"
-msgstr "Przesu�na wierzch"
+msgstr "Przesuń na &wierzch"
 
 #: bnpview.cpp:420
-#, fuzzy
 msgid "Move &Up"
-msgstr "Przesu�na wierzch"
+msgstr "Przesuń do &góry"
 
 #: bnpview.cpp:422
-#, fuzzy
 msgid "Move &Down"
-msgstr "Przesu�na wierzch"
+msgstr "Prze&suń w dół"
 
 #: bnpview.cpp:424
 msgid "Move on &Bottom"
-msgstr "Przesu�pod spód"
+msgstr "Przesuń pod s&pód"
 
 #: bnpview.cpp:440
 msgid "&Text"
@@ -736,193 +719,183 @@ msgstr "&Tekst"
 
 #: bnpview.cpp:441
 msgid "&Link"
-msgstr "Odno�ik"
+msgstr "Od&nośnik"
 
 #: bnpview.cpp:442
 msgid "&Image"
-msgstr "Obrazek"
+msgstr "&Obrazek"
 
 #: bnpview.cpp:443
 msgid "&Color"
-msgstr "Kolor"
+msgstr "&Kolor"
 
 #: bnpview.cpp:444
 msgid "L&auncher"
-msgstr "Uruch&amianie aplikacji"
+msgstr "Uruch&amianie programów"
 
 #: bnpview.cpp:446
-#, fuzzy
 msgid "Import Launcher from &KDE Menu..."
-msgstr "Importuj program uruchamiaj�y KMenu..."
+msgstr "Importuj program uruchamiający z &KMenu..."
 
 #: bnpview.cpp:447
-#, fuzzy
 msgid "Im&port Icon..."
-msgstr "Importuj ikon�.."
+msgstr "Im&portuj ikonę..."
 
 #: bnpview.cpp:448
-#, fuzzy
 msgid "Load From &File..."
-msgstr "Za�duj z pliku..."
+msgstr "Wczyta&j z pliku..."
 
 #: bnpview.cpp:471
 msgid "C&olor from Screen"
-msgstr ""
+msgstr "K&olor z ekranu"
 
 #: bnpview.cpp:476
 msgid "Grab Screen &Zone"
-msgstr ""
+msgstr "Pobierz &region ekranu"
 
 #: bnpview.cpp:506
-#, fuzzy
 msgid "&New Basket..."
-msgstr "&Nast�ny kosz"
+msgstr "&Nowy koszyk..."
 
 #: bnpview.cpp:508
-#, fuzzy
 msgid "New &Sub-Basket..."
-msgstr "&Nast�ny kosz"
+msgstr "Nowy &pod-koszyk..."
 
 #: bnpview.cpp:510
-#, fuzzy
 msgid "New Si&bling Basket..."
-msgstr "&Nast�ny kosz"
+msgstr "Nowy koszyk &bliźniaczy..."
 
 #: bnpview.cpp:513
-#, fuzzy
 msgid "&New"
-msgstr "&Nowy..."
+msgstr "&Nowy"
 
 #: bnpview.cpp:521
-#, fuzzy
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
-msgstr "&Nast�ny kosz"
+msgstr "&Usuń"
 
 #: bnpview.cpp:524
 msgid ""
 "_: Password protection\n"
 "Pass&word..."
-msgstr ""
+msgstr "Hasł&o..."
 
 #: bnpview.cpp:526
-#, fuzzy
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
-msgstr "&Nast�ny kosz"
+msgstr "Zab&lokuj"
 
 #: bnpview.cpp:536
 msgid "&Filter"
-msgstr ""
+msgstr "&Filtr"
 
 #: bnpview.cpp:540
-#, fuzzy
 msgid "Filter all &Baskets"
-msgstr "Usu�kosz"
+msgstr "Filtruj wszystkie &koszyki"
 
 #: bnpview.cpp:544
-#, fuzzy
 msgid "&Reset Filter"
-msgstr "Wyczy� wyniki wyszukiwania"
+msgstr "U&suń filtr"
 
 #: bnpview.cpp:549
 msgid "&Previous Basket"
-msgstr "&Poprzedni kosz"
+msgstr "&Poprzedni koszyk"
 
 #: bnpview.cpp:551
 msgid "&Next Basket"
-msgstr "&Nast�ny kosz"
+msgstr "&Następny koszyk"
 
 #: bnpview.cpp:553
-#, fuzzy
 msgid "&Fold Basket"
-msgstr "Kosz"
+msgstr "&Zwiń koszyk"
 
 #: bnpview.cpp:555
-#, fuzzy
 msgid "&Expand Basket"
-msgstr "&Nast�ny kosz"
+msgstr "&Rozwiń koszyk"
 
 #: bnpview.cpp:565
 msgid "Configure &Global Shortcuts..."
-msgstr "Konfiguruj &globalne skróty..."
+msgstr "Konfiguruj skróŧy &globalne..."
 
 #: bnpview.cpp:862
 msgid "Plain Text Notes Conversion"
-msgstr ""
+msgstr "Konwersja notatek tekstowych"
 
 #: bnpview.cpp:863
 msgid "Converting plain text notes to rich text ones..."
-msgstr ""
+msgstr "Konwersja zwykłych notatek tekstowych do tekstu wzbogaconego..."
 
 #: bnpview.cpp:1238
-#, fuzzy
 msgid "Locked"
-msgstr "(Zablokowany)"
+msgstr "Zablokowany"
 
 #: bnpview.cpp:1242
-#, fuzzy
 msgid "No notes"
-msgstr "Brak pozycji"
+msgstr "Brak notatek"
 
 #: bnpview.cpp:1244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
-msgstr "np. \"Aktualizacja: 1 pozycja wczytana i 3 pozycje usuni�e\""
+msgstr ""
+"1 notatka \n"
+"%n notatki\n"
+"%n notatek"
 
 #: bnpview.cpp:1245
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
-msgstr "Udznacz wszystkie zaznaczone pozycje"
+msgstr ""
+"1 zaznaczona\n"
+"%n zaznaczone\n"
+"%n zaznaczonych"
 
 #: bnpview.cpp:1246
 msgid "all matches"
-msgstr ""
+msgstr "wszystkie dopasowania"
 
 #: bnpview.cpp:1246
-#, fuzzy
 msgid "no filter"
-msgstr "1 pozycja"
+msgstr "brak filtra"
 
 #: bnpview.cpp:1248
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
-msgstr "np. \"Aktualizacja: 1 pozycja wczytana i 3 pozycje usuni�e\""
+msgstr ""
+"1 dopasowanie\n"
+"%n dopasowania\n"
+"%n dopasowań"
 
 #: bnpview.cpp:1250
-#, fuzzy
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
-msgstr "np. \"18 pozycji, 10 znalezionych, 5 zaznaczonych\""
+msgstr "%1, %2, %3"
 
 #: bnpview.cpp:1367
 msgid "Picked color to basket <i>%1</i>"
-msgstr ""
+msgstr "Pobrano kolor do koszyka <i>%1</i>"
 
 #: bnpview.cpp:1404
-#, fuzzy
 msgid "The plain text notes have been converted to rich text ones."
-msgstr "Wstaw pozycj�tekstu wzbogaconego"
+msgstr "Zwykłe notatki tekstowe zostały zamienione na tekst wzbogacony."
 
 #: bnpview.cpp:1404 bnpview.cpp:1406
 msgid "Conversion Finished"
-msgstr ""
+msgstr "Zakończono konwersję"
 
 #: bnpview.cpp:1406
 msgid "There is no plain text notes to convert."
-msgstr ""
+msgstr "Nie ma zwykłych notatek tekstowych do konwersji."
 
 #: bnpview.cpp:1431
-#, fuzzy
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -931,84 +904,73 @@ msgid ""
 "folder <a href='file://%3'>%4</a>.</p><p>In last ressort, if you are sure "
 "the application is well installed but you had a preview version of it, try "
 "to remove the file %5basketui.rc</p>"
-msgstr ""
-"<p><b>Plik basketui.rc nie istnieje.</b><br>BasKet nie moťe bez niego "
-"dzia��i przerwie teraz swoje dzia�nie.</p><p>Sprawdź swoj�instalacj�<br>Je�i "
-"nie masz dost�u administratora, aby zainstalowa�program w katalogach "
-"systemowych, moťesz przekopiowa�plik basketui.rc do katalogu %1."
+msgstr "<p><b>Plik basketui.rg nie istnieje lub jest zbyt stary.<br>%1 nie może bez niego działać i zakończy działanie.</b></p><p>Proszę sprawdzić instalację %2.</p><p>Jeśli nie masz dostępu administratora do programów systemowych możesz skopiować plik basketui.rg z archiwum instalacyjnego do katalogu <a href='file://%3'>%4</a>.</p><p>Jeśli to nie pomoże i program został na pewno poprawnie zainstalowany ale masz wersję testową spróbuj usunąć plik %5basketui.rg</p>"
 
 #: bnpview.cpp:1442
 msgid "Ressource not Found"
 msgstr "Nie znaleziono zasobu"
 
 #: bnpview.cpp:1465 bnpview.cpp:1474
-#, fuzzy
 msgid "Cannot add note."
-msgstr "Nie mog�doda�pozycji."
+msgstr "Nie można dodać notatki."
 
 #: bnpview.cpp:1536
 msgid "Grabbed screen zone to basket <i>%1</i>"
-msgstr ""
+msgstr "Pobrano region ekranu do koszyka <i>%1</i>"
 
 #: bnpview.cpp:1584
 msgid "Delete Basket"
-msgstr "Usu�kosz"
+msgstr "Usuń koszyk"
 
 #: bnpview.cpp:1587
-#, fuzzy
 msgid "Delete Only that Basket"
-msgstr "Usu�kosz"
+msgstr "Usuń tylko ten koszyk"
 
 #: bnpview.cpp:1588
 msgid "Delete With its Childs"
-msgstr ""
+msgstr "Usuń razem z dziećmi"
 
 #: bnpview.cpp:1596 bnpview.cpp:1602
-#, fuzzy
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr "<qt>Czy na pewno chcesz usun� <b>%1</b> wraz z zawarto�i�</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Czy na pewno chcesz usunąć koszyk <b>%1</b> i jego zawartość?</qt>"
 
 #: bnpview.cpp:1604
-#, fuzzy
 msgid "Remove Basket"
-msgstr "&Nast�ny kosz"
+msgstr "Usuń koszyk"
 
 #: bnpview.cpp:1606
-#, fuzzy
 msgid "&Remove Basket"
-msgstr "&Nast�ny kosz"
+msgstr "&Usuń koszyk"
 
 #: bnpview.cpp:1617
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
-msgstr ""
+msgstr "<qt><b>%1</b> ma następujące koszyki potomne.<br>Czy je też chcesz usunąć?</qt>"
 
 #: bnpview.cpp:1620
 msgid "Remove Child Baskets"
-msgstr ""
+msgstr "Usuń koszyki potomne"
 
 #: bnpview.cpp:1622
-#, fuzzy
 msgid "&Remove Child Baskets"
-msgstr "&Nast�ny kosz"
+msgstr "&Usuń koszyki potomne"
 
 #: bnpview.cpp:1758
 msgid "Clipboard content pasted to basket <i>%1</i>"
-msgstr ""
+msgstr "Zawartość schowka wklejono do koszyka <i>%1</i>"
 
 #: bnpview.cpp:1766
 msgid "Selection pasted to basket <i>%1</i>"
-msgstr ""
+msgstr "Zaznaczenie wklejono do koszyka <i>%1</i>"
 
 #: bnpview.cpp:1778
 msgid "No note was added."
-msgstr ""
+msgstr "Nie dodano notatki."
 
 #: bnpview.cpp:1805
 msgid "Basket <i>%1</i> is locked"
-msgstr "Kosz <i>%1</i> jest zablokowany"
+msgstr "Koszyk <i>%1</i> jest zablokowany"
 
 #: bnpview.cpp:1830
 msgid "(Locked)"
@@ -1016,12 +978,11 @@ msgstr "(Zablokowany)"
 
 #: bnpview.cpp:2148
 msgid "&Assign new Tag..."
-msgstr ""
+msgstr "&Dodaj nowy znacznik..."
 
 #: bnpview.cpp:2149
-#, fuzzy
 msgid "&Remove All"
-msgstr "&Nast�ny kosz"
+msgstr "&Usuń wszystko"
 
 #: crashhandler.cpp:80
 msgid ""
@@ -1033,12 +994,18 @@ msgid ""
 "\n"
 "Many thanks."
 msgstr ""
+"%1 padł! Przykro nam z tego powodu.\n"
+"\n"
+"Jednak nie wszystko stracone! Możesz pomóc nam poprawić ten błąd. "
+"Informacja o padzie znajduje się poniżej, po prostu kliknij Wyślij lub jeśli masz trochę czasu krótko opisz jak to się stało.\n"
+"\n"
+"Bardzo dziękujemy."
 
 #: crashhandler.cpp:87
 msgid ""
 "The information below is to help the developers identify the problem, please "
 "do not modify it."
-msgstr ""
+msgstr "Informacja poniżej pomoże deweloperom rozwiązać problem, proszę jej nie zmieniać."
 
 #: crashhandler.cpp:206
 msgid ""
@@ -1047,81 +1014,77 @@ msgid ""
 "But, all is not lost! Perhaps an upgrade is already available which fixes "
 "the problem. Please check your distribution's software repository."
 msgstr ""
+"%1 padł! Przykro nam z tego powodu.\n"
+"\n"
+"Jednak nie wszystko stracone! Być może dostępne jest uaktualnienie programu, które nie zawiera tego błędu. Proszę sprawdzić repozytorium twojej dystrybucji."
 
 #: debugwindow.cpp:34
 msgid "Debug Window"
-msgstr ""
+msgstr "Okno debugowania"
 
 #: exporterdialog.cpp:37
-#, fuzzy
 msgid "Export Basket to HTML"
-msgstr "Wyeksportuj kosz do pliku HTML"
+msgstr "Eksportuj koszyk do HTML"
 
 #: exporterdialog.cpp:46
 msgid "HTML Page Filename"
-msgstr ""
+msgstr "Nazwa pliku strony HTML"
 
 #: exporterdialog.cpp:49
-#, fuzzy
 msgid "&Filename:"
-msgstr "Nazwa pliku:"
+msgstr "&Nazwa pliku:"
 
 #: exporterdialog.cpp:52
 msgid "&Embed linked local files"
-msgstr ""
+msgstr "&Dołącz zlinkowane pliki lokalne"
 
 #: exporterdialog.cpp:53
 msgid "Embed &linked local folders"
-msgstr ""
+msgstr "Dołącz z&linkowane katalogi lokalne"
 
 #: exporterdialog.cpp:54
 msgid "Erase &previous files in target folder"
-msgstr ""
+msgstr "Usuń &poprzednie pliki w katalogu docelowym"
 
 #: exporterdialog.cpp:55
 msgid "For&mat for impression"
-msgstr ""
+msgstr "For&mat wrażenia"
 
 #: filter.cpp:60
-#, fuzzy
 msgid "Reset Filter"
-msgstr "Wyczy� wyniki wyszukiwania"
+msgstr "Wyczyść filtr"
 
 #: filter.cpp:64
-#, fuzzy
 msgid "&Filter: "
-msgstr "Nazwa pliku:"
+msgstr "&Filtr: "
 
 #: filter.cpp:66
-#, fuzzy
 msgid "T&ag: "
-msgstr "Zapisz cel"
+msgstr "Zn&acznik: "
 
 #: filter.cpp:69
-#, fuzzy
 msgid "Filter all Baskets"
-msgstr "Usu�kosz"
+msgstr "Filtruj wszystkie koszyki"
 
 #: filter.cpp:149
 msgid "(Not tagged)"
-msgstr ""
+msgstr "(Brak znaczników)"
 
 #: filter.cpp:150
-#, fuzzy
 msgid "(Tagged)"
-msgstr "Obrazek"
+msgstr "(Znaczniki)"
 
 #: focusedwidgets.cpp:178
 msgid "Auto Spell Check"
-msgstr ""
+msgstr "Automatyczne sprawdzanie pisowni"
 
 #: focusedwidgets.cpp:178
 msgid "Check Spelling..."
-msgstr ""
+msgstr "Sprawdzanie pisowni..."
 
 #: focusedwidgets.cpp:181
 msgid "Allow Tabulations"
-msgstr ""
+msgstr "Dopuść tabulację"
 
 #: formatimporter.cpp:123
 msgid ""
@@ -1130,323 +1093,319 @@ msgid ""
 "has been copied for the basket needs. You can either delete this folder or "
 "delete the basket, or use both. But remember that modifying one will not "
 "modify the other anymore as they are now separate entities.</p>"
-msgstr ""
+msgstr "<p>Odzwierciedlanie katalogów nie jest dłużej wspierane (więcej informacji na <a href='http://basket.kde.org/'>basket.kde.org</a>).</p><p>Katalog <b>%1</b> został skopiowany na potrzeby koszyka. Możesz usunąć ten katalog lub koszyk, albo używać obu. Ale pamiętaj, że modyfikacja jednego z nich nie zmieni drugiego - są to byty osobne.</p>"
 
 #: formatimporter.cpp:125
-#, fuzzy
 msgid "Folder Mirror Import"
-msgstr "Katalog do skopiowania"
+msgstr "Import odzwierciedlania katalogów"
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
 msgid "(Default)"
-msgstr ""
+msgstr "(Domyślne)"
 
 #: kcolorcombo2.cpp:138
 msgid "Other..."
-msgstr ""
+msgstr "Inne..."
 
 #: kgpgme.cpp:49
 msgid "Private Key List"
-msgstr ""
+msgstr "Lista kluczy prywatnych"
 
 #: kgpgme.cpp:61
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: kgpgme.cpp:62
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: kgpgme.cpp:67
-#, fuzzy
 msgid "Choose a secret key:"
-msgstr "Wybierz nazw�dla nowego kosza:"
+msgstr "Wybierz tajny klucz:"
 
 #: kgpgme.cpp:228
 msgid "Key listing unexpectedly truncated."
-msgstr ""
+msgstr "Lista kluczy nagle ucięta."
 
 #: kgpgme.cpp:264
 msgid "That public key is not meant for encryption"
-msgstr ""
+msgstr "Ten klucz publiczny nie jest przeznaczony do szyfrowania"
 
 #: kgpgme.cpp:307
 msgid "Unsupported algorithm"
-msgstr ""
+msgstr "Niewspierany algorytm"
 
 #: kgpgme.cpp:410
 msgid "Wrong password."
-msgstr ""
+msgstr "Złe hasło."
 
 #: kicondialog.cpp:84 kicondialog.cpp:94
 msgid "Select Icon"
-msgstr ""
+msgstr "Wybierz ikonę"
 
 #: kicondialog.cpp:121
 msgid "&Browse..."
-msgstr ""
+msgstr "&Przeglądaj..."
 
 #: kicondialog.cpp:133
 msgid "(All Icons)"
-msgstr ""
+msgstr "(Wszystkie ikony)"
 
 #: kicondialog.cpp:134
 msgid "(Recent)"
-msgstr ""
+msgstr "(Ostatnie)"
 
 #: kicondialog.cpp:135
-#, fuzzy
 msgid "Actions"
-msgstr "Aplikacje"
+msgstr "Działania"
 
 #: kicondialog.cpp:136
 msgid "Applications"
-msgstr "Aplikacje"
+msgstr "Programy"
 
 #: kicondialog.cpp:137
 msgid "Devices"
-msgstr ""
+msgstr "Urządzenia"
 
 #: kicondialog.cpp:138
-#, fuzzy
 msgid "Filesystem"
-msgstr "Nazwa pliku:"
+msgstr "System plików"
 
 #: kicondialog.cpp:139
 msgid "File Types"
-msgstr ""
+msgstr "Typy plików"
 
 #: kicondialog.cpp:356
 msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
-msgstr ""
+msgstr "*.png *.xpm *.svg *.svgz|Pliki ikon (*.png *.xpm *.svg *.svgz)"
 
 #. i18n: file kicondialogui.ui line 31
 #: kicondialogui.cpp:104 rc.cpp:69
 #, no-c-format
 msgid "KIconDialogUI"
-msgstr ""
+msgstr "KIconDialogUI"
 
 #. i18n: file kicondialogui.ui line 105
 #: kicondialogui.cpp:105 rc.cpp:72
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Fi&lter:"
-msgstr "Nazwa pliku:"
+msgstr "Fi&ltr:"
 
 #. i18n: file kicondialogui.ui line 160
 #: kicondialogui.cpp:107 rc.cpp:78
 #, no-c-format
 msgid "Alt+O"
-msgstr ""
+msgstr "Alt+O"
 
 #: likeback.cpp:74
 msgid "Send application developers a comment about something you like"
-msgstr ""
+msgstr "Wyślij deweloperom programu komentarz o tym co ci się podoba"
 
 #: likeback.cpp:81
 msgid "Send application developers a comment about something you dislike"
-msgstr ""
+msgstr "Wyślij deweloperom programu komentarz o tym co ci się nie podoba"
 
 #: likeback.cpp:88
 msgid ""
 "Send application developers a comment about an improper behavior of the "
 "application"
-msgstr ""
+msgstr "Wyślij deweloperom programu komentarz o tym co nie działa"
 
 #: likeback.cpp:95
 msgid "Send application developers a comment about a new feature you desire"
-msgstr ""
+msgstr "Wyślij deweloperom programu komentarz o tym co powinno w programie się pojawić"
 
 #: likeback.cpp:382
-#, fuzzy
 msgid "&Send a Comment to Developers"
-msgstr "Polecenie:"
+msgstr "&Wyślij komentarz do deweloperów"
 
 #: likeback.cpp:433
 #, c-format
 msgid "Welcome to this testing version of %1."
-msgstr ""
+msgstr "Witamy w wersji testowej %1."
 
 #: likeback.cpp:434
 #, c-format
 msgid "Welcome to %1."
-msgstr ""
+msgstr "Witamy w %1."
 
 #: likeback.cpp:436
 msgid "To help us improve it, your comments are important."
-msgstr ""
+msgstr "Twoje komentarze co należy poprawić są dla nas bardzo pomocne."
 
 #: likeback.cpp:439
 msgid ""
 "Each time you have a great or frustrating experience, please click the "
 "appropriate face below the window title-bar, briefly describe what you like "
 "or dislike and click Send."
-msgstr ""
+msgstr "Za każdym razem kiedy coś ci się spodobało, lub odwrotnie - kiedy coś cię zdenerwowało kliknij odpowiednią twarzyczkę poniżej paska tytułu, krótko opisz co ci się podoba i wciśnij Wyślij."
 
 #: likeback.cpp:443
 msgid ""
 "Each time you have a great experience, please click the smiling face below "
 "the window title-bar, briefly describe what you like and click Send."
-msgstr ""
+msgstr "Za każdym razem kiedy coś ci się spodobało kliknij uśmiechniętą twarzyczkę poniżej paska tytułu, krótko opisz co ci się podoba i wciśnij Wyślij."
 
 #: likeback.cpp:447
 msgid ""
 "Each time you have a frustrating experience, please click the frowning face "
 "below the window title-bar, briefly describe what you dislike and click Send."
-msgstr ""
+msgstr "Za każdym razem kiedy coś ci się nie spodobało kliknij skwaszoną twarzyczkę poniżej paska tytułu, krótko opisz co ci się podoba i wciśnij Wyślij."
 
 #: likeback.cpp:456
 msgid ""
 "Follow the same principle to quickly report a bug: just click the broken-"
 "object icon in the top-right corner of the window, describe it and click "
 "Send."
-msgstr ""
+msgstr "Wykonaj podobną akcję by szybko zgłosić błąd: po prostu kliknij ikonę złamanego przedmiotu w prawym górnym rogu okna, opisz błąd i kliknij Wyślij."
 
 #: likeback.cpp:459
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe what is the mis-"
 "behaviour and click Send."
-msgstr ""
+msgstr "Za każdym razem kiedy natkniesz się na błąd kliknij ikonę złamanego przedmiotu poniżej belki tytułu, króŧko opisz błąd i kliknij Wyślij."
 
 #: likeback.cpp:464
 msgid ""
 "_n: Example:\n"
 "Examples:"
 msgstr ""
+"Przykład:\n"
+"%n przykłady:\n"
+"%n przykładów:"
 
 #: likeback.cpp:467
 msgid "<b>I like</b> the new artwork. Very refreshing."
-msgstr ""
+msgstr "<b>Lubię</b> nową szatę graficzną. Odświeżająca."
 
 #: likeback.cpp:471
-msgid ""
-"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
-msgstr ""
+msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+msgstr "<b>Nie lubię</b> ekranu powitalnego tego asystenta. Zbyt czasochłonny."
 
 #: likeback.cpp:475
 msgid ""
 "<b>The application has an improper behaviour</b> when clicking the Add "
 "button. Nothing happens."
-msgstr ""
+msgstr "<b>Program nie zachowuje się prawidłowo</b> kiedy kliknie się przycisk Dodaj. Nic się nie dzieje."
 
 #: likeback.cpp:479
 msgid "<b>I desire a new feature</b> allowing me to send my work by email."
-msgstr ""
+msgstr "<b>Chciałbym nową opcję</b> pozwalającą na wysyłanie pracy przez e-mail."
 
 #: likeback.cpp:482
 msgid "Help Improve the Application"
-msgstr ""
+msgstr "Pomóż udoskonalić Program"
 
 #: likeback.cpp:559
 msgid "Email Address"
-msgstr ""
+msgstr "Adres e-mail"
 
 #: likeback.cpp:560
 msgid "Please provide your email address."
-msgstr ""
+msgstr "Proszę podać adres e-mail."
 
 #: likeback.cpp:561
 msgid ""
 "It will only be used to contact you back if more information is needed about "
 "your comments, ask you how to reproduce the bugs you report, send bug "
 "corrections for you to test, etc."
-msgstr ""
+msgstr "Adres zostanie użyty tylko wtedy kiedy będziemy potrzebować więcej informacji o twoich komentarzach, zapytać się jak zreprodukować błąd, wysłać poprawki do testowania itd."
 
 #: likeback.cpp:562
 msgid ""
 "The email address is optional. If you do not provide any, your comments will "
 "be sent anonymously."
-msgstr ""
+msgstr "Adres e-mail jest opcjonalny. Jeśli go nie podasz komentarze zostaną wysłane anonimowo."
 
 #: likeback.cpp:635
-#, fuzzy
 msgid "Send a Comment to Developers"
-msgstr "Polecenie:"
+msgstr "Wyślij komentarz do Deweloperów"
 
 #. i18n("Send Application Developers a Comment About:"), page);
 #: likeback.cpp:665
 msgid "Send Application Developers a Comment About:"
-msgstr ""
+msgstr "Wyślij deweloperom programu komentarz o:"
 
 #: likeback.cpp:676
 msgid "Something you &like"
-msgstr ""
+msgstr "Czymś co &lubisz"
 
 #: likeback.cpp:686
 msgid "Something you &dislike"
-msgstr ""
+msgstr "Czymś czego &nie lubisz"
 
 #: likeback.cpp:696
 msgid "An improper &behavior of this application"
-msgstr ""
+msgstr "Nieprawidłowym &zachowaniu programu"
 
 #: likeback.cpp:706
 msgid "A new &feature you desire"
-msgstr ""
+msgstr "Nowej &opcji jakiej potrzebujesz"
 
 #: likeback.cpp:719
 msgid "Show comment buttons below &window titlebars"
-msgstr ""
+msgstr "Pokaż przyciski komentarz poniżej paska &tytułu okna"
 
 #: likeback.cpp:723
-#, fuzzy
 msgid "&Send Comment"
-msgstr "Polecenie:"
+msgstr "&Wyślij komentarz"
 
 #: likeback.cpp:727
 msgid "&Email Address..."
-msgstr ""
+msgstr "Adres &e-mail..."
 
 #: likeback.cpp:744
 #, c-format
 msgid "Please provide a brief description of your opinion of %1."
-msgstr ""
+msgstr "Proszę podać króŧki opis twojej opinii o %1."
 
 #: likeback.cpp:757
 msgid "Please write in English."
-msgstr ""
+msgstr "Proszę pisać po angielsku."
 
 #: likeback.cpp:763
 msgid "You may be able to use an <a href=\"%1\">online translation tool</a>."
-msgstr ""
+msgstr "Możesz użyć <a href=\"%1\">translatora na WWW</a>."
 
 #: likeback.cpp:769
 msgid ""
 "To make the comments you send more useful in improving this application, try "
 "to send the same amount of positive and negative comments."
-msgstr ""
+msgstr "Aby komentarze były bardziej użyteczne spróbuj wysłać tę samą ilość pozytywnych i negatywnych komentarzy."
 
 #: likeback.cpp:772
 msgid "Do <b>not</b> ask for new features: your requests will be ignored."
-msgstr ""
+msgstr "<b>Nie</b> proś o nowe rzeczy: twoje prośby będą ignorowane."
 
 #: likeback.cpp:836
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
-msgstr ""
+msgstr "<p>Błąd w czasie wysyłania raportu.</p><p>Proszę spróbować później.</p>"
 
 #: likeback.cpp:836
 msgid "Transfer Error"
-msgstr ""
+msgstr "Błąd transportu"
 
 #: likeback.cpp:840
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
 "application.</p><p>Thanks for your time.</p>"
 msgstr ""
+"<p>Twój komentarz został wysłany. Pomoże to w rozwoju programu.</p> "
+"<p>Dziękujemy za poświęcony czas.</p>"
 
 #: likeback.cpp:841
-#, fuzzy
 msgid "Comment Sent"
-msgstr "Polecenie:"
+msgstr "Komentarz wysłany"
 
 #: linklabel.cpp:560
 msgid "I&talic"
-msgstr "Kursywa"
+msgstr "&Kursywa"
 
 #: linklabel.cpp:563
 msgid "&Bold"
-msgstr "Pogrubienie"
+msgstr "Pogru&bienie"
 
 #: linklabel.cpp:570
 msgid "Always"
@@ -1458,54 +1417,51 @@ msgstr "Nigdy"
 
 #: linklabel.cpp:572
 msgid "On mouse hovering"
-msgstr ""
+msgstr "Przy aktywacji myszą"
 
 #: linklabel.cpp:573
 msgid "When mouse is outside"
-msgstr ""
+msgstr "Kiedy mysz jest poza"
 
 #: linklabel.cpp:574
 msgid "&Underline:"
-msgstr "Podkre�enie:"
+msgstr "&Podkreślenie:"
 
 #: linklabel.cpp:579
 msgid "Colo&r:"
-msgstr "Kolo&r"
+msgstr "Kolo&r:"
 
 #: linklabel.cpp:584
 msgid "&Mouse hover color:"
-msgstr ""
+msgstr "Kolor w czasie aktywacji &myszą:"
 
 #: linklabel.cpp:591
-#, fuzzy
 msgid "&Icon size:"
-msgstr "&Ikona:"
+msgstr "Rozmiar &ikony:"
 
 #: linklabel.cpp:596
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 #: linklabel.cpp:597
-#, fuzzy
 msgid "Icon size"
-msgstr "Ikona"
+msgstr "Rozmiar ikony"
 
 #: linklabel.cpp:598
 msgid "Twice the icon size"
-msgstr ""
+msgstr "Podwójny rozmiar ikony"
 
 #: linklabel.cpp:599
 msgid "Three times the icon size"
-msgstr ""
+msgstr "Potrójny rozmiar ikony"
 
 #: linklabel.cpp:600
-#, fuzzy
 msgid "&Preview:"
-msgstr "W��iwo�i"
+msgstr "&Podgląd:"
 
 #: linklabel.cpp:602
 msgid "You disabled preview but still see images?"
-msgstr ""
+msgstr "Wyłączyłeś podgląd ale cały czas widzisz obrazki?"
 
 #: linklabel.cpp:603
 msgid ""
@@ -1521,86 +1477,78 @@ msgid ""
 "content of the files you drop, go to the \"General\" page and uncheck "
 "\"Image or animation\" in the \"View Content of Added Files for the "
 "Following Types\" group.</p>"
-msgstr ""
+msgstr "<p>Jest to normalne ponieważ istnieje kilka typów notatek.<br>To ustawienie stosuje się tylko do plików i linków lokalnych.<br>Obrazki jakie widzisz to notatki obrazkowe, nie notatki plikowe.<br>Notatki plikowe są zwykłymi dokumentami, podczas gdy notatki obrazkowe to obrazki na których możesz rysować.</p><p>Upuszczając pliki do koszyków, %1 wykrywa ich typ i pokazuje zawartość plików.<br>Na przykład, kiedy upuścisz pliki obrazkowe lub tekstowe zostaną utworzone notatki obrazkowe i tekstowe.<br>Dla typów plików nieznanych dla %2, zostaną pokazane notatki plikowe ogólnego typu tylko z ikoną lub podglądem pliku i nazwą pliku.</p><p>Jeśli nie chcesz aby program tworzył notatki na podstawie zawartości upuszczanych plików przejdź do strony \"Ogólne\" i odznacz opcję \"Obrazki lub animacje\" w grupie \"Pokaż zawartość dodawanych plików dla następujących typów plików\".</p>"
 
 #: linklabel.cpp:619
 msgid "Example"
-msgstr "Przyk�d"
+msgstr "Przykład"
 
 #: mainwindow.cpp:135
-#, fuzzy
 msgid "Minimize"
-msgstr "&Minimalizuj"
+msgstr "Minimalizuj"
 
 #: mainwindow.cpp:300
 msgid "Basket"
-msgstr "Kosz"
+msgstr "Koszyk"
 
 #: mainwindow.cpp:309
-#, fuzzy
 msgid "<p>Do you really want to quit %1?</p>"
-msgstr "<p>Czy na pewno chcesz zamkn� BasKet?</p>"
+msgstr "<p>Czy na pewno chcesz zamknąć %1?</p>"
 
 #: mainwindow.cpp:311
-#, fuzzy
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session. If you end your session while the application is still running, "
 "the application will be reloaded the next time you log in.</p>"
-msgstr ""
-"<p>Nie musisz ko�zy�BasKet przed ko�em sesji KDE: wtedy zostanie przywrócony "
-"nast�nym razem, gdy si�zalogujesz.</p>"
+msgstr "<p>Pamiętaj, że nie musisz opuszczać programu zanim zakończysz sesję KDE. Jeśli zakończysz sesję a program cały czas działa, program zostanie uruchomiony przy następnym zalogowaniu.</p>"
 
 #: mainwindow.cpp:314
 msgid "Quit Confirm"
 msgstr "Potwierdź zako�zenie"
 
 #: newbasketdialog.cpp:88
-#, fuzzy
 msgid "New Basket"
-msgstr "&Nast�ny kosz"
+msgstr "Nowy koszyk"
 
 #: newbasketdialog.cpp:113
-#, fuzzy
 msgid "Background color"
-msgstr "Kolor t�:"
+msgstr "Kolor tła"
 
 #: newbasketdialog.cpp:120
 msgid "&Manage Templates..."
-msgstr ""
+msgstr "&Zarządzaj szablonami..."
 
 #: newbasketdialog.cpp:155 newbasketdialog.cpp:300
 msgid "One column"
-msgstr ""
+msgstr "Jedna kolumna"
 
 #: newbasketdialog.cpp:166 newbasketdialog.cpp:302
 msgid "Two columns"
-msgstr ""
+msgstr "Dwie kolumny"
 
 #: newbasketdialog.cpp:178 newbasketdialog.cpp:304
 msgid "Three columns"
-msgstr ""
+msgstr "Trzy kolumny"
 
 #: newbasketdialog.cpp:188
 msgid "Free"
-msgstr ""
+msgstr "Swobodny"
 
 #: newbasketdialog.cpp:203
 msgid "&Template:"
-msgstr ""
+msgstr "&Szablon:"
 
 #: newbasketdialog.cpp:212
-#, fuzzy
 msgid "(Baskets)"
-msgstr "Kosz"
+msgstr "(Koszyki)"
 
 #: newbasketdialog.cpp:213
 msgid "C&reate in:"
-msgstr ""
+msgstr "Utwo&rzony w:"
 
 #: newbasketdialog.cpp:214
 msgid "How is it useful?"
-msgstr ""
+msgstr "Do czego to służy?"
 
 #: newbasketdialog.cpp:215
 msgid ""
@@ -1610,24 +1558,29 @@ msgid ""
 "sections with sub-baskets representing chapters or pages;</li><li>Making "
 "group of baskets to export together (to eg. email them to people).</li></ul>"
 msgstr ""
+"<p>Tworzenie koszyków wewnątrz innych koszyków pozwala utworzyć hierarchię dla lepszej organizacji np.:</p> "
+"<ul> "
+"<li>grupowanie koszyków tematami;</li> "
+"<li>grupowanie koszyków w katalogach dla różnych projektów;</li> "
+"<li>robienie sekcji pod-koszykami reprezentującymi rozdziały lub strony;</li> "
+"<li>tworzenie grup koszyków by je razem wyeksportować (np. wysłać e-mailem).</li> "
+"</ul>"
 
 #: newbasketdialog.cpp:306
 msgid "Free-form"
-msgstr ""
+msgstr "Swobodny"
 
 #: newbasketdialog.cpp:308
 msgid "Mind map"
-msgstr ""
+msgstr "Mapa umysłu"
 
 #: note.cpp:2883
-#, fuzzy
 msgid "(Image)"
-msgstr "Obrazek"
+msgstr "(Obrazek)"
 
 #: notecontent.cpp:172
-#, fuzzy
 msgid "Plain Text"
-msgstr "Tekst wzbogacony"
+msgstr "Tekst zwykły"
 
 #: notecontent.cpp:173
 msgid "Text"
@@ -1651,374 +1604,319 @@ msgstr "Odno�ik"
 
 #: notecontent.cpp:179
 msgid "Launcher"
-msgstr "Uruchamianie aplikacji"
+msgstr "Uruchamianie programu"
 
 #: notecontent.cpp:180 noteedit.cpp:809
 msgid "Color"
 msgstr "Kolor"
 
 #: notecontent.cpp:181
-#, fuzzy
 msgid "Unknown"
-msgstr "Nieznany obiekt"
+msgstr "Nieznany"
 
 #: notecontent.cpp:322
-#, fuzzy
 msgid "Edit this plain text"
-msgstr "Uruchamianie &aplikacji"
+msgstr "Zmień tekst"
 
 #: notecontent.cpp:323
 msgid "Edit this text"
-msgstr ""
+msgstr "Zmień tekst"
 
 #: notecontent.cpp:324
 msgid "Edit this image"
-msgstr ""
+msgstr "Zmień obrazek"
 
 #: notecontent.cpp:325
-#, fuzzy
 msgid "Edit this animation"
-msgstr "Czym jest ten program?"
+msgstr "Zmień animację"
 
 #: notecontent.cpp:326
 msgid "Edit the file name of this sound"
-msgstr ""
+msgstr "Zmień nazwę pliku dźwiękowego"
 
 #: notecontent.cpp:327
 msgid "Edit the name of this file"
-msgstr ""
+msgstr "Zmien nazwę pliku"
 
 #: notecontent.cpp:328
 msgid "Edit this link"
-msgstr ""
+msgstr "Zmień odnośnik"
 
 #: notecontent.cpp:329
-#, fuzzy
 msgid "Edit this launcher"
-msgstr "Uruchamianie &aplikacji"
+msgstr "Zmień to uruchamianie programu"
 
 #: notecontent.cpp:330
 msgid "Edit this color"
-msgstr ""
+msgstr "Zmień kolor"
 
 #: notecontent.cpp:331
-#, fuzzy
 msgid "Edit this unknown object"
-msgstr "Uruchamianie &aplikacji"
+msgstr "Zmień ten nieznany obiekt"
 
 #: notecontent.cpp:557
-#, fuzzy
 msgid "Opening plain text..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram zwykły tekst..."
 
 #: notecontent.cpp:558
-#, fuzzy
 msgid "Opening plain texts..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram zwykłe teksty..."
 
 #: notecontent.cpp:559
-#, fuzzy
 msgid "Opening plain text with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram zwykły tekst w..."
 
 #: notecontent.cpp:560
-#, fuzzy
 msgid "Opening plain texts with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram zwykłe teksty w..."
 
 #: notecontent.cpp:561
-#, fuzzy
 msgid "Open plain text with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz zwykły tekst w:"
 
 #: notecontent.cpp:562
-#, fuzzy
 msgid "Open plain texts with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz zwykłe teksty w:"
 
 #: notecontent.cpp:648
-#, fuzzy
 msgid "Opening text..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram tekst..."
 
 #: notecontent.cpp:649
-#, fuzzy
 msgid "Opening texts..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram teksty..."
 
 #: notecontent.cpp:650
-#, fuzzy
 msgid "Opening text with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram tekst w..."
 
 #: notecontent.cpp:651
-#, fuzzy
 msgid "Opening texts with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram teksty w..."
 
 #: notecontent.cpp:652
-#, fuzzy
 msgid "Open text with:"
-msgstr "otwórz z"
+msgstr "Otwórz tekst w:"
 
 #: notecontent.cpp:653
-#, fuzzy
 msgid "Open texts with:"
-msgstr "otwórz z"
+msgstr "Otwórz teksty w:"
 
 #: notecontent.cpp:761 notecontent.cpp:964
 msgid "Size"
-msgstr ""
+msgstr "Wielkość"
 
 #: notecontent.cpp:762 variouswidgets.cpp:147
 msgid "%1 by %2 pixels"
-msgstr ""
+msgstr "%1 na %2 piksele"
 
 #: notecontent.cpp:768
-#, fuzzy
 msgid "Opening image..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram obrazek..."
 
 #: notecontent.cpp:769
-#, fuzzy
 msgid "Opening images..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram obrazki..."
 
 #: notecontent.cpp:770
-#, fuzzy
 msgid "Opening image with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram obrazek w..."
 
 #: notecontent.cpp:771
-#, fuzzy
 msgid "Opening images with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram obrazki w..."
 
 #: notecontent.cpp:772
-#, fuzzy
 msgid "Open image with:"
-msgstr "otwórz z"
+msgstr "Otwórz obrazek w:"
 
 #: notecontent.cpp:773
-#, fuzzy
 msgid "Open images with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz obrazki w:"
 
 #: notecontent.cpp:797
 msgid "Click for full size view"
-msgstr ""
+msgstr "Kliknij by zobaczyć w skali 1:1"
 
 #: notecontent.cpp:853
-#, fuzzy
 msgid "Opening animation..."
-msgstr "Otwieram plik..."
+msgstr "Otwieram animację..."
 
 #: notecontent.cpp:854
-#, fuzzy
 msgid "Opening animations..."
-msgstr "Otwieram plik..."
+msgstr "Otwieram animacje..."
 
 #: notecontent.cpp:855
-#, fuzzy
 msgid "Opening animation with..."
-msgstr "Otwórz plik z..."
+msgstr "Otwieram animację w..."
 
 #: notecontent.cpp:856
-#, fuzzy
 msgid "Opening animations with..."
-msgstr "Otwórz plik z..."
+msgstr "Otwieram animacje w..."
 
 #: notecontent.cpp:857
 msgid "Open animation with:"
-msgstr ""
+msgstr "Otwórz animację w:"
 
 #: notecontent.cpp:858
 msgid "Open animations with:"
-msgstr ""
+msgstr "Otwórz animacje w:"
 
 #: notecontent.cpp:969
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: notecontent.cpp:1007
-#, fuzzy
 msgid "Open this file"
-msgstr "Otwieram plik..."
+msgstr "Otwórz ten plik"
 
 #: notecontent.cpp:1026
-#, fuzzy
 msgid "Opening file..."
 msgstr "Otwieram plik..."
 
 #: notecontent.cpp:1027
-#, fuzzy
 msgid "Opening files..."
-msgstr "Otwieram plik..."
+msgstr "Otwieram pliki..."
 
 #: notecontent.cpp:1028
-#, fuzzy
 msgid "Opening file with..."
-msgstr "Otwórz plik z..."
+msgstr "Otwieram plik w..."
 
 #: notecontent.cpp:1029
-#, fuzzy
 msgid "Opening files with..."
-msgstr "Otwórz plik z..."
+msgstr "Otwieram pliki w..."
 
 #: notecontent.cpp:1030
-#, fuzzy
 msgid "Open file with:"
-msgstr "Otwórz plik z..."
+msgstr "Otwórz plik w:"
 
 #: notecontent.cpp:1031
-#, fuzzy
 msgid "Open files with:"
-msgstr "Otwórz plik z..."
+msgstr "Otwórz pliki w:"
 
 #: notecontent.cpp:1102
-#, fuzzy
 msgid "Open this sound"
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwórz plik dźwiękowy"
 
 #: notecontent.cpp:1139
-#, fuzzy
 msgid "Opening sound..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram plik dźwiękowy..."
 
 #: notecontent.cpp:1140
-#, fuzzy
 msgid "Opening sounds..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram pliki dźwiękowe..."
 
 #: notecontent.cpp:1141
-#, fuzzy
 msgid "Opening sound with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram pliki dźwiękowe w..."
 
 #: notecontent.cpp:1142
-#, fuzzy
 msgid "Opening sounds with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram pliki dźwiękowe w..."
 
 #: notecontent.cpp:1143
-#, fuzzy
 msgid "Open sound with:"
-msgstr "otwórz z"
+msgstr "Otwórz plik dźwiękowy w:"
 
 #: notecontent.cpp:1144
-#, fuzzy
 msgid "Open sounds with:"
-msgstr "otwórz z"
+msgstr "Otwórz pliki dźwiękowe w:"
 
 #: notecontent.cpp:1182
-#, fuzzy
 msgid "Target"
-msgstr "Zapisz cel"
+msgstr "Cel"
 
 #: notecontent.cpp:1205
-#, fuzzy
 msgid "Open this link"
-msgstr "Otwórz istniej�y kosz"
+msgstr "Otwórz ten link"
 
 #: notecontent.cpp:1231
-#, fuzzy
 msgid "Link have no URL to open."
-msgstr "W pozycji nie znaleziono URL-a do otwarcia."
+msgstr "Odnośnik nie zawiera URL-a do otwarcia."
 
 #: notecontent.cpp:1234
-#, fuzzy
 msgid "Opening link target..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram odnośnik..."
 
 #: notecontent.cpp:1235
-#, fuzzy
 msgid "Opening link targets..."
-msgstr "Otwieram docelowy odno�ik..."
+msgstr "Otwieram odnośniki..."
 
 #: notecontent.cpp:1236
-#, fuzzy
 msgid "Opening link target with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram odnośnik w..."
 
 #: notecontent.cpp:1237
-#, fuzzy
 msgid "Opening link targets with..."
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwieram odnośniki w..."
 
 #: notecontent.cpp:1238
-#, fuzzy
 msgid "Open link target with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz odnośnik w:"
 
 #: notecontent.cpp:1239
-#, fuzzy
 msgid "Open link targets with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz odnośniki w:"
 
 #: notecontent.cpp:1365
 msgid "%1 <i>(run in terminal)</i>"
-msgstr ""
+msgstr "%1 <i>(uruchom w terminalu)</i>"
 
 #: notecontent.cpp:1368
-#, fuzzy
 msgid "Comment"
-msgstr "Polecenie:"
+msgstr "Komentarz"
 
 #: notecontent.cpp:1372
-#, fuzzy
 msgid "Command"
-msgstr "Polecenie:"
+msgstr "Polecenie"
 
 #: notecontent.cpp:1395
-#, fuzzy
 msgid "Launch this application"
-msgstr "Uruchamiam aplikacj�.."
+msgstr "Uruchom ten program"
 
 #: notecontent.cpp:1416
-#, fuzzy
 msgid "The launcher have no command to run."
-msgstr "W pozycji nie zawarto aplikacji do uruchomienia."
+msgstr "To uruchomianie nie ma określonego programu."
 
 #: notecontent.cpp:1419
 msgid "Launching application..."
-msgstr "Uruchamiam aplikacj�.."
+msgstr "Uruchamiam program..."
 
 #: notecontent.cpp:1420
-#, fuzzy
 msgid "Launching applications..."
-msgstr "Uruchamiam aplikacj�.."
+msgstr "Uruchamiam programy..."
 
 #: notecontent.cpp:1507
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
-msgstr ""
+msgstr "RGB"
 
 #: notecontent.cpp:1508
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
-msgstr ""
+msgstr "<i>Czerwony</i>: %1, <i>Zielony</i>: %2, <i>Niebieski</i>: %3,"
 
 #: notecontent.cpp:1510
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
-msgstr ""
+msgstr "HSV"
 
 #: notecontent.cpp:1511
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
-msgstr ""
+msgstr "<i>Barwa</i>: %1, <i>Nasycenie</i>: %2, <i>Wartość</i>: %3,"
 
 #: notecontent.cpp:1664
 msgid "CSS Color Name"
-msgstr ""
+msgstr "Nazwa koloru CSS"
 
 #: notecontent.cpp:1674
 msgid "CSS Extended Color Name"
-msgstr ""
+msgstr "Rozszerzona nazwa koloru CSS"
 
 #: notecontent.cpp:1680
 msgid "Is Web Color"
-msgstr ""
+msgstr "Czy jest kolorem Sieci"
 
 #: noteedit.cpp:373
 msgid ""
@@ -2026,27 +1924,28 @@ msgid ""
 "Pads will include an image editor).\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
+"W tej chwili nie można edytować obrazków (następna wersja Koszyka będzie zawierać edytor obrazków).\n"
+"Czy chcesz otworzyć go w programie, który posiada taką możliwość?"
 
 #: noteedit.cpp:375
-#, fuzzy
 msgid "Edit Image Note"
-msgstr "Edytuj pozycj�i jej w�sno�i"
+msgstr "Edytur notatkę obrazkową"
 
 #: noteedit.cpp:389
 msgid ""
 "This animated image can not be edited here.\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
+"Ten animowany obrazek nie może być tu zmieniony.\n"
+"Czy chcesz otworzyć go w programie który może to wykonać?"
 
 #: noteedit.cpp:391
-#, fuzzy
 msgid "Edit Animation Note"
-msgstr "Animacja"
+msgstr "Zmień animację"
 
 #: noteedit.cpp:468
-#, fuzzy
 msgid "Edit Color Note"
-msgstr "Wstaw pozycj�z kolorem"
+msgstr "Zmień kolor"
 
 #: noteedit.cpp:491
 msgid ""
@@ -2054,16 +1953,16 @@ msgid ""
 "You however can drag or copy the note into an application that understands "
 "it."
 msgstr ""
+"Ten typ notatki jest nieznany i nie może być tutaj edytowany.\n"
+"Możesz jednak przeciągnąć kopię notatki do aplikacji, która posiada taką możliwość."
 
 #: noteedit.cpp:493
-#, fuzzy
 msgid "Edit Unknown Note"
-msgstr "Wstaw pozycj�z odno�ikiem"
+msgstr "Zmień nieznaną notatkę"
 
 #: noteedit.cpp:522
-#, fuzzy
 msgid "Edit Link Note"
-msgstr "Wstaw pozycj�z odno�ikiem"
+msgstr "Zmień odnośnik"
 
 #: noteedit.cpp:534 noteedit.cpp:547
 msgid "Auto"
@@ -2074,18 +1973,16 @@ msgid "&Icon:"
 msgstr "&Ikona:"
 
 #: noteedit.cpp:567
-#, fuzzy
 msgid "Ta&rget:"
-msgstr "Zapisz cel"
+msgstr "&Cel:"
 
 #: noteedit.cpp:568
 msgid "&Title:"
-msgstr "&Tytu�"
+msgstr "&Tytuł:"
 
 #: noteedit.cpp:681
-#, fuzzy
 msgid "Edit Launcher Note"
-msgstr "Wstaw pozycj�do uruchomienia"
+msgstr "Zmień uruchamianie programu"
 
 #: noteedit.cpp:690
 msgid "Choose a command to run:"
@@ -2093,12 +1990,11 @@ msgstr "Wybierz polecenie do uruchomienia:"
 
 #: noteedit.cpp:699
 msgid "&Guess"
-msgstr ""
+msgstr "Od&gadnij"
 
 #: noteedit.cpp:715
-#, fuzzy
 msgid "Comman&d:"
-msgstr "Polecenie:"
+msgstr "P&olecenie:"
 
 #: noteedit.cpp:716 tagsedit.cpp:379
 msgid "&Name:"
@@ -2114,16 +2010,15 @@ msgstr "Podkre�enie"
 
 #: noteedit.cpp:818
 msgid "Align Left"
-msgstr ""
+msgstr "Do lewej"
 
 #: noteedit.cpp:819
 msgid "Centered"
 msgstr "Wy�odkowanie"
 
 #: noteedit.cpp:820
-#, fuzzy
 msgid "Align Right"
-msgstr "w prawo"
+msgstr "Do prawej"
 
 #: noteedit.cpp:821
 msgid "Justified"
@@ -2136,140 +2031,133 @@ msgid ""
 "understand it.</p><p>If you want the support of these data, please contact "
 "developer or visit the <a href=\"http://basket.kde.org/dropdb.php\">BasKet "
 "Drop Database</a>.</p>"
-msgstr ""
+msgstr "<p>%1 nie wspiera danych jakie upuściłeś.<br>Mimo to została utworzona ogólna notatka pozwalająca na przeciągnięcie i upuszczenie jej do programu, w którym można ją edytować.</p><p>Jeśli chcesz by ten typ danych był wspierany proszę skontaktować się z deweloperem lub odwiedzić <a href=\"http://basket.kde.org/dropdb.php\">Bazę danych upuszczania Koszyka</a>.</p>"
 
 #: notefactory.cpp:449
 msgid "Unsupported MIME Type(s)"
-msgstr "Nieobs�giwany typ MIME"
+msgstr "Nieobsługiwany typ MIME"
 
 #: notefactory.cpp:503
-#, fuzzy
 msgid "&Move Here\tShift"
-msgstr "Przesu�tutaj"
+msgstr "&Przenieś tutaj\tShift"
 
 #: notefactory.cpp:504
-#, fuzzy
 msgid "&Copy Here\tCtrl"
-msgstr "Skopiuj tutaj"
+msgstr "&Kopiuj tutaj\tCtrl"
 
 #: notefactory.cpp:505
-#, fuzzy
 msgid "&Link Here\tCtrl+Shift"
-msgstr "Stwórz dowi�anie tutaj"
+msgstr "&Dowiąż tutaj\tCtrl+Shift"
 
 #: notefactory.cpp:507
-#, fuzzy
 msgid "C&ancel\tEscape"
-msgstr "&Anuluj"
+msgstr "&Anuluj\tEscape"
 
 #: notefactory.cpp:973
 msgid "Import Icon as Image"
-msgstr ""
+msgstr "Importuj ikonę jako obrazek"
 
 #: notefactory.cpp:973
 msgid "Choose the size of the icon to import as an image:"
-msgstr ""
+msgstr "Wybierz rozmiar ikony do importu jako obrazek:"
 
 #: notefactory.cpp:986
-#, fuzzy
 msgid "Load File Content into a Note"
-msgstr "Za�duj zawarto� pliku do pozycji"
+msgstr "Wczytaj zawartość pliku do notatki"
 
 #. i18n: file passwordlayout.ui line 16
 #: password.cpp:36 passwordlayout.cpp:79 rc.cpp:81 settings.cpp:588
 #, no-c-format
 msgid "Password Protection"
-msgstr ""
+msgstr "Ochrona hasłem"
 
 #: password.cpp:53
 msgid "No private key selected."
-msgstr ""
+msgstr "Nie wybrano klucza prywatnego."
 
 #. i18n: file passwordlayout.ui line 44
 #: passwordlayout.cpp:81 rc.cpp:85
 #, no-c-format
 msgid "&No protection"
-msgstr ""
+msgstr "&Brak ochrony"
 
 #. i18n: file passwordlayout.ui line 47
 #: passwordlayout.cpp:82 rc.cpp:88
 #, no-c-format
 msgid "Alt+N"
-msgstr ""
+msgstr "Alt+N"
 
 #. i18n: file passwordlayout.ui line 55
 #: passwordlayout.cpp:83 rc.cpp:91
 #, no-c-format
 msgid "Protect basket with a &password"
-msgstr ""
+msgstr "Chroń koszyk &hasłem"
 
 #. i18n: file passwordlayout.ui line 58
 #: passwordlayout.cpp:84 rc.cpp:94
 #, no-c-format
 msgid "Alt+P"
-msgstr ""
+msgstr "Alt+P"
 
 #. i18n: file passwordlayout.ui line 82
 #: passwordlayout.cpp:85 rc.cpp:97
 #, no-c-format
 msgid "Protect basket with private &key:"
-msgstr ""
+msgstr "Chroń koszyk &kluczem prywatnym:"
 
 #. i18n: file passwordlayout.ui line 85
 #: passwordlayout.cpp:86 rc.cpp:100
 #, no-c-format
 msgid "Alt+K"
-msgstr ""
+msgstr "Alt+K"
 
 #. i18n: file basket_part.rc line 5
 #: rc.cpp:3 rc.cpp:36
 #, no-c-format
 msgid "&Basket"
-msgstr "Kosz"
+msgstr "&Koszyk"
 
 #. i18n: file basket_part.rc line 16
 #: rc.cpp:6 rc.cpp:39
 #, no-c-format
 msgid "&Import"
-msgstr ""
+msgstr "&Importuj"
 
 #. i18n: file basket_part.rc line 42
 #: rc.cpp:12 rc.cpp:45
 #, no-c-format
 msgid "&Go"
-msgstr "Idź do"
+msgstr "&Idź do"
 
 #. i18n: file basket_part.rc line 49
 #: rc.cpp:15 rc.cpp:48
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Note"
-msgstr "Brak pozycji"
+msgstr "&Notatka"
 
 #. i18n: file basket_part.rc line 64
 #: rc.cpp:18 rc.cpp:51
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Tags"
-msgstr "Zapisz cel"
+msgstr "&Znaczniki"
 
 #. i18n: file basket_part.rc line 127
 #: rc.cpp:33 rc.cpp:66
 #, no-c-format
 msgid "Text Formating Toolbar"
-msgstr ""
+msgstr "Pasek narzędzi formatowania tekstu"
 
 #: settings.cpp:362
-#, fuzzy
 msgid "On left"
-msgstr "Na górze"
+msgstr "Po lewej"
 
 #: settings.cpp:363
-#, fuzzy
 msgid "On right"
-msgstr "w prawo"
+msgstr "Po prawej"
 
 #: settings.cpp:364
 msgid "&Basket tree position:"
-msgstr ""
+msgstr "Pozycja drzewa &koszyków:"
 
 #: settings.cpp:371 settings.cpp:686
 msgid "On top"
@@ -2281,15 +2169,15 @@ msgstr "Na dole"
 
 #: settings.cpp:373
 msgid "&Filter bar position:"
-msgstr ""
+msgstr "Pozycja paska &filtrowania:"
 
 #: settings.cpp:380
 msgid "&Use balloons to report results of global actions"
-msgstr ""
+msgstr "&Użyj dymków do powiadamiania o wynikach działań globalnych"
 
 #: settings.cpp:383
 msgid "What are global actions?"
-msgstr ""
+msgstr "Co to są działania globalne?"
 
 #: settings.cpp:384
 msgid ""
@@ -2298,114 +2186,108 @@ msgid ""
 "color from a point of the screen, etc. You can also use the mouse scroll "
 "wheel over the system tray icon to change the current basket. Or use the "
 "middle mouse button on that icon to paste the current selection."
-msgstr ""
+msgstr "Możesz skonfigurować skróty globalne dla kilku akcji bez potrzeby otwierania głównego okna. Na przykład można wklejać zawartość schowka, pobierać kolor z ekranu, itd. Możesz także użyć rolki myszy nad ikoną w tacce systemowej by zmienić bieżący koszyk lub użyć środkowego przycisku myszy nad tą ikoną by wkleić bieżące zaznaczenie."
 
 #: settings.cpp:387
 msgid ""
 "When doing so, %1 pops up a little balloon message to inform you the action "
 "has been successfully done. You can disable that balloon."
-msgstr ""
+msgstr "Robiąc to, %1 pokazuje mały dymek z wiadomością informującą cię o zakończonej z powodzeniem akcji. Możesz wyłączyć ten dymek."
 
 #: settings.cpp:388
 msgid ""
 "Note that those messages are smart enough to not appear if the main window "
 "is visible. This is because you already see the result of your actions in "
 "the main window."
-msgstr ""
+msgstr "Pamiętaj że te wiadomości są na tyle sprytne by nie pojawiać się kiedy główne okno jest widoczne. Dzieje się tak ponieważ jesteś w stanie widzieć rezultat swojego działania w głównym oknie."
 
 #: settings.cpp:397
 msgid "System Tray Icon"
-msgstr ""
+msgstr "Ikona tacki systemowej"
 
 #: settings.cpp:402
 msgid "&Dock in system tray"
-msgstr ""
+msgstr "&Dokuj w tacce systemowej"
 
 #: settings.cpp:411
 msgid "&Show current basket icon in system tray icon"
-msgstr ""
+msgstr "&Pokaż ikonę bieżącego koszyka w tacce systemowej"
 
 #: settings.cpp:421
 msgid "&Hide main window when mouse goes out of it for"
-msgstr ""
+msgstr "&Ukryj główne okno kiedy nie ma już nad nim myszy"
 
 #: settings.cpp:423 settings.cpp:434
 msgid " tenths of seconds"
-msgstr ""
+msgstr " dziesiątych sekundy"
 
 #: settings.cpp:432
 msgid "Show &main window when mouse hovers over the system tray icon for"
-msgstr ""
+msgstr "Pokaż &główne okno kiedy mysz jest nad ikoną w tacce systemowej"
 
 #: settings.cpp:506
-#, fuzzy
 msgid "Ani&mate changes in baskets"
-msgstr "Stwórz nowy kosz"
+msgstr "Ani&macja zmian w koszykach"
 
 #: settings.cpp:509
-#, fuzzy
 msgid "&Show tooltips in baskets"
-msgstr "Idź do nast�nego kosza"
+msgstr "&Pokaż dymki w koszykach"
 
 #: settings.cpp:512
-#, fuzzy
 msgid "&Big notes"
-msgstr "Brak pozycji"
+msgstr "&Duże notatki"
 
 #: settings.cpp:517
 msgid "Behavior"
-msgstr ""
+msgstr "Zachowanie"
 
 #: settings.cpp:520
 msgid "&Transform lines starting with * or - to lists in text editors"
-msgstr ""
+msgstr "Zamień &linie zaczynające się * lub - na listy w edytorach tekstu"
 
 #: settings.cpp:523
 msgid "Ask confirmation before &deleting notes"
-msgstr ""
+msgstr "Proś o potwierdzenie przed &usunięciem notatek"
 
 #: settings.cpp:528
-#, fuzzy
 msgid "&Export tags in texts"
-msgstr "Uruchamianie &aplikacji"
+msgstr "&Eksportuj znaczniki w tekście"
 
 #: settings.cpp:534 tagsedit.cpp:485
-#, fuzzy
 msgid "When does this apply?"
-msgstr "Czym jest ten program?"
+msgstr "Kiedy to się stosuje?"
 
 #: settings.cpp:535 tagsedit.cpp:486
 msgid ""
 "It does apply when you copy and paste, or drag and drop notes to a text "
 "editor."
-msgstr ""
+msgstr "Znajduje zastosowanie kiedy kopiujesz/wklejach lub przeciągasz i upuszczasz notatki w edytorze tekstu."
 
 #: settings.cpp:536
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
-msgstr ""
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
+msgstr "Jeśli włączone, pozwala wkleić znaczniki w formie tekstowej."
 
 #: settings.cpp:537 tagsedit.cpp:488
 msgid ""
 "For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are "
 "exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, representing an "
 "empty checkbox and a checked box."
-msgstr ""
+msgstr "Na przykład lista notatek ze znacznikami <b>Do zrobienia</b> i <b>Zrobione</b> zostaną eksportowane jako wiersze poprzedzone <b>[ ]</b> lub <b>[x]</b>, reprezentującymi puste pole wyboru i wypełnione."
 
 #: settings.cpp:547
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr ""
+msgstr "&Grupuj nową notatkę klikając po prawej stronie linii wstawiania"
 
 #: settings.cpp:551
 msgid "How to group a new note?"
-msgstr ""
+msgstr "Jak zgrupować nową notatkę?"
 
 #: settings.cpp:552
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
-msgstr ""
+msgstr "<p>Gdy ta opcja jest zaznaczona linia wstawiania nie tylko pozwala na wstawianie notatek przy pozycji kursora, ale także pozwala na grupowanie nowej notatki razem z tą, nad którą jest kursor:</p>"
 
 #: settings.cpp:554
 msgid ""
@@ -2414,198 +2296,186 @@ msgid ""
 "<br>Click on the <b>right</b> to <b>group</b> a note, with the one <b>below "
 "or above</b>, depending on where your mouse is.</p>"
 msgstr ""
+"<p>Umieść wskaźnik myszy między notatkami, tam gdzie chcesz dodać nową.<br>Kliknij po <b>lewej</b> stronie środka linii wstawiania aby <b>wstawić</b> notatkę. "
+"<br>Kliknij po <b>prawej</b> aby <b>zgrupować</b> notatkę z inną <b>poniżej albo powyżej</b>, w zależności od położenia wskaźnika myszy.</p>"
 
 #: settings.cpp:569
 msgid "Do nothing"
-msgstr ""
+msgstr "Nic nie rób"
 
 #: settings.cpp:570
 msgid "Paste clipboard"
-msgstr ""
+msgstr "Wklej zawartość schowka"
 
 #: settings.cpp:573
-#, fuzzy
 msgid "Insert launcher note"
-msgstr "Wstaw pozycj�do uruchomienia"
+msgstr "Wstaw uruchamianie programów"
 
 #: settings.cpp:576
-#, fuzzy
 msgid "Insert color from screen"
-msgstr "Wstaw pozycj�z kolorem"
+msgstr "Wstaw kolor z ekranu"
 
 #: settings.cpp:577
-#, fuzzy
 msgid "Load note from file"
-msgstr "Za�duj z pliku..."
+msgstr "Wczytaj notatkę z pliku"
 
 #: settings.cpp:578
-#, fuzzy
 msgid "Import Launcher from KDE Menu"
-msgstr "Importuj program uruchamiaj�y KMenu..."
+msgstr "Importuj uruchamianie z KMenu"
 
 #: settings.cpp:579
-#, fuzzy
 msgid "Import icon"
-msgstr "Importuj ikon�.."
+msgstr "Importuj ikonę"
 
 #: settings.cpp:580
-#, fuzzy
 msgid "&Shift+middle-click anywhere:"
-msgstr "&Shift + �odkowy przycisk:"
+msgstr "&Shift+środkowy przycisk wszędzie:"
 
 #: settings.cpp:583
 msgid "at cursor position"
-msgstr ""
+msgstr "na pozycji kursora"
 
 #: settings.cpp:594
 msgid "A&utomatically lock protected baskets when closed for"
-msgstr ""
+msgstr "A&utomatycznie blokuj chronione koszyki kiedy zamknięte od"
 
 #: settings.cpp:598
-#, fuzzy
 msgid " minutes"
-msgstr "Brak pozycji"
+msgstr " minuty"
 
 #: settings.cpp:609
 msgid "Use GnuPG agent for &private/public key protected baskets"
-msgstr ""
+msgstr "Użyj agenta GnuPG dla koszyków chronionych kluczem &prywatnym/publicznym"
 
 #: settings.cpp:685
 msgid "&Place of new notes:"
-msgstr ""
+msgstr "U&miejscowienie nowych notatek:"
 
 #: settings.cpp:688
 msgid "At current note"
-msgstr ""
+msgstr "Przy bieżącej notatce"
 
 #: settings.cpp:705
 msgid "&New images size:"
-msgstr ""
+msgstr "Wielkość &nowych obrazków:"
 
 #: settings.cpp:713
 msgid "&by"
-msgstr ""
+msgstr "&na"
 
 #: settings.cpp:716
 msgid "pixels"
-msgstr ""
+msgstr "pikseli"
 
 #: settings.cpp:718
 msgid "&Visualize..."
-msgstr ""
+msgstr "&Wizualizuj..."
 
 #: settings.cpp:726
 msgid "View Content of Added Files for the Following Types"
-msgstr ""
+msgstr "Pokaż zawartość dodanych plików dla następujących typów"
 
 #: settings.cpp:727
-#, fuzzy
 msgid "&Plain text"
-msgstr "Tekst wzbogacony"
+msgstr "&Tekst zwykły"
 
 #: settings.cpp:728
-#, fuzzy
 msgid "&HTML page"
-msgstr "Strony &HTML"
+msgstr "Strona &HTML"
 
 #: settings.cpp:729
 msgid "&Image or animation"
-msgstr "Obrazek lub animacja"
+msgstr "&Obrazek lub animacja"
 
 #: settings.cpp:730
-#, fuzzy
 msgid "&Sound"
-msgstr "Dźwi�"
+msgstr "Dź&więk"
 
 #: settings.cpp:789
 msgid "Conference audio record"
-msgstr ""
+msgstr "nagranie audio konferencji"
 
 #: settings.cpp:790
 msgid "Annual report"
-msgstr ""
+msgstr "Raport roczny"
 
 #: settings.cpp:791
 msgid "Home folder"
-msgstr ""
+msgstr "Katalog domowy"
 
 #: settings.cpp:793
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %1"
-msgstr "Uruchamianie aplikacji %1"
+msgstr "Uruchamianie programu %1"
 
 #: settings.cpp:794
 msgid "&Sounds"
-msgstr ""
+msgstr "&Dźwięki"
 
 #: settings.cpp:795
 msgid "&Files"
-msgstr ""
+msgstr "&Pliki"
 
 #: settings.cpp:796
 msgid "&Local Links"
-msgstr ""
+msgstr "Dowiązania &lokalne"
 
 #: settings.cpp:797
 msgid "&Network Links"
-msgstr ""
+msgstr "Dowiązania &sieciowe"
 
 #: settings.cpp:798
 msgid "Launc&hers"
-msgstr "Uruc&hamianie aplikacji"
+msgstr "Uruc&hamianie programów"
 
 #: settings.cpp:835
 msgid "Open &text notes with a custom application:"
-msgstr ""
+msgstr "Otwórz notatki &tekstowe w programie użytkownika:"
 
 #: settings.cpp:836
-#, fuzzy
 msgid "Open text notes with:"
-msgstr "otwórz z"
+msgstr "Otwórz notatki tekstowe w:"
 
 #: settings.cpp:843
 msgid "Open &image notes with a custom application:"
-msgstr ""
+msgstr "Otwórz notatki &obrazkowe w programie użytkownika:"
 
 #: settings.cpp:844
-#, fuzzy
 msgid "Open image notes with:"
-msgstr "Otwórz docelowy odno�ik z..."
+msgstr "Otwórz obrazki w:"
 
 #: settings.cpp:851
 msgid "Open a&nimation notes with a custom application:"
-msgstr ""
+msgstr "Otwórz a&nimacje w programie użytkownika:"
 
 #: settings.cpp:852
-#, fuzzy
 msgid "Open animation notes with:"
-msgstr "Otwórz plik z..."
+msgstr "Otwórz animacje w:"
 
 #: settings.cpp:859
 msgid "Open so&und notes with a custom application:"
-msgstr ""
+msgstr "Otwórz pliki &dźwiękowe w programie użytkownika:"
 
 #: settings.cpp:860
-#, fuzzy
 msgid "Open sound notes with:"
-msgstr "otwórz z"
+msgstr "Otwórz pliki dźwiękowe w:"
 
 #: settings.cpp:868
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured to in "
 "Konqueror will be used.</p>"
-msgstr ""
+msgstr "<p>Jeśli zaznaczona, program określony poniżej zostanie użyty do otwierania tego typu notatek.</p><p>W innym wypadku zostanie użyty program zdefiniowany w Konquerorze.</p>"
 
 #: settings.cpp:877
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
-msgstr ""
+msgstr "<p>Zdefiniuj program do otwierania tego typu notatek zamiast programu zdefiniowanego w Konquerorze.</p>"
 
 #: settings.cpp:898
 msgid "How to change the application used to open Web links?"
-msgstr ""
+msgstr "Jak zmienić program używany do otwierania odnośników WWW?"
 
 #: settings.cpp:899
 msgid ""
@@ -2624,10 +2494,14 @@ msgid ""
 "grained configuration (like openning only Web pages in your Web browser), "
 "read the second help link.</p>"
 msgstr ""
+"<p>Kiedy otwierasz linki WWW, otwierane są one w różnych programach w zależności od zawartości linka (strona WWW, obrazek, plik PDF...), tak jakby były to pliki na twoim komputerze.</p><p>Tutaj objaśnione jest jak sprawić by każdy adres WWW był otwarty przeglądarce WWW. Pożyteczne jeśli nie używasz KDE (np. GNOME, XFCE...).</p><ul>"
+"<li>Otwórz Centrum sterowania KDE (jeśli nie jest dostępne spróbuj wywołać \"kcontrol\" z linii poleceń);</li> "
+"<li>Przejdź do sekcji \"Składniki\" a potem \"Wybór komponentów\";</li> "
+"<li>Wybierz \"Przeglądarka WWW\" zaznacz \"w następującej przeglądarce:\" i podaj nazwę twojej przeglądarki (np. \"firefox\" lub \"epiphany\").</li></ul><p>Teraz kiedy klikniesz <i>dowolny</i> link zaczynający się \"http://...\" zostanie otwarty w przeglądarce WWW (np. Mozilla Firefox lub Epiphany lub...).</p><p>Dokładniejsze ustawienia (np. otwieranie tylko stron WWW w przeglądarce) opisane są w drugim linku.</p>"
 
 #: settings.cpp:917
 msgid "How to change the applications used to open files and links?"
-msgstr ""
+msgstr "Jak zmienić programy używane do otwierania plików i odnośników?"
 
 #: settings.cpp:918
 msgid ""
@@ -2645,85 +2519,87 @@ msgid ""
 "applications list, add your Web browser as the first entry;</li><li>Do the "
 "same for the type \"application -> xhtml+xml\".</li></ul>"
 msgstr ""
+"<p>Tutaj dowiesz się jak ustawić programy używane dla każdego typu pliku. Stosuje się to także do linków WWW jeśli nie będziesz ich chciał otwierać w przeglądarce (zobacz pierwszy link). Domyślne ustawienia powinny być wystarczające, ale ta porada będzie pożyteczna dla użytkowników GNOME, XFCE lub innego niż KDE środowiska.</p><p>To jest przykład jak otwierać strony HTML w przeglądarce WWW (ale nadal używać innych programów do innych typów plików). Powtarzaj te kroi dla każdego typu pliku jaki chcesz używać w określonym programie.</p>"
+"<ul>"
+"<li>Otwórz Centrum sterowania KDE (jeśli nie jest dostępne spróbuj wywołać \"kcontrol\" z linii poleceń);</li> "
+"<li>W drzewie, rozwiń \"text\" i kliknij \"html\";</li> "
+"<li>W liście programów dodaj swoją przeglądarkę WWW jako pierwszy wpis;</li>"
+"<li>Powtórz dla typu \"application -> xhtml+xml\".</li></ul>"
 
 #: softwareimporters.cpp:44
 msgid "Import Hierarchy"
-msgstr ""
+msgstr "Hierarchia importu"
 
 #: softwareimporters.cpp:50
 msgid "How to Import the Notes?"
-msgstr ""
+msgstr "Jak importować notatki?"
 
 #: softwareimporters.cpp:51
 msgid "&Keep original hierarchy (all notes in separate baskets)"
-msgstr ""
+msgstr "&Zachowaj oryginalną hierarchię (wszystkie notatki w oddzielnych koszykach)"
 
 #: softwareimporters.cpp:52
 msgid "&First level notes in separate baskets"
-msgstr ""
+msgstr "Notatki &pierwszego poziomu w oddzielnych koszykach"
 
 #: softwareimporters.cpp:53
-#, fuzzy
 msgid "&All notes in one basket"
-msgstr "Idź do nast�nego kosza"
+msgstr "Wszystkie not&atki w jednym koszyku"
 
 #: softwareimporters.cpp:180
 msgid "From KJots"
-msgstr ""
+msgstr "Notatki z KJots"
 
 #: softwareimporters.cpp:268
-#, fuzzy
 msgid "From KNotes"
-msgstr "Notatki z KNotes"
+msgstr "Notatki z Żółtych karteczek"
 
 #: softwareimporters.cpp:339
-#, fuzzy
 msgid "From Sticky Notes"
 msgstr "Notatki ze Sticky Notes"
 
 #: softwareimporters.cpp:389
 msgid "From Tomboy"
-msgstr ""
+msgstr "Notatki z Tomboya"
 
 #: softwareimporters.cpp:548
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
-msgstr ""
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
+msgstr "Nie mogę importować tego pliku. Albo jest zepsuty, albo to nie jest plik TuxCards."
 
 #: softwareimporters.cpp:548
 msgid "Bad File Format"
-msgstr ""
+msgstr "Zły format pliku"
 
 #: softwareimporters.cpp:576
 msgid ""
 "A note is encrypted. The importer do not support encrypted notes yet. Please "
 "remove the encryption with TuxCards and re-import the file."
-msgstr ""
+msgstr "Notatka jest zaszyfrowana. Program importujący jeszcze nie wspiera zaszyfrowanych notatek. Proszę usunąć szyfrowanie w TuxCards i spróbować ponownie."
 
 #: softwareimporters.cpp:576
 msgid "Encrypted Notes not Supported Yet"
-msgstr ""
+msgstr "Szyfrowanie notatek jeszcze nie jest wspierane"
 
 #: softwareimporters.cpp:578
 msgid ""
 "<font color='red'><b>Encrypted note.</b><br>The importer do not support "
 "encrypted notes yet. Please remove the encryption with TuxCards and re-"
 "import the file.</font>"
-msgstr ""
+msgstr "<font color='red'><b>Zaszyfrowana notatka.</b><br>Importer jeszcze nie wspiera zaszyfrowanych notatek. Proszę usunąć szyfrowanie w TuxCards i jeszcze raz importować plik.</font>"
 
 #: systemtray.cpp:140
 msgid ""
 "<p>Closing the main window will keep %1 running in the system tray. Use "
 "<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
-msgstr ""
+msgstr "<p>Mimo zamknięcia głównego okna %1 będzie nadal działał w tacce systemowej. Użyj <b>Zakończ</b> z menu <b>Koszyka</b> aby zakończyć program.</p>"
 
 #: systemtray.cpp:186 systemtray.cpp:191
 msgid "Docking in System Tray"
-msgstr ""
+msgstr "Zadokowany w tacce systemowej"
 
 #: systemtray.cpp:237
 msgid "Pasted selection to basket <i>%1</i>"
-msgstr ""
+msgstr "Wklejono zaznaczenie do koszyka <i>%1</i>"
 
 #: systemtray.cpp:272
 msgid "&Minimize"
@@ -2731,11 +2607,11 @@ msgstr "&Minimalizuj"
 
 #: systemtray.cpp:274
 msgid "&Restore"
-msgstr "Odtwórz"
+msgstr "&Odtwórz"
 
 #: systemtray.cpp:335
 msgid "Dropped to basket <i>%1</i>"
-msgstr ""
+msgstr "Upuszczone do koszyka <i>%1</i>"
 
 #: systemtray.cpp:423
 msgid "%1 (Locked)"
@@ -2743,934 +2619,311 @@ msgstr "%1 (zablokowany)"
 
 #: tag.cpp:80
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: tag.cpp:447
 msgid "To Do"
-msgstr ""
+msgstr "Do zrobienia"
 
 #: tag.cpp:447
-#, fuzzy
 msgid "Unchecked"
-msgstr "Nast�na niewybrana pozycja"
+msgstr "Nie zaznaczony"
 
 #: tag.cpp:447
 msgid "Done"
-msgstr ""
+msgstr "Zrobione"
 
 #: tag.cpp:448
-#, fuzzy
 msgid "Progress"
-msgstr "W��iwo�i"
+msgstr "Postęp"
 
 #: tag.cpp:448
 #, c-format
 msgid "0 %"
-msgstr ""
+msgstr "0 %"
 
 #: tag.cpp:448
 #, c-format
 msgid "25 %"
-msgstr ""
+msgstr "25 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "50 %"
-msgstr ""
+msgstr "50 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "75 %"
-msgstr ""
+msgstr "75 %"
 
 #: tag.cpp:449
 #, c-format
 msgid "100 %"
-msgstr ""
+msgstr "100 %"
 
 #: tag.cpp:502
 msgid "Priority"
-msgstr ""
+msgstr "Priorytet"
 
 #: tag.cpp:502
 msgid "Low"
-msgstr ""
+msgstr "Niski"
 
 #: tag.cpp:502
-#, fuzzy
 msgid "Medium"
-msgstr "edytuj"
+msgstr "Średni"
 
 #: tag.cpp:503
-#, fuzzy
 msgid "High"
-msgstr "w prawo"
+msgstr "Wysoki"
 
 #: tag.cpp:503
 msgid "Preference"
-msgstr ""
+msgstr "Preferencje"
 
 #: tag.cpp:503
 msgid "Bad"
-msgstr ""
+msgstr "Złe"
 
 #: tag.cpp:504
 msgid "Good"
-msgstr ""
+msgstr "Dobre"
 
 #: tag.cpp:504
 msgid "Excellent"
-msgstr ""
+msgstr "Znakomite"
 
 #: tag.cpp:504
-#, fuzzy
 msgid "Highlight"
-msgstr "Wyrównanie w prawo"
+msgstr "Znaczące"
 
 #: tag.cpp:570
 msgid "Important"
-msgstr ""
+msgstr "Ważne"
 
 #: tag.cpp:570
 msgid "Very Important"
-msgstr ""
+msgstr "Bardzo ważne"
 
 #: tag.cpp:571
 msgid "Idea"
-msgstr ""
+msgstr "Pomysł"
 
 #: tag.cpp:571
 msgid ""
 "_: The initial of 'Idea'\n"
 "I."
-msgstr ""
+msgstr "P."
 
 #: tag.cpp:571
-#, fuzzy
 msgid "Title"
-msgstr "&Tytu�"
+msgstr "Tytuł"
 
 #: tag.cpp:572
 msgid "Code"
-msgstr ""
+msgstr "Kod"
 
 #: tag.cpp:572
 msgid "Work"
-msgstr ""
+msgstr "Praca"
 
 #: tag.cpp:572
 msgid ""
 "_: The initial of 'Work'\n"
 "W."
-msgstr ""
+msgstr "P."
 
 #: tag.cpp:590
 msgid "Personal"
-msgstr ""
+msgstr "Osobiste"
 
 #: tag.cpp:590
 msgid ""
 "_: The initial of 'Personal'\n"
 "P."
-msgstr ""
+msgstr "O."
 
 #: tag.cpp:590
 msgid "Funny"
-msgstr ""
+msgstr "Śmieszne"
 
 #: tagsedit.cpp:207 tagsedit.cpp:227
 msgid ""
 "_: Tag name (shortcut)\n"
 "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #: tagsedit.cpp:325
 msgid "Customize Tags"
-msgstr ""
+msgstr "Dostosuj znaczniki"
 
 #: tagsedit.cpp:333
 msgid "Ne&w Tag"
-msgstr ""
+msgstr "No&wy znacznik"
 
 #: tagsedit.cpp:334
-#, fuzzy
 msgid "New St&ate"
-msgstr "&Nast�ny kosz"
+msgstr "Nowy st&an"
 
 #: tagsedit.cpp:350
 msgid "Move Up (Ctrl+Shift+Up)"
-msgstr ""
+msgstr "Do góry (Ctrl+Shift+Up)"
 
 #: tagsedit.cpp:351
 msgid "Move Down (Ctrl+Shift+Down)"
-msgstr ""
+msgstr "Do dołu (Ctrl+Shift+Down)"
 
 #: tagsedit.cpp:375
-#, fuzzy
 msgid "Tag"
-msgstr "Zapisz cel"
+msgstr "Znacznik"
 
 #: tagsedit.cpp:382
-#, fuzzy
 msgid ""
 "_: Remove tag shortcut\n"
 "&Remove"
-msgstr "&Nast�ny kosz"
+msgstr "&Usuń"
 
 #: tagsedit.cpp:383
 msgid "S&hortcut:"
-msgstr ""
+msgstr "&Skrót:"
 
 #: tagsedit.cpp:387
 msgid "&Inherited by new sibling notes"
-msgstr ""
+msgstr "Dz&iedziczony przez nowe notatki bliźniacze"
 
 #: tagsedit.cpp:398 tagsedit.cpp:1005 tagsedit.cpp:1021
-#, fuzzy
 msgid "State"
-msgstr "Stos"
+msgstr "Stan"
 
 #: tagsedit.cpp:402
-#, fuzzy
 msgid "Na&me:"
 msgstr "&Nazwa:"
 
 #: tagsedit.cpp:409
-#, fuzzy
 msgid ""
 "_: Remove tag emblem\n"
 "Remo&ve"
-msgstr "&Nast�ny kosz"
+msgstr "U&suń"
 
 #: tagsedit.cpp:410
 msgid "&Emblem:"
-msgstr ""
+msgstr "&Emblemat:"
 
 #: tagsedit.cpp:426
-#, fuzzy
 msgid "&Background:"
-msgstr "Kolor t�:"
+msgstr "Tł&o:"
 
 #: tagsedit.cpp:455
 msgid "Strike Through"
-msgstr ""
+msgstr "Przekreślenie"
 
 #: tagsedit.cpp:457
-#, fuzzy
 msgid "&Text:"
-msgstr "&Tekst"
+msgstr "&Tekst:"
 
 #: tagsedit.cpp:467
-#, fuzzy
 msgid "Co&lor:"
-msgstr "Kolo&r"
+msgstr "Kolo&r:"
 
 #: tagsedit.cpp:471
-#, fuzzy
 msgid "&Font:"
-msgstr "&Ikona:"
+msgstr "&Czcionka:"
 
 #: tagsedit.cpp:474
-#, fuzzy
 msgid "&Size:"
-msgstr "&Tytu�"
+msgstr "Ro&zmiar:"
 
 #: tagsedit.cpp:477
 msgid "Te&xt equivalent:"
-msgstr ""
+msgstr "Ekwiwalent &tekstowy:"
 
 #: tagsedit.cpp:487
 msgid ""
 "If filled, this property lets you paste this tag or this state as textual "
 "equivalent."
-msgstr ""
+msgstr "Jeśli zaznaczone, pozwoli na wklejenie znacznika lub stanu w formie tekstowej."
 
 #: tagsedit.cpp:496
 msgid "On ever&y lines"
-msgstr ""
+msgstr "W każdej &inii"
 
 #: tagsedit.cpp:501
-#, fuzzy
 msgid "What does it mean?"
-msgstr "Czym jest ten program?"
+msgstr "Co to oznacza?"
 
 #: tagsedit.cpp:502
 msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every lines of the note."
-msgstr ""
+msgstr "Kiedy notatka ma kilka linijek, możesz wybrać eksport znacznika lub stanu tylko w pierwszej linii lub w każdej linii notatki."
 
 #: tagsedit.cpp:504
 msgid ""
 "In the example above, the tag of the top note is only exported on the first "
 "line, while the tag of the bottom note is exported on every lines of the "
 "note."
-msgstr ""
+msgstr "W przykładzie powyżej, znacznik górnej notatki został wyeksportowany tylko w pierwszej linii, podczas gdy znacznik dolnej notatki został wyeksportowany w każdej linii notatki."
 
 #: tagsedit.cpp:888
-msgid ""
-"Deleting the tag will remove it from every notes it is currently assigned to."
-msgstr ""
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
+msgstr "Usunięcie znacznika spowoduje jego zniknięcie z każdej notatki do której został przydzielony."
 
 #: tagsedit.cpp:889
-#, fuzzy
 msgid "Confirm Delete Tag"
-msgstr "zaznacz"
+msgstr "Potwierdź usunięcie znacznika"
 
 #: tagsedit.cpp:890
-#, fuzzy
 msgid "Delete Tag"
-msgstr "Usu�"
+msgstr "Usuń znacznik"
 
 #: tagsedit.cpp:895
 msgid ""
 "Deleting the state will remove the tag from every notes the state is "
 "currently assigned to."
-msgstr ""
+msgstr "Usunięcie stanu spowoduje zniknięcie znacznika z każdej notatki do jakiej został przydzielony."
 
 #: tagsedit.cpp:896
-#, fuzzy
 msgid "Confirm Delete State"
-msgstr "zaznacz"
+msgstr "Potwierdź usunięcie stanu"
 
 #: tagsedit.cpp:897
-#, fuzzy
 msgid "Delete State"
-msgstr "Usu�kosz"
+msgstr "Usuń stan"
 
 #: variouswidgets.cpp:47
-#, fuzzy
 msgid "..."
-msgstr "&Nowy..."
+msgstr "..."
 
 #: variouswidgets.cpp:84 variouswidgets.cpp:199
 msgid "16 by 16 pixels"
-msgstr ""
+msgstr "16 na 16 pikseli"
 
 #: variouswidgets.cpp:85 variouswidgets.cpp:200
 msgid "22 by 22 pixels"
-msgstr ""
+msgstr "22 na 22 piksele"
 
 #: variouswidgets.cpp:86 variouswidgets.cpp:201
 msgid "32 by 32 pixels"
-msgstr ""
+msgstr "32 na 32 piksele"
 
 #: variouswidgets.cpp:87 variouswidgets.cpp:202
 msgid "48 by 48 pixels"
-msgstr ""
+msgstr "48 na 48 pikseli"
 
 #: variouswidgets.cpp:88 variouswidgets.cpp:203
 msgid "64 by 64 pixels"
-msgstr ""
+msgstr "64 na 64 piksele"
 
 #: variouswidgets.cpp:89 variouswidgets.cpp:204
 msgid "128 by 128 pixels"
-msgstr ""
+msgstr "128 na 128 pikseli"
 
 #: variouswidgets.cpp:129
 msgid ""
 "Resize the window to select the image size\n"
 "and close it or press Escape to accept changes."
 msgstr ""
+"Zmień rozmiar okna by wybrać rozmiar obrazka\n"
+"i zamknij je lub wciśnij Escape by zaakceptować zmiany."
 
-#~ msgid "A set of baskets to keep a full range of data on hand."
-#~ msgstr "Zbiór koszy do przechowywania pe�ego zakresu danych pod r��"
-
-#, fuzzy
-#~ msgid "Examples:"
-#~ msgstr "Przyk�d"
-
-#, fuzzy
-#~ msgid "Hide &Toolbar"
-#~ msgstr "G�wny pasek*narz�zi"
-
-#, fuzzy
-#~ msgid "Configure..."
-#~ msgstr "Skonfiguruj"
-
-#, fuzzy
-#~ msgid "Send"
-#~ msgstr "Dźwi�"
-
-#, fuzzy
-#~ msgid "Remo&ve"
-#~ msgstr "&Nast�ny kosz"
-
-#, fuzzy
-#~ msgid "Insert rich text note"
-#~ msgstr "Wstaw pozycj�tekstu wzbogaconego"
-
-#~ msgid "&Rich Text"
-#~ msgstr "Tekst wzbogacony"
-
-#, fuzzy
-#~ msgid "Convert Text Notes"
-#~ msgstr "Wstaw pozycj�tekstow�"
-
-#, fuzzy
-#~ msgid "Only in the Current Basket"
-#~ msgstr "Usu�kosz"
-
-#, fuzzy
-#~ msgid "In Every Baskets"
-#~ msgstr "&Nast�ny kosz"
-
-#, fuzzy
-#~ msgid "Opening rich text..."
-#~ msgstr "Otwieram docelowy odno�ik..."
-
-#, fuzzy
-#~ msgid "Opening rich texts..."
-#~ msgstr "Otwieram docelowy odno�ik..."
-
-#, fuzzy
-#~ msgid "Opening rich text with..."
-#~ msgstr "Otwórz docelowy odno�ik z..."
-
-#, fuzzy
-#~ msgid "Opening rich texts with..."
-#~ msgstr "Otwórz docelowy odno�ik z..."
-
-#, fuzzy
-#~ msgid "Open rich text with:"
-#~ msgstr "Wstaw pozycj�tekstu wzbogaconego"
-
-#, fuzzy
-#~ msgid "Open rich texts with:"
-#~ msgstr "Wstaw pozycj�tekstu wzbogaconego"
-
-#, fuzzy
-#~ msgid "Open &rich text notes with a custom application:"
-#~ msgstr "Wstaw pozycj�tekstu wzbogaconego"
-
-#, fuzzy
-#~ msgid "Open rich text notes with:"
-#~ msgstr "Wstaw pozycj�tekstu wzbogaconego"
-
-#, fuzzy
-#~ msgid "Move Up"
-#~ msgstr "Przesu�na wierzch"
-
-#, fuzzy
-#~ msgid "Move Down"
-#~ msgstr "Przesu�na wierzch"
-
-#, fuzzy
-#~ msgid ""
-#~ "<p>%1 let you to collect a wide variety of objects and keep them all in "
-#~ "one place.</p><p>You can group things for different purposes in tabs by "
-#~ "creating as many baskets as you want.<br>Notes can be re-arranged, tags "
-#~ "can be associated to, and you can drag them back to other applications "
-#~ "when needed.</p><p>You can use baskets to take notes, clean up your "
-#~ "desktop, replace your bookmarks, store links to applications you often "
-#~ "use, create shop-lists...</p>"
-#~ msgstr ""
-#~ "<p>BasKet pozwala na zebranie szerokiego spektrum obiektów i przechowanie "
-#~ "ich w jednym miejscu.</p><p>Moťesz grupowa�obiekty w róťnych celach w "
-#~ "zak�dkach, w tak wielu koszach, jak chcesz.<br> Pozycje "
-#~ "mog�by�przestawiane, moťna dowi�ywa�opisy, moťna je przenosi�do innych "
-#~ "aplikacji w miar�potrzeb.</p><p>Moťesz wykorzystywa�kosze do robienia "
-#~ "notatek, oczyszczenia pulpitu, a nawet do tworzenia specjalnych koszy z "
-#~ "list�zakupów i stosów czy stert b�ź stworzenia zaawansowanego managera "
-#~ "schowka.</p>"
-
-#, fuzzy
-#~ msgid "C&hange..."
-#~ msgstr "Skonfiguruj"
-
-#, fuzzy
-#~ msgid "Notes Look"
-#~ msgstr "Wygl� pozycji"
-
-#, fuzzy
-#~ msgid "Filter &all Baskets"
-#~ msgstr "Usu�kosz"
-
-#~ msgid "So&und"
-#~ msgstr "Dźwi�"
-
-#~ msgid "I&nsert"
-#~ msgstr "Wstaw"
-
-#~ msgid "<qt>Do you really want to delete <b>%1</b> and its contents?</qt>"
-#~ msgstr "<qt>Czy na pewno chcesz usun� <b>%1</b> wraz z zawarto�i�</qt>"
-
-#~ msgid "all shown"
-#~ msgstr "w"
-
-#, fuzzy
-#~ msgid "Non openable item."
-#~ msgstr "Pozycja nieotwieralna."
-
-#~ msgid "Basket %1"
-#~ msgstr "Kosz %1"
-
-#~ msgid "Checklist"
-#~ msgstr "Lista kontrolna"
-
-#~ msgid "Checklist %1"
-#~ msgstr "Lista kontrolna %1"
-
-#~ msgid "Stack %1"
-#~ msgstr "Stos %1"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: like \"folderFoo mirror\"\n"
-#~ "%1 mirror"
-#~ msgstr "Wybierz katalog do kopiowania"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: like \"folderFoo mirror 2\"\n"
-#~ "%1 mirror %2"
-#~ msgstr "Wybierz katalog do kopiowania"
-
-#~ msgid "Launcher %1"
-#~ msgstr "Uruchamianie aplikacji %1"
-
-#~ msgid "Clipboard manager"
-#~ msgstr "Menedťer schowka"
-
-#~ msgid "Clipboard manager %1"
-#~ msgstr "Menedťer schowka %1"
-
-#~ msgid "&Item"
-#~ msgstr "Pozycja"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: HTML exportation files folder\n"
-#~ "%1_files"
-#~ msgstr "Katalog do eksportu HTML"
-
-#~ msgid "Left Align"
-#~ msgstr "Wyrównanie w lewo"
-
-#~ msgid "Right Align"
-#~ msgstr "Wyrównanie w prawo"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: e.g. \"Update: 1 loaded item and 3 removed items\"\n"
-#~ "Update: %1 and %2"
-#~ msgstr "np. \"Aktualizacja: 1 pozycja wczytana i 3 pozycje usuni�e\""
-
-#, fuzzy
-#~ msgid ""
-#~ "_n: %n loaded item\n"
-#~ "%n loaded items"
-#~ msgstr "np. \"Aktualizacja: 1 pozycja wczytana i 3 pozycje usuni�e\""
-
-#, fuzzy
-#~ msgid ""
-#~ "_n: %n removed item\n"
-#~ "%n removed items"
-#~ msgstr "np. \"Aktualizacja: 1 pozycja wczytana i 3 pozycje usuni�e\""
-
-#~ msgid "Up to date basket: no change done."
-#~ msgstr "Kosz jest aktualny: nie wykonano ťadnych zmian"
-
-#, fuzzy
-#~ msgid "Group New: the verb"
-#~ msgstr "Wstaw pozycj�z obrazkiem"
-
-#, fuzzy
-#~ msgid "Insert New: the verb"
-#~ msgstr "Wstaw pozycj�z obrazkiem"
-
-#~ msgid "<qt>Do you really want to delete this item?</qt>"
-#~ msgstr "<qt>Czy na pewno chcesz usun� t�pozycj�</qt>"
-
-#, fuzzy
-#~ msgid "%n loaded item"
-#~ msgstr "1 pozycja za�dowana"
-
-#, fuzzy
-#~ msgid "%n removed item"
-#~ msgstr "1 pozycja usuni�a"
-
-#, fuzzy
-#~ msgid "%n selected"
-#~ msgstr "1 zaznaczona"
-
-#, fuzzy
-#~ msgid "%n found"
-#~ msgstr "1 znaleziona"
-
-#, fuzzy
-#~ msgid ""
-#~ "Use the <b>Insert</b> menu to add items.<br>You also can <b>drop</b> or "
-#~ "<b>paste</b> objects here."
-#~ msgstr ""
-#~ "Aby doda�nowe pozycje, uťyj menu <b>Wstaw</b>.<br>Moťesz równieť "
-#~ "<b>przenie�</b> i <b>upu�i�/b> róťne obiekty."
-
-#~ msgid "&Do not show this message again"
-#~ msgstr "&Nie pokazuj ponownie tej wiadomo�i."
-
-#~ msgid "Basket <i>%1</i> is not a stack."
-#~ msgstr "Kosz <i>%1</i> nie jest stosem."
-
-#~ msgid "Basket <i>%1</i> is empty."
-#~ msgstr "Kosz <i>%1</i> jest pusty."
-
-#, fuzzy
-#~ msgid "The link have no URL to open."
-#~ msgstr "W pozycji nie znaleziono URL-a do otwarcia."
-
-#, fuzzy
-#~ msgid "The launcher have no application to open."
-#~ msgstr "W pozycji nie zawarto aplikacji do uruchomienia."
-
-#, fuzzy
-#~ msgid "Opening item file..."
-#~ msgstr "Otwieram plik..."
-
-#, fuzzy
-#~ msgid "Opening item file with..."
-#~ msgstr "Otwórz plik z..."
-
-#~ msgid "Save Target"
-#~ msgstr "Zapisz cel"
-
-#~ msgid "Save a Copy"
-#~ msgstr "Zapisz kopi�"
-
-#~ msgid "Superscript"
-#~ msgstr "Indeks górny"
-
-#~ msgid "Subscript"
-#~ msgstr "Indeks dolny"
-
-#~ msgid "Cl&ear"
-#~ msgstr "Wyczy�"
-
-#~ msgid "&URL:"
-#~ msgstr "&URL:"
-
-#, fuzzy
-#~ msgid ""
-#~ "<center>No editor yet for this type of item.<br>Use \"Open\" or \"Open "
-#~ "with...\" action to open<br>the file in your preferred editor.<br>Item "
-#~ "will be automatically updated.</center>"
-#~ msgstr ""
-#~ "<center>Nie ma jeszcze edytora dla tego typu pozycji.<br>Aby otworzy�plik "
-#~ "w swoim ulubionym edytorze, wykonaj akcj�\"Otwórz\" lub \"Otwórz z...\"."
-#~ "<br>Pozycja zostanie automatycznie zaktualizowana.</center>"
-
-#~ msgid "O&pen"
-#~ msgstr "Otwórz"
-
-#~ msgid "Anno&tations:"
-#~ msgstr "Komen&tarze:"
-
-#~ msgid "&File name:"
-#~ msgstr "Nazwa pliku:"
-
-#~ msgid "Co&ntent: %1"
-#~ msgstr "Zawarto�: %1"
-
-#~ msgid "&Meta-data"
-#~ msgstr "&Metadane"
-
-#~ msgid "Original file: %1"
-#~ msgstr "Oryginalny plik: :%1"
-
-#, fuzzy
-#~ msgid "Unknow"
-#~ msgstr "Nieznany obiekt"
-
-#~ msgid "New Basket Wizard"
-#~ msgstr "Nowy kreator kosza"
-
-#~ msgid "Choose a type for the new basket:"
-#~ msgstr "Wybierz typ nowego kosza"
-
-#~ msgid "N&otes && clips"
-#~ msgstr "N&otatki && uchwyty"
-
-#~ msgid "Chec&k list"
-#~ msgstr "Lista &kontrolna"
-
-#~ msgid "&Stack"
-#~ msgstr "&Stos"
-
-#~ msgid "&Mirror a folder"
-#~ msgstr "Kopia katalogu"
-
-#~ msgid "&Application launchers"
-#~ msgstr "Uruchamianie &aplikacji"
-
-#, fuzzy
-#~ msgid "Store links to applications you often use."
-#~ msgstr "W pozycji nie zawarto aplikacji do uruchomienia."
-
-#~ msgid "Clip&board manager"
-#~ msgstr "Menedťer schowka"
-
-#~ msgid "Basket Type"
-#~ msgstr "Typ kosza"
-
-#~ msgid "Open the existing basket"
-#~ msgstr "Otwórz istniej�y kosz"
-
-#~ msgid "Mirror only new files"
-#~ msgstr "Kopiuj tylko nowe pliki"
-
-#~ msgid ""
-#~ "<center><i>If the folder do not exists, it will be created.</i></center>"
-#~ msgstr ""
-#~ "<center><i>Je�i katalog nie istnieje, zostanie stworzony</i></center>"
-
-#~ msgid ""
-#~ "<nobr><i><b>The path you entered is malformed.</b><br>Please check its "
-#~ "validity.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i><b>Źcieťka, któr�poda��jest nieprawid�wa.</b><br>Sprawdź jej "
-#~ "poprawno�.</i></nobr>"
-
-#, fuzzy
-#~ msgid ""
-#~ "<nobr><i><b>The folder you entered isn't local.</b><br>You cannot mirror "
-#~ "folders that are not on your computer.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i><b>Katalog, który poda�� nie jest lokalny.</b><br>W chwili "
-#~ "obecnej nie moťesz kopiowa�katalogów, które nie s�na Twoim komputerze.</"
-#~ "i></nobr>"
-
-#~ msgid ""
-#~ "<nobr><i><b>The folder you entered is already mirrored.</b><br>You cannot "
-#~ "mirror a folder twice.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i><b>Katalog, który poda��jest juť skopiowany.</b><br>Nie moťesz "
-#~ "skopiowa�katalogu dwukrotnie.</i></nobr>"
-
-#~ msgid ""
-#~ "<nobr><i><b>The name you entered is a file, not a folder.</b><br>You "
-#~ "cannot create a basket that mirror a file.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i><b>Nazwa, któr�poda��jest plikiem, nie katalogiem.</b><br>Nie "
-#~ "moťesz stworzy�kosza kopiuj�ego plik.</i></nobr>"
-
-#~ msgid ""
-#~ "<nobr><i>The folder exists.<br>It contain basket data: you can reload "
-#~ "(open) or erase it (create a new one).</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i>Katalog istnieje.<br>Zawiera dane z kosza: moťesz go ponownie "
-#~ "za�dowa�(otworzy� lub usun� (stworzy�nowy).</i></nobr>"
-
-#~ msgid ""
-#~ "<nobr><i>The folder exists.<br>The new basket will mirror the folder "
-#~ "contents.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i>Katalog istnieje.<br>Nowy kosz b�zie kopi�zawarto�i tego "
-#~ "katalogu.</i></nobr>"
-
-#~ msgid ""
-#~ "<nobr><i>The folder doesn't exist.<br>A new blank folder will be created "
-#~ "and mirrored.</i></nobr>"
-#~ msgstr ""
-#~ "<nobr><i>Katalog nie istnieje.<br>Zostanie stworzony nowy katalog. "
-#~ "Nast�nie b�zie skopiowany do kosza.</i></nobr>"
-
-#~ msgid "Basket Name"
-#~ msgstr "Nazwa kosza"
-
-#, fuzzy
-#~ msgid "Insert an item here"
-#~ msgstr "Wstaw pozycj�z odno�ikiem"
-
-#~ msgid "Now openning mirrored folder..."
-#~ msgstr "Otwieram skopiowany katalog..."
-
-#~ msgid "Alte&rnate background color:"
-#~ msgstr "Alternatywny kolor t�:"
-
-#~ msgid "Items ali&gnment:"
-#~ msgstr "Wyrównanie pozycji:"
-
-#~ msgid "Middle"
-#~ msgstr "po �odku"
-
-#~ msgid "Do &nothing"
-#~ msgstr "&Nic nie rób"
-
-#~ msgid "Mi&rror only new files"
-#~ msgstr "Kopiuj jedynie nowe pliki"
-
-#~ msgid "Click: copy, Ctrl+click: edit, Alt+click: open"
-#~ msgstr "Klikni�ie: kopiuj, Ctrl+klikni�ie: edytuj, Alt+klikni�ie: otwórz"
-
-#~ msgid "Click: edit, Ctrl+click: copy, Alt+click: open"
-#~ msgstr "Klikni�ie: edytuj, Ctrl+klikni�ie: otwórz, Alt+klikni�ie: otwórz"
-
-#~ msgid "Click: open, Ctrl+click: edit, Alt+click: copy"
-#~ msgstr "Klikni�ie: otwórz, Ctrl+klikni�ie: edytuj, Alt+klikni�ie: kopiuj"
-
-#, fuzzy
-#~ msgid "Double-click: copy, Ctrl+double-click: edit, Alt+double-click: open"
-#~ msgstr "Klikni�ie: kopiuj, Ctrl+klikni�ie: edytuj, Alt+klikni�ie: otwórz"
-
-#, fuzzy
-#~ msgid "Double-click: edit, Ctrl+double-click: copy, Alt+double-click: open"
-#~ msgstr "Klikni�ie: edytuj, Ctrl+klikni�ie: otwórz, Alt+klikni�ie: otwórz"
-
-#, fuzzy
-#~ msgid "Double-click: open, Ctrl+double-click: edit, Alt+double-click: copy"
-#~ msgstr "Klikni�ie: otwórz, Ctrl+klikni�ie: edytuj, Alt+klikni�ie: kopiuj"
-
-#, fuzzy
-#~ msgid "Clip&board"
-#~ msgstr "Menedťer schowka"
-
-#, fuzzy
-#~ msgid "&Mirror"
-#~ msgstr "Kopia katalogu"
-
-#~ msgid "Last"
-#~ msgstr "Ostatni"
-
-#~ msgid "First"
-#~ msgstr "Pierwszy"
-
-#~ msgid "(Empty)"
-#~ msgstr "(Pusty)"
-
-#~ msgid "&Clear Stack"
-#~ msgstr "Wy&czy� stos"
-
-#~ msgid "&Open the Mirrored Folder"
-#~ msgstr "&Otwórz skopiowany katalog"
-
-#~ msgid "Select Chec&ked Items"
-#~ msgstr "Wybierz oznaczone pozycje"
-
-#~ msgid "Show Search &Bar"
-#~ msgstr "Pokať belk�wyszukiwania"
-
-#~ msgid "Pre&vious Checked Item"
-#~ msgstr "Poprzednia zaznaczona pozycja"
-
-#~ msgid "Ne&xt Checked Item"
-#~ msgstr "Nast�na zaznaczona pozycja"
-
-#~ msgid "Previ&ous Unchecked Item"
-#~ msgstr "Poprzednia niewybrana pozycja"
-
-#~ msgid "Edit &Meta-data..."
-#~ msgstr "Edytuj metadane"
-
-#~ msgid "Chec&k"
-#~ msgstr "Sprawdź"
-
-#, fuzzy
-#~ msgid ""
-#~ "<p>You are about to hide the menubar.</p><p>To show the menubar again, "
-#~ "right click the tabbar and choose <b>Show Menubar</b> in the <b>Settings</"
-#~ "b> submenu.</p>"
-#~ msgstr ""
-#~ "<p>Moťesz ponownie w�czy�pasek stanu w menu prawego przycisku myszy, "
-#~ "wybieraj� <b>Pokať pasek menu</b> w podmenu <b>Ustawienia</b>.</p>"
-
-#~ msgid "Hidding Menubar"
-#~ msgstr "Ukryj pasek menu"
-
-#, fuzzy
-#~ msgid "&Hide Menubar"
-#~ msgstr "Ukryj pasek menu"
-
-#~ msgid "Clipboard stack basket."
-#~ msgstr "Kosz stosu schowka."
-
-#~ msgid "Clipboard basket."
-#~ msgstr "Kosz schowka."
-
-#~ msgid "Stack basket."
-#~ msgstr "Kosz stosu."
-
-#~ msgid "Folder mirror basket."
-#~ msgstr "Kosz skopiowanego katalogu."
-
-#~ msgid "Checklist basket."
-#~ msgstr "Kosz listy kontrolnej."
-
-#~ msgid "Clips basket."
-#~ msgstr "Kosz uchwytów"
-
-#~ msgid "No action performed."
-#~ msgstr "�dna akcja nie zosta� wykonana."
-
-#~ msgid "Icon name: %1"
-#~ msgstr "Nazwa ikony: %1"
-
-#~ msgid "Mirror a File Content into an Item"
-#~ msgstr "Skopiuj zawarto� pliku do pozycji"
-
-#, fuzzy
-#~ msgid ""
-#~ "_: No icon\n"
-#~ "None"
-#~ msgstr "Brak ikony"
-
-#~ msgid "BasKet"
-#~ msgstr "BasKet"
-
-#~ msgid "Allow you to skip one or more items in a round stack basket."
-#~ msgstr ""
-#~ "Pozwala na omini�ie jednej lub wi�ej pozycji w koszu listy cyklicznej."
-
-#~ msgid "Remove all items of the current stack basket."
-#~ msgstr "Usu�wszystkie pozycje z bieť�ego kosza stosu."
-
-#~ msgid "copy"
-#~ msgstr "kopiuj"
-
-#~ msgid "edit meta-data"
-#~ msgstr "edytuj metadane"
-
-#~ msgid "open"
-#~ msgstr "otwórz"
-
-#~ msgid "Sea&rch: "
-#~ msgstr "Szukaj:"
-
-#~ msgid "Items Default Values"
-#~ msgstr "Domy�ne warto�i pozycji"
-
-#~ msgid "Launch BasKet"
-#~ msgstr "Uruchom BasKet"
-
-#~ msgid ""
-#~ "<p>You can mirror a file only once per basket.</p><p><b>%1</b> is already "
-#~ "mirrored here.<br>Its content has been copied.</p>"
-#~ msgstr ""
-#~ "<p>Moťesz skopiowa�plik tylko jeden raz w jednym koszu</p><p>Plik <b>%1</"
-#~ "b> jest juť tu skopiowany.</p>"
-
-#~ msgid "<i>Item of unknown type.</i>"
-#~ msgstr "<i>Pozycja nieznanego typu.</i>"
-
-#~ msgid "Left"
-#~ msgstr "w lewo"
-
-#~ msgid "Center"
-#~ msgstr "wy�odkowanie"
-
-#~ msgid "Top"
-#~ msgstr "w gór�"
-
-#~ msgid "Bottom"
-#~ msgstr "w dó�"
-
-#~ msgid "&Show HTML source"
-#~ msgstr "Pokať źród� HTML"
-
-#~ msgid "Mirrored file:"
-#~ msgstr "Skopiowany plik:"
-
-#~ msgid "%x=copy|edit|open"
-#~ msgstr "%x=kopiuj|edytuj|otwórz"
-
-#~ msgid "&Settings"
-#~ msgstr "U&stawienia"
