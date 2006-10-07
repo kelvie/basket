@@ -3156,7 +3156,7 @@ void Basket::relayoutNotes(bool animate)
 	while (note) {
 		if (note->matching()) {
 			note->relayoutAt(0, h, animate);
-			if (note->isColumn() && note->hasResizer()) {
+			if (note->hasResizer()) {
 				int minGroupWidth = note->minRight() - note->x();
 				if (note->groupWidth() < minGroupWidth) {
 					note->setGroupWidth(minGroupWidth);
