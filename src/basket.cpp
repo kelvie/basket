@@ -4176,8 +4176,14 @@ Note* Basket::selectedGroup()
 {
 	FOR_EACH_NOTE (note) {
 		Note *selectedGroup = note->selectedGroup();
-		if (selectedGroup)
+		if (selectedGroup) {
+			// If the selected group is one group in a column, then return that group, and not the column,
+			// because the column is not ungrouppage, and the Ungroup action would be disabled.
+			if (selectedGroup->isColumn() && selectedGroup->firstChild() && !selectedGroup->firstChild()->next()) {
+				return selectedGroup->firstChild();
+			}
 			return selectedGroup;
+		}
 	}
 	return 0;
 }
@@ -4230,11 +4236,12 @@ bool Basket::convertTexts()
 void Basket::noteGroup()
 {
 	// Nothing to do?
-	if (countSelecteds() <= 1)
+	if (isLocked() || countSelecteds() <= 1)
 		return;
 
 	// If every selected notes are ALREADY in one group, then don't touch anything:
-	if (selectionIsOneGroup())
+	Note *selectedGroup = this->selectedGroup();
+	if (selectedGroup && !selectedGroup->isColumn())
 		return;
 
 	// Get the first selected note: we will group selected items just before:
