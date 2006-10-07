@@ -132,6 +132,10 @@ bool Note::computeMatching(const FilterData &data)
 	if (!content())
 		return true;
 
+	// If we were editing this note and there is a save operation in the middle, then do not hide it suddently:
+	if (basket()->editedNote() == this)
+		return true;
+
 	bool matching;
 	// First match tags (they are fast to compute):
 	switch (data.tagFilterType) {
