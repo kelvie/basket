@@ -10,6 +10,7 @@ Name[pt_BR]=Parte basket
 Name[sv]=basket-del
 Name[ta]=basketபாகம்
 Name[tr]=basket Bileşeni
+Name[es]=Componente de Basket
 MimeType=application/x-basket;
 ServiceTypes=KParts/ReadOnlyPart,KParts/ReadWritePart
 X-KDE-Library=libbasketpart
