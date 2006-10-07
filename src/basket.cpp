@@ -1940,6 +1940,8 @@ void Basket::blindDrop(QDropEvent* event)
 		if (note) {
 			insertCreatedNote(note);
 			//unselectAllBut(note);
+			if (Settings::usePassivePopup())
+				Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));
 		}
 	}
 	save();
@@ -3913,7 +3915,7 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 				updateEditorAppearance();
 			}
 		}
-		kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
+//		kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
 		ensureNoteVisible(note);   //  because toolbar can create a new line and then partially hide the note
 		m_editor->widget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
 		emit resetStatusBarText(); // Display "Editing. ... to validate."

@@ -326,13 +326,24 @@ void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
 	Global::bnpView->updateStatusBarHint();
 }
 
+#include <iostream>
+
 void SystemTray::dropEvent(QDropEvent *event)
 {
 	m_showTimer->stop();
-	Global::bnpView->currentBasket()->contentsDropEvent(event);
+
+	Global::bnpView->currentBasket()->blindDrop(event);
+
+/*	Basket *basket = Global::bnpView->currentBasket();
+	if (!basket->isLoaded()) {
+		Global::bnpView->showPassiveLoading(basket);
+		basket->load();
+	}
+	basket->contentsDropEvent(event);
+	std::cout << (long) basket->selectedNotes() << std::endl;
 
 	if (Settings::usePassivePopup())
-		Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));
+		Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));*/
 }
 
 /* This function comes directly from JuK: */
