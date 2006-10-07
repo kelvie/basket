@@ -1296,8 +1296,8 @@ void BNPView::updateNotesActions()
 	m_actOpenNote        ->setEnabled(              oneOrSeveralSelected );
 	m_actOpenNoteWith    ->setEnabled(              oneSelected          ); // TODO: oneOrSeveralSelected IF SAME TYPE
 	m_actSaveNoteAs      ->setEnabled(              oneSelected          ); // IDEM?
-	m_actGroup           ->setEnabled( !isLocked && !selectedGroup );
-	m_actUngroup         ->setEnabled( !isLocked &&  selectedGroup && !selectedGroup->isColumn());
+	m_actGroup           ->setEnabled( !isLocked && severalSelected && (!selectedGroup || selectedGroup->isColumn()) );
+	m_actUngroup         ->setEnabled( !isLocked && selectedGroup && !selectedGroup->isColumn() );
 	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected ); // TODO: Disable when unavailable!
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );

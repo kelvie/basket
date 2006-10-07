@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: 2006-09-27 22:48+0200\n"
-"PO-Revision-Date: 2006-09-12 22:52+0100\n"
+"PO-Revision-Date: 2006-10-01 20:42+0100\n"
 "Last-Translator: Rafael Rodríguez <rafael.rodriguez.tf@gmail.com>\n"
 "Language-Team: Español <kde-es@kybs.de>\n"
 "MIME-Version: 1.0\n"
@@ -22,17 +22,13 @@ msgstr ""
 msgid ""
 "_: NAME OF TRANSLATORS\n"
 "Your names"
-msgstr ""
-"José Luis Tallón\n"
-"Rafael Rodríguez"
+msgstr "José Luis Tallón,Rafael Rodríguez"
 
 #: _translatorinfo.cpp:3
 msgid ""
 "_: EMAIL OF TRANSLATORS\n"
 "Your emails"
-msgstr ""
-"jltallon@adv-solutions.net \n"
-"rafael.rodriguez.tf@gmail.com"
+msgstr "jltallon@adv-solutions.net,rafael.rodriguez.tf@gmail.com"
 
 #: aboutdata.cpp:27
 msgid ""
@@ -40,6 +36,9 @@ msgid ""
 "makes it easy to write down ideas as you think, and quickly find them back "
 "later. Organizing your notes has never been so easy.</p>"
 msgstr ""
+"<p><b>Cuidando sus ideas.</b></p><p>Una aplicacion para tomar notas "
+"que le facilita anotar ideas según se le ocurren, y encontrarlas de forma sencilla. "
+"¡Organizar sus notas nunca fue tan sencillo!</p>"
 
 #: aboutdata.cpp:34
 msgid "BasKet Note Pads"
@@ -58,6 +57,8 @@ msgid ""
 "Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, "
 "drop to basket name"
 msgstr ""
+"Auto bloqueo de las cestas, icono del estado de guardado, copiar/pegar HTML, "
+"consejos con el nombre de las cestas, soltar en cesta por nombre"
 
 #: aboutdata.cpp:53 basketproperties.cpp:61 newbasketdialog.cpp:103
 msgid "Icon"
@@ -79,8 +80,7 @@ msgstr ""
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"Las notas nuevas no coinciden con el criterio de filtrado y están ocultas."
+msgstr "Las notas nuevas no coinciden con el criterio de filtrado y están ocultas."
 
 #: basket.cpp:1534
 msgid ""
@@ -198,9 +198,8 @@ msgid "Password protected basket."
 msgstr "Cesta protegida con contraseña."
 
 #: basket.cpp:2971
-#, fuzzy
 msgid "Press Unlock to access it."
-msgstr "Pulse Desbloquear para verla."
+msgstr "Pulse Desbloquear para acceder a ella."
 
 #: basket.cpp:2973
 #, c-format
@@ -212,6 +211,8 @@ msgid ""
 "To make baskets stay unlocked, change the automatic<br>locking duration in "
 "the application settings."
 msgstr ""
+"Para hacer que las cestas permanezcan desbloqueadas, cambie<br>la duración del "
+"bloqueo automático en las preferencias de la aplicación."
 
 #: basket.cpp:3020 basketstatusbar.cpp:83 bnpview.cpp:1240 bnpview.cpp:1846
 msgid "Loading..."
@@ -315,8 +316,7 @@ msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr "Notas que coinciden con el criterio de filtrado &quot;%1&quot;:"
 
 #: basket.cpp:4746
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
 "Creado con %1, una herramienta para tomar notas y mantener gran variedad de "
 "datos al alcance de la mano."
@@ -363,8 +363,7 @@ msgstr "Error de guardado"
 
 #: basketfactory.cpp:60
 msgid "Sorry, but the folder creation for this new basket has failed."
-msgstr ""
-"Lo siento, pero la creación de la carpeta para esta nueva cesta ha fallado."
+msgstr "Lo siento, pero la creación de la carpeta para esta nueva cesta ha fallado."
 
 #: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
 msgid "Basket Creation Failed"
@@ -372,8 +371,7 @@ msgstr "Falló la creación de la cesta"
 
 #: basketfactory.cpp:90
 msgid "Sorry, but the template copying for this new basket has failed."
-msgstr ""
-"Lo siento, pero la copia de la plantilla para esta nueva cesta ha fallado."
+msgstr "Lo siento, pero la copia de la plantilla para esta nueva cesta ha fallado."
 
 #: basketfactory.cpp:111
 msgid "Sorry, but the template customization for this new basket has failed."
@@ -402,17 +400,14 @@ msgid "Name"
 msgstr "Nombre"
 
 #: basketproperties.cpp:76
-#, fuzzy
 msgid "Background &image:"
 msgstr "&Imagen de fondo:"
 
 #: basketproperties.cpp:77
-#, fuzzy
 msgid "&Background color:"
 msgstr "&Color de fondo:"
 
 #: basketproperties.cpp:78
-#, fuzzy
 msgid "&Text color:"
 msgstr "Color del &texto:"
 
@@ -488,7 +483,7 @@ msgstr "&Cambiar a esta cesta (acceso rápido global)"
 
 #: basketstatusbar.cpp:100
 msgid "Shows if there are changes that have not been saved yet."
-msgstr ""
+msgstr "Muestra si existen cambios que aún no han sido guardados."
 
 #: basketstatusbar.cpp:128
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
@@ -596,8 +591,7 @@ msgid "Insert text note"
 msgstr "Insertar nota de texto"
 
 #: bnpview.cpp:261
-msgid ""
-"Add a text note to the current basket without having to open main window."
+msgid "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Añade una nota de texto a la cesta actual sin necesidad de abrir la ventana "
 "principal."
@@ -607,8 +601,7 @@ msgid "Insert image note"
 msgstr "Insertar nota de imagen"
 
 #: bnpview.cpp:265
-msgid ""
-"Add an image note to the current basket without having to open main window."
+msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Añade una nota de tipo imagen a la cesta actual sin necesidad de abrir la "
 "ventana principal."
@@ -618,8 +611,7 @@ msgid "Insert link note"
 msgstr "Insertar nota de enlace"
 
 #: bnpview.cpp:269
-msgid ""
-"Add a link note to the current basket without having to open main window."
+msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Añade un elemento de tipo enlace a la cesta actual sin necesidad de abrir la "
 "ventana principal."
@@ -629,8 +621,7 @@ msgid "Insert color note"
 msgstr "Insertar nota de color"
 
 #: bnpview.cpp:273
-msgid ""
-"Add a color note to the current basket without having to open main window."
+msgid "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Inserta una nota de tipo color a la cesta actual sin necesidad de abrir la "
 "ventana principal."
@@ -665,7 +656,7 @@ msgstr "Cestas"
 
 #: bnpview.cpp:342
 msgid "Please write in English or French."
-msgstr ""
+msgstr "Por favor, escriba en inglés o francés."
 
 #: bnpview.cpp:351
 msgid ""
@@ -946,8 +937,7 @@ msgstr "Seleccionado color para la cesta <i>%1</i>"
 
 #: bnpview.cpp:1404
 msgid "The plain text notes have been converted to rich text ones."
-msgstr ""
-"Las notas en texto plano han sido convertidas en notas en texto enriquecido."
+msgstr "Las notas en texto plano han sido convertidas en notas en texto enriquecido."
 
 #: bnpview.cpp:1404 bnpview.cpp:1406
 msgid "Conversion Finished"
@@ -1001,8 +991,7 @@ msgid "Delete With its Childs"
 msgstr "Borrar con todas las cestas hijas"
 
 #: bnpview.cpp:1596 bnpview.cpp:1602
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
 msgstr "<qt>¿Desea realmente eliminar <b>%1</b> y sus contenidos?</qt>"
 
 #: bnpview.cpp:1604
@@ -1214,7 +1203,7 @@ msgstr "El listado de claves terminó inesperadamente."
 
 #: kgpgme.cpp:264
 msgid "That public key is not meant for encryption"
-msgstr ""
+msgstr "Esa clave pública no fue creada para encriptación"
 
 #: kgpgme.cpp:307
 msgid "Unsupported algorithm"
@@ -1285,25 +1274,32 @@ msgstr "Alt+O"
 #: likeback.cpp:74
 msgid "Send application developers a comment about something you like"
 msgstr ""
+"Enviar a los desarrolladores de la aplicación un comentario sobre algo que le "
+"gusta"
 
 #: likeback.cpp:81
 msgid "Send application developers a comment about something you dislike"
 msgstr ""
+"Enviar a los desarrolladores de la aplicación un comentario sobre algo que no "
+"le gusta."
 
 #: likeback.cpp:88
 msgid ""
 "Send application developers a comment about an improper behavior of the "
 "application"
 msgstr ""
+"Enviar a los desarrolladores de la aplicación un comentario sobre un "
+"comportamiento anómalo en el programa"
 
 #: likeback.cpp:95
 msgid "Send application developers a comment about a new feature you desire"
 msgstr ""
+"Enviar a los desarrolladores de la aplicación un comentario sobre una nueva "
+"característica que le gustaría"
 
 #: likeback.cpp:382
-#, fuzzy
 msgid "&Send a Comment to Developers"
-msgstr "Enviar un comentario"
+msgstr "&Enviar un comentario a los desarrolladores"
 
 #: likeback.cpp:433
 #, c-format
@@ -1313,188 +1309,184 @@ msgstr "Bienvenido a esta versión de prueba de %1."
 #: likeback.cpp:434
 #, c-format
 msgid "Welcome to %1."
-msgstr ""
+msgstr "Bienvenido a %1."
 
 #: likeback.cpp:436
 msgid "To help us improve it, your comments are important."
 msgstr "Para ayudarnos a mejorar, sus comentarios son importantes."
 
 #: likeback.cpp:439
-#, fuzzy
 msgid ""
 "Each time you have a great or frustrating experience, please click the "
 "appropriate face below the window title-bar, briefly describe what you like "
 "or dislike and click Send."
 msgstr ""
 "Cada vez que tenga una genial o nefasta experiencia, por favor, pulse en la "
-"mano apropiada debajo de la barra de título de la ventana. Describa "
-"brevemente lo que le gustó o le disgustó y pulse en Enviar."
+"cara apropiada debajo de la barra de título de la ventana. Describa "
+"brevemente lo que le gustó o le disgustó y pulse Enviar."
 
 #: likeback.cpp:443
-#, fuzzy
 msgid ""
 "Each time you have a great experience, please click the smiling face below "
 "the window title-bar, briefly describe what you like and click Send."
 msgstr ""
-"Cada vez que tenga una genial o nefasta experiencia, por favor, pulse en la "
-"mano apropiada debajo de la barra de título de la ventana. Describa "
-"brevemente lo que le gustó o le disgustó y pulse en Enviar."
+"Cada vez que tenga un experiencia genial, por favor, pulse en la cara "
+"sonriente debajo de la barra de título de la ventana. Describa brevemente lo "
+"que le gustó y pulse Enviar."
 
 #: likeback.cpp:447
-#, fuzzy
 msgid ""
 "Each time you have a frustrating experience, please click the frowning face "
 "below the window title-bar, briefly describe what you dislike and click Send."
 msgstr ""
-"Cada vez que tenga una genial o nefasta experiencia, por favor, pulse en la "
-"mano apropiada debajo de la barra de título de la ventana. Describa "
-"brevemente lo que le gustó o le disgustó y pulse en Enviar."
+"Cada vez que tenga una experiencia nefasta, por favor, pulse en la "
+"cara enfadada debajo de la barra de título de la ventana. Describa "
+"brevemente lo que le disgustó y pulse Enviar."
 
 #: likeback.cpp:456
-#, fuzzy
 msgid ""
 "Follow the same principle to quickly report a bug: just click the broken-"
 "object icon in the top-right corner of the window, describe it and click "
 "Send."
 msgstr ""
 "Siga la misma mecánica para rápidamente informar de un fallo: simplemente "
-"pulse en el icono de errores en la esquina arriba-derecha de la ventana, "
+"pulse en el icono del objeto roto en la esquina arriba-derecha de la ventana, "
 "descríbalo y pulse Enviar."
 
 #: likeback.cpp:459
-#, fuzzy
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe what is the mis-"
 "behaviour and click Send."
 msgstr ""
-"Cada vez que tenga una genial o nefasta experiencia, por favor, pulse en la "
-"mano apropiada debajo de la barra de título de la ventana. Describa "
-"brevemente lo que le gustó o le disgustó y pulse en Enviar."
+"Cada vez que descubra un error en la aplicación, por favor, pulse en el "
+"icono del objeto rojo bajo la ventana de título de la ventana. Describa "
+"brevemente el comportamietno anómalo y pulse Enviar."
 
 #: likeback.cpp:464
 msgid ""
 "_n: Example:\n"
 "Examples:"
 msgstr ""
+"Ejemplo: "
+"Ejemplos"
 
 #: likeback.cpp:467
 msgid "<b>I like</b> the new artwork. Very refreshing."
-msgstr ""
+msgstr "<b>Me gusta</b> la nueva interfaz. Muy refrescante."
 
 #: likeback.cpp:471
-msgid ""
-"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 msgstr ""
+"<b>No me gusta</b> la página de bienvenida de este asistente. Consume "
+"demasiado tiempo."
 
 #: likeback.cpp:475
-#, fuzzy
 msgid ""
 "<b>The application has an improper behaviour</b> when clicking the Add "
 "button. Nothing happens."
-msgstr "cuando pulso en el botón de Añadir, no ocurre nada."
+msgstr ""
+"<b>La aplicacion tiene un comportamiento anómalo</b> cuando pulso en el "
+"botón Añadir. No ocurre nada."
 
 #: likeback.cpp:479
 msgid "<b>I desire a new feature</b> allowing me to send my work by email."
 msgstr ""
+"<b>Me gustaría disponer de una nueva característica</b> que me permitiera "
+"enviar mi trabajo por correo electrónico."
 
 #: likeback.cpp:482
 msgid "Help Improve the Application"
 msgstr "Ayudar a mejorar la aplicación"
 
 #: likeback.cpp:559
-#, fuzzy
 msgid "Email Address"
-msgstr "Configurar dirección de correo electrónico"
+msgstr "Dirección de correo electrónico"
 
 #: likeback.cpp:560
 msgid "Please provide your email address."
 msgstr "Por favor, introduzca su dirección de correo electrónico."
 
 #: likeback.cpp:561
-#, fuzzy
 msgid ""
 "It will only be used to contact you back if more information is needed about "
 "your comments, ask you how to reproduce the bugs you report, send bug "
 "corrections for you to test, etc."
 msgstr ""
 "Sólo será utilizada para contactarle en caso de que se necesite más "
-"información sobre sus comentarios, cómo reproducir los errores de los cuales "
-"nos informa, enviarle correcciones del error para que las pruebe..."
+"información sobre sus comentarios, preguntarle cómo reproducir los errores "
+"de los cuales nos informa, enviarle correcciones del error para que las "
+"pruebe, etc."
 
 #: likeback.cpp:562
-#, fuzzy
 msgid ""
 "The email address is optional. If you do not provide any, your comments will "
 "be sent anonymously."
 msgstr ""
 "La dirección de correo electrónico es opcional. Si no facilita ninguna, sus "
-"comentarios serán enviados anónimamente. Simplemente pulse Aceptar en tal "
-"caso."
+"comentarios serán enviados anónimamente."
 
 #: likeback.cpp:635
-#, fuzzy
 msgid "Send a Comment to Developers"
-msgstr "Enviar un comentario"
+msgstr "Enviar un comentario a los desarrolladores"
 
 #. i18n("Send Application Developers a Comment About:"), page);
 #: likeback.cpp:665
 msgid "Send Application Developers a Comment About:"
-msgstr ""
+msgstr "Enviar a los desarrolladores de la aplicación un comentario sobre:"
 
 #: likeback.cpp:676
 msgid "Something you &like"
-msgstr ""
+msgstr "Algo que le &gusta"
 
 #: likeback.cpp:686
 msgid "Something you &dislike"
-msgstr ""
+msgstr "Algo que le &disgusta"
 
 #: likeback.cpp:696
 msgid "An improper &behavior of this application"
-msgstr ""
+msgstr "Un &comportamiento anómalo de esta aplicación"
 
 #: likeback.cpp:706
 msgid "A new &feature you desire"
-msgstr ""
+msgstr "Una nueva &característica que desearía"
 
 #: likeback.cpp:719
 msgid "Show comment buttons below &window titlebars"
-msgstr ""
+msgstr "Mostrar botones para comentarios bajo las barras de título de las ventanas"
 
 #: likeback.cpp:723
-#, fuzzy
 msgid "&Send Comment"
-msgstr "Enviar un comentario"
+msgstr "&Enviar un comentario"
 
 #: likeback.cpp:727
-#, fuzzy
 msgid "&Email Address..."
-msgstr "Configurar dirección de correo electrónico"
+msgstr "&Dirección de correo electrónico..."
 
 #: likeback.cpp:744
 #, c-format
 msgid "Please provide a brief description of your opinion of %1."
-msgstr ""
+msgstr "Por favor, proporcione una breve descripción de su opinión sobre %1."
 
 #: likeback.cpp:757
 msgid "Please write in English."
-msgstr ""
+msgstr "Por favor, escriba en inglés."
 
 #: likeback.cpp:763
 msgid "You may be able to use an <a href=\"%1\">online translation tool</a>."
-msgstr ""
+msgstr "Podría utilizar una <a href=\"%1\">herramienta de traducción en línea</a>."
 
 #: likeback.cpp:769
 msgid ""
 "To make the comments you send more useful in improving this application, try "
 "to send the same amount of positive and negative comments."
 msgstr ""
+"Para hacer más útiles los comentarios que envía para mejorar la aplicación, "
+"intente enviar la misma cantidad de comentarios positivos y negativos."
 
 #: likeback.cpp:772
-#, fuzzy
 msgid "Do <b>not</b> ask for new features: your requests will be ignored."
-msgstr "No pida características nuevas: sus deseos serán ignorados."
+msgstr "<b>No</b> pregunte por características nuevas: sus peticiones serán ignoradas."
 
 #: likeback.cpp:836
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
@@ -1687,7 +1679,6 @@ msgid "How is it useful?"
 msgstr "¿Por qué es útil?"
 
 #: newbasketdialog.cpp:215
-#, fuzzy
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or topics;"
@@ -2221,9 +2212,9 @@ msgstr "No se ha seleccionado una clave privada."
 
 #. i18n: file passwordlayout.ui line 44
 #: passwordlayout.cpp:81 rc.cpp:85
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&No protection"
-msgstr "Protección con contraseña"
+msgstr "&Ninguna protección"
 
 #. i18n: file passwordlayout.ui line 47
 #: passwordlayout.cpp:82 rc.cpp:88
@@ -2245,7 +2236,7 @@ msgstr "Alt+P"
 
 #. i18n: file passwordlayout.ui line 82
 #: passwordlayout.cpp:85 rc.cpp:97
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Protect basket with private &key:"
 msgstr "Proteger cesta con una &clave privada"
 
@@ -2300,9 +2291,8 @@ msgid "On right"
 msgstr "A la derecha"
 
 #: settings.cpp:364
-#, fuzzy
 msgid "&Basket tree position:"
-msgstr "Posición de las c&estas en el árbol:"
+msgstr "&Posición del árbol de cestas:"
 
 #: settings.cpp:371 settings.cpp:686
 msgid "On top"
@@ -2318,12 +2308,11 @@ msgstr "Posición de la barra de &filtrado:"
 
 #: settings.cpp:380
 msgid "&Use balloons to report results of global actions"
-msgstr ""
-"&Utilizar globos para informar de los resultados de las acciones globales"
+msgstr "&Utilizar globos para informar de los resultados de las acciones globales"
 
 #: settings.cpp:383
 msgid "What are global actions?"
-msgstr ""
+msgstr "¿Qué son las acciones globales?"
 
 #: settings.cpp:384
 msgid ""
@@ -2333,12 +2322,21 @@ msgid ""
 "wheel over the system tray icon to change the current basket. Or use the "
 "middle mouse button on that icon to paste the current selection."
 msgstr ""
+"Puede configurar accesos rápidos globales para realizar diversas acciones sin "
+"tener que mostrar la ventana principal. Por ejemplo, puede pegar el contenido "
+"del portapapeles, tomar un color de un punto de la pantalla, etc. Puede "
+"también utilizar la rueda de desplazamiento del ratón sobre la bandeja del "
+"sistema para cambiar la cesta actual, o utilizar el botón central del ratón en "
+"ese icono para pegar la selección actual."
 
 #: settings.cpp:387
 msgid ""
 "When doing so, %1 pops up a little balloon message to inform you the action "
 "has been successfully done. You can disable that balloon."
 msgstr ""
+"Cuando lo haga, %1 muestra un pequeño mensaje en forma de globo para "
+"informarle de que la acción se ha realizado correctamente. Puede deshabilitar "
+"dicho globo."
 
 #: settings.cpp:388
 msgid ""
@@ -2346,26 +2344,25 @@ msgid ""
 "is visible. This is because you already see the result of your actions in "
 "the main window."
 msgstr ""
+"Tenga en cuenta que dichos mensajes son lo suficientemente inteligenes como "
+"para no aparecer si la ventana principal está visible. Esto se debe a que "
+"usted ya ve el resultado de sus acciones en la ventana principal."
 
 #: settings.cpp:397
 msgid "System Tray Icon"
 msgstr "Icono de la bandeja del sistema"
 
 #: settings.cpp:402
-#, fuzzy
 msgid "&Dock in system tray"
-msgstr "&Anclar en la bandeja del sistema"
+msgstr "Anclar en la ban&deja del sistema"
 
 #: settings.cpp:411
-#, fuzzy
 msgid "&Show current basket icon in system tray icon"
-msgstr "Mostrar el icono de la cesta act&ual en la bandeja del sistema"
+msgstr "Mo&strar el icono de la cesta actual en la bandeja del sistema"
 
 #: settings.cpp:421
-#, fuzzy
 msgid "&Hide main window when mouse goes out of it for"
-msgstr ""
-"Ocul&tar la ventana principal cuando el ratón esté fuera de ella durante"
+msgstr "&Ocultar la ventana principal cuando el ratón esté fuera de ella durante"
 
 #: settings.cpp:423 settings.cpp:434
 msgid " tenths of seconds"
@@ -2382,31 +2379,30 @@ msgid "Ani&mate changes in baskets"
 msgstr "Ani&mar cambios en las cestas"
 
 #: settings.cpp:509
-#, fuzzy
 msgid "&Show tooltips in baskets"
-msgstr "&Mostrar los consejos en las cestas"
+msgstr "Mo&strar los consejos en las cestas"
 
 #: settings.cpp:512
-#, fuzzy
 msgid "&Big notes"
 msgstr "Notas &grandes"
 
 #: settings.cpp:517
 msgid "Behavior"
-msgstr ""
+msgstr "Comportamiento"
 
 #: settings.cpp:520
 msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
+"&Transformar las líneas que empiecen por * o - en listas en los editores de "
+"texto"
 
 #: settings.cpp:523
 msgid "Ask confirmation before &deleting notes"
 msgstr "Pe&dir confirmación antes de borrar notas"
 
 #: settings.cpp:528
-#, fuzzy
 msgid "&Export tags in texts"
-msgstr "E&xportar etiquetas en los textos"
+msgstr "&Exportar etiquetas en textos"
 
 #: settings.cpp:534 tagsedit.cpp:485
 msgid "When does this apply?"
@@ -2421,8 +2417,7 @@ msgstr ""
 "texto."
 
 #: settings.cpp:536
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr ""
 "Si está activada, esta propiedad le permite pegar las etiquetas como sus "
 "equivalentes textuales."
@@ -2439,8 +2434,7 @@ msgstr ""
 
 #: settings.cpp:547
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr ""
-"A&grupar una nota nueva cuando se pulse a la derecha de la linea de inserción"
+msgstr "A&grupar una nota nueva cuando se pulse a la derecha de la linea de inserción"
 
 #: settings.cpp:551
 msgid "How to group a new note?"
@@ -2482,29 +2476,24 @@ msgid "Insert launcher note"
 msgstr "Insertar nota de lanzador"
 
 #: settings.cpp:576
-#, fuzzy
 msgid "Insert color from screen"
-msgstr "Elegir un color de la pantalla"
+msgstr "Insertar color desde la pantalla"
 
 #: settings.cpp:577
-#, fuzzy
 msgid "Load note from file"
-msgstr "Car&gar desde archivo..."
+msgstr "Cargar nota desde archivo"
 
 #: settings.cpp:578
-#, fuzzy
 msgid "Import Launcher from KDE Menu"
-msgstr "Importar lanzador del menú de &KDE..."
+msgstr "Importar lanzador del menú de KDE"
 
 #: settings.cpp:579
-#, fuzzy
 msgid "Import icon"
-msgstr "Im&portar icono..."
+msgstr "Importar icono"
 
 #: settings.cpp:580
-#, fuzzy
 msgid "&Shift+middle-click anywhere:"
-msgstr "&Mayúsculas + botón central:"
+msgstr "&Mayúsculas + botón central en cualquier sitio:"
 
 #: settings.cpp:583
 msgid "at cursor position"
@@ -2512,21 +2501,19 @@ msgstr "en la posición del cursor"
 
 #: settings.cpp:594
 msgid "A&utomatically lock protected baskets when closed for"
-msgstr ""
+msgstr "Bloquear a&utomáticamente las cestas protegidas cuando estén cerradas durante"
 
 #: settings.cpp:598
-#, fuzzy
 msgid " minutes"
-msgstr "Sin notas"
+msgstr " minutos"
 
 #: settings.cpp:609
 msgid "Use GnuPG agent for &private/public key protected baskets"
-msgstr ""
-"Usar el agente GnuPG para cestas protegidas con claves &privadas/públicas"
+msgstr "Usar el agente GnuPG para cestas protegidas con claves &privadas/públicas"
 
 #: settings.cpp:685
 msgid "&Place of new notes:"
-msgstr ""
+msgstr "&Lugar de las nuevas notas:"
 
 #: settings.cpp:688
 msgid "At current note"
@@ -2553,9 +2540,8 @@ msgid "View Content of Added Files for the Following Types"
 msgstr "Ver el contenido de los archivos añadidos para los siguientes tipos"
 
 #: settings.cpp:727
-#, fuzzy
 msgid "&Plain text"
-msgstr "&Texto plano"
+msgstr "Texto &plano"
 
 #: settings.cpp:728
 msgid "&HTML page"
@@ -2695,8 +2681,7 @@ msgstr ""
 
 #: settings.cpp:917
 msgid "How to change the applications used to open files and links?"
-msgstr ""
-"¿Cómo cambiar las aplicaciones utilizadas para abrir archivos y enlaces?"
+msgstr "¿Cómo cambiar las aplicaciones utilizadas para abrir archivos y enlaces?"
 
 #: settings.cpp:918
 msgid ""
@@ -2767,8 +2752,7 @@ msgid "From Tomboy"
 msgstr "Desde Tomboy"
 
 #: softwareimporters.cpp:548
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "No se puede importar este archivo. O está corrupto o no es un archivo de "
 "TuxCards."
@@ -3089,8 +3073,7 @@ msgstr ""
 "todas las líneas de la nota."
 
 #: tagsedit.cpp:888
-msgid ""
-"Deleting the tag will remove it from every notes it is currently assigned to."
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
 msgstr ""
 "Eliminar la etiqueta la borrará de todas las notas a las que está asignada "
 "actualmente."
@@ -3155,128 +3138,3 @@ msgstr ""
 "Redimensione la ventana para escoger el tamaño de la imagen\n"
 "y ciérrela o bien pulse Escape para aceptar los cambios."
 
-#~ msgid "A set of baskets to keep a full range of data on hand."
-#~ msgstr ""
-#~ "Un conjunto de cestas para mantener toda una gama de datos al alcance de "
-#~ "la mano."
-
-#~ msgid "Only english and french languages are accepted."
-#~ msgstr "Sólo se aceptan los idiomas inglés y francés."
-
-#~ msgid "Invalid recipient encountered"
-#~ msgstr "Se encontró un destinatario no válido"
-
-#~ msgid "I Like..."
-#~ msgstr "Me gusta..."
-
-#~ msgid "I Do not Like..."
-#~ msgstr "No me gusta..."
-
-#~ msgid "I Found a Bug..."
-#~ msgstr "Encontré un fallo..."
-
-#~ msgid "Configure..."
-#~ msgstr "Configurar..."
-
-#~ msgid "What's &This?"
-#~ msgstr "¿&Qué es esto?"
-
-#~ msgid "&Change or Remove Email Address..."
-#~ msgstr "&Cambiar o eliminar dirección de correo electrónico..."
-
-#~ msgid "&Do not Help Anymore"
-#~ msgstr "&No ayudar más"
-
-#~ msgid ""
-#~ "Are you sure you do not want to participate anymore in the application "
-#~ "enhancing program?"
-#~ msgstr ""
-#~ "¿Está seguro de que no desea participar más en el programa de mejora de "
-#~ "la aplicación?"
-
-#~ msgid "Do not Help Anymore"
-#~ msgstr "No ayudar más"
-
-#~ msgid "Examples:"
-#~ msgstr "Ejemplos:"
-
-#~ msgid "I like..."
-#~ msgstr "Me gusta..."
-
-#~ msgid ""
-#~ "_: I like...\n"
-#~ "the nice new artwork."
-#~ msgstr "la nueva apariencia del programa."
-
-#~ msgid "Very refreshing."
-#~ msgstr "Muy refrescante."
-
-#~ msgid "I do not like..."
-#~ msgstr "No me gusta..."
-
-#~ msgid ""
-#~ "_: I do not like...\n"
-#~ "the welcome page of that wizard."
-#~ msgstr "la página de bienvenida de ese asistente."
-
-#~ msgid "Too time consuming."
-#~ msgstr "Se muestra demasiado tiempo."
-
-#~ msgid "I found a bug..."
-#~ msgstr "Encontré un fallo..."
-
-#~ msgid ""
-#~ "You can change or remove your email address whenever you want. For that, "
-#~ "use the little arrow icon at the top-right corner of a window."
-#~ msgstr ""
-#~ "Puede cambiar o eliminar su dirección de correo electrónico cuando lo "
-#~ "crea necesario. Para ello, utilice el pequeño icono con forma de flecha "
-#~ "en la esquina arriba-derecha de la ventana."
-
-#~ msgid "Your email address (keep empty to post comments anonymously):"
-#~ msgstr ""
-#~ "Su dirección de correo electrónico (deje el campo vacío para enviar sus "
-#~ "comentarios anónimamente):"
-
-#~ msgid "Please briefly describe what you like."
-#~ msgstr "Por favor, describa brevemente lo que le gusta."
-
-#~ msgid "Please briefly describe what you do not like."
-#~ msgstr "Por favor, describa brevemente lo que no le gusta."
-
-#~ msgid "Please briefly describe the bug you encountered."
-#~ msgstr "Por favor, describa el fallo que ha encontrado."
-
-#~ msgid "Send"
-#~ msgstr "Enviar"
-
-#~ msgid "Only english language is accepted."
-#~ msgstr "Sólo se acepta en inglés."
-
-#~ msgid ""
-#~ "Note that to improve this application, it's important to tell us the "
-#~ "things you like as much as the things you dislike."
-#~ msgstr ""
-#~ "Tenga en cuenta que, para mejorar la aplicación, es importante que nos "
-#~ "diga tanto las cosas que le gustan como las que no."
-
-#~ msgid "Hide &Toolbar"
-#~ msgstr "Ocultar barra de herramien&tas"
-
-#~ msgid "&No password"
-#~ msgstr "&Ninguna contraseña"
-
-#~ msgid "New notes &place:"
-#~ msgstr "&Posición de las nuevas notas:"
-
-#~ msgid "Customize look of file, sound, link and launcher notes:"
-#~ msgstr ""
-#~ "Personalizar la apariencia de las notas de archivo, sonido, enlace y "
-#~ "lanzador:"
-
-#~ msgid ""
-#~ "This page groups non-standard options that, once learned,\n"
-#~ "can be very powerful and time saving in the context of %1:"
-#~ msgstr ""
-#~ "Esta página contiene opciones no estándar que pueden ser muy potentes\n"
-#~ " y eficientes en el contexto de %1 una vez aprendidas:"
