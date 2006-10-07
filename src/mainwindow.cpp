@@ -121,6 +121,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	setStandardToolBarMenuEnabled(true);
 
 	createGUI("basketui.rc");
+	applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
 }
 
 MainWindow::~MainWindow()
