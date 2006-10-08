@@ -451,10 +451,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Don't forget to update the key computation if parameters
 	// affecting the rendering logic change
-	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11.%12")
+	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11.%12.%13")
 		.arg(effectiveWidth)
 		.arg(drawRoundRect)
 		.arg(textColor.rgb())
+		.arg(m_basket->backgroundColor().rgb())
 		.arg(isCurrentBasket())
 		.arg(shownBelow && shownBelow->isCurrentBasket())
 		.arg(shownAbove && shownAbove->isCurrentBasket())
@@ -649,7 +650,6 @@ void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
 
 void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 {
-	std::cout << "BasketTreeListView::contentsDragEnterEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem")) {
 		QListViewItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (it.current()) {
