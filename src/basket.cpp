@@ -4426,7 +4426,7 @@ void Basket::linkLookChanged()
 	relayoutNotes(true);
 }
 
-void Basket::slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool)
+/*void Basket::slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool)
 {
 	Note *note = noteForFullPath(to.path());
 	DEBUG_WIN << "Copy finished, load note: " + to.path() + (note ? "" : " --- NO CORRESPONDING NOTE");
@@ -4437,7 +4437,7 @@ void Basket::slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, boo
 		if (m_focusedNote == note)   // When inserting a new note we ensure it visble
 			ensureNoteVisible(note); //  But after loading it has certainly grown and if it was
 	}                                //  on bottom of the basket it's not visible entirly anymore
-}
+}*/
 
 void Basket::slotCopyingDone2(KIO::Job *job)
 {

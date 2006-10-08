@@ -576,7 +576,7 @@ public slots:
 	void contentsDragMoveEvent(QDragMoveEvent *event);
 	void contentsDragLeaveEvent(QDragLeaveEvent*);
   public slots:
-	void slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool);
+//	void slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool);
 	void slotCopyingDone2(KIO::Job *job);
   public:
 	Note* noteForFullPath(const QString &path);

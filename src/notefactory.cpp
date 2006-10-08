@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -684,9 +684,18 @@ Note* NoteFactory::copyFileAndLoad(const KURL &url, Basket *parent)
 
 //	QString annotations = i18n("Original file: %1").arg(url.prettyURL());
 //	parent->dontCareOfCreation(fullPath);
-	KIO::CopyJob *copyJob = KIO::copy(url, KURL(fullPath));
-	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
-					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
+
+
+//	KIO::CopyJob *copyJob = KIO::copy(url, KURL(fullPath));
+//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
+//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
+
+	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
+			url, KURL(fullPath), 0666, /*move=*/false,
+			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
+	parent->connect( copyJob,  SIGNAL(result(KIO::Job *)),
+					 parent, SLOT(slotCopyingDone2(KIO::Job *)) );
+
 
 	NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet
 	return loadFile(fileName, type, parent);
@@ -703,9 +712,18 @@ Note* NoteFactory::moveFileAndLoad(const KURL &url, Basket *parent)
 
 //	QString annotations = i18n("Original file: %1").arg(url.prettyURL());
 //	parent->dontCareOfCreation(fullPath);
-	KIO::CopyJob *copyJob = KIO::move(url, KURL(fullPath));
-	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
-					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
+
+
+//	KIO::CopyJob *copyJob = KIO::move(url, KURL(fullPath));
+//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)),
+//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KURL &, const KURL &, bool, bool)) );
+
+	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
+			url, KURL(fullPath), 0666, /*move=*/true,
+			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
+	parent->connect( copyJob,  SIGNAL(result(KIO::Job *)),
+					 parent, SLOT(slotCopyingDone2(KIO::Job *)) );
+
 
 	NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet
 	return loadFile(fileName, type, parent);
