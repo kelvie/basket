@@ -1649,6 +1649,8 @@ void BNPView::doBasketDeletion(Basket *basket)
 	DecoratedBasket *decoBasket = basket->decoration();
 	basket->deleteFiles();
 	removeBasket(basket);
+	// Remove the action to avoir keyboard-shortcut clashes:
+	delete basket->m_action; // FIXME: It's quick&dirty. In the future, the Basket should be deleted, and then the KAction deleted in the Basket destructor.
 	delete decoBasket;
 //	delete basket;
 }
