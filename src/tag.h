@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +34,7 @@ class QPainter;
 class Tag;
 
 /**
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class State
 {
@@ -104,7 +104,7 @@ class State
 /** A Tag is a category of Notes.
   * A Note can have 0, 1 or more Tags.
   * A Tag can have a unique State or several States.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class Tag
 {
@@ -126,7 +126,7 @@ class Tag
 	Tag(/*State *firstState, const QString &name, bool inheritedBySiblings*/);
 	~Tag();
 	/// SET PROPERTIES:
-	void setName(const QString &name)           { m_name = name;                                     }
+	void setName(const QString &name);
 	void setShortcut(const KShortcut &shortcut) { m_action->setShortcut(shortcut);                   }
 	void setInheritedBySiblings(bool inherited) { m_inheritedBySiblings = inherited;                 }
 	void appendState(State *state)              { m_states.append(state); state->setParentTag(this); }
@@ -156,7 +156,7 @@ class QPainter;
   * You should not set any icon when adding this entry to the menu.
   * Instead, the constructor take the icon and the item take care to draw it itself.
   * Better suited to be used with StateMenuItem (or TagMenuItem).
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class IndentedMenuItem : public QCustomMenuItem
 {
@@ -173,7 +173,7 @@ class IndentedMenuItem : public QCustomMenuItem
 };
 
 /** A menu item representing a State or a Tag.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class StateMenuItem : public QCustomMenuItem
 {

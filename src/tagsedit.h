@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -113,7 +113,7 @@ class TagListView : public QListView
 };
 
 /**
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class TagsEditDialog : public KDialogBase
 {
@@ -136,6 +136,7 @@ class TagsEditDialog : public KDialogBase
 	void removeEmblem();
 	void modified();
 	void currentItemChanged(QListViewItem *item);
+	void slotCancel();
 	void slotOk();
 	void selectUp();
 	void selectDown();

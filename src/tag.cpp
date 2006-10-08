@@ -231,6 +231,13 @@ Tag::Tag()
 
 Tag::~Tag()
 {
+	delete m_action;
+}
+
+void Tag::setName(const QString &name)
+{
+	m_name = name;
+	m_action->setText("TAG SHORTCUT: " + name); // TODO: i18n  (for debug purpose only by now).
 }
 
 State* Tag::stateForId(const QString &id)

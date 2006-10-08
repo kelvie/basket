@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -910,6 +910,8 @@ void TagsEditDialog::deleteTag()
 			m_addedStates.remove(stateCopy->newState);
 		}
 		m_tagCopies.remove(item->tagCopy());
+		// Remove the new tag, to avoid keyboard-shortcut clashes:
+		delete item->tagCopy()->newTag;
 	} else {
 		TagListViewItem *parentItem = item->parent();
 		// Remove the state:
@@ -1131,14 +1133,28 @@ void TagsEditDialog::saveTagTo(Tag *tag)
 	tag->setInheritedBySiblings(m_inherit->isChecked());
 }
 
+void TagsEditDialog::slotCancel()
+{
+	// All copies of tag have a shortcut, that is stored as a QAction.
+	// So, shortcuts are duplicated, and if the user press one tag keyboard-shortcut in the main window, there is a conflict.
+	// We then should delete every copies:
+	for (TagCopy::List::iterator tagCopyIt = m_tagCopies.begin(); tagCopyIt != m_tagCopies.end(); ++tagCopyIt) {
+		delete (*tagCopyIt)->newTag;
+	}
+
+	KDialogBase::slotCancel();
+}
+
 void TagsEditDialog::slotOk()
 {
 	Tag::all.clear();
 	for (TagCopy::List::iterator tagCopyIt = m_tagCopies.begin(); tagCopyIt != m_tagCopies.end(); ++tagCopyIt) {
 		TagCopy *tagCopy = *tagCopyIt;
 		// Copy changes to the tag and append in the list of tags::
-		if (tagCopy->oldTag)
+		if (tagCopy->oldTag) {
 			tagCopy->newTag->copyTo(tagCopy->oldTag);
+			delete tagCopy->newTag;
+		}
 		Tag *tag = (tagCopy->oldTag ? tagCopy->oldTag : tagCopy->newTag);
 		Tag::all.append(tag);
 		// And change all states:

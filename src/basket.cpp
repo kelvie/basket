@@ -901,6 +901,8 @@ void Basket::setAppearance(const QString &icon, const QString &name, const QStri
 	m_backgroundColorSetting = backgroundColor;
 	m_textColorSetting       = textColor;
 
+	m_action->setText("BASKET SHORTCUT: " + name);
+
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
 	QPixmap iconTest = kapp->iconLoader()->loadIcon(m_icon, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
 	if (iconTest.isNull())
