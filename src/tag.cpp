@@ -76,7 +76,7 @@ State* State::nextState(bool cycle /*= true*/)
 QString State::fullName()
 {
 	if (!parentTag() || parentTag()->states().count() == 1)
-		return name();
+		return (name().isEmpty() && parentTag() ? parentTag()->name() : name());
 	return QString(i18n("%1: %2")).arg(parentTag()->name(), name());
 }
 
