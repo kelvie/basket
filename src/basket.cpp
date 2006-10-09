@@ -4386,12 +4386,12 @@ void Basket::moveSelectionTo(Note *here, bool below/* = true*/)
 	unplugSelection(selection);
 	// Replug the notes:
 	Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
-	if (isColumnsLayout())
+//	if (isColumnsLayout())
 		insertNote(fakeNote, here, (below ? Note::BottomInsert : Note::TopInsert), QPoint(), /*animateNewPosition=*/false);
-	else {
-		// TODO: Also allow to move notes on top of a group!!!!!!!
-		insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
-	}
+//	else {
+//		// TODO: Also allow to move notes on top of a group!!!!!!!
+//		insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+//	}
 	insertSelection(selection, fakeNote);
 	unplugNote(fakeNote);
 	selectSelection(selection);
