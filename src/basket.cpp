@@ -4255,15 +4255,24 @@ void Basket::noteGroup()
 
 	// Create and insert the receiving group:
 	Note *group = new Note(this);
-	insertNote(group, first, Note::TopInsert, QPoint(), /*animateNewPosition=*/false);
+	if (first->isFree()) {
+		insertNote(group, 0L, Note::BottomColumn, QPoint(first->finalX(), first->finalY()), /*animateNewPosition=*/false);
+	} else {
+		insertNote(group, first, Note::TopInsert, QPoint(), /*animateNewPosition=*/false);
+	}
 
 	// Put a FAKE UNSELECTED note in the new group, so if the new group is inside an allSelected() group, the parent group is not moved inside the new group!
 	Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
 	insertNote(fakeNote, group, Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
 
 	// Group the notes:
-	FOR_EACH_NOTE (note)
+	Note *nextNote;
+	Note *note = firstNote();
+	while (note) {
+		nextNote = note->next();
 		note->groupIn(group);
+		note = nextNote;
+	}
 
 	m_loaded = true; // Part 2 / 2 of the workarround!
 
