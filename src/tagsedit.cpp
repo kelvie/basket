@@ -733,13 +733,14 @@ void TagsEditDialog::newTag()
 	} else
 		item = new TagListViewItem(m_tags, newTagCopy);
 
+	m_deleteTag->setEnabled(true);
+	m_tagBox->setEnabled(true);
+
 	// Add to the "controler":
 	m_tags->setCurrentItem(item);
 	currentItemChanged(item);
+	item->setSelected(true);
 	m_tagName->setFocus();
-
-	m_deleteTag->setEnabled(true);
-	m_tagBox->setEnabled(true);
 }
 
 void TagsEditDialog::newState()
