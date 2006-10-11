@@ -1298,10 +1298,10 @@ void BNPView::updateNotesActions()
 	m_actSaveNoteAs      ->setEnabled(              oneSelected          ); // IDEM?
 	m_actGroup           ->setEnabled( !isLocked && severalSelected && (!selectedGroup || selectedGroup->isColumn()) );
 	m_actUngroup         ->setEnabled( !isLocked && selectedGroup && !selectedGroup->isColumn() );
-	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected );
+	m_actMoveOnTop       ->setEnabled( !isLocked && oneOrSeveralSelected && !currentBasket()->isFreeLayout() );
 	m_actMoveNoteUp      ->setEnabled( !isLocked && oneOrSeveralSelected ); // TODO: Disable when unavailable!
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );
-	m_actMoveOnBottom    ->setEnabled( !isLocked && oneOrSeveralSelected );
+	m_actMoveOnBottom    ->setEnabled( !isLocked && oneOrSeveralSelected && !currentBasket()->isFreeLayout() );
 
 	for (KAction *action = m_insertActions.first(); action; action = m_insertActions.next())
 		action->setEnabled( !isLocked );
