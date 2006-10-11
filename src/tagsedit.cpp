@@ -372,8 +372,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *rightWidget = new QWidget(plainPage());
 
-	QGroupBox *tagBox    = new QGroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
-	QWidget   *tagWidget = new QWidget(tagBox);
+	m_tagBox             = new QGroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
+	QWidget   *tagWidget = new QWidget(m_tagBox);
 
 	m_tagName = new QLineEdit(tagWidget);
 	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
@@ -536,7 +536,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	stateGrid->addMultiCellLayout(textEquivalentGrid,     /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/0, /*toCol=*/6);
 
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget, /*margin=*/0, spacingHint());
-	rightLayout->addWidget(tagBox);
+	rightLayout->addWidget(m_tagBox);
 	rightLayout->addWidget(m_stateBox);
 	rightLayout->addStretch();
 
@@ -629,6 +629,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		m_moveUp->setEnabled(false);
 		m_moveDown->setEnabled(false);
 		m_deleteTag->setEnabled(false);
+		m_tagBox->setEnabled(false);
+		m_stateBox->setEnabled(false);
 	}
 	// TODO: Disabled both boxes if no tag!!!
 
@@ -663,7 +665,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	m_tags->setMinimumSize(
 		m_tags->sizeHint().width() * 2,
-		tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
+		m_tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
 	);
 
 	if (addNewTag)
@@ -737,6 +739,7 @@ void TagsEditDialog::newTag()
 	m_tagName->setFocus();
 
 	m_deleteTag->setEnabled(true);
+	m_tagBox->setEnabled(true);
 }
 
 void TagsEditDialog::newState()
@@ -943,8 +946,11 @@ void TagsEditDialog::deleteTag()
 	if (m_tags->currentItem())
 		m_tags->currentItem()->setSelected(true);
 
-	if (!m_tags->firstChild())
+	if (!m_tags->firstChild()) {
 		m_deleteTag->setEnabled(false);
+		m_tagBox->setEnabled(false);
+		m_stateBox->setEnabled(false);
+	}
 }
 
 void TagsEditDialog::renameIt()

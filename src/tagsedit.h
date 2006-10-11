@@ -158,6 +158,7 @@ class TagsEditDialog : public KDialogBase
 	KKeyButton    *m_shortcut;
 	QPushButton   *m_removeShortcut;
 	QCheckBox     *m_inherit;
+	QGroupBox     *m_tagBox;
 	QGroupBox     *m_stateBox;
 	QLabel        *m_stateNameLabel;
 	QLineEdit     *m_stateName;
