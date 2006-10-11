@@ -625,6 +625,10 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		if (stateToEdit == 0)
 			m_tags->ensureVisible(0, 0);
 		m_tags->setFocus();
+	} else {
+		m_moveUp->setEnabled(false);
+		m_moveDown->setEnabled(false);
+		m_deleteTag->setEnabled(false);
 	}
 	// TODO: Disabled both boxes if no tag!!!
 
@@ -731,6 +735,8 @@ void TagsEditDialog::newTag()
 	m_tags->setCurrentItem(item);
 	currentItemChanged(item);
 	m_tagName->setFocus();
+
+	m_deleteTag->setEnabled(true);
 }
 
 void TagsEditDialog::newState()
@@ -879,6 +885,9 @@ void TagsEditDialog::selectRight()
 
 void TagsEditDialog::deleteTag()
 {
+	if (!m_deleteTag->isEnabled())
+		return;
+
 	TagListViewItem *item = m_tags->currentItem();
 
 	int result = KMessageBox::Continue;
@@ -933,6 +942,9 @@ void TagsEditDialog::deleteTag()
 	delete item;
 	if (m_tags->currentItem())
 		m_tags->currentItem()->setSelected(true);
+
+	if (!m_tags->firstChild())
+		m_deleteTag->setEnabled(false);
 }
 
 void TagsEditDialog::renameIt()
