@@ -1,5 +1,5 @@
 %define name basket
-%define version 0.6.0Beta2.2
+%define version 0.6.0
 %define release mantic0
 
 Summary: Taking care of your ideas.
