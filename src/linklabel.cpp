@@ -56,6 +56,7 @@ LinkLook::LinkLook(bool useLinkColor, bool canPreview)
 {
 	m_useLinkColor = useLinkColor;
 	m_canPreview   = canPreview;
+	m_iconSize     = 0;
 }
 
 LinkLook::LinkLook(const LinkLook &other)
@@ -210,8 +211,11 @@ void LinkLabel::setLink(const QString &title, const QString &icon, LinkLook *loo
 
 	if (icon.isEmpty())
 		m_icon->clear();
-	else
-		m_icon->setPixmap( DesktopIcon(icon, m_look->iconSize()) );
+	else {
+		QPixmap pixmap = DesktopIcon(icon, m_look->iconSize(), m_look->iconSize(), kapp);
+		if (!pixmap.isNull())
+			m_icon->setPixmap(pixmap);
+	}
 	m_icon->setShown( ! icon.isEmpty() );
 
 	if (look)
