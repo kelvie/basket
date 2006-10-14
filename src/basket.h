@@ -499,6 +499,7 @@ public slots:
 /// ACTIONS ON SELECTED NOTES FROM THE INTERFACE:
   public slots:
 	void noteEdit(Note *note = 0L, bool justAdded = false, const QPoint &clickedPoint = QPoint());
+	void showEditedNoteWhileFiltering();
 	void noteDelete();
 	void noteDeleteWithoutConfirmation(bool deleteFilesToo = true);
 	void noteCopy();

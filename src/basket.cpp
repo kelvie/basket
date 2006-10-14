@@ -3855,6 +3855,19 @@ NoteSelection* Basket::selectedNotes()
 	}
 }
 
+void Basket::showEditedNoteWhileFiltering()
+{
+	if (m_editor) {
+		Note *note = m_editor->note();
+		filterAgain();
+		note->setSelected(true);
+		relayoutNotes(false);
+		note->setX(note->finalX());
+		note->setY(note->finalY());
+		filterAgainDelayed();
+	}
+}
+
 void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) // TODO: Remove the first parameter!!!
 {
 	if (!note)
@@ -3870,6 +3883,10 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 	if (note != m_focusedNote) {
 		setFocusedNote(note);
 		m_startOfShiftSelectionNote = note;
+	}
+
+	if (justAdded && isFiltering()) {
+		QTimer::singleShot( 0, this, SLOT(showEditedNoteWhileFiltering()) );
 	}
 
 	doHoverEffects(note, Note::Content); // Be sure (in the case Edit was triggered by menu or Enter key...): better feedback!
