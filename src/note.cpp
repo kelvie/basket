@@ -859,7 +859,11 @@ void Note::setWidthForceRelayout(int width)
 	m_width = (width < minWidth() ? minWidth() : width);
 	int contentWidth = width - contentX() - NOTE_MARGIN;
 	if (m_content) { ///// FIXME: is this OK?
-		m_height = m_content->setWidthAndGetHeight(contentWidth < 1 ? 1 : contentWidth) + 2 * NOTE_MARGIN;
+		if (contentWidth < 1)
+			contentWidth = 1;
+		if (contentWidth < m_content->minWidth())
+			contentWidth = m_content->minWidth();
+		m_height = m_content->setWidthAndGetHeight(contentWidth/* < 1 ? 1 : contentWidth*/) + 2 * NOTE_MARGIN;
 		if (m_height < 3 * INSERTION_HEIGHT) // Assure a minimal size...
 			m_height = 3 * INSERTION_HEIGHT;
 	}
