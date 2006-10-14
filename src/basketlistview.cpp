@@ -259,8 +259,8 @@ extern void drawGradient( QPainter *p, const QColor &colorTop, const QColor & co
 
 QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color)
 {
-	QString key = QString("BLI-%1.%2.%3")
-		.arg(text).arg(font.toString()).arg(color.rgb());
+	QString key = QString("BLI-%1.%2.%3.%4")
+		.arg(text).arg(height).arg(font.toString()).arg(color.rgb());
 	if (QPixmap* cached=QPixmapCache::find(key)) {
 		return *cached;
 	}
@@ -451,7 +451,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Don't forget to update the key computation if parameters
 	// affecting the rendering logic change
-	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11.%12.%13")
+	QString key = QString("BLVI::pC-%1.%2.%3.%4.%5.%6.%7.%8.%9.%10.%11.%12.%13.%14.%15")
 		.arg(effectiveWidth)
 		.arg(drawRoundRect)
 		.arg(textColor.rgb())
@@ -462,6 +462,8 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		.arg(showLoadingIcon)
 		.arg(showEncryptedIcon)
 		.arg(showCountPixmap)
+		.arg(m_basket->countFounds())
+		.arg(countHiddenChildsFound())
 		.arg(m_isUnderDrag)
 		.arg(m_basket->basketName())
 		.arg(m_basket->icon());
