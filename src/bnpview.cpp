@@ -941,8 +941,8 @@ void BNPView::newFilter()
 		if (item->basket() != current)
 			if (isFilteringAllBaskets())
 				item->basket()->decoration()->filterBar()->setFilterData(filterData); // Set the new FilterData for every other baskets
-		else
-			item->basket()->decoration()->filterBar()->setFilterData(FilterData()); // We just disabled the global filtering: remove the FilterData
+			else
+				item->basket()->decoration()->filterBar()->setFilterData(FilterData()); // We just disabled the global filtering: remove the FilterData
 		++it;
 	}
 
@@ -961,6 +961,7 @@ void BNPView::newFilter()
 				Basket *basket = item->basket();
 				if (!basket->loadingLaunched() && !basket->isLocked())
 					basket->load();
+				basket->filterAgain();
 				m_tree->triggerUpdate();
 				kapp->processEvents();
 				if (shouldRestart) {
