@@ -1312,6 +1312,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_count(0), m_countFounds(0), m_countSelecteds(0),
    m_folderName(folderName),
    m_editor(0), m_leftEditorBorder(0), m_rightEditorBorder(0), m_redirectEditActions(false), m_editorWidth(-1), m_editorHeight(-1),
+   m_doNotCloseEditor(false),
    m_isDuringDrag(false), m_draggedNotes(),
    m_focusedNote(0), m_startOfShiftSelectionNote(0)
 {
@@ -1894,6 +1895,10 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// Should, of course, not return 0:
 	Note *clicked = noteAt(event->pos().x(), event->pos().y());
 
+	if (NoteFactory::movingNotesInTheSameBasket(event, this, event->action()) && event->action() == QDropEvent::Move) {
+		m_doNotCloseEditor = true;
+	}
+
 	Note *note = NoteFactory::dropNote( event, this, true, event->action(), dynamic_cast<Note*>(event->source()) );
 
 	if (note) {
@@ -1922,6 +1927,10 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	}
 
 	m_draggedNotes.clear();
+
+	m_doNotCloseEditor = false;
+	if (m_editor)
+		QTimer::singleShot( 0, m_editor->widget(), SLOT(setFocus()) );
 }
 
 // handles dropping of a note to basket that is not shown
@@ -3735,9 +3744,15 @@ void Basket::closeEditorDelayed()
 
 bool Basket::closeEditor()
 {
-        fprintf(stderr,"Editor is being closed\n");
+	fprintf(stderr,"Editor is being closed\n");
+
 	if (!isDuringEdit())
 		return true;
+
+	if (m_doNotCloseEditor) {
+		fprintf(stderr,"But close canceled\n");
+		return true;
+	}
 
 	if (m_redirectEditActions) {
 		disconnect( m_editor->widget(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()) );
