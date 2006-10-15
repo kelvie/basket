@@ -1583,7 +1583,10 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				case 2: type = NoteType::Image;    break;
 				case 3: type = NoteType::Link;     break;
 				case 4: type = NoteType::Launcher; break;
-				case 5: type = NoteType::Color;    break;
+				default:
+					m_noActionOnMouseRelease = false;
+					return; // Other options should be done on mouse release (to avoid mouse release to cancel them!)
+/*				case 5: type = NoteType::Color;    break;
 				case 6:
 					Global::bnpView->grabScreenshot();
 					break;
@@ -1599,7 +1602,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				case 10:
 					Global::bnpView->insertWizard(2); // importIcon
 					break;
-			}
+*/			}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;
 				Global::bnpView->insertEmpty(type);
@@ -2157,6 +2160,42 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 	// the menu then receive the mousePress event and the basket area ONLY receive the mouseRelease event.
 	// Obviously, nothing should be done in this case:
 	m_noActionOnMouseRelease = true;
+
+
+
+	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
+		if ((Settings::middleAction() != 0) && (event->stateAfter() == Qt::ShiftButton)) {
+			m_clickedToInsert = clicked;
+			m_zoneToInsert    = zone;
+			m_posToInsert     = event->pos();
+			closeEditor();
+			removeInserter();                     // If clicked at an insertion line and the new note shows a dialog for editing,
+			NoteType::Id type = (NoteType::Id)0;  //  hide that inserter before the note edition instead of after the dialog is closed
+			switch (Settings::middleAction()) {
+				case 5: type = NoteType::Color;    break;
+				case 6:
+					Global::bnpView->grabScreenshot();
+					break;
+				case 7:
+					Global::bnpView->slotColorFromScreen();
+					break;
+				case 8:
+					Global::bnpView->insertWizard(3); // loadFromFile
+					break;
+				case 9:
+					Global::bnpView->insertWizard(1); // importKMenuLauncher
+					break;
+				case 10:
+					Global::bnpView->insertWizard(2); // importIcon
+					break;
+			}
+			if (type != 0) {
+				m_ignoreCloseEditorOnNextMouseRelease = true;
+				Global::bnpView->insertEmpty(type);
+				return;
+			}
+		}
+	}
 
 //	Note *clicked = noteAt(event->pos().x(), event->pos().y());
 	if ( ! clicked ) {
