@@ -836,7 +836,15 @@ void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const
 bool AnimationContent::loadFromFile()
 {
 	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
-	return setMovie(QMovie(fullPath()));
+//	return setMovie(QMovie(fullPath()));
+
+	bool success = false;
+	QByteArray content;
+	if (basket()->loadFromFile(fullPath(), &content))
+		success = setMovie(QMovie(content, content.size()));
+	if (!success)
+		setMovie(QMovie());
+	return success;
 }
 
 
