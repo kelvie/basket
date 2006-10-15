@@ -1312,7 +1312,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_count(0), m_countFounds(0), m_countSelecteds(0),
    m_folderName(folderName),
    m_editor(0), m_leftEditorBorder(0), m_rightEditorBorder(0), m_redirectEditActions(false), m_editorWidth(-1), m_editorHeight(-1),
-   m_doNotCloseEditor(false),
+   m_doNotCloseEditor(false), m_editParagraph(0), m_editIndex(0),
    m_isDuringDrag(false), m_draggedNotes(),
    m_focusedNote(0), m_startOfShiftSelectionNote(0)
 {
@@ -1441,6 +1441,11 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			if (!shiftPressed && !controlPressed) {
 				m_pressPos = event->pos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
 				m_canDrag  = true;
+				// Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
+				if (m_editor && m_editor->textEdit()) {
+					QTextEdit *editor = m_editor->textEdit();
+					editor->getCursorPosition(&m_editParagraph, &m_editIndex);
+				}
 			}
 		}
 
@@ -1929,8 +1934,13 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	m_draggedNotes.clear();
 
 	m_doNotCloseEditor = false;
-	if (m_editor)
-		QTimer::singleShot( 0, m_editor->widget(), SLOT(setFocus()) );
+	// When starting the drag, we saved where we were editing.
+	// This is because during a drag, the mouse can fly over the text edit and move the cursor position, and even HIDE the cursor.
+	// So we re-show the cursor, and re-position it at the right place:
+	if (m_editor && m_editor->textEdit()) {
+		QTextEdit *editor = m_editor->textEdit();
+		editor->setCursorPosition(m_editParagraph, m_editIndex);
+	}
 }
 
 // handles dropping of a note to basket that is not shown

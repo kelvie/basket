@@ -533,6 +533,8 @@ public slots:
 	int         m_editorHeight;
 	QTimer      m_inactivityAutoSaveTimer;
 	bool        m_doNotCloseEditor;
+	int         m_editParagraph;
+	int         m_editIndex;
   public:
 	bool isDuringEdit()        { return m_editor;              }
 	bool redirectEditActions() { return m_redirectEditActions; }
