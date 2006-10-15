@@ -2175,19 +2175,19 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 				case 5: type = NoteType::Color;    break;
 				case 6:
 					Global::bnpView->grabScreenshot();
-					break;
+					return;
 				case 7:
 					Global::bnpView->slotColorFromScreen();
-					break;
+					return;
 				case 8:
 					Global::bnpView->insertWizard(3); // loadFromFile
-					break;
+					return;
 				case 9:
 					Global::bnpView->insertWizard(1); // importKMenuLauncher
-					break;
+					return;
 				case 10:
 					Global::bnpView->insertWizard(2); // importIcon
-					break;
+					return;
 			}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;
