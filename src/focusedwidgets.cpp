@@ -28,6 +28,10 @@
 #include "global.h"
 #include "basket.h"
 
+#ifdef KeyPress
+#undef KeyPress
+#endif
+#include <qevent.h>
 
 /** class FocusedTextEdit */
 

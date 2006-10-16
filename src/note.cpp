@@ -37,6 +37,10 @@
 
 #include <iostream>
 
+#ifdef None
+#undef None
+#endif
+
 #include "basket.h"
 #include "tag.h"
 #include "note.h"
@@ -72,7 +76,7 @@ Note::Note(Basket *parent)
    m_basket(parent), m_content(0), m_addedDate(QDateTime::currentDateTime()), m_lastModificationDate(QDateTime::currentDateTime()),
    m_computedAreas(false), m_onTop(false),
    m_deltaX(0), m_deltaY(0), m_deltaHeight(0), m_collapseFinished(true), m_expandingFinished(true),
-   m_hovered(false), m_hoveredZone(None), m_focused(false), m_selected(false), m_wasInLastSelectionRect(false),
+   m_hovered(false), m_hoveredZone(Note::None), m_focused(false), m_selected(false), m_wasInLastSelectionRect(false),
    m_computedState(), m_emblemsCount(0), m_haveInvisibleTags(false),
    m_matching(true)
 {
@@ -596,7 +600,7 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
 		if (pos.x() < width())
 			return Group;
 		else
-			return None;
+			return Note::None;
 	}
 
 	// Else, it's a normal note:
@@ -1627,7 +1631,7 @@ void Note::setOnTop(bool onTop)
 	}
 }
 
-void substractRectOnAreas(const QRect &rectToSubstract, QValueList<QRect> &areas, bool andRemove = true)
+void substractRectOnAreas(const QRect &rectToSubstract, QValueList<QRect> &areas, bool andRemove)
 {
 	for (QValueList<QRect>::iterator it = areas.begin(); it != areas.end(); ) {
 		QRect &rect = *it;
@@ -1689,9 +1693,9 @@ bool Note::recomputeAreas(Note *note, bool noteIsAfterThis)
 	else if ( note->matching() && noteIsAfterThis && (!(isOnTop() || isEditing()) || ((isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing()))) ||
 	           (!(isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing())) ) {
 		//if (!(isSelected() && !note->isSelected())) { // FIXME: FIXME: FIXME: FIXME: This last condition was added LATE, so we should look if it's ALWAYS good:
-			substractRectOnAreas(note->visibleRect(), m_areas);
+			substractRectOnAreas(note->visibleRect(), m_areas, true);
 			if (note->hasResizer())
-				substractRectOnAreas(note->resizerRect(), m_areas);
+				substractRectOnAreas(note->resizerRect(), m_areas, true);
 		//}
 	}
 
@@ -2373,7 +2377,7 @@ QRect Note::visibleRect()
 	Note *parent = parentNote();
 	while (parent) {
 		if (parent->expandingOrCollapsing())
-			substractRectOnAreas(QRect(x(), parent->y() - height(), width(), height()), areas);
+			substractRectOnAreas(QRect(x(), parent->y() - height(), width(), height()), areas, true);
 		parent = parent->parentNote();
 	}
 
@@ -2390,9 +2394,9 @@ void Note::recomputeBlankRects(QValueList<QRect> &blankAreas)
 
 	// visibleRect() instead of rect() because if we are folding/expanding a smaller parent group, then some part is hidden!
 	// But anyway, a resizer is always a primary note and is never hidden by a parent group, so no visibleResizerRect() method!
-	substractRectOnAreas(visibleRect(), blankAreas);
+	substractRectOnAreas(visibleRect(), blankAreas, true);
 	if (hasResizer())
-		substractRectOnAreas(resizerRect(), blankAreas);
+		substractRectOnAreas(resizerRect(), blankAreas, true);
 
 	if (isGroup()) {
 		Note *child = firstChild();

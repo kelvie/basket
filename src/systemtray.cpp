@@ -97,7 +97,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	QCString screenstr;
 	screenstr.setNum(qt_xscreen());
 	QCString trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
-	bool useSystray = (KSelectionWatcher(trayatom).owner() != None);
+	bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
 
 	// 2. And then if the icon is visible too (eg. this->show() has been called):
 	useSystray = useSystray && isVisible();
