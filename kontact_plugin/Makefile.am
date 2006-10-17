@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src -I$(top_srcdir) $(all_inclu
 
 kde_module_LTLIBRARIES = libkontact_basket.la
 libkontact_basket_la_LDFLAGS = $(all_libraries) $(KDE_PLUGIN)
-libkontact_basket_la_LIBADD = -lkpinterfaces
+libkontact_basket_la_LIBADD = -lkpinterfaces -lDCOP -lqt-mt -lkdecore -lkdeui
 
 noinst_HEADERS = basket_plugin.h uniqueapphandler.h
 libkontact_basket_la_SOURCES = basket_plugin.cpp uniqueapphandler.cpp basketdcopiface.stub

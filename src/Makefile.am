@@ -32,7 +32,7 @@ AM_CPPFLAGS = $(GPGME_CFLAGS)
 libbasketcommon_la_LDFLAGS = -avoid-version -no-undefined $(all_libraries)
 
 libbasketcommon_la_LIBADD = $(LIB_ARTSKDE) -lkio $(LIB_KDEUI) $(LIB_KDECORE) \
-	$(LIB_QT) $(LIBSOCKET) $(GPGME_LIBS) $(LIB_KPARTS) -lDCOP -lkdefx
+	$(LIB_QT) $(LIBSOCKET) $(GPGME_LIBS) $(LIB_KPARTS) -lDCOP -lkdefx -lkdeui
 
 libbasketcommon_la_SOURCES = \
 	bnpview.cpp settings.cpp basket.cpp basketproperties.cpp \
@@ -82,11 +82,11 @@ kde_module_LTLIBRARIES = kcm_basket.la libbasketpart.la
 
 libbasketpart_la_SOURCES = basket_part.cpp
 libbasketpart_la_LDFLAGS = $(all_libraries) $(KDE_RPATH) -module -avoid-version -no-undefined
-libbasketpart_la_LIBADD  = libbasketcommon.la -lkparts -lkdeui $(LIB_KDECORE) $(LIB_QT)
+libbasketpart_la_LIBADD  = libbasketcommon.la -lkparts -lkdeui $(LIB_KDECORE) $(LIB_QT) -lDCOP
 
 kcm_basket_la_SOURCES = kcm_basket.cpp
 kcm_basket_la_LDFLAGS = $(all_libraries) -module -avoid-version -no-undefined
-kcm_basket_la_LIBADD = libbasketcommon.la $(LIB_KDECORE) $(LIB_QT)
+kcm_basket_la_LIBADD = libbasketcommon.la $(LIB_KDECORE) $(LIB_QT) -lkdeui
 
 # this is where the desktop file will go
 partdesktopdir   = $(kde_servicesdir)
