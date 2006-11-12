@@ -4,8 +4,10 @@
   <Menu name="basket" >
    <text>&amp;Basket</text>
    <Action name="basket_new_menu" />
+   <Action name="basket_open_archive" />
    <Separator/>
    <Action name="basket_properties" />
+   <Action name="basket_save_as_archive" />
    <Action name="basket_export_html" />
    <Action name="basket_remove" />
    <Separator/>
@@ -150,6 +152,7 @@
  </ToolBar>
  <Menu name="basket_popup" >
   <Action name="basket_properties" />
+  <Action name="basket_save_as_archive" />
   <Action name="basket_export_html" />
   <Action name="basket_remove" />
   <Separator/>
@@ -159,9 +162,11 @@
   <Action name="basket_new" />
   <Action name="basket_new_sub" />
   <Action name="basket_new_sibling" />
+  <Action name="basket_open_archive" />
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />
+  <Action name="basket_open_archive" />
  </Menu>
  <Menu noMerge="1" name="note_popup" >
   <Action name="note_edit" />

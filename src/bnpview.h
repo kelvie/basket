@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,6 +40,7 @@ class KToggleAction;
 class KPassivePopup;
 class QPopupMenu;
 class KPopupMenu;
+class KTar;
 
 class DesktopColorPicker;
 class RegionGrabber;
@@ -83,6 +84,8 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		bool canExpand();
 		void enableActions();
 
+	private:
+		QDomElement basketElement(QListViewItem *item, QDomDocument &document, QDomElement &parentElement);
 	public slots:
 		void countsChanged(Basket *basket);
 		void notesStateChanged();
@@ -91,6 +94,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void updateBasketListViewItem(Basket *basket);
 		void save();
 		void save(QListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement);
+		void saveSubHierarchy(QListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
 		void load();
 		void load(KListView *listView, QListViewItem *item, const QDomElement &baskets);
 		void loadNewBasket(const QString &folderName, const QDomElement &properties, Basket *parent);
@@ -180,12 +184,16 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void delBasket();
 		void doBasketDeletion(Basket *basket);
 		void password();
+		void saveAsArchive();
+		void openArchive();
 		void lockBasket();
 		void hideOnEscape();
 
 		void changedSelectedNotes();
 		void timeoutTryHide();
 		void timeoutHide();
+	private:
+		void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar);
 
 	private slots:
 		void updateNotesActions();
@@ -215,6 +223,9 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KToggleAction *m_actFilterAllBaskets;
 
 	private:
+		// Basket actions:
+		KAction       *m_actSaveAsArchive;
+		KAction       *m_actOpenArchive;
 		// Notes actions :
 		KAction       *m_actOpenNoteWith;
 		KAction       *m_actSaveNoteAs;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,7 @@
 #include <klocale.h>
 #include <kstringhandler.h>
 #include <kmessagebox.h>
+#include <kfiledialog.h>
 #include <kprogress.h>
 #include <kstandarddirs.h>
 #include <kaboutdata.h>
@@ -359,6 +360,11 @@ void BNPView::initialize()
 
 void BNPView::setupActions()
 {
+	m_actSaveAsArchive = new KAction( i18n("Save &as Baskets Archive..."), "filesaveas", 0,
+	                                  this, SLOT(saveAsArchive()),         actionCollection(), "basket_save_as_archive" );
+	m_actOpenArchive   = new KAction( i18n("&Open Baskets Archive..."),    "fileopen", 0,
+	                                  this, SLOT(openArchive()),           actionCollection(), "basket_open_archive"    );
+
 	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStdAccel::shortcut(KStdAccel::Close),
 								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
 	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
@@ -638,7 +644,9 @@ void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement
 {
 	QListViewItem *item = firstItem;
 	while (item) {
-		Basket *basket = ((BasketListViewItem*)item)->basket();
+//		Basket *basket = ((BasketListViewItem*)item)->basket();
+		QDomElement basketElement = this->basketElement(item, document, parentElement);
+/*
 		QDomElement basketElement = document.createElement("basket");
 		parentElement.appendChild(basketElement);
 		// Save Attributes:
@@ -651,12 +659,38 @@ void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement
 		QDomElement properties = document.createElement("properties");
 		basketElement.appendChild(properties);
 		basket->saveProperties(document, properties);
+*/
 		// Save Child Basket:
 		if (item->firstChild())
 			save(item->firstChild(), document, basketElement);
 		// Next Basket:
 		item = item->nextSibling();
 	}
+}
+
+QDomElement BNPView::basketElement(QListViewItem *item, QDomDocument &document, QDomElement &parentElement)
+{
+	Basket *basket = ((BasketListViewItem*)item)->basket();
+	QDomElement basketElement = document.createElement("basket");
+	parentElement.appendChild(basketElement);
+	// Save Attributes:
+	basketElement.setAttribute("folderName", basket->folderName());
+	if (item->firstChild()) // If it can be expanded/folded:
+		basketElement.setAttribute("folded", XMLWork::trueOrFalse(!item->isOpen()));
+	if (((BasketListViewItem*)item)->isCurrentBasket())
+		basketElement.setAttribute("lastOpened", "true");
+	// Save Properties:
+	QDomElement properties = document.createElement("properties");
+	basketElement.appendChild(properties);
+	basket->saveProperties(document, properties);
+	return basketElement;
+}
+
+void BNPView::saveSubHierarchy(QListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive)
+{
+	QDomElement element = basketElement(item, document, parentElement);
+	if (recursive && item->firstChild())
+		save(item->firstChild(), document, element);
 }
 
 void BNPView::load()
@@ -1680,6 +1714,77 @@ void BNPView::lockBasket()
 	cur->lock();
 #endif
 }
+
+
+
+#include <ktar.h>
+
+void BNPView::saveAsArchive()
+{
+	Basket *basket = currentBasket();
+/*
+	QString destination = "/home/seb/archive.baskets";
+	bool withSubBaskets = true;
+*/
+	QString filter = "*.baskets|" + i18n("Baskets Archives") + "\n*|" + i18n("All Files");
+	QString destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Baskets Archive"));
+	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Baskets Archive")) == KMessageBox::Yes;
+
+//	QFile file(destination);
+//	if (file.open(IO_WriteOnly)) {
+/*		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::Latin1);
+		stream << "BasKetNP:archive\n"
+		       << "version:" << kapp->aboutData()->version() << "\n"
+		       << "read-compatible:" << kapp->aboutData()->version() << "\n"
+		       << "write-compatible:" << kapp->aboutData()->version() << "\n"
+		       << "preview:0\n" // TODO: Add a PNG preview
+		       << "archive:" << "" << "\n";
+*/
+//		KTar tar(&file);
+		KTar tar(destination, "application/x-gzip");
+		tar.open(IO_WriteOnly);
+		tar.writeDir("baskets", "", "");
+
+		saveBasketToArchive(basket, withSubBaskets, &tar);
+
+		QString tempFolder = Global::savesFolder() + "temp-archive/";
+		QDir dir;
+		dir.mkdir(tempFolder);
+
+		// Create a Small baskets.xml Document:
+		QDomDocument document("basketTree");
+		QDomElement root = document.createElement("basketTree");
+		document.appendChild(root);
+		saveSubHierarchy(listViewItemForBasket(basket), document, root, withSubBaskets);
+		Basket::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
+		tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
+		dir.remove(tempFolder + "baskets.xml");
+
+		tar.close();
+//		file.close();
+//	}
+
+		// TODO: Remove "temp-archive/"
+}
+
+void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar)
+{
+	std::cout << basket->fullPath() << "   :     " << "baskets/" + basket->folderName() << std::endl;
+	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
+	tar->addLocalFile(basket->fullPath() + ".basket", "baskets/" + basket->folderName() + ".basket"); // The hidden files were not added
+	BasketListViewItem *item = listViewItemForBasket(basket);
+	if (recursive && item->firstChild()) {
+		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
+			saveBasketToArchive(child->basket(), recursive, tar);
+		}
+	}
+}
+
+void BNPView::openArchive()
+{
+}
+
 
 void BNPView::activatedTagShortcut()
 {
