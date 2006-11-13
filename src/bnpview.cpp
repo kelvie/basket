@@ -1738,15 +1738,16 @@ void BNPView::saveAsArchive()
 		       << "version:" << kapp->aboutData()->version() << "\n"
 		       << "read-compatible:" << kapp->aboutData()->version() << "\n"
 		       << "write-compatible:" << kapp->aboutData()->version() << "\n"
-		       << "preview:0\n" // TODO: Add a PNG preview
-		       << "archive:" << "" << "\n";
+		       << "preview*:0\n" // TODO: Add a PNG preview
+		       << "archive*:" << "" << "\n";
 */
 //		KTar tar(&file);
 		KTar tar(destination, "application/x-gzip");
 		tar.open(IO_WriteOnly);
 		tar.writeDir("baskets", "", "");
 
-		saveBasketToArchive(basket, withSubBaskets, &tar);
+		QStringList backgrounds;
+		saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds);
 
 		QString tempFolder = Global::savesFolder() + "temp-archive/";
 		QDir dir;
@@ -1793,15 +1794,32 @@ void BNPView::saveAsArchive()
 		// TODO: Remove "temp-archive/"
 }
 
-void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar)
+void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
 {
 	std::cout << basket->fullPath() << "   :     " << "baskets/" + basket->folderName() << std::endl;
+	// Save basket data:
 	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
 	tar->addLocalFile(basket->fullPath() + ".basket", "baskets/" + basket->folderName() + ".basket"); // The hidden files were not added
+	// Save basket backgorund image:
+	QString imageName = basket->backgroundImageName();
+	std::cout << imageName << std::endl;
+	if (!basket->backgroundImageName().isEmpty() && !backgrounds.contains(imageName)) {
+		QString backgroundPath = Global::backgroundManager->pathForImageName(imageName);
+		std::cout << "Path:" << backgroundPath << std::endl;
+		if (!backgroundPath.isEmpty()) {
+			tar->addLocalFile(backgroundPath, "backgrounds/" + imageName);
+			QString previewPath = Global::backgroundManager->previewPathForImageName(imageName);
+			std::cout << "PreviewPath:" << previewPath << std::endl;
+			if (!previewPath.isEmpty())
+				tar->addLocalFile(previewPath, "backgrounds/previews/" + imageName);
+		}
+		backgrounds.append(imageName);
+	}
+	// Recursively save child baskets:
 	BasketListViewItem *item = listViewItemForBasket(basket);
 	if (recursive && item->firstChild()) {
 		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar);
+			saveBasketToArchive(child->basket(), recursive, tar, backgrounds);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 
 /** A node in the list of background images of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class BackgroundEntry
 {
@@ -50,7 +50,7 @@ class BackgroundEntry
 
 /** A node in the list of opaque background images (with a background color applyed to an image) of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class OpaqueBackgroundEntry
 {
@@ -83,7 +83,7 @@ class OpaqueBackgroundEntry
   *   When the user removed the object background image (or when the object/basket/... is removed), the object should call unsubscribe() for
   *   EVERY subscribed image and image couples. Usage count is decreased for those images and a garbage collector will remove the cached images
   *   if nothing is subscribed to them (to free memory).
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class BackgroundManager : private QObject
 {
@@ -109,6 +109,9 @@ class BackgroundManager : private QObject
 	/// LIST OF IMAGES AND PREVIEWS:
 	QStringList imageNames();
 	QPixmap* preview(const QString &image);
+	/// USED FRO EXPORTATION:
+	QString pathForImageName(const QString &image); /// << It is STRONGLY advised to not use those two methods unless it's to copy (export) the images or something like that...
+	QString previewPathForImageName(const QString &image);
 
   private:
 	BackgroundEntry*       backgroundEntryFor(const QString &image);

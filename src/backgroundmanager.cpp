@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -313,6 +313,30 @@ QPixmap* BackgroundManager::preview(const QString &image)
 	entry->preview = result;
 	requestDelayedGarbage();
 	return entry->preview;
+}
+
+QString BackgroundManager::pathForImageName(const QString &image)
+{
+	BackgroundEntry *entry = backgroundEntryFor(image);
+	if (entry == 0)
+		return "";
+	else
+		return entry->location;
+}
+
+QString BackgroundManager::previewPathForImageName(const QString &image)
+{
+	BackgroundEntry *entry = backgroundEntryFor(image);
+	if (entry == 0)
+		return "";
+	else {
+		QString previewPath = KGlobal::dirs()->findResource("data", "basket/backgrounds/previews/" + entry->name);
+		QDir dir;
+		if (!dir.exists(previewPath))
+			return "";
+		else
+			return previewPath;
+	}
 }
 
 void BackgroundManager::requestDelayedGarbage()

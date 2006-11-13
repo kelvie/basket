@@ -193,7 +193,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void timeoutTryHide();
 		void timeoutHide();
 	private:
-		void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar);
+		void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds);
 		void listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list);
 
 	private slots:
