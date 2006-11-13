@@ -1761,15 +1761,31 @@ void BNPView::saveAsArchive()
 		tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
 		dir.remove(tempFolder + "baskets.xml");
 
-		QValueList<Tag*> list;
-		listUsedTags(basket, withSubBaskets, list);
-		Tag::saveTagsTo(list, tempFolder + "tags.xml");
+		// Save a Small tags.xml Document:
+		QValueList<Tag*> tags;
+		listUsedTags(basket, withSubBaskets, tags);
+		Tag::saveTagsTo(tags, tempFolder + "tags.xml");
 		tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
 		dir.remove(tempFolder + "tags.xml");
 
-		for (uint i = 0; i < list.count(); i++)
-			std::cout << (*list.at(i))->name() << std::endl;
+		// Save Tag Emblems (in case they are loaded on a computer that do not have those icons):
+		QString tempIconFile = tempFolder + "icon.png";
+		for (Tag::List::iterator it = tags.begin(); it != tags.end(); ++it) {
+			State::List states = (*it)->states();
+			for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
+				State *state = (*it2);
+				QPixmap icon = kapp->iconLoader()->loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+				if (!icon.isNull()) {
+					icon.save(tempIconFile, "PNG");
+					QString iconFileName = state->emblem().replace('/', '_');
+					tar.addLocalFile(tempIconFile, "tag_emblems/" + iconFileName);
+				}
+			}
+		}
+		dir.remove(tempIconFile);
 
+
+		// Finish Exportation:
 		tar.close();
 //		file.close();
 //	}
