@@ -1728,70 +1728,107 @@ void BNPView::saveAsArchive()
 */
 	QString filter = "*.baskets|" + i18n("Baskets Archives") + "\n*|" + i18n("All Files");
 	QString destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Baskets Archive"));
+	if (destination.isEmpty()) // User canceled
+		return;
 	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Baskets Archive")) == KMessageBox::Yes;
 
-//	QFile file(destination);
-//	if (file.open(IO_WriteOnly)) {
-/*		QTextStream stream(&file);
+	// Create the temporar folder:
+	QString tempFolder = Global::savesFolder() + "temp-archive/";
+	QDir dir;
+	dir.mkdir(tempFolder);
+
+	// Create the temporar archive file:
+	QString tempDestination = tempFolder + "temp-archive.tar.gz";
+	KTar tar(tempDestination, "application/x-gzip");
+	tar.open(IO_WriteOnly);
+	tar.writeDir("baskets", "", "");
+
+	// Copy the baskets data into the archive:
+	QStringList backgrounds;
+	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds);
+
+	// Create a Small baskets.xml Document:
+	QDomDocument document("basketTree");
+	QDomElement root = document.createElement("basketTree");
+	document.appendChild(root);
+	saveSubHierarchy(listViewItemForBasket(basket), document, root, withSubBaskets);
+	Basket::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
+	tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
+	dir.remove(tempFolder + "baskets.xml");
+
+	// Save a Small tags.xml Document:
+	QValueList<Tag*> tags;
+	listUsedTags(basket, withSubBaskets, tags);
+	Tag::saveTagsTo(tags, tempFolder + "tags.xml");
+	tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
+	dir.remove(tempFolder + "tags.xml");
+
+	// Save Tag Emblems (in case they are loaded on a computer that do not have those icons):
+	QString tempIconFile = tempFolder + "icon.png";
+	for (Tag::List::iterator it = tags.begin(); it != tags.end(); ++it) {
+		State::List states = (*it)->states();
+		for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
+			State *state = (*it2);
+			QPixmap icon = kapp->iconLoader()->loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+			if (!icon.isNull()) {
+				icon.save(tempIconFile, "PNG");
+				QString iconFileName = state->emblem().replace('/', '_');
+				tar.addLocalFile(tempIconFile, "tag_emblems/" + iconFileName);
+			}
+		}
+	}
+	dir.remove(tempIconFile);
+
+	// Finish Tar.Gz Exportation:
+	tar.close();
+
+	// Computing the File Preview:
+	Basket *previewBasket = basket; // FIXME: Use the first non-empty basket!
+	QPixmap previewPixmap(previewBasket->contentsWidth(), previewBasket->contentsHeight());
+	QPainter painter(&previewPixmap);
+	previewBasket->drawContents(&painter, 0, 0, previewPixmap.width(), previewPixmap.height());
+	painter.end();
+	QImage previewImage = previewPixmap.convertToImage();
+	const int PREVIEW_SIZE = 256;
+	previewImage = previewImage.scale(PREVIEW_SIZE, PREVIEW_SIZE, QImage::ScaleMin);
+	previewImage.save(tempFolder + "preview.png", "PNG");
+
+	// Finaly Save to the Real Destination file:
+	QFile file(destination);
+	if (file.open(IO_WriteOnly)) {
+		ulong previewSize = QFile(tempFolder + "preview.png").size();
+		ulong archiveSize = QFile(tempDestination).size();
+		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::Latin1);
 		stream << "BasKetNP:archive\n"
 		       << "version:" << kapp->aboutData()->version() << "\n"
 		       << "read-compatible:" << kapp->aboutData()->version() << "\n"
 		       << "write-compatible:" << kapp->aboutData()->version() << "\n"
-		       << "preview*:0\n" // TODO: Add a PNG preview
-		       << "archive*:" << "" << "\n";
-*/
-//		KTar tar(&file);
-		KTar tar(destination, "application/x-gzip");
-		tar.open(IO_WriteOnly);
-		tar.writeDir("baskets", "", "");
-
-		QStringList backgrounds;
-		saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds);
-
-		QString tempFolder = Global::savesFolder() + "temp-archive/";
-		QDir dir;
-		dir.mkdir(tempFolder);
-
-		// Create a Small baskets.xml Document:
-		QDomDocument document("basketTree");
-		QDomElement root = document.createElement("basketTree");
-		document.appendChild(root);
-		saveSubHierarchy(listViewItemForBasket(basket), document, root, withSubBaskets);
-		Basket::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
-		tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
-		dir.remove(tempFolder + "baskets.xml");
-
-		// Save a Small tags.xml Document:
-		QValueList<Tag*> tags;
-		listUsedTags(basket, withSubBaskets, tags);
-		Tag::saveTagsTo(tags, tempFolder + "tags.xml");
-		tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
-		dir.remove(tempFolder + "tags.xml");
-
-		// Save Tag Emblems (in case they are loaded on a computer that do not have those icons):
-		QString tempIconFile = tempFolder + "icon.png";
-		for (Tag::List::iterator it = tags.begin(); it != tags.end(); ++it) {
-			State::List states = (*it)->states();
-			for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
-				State *state = (*it2);
-				QPixmap icon = kapp->iconLoader()->loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
-				if (!icon.isNull()) {
-					icon.save(tempIconFile, "PNG");
-					QString iconFileName = state->emblem().replace('/', '_');
-					tar.addLocalFile(tempIconFile, "tag_emblems/" + iconFileName);
-				}
-			}
+		       << "preview*:" << previewSize << "\n";
+		// Copy the Preview File:
+		const Q_ULONG BUFFER_SIZE = 1024;
+		char *buffer = new char[BUFFER_SIZE];
+		Q_LONG sizeRead;
+		QFile previewFile(tempFolder + "preview.png");
+		if (previewFile.open(IO_ReadOnly)) {
+			while ((sizeRead = previewFile.readBlock(buffer, BUFFER_SIZE)) > 0)
+				file.writeBlock(buffer, sizeRead);
 		}
-		dir.remove(tempIconFile);
+		stream << "archive*:" << archiveSize << "\n";
+		// Copy the Archive File:
+		QFile archiveFile(tempDestination);
+		if (archiveFile.open(IO_ReadOnly)) {
+			while ((sizeRead = archiveFile.readBlock(buffer, BUFFER_SIZE)) > 0)
+				file.writeBlock(buffer, sizeRead);
+		}
+		// Clean Up:
+		file.close();
+	}
 
-
-		// Finish Exportation:
-		tar.close();
-//		file.close();
-//	}
-
-		// TODO: Remove "temp-archive/"
+	// Clean Up Everything:
+	// TODO: Remove "temp-archive/"
+	dir.remove(tempFolder + "preview.png");
+	dir.remove(tempDestination);
 }
 
 void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
