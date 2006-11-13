@@ -4852,8 +4852,15 @@ void Basket::exportToHTML()
 
 
 
+void Basket::listUsedTags(QValueList<Tag*> &list)
+{
+	if (!isLoaded()) {
+		load();
+	}
 
-
+	FOR_EACH_NOTE (child)
+		child->listUsedTags(list);
+}
 
 
 /** Unfocus the previously focused note (unless it was null)

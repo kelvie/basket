@@ -1761,6 +1761,15 @@ void BNPView::saveAsArchive()
 		tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
 		dir.remove(tempFolder + "baskets.xml");
 
+		QValueList<Tag*> list;
+		listUsedTags(basket, withSubBaskets, list);
+		Tag::saveTagsTo(list, tempFolder + "tags.xml");
+		tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
+		dir.remove(tempFolder + "tags.xml");
+
+		for (uint i = 0; i < list.count(); i++)
+			std::cout << (*list.at(i))->name() << std::endl;
+
 		tar.close();
 //		file.close();
 //	}
@@ -1777,6 +1786,17 @@ void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar)
 	if (recursive && item->firstChild()) {
 		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
 			saveBasketToArchive(child->basket(), recursive, tar);
+		}
+	}
+}
+
+void BNPView::listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list)
+{
+	basket->listUsedTags(list);
+	BasketListViewItem *item = listViewItemForBasket(basket);
+	if (recursive && item->firstChild()) {
+		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
+			listUsedTags(child->basket(), recursive, list);
 		}
 	}
 }

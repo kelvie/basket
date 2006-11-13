@@ -594,6 +594,9 @@ public slots:
   public slots:
 	void exportToHTML();
 
+  public:
+	void listUsedTags(QValueList<Tag*> &list);
+
 /// MANAGE FOCUS:
   private:
 	Note *m_focusedNote;

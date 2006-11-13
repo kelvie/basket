@@ -333,7 +333,11 @@ void Tag::loadTags()
 void Tag::saveTags()
 {
 	DEBUG_WIN << "Saving tags...";
+	saveTagsTo(all, Global::savesFolder() + "tags.xml");
+}
 
+void Tag::saveTagsTo(QValueList<Tag*> &list, const QString &fullPath)
+{
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");
 	QDomElement root = document.createElement("basketTags");
@@ -341,7 +345,7 @@ void Tag::saveTags()
 	document.appendChild(root);
 
 	// Save all tags:
-	for (List::iterator it = all.begin(); it != all.end(); ++it) {
+	for (List::iterator it = list.begin(); it != list.end(); ++it) {
 		Tag *tag = *it;
 		// Create tag node:
 		QDomElement tagNode = document.createElement("tag");
@@ -382,7 +386,7 @@ void Tag::saveTags()
 	}
 
 	// Write to Disk:
-	if (!Basket::safelySaveToFile(Global::savesFolder() + "tags.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+	if (!Basket::safelySaveToFile(fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
 		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 

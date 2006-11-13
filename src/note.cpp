@@ -2528,6 +2528,19 @@ void Note::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &e
 	}
 }
 
+void Note::listUsedTags(QValueList<Tag*> &list)
+{
+	for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
+		Tag *tag = (*it)->parentTag();
+		if (!list.contains(tag))
+			list.append(tag);
+	}
+
+	FOR_EACH_CHILD (child)
+		child->listUsedTags(list);
+}
+
+
 void Note::usedStates(QValueList<State*> &states)
 {
 	if (content())

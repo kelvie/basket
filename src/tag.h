@@ -116,6 +116,7 @@ class Tag
 	static Tag* tagForKAction(KAction *action);
 	static void loadTags(/*const QString &path = QString(), bool merge*/); /// << Load the tags contained in the XML file @p path or those in the application settings if @p path isEmpty(). If @p merge is true and a tag with the id of a tag that should be loaded already exist, the tag will get a new id. Otherwise, the tag will be dismissed.
 	static void saveTags();
+	static void saveTagsTo(QValueList<Tag*> &list, const QString &fullPath);
 	static void createDefaultTagsSet(const QString &file);
 	static long getNextStateUid();
   private:

@@ -307,6 +307,9 @@ class Note
 	void exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
 	void usedStates(QValueList<State*> &states);
 
+	void listUsedTags(QValueList<Tag*> &list);
+
+
 	Note* nextInStack();
 	Note* prevInStack();
 	Note* nextShownInStack();
