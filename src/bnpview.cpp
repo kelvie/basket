@@ -360,10 +360,10 @@ void BNPView::initialize()
 
 void BNPView::setupActions()
 {
-	m_actSaveAsArchive = new KAction( i18n("Save &as Baskets Archive..."), "filesaveas", 0,
-	                                  this, SLOT(saveAsArchive()),         actionCollection(), "basket_save_as_archive" );
-	m_actOpenArchive   = new KAction( i18n("&Open Baskets Archive..."),    "fileopen", 0,
-	                                  this, SLOT(openArchive()),           actionCollection(), "basket_open_archive"    );
+	m_actSaveAsArchive = new KAction( i18n("Save &as Basket Archive..."), "filesaveas", 0,
+	                                  this, SLOT(saveAsArchive()),        actionCollection(), "basket_save_as_archive" );
+	m_actOpenArchive   = new KAction( i18n("&Open Basket Archive..."),    "fileopen", 0,
+	                                  this, SLOT(openArchive()),          actionCollection(), "basket_open_archive"    );
 
 	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStdAccel::shortcut(KStdAccel::Close),
 								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
@@ -1726,11 +1726,11 @@ void BNPView::saveAsArchive()
 	QString destination = "/home/seb/archive.baskets";
 	bool withSubBaskets = true;
 */
-	QString filter = "*.baskets|" + i18n("Baskets Archives") + "\n*|" + i18n("All Files");
-	QString destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Baskets Archive"));
+	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
+	QString destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Basket Archive"));
 	if (destination.isEmpty()) // User canceled
 		return;
-	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Baskets Archive")) == KMessageBox::Yes;
+	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Basket Archive")) == KMessageBox::Yes;
 
 	// Create the temporar folder:
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
@@ -1801,9 +1801,9 @@ void BNPView::saveAsArchive()
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::Latin1);
 		stream << "BasKetNP:archive\n"
-		       << "version:" << kapp->aboutData()->version() << "\n"
-		       << "read-compatible:" << kapp->aboutData()->version() << "\n"
-		       << "write-compatible:" << kapp->aboutData()->version() << "\n"
+		       << "version:0.6.1\n"
+//		       << "read-compatible:0.6.1\n"
+//		       << "write-compatible:0.6.1\n"
 		       << "preview*:" << previewSize << "\n";
 		// Copy the Preview File:
 		const Q_ULONG BUFFER_SIZE = 1024;
@@ -1822,6 +1822,8 @@ void BNPView::saveAsArchive()
 				file.writeBlock(buffer, sizeRead);
 		}
 		// Clean Up:
+		delete buffer;
+		buffer = 0;
 		file.close();
 	}
 
@@ -1874,6 +1876,114 @@ void BNPView::listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &lis
 
 void BNPView::openArchive()
 {
+	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
+	QString path = KFileDialog::getOpenFileName(QString::null, filter, this, i18n("Open Basket Archive"));
+	if (path.isEmpty()) // User canceled
+		return;
+
+	// Create the temporar folder:
+	QString tempFolder = Global::savesFolder() + "temp-archive/";
+	QDir dir;
+	dir.mkdir(tempFolder);
+	const Q_ULONG BUFFER_SIZE = 1024;
+
+//	// Create the temporar archive file:
+//	QString tempDestination = tempFolder + "temp-archive.tar.gz";
+//	KTar tar(tempDestination, "application/x-gzip");
+//	tar.open(IO_WriteOnly);
+
+	QFile file(path);
+	if (file.open(IO_ReadOnly)) {
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::Latin1);
+		QString line = stream.readLine();
+		if (line != "BasKetNP:archive") {
+			KMessageBox::error(this, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));
+			return;
+		}
+		QString version;
+		QStringList readCompatibleVersion;
+		QStringList writeCompatibleVersion;
+		while (!stream.atEnd()) {
+			// Get Key/Value Pair From the Line to Read:
+			line = stream.readLine();
+			int index = line.find(':');
+			QString key;
+			QString value;
+			if (index >= 0) {
+				key = line.left(index);
+				value = line.right(line.length() - index - 1);
+			} else {
+				key = line;
+				value = "";
+			}
+			std::cout << key << ">>" << value << std::endl;
+			if (key == "version") {
+				version = value;
+			} else if (key == "read-compatible") {
+				readCompatibleVersion = QStringList::split(value, ";");
+			} else if (key == "write-compatible") {
+				writeCompatibleVersion = QStringList::split(value, ";");
+			} else if (key == "preview*") {
+				bool ok;
+				ulong size = value.toULong(&ok);
+				if (!ok) {
+					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					return;
+				}
+				// Get the preview file:
+//FIXME: We do not need the preview for now
+//				QFile previewFile(tempFolder + "preview.png");
+//				if (previewFile.open(IO_WriteOnly)) {
+					char *buffer = new char[BUFFER_SIZE];
+					Q_LONG sizeRead;
+					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
+//						previewFile.writeBlock(buffer, sizeRead);
+						size -= sizeRead;
+					}
+//					previewFile.close();
+					delete buffer;
+//				}
+			} else if (key == "archive*") {
+				bool ok;
+				ulong size = value.toULong(&ok);
+				if (!ok) {
+					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					return;
+				}
+				// Get the archive file:
+				QFile archiveFile(tempFolder + "temp-archive.tar.gz");
+				if (archiveFile.open(IO_WriteOnly)) {
+					char *buffer = new char[BUFFER_SIZE];
+					Q_LONG sizeRead;
+					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
+						archiveFile.writeBlock(buffer, sizeRead);
+						size -= sizeRead;
+					}
+					archiveFile.close();
+					delete buffer;
+				}
+			} else if (key.endsWith("*")) {
+				// We do not know what it is, but we should read the embedded-file in order to discard it:
+				bool ok;
+				ulong size = value.toULong(&ok);
+				if (!ok) {
+					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					return;
+				}
+				// Get the archive file:
+				char *buffer = new char[BUFFER_SIZE];
+				Q_LONG sizeRead;
+				while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
+					size -= sizeRead;
+				}
+				delete buffer;
+			} else {
+				// We do not know what it is, and we do not care.
+			}
+			// Analyse the Value, if Understood:
+		}
+	}
 }
 
 
