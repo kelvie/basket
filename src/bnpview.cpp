@@ -1902,8 +1902,8 @@ void BNPView::openArchive()
 			return;
 		}
 		QString version;
-		QStringList readCompatibleVersion;
-		QStringList writeCompatibleVersion;
+		QStringList readCompatibleVersions;
+		QStringList writeCompatibleVersions;
 		while (!stream.atEnd()) {
 			// Get Key/Value Pair From the Line to Read:
 			line = stream.readLine();
@@ -1921,9 +1921,9 @@ void BNPView::openArchive()
 			if (key == "version") {
 				version = value;
 			} else if (key == "read-compatible") {
-				readCompatibleVersion = QStringList::split(value, ";");
+				readCompatibleVersions = QStringList::split(value, ";");
 			} else if (key == "write-compatible") {
-				writeCompatibleVersion = QStringList::split(value, ";");
+				writeCompatibleVersions = QStringList::split(value, ";");
 			} else if (key == "preview*") {
 				bool ok;
 				ulong size = value.toULong(&ok);
@@ -1945,6 +1945,27 @@ void BNPView::openArchive()
 					delete buffer;
 //				}
 			} else if (key == "archive*") {
+				if (version != "0.6.1" && readCompatibleVersions.contains("0.6.1") && !writeCompatibleVersions.contains("0.6.1")) {
+					KMessageBox::information(
+						this,
+						i18n("This file was created with a recent version of %1. "
+						     "It can be opened but not every information will be available to you. "
+						     "For instance, some notes may be missing because they are of a type only available in new versions. "
+						     "When saving the file back, consider to save it to another file, to preserve the original one.")
+							.arg(kapp->aboutData()->programName()),
+						i18n("Basket Archive Error")
+					);
+				}
+				if (version != "0.6.1" && !readCompatibleVersions.contains("0.6.1") && !writeCompatibleVersions.contains("0.6.1")) {
+					KMessageBox::error(
+						this,
+						i18n("This file was created with a recent version of %1. Please upgrade to a newer version to be able to open that file.")
+							.arg(kapp->aboutData()->programName()),
+						i18n("Basket Archive Error")
+					);
+					return;
+				}
+
 				bool ok;
 				ulong size = value.toULong(&ok);
 				if (!ok) {
