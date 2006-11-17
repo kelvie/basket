@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=10
 
 Name=Baskets
+Name[de]=Körbe
 Name[fr]=Paniers
 Name[ja]=バスケット
 Name[nn]=Korger
@@ -21,6 +22,7 @@ Name[es]=Cestas
 Name[pt]=Cestos
 Name[ru]=Корзины
 Comment=Baskets
+Comment[de]=Körbe
 Comment[fr]=Paniers
 Comment[ja]=バスケット
 Comment[nn]=Korger

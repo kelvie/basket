@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=10
 
 Name=New Notes
+Name[de]=Neue Notizen
 Name[fr]=Nouvelles notes
 Name[ja]=新しいメモ
 Name[nn]=Nye notat
@@ -21,6 +22,7 @@ Name[es]=Notas nuevas
 Name[pt]=Anotações novas
 Name[ru]=Новые заметки
 Comment=New Notes
+Comment[de]=Neue Notizen
 Comment[fr]=Nouvelles notes
 Comment[ja]=新しいメモ
 Comment[nn]=Nye notat

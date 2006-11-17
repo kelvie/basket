@@ -18,13 +18,16 @@ X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 
 Comment=BasKet Note Pads plugin for Kontact
+Comment[de]=Plugin BasKet Notizblätter für Kontact
 Comment[fr]=Module Blocs notes BasKet pour Kontact
 Comment[ja]=BasKet メモパッドの Kontact 統合プラグイン
 Comment[nn]=Korgnotat-tillegg for Kontakt
 Comment[es]=Plugin de las notas de BasKet para Kontact
 Comment[pt]=Plugin do Bloco de Notas BasKet para o Kontact
 Comment[ru]=Модуль Альбом заметок Basket для Kontact
+
 Name=Baskets
+Name[de]=Körbe
 Name[fr]=Paniers
 Name[ja]=バスケット
 Name[nn]=Korger

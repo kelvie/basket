@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=30
 
 Name=Applications
+Name[de]=Anwendungen
 Name[fr]=Applications
 Name[ja]=アプリケーション
 Name[nn]=Program
@@ -21,6 +22,7 @@ Name[es]=Aplicaciones
 Name[pt]=Aplicações
 Name[ru]=Приложения
 Comment=Applications
+Comment[de]=Anwendungen
 Comment[fr]=Applications
 Comment[ja]=アプリケーション
 Comment[nn]=Program

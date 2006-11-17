@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=Basket
 X-KDE-Weight=10
 
 Name=General
+Name[de]=Allgemein
 Name[fr]=Général
 Name[ja]=全般
 Name[nn]=Generelt
@@ -21,6 +22,7 @@ Name[es]=General
 Name[pt]=Geral
 Name[ru]=Общие
 Comment=General
+Comment[de]=Allgemein
 Comment[fr]=Général
 Comment[ja]=全般
 Comment[nn]=Generelt
