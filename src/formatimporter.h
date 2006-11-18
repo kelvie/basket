@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@ namespace KIO {
 }
 
 /**
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laot
   */
 class FormatImporter : QObject
 {
@@ -41,6 +41,7 @@ class FormatImporter : QObject
 	static QDomElement importBasket(const QString &folderName);
 
 	void copyFolder(const QString &folder, const QString &newFolder);
+	void moveFolder(const QString &folder, const QString &newFolder);
   private slots:
 	void slotCopyingDone(KIO::Job*);
   private:

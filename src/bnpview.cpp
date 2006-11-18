@@ -1988,7 +1988,7 @@ void BNPView::openArchive()
 					tar.open(IO_ReadOnly);
 					tar.directory()->copyTo(extractionFolder);
 					tar.close();
-//					renameBasketFolders(extractionFolder);
+					renameBasketFolders(extractionFolder);
 
 				}
 			} else if (key.endsWith("*")) {
@@ -2025,6 +2025,8 @@ void BNPView::renameBasketFolders(const QString &extractionFolder)
 //		dir.mkdir(extractionFolder + "new-baskets/");
 		QDomNode node = docElem.firstChild();
 		renameBasketFolder(extractionFolder, node, folderMap/*, backgroundMap*/);
+
+		loadExtractedBaskets(extractionFolder, node, folderMap, 0);
 	}
 }
 
@@ -2038,6 +2040,9 @@ void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 			if (!folderName.isEmpty()) {
 				QString newFolderName = BasketFactory::newFolderName();
 				folderMap[folderName] = newFolderName;
+				// Reserve the folder:
+				QDir dir;
+				dir.mkdir(Global::basketsFolder() + newFolderName);
 				//Basket *basket = loadBasket(folderName);
 				//BasketListViewItem *basketItem = appendBasket(basket, item);
 				//basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
@@ -2046,6 +2051,40 @@ void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 				//	setCurrentBasket(basket);
 				QDomNode node = element.firstChild();
 				renameBasketFolder(extractionFolder, node, folderMap);
+			}
+		}
+		n = n.nextSibling();
+	}
+}
+
+void BNPView::loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent)
+{
+	bool basketSetAsCurrent = (parent != 0);
+	QDomNode n = basketNode;
+	while ( ! n.isNull() ) {
+		QDomElement element = n.toElement();
+		if ( (!element.isNull()) && element.tagName() == "basket" ) {
+			QString folderName = element.attribute("folderName");
+			if (!folderName.isEmpty()) {
+				// Move the basket folder to its destination, while renaming it uniquely:
+				QString newFolderName = folderMap[folderName];
+				FormatImporter copier;
+				// The folder has been "reserved" by creating it. Avoid asking the user to override:
+				QDir dir;
+				dir.rmdir(Global::basketsFolder() + newFolderName);
+				copier.moveFolder(extractionFolder + "baskets/" + folderName, Global::basketsFolder() + newFolderName);
+				// Append and load the basket in the tree:
+				Basket *basket = loadBasket(newFolderName);
+				BasketListViewItem *basketItem = appendBasket(basket, (basket && parent ? listViewItemForBasket(parent) : 0));
+				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
+				basket->loadProperties(XMLWork::getElement(element, "properties"));
+				// Open the first basket of the archive:
+				if (!basketSetAsCurrent) {
+					setCurrentBasket(basket);
+					basketSetAsCurrent = true;
+				}
+				QDomNode node = element.firstChild();
+				loadExtractedBaskets(extractionFolder, node, folderMap, basket);
 			}
 		}
 		n = n.nextSibling();

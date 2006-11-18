@@ -64,6 +64,15 @@ void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 		kapp->processEvents();
 }
 
+void FormatImporter::moveFolder(const QString &folder, const QString &newFolder)
+{
+	copyFinished = false;
+	KIO::CopyJob *copyJob = KIO::moveAs(KURL(folder), KURL(newFolder), /*showProgressInfo=*/false);
+	connect( copyJob,  SIGNAL(result(KIO::Job*)), this, SLOT(slotCopyingDone(KIO::Job*)) );
+	while (!copyFinished)
+		kapp->processEvents();
+}
+
 void FormatImporter::slotCopyingDone(KIO::Job *)
 {
 //	std::cout << "Copy finished of " + from.path() + " to " + to.path() << std::endl;

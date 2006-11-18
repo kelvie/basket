@@ -197,6 +197,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list);
 		void renameBasketFolders(const QString &extractionFolder);
 		void renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap/*, QMap<QString, QString> &backgroundMap*/);
+		void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent);
 
 	private slots:
 		void updateNotesActions();
