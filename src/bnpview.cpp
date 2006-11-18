@@ -1835,22 +1835,24 @@ void BNPView::saveAsArchive()
 
 void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
 {
-	std::cout << basket->fullPath() << "   :     " << "baskets/" + basket->folderName() << std::endl;
 	// Save basket data:
 	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
 	tar->addLocalFile(basket->fullPath() + ".basket", "baskets/" + basket->folderName() + ".basket"); // The hidden files were not added
 	// Save basket backgorund image:
 	QString imageName = basket->backgroundImageName();
-	std::cout << imageName << std::endl;
 	if (!basket->backgroundImageName().isEmpty() && !backgrounds.contains(imageName)) {
 		QString backgroundPath = Global::backgroundManager->pathForImageName(imageName);
-		std::cout << "Path:" << backgroundPath << std::endl;
 		if (!backgroundPath.isEmpty()) {
+			// Save the background image:
 			tar->addLocalFile(backgroundPath, "backgrounds/" + imageName);
+			// Save the preview image:
 			QString previewPath = Global::backgroundManager->previewPathForImageName(imageName);
-			std::cout << "PreviewPath:" << previewPath << std::endl;
 			if (!previewPath.isEmpty())
 				tar->addLocalFile(previewPath, "backgrounds/previews/" + imageName);
+			// Save the configuration file:
+			QString configPath = backgroundPath + ".config";
+			if (!configPath.isEmpty())
+				tar->addLocalFile(configPath, "backgrounds/" + imageName + ".config");
 		}
 		backgrounds.append(imageName);
 	}
@@ -1912,7 +1914,6 @@ void BNPView::openArchive()
 				key = line;
 				value = "";
 			}
-			std::cout << key << ">>" << value << std::endl;
 			if (key == "version") {
 				version = value;
 			} else if (key == "read-compatible") {
