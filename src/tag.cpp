@@ -257,25 +257,32 @@ Tag* Tag::tagForKAction(KAction *action)
 	return 0;
 }
 
-void Tag::loadTags()
+QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool merge = false*/)
 {
-	QString fullPath = Global::savesFolder() + "tags.xml";
+	QMap<QString, QString> mergedStates;
+
+	bool merge = !path.isEmpty();
+	QString fullPath = (merge ? path : Global::savesFolder() + "tags.xml");
 	QString doctype  = "basketTags";
 
 	QDir dir;
 	if (!dir.exists(fullPath)) {
-		DEBUG_WIN << "Tags file does not exists: Creating it...";
+		if (merge)
+			return mergedStates;
+		DEBUG_WIN << "Tags file does not exist: Creating it...";
 		createDefaultTagsSet(fullPath);
 	}
 
 	QDomDocument *document = XMLWork::openFile(doctype, fullPath);
 	if (!document) {
 		DEBUG_WIN << "<font color=red>FAILED to read the tags file</font>";
-		return;
+		return mergedStates;
 	}
 
 	QDomElement docElem = document->documentElement();
-	nextStateUid = docElem.attribute("nextStateUid", QString::number(nextStateUid)).toLong();
+	if (!merge)
+		nextStateUid = docElem.attribute("nextStateUid", QString::number(nextStateUid)).toLong();
+
 	QDomNode node = docElem.firstChild();
 	while (!node.isNull()) {
 		QDomElement element = node.toElement();
@@ -316,18 +323,88 @@ void Tag::loadTags()
 				}
 				subNode = subNode.nextSibling();
 			}
-			// Append it
+			// If the Tag is Valid:
 			if (tag->countStates() > 0) {
+				// Rename Things if Needed:
 				State *firstState = tag->states().first();
 				if (tag->countStates() == 1 && firstState->name().isEmpty())
 					firstState->setName(tag->name());
 				if (tag->name().isEmpty())
 					tag->setName(firstState->name());
-				all.append(tag);
+				// Add or Merge the Tag:
+				if (!merge) {
+					all.append(tag);
+				} else {
+					Tag *similarTag = tagSimilarTo(tag);
+					// Tag does not exists, add it:
+					if (similarTag == 0) {
+						// We are merging the new states, so we should choose new and unique (on that computer) ids for those states:
+						for (State::List::iterator it = tag->states().begin(); it != tag->states().end(); ++it) {
+							State *state = *it;
+							QString uid    = state->id();
+							QString newUid = "tag_state_" + QString::number(getNextStateUid());
+							state->setId(newUid);
+							mergedStates[uid] = newUid;
+						}
+						// TODO: if shortcut is already assigned to a previous note, do not import it, keep the user settings!
+						all.append(tag);
+					// Tag already exists, rename to theire ids:
+					} else {
+						State::List::iterator it2 = similarTag->states().begin();
+						for (State::List::iterator it = tag->states().begin(); it != tag->states().end(); ++it, ++it2) {
+							State *state        = *it;
+							State *similarState = *it2;
+							QString uid    = state->id();
+							QString newUid = similarState->id();
+							if (uid != newUid)
+								mergedStates[uid] = newUid;
+						}
+						delete tag; // Already exists, not to be merged. Delete the shortcut and all.
+					}
+				}
 			}
 		}
 		node = node.nextSibling();
 	}
+
+	return mergedStates;
+}
+
+Tag* Tag::tagSimilarTo(Tag *tagToTest)
+{
+	// Browse all tags:
+	for (List::iterator it = all.begin(); it != all.end(); ++it) {
+		Tag *tag = *it;
+		// We test only name and look. Shorcut and whenever it is inherited by sibling new notes are user settings only!
+		if (tag->name() != tagToTest->name())
+			continue; // Tag is different!
+		if (tag->countStates() != tagToTest->countStates())
+			continue; // Tag is different!
+		// We found a tag with same name, check if every states/look are same too:
+		bool same = true;
+		State::List::iterator itTest = tagToTest->states().begin();
+		for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2, ++itTest) {
+			State *state       = *it2;
+			State *stateToTest = *itTest;
+			if (state->name()            != stateToTest->name())            { same = false; break; }
+			if (state->emblem()          != stateToTest->emblem())          { same = false; break; }
+			if (state->bold()            != stateToTest->bold())            { same = false; break; }
+			if (state->italic()          != stateToTest->italic())          { same = false; break; }
+			if (state->underline()       != stateToTest->underline())       { same = false; break; }
+			if (state->strikeOut()       != stateToTest->strikeOut())       { same = false; break; }
+			if (state->textColor()       != stateToTest->textColor())       { same = false; break; }
+			if (state->fontName()        != stateToTest->fontName())        { same = false; break; }
+			if (state->fontSize()        != stateToTest->fontSize())        { same = false; break; }
+			if (state->backgroundColor() != stateToTest->backgroundColor()) { same = false; break; }
+			// Text equivalent (as well as onAllTextLines) is also a user setting!
+		}
+		// We found an existing tag that is "exactly" the same:
+		if (same)
+			return tag;
+	}
+
+	// Not found:
+	return 0;
 }
 
 void Tag::saveTags()

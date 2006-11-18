@@ -1989,7 +1989,14 @@ void BNPView::openArchive()
 					tar.open(IO_ReadOnly);
 					tar.directory()->copyTo(extractionFolder);
 					tar.close();
-					renameBasketFolders(extractionFolder);
+
+					// Import the Baskets:
+					QMap<QString, QString> mergedStates = Tag::loadTags(extractionFolder + "tags.xml");
+					QMap<QString, QString>::Iterator it;
+					if (mergedStates.count() > 0) {
+						Tag::saveTags();
+					}
+					renameBasketFolders(extractionFolder, mergedStates);
 
 				}
 			} else if (key.endsWith("*")) {
@@ -2015,23 +2022,20 @@ void BNPView::openArchive()
 	}
 }
 
-void BNPView::renameBasketFolders(const QString &extractionFolder)
+void BNPView::renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates)
 {
 	QDomDocument *doc = XMLWork::openFile("basketTree", extractionFolder + "baskets/baskets.xml");
 	if (doc != 0) {
 		QMap<QString, QString> folderMap;
-//		QMap<QString, QString> backgroundMap;
 		QDomElement docElem = doc->documentElement();
 		QDir dir;
-//		dir.mkdir(extractionFolder + "new-baskets/");
 		QDomNode node = docElem.firstChild();
-		renameBasketFolder(extractionFolder, node, folderMap/*, backgroundMap*/);
-
+		renameBasketFolder(extractionFolder, node, folderMap, mergedStates);
 		loadExtractedBaskets(extractionFolder, node, folderMap, 0);
 	}
 }
 
-void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap/*, QMap<QString, QString> &backgroundMap*/)
+void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, QMap<QString, QString> &mergedStates)
 {
 	QDomNode n = basketNode;
 	while ( ! n.isNull() ) {
@@ -2039,19 +2043,61 @@ void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 		if ( (!element.isNull()) && element.tagName() == "basket" ) {
 			QString folderName = element.attribute("folderName");
 			if (!folderName.isEmpty()) {
+				// Find a folder name:
 				QString newFolderName = BasketFactory::newFolderName();
 				folderMap[folderName] = newFolderName;
-				// Reserve the folder:
+				// Reserve the folder name:
 				QDir dir;
 				dir.mkdir(Global::basketsFolder() + newFolderName);
-				//Basket *basket = loadBasket(folderName);
-				//BasketListViewItem *basketItem = appendBasket(basket, item);
-				//basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
-				//basket->loadProperties(XMLWork::getElement(element, "properties"));
-				//if (XMLWork::trueOrFalse(element.attribute("lastOpened", element.attribute("lastOpenned", "false")), false)) // Compat with 0.6.0-Alphas
-				//	setCurrentBasket(basket);
+				// Rename the merged tag ids:
+				if (mergedStates.count() > 0) {
+					renameMergedStates(extractionFolder + "baskets/" + folderName + ".basket", mergedStates);
+				}
+				// Child baskets:
 				QDomNode node = element.firstChild();
-				renameBasketFolder(extractionFolder, node, folderMap);
+				renameBasketFolder(extractionFolder, node, folderMap, mergedStates);
+			}
+		}
+		n = n.nextSibling();
+	}
+}
+
+void BNPView::renameMergedStates(const QString &fullPath, QMap<QString, QString> &mergedStates)
+{
+	QDomDocument *doc = XMLWork::openFile("basket", fullPath);
+	if (doc == 0)
+		return;
+	QDomElement docElem = doc->documentElement();
+	QDomElement notes = XMLWork::getElement(docElem, "notes");
+	renameMergedStates(notes, mergedStates);
+	Basket::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
+}
+
+void BNPView::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates)
+{
+	QDomNode n = notes.firstChild();
+	while ( ! n.isNull() ) {
+		QDomElement element = n.toElement();
+		if (!element.isNull()) {
+			if (element.tagName() == "group" ) {
+				renameMergedStates(n, mergedStates);
+			} else if (element.tagName() == "note") {
+				QString tags = XMLWork::getElementText(element, "tags");
+				if (!tags.isEmpty()) {
+					QStringList tagNames = QStringList::split(";", tags);
+					for (QStringList::Iterator it = tagNames.begin(); it != tagNames.end(); ++it) {
+						QString &tag = *it;
+						if (mergedStates.contains(tag)) {
+							tag = mergedStates[tag];
+						}
+					}
+					QString newTags = tagNames.join(";");
+					QDomElement tagsElement = XMLWork::getElement(element, "tags");
+					element.removeChild(tagsElement);
+					QDomDocument document = element.ownerDocument();
+					XMLWork::addElement(document, element, "tags", newTags);
+					//tagsElement.toText().setData(newTags);
+				}
 			}
 		}
 		n = n.nextSibling();

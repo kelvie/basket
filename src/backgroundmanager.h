@@ -107,11 +107,14 @@ class BackgroundManager : private QObject
 	QPixmap* opaquePixmap(const QString &image, const QColor &color);
 	bool tiled(const QString &image);
 	/// LIST OF IMAGES AND PREVIEWS:
+	bool exists(const QString &image);
 	QStringList imageNames();
 	QPixmap* preview(const QString &image);
-	/// USED FRO EXPORTATION:
+	/// USED FOR EXPORTATION:
 	QString pathForImageName(const QString &image); /// << It is STRONGLY advised to not use those two methods unless it's to copy (export) the images or something like that...
 	QString previewPathForImageName(const QString &image);
+	/// USED FOR IMPORTATION:
+	void addImage(const QString &fullPath);
 
   private:
 	BackgroundEntry*       backgroundEntryFor(const QString &image);

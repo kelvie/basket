@@ -76,7 +76,7 @@ BackgroundManager::BackgroundManager()
 ///		std::cout << *it + "basket/backgrounds/  ";
 		QStringList files = dir.entryList();
 		for (QStringList::Iterator it2 = files.begin(); it2 != files.end(); ++it2) // TODO: If an image name is present in two folders?
-			m_backgroundsList.append(new BackgroundEntry(*it + "basket/backgrounds/" + *it2));
+			addImage(*it + "basket/backgrounds/" + *it2);
 	}
 
 ///	std::cout << ":" << std::endl;
@@ -88,6 +88,11 @@ BackgroundManager::BackgroundManager()
 
 BackgroundManager::~BackgroundManager()
 {
+}
+
+void BackgroundManager::addImage(const QString &fullPath)
+{
+	m_backgroundsList.append(new BackgroundEntry(fullPath));
 }
 
 BackgroundEntry* BackgroundManager::backgroundEntryFor(const QString &image)
@@ -225,6 +230,14 @@ bool BackgroundManager::tiled(const QString &image)
 	}
 
 	return entry->tiled;
+}
+
+bool BackgroundManager::exists(const QString &image)
+{
+	for (BackgroundsList::iterator it = m_backgroundsList.begin(); it != m_backgroundsList.end(); ++it)
+		if ((*it)->name == image)
+			return true;
+	return false;
 }
 
 QStringList BackgroundManager::imageNames()
