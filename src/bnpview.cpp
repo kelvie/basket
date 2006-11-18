@@ -1887,11 +1887,6 @@ void BNPView::openArchive()
 	dir.mkdir(tempFolder);
 	const Q_ULONG BUFFER_SIZE = 1024;
 
-//	// Create the temporar archive file:
-//	QString tempDestination = tempFolder + "temp-archive.tar.gz";
-//	KTar tar(tempDestination, "application/x-gzip");
-//	tar.open(IO_WriteOnly);
-
 	QFile file(path);
 	if (file.open(IO_ReadOnly)) {
 		QTextStream stream(&file);
@@ -1973,7 +1968,8 @@ void BNPView::openArchive()
 					return;
 				}
 				// Get the archive file:
-				QFile archiveFile(tempFolder + "temp-archive.tar.gz");
+				QString tempArchive = tempFolder + "temp-archive.tar.gz";
+				QFile archiveFile(tempArchive);
 				if (archiveFile.open(IO_WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
@@ -1983,6 +1979,17 @@ void BNPView::openArchive()
 					}
 					archiveFile.close();
 					delete buffer;
+
+					// Extract the Archive:
+					QString extractionFolder = tempFolder + "extraction/";
+					QDir dir;
+					dir.mkdir(extractionFolder);
+					KTar tar(tempArchive, "application/x-gzip");
+					tar.open(IO_ReadOnly);
+					tar.directory()->copyTo(extractionFolder);
+					tar.close();
+//					renameBasketFolders(extractionFolder);
+
 				}
 			} else if (key.endsWith("*")) {
 				// We do not know what it is, but we should read the embedded-file in order to discard it:
@@ -2007,6 +2014,43 @@ void BNPView::openArchive()
 	}
 }
 
+void BNPView::renameBasketFolders(const QString &extractionFolder)
+{
+	QDomDocument *doc = XMLWork::openFile("basketTree", extractionFolder + "baskets/baskets.xml");
+	if (doc != 0) {
+		QMap<QString, QString> folderMap;
+//		QMap<QString, QString> backgroundMap;
+		QDomElement docElem = doc->documentElement();
+		QDir dir;
+//		dir.mkdir(extractionFolder + "new-baskets/");
+		QDomNode node = docElem.firstChild();
+		renameBasketFolder(extractionFolder, node, folderMap/*, backgroundMap*/);
+	}
+}
+
+void BNPView::renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap/*, QMap<QString, QString> &backgroundMap*/)
+{
+	QDomNode n = basketNode;
+	while ( ! n.isNull() ) {
+		QDomElement element = n.toElement();
+		if ( (!element.isNull()) && element.tagName() == "basket" ) {
+			QString folderName = element.attribute("folderName");
+			if (!folderName.isEmpty()) {
+				QString newFolderName = BasketFactory::newFolderName();
+				folderMap[folderName] = newFolderName;
+				//Basket *basket = loadBasket(folderName);
+				//BasketListViewItem *basketItem = appendBasket(basket, item);
+				//basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
+				//basket->loadProperties(XMLWork::getElement(element, "properties"));
+				//if (XMLWork::trueOrFalse(element.attribute("lastOpened", element.attribute("lastOpenned", "false")), false)) // Compat with 0.6.0-Alphas
+				//	setCurrentBasket(basket);
+				QDomNode node = element.firstChild();
+				renameBasketFolder(extractionFolder, node, folderMap);
+			}
+		}
+		n = n.nextSibling();
+	}
+}
 
 void BNPView::activatedTagShortcut()
 {
