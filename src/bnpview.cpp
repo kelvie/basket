@@ -1722,19 +1722,34 @@ void BNPView::lockBasket()
 void BNPView::saveAsArchive()
 {
 	Basket *basket = currentBasket();
-/*
-	QString destination = "/home/seb/archive.baskets";
-	bool withSubBaskets = true;
-*/
+
+	QDir dir;
+
 	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
-	QString destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Basket Archive"));
-	if (destination.isEmpty()) // User canceled
-		return;
+	QString destination;
+	for (bool askAgain = true; askAgain; ) {
+		destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Basket Archive"));
+		if (destination.isEmpty()) // User canceled
+			return;
+		if (dir.exists(destination)) {
+			int result = KMessageBox::questionYesNoCancel(
+				this,
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
+					.arg(KURL(destination).fileName()),
+				i18n("Override File?"),
+				KGuiItem(i18n("&Override"), "filesave")
+			);
+			if (result == KMessageBox::Cancel)
+				return;
+			else if (result == KMessageBox::Yes)
+				askAgain = false;
+		} else
+			askAgain = false;
+	}
 	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Basket Archive")) == KMessageBox::Yes;
 
 	// Create the temporar folder:
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
-	QDir dir;
 	dir.mkdir(tempFolder);
 
 	// Create the temporar archive file:
@@ -1828,9 +1843,9 @@ void BNPView::saveAsArchive()
 	}
 
 	// Clean Up Everything:
-	// TODO: Remove "temp-archive/"
 	dir.remove(tempFolder + "preview.png");
 	dir.remove(tempDestination);
+	dir.rmdir(tempFolder);
 }
 
 void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
@@ -1896,6 +1911,8 @@ void BNPView::openArchive()
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive") {
 			KMessageBox::error(this, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));
+			file.close();
+			Tools::deleteRecursively(tempFolder);
 			return;
 		}
 		QString version;
@@ -1925,6 +1942,8 @@ void BNPView::openArchive()
 				ulong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					file.close();
+					Tools::deleteRecursively(tempFolder);
 					return;
 				}
 				// Get the preview file:
@@ -1959,6 +1978,8 @@ void BNPView::openArchive()
 							.arg(kapp->aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
+					file.close();
+					Tools::deleteRecursively(tempFolder);
 					return;
 				}
 
@@ -1966,6 +1987,8 @@ void BNPView::openArchive()
 				ulong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					file.close();
+					Tools::deleteRecursively(tempFolder);
 					return;
 				}
 				// Get the archive file:
@@ -2005,6 +2028,8 @@ void BNPView::openArchive()
 				ulong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(this, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
+					file.close();
+					Tools::deleteRecursively(tempFolder);
 					return;
 				}
 				// Get the archive file:
@@ -2019,7 +2044,9 @@ void BNPView::openArchive()
 			}
 			// Analyse the Value, if Understood:
 		}
+		file.close();
 	}
+	Tools::deleteRecursively(tempFolder);
 }
 
 void BNPView::renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates)
