@@ -1788,7 +1788,7 @@ void BNPView::saveAsArchive()
 			if (!icon.isNull()) {
 				icon.save(tempIconFile, "PNG");
 				QString iconFileName = state->emblem().replace('/', '_');
-				tar.addLocalFile(tempIconFile, "tag_emblems/" + iconFileName);
+				tar.addLocalFile(tempIconFile, "tag-emblems/" + iconFileName);
 			}
 		}
 	}
@@ -2013,12 +2013,15 @@ void BNPView::openArchive()
 					tar.directory()->copyTo(extractionFolder);
 					tar.close();
 
-					// Import the Baskets:
+					// Import the Tags:
+					importTagEmblems(extractionFolder); // Import and rename tag emblems BEFORE loading them!
 					QMap<QString, QString> mergedStates = Tag::loadTags(extractionFolder + "tags.xml");
 					QMap<QString, QString>::Iterator it;
 					if (mergedStates.count() > 0) {
 						Tag::saveTags();
 					}
+
+					// Import the Baskets:
 					renameBasketFolders(extractionFolder, mergedStates);
 
 				}
@@ -2047,6 +2050,59 @@ void BNPView::openArchive()
 		file.close();
 	}
 	Tools::deleteRecursively(tempFolder);
+}
+
+/**
+ * When opening a basket archive that come from another computer,
+ * it can contains tags that use icons (emblems) that are not present on that computer.
+ * Fortunately, basket archives contains a copy of every used icons.
+ * This method check for every emblems and import the missing ones.
+ * It also modify the tags.xml copy for the emblems to point to the absolute path of the impported icons.
+ */
+void BNPView::importTagEmblems(const QString &extractionFolder)
+{
+	QDomDocument *document = XMLWork::openFile("basketTags", extractionFolder + "tags.xml");
+	if (document == 0)
+		return;
+	QDomElement docElem = document->documentElement();
+
+	QDir dir;
+	dir.mkdir(Global::savesFolder() + "tag-emblems/");
+	FormatImporter copier; // Only used to copy files synchronously
+
+	QDomNode node = docElem.firstChild();
+	while (!node.isNull()) {
+		QDomElement element = node.toElement();
+		if ( (!element.isNull()) && element.tagName() == "tag" ) {
+			QDomNode subNode = element.firstChild();
+			while (!subNode.isNull()) {
+				QDomElement subElement = subNode.toElement();
+				if ( (!subElement.isNull()) && subElement.tagName() == "state" ) {
+					QString emblemName = XMLWork::getElementText(subElement, "emblem");
+					if (!emblemName.isEmpty()) {
+						QPixmap emblem = kapp->iconLoader()->loadIcon(emblemName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+						// The icon does not exists on that computer, import it:
+						if (emblem.isNull()) {
+							// Of the emblem path was eg. "/home/seb/emblem.png", it was exported as "tag-emblems/_home_seb_emblem.png".
+							// So we need to copy that image to "~/.kde/share/apps/basket/tag-emblems/emblem.png":
+							int slashIndex = emblemName.findRev("/");
+							QString emblemFileName = (slashIndex < 0 ? emblemName : emblemName.right(slashIndex - 2));
+							QString source      = extractionFolder + "tag-emblems/" + emblemName.replace('/', '_');
+							QString destination = Global::savesFolder() + "tag-emblems/" + emblemFileName;
+							copier.copyFolder(source, destination);
+							// Replace the emblem path in the tags.xml copy:
+							QDomElement emblemElement = XMLWork::getElement(subElement, "emblem");
+							subElement.removeChild(emblemElement);
+							XMLWork::addElement(*document, subElement, "emblem", destination);
+						}
+					}
+				}
+				subNode = subNode.nextSibling();
+			}
+		}
+		node = node.nextSibling();
+	}
+	Basket::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
 }
 
 void BNPView::renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates)
@@ -2123,7 +2179,6 @@ void BNPView::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedS
 					element.removeChild(tagsElement);
 					QDomDocument document = element.ownerDocument();
 					XMLWork::addElement(document, element, "tags", newTags);
-					//tagsElement.toText().setData(newTags);
 				}
 			}
 		}
