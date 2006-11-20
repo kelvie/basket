@@ -201,6 +201,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent);
 		void renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates);
 		void importTagEmblems(const QString &extractionFolder);
+		void importArchivedBackgroundImages(const QString &extractionFolder);
 
 	private slots:
 		void updateNotesActions();

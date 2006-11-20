@@ -2021,6 +2021,9 @@ void BNPView::openArchive()
 						Tag::saveTags();
 					}
 
+					// Import the Background Images:
+					importArchivedBackgroundImages(extractionFolder);
+
 					// Import the Baskets:
 					renameBasketFolders(extractionFolder, mergedStates);
 
@@ -2103,6 +2106,38 @@ void BNPView::importTagEmblems(const QString &extractionFolder)
 		node = node.nextSibling();
 	}
 	Basket::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
+}
+
+void BNPView::importArchivedBackgroundImages(const QString &extractionFolder)
+{
+	FormatImporter copier; // Only used to copy files synchronously
+	QString destFolder = KGlobal::dirs()->saveLocation("data", "basket/backgrounds/");
+
+	QDir dir(extractionFolder + "backgrounds/", /*nameFilder=*/"*.png", /*sortSpec=*/QDir::Name | QDir::IgnoreCase, /*filterSpec=*/QDir::Files | QDir::NoSymLinks);
+	QStringList files = dir.entryList();
+	for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
+		QString image = *it;
+		if (!Global::backgroundManager->exists(image)) {
+			// Copy images:
+			QString imageSource = extractionFolder + "backgrounds/" + image;
+			QString imageDest   = destFolder + image;
+			copier.copyFolder(imageSource, imageDest);
+			// Copy configuration file:
+			QString configSource = extractionFolder + "backgrounds/" + image + ".config";
+			QString configDest   = destFolder + image;
+			if (dir.exists(configSource))
+				copier.copyFolder(configSource, configDest);
+			// Copy preview:
+			QString previewSource = extractionFolder + "backgrounds/previews/" + image;
+			QString previewDest   = destFolder + "previews/" + image;
+			if (dir.exists(previewSource)) {
+				dir.mkdir(destFolder + "previews/"); // Make sure the folder exists!
+				copier.copyFolder(previewSource, previewDest);
+			}
+			// Append image to database:
+			Global::backgroundManager->addImage(imageDest);
+		}
+	}
 }
 
 void BNPView::renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates)
