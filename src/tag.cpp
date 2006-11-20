@@ -372,21 +372,32 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
 
 Tag* Tag::tagSimilarTo(Tag *tagToTest)
 {
+	// Tags are considered similar if they have the same name, the same number of states, in the same order, and the same look.
+	// Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparision.
+	// Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparision.
+	// Default tags are equal only if they have the same number of states, in the same order, and the same look.
+	// This is because default tag names are translated differently in every countries, but they are essentialy the same!
+	// User tags begins with "tag_state_" followed by a number. Default tags are the other ones.
+
 	// Browse all tags:
 	for (List::iterator it = all.begin(); it != all.end(); ++it) {
 		Tag *tag = *it;
+		bool same = true;
+		bool sameName;
+		bool defaultTag = true;
 		// We test only name and look. Shorcut and whenever it is inherited by sibling new notes are user settings only!
-		if (tag->name() != tagToTest->name())
-			continue; // Tag is different!
+		sameName = tag->name() == tagToTest->name();
+	//	if (tag->name() != tagToTest->name())
+	//		continue; // Tag is different!
 		if (tag->countStates() != tagToTest->countStates())
 			continue; // Tag is different!
 		// We found a tag with same name, check if every states/look are same too:
-		bool same = true;
 		State::List::iterator itTest = tagToTest->states().begin();
 		for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2, ++itTest) {
 			State *state       = *it2;
 			State *stateToTest = *itTest;
-			if (state->name()            != stateToTest->name())            { same = false; break; }
+			if (state->id().startsWith("tag_state_") || stateToTest->id().startsWith("tag_state_")) { defaultTag = false; }
+			if (state->name()            != stateToTest->name())            { sameName = false; /*break; */}
 			if (state->emblem()          != stateToTest->emblem())          { same = false; break; }
 			if (state->bold()            != stateToTest->bold())            { same = false; break; }
 			if (state->italic()          != stateToTest->italic())          { same = false; break; }
@@ -399,7 +410,7 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
 			// Text equivalent (as well as onAllTextLines) is also a user setting!
 		}
 		// We found an existing tag that is "exactly" the same:
-		if (same)
+		if (same && (sameName || defaultTag))
 			return tag;
 	}
 

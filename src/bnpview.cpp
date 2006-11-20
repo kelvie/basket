@@ -1850,6 +1850,7 @@ void BNPView::saveAsArchive()
 
 void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
 {
+	QDir dir;
 	// Save basket data:
 	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
 	tar->addLocalFile(basket->fullPath() + ".basket", "baskets/" + basket->folderName() + ".basket"); // The hidden files were not added
@@ -1866,7 +1867,7 @@ void BNPView::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 				tar->addLocalFile(previewPath, "backgrounds/previews/" + imageName);
 			// Save the configuration file:
 			QString configPath = backgroundPath + ".config";
-			if (!configPath.isEmpty())
+			if (dir.exists(configPath))
 				tar->addLocalFile(configPath, "backgrounds/" + imageName + ".config");
 		}
 		backgrounds.append(imageName);
@@ -2092,7 +2093,8 @@ void BNPView::importTagEmblems(const QString &extractionFolder)
 							QString emblemFileName = (slashIndex < 0 ? emblemName : emblemName.right(slashIndex - 2));
 							QString source      = extractionFolder + "tag-emblems/" + emblemName.replace('/', '_');
 							QString destination = Global::savesFolder() + "tag-emblems/" + emblemFileName;
-							copier.copyFolder(source, destination);
+							if (!dir.exists(destination))
+								copier.copyFolder(source, destination);
 							// Replace the emblem path in the tags.xml copy:
 							QDomElement emblemElement = XMLWork::getElement(subElement, "emblem");
 							subElement.removeChild(emblemElement);
