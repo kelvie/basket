@@ -387,8 +387,6 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
 		bool defaultTag = true;
 		// We test only name and look. Shorcut and whenever it is inherited by sibling new notes are user settings only!
 		sameName = tag->name() == tagToTest->name();
-	//	if (tag->name() != tagToTest->name())
-	//		continue; // Tag is different!
 		if (tag->countStates() != tagToTest->countStates())
 			continue; // Tag is different!
 		// We found a tag with same name, check if every states/look are same too:
@@ -397,7 +395,7 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
 			State *state       = *it2;
 			State *stateToTest = *itTest;
 			if (state->id().startsWith("tag_state_") || stateToTest->id().startsWith("tag_state_")) { defaultTag = false; }
-			if (state->name()            != stateToTest->name())            { sameName = false; /*break; */}
+			if (state->name()            != stateToTest->name())            { sameName = false;    }
 			if (state->emblem()          != stateToTest->emblem())          { same = false; break; }
 			if (state->bold()            != stateToTest->bold())            { same = false; break; }
 			if (state->italic()          != stateToTest->italic())          { same = false; break; }

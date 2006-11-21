@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (C) 2006 by Sébastien Laoût                                 *
+ *   slaout@linux62.org                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #include <qstringlist.h>
 #include <qdir.h>
 #include <qfile.h>
@@ -12,7 +32,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 	// Create the temporar folder:
 	KTempDir tempDir;
 	tempDir.setAutoDelete(true);
-	QString tempFolder = tempDir.name();//"/tmp/kde-seb/temp-archive/";
+	QString tempFolder = tempDir.name();
 	QDir dir;
 	dir.mkdir(tempFolder);
 	const Q_ULONG BUFFER_SIZE = 1024;
@@ -24,7 +44,6 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive" && line != "BasKetNP:template") {
 			file.close();
-//			deleteRecursively(tempFolder);
 			return false;
 		}
 		while (!stream.atEnd()) {
@@ -45,7 +64,6 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				ulong size = value.toULong(&ok);
 				if (!ok) {
 					file.close();
-//					deleteRecursively(tempFolder);
 					return false;
 				}
 				// Get the preview file:
@@ -61,7 +79,6 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 					delete buffer;
 					image = QImage(tempFolder + "preview.png");
 					file.close();
-//					deleteRecursively(tempFolder);
 					return true;
 				}
 			} else if (key.endsWith("*")) {
@@ -70,7 +87,6 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				ulong size = value.toULong(&ok);
 				if (!ok) {
 					file.close();
-//					deleteRecursively(tempFolder);
 					return false;
 				}
 				// Get the archive file:
@@ -80,43 +96,16 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 					size -= sizeRead;
 				}
 				delete buffer;
-			} else {
-				// We do not know what it is, and we do not care.
 			}
-			// Analyse the Value, if Understood:
 		}
 		file.close();
 	}
-//	deleteRecursively(tempFolder);
 	return false;
 }
 
 ThumbCreator::Flags BasketThumbCreator::flags() const
 {
 	return (Flags) (DrawFrame | BlendIcon);
-}
-
-// Copied from src/Tools::deleteRecursively()
-void BasketThumbCreator::deleteRecursively(const QString &/*folderOrFile*/)
-{
-// No need anymore, since we're using KTempDir
-/*	if (folderOrFile.isEmpty())
-		return;
-
-	QFileInfo fileInfo(folderOrFile);
-	if (fileInfo.isDir()) {
-		// Delete the child files:
-		QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::All | QDir::Hidden);
-		QStringList list = dir.entryList();
-		for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it )
-			if ( *it != "." && *it != ".." )
-				deleteRecursively(folderOrFile + "/" + *it);
-		// And then delete the folder:
-		dir.rmdir(folderOrFile);
-	} else
-		// Delete the file:
-		QFile::remove(folderOrFile);
-*/
 }
 
 extern "C"
