@@ -1,5 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
+Type=Application
+
+Exec=basket %f
+MimeType=application/x-basket-archive;application/x-basket-template
+Icon=basket
+
 Name=BasKet Note Pads
 Name[de]=BasKet Notizblätter
 Name[fr]=Blocs notes BasKet
@@ -8,9 +14,7 @@ Name[es]=Notas de BasKet
 Name[pt]=Bloco de Notas BasKet
 Name[ru]=Альбом заметок BasKet
 Name[xx]=xxBasKetxx
-Exec=basket
-Icon=basket
-Type=Application
+
 Comment=Taking care of your ideas.
 Comment[fr]=Prendre soin de vos idées.
 Comment[nn]=Ta vare på tankane dine.

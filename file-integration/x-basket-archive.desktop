@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+MimeType=application/x-basket-archive
+Type=MimeType
+Comment=Basket Archive
+Comment[fr]=Archive de paniers
+Icon=baskets
+Patterns=*.baskets

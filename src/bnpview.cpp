@@ -1799,9 +1799,21 @@ void BNPView::saveAsArchive()
 
 	// Computing the File Preview:
 	Basket *previewBasket = basket; // FIXME: Use the first non-empty basket!
-	QPixmap previewPixmap(previewBasket->contentsWidth(), previewBasket->contentsHeight());
+	QPixmap previewPixmap(previewBasket->visibleWidth(), previewBasket->visibleHeight());
 	QPainter painter(&previewPixmap);
+	// Save old state, and make the look clean ("smile, you are filmed!"):
+	NoteSelection *selection = previewBasket->selectedNotes();
+	previewBasket->unselectAll();
+	Note *focusedNote = previewBasket->focusedNote();
+	previewBasket->setFocusedNote(0);
+	previewBasket->doHoverEffects(0, Note::None);
+	// Take the screenshot:
 	previewBasket->drawContents(&painter, 0, 0, previewPixmap.width(), previewPixmap.height());
+	// Go back to the old look:
+	previewBasket->selectSelection(selection);
+	previewBasket->setFocusedNote(focusedNote);
+	previewBasket->doHoverEffects();
+	// End and save our splandid painting:
 	painter.end();
 	QImage previewImage = previewPixmap.convertToImage();
 	const int PREVIEW_SIZE = 256;
@@ -1892,13 +1904,23 @@ void BNPView::listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &lis
 	}
 }
 
+QString BNPView::s_fileToOpen = "";
+
+void BNPView::delayedOpenArchive()
+{
+	openArchive(s_fileToOpen);
+}
+
 void BNPView::openArchive()
 {
 	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
 	QString path = KFileDialog::getOpenFileName(QString::null, filter, this, i18n("Open Basket Archive"));
-	if (path.isEmpty()) // User canceled
-		return;
+	if (!path.isEmpty()) // User has not canceled
+		openArchive(path);
+}
 
+void BNPView::openArchive(const QString &path)
+{
 	// Create the temporar folder:
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
 	QDir dir;

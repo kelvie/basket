@@ -12,14 +12,14 @@ KDE_ICON = AUTO
 # these are the headers for your project
 
 noinst_HEADERS = basket.h basketproperties.h mainwindow.h basket_part.h \
-			debugwindow.h 	linklabel.h variouswidgets.h xmlwork.h keyboard.h global.h settings.h \
-			focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h tag.h kcolorcombo2.h \
-			newbasketdialog.h tagsedit.h note.h notecontent.h 	notedrag.h noteedit.h notefactory.h \
-			filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
-			kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
-			systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
-			formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h basket_options.h \
-	likeback_private.h
+				debugwindow.h 	linklabel.h variouswidgets.h xmlwork.h keyboard.h global.h settings.h \
+				focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h tag.h kcolorcombo2.h \
+				newbasketdialog.h tagsedit.h note.h notecontent.h 	notedrag.h noteedit.h notefactory.h \
+				filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
+				kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
+				systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
+				formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h basket_options.h \
+		likeback_private.h application.h
 
 #########################################################################
 # COMMON FILES SECTION
@@ -66,7 +66,7 @@ shelldesktop_DATA = basket.desktop
 rcdir = $(kde_datadir)/basket
 rc_DATA = basketui.rc
 
-basket_SOURCES = main.cpp mainwindow.cpp
+basket_SOURCES = main.cpp mainwindow.cpp application.cpp
 
 kde_icon_KDEICON = cr128-app-basket.png cr16-app-basket.png cr22-app-basket.png \
 	cr32-app-basket.png cr48-app-basket.png cr64-app-basket.png hi16-app-basket_old.png \

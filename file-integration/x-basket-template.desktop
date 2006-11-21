@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+MimeType=application/x-basket-template
+Type=MimeType
+Comment=Basket Template
+Comment[fr]=Modèle de panier
+Icon=baskett
+Patterns=*.baskett

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 
-#include <kuniqueapplication.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <kiconloader.h>
@@ -30,9 +29,12 @@
 #include <kmessagebox.h>
 #include <kstandarddirs.h>
 #include <kdebug.h>
+#include <qfile.h>
+#include <qfileinfo.h>
 
 #include <kconfig.h> // TMP IN ALPHA 1
 
+#include "application.h"
 #include "backgroundmanager.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -48,7 +50,7 @@
 #endif
 
 /* Thanks to JuK for this Application class */
-#if KDE_IS_VERSION( 3, 1, 90 )
+/*#if KDE_IS_VERSION( 3, 1, 90 )
 typedef KUniqueApplication Application; // KDE 3.2 and later already re-show the main window
 #else
 class Application : public KUniqueApplication
@@ -63,6 +65,7 @@ class Application : public KUniqueApplication
 	}
 };
 #endif
+*/
 
 int main(int argc, char *argv[])
 {
@@ -70,7 +73,8 @@ int main(int argc, char *argv[])
 	KCmdLineArgs::addCmdLineOptions(basket_options);
 
 	KUniqueApplication::addCmdLineOptions();
-	KUniqueApplication app;
+	//KUniqueApplication app;
+	Application app;
 
 	/* Main Window */
 	MainWindow* win = new MainWindow();

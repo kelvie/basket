@@ -186,12 +186,18 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void password();
 		void saveAsArchive();
 		void openArchive();
+		void openArchive(const QString &path);
+		void delayedOpenArchive();
 		void lockBasket();
 		void hideOnEscape();
 
 		void changedSelectedNotes();
 		void timeoutTryHide();
 		void timeoutHide();
+
+	public:
+		static QString s_fileToOpen;
+
 	private:
 		void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds);
 		void listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,24 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASKET_OPTIONS_H
-#define BASKET_OPTIONS_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-#include <kcmdlineargs.h>
-#include <klocale.h>
+#include <kuniqueapplication.h>
+#include <qstring.h>
 
-KCmdLineOptions basket_options[] =
+/**
+ * @author Sébastien Laoût <slaout@linux62.org>
+ */
+class Application : public KUniqueApplication
 {
-	{ "d", 0, 0 },
-	{ "debug", I18N_NOOP("Show the debug window"), 0 },
-	{ "f", 0, 0 },
-	{ "data-folder <folder>", I18N_NOOP("Custom folder where to load and save basket data and application data (useful for debugging purpose)"), 0 },
-	{ "h", 0, 0 },
-	{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
-	{ "k", 0, 0 },
-	{ "use-drkonquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
-	{ "+[file]", I18N_NOOP("Open basket archive or template"), 0 },
-	KCmdLineLastOption
+  public:
+	Application();
+	~Application();
+	int newInstance();
 };
 
-#endif // BASKET_OPTIONS_H
+#endif // APPLICATION_H

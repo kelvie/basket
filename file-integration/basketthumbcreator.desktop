@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Service
+Name=Basket Archives & Templates
+ServiceTypes=ThumbCreator
+MimeTypes=application/x-basket-archive,application/x-basket-template
+CacheThumbnail=true
+X-KDE-Library=basketthumbcreator
