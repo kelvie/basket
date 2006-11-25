@@ -4652,9 +4652,43 @@ void Basket::exportToHTML()
 	/*KMessageBox::information(this, "Sorry, this action isn't re-available yet. It need to be adapted to the new BasKet Note Pads capabilities.");*/
 
 	// Get the HTML filename:
-	ExporterDialog *options = new ExporterDialog(this, this, "ExportToHtml");
-	if (options->exec() == QDialog::Rejected)
-		return;
+//	ExporterDialog *options = new ExporterDialog(this, this, "ExportToHtml");
+//	if (options->exec() == QDialog::Rejected)
+//		return;
+
+
+	QDir dir;
+
+	KConfig *config = KGlobal::config();
+	config->setGroup("Export to HTML");
+	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString url = folder + QString(basketName()).replace("/", "_") + ".html";
+
+	QString filter = "*.html *.htm|" + i18n("HTML Documents") + "\n*|" + i18n("All Files");
+	QString destination = url;
+	for (bool askAgain = true; askAgain; ) {
+		destination = KFileDialog::getSaveFileName(destination, filter, this, i18n("Export to HTML"));
+		if (destination.isEmpty()) // User canceled
+			return;
+		if (dir.exists(destination)) {
+			int result = KMessageBox::questionYesNoCancel(
+				this,
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
+					.arg(KURL(destination).fileName()),
+				i18n("Override File?"),
+				KGuiItem(i18n("&Override"), "filesave")
+			);
+			if (result == KMessageBox::Cancel)
+				return;
+			else if (result == KMessageBox::Yes)
+				askAgain = false;
+		} else
+			askAgain = false;
+	}
+
+	config->writeEntry("lastFolder", KURL(destination).directory());
+	config->sync();
+
 
 	// TODO: options->erasePreviousFiles() is not used: on pressing OK, a messagebox should show:
 	//       "A folder named foobar_files already exist. This folder will contains the data files and images.
@@ -4664,7 +4698,7 @@ void Basket::exportToHTML()
 	//       It's now only used to put URL in front of links. TODO: Use @media print { } for that!
 
 	// Open the file to write:
-	QString filePath = options->filePath();
+	QString filePath = destination;//options->filePath();
 	QFile file(filePath);
 	if ( ! file.open(IO_WriteOnly) )
 		return;
@@ -4675,7 +4709,7 @@ void Basket::exportToHTML()
 	QString filesFolderPath = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/";                  // eg.: "/home/seb/foo.html_files/"
 	QString filesFolderName = i18n("HTML export folder (files)", "%1_files").arg(KURL(filePath).fileName()) + "/"; // eg.: "foo.html_files/"
 	Tools::deleteRecursively(filesFolderPath);
-	QDir dir;
+//	QDir dir;
 	dir.mkdir(filesFolderPath);
 
 	// Create sub-folders:
@@ -4723,6 +4757,9 @@ void Basket::exportToHTML()
 		"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
 		"  <meta name=\"Generator\" content=\"" << kapp->aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
 		"  <style type=\"text/css\">\n"
+		"   @media print {\n"
+		"    span.printable { display: inline; }\n"
+		"   }\n"
 		"   h1 { text-align: center; }\n"
 		"   img { border: none; vertical-align: middle; }\n"
 		"   .basket { background-color: " << backgroundColor().name() << "; border: solid " << borderColor << " 1px; "
@@ -4825,9 +4862,9 @@ void Basket::exportToHTML()
 	exportData.imagesFolderName    = imagesFolderName;
 	exportData.dataFolderPath      = dataFolderPath;
 	exportData.dataFolderName      = dataFolderName;
-	exportData.formatForImpression = options->formatForImpression();
-	exportData.embedLinkedFiles    = options->embedLinkedFiles();
-	exportData.embedLinkedFolders  = options->embedLinkedFolders();
+	exportData.formatForImpression = false;//options->formatForImpression();
+	exportData.embedLinkedFiles    = false;//options->embedLinkedFiles();
+	exportData.embedLinkedFolders  = false;//options->embedLinkedFolders();
 
 	FOR_EACH_NOTE (note)
 		note->exportToHTML(stream, /*indent=*/(isFreeLayout() ? 3 : 4), exportData);

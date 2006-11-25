@@ -1722,10 +1722,15 @@ void BNPView::saveAsArchive()
 
 	QDir dir;
 
+	KConfig *config = KGlobal::config();
+	config->setGroup("Basket Archive");
+	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString url = folder + QString(basket->basketName()).replace("/", "_") + ".baskets";
+
 	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
-	QString destination;
+	QString destination = url;
 	for (bool askAgain = true; askAgain; ) {
-		destination = KFileDialog::getSaveFileName(QString::null, filter, this, i18n("Save as Basket Archive"));
+		destination = KFileDialog::getSaveFileName(destination, filter, this, i18n("Save as Basket Archive"));
 		if (destination.isEmpty()) // User canceled
 			return;
 		if (dir.exists(destination)) {
@@ -1743,7 +1748,10 @@ void BNPView::saveAsArchive()
 		} else
 			askAgain = false;
 	}
-	bool withSubBaskets = KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Basket Archive")) == KMessageBox::Yes;
+	bool withSubBaskets = true;//KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Basket Archive")) == KMessageBox::Yes;
+
+	config->writeEntry("lastFolder", KURL(destination).directory());
+	config->sync();
 
 	Archive::save(basket, withSubBaskets, destination);
 }
