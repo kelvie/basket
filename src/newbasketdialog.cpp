@@ -184,6 +184,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
 	painter.setPen(KGlobalSettings::textColor());
 	painter.drawRect(0, 0, icon.width(), icon.height());
+	painter.drawRect(icon.width() / 5, icon.width() / 5, icon.width() / 4, icon.height() / 8);
+	painter.drawRect(icon.width() * 2 / 5, icon.width() * 2 / 5, icon.width() / 4, icon.height() / 8);
 	painter.end();
 	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Free"), icon);
 

@@ -12,14 +12,14 @@ KDE_ICON = AUTO
 # these are the headers for your project
 
 noinst_HEADERS = basket.h basketproperties.h mainwindow.h basket_part.h \
-				debugwindow.h 	linklabel.h variouswidgets.h xmlwork.h keyboard.h global.h settings.h \
-				focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h tag.h kcolorcombo2.h \
-				newbasketdialog.h tagsedit.h note.h notecontent.h 	notedrag.h noteedit.h notefactory.h \
-				filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
-				kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
-				systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
-				formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h basket_options.h \
-		likeback_private.h application.h
+					debugwindow.h 	linklabel.h variouswidgets.h xmlwork.h keyboard.h global.h settings.h \
+					focusedwidgets.h popupmenu.h basketfactory.h exporterdialog.h tag.h kcolorcombo2.h \
+					newbasketdialog.h tagsedit.h note.h notecontent.h 	notedrag.h noteedit.h notefactory.h \
+					filter.h tools.h backgroundmanager.h regiongrabber.h softwareimporters.h \
+					kicondialog.h kiconcanvas.h kgpgme.h crashhandler.h password.h bnpview.h \
+					systemtray.h clickablelabel.h colorpicker.h basketlistview.h qeffects.h likeback.h \
+					formatimporter.h aboutdata.h basketstatusbar.h basketdcopiface.h basket_options.h \
+			likeback_private.h application.h archive.h
 
 #########################################################################
 # COMMON FILES SECTION
@@ -35,7 +35,7 @@ libbasketcommon_la_LIBADD = $(LIB_ARTSKDE) -lkio $(LIB_KDEUI) $(LIB_KDECORE) \
 	$(LIB_QT) $(LIBSOCKET) $(GPGME_LIBS) $(LIB_KPARTS) -lDCOP -lkdefx -lkdeui
 
 libbasketcommon_la_SOURCES = \
-	bnpview.cpp settings.cpp basket.cpp basketproperties.cpp \
+	archive.cpp bnpview.cpp settings.cpp basket.cpp basketproperties.cpp \
 	linklabel.cpp variouswidgets.cpp xmlwork.cpp keyboard.cpp \
 	global.cpp exporterdialog.cpp notefactory.cpp softwareimporters.cpp \
 	focusedwidgets.cpp popupmenu.cpp basketfactory.cpp \

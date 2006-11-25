@@ -186,7 +186,6 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void password();
 		void saveAsArchive();
 		void openArchive();
-		void openArchive(const QString &path);
 		void delayedOpenArchive();
 		void lockBasket();
 		void hideOnEscape();
@@ -197,17 +196,6 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 
 	public:
 		static QString s_fileToOpen;
-
-	private:
-		void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds);
-		void listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list);
-		void renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates);
-		void renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, QMap<QString, QString> &mergedStates);
-		void renameMergedStates(const QString &fullPath, QMap<QString, QString> &mergedStates);
-		void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent);
-		void renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates);
-		void importTagEmblems(const QString &extractionFolder);
-		void importArchivedBackgroundImages(const QString &extractionFolder);
 
 	private slots:
 		void updateNotesActions();
@@ -280,13 +268,14 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 //		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
 		KAction       *actConfigGlobalShortcuts;
 
-		Basket* loadBasket(const QString &folderName);
-		BasketListViewItem* appendBasket(Basket *basket, QListViewItem *parentItem);
 		void setupActions();
 		void setupGlobalShortcuts();
 		DecoratedBasket* currentDecoratedBasket();
 
 	public:
+		Basket* loadBasket(const QString &folderName); // Public only for class Archive
+		BasketListViewItem* appendBasket(Basket *basket, QListViewItem *parentItem); // Public only for class Archive
+
 		Basket* basketForFolderName(const QString &folderName);
 		QPopupMenu* popupMenu(const QString &menuName);
 		bool isPart();
