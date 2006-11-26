@@ -31,6 +31,7 @@
 #include <kstandarddirs.h>
 #include <kapplication.h>
 #include <kiconloader.h>
+#include <kprogress.h>
 
 #include "archive.h"
 #include "global.h"
@@ -44,9 +45,19 @@
 #include "backgroundmanager.h"
 #include "formatimporter.h"
 
+#include <iostream>
+
 void Archive::save(Basket *basket, bool withSubBaskets, const QString &destination)
 {
 	QDir dir;
+
+	KProgressDialog dialog(0, 0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
+	dialog.showCancelButton(false);
+	dialog.setAutoClose(true);
+	dialog.show();
+	KProgress *progress = dialog.progressBar();
+	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
+	progress->setValue(0);
 
 	// Create the temporar folder:
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
@@ -58,9 +69,12 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	tar.open(IO_WriteOnly);
 	tar.writeDir("baskets", "", "");
 
+	progress->advance(1); // Preparation finished
+	std::cout << "Preparation finished out of " << progress->totalSteps() << std::endl;
+
 	// Copy the baskets data into the archive:
 	QStringList backgrounds;
-	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds);
+	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds, progress);
 
 	// Create a Small baskets.xml Document:
 	QDomDocument document("basketTree");
@@ -154,14 +168,23 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		file.close();
 	}
 
+	progress->advance(1); // Finishing finished
+	std::cout << "Finishing finished" << std::endl;
+
 	// Clean Up Everything:
 	dir.remove(tempFolder + "preview.png");
 	dir.remove(tempDestination);
 	dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds)
+void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, KProgress *progress)
 {
+	// Basket need to be loaded for tags exportation.
+	// We load it NOW so that the progress bar really reflect the state of the exportation:
+	if (!basket->isLoaded()) {
+		basket->load();
+	}
+
 	QDir dir;
 	// Save basket data:
 	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
@@ -184,11 +207,15 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 		}
 		backgrounds.append(imageName);
 	}
+
+	progress->advance(1); // Basket exportation finished
+	std::cout << basket->basketName() << " finished" << std::endl;
+
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive && item->firstChild()) {
 		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar, backgrounds);
+			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, progress);
 		}
 	}
 }
