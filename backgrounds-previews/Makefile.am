@@ -10,5 +10,6 @@ backgroundspreviews_DATA = \
 	pins.png \
 	rainbow-balls.png \
 	rounds-line.png \
+	strings.png \
 	todo.png \
 	working.png
