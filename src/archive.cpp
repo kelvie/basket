@@ -492,7 +492,6 @@ void Archive::renameBasketFolders(const QString &extractionFolder, QMap<QString,
 	if (doc != 0) {
 		QMap<QString, QString> folderMap;
 		QDomElement docElem = doc->documentElement();
-		QDir dir;
 		QDomNode node = docElem.firstChild();
 		renameBasketFolder(extractionFolder, node, folderMap, mergedStates);
 		loadExtractedBaskets(extractionFolder, node, folderMap, 0);
@@ -514,9 +513,9 @@ void Archive::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 				QDir dir;
 				dir.mkdir(Global::basketsFolder() + newFolderName);
 				// Rename the merged tag ids:
-				if (mergedStates.count() > 0) {
-					renameMergedStates(extractionFolder + "baskets/" + folderName + ".basket", mergedStates);
-				}
+//				if (mergedStates.count() > 0) {
+					renameMergedStatesAndBasketIcon(extractionFolder + "baskets/" + folderName + ".basket", mergedStates, extractionFolder);
+//				}
 				// Child baskets:
 				QDomNode node = element.firstChild();
 				renameBasketFolder(extractionFolder, node, folderMap, mergedStates);
@@ -526,15 +525,45 @@ void Archive::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 	}
 }
 
-void Archive::renameMergedStates(const QString &fullPath, QMap<QString, QString> &mergedStates)
+void Archive::renameMergedStatesAndBasketIcon(const QString &fullPath, QMap<QString, QString> &mergedStates, const QString &extractionFolder)
 {
 	QDomDocument *doc = XMLWork::openFile("basket", fullPath);
 	if (doc == 0)
 		return;
 	QDomElement docElem = doc->documentElement();
+	QDomElement properties = XMLWork::getElement(docElem, "properties");
+	importBasketIcon(properties, extractionFolder);
 	QDomElement notes = XMLWork::getElement(docElem, "notes");
-	renameMergedStates(notes, mergedStates);
+	if (mergedStates.count() > 0)
+		renameMergedStates(notes, mergedStates);
 	Basket::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
+}
+
+void Archive::importBasketIcon(QDomElement properties, const QString &extractionFolder)
+{
+	QString iconName = XMLWork::getElementText(properties, "icon");
+	if (!iconName.isEmpty() && iconName != "basket") {
+		QPixmap icon = kapp->iconLoader()->loadIcon(iconName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+		// The icon does not exists on that computer, import it:
+		if (icon.isNull()) {
+			QDir dir;
+			dir.mkdir(Global::savesFolder() + "basket-icons/");
+			FormatImporter copier; // Only used to copy files synchronously
+			// Of the icon path was eg. "/home/seb/icon.png", it was exported as "basket-icons/_home_seb_icon.png".
+			// So we need to copy that image to "~/.kde/share/apps/basket/basket-icons/icon.png":
+			int slashIndex = iconName.findRev("/");
+			QString iconFileName = (slashIndex < 0 ? iconName : iconName.right(slashIndex - 2));
+			QString source       = extractionFolder + "basket-icons/" + iconName.replace('/', '_');
+			QString destination = Global::savesFolder() + "basket-icons/" + iconFileName;
+			if (!dir.exists(destination))
+				copier.copyFolder(source, destination);
+			// Replace the emblem path in the tags.xml copy:
+			QDomElement iconElement = XMLWork::getElement(properties, "icon");
+			properties.removeChild(iconElement);
+			QDomDocument document = properties.ownerDocument();
+			XMLWork::addElement(document, properties, "icon", destination);
+		}
+	}
 }
 
 void Archive::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates)
@@ -587,7 +616,9 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
 				Basket *basket = Global::bnpView->loadBasket(newFolderName);
 				BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
 				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
-				basket->loadProperties(XMLWork::getElement(element, "properties"));
+				QDomElement properties = XMLWork::getElement(element, "properties");
+				importBasketIcon(properties, extractionFolder); // Rename the icon fileName if necessary
+				basket->loadProperties(properties);
 				// Open the first basket of the archive:
 				if (!basketSetAsCurrent) {
 					Global::bnpView->setCurrentBasket(basket);

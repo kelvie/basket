@@ -48,8 +48,9 @@ class Archive
 	// Convenient Methods for Loading:
 	static void renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates);
 	static void renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, QMap<QString, QString> &mergedStates);
-	static void renameMergedStates(const QString &fullPath, QMap<QString, QString> &mergedStates);
+	static void renameMergedStatesAndBasketIcon(const QString &fullPath, QMap<QString, QString> &mergedStates, const QString &extractionFolder);
 	static void renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates);
+	static void importBasketIcon(QDomElement properties, const QString &extractionFolder);
 	static void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent);
 	static void importTagEmblems(const QString &extractionFolder);
 	static void importArchivedBackgroundImages(const QString &extractionFolder);
