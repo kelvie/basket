@@ -74,7 +74,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 
 	// Copy the baskets data into the archive:
 	QStringList backgrounds;
-	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds, progress);
+	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds, tempFolder, progress);
 
 	// Create a Small baskets.xml Document:
 	QDomDocument document("basketTree");
@@ -177,7 +177,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, KProgress *progress)
+void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, KProgress *progress)
 {
 	// Basket need to be loaded for tags exportation.
 	// We load it NOW so that the progress bar really reflect the state of the exportation:
@@ -189,6 +189,16 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	// Save basket data:
 	tar->addLocalDirectory(basket->fullPath(), "baskets/" + basket->folderName());
 	tar->addLocalFile(basket->fullPath() + ".basket", "baskets/" + basket->folderName() + ".basket"); // The hidden files were not added
+	// Save basket icon:
+	QString tempIconFile = tempFolder + "icon.png";
+	if (!basket->icon().isEmpty() && basket->icon() != "basket") {
+		QPixmap icon = kapp->iconLoader()->loadIcon(basket->icon(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+		if (!icon.isNull()) {
+			icon.save(tempIconFile, "PNG");
+			QString iconFileName = basket->icon().replace('/', '_');
+			tar->addLocalFile(tempIconFile, "basket-icons/" + iconFileName);
+		}
+	}
 	// Save basket backgorund image:
 	QString imageName = basket->backgroundImageName();
 	if (!basket->backgroundImageName().isEmpty() && !backgrounds.contains(imageName)) {
@@ -215,7 +225,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive && item->firstChild()) {
 		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, progress);
+			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
 }
