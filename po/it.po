@@ -1,11 +1,11 @@
-# translation of basket.po to italian
+# translation of it.po to italian
 #
 # Luigi Toscano <luigi.toscano@tiscali.it>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: basket\n"
+"Project-Id-Version: it\n"
 "POT-Creation-Date: 2006-11-30 00:16+0100\n"
-"PO-Revision-Date: 2006-11-19 18:25+0100\n"
+"PO-Revision-Date: 2006-12-07 00:26+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,25 +63,24 @@ msgstr "Icona"
 
 #: archive.cpp:54 bnpview.cpp:1733
 msgid "Save as Basket Archive"
-msgstr ""
+msgstr "Salva come archivio basket"
 
 #: archive.cpp:54
 msgid "Saving as basket archive. Please wait..."
-msgstr ""
+msgstr "Salvataggio come archivio basket. Attendere prego..."
 
 #: archive.cpp:258
 msgid "This file is not a basket archive."
-msgstr ""
+msgstr "Questo file non è un archivio basket."
 
 #: archive.cpp:258 archive.cpp:289 archive.cpp:316 archive.cpp:324
 #: archive.cpp:334 archive.cpp:381
-#, fuzzy
 msgid "Basket Archive Error"
-msgstr "Errore nel salvataggio"
+msgstr "Errore nell'archivio basket"
 
 #: archive.cpp:289 archive.cpp:334 archive.cpp:381
 msgid "This file is corrupted. It can not be opened."
-msgstr ""
+msgstr "Questo file è danneggiato. Non può essere aperto."
 
 #: archive.cpp:311
 msgid ""
@@ -90,13 +89,13 @@ msgid ""
 "missing because they are of a type only available in new versions. When "
 "saving the file back, consider to save it to another file, to preserve the "
 "original one."
-msgstr ""
+msgstr "Questo file è stato creato con una versione recente di %1. Può essere aperto ma non tutte le informazioni potrebbero essere disponibili. Ad esempio alcune note potrebbero mancare perché di un tipo presente solo nelle nuove versioni. Quando salvi il file tieni in considerazione la possibilità di salvarne uno nuovo per preservare quello originale."
 
 #: archive.cpp:322
 msgid ""
 "This file was created with a recent version of %1. Please upgrade to a newer "
 "version to be able to open that file."
-msgstr ""
+msgstr "Questo file è stato creato con una versione recente di %1. Per piacere, aggiorna ad una versione più recente se vuoi aprire questo file."
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -108,13 +107,11 @@ msgstr "Una nota nuova non corrisponde al criterio di ricerca ed è nascosta."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
-"Alcune note nuove non corrispondono al criterio di ricerca e sono nascoste."
+msgstr "Alcune note nuove non corrispondono al criterio di ricerca e sono nascoste."
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"Le nuove note non corrispondono al criterio di ricerca e sono nascoste."
+msgstr "Le nuove note non corrispondono al criterio di ricerca e sono nascoste."
 
 #: basket.cpp:1542
 msgid ""
@@ -327,29 +324,27 @@ msgstr "Salva su file"
 
 #: basket.cpp:4667
 msgid "HTML Documents"
-msgstr ""
+msgstr "Documenti HTML"
 
 #: basket.cpp:4667 bnpview.cpp:1730 bnpview.cpp:1768
-#, fuzzy
 msgid "All Files"
-msgstr "&File"
+msgstr "Tutti i file"
 
 #: basket.cpp:4670
-#, fuzzy
 msgid "Export to HTML"
-msgstr "&Esporta in HTML..."
+msgstr "Esporta in HTML"
 
 #: basket.cpp:4676 bnpview.cpp:1739
 msgid "The file <b>%1</b> already exists. Do you really want to override it?"
-msgstr ""
+msgstr "Il file <b>%1</b> esiste già. Vuoi veramente sostituirlo?"
 
 #: basket.cpp:4678 bnpview.cpp:1741
 msgid "Override File?"
-msgstr ""
+msgstr "Sostituisci il file?"
 
 #: basket.cpp:4679 bnpview.cpp:1742
 msgid "&Override"
-msgstr ""
+msgstr "S&ostituisci"
 
 #: basket.cpp:4709 basket.cpp:4710
 msgid ""
@@ -380,8 +375,7 @@ msgid "Notes matching the filter &quot;%1&quot;:"
 msgstr "Note che corrispondono al filtro &quot;%1&quot;:"
 
 #: basket.cpp:4884
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
 msgstr ""
 "Creato con %1, uno strumento KDE per prendere note e tenere sottomano una "
 "grande quantità di dati."
@@ -428,8 +422,7 @@ msgstr "Errore nel salvataggio"
 
 #: basketfactory.cpp:60
 msgid "Sorry, but the folder creation for this new basket has failed."
-msgstr ""
-"Spiacente, ma la creazione della cartella per il nuovo canestro è fallita."
+msgstr "Spiacente, ma la creazione della cartella per il nuovo canestro è fallita."
 
 #: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
 msgid "Basket Creation Failed"
@@ -555,8 +548,7 @@ msgstr "Mostra se ci sono modifiche che non sono state ancora salvate."
 
 #: basketstatusbar.cpp:128
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
-msgstr ""
-"Ctrl+rilascia: copia, Shift+rilascia: sposta, Shift+Ctrl+rilascia: collega."
+msgstr "Ctrl+rilascia: copia, Shift+rilascia: sposta, Shift+Ctrl+rilascia: collega."
 
 #: basketstatusbar.cpp:148
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
@@ -660,8 +652,7 @@ msgid "Insert text note"
 msgstr "Inserisci nota di testo"
 
 #: bnpview.cpp:263
-msgid ""
-"Add a text note to the current basket without having to open main window."
+msgid "Add a text note to the current basket without having to open main window."
 msgstr ""
 "Inserisci una nota di testo nel canestro corrente senza dover aprire la "
 "finestra principale."
@@ -671,8 +662,7 @@ msgid "Insert image note"
 msgstr "Inserisci nota di tipo immagine"
 
 #: bnpview.cpp:267
-msgid ""
-"Add an image note to the current basket without having to open main window."
+msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Inserisci una nota di tipo immagine nel canestro corrente senza dover aprire "
 "la finestra principale."
@@ -682,8 +672,7 @@ msgid "Insert link note"
 msgstr "Inserisci nota di tipo collegamento"
 
 #: bnpview.cpp:271
-msgid ""
-"Add a link note to the current basket without having to open main window."
+msgid "Add a link note to the current basket without having to open main window."
 msgstr ""
 "Inserisci una nota di tipo collegamento nel canestro corrente senza dover "
 "aprire la finestra principale."
@@ -693,8 +682,7 @@ msgid "Insert color note"
 msgstr "Inserisci nota di tipo colore"
 
 #: bnpview.cpp:275
-msgid ""
-"Add a color note to the current basket without having to open main window."
+msgid "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Inserisci una nota di tipo colore nel canestro corrente senza dover aprire "
 "la finestra principale."
@@ -746,12 +734,11 @@ msgstr ""
 
 #: bnpview.cpp:364
 msgid "Save &as Basket Archive..."
-msgstr ""
+msgstr "Salv&a come archivio basket..."
 
 #: bnpview.cpp:366
-#, fuzzy
 msgid "&Open Basket Archive..."
-msgstr "&Nuovo canestro..."
+msgstr "Apri archivi&o basket..."
 
 #: bnpview.cpp:369
 msgid "&Hide Window"
@@ -1074,10 +1061,8 @@ msgid "Delete With its Childs"
 msgstr "Cancella con tutti quelli contenuti"
 
 #: bnpview.cpp:1632 bnpview.cpp:1638
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr ""
-"<qt>Vuoi veramente rimuovere il canestro <b>%1</b> ed il suo contenuto?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Vuoi veramente rimuovere il canestro <b>%1</b> ed il suo contenuto?</qt>"
 
 #: bnpview.cpp:1640
 msgid "Remove Basket"
@@ -1104,13 +1089,12 @@ msgid "&Remove Child Baskets"
 msgstr "&Rimuovi sotto-canestri"
 
 #: bnpview.cpp:1730 bnpview.cpp:1768
-#, fuzzy
 msgid "Basket Archives"
-msgstr "Proprietà del canestro"
+msgstr "Archivio basket"
 
 #: bnpview.cpp:1769
 msgid "Open Basket Archive"
-msgstr ""
+msgstr "Apri archivio basket"
 
 #: bnpview.cpp:1852
 msgid "Clipboard content pasted to basket <i>%1</i>"
@@ -1449,8 +1433,7 @@ msgid "<b>I like</b> the new artwork. Very refreshing."
 msgstr "<b>Mi piace</b> la nuova grafica. Molto piacevole."
 
 #: likeback.cpp:469
-msgid ""
-"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 msgstr ""
 "<b>Non mi piace</b> la pagina di benvenuto di quell'assistente. Fa perdere "
 "troppo tempo."
@@ -1526,8 +1509,7 @@ msgstr "Una nuova &funzionalità che vorresti nel programma"
 
 #: likeback.cpp:717
 msgid "Show comment buttons below &window titlebars"
-msgstr ""
-"Mostra i &pulsanti di commento sotto le barre del titolo della finestra"
+msgstr "Mostra i &pulsanti di commento sotto le barre del titolo della finestra"
 
 #: likeback.cpp:722
 msgid "&Send Comment"
@@ -2452,13 +2434,11 @@ msgstr "&Aggiungi nel vassoio di sistema"
 
 #: settings.cpp:411
 msgid "&Show current basket icon in system tray icon"
-msgstr ""
-"Mo&stra l'icona del canestro corrente come icona nel vassoio di sistema"
+msgstr "Mo&stra l'icona del canestro corrente come icona nel vassoio di sistema"
 
 #: settings.cpp:421
 msgid "&Hide main window when mouse goes out of it for"
-msgstr ""
-"&Nascondi la finestra principale quando il mouse rimane fuori da essa per"
+msgstr "&Nascondi la finestra principale quando il mouse rimane fuori da essa per"
 
 #: settings.cpp:423 settings.cpp:434
 msgid " tenths of seconds"
@@ -2488,8 +2468,7 @@ msgstr "Comportamento"
 
 #: settings.cpp:520
 msgid "&Transform lines starting with * or - to lists in text editors"
-msgstr ""
-"&Trasforma le linee che cominciano per * o - in liste negli editor di testo"
+msgstr "&Trasforma le linee che cominciano per * o - in liste negli editor di testo"
 
 #: settings.cpp:523
 msgid "Ask confirmation before &deleting notes"
@@ -2512,8 +2491,7 @@ msgstr ""
 "testo."
 
 #: settings.cpp:536
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr ""
 "Se abilitata, questa proprietà ti consente di incollare gli equivalenti "
 "testuali delle etichette."
@@ -2530,8 +2508,7 @@ msgstr ""
 
 #: settings.cpp:547
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr ""
-"Ra&ggruppa una nuova nota facendo clic a destra della linea di inserimento"
+msgstr "Ra&ggruppa una nuova nota facendo clic a destra della linea di inserimento"
 
 #: settings.cpp:551
 msgid "How to group a new note?"
@@ -2849,8 +2826,7 @@ msgid "From Tomboy"
 msgstr "Da Tomboy"
 
 #: softwareimporters.cpp:548
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "Impossibile importare il file specificato. Potrebbe essere rovinato o non "
 "essere un file TuxCards."
@@ -3166,8 +3142,7 @@ msgstr ""
 "su ogni linea della nota."
 
 #: tagsedit.cpp:901
-msgid ""
-"Deleting the tag will remove it from every notes it is currently assigned to."
+msgid "Deleting the tag will remove it from every notes it is currently assigned to."
 msgstr ""
 "Cancellando l'etichetta ne verranno rimosse tutte le occorrenze dalle note a "
 "cui è stata assegnata."
@@ -3231,3 +3206,4 @@ msgid ""
 msgstr ""
 "Ridimensiona la finestra per selezionare la dimensione dell'immagine\n"
 "e chiudila o premi Esc per rendere definitivi i cambiamenti."
+

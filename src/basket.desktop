@@ -9,6 +9,7 @@ Icon=basket
 Name=BasKet Note Pads
 Name[de]=BasKet Notizblätter
 Name[fr]=Blocs notes BasKet
+Name[it]=Blocco appunti BasKet
 Name[ja]=Basket メモパッド
 Name[es]=Notas de BasKet
 Name[pt]=Bloco de Notas BasKet
@@ -17,6 +18,7 @@ Name[xx]=xxBasKetxx
 
 Comment=Taking care of your ideas.
 Comment[fr]=Prendre soin de vos idées.
+Comment[it]=Ci prendiamo cura delle tue idee
 Comment[nn]=Ta vare på tankane dine.
 Comment[ja]=あなたのアイデアのお世話をします。
 Comment[es]=Cuidando de sus ideas.
