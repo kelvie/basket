@@ -580,19 +580,14 @@ public slots:
 	void contentsDragMoveEvent(QDragMoveEvent *event);
 	void contentsDragLeaveEvent(QDragLeaveEvent*);
   public slots:
-//	void slotCopyingDone(KIO::Job *, const KURL &, const KURL &to, bool, bool);
 	void slotCopyingDone2(KIO::Job *job);
   public:
 	Note* noteForFullPath(const QString &path);
 
 /// EXPORTATION:
   public:
-	static QString copyIcon(const QString &iconName, int size, const QString &destFolder);
-	static QString copyFile(const QString &srcPath, const QString &destFolder, bool createIt = false);
 	QValueList<State*> usedStates();
 	static QString saveGradientBackground(const QColor &color, const QFont &font, const QString &folder);
-  public slots:
-	void exportToHTML();
 
   public:
 	void listUsedTags(QValueList<Tag*> &list);

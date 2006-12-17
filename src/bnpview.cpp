@@ -70,6 +70,7 @@
 #include "backgroundmanager.h"
 #include "noteedit.h" // To launch InlineEditors::initToolBars()
 #include "archive.h"
+#include "htmlexporter.h"
 #include "crashhandler.h"
 #include "likeback.h"
 
@@ -1233,7 +1234,7 @@ DecoratedBasket* BNPView::currentDecoratedBasket()
 
 // Redirected actions :
 
-void BNPView::exportToHTML()              { currentBasket()->exportToHTML();         }
+void BNPView::exportToHTML()              { HTMLExporter exporter(currentBasket());  }
 void BNPView::editNote()                  { currentBasket()->noteEdit();             }
 void BNPView::cutNote()                   { currentBasket()->noteCut();              }
 void BNPView::copyNote()                  { currentBasket()->noteCopy();             }

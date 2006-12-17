@@ -36,7 +36,7 @@ class QComboBox;
 class KColorCombo2;
 class IconSizeCombo;
 
-class HtmlExportData;
+class HTMLExporter;
 class HelpLabel;
 class KCModule;
 
@@ -160,7 +160,7 @@ class LinkDisplay
 	QFont   labelFont(QFont font, bool isIconButtonHovered) const;               /// << @return the font for this link, according to parent font AND LinkLook!
 	int     heightForWidth(int width) const;                                     /// << @return the needed height to display the link in function of a width.
 	QString toHtml(const QString &imageName) const;                              /// << Convert the link to HTML code, using the LinkLook to style it.
-	QString toHtml(const HtmlExportData &exportData, const KURL &url, const QString &title = "");
+	QString toHtml(HTMLExporter *exporter, const KURL &url, const QString &title = "");
   private:
 	QString   m_title;
 	QString   m_icon;

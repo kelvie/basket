@@ -65,6 +65,7 @@
 #include "focusedwidgets.h"
 #include "debugwindow.h"
 #include "kcolorcombo2.h"
+#include "htmlexporter.h"
 
 #include "config.h"
 #ifndef WITHOUT_ARTS
@@ -577,12 +578,12 @@ void TextContent::setText(const QString &text)
 	contentChanged(minWidth + 1);
 }
 
-void TextContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &/*exportData*/)
+void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
 	               KStringHandler::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
-	stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class HtmlContent:
@@ -667,12 +668,12 @@ void HtmlContent::setHtml(const QString &html)
 	contentChanged(minWidth + 1);
 }
 
-void HtmlContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &/*exportData*/)
+void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
-	stream << Tools::htmlToParagraph(KStringHandler::tagURLs(html().replace("\t", "                ")))
-	          .replace("  ", " &nbsp;")
-	          .replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	exporter->stream << Tools::htmlToParagraph(KStringHandler::tagURLs(html().replace("\t", "                ")))
+	                    .replace("  ", " &nbsp;")
+	                    .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class ImageContent:
@@ -782,26 +783,26 @@ void ImageContent::setPixmap(const QPixmap &pixmap)
 	contentChanged(16 + 1); // TODO: always good? I don't think...
 }
 
-void ImageContent::exportToHTML(QTextStream &stream, int /*indent*/, const HtmlExportData &exportData)
+void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
 	int width  = m_pixmap.width();
 	int height = m_pixmap.height();
 	int contentWidth = note()->width() - note()->contentX() - 1 - Note::NOTE_MARGIN;
 
-	QString imageName = Basket::copyFile(fullPath(), exportData.dataFolderPath, /*createIt=*/true);
+	QString imageName = exporter->copyFile(fullPath(), /*createIt=*/true);
 
 	if (contentWidth <= m_pixmap.width()) { // Scalled down
 		double scale = ((double)contentWidth) / m_pixmap.width();
 		width  = (int)(m_pixmap.width()  * scale);
 		height = (int)(m_pixmap.height() * scale);
-		stream << "<a href=\"" << exportData.dataFolderName << imageName << "\" title=\"" << i18n("Click for full size view") << "\">";
+		exporter->stream << "<a href=\"" << exporter->dataFolderName << imageName << "\" title=\"" << i18n("Click for full size view") << "\">";
 	}
 
-	stream << "<img src=\"" << exportData.dataFolderName << imageName
-	       << "\" width=\"" << width << "\" height=\"" << height << "\" alt=\"\">";
+	exporter->stream << "<img src=\"" << exporter->dataFolderName << imageName
+	                 << "\" width=\"" << width << "\" height=\"" << height << "\" alt=\"\">";
 
 	if (contentWidth <= m_pixmap.width()) // Scalled down
-		stream << "</a>";
+		exporter->stream << "</a>";
 }
 
 /** class AnimationContent:
@@ -928,12 +929,12 @@ void AnimationContent::movieStatus(int status)
 		m_oldStatus = status;
 }
 
-void AnimationContent::exportToHTML(QTextStream &stream, int /*indent*/, const HtmlExportData &exportData)
+void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
-	stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
-	          .arg( exportData.dataFolderName + Basket::copyFile(fullPath(), exportData.dataFolderPath, /*createIt=*/true),
-	                QString::number(movie().framePixmap().size().width()),
-	                QString::number(movie().framePixmap().size().height()) );
+	exporter->stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
+	                    .arg( exporter->dataFolderName + exporter->copyFile(fullPath(), /*createIt=*/true),
+	                          QString::number(movie().framePixmap().size().width()),
+	                          QString::number(movie().framePixmap().size().height()) );
 }
 
 /** class FileContent:
@@ -1088,11 +1089,11 @@ void FileContent::startFetchingUrlPreview()
 	}
 }
 
-void FileContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData)
+void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
-	QString fileName = Basket::copyFile(fullPath(), exportData.dataFolderPath, true);
-	stream << m_linkDisplay.toHtml(exportData, KURL(exportData.dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	QString fileName = exporter->copyFile(fullPath(), true);
+	exporter->stream << m_linkDisplay.toHtml(exporter, KURL(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class SoundContent:
@@ -1300,21 +1301,23 @@ void LinkContent::startFetchingUrlPreview()
 	}
 }
 
-void LinkContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData)
+void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString linkTitle = title();
 
-	// Append address (useful for print version of the page/basket):
-	if (exportData.formatForImpression && (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyURL()))) {
-		// The address is on a new line, unless title is empty (empty lines was replaced by &nbsp;):
-		if (linkTitle == " "/*"&nbsp;"*/)
-			linkTitle = url().prettyURL()/*""*/;
-		else
-			linkTitle = linkTitle + " <" + url().prettyURL() + ">"/*+ "<br>"*/;
-		//linkTitle += "<i>" + url().prettyURL() + "</i>";
-	}
+// TODO:
+//	// Append address (useful for print version of the page/basket):
+//	if (exportData.formatForImpression && (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyURL()))) {
+//		// The address is on a new line, unless title is empty (empty lines was replaced by &nbsp;):
+//		if (linkTitle == " "/*"&nbsp;"*/)
+//			linkTitle = url().prettyURL()/*""*/;
+//		else
+//			linkTitle = linkTitle + " <" + url().prettyURL() + ">"/*+ "<br>"*/;
+//		//linkTitle += "<i>" + url().prettyURL() + "</i>";
+//	}
 
 	KURL linkURL;
+/*
 	QFileInfo fInfo(url().path());
 //	DEBUG_WIN << url().path()
 //	          << "IsFile:" + QString::number(fInfo.isFile())
@@ -1327,11 +1330,14 @@ void LinkContent::exportToHTML(QTextStream &stream, int indent, const HtmlExport
 		linkURL = exportData.dataFolderName + Basket::copyFile(url().path(), exportData.dataFolderPath, true);
 	} else {
 //		DEBUG_WIN << "Embed LINK";
+*/
 		linkURL = url();
+/*
 	}
+*/
 
 	QString spaces;
-	stream << m_linkDisplay.toHtml(exportData, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	exporter->stream << m_linkDisplay.toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class LauncherContent:
@@ -1444,11 +1450,11 @@ void LauncherContent::setLauncher(const QString &name, const QString &icon, cons
 	contentChanged(m_linkDisplay.minWidth());
 }
 
-void LauncherContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData)
+void LauncherContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
-	QString fileName = Basket::copyFile(fullPath(), exportData.dataFolderPath, true);
-	stream << m_linkDisplay.toHtml(exportData, KURL(exportData.dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	QString fileName = exporter->copyFile(fullPath(), /*createIt=*/true);
+	exporter->stream << m_linkDisplay.toHtml(exporter, KURL(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class ColorContent:
@@ -1714,7 +1720,7 @@ void ColorContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 	delete array;*/
 }
 
-void ColorContent::exportToHTML(QTextStream &stream, int /*indent*/, const HtmlExportData &exportData)
+void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
 	// FIXME: Duplicate from setColor(): TODO: rectSize()
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
@@ -1722,13 +1728,13 @@ void ColorContent::exportToHTML(QTextStream &stream, int /*indent*/, const HtmlE
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
 	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().lower().mid(1))/*, exportData.iconsFolderPath)*/;
-	QString fullPath = exportData.iconsFolderPath + fileName;
+	QString fullPath = exporter->iconsFolderPath + fileName;
 	QPixmap colorIcon = KColorCombo2::colorRectPixmap(color(), /*isDefault=*/false, rectWidth, rectHeight);
 	colorIcon.save(fullPath, "PNG");
 	QString iconHtml = QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
-	                   .arg(exportData.iconsFolderName + fileName, QString::number(colorIcon.width()), QString::number(colorIcon.height()));
+	                   .arg(exporter->iconsFolderName + fileName, QString::number(colorIcon.width()), QString::number(colorIcon.height()));
 
-	stream << iconHtml + " " + color().name();
+	exporter->stream << iconHtml + " " + color().name();
 }
 
 
@@ -1847,10 +1853,10 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 	}
 }
 
-void UnknownContent::exportToHTML(QTextStream &stream, int indent, const HtmlExportData &/*exportData*/)
+void UnknownContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
-	stream << "<div class=\"unknown\">" << mimeTypes().replace("\n", "\n" + spaces.fill(' ', indent + 1 + 1)) << "</div>";
+	exporter->stream << "<div class=\"unknown\">" << mimeTypes().replace("\n", "\n" + spaces.fill(' ', indent + 1 + 1)) << "</div>";
 }
 
 

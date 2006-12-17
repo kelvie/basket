@@ -46,7 +46,7 @@ namespace KIO { class PreviewJob; }
 class Note;
 class Basket;
 class FilterData;
-class HtmlExportData;
+class HtmlExporter;
 
 /** A list of numeric identifier for each note type.
   * Declare a varible with the type NoteType::Id and assign a value like NoteType::Text...
@@ -80,7 +80,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual QString saveAsFilters()                                 = 0L; /// << @return the filters for the user to choose a file destination to save the note as.
 	virtual bool    match(const FilterData &data)                   = 0L; /// << @return true if the content match the filter criterias.
 	// Complexe Abstract Generic Methods:
-	virtual void exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData) = 0L; /// << Export the note in an HTML file.
+	virtual void exportToHTML(HTMLExporter *exporter, int indent)   = 0L; /// << Export the note in an HTML file.
 	virtual QString cssClass()                                      = 0L; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                 = 0L; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
 	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0L; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
@@ -159,7 +159,7 @@ class TextContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -201,7 +201,7 @@ class HtmlContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -242,7 +242,7 @@ class ImageContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -290,7 +290,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -331,7 +331,7 @@ class FileContent : public QObject, public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -417,7 +417,7 @@ class LinkContent : public QObject, public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -480,7 +480,7 @@ class LauncherContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -530,7 +530,7 @@ class ColorContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
@@ -571,7 +571,7 @@ class UnknownContent : public NoteContent
 	QString saveAsFilters();
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
-	void    exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
+	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);

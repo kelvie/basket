@@ -42,7 +42,7 @@
 #include "tools.h"
 #include "global.h"
 #include "kcolorcombo2.h"
-#include "basket.h" // For the class HtmlExportData
+#include "htmlexporter.h"
 
 /** LinkLook */
 
@@ -532,17 +532,17 @@ QString LinkDisplay::toHtml(const QString &/*imageName*/) const
 	return "";
 }
 
-QString LinkDisplay::toHtml(const HtmlExportData &exportData, const KURL &url, const QString &title)
+QString LinkDisplay::toHtml(HTMLExporter *exporter, const KURL &url, const QString &title)
 {
 	QString linkIcon;
 	if (m_look->previewEnabled() && !m_preview.isNull()) {
-		QString fileName = Tools::fileNameForNewFile("preview_" + url.fileName() + ".png", exportData.iconsFolderPath);
-		QString fullPath = exportData.iconsFolderPath + fileName;
+		QString fileName = Tools::fileNameForNewFile("preview_" + url.fileName() + ".png", exporter->iconsFolderPath);
+		QString fullPath = exporter->iconsFolderPath + fileName;
 		m_preview.save(fullPath, "PNG");
 		linkIcon = QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
-		           .arg(exportData.iconsFolderName + fileName, QString::number(m_preview.width()), QString::number(m_preview.height()));
+		           .arg(exporter->iconsFolderName + fileName, QString::number(m_preview.width()), QString::number(m_preview.height()));
 	} else {
-		linkIcon = exportData.iconsFolderName + Basket::copyIcon(m_icon, m_look->iconSize(), exportData.iconsFolderPath);
+		linkIcon = exporter->iconsFolderName + exporter->copyIcon(m_icon, m_look->iconSize());
 		linkIcon = QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
 		           .arg(linkIcon, QString::number(m_look->iconSize()), QString::number(m_look->iconSize()));
 	}

@@ -260,6 +260,7 @@ class Note
 	bool        m_haveInvisibleTags;
   public:
 	/*const */State::List& states() const;
+	inline int emblemsCount() { return m_emblemsCount; }
 	void addState(State *state, bool orReplace = true);
 	void addTag(Tag *tag);
 	void removeState(State *state);
@@ -304,7 +305,6 @@ class Note
 	void update();
 	void linkLookChanged();
 
-	void exportToHTML(QTextStream &stream, int indent, const HtmlExportData &exportData);
 	void usedStates(QValueList<State*> &states);
 
 	void listUsedTags(QValueList<Tag*> &list);
