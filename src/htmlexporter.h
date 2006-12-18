@@ -36,9 +36,11 @@ class HTMLExporter
 	HTMLExporter(Basket *basket);
 	~HTMLExporter();
   private:
-	void prepareExport(const QString &fullPath);
+	void prepareExport(Basket *basket, const QString &fullPath);
 	void exportBasket(Basket *basket, bool isSubBasket);
 	void exportNote(Note *note, int indent);
+	void writeBasketTree(Basket *currentBasket);
+	void writeBasketTree(Basket *currentBasket, Basket *basket, int indent);
 
   public:
 	QString copyIcon(const QString &iconName, int size);
@@ -61,8 +63,13 @@ class HTMLExporter
 	QString basketsFolderPath; // eg.: "/home/seb/foo.html_files/baskets/"
 	QString basketsFolderName; // eg.: "foo.html_files/baskets/" or ""
 
+	// Various properties of the currently exporting basket:
+	QString backgroundColorName;
+
 	// Variables used by every export methods:
 	QTextStream stream;
+	Basket *exortedBasket;
+	bool withBasketTree;
 };
 
 #endif // HTMLEXPORTER_H

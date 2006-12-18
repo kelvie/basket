@@ -36,6 +36,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qpainter.h>
+#include <kglobalsettings.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {
@@ -77,7 +78,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	config->writeEntry("lastFolder", KURL(destination).directory());
 	config->sync();
 
-	prepareExport(destination);
+	prepareExport(basket, destination);
 	exportBasket(basket, /*isSubBasket*/false);
 }
 
@@ -85,10 +86,14 @@ HTMLExporter::~HTMLExporter()
 {
 }
 
-void HTMLExporter::prepareExport(const QString &fullPath)
+void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 {
 	// Remember the file path choosen by the user:
 	filePath = fullPath;
+	exortedBasket = basket;
+
+	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
+	withBasketTree = (item->firstChild() != 0);
 
 	// Create and empty the files folder:
 	QString filesFolderPath = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
@@ -150,6 +155,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	QDir dir;
 	dir.mkdir(dataFolderPath);
 
+	backgroundColorName = basket->backgroundColor().name().lower().mid(1);
+
 	// Generate basket icons:
 	QString basketIcon16 = iconsFolderName + copyIcon(basket->icon(), 16);
 	QString basketIcon32 = iconsFolderName + copyIcon(basket->icon(), 32);
@@ -160,7 +167,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	QPainter painter(&expandGroup);
 	Note::drawExpander(&painter, 0, 0, basket->backgroundColor(), /*expand=*/true, basket);
 	painter.end();
-	expandGroup.save(imagesFolderPath + "expand_group_" + basket->backgroundColor().name().lower().mid(1) + ".png", "PNG");
+	expandGroup.save(imagesFolderPath + "expand_group_" + backgroundColorName + ".png", "PNG");
 
 	// Generate the [-] image for groups:
 	QPixmap foldGroup(Note::EXPANDER_WIDTH, Note::EXPANDER_HEIGHT);
@@ -168,7 +175,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	painter.begin(&foldGroup);
 	Note::drawExpander(&painter, 0, 0, basket->backgroundColor(), /*expand=*/false, basket);
 	painter.end();
-	foldGroup.save(imagesFolderPath + "fold_group_" + basket->backgroundColor().name().lower().mid(1) + ".png", "PNG");
+	foldGroup.save(imagesFolderPath + "fold_group_" + backgroundColorName + ".png", "PNG");
 
 	// Open the file to write:
 	QFile file(basketFilePath);
@@ -187,25 +194,40 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	// Output the header:
 	QString borderColor = Tools::mixColor(basket->backgroundColor(), basket->textColor()).name();
 	stream <<
-		"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\n"
-		"         \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+		"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
 		"<html>\n"
 		" <head>\n"
 		"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
 		"  <meta name=\"Generator\" content=\"" << kapp->aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
 		"  <style type=\"text/css\">\n"
-		"   @media print {\n"
-		"    span.printable { display: inline; }\n"
-		"   }\n"
+//		"   @media print {\n"
+//		"    span.printable { display: inline; }\n"
+//		"   }\n"
+		"   body { margin: 10px; font: 11px sans-serif; }\n" // TODO: Use user font
 		"   h1 { text-align: center; }\n"
-		"   img { border: none; vertical-align: middle; }\n"
+		"   img { border: none; vertical-align: middle; }\n";
+	if (withBasketTree) {
+		stream <<
+			"   .tree { margin: 0; padding: 1px 0 1px 1px; width: 150px; _width: 149px; overflow: hidden; float: left; }\n"
+			"   .tree ul { margin: 0 0 0 10px; padding: 0; }\n"
+			"   .tree li { padding: 0; margin: 0; list-style: none; }\n"
+			"   .tree a { display: block; padding: 1px; height: 16px; text-decoration: none;\n"
+			"             white-space: nowrap; word-wrap: normal; text-wrap: suppress; color: black; }\n"
+			"   .tree span { -moz-border-radius: 6px; display: block; float: left;\n"
+			"                line-height: 16px; height: 16px; vertical-align: middle; padding: 0 1px; }\n"
+			"   .tree img { vertical-align: top; padding-right: 1px; }\n"
+			"   .tree .current { background-color: " << KGlobalSettings::highlightColor().name() << "; "
+			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << KGlobalSettings::highlightedTextColor().name() << "; }\n"
+			"   .basketSurrounder { margin-left: 152px; _margin: 0; _float: right; }\n";
+	}
+	stream <<
 		"   .basket { background-color: " << basket->backgroundColor().name() << "; border: solid " << borderColor << " 1px; "
 		             "font: " << Tools::cssFontDefinition(basket->QScrollView::font()) << "; color: " << basket->textColor().name() << "; padding: 1px; width: 100%; }\n"
 		"   table.basket { border-collapse: collapse; }\n"
 		"   .basket * { padding: 0; margin: 0; }\n"
 		"   .basket table { width: 100%; border-spacing: 0; _border-collapse: collapse; }\n"
 		"   .column { vertical-align: top; }\n"
-		"   .columnHandle { width: " << Note::RESIZER_WIDTH << "px; background: transparent url('" << imagesFolderName << "column_handle.png') repeat-y; }\n"
+		"   .columnHandle { width: " << Note::RESIZER_WIDTH << "px; background: transparent url('" << imagesFolderName << "column_handle_" << backgroundColorName << ".png') repeat-y; }\n"
 		"   .group { margin: 0; padding: 0; border-collapse: collapse; width: 100% }\n"
 		"   .groupHandle { margin: 0; width: " << Note::GROUP_WIDTH << "px; text-align: center; }\n"
 		"   .note { padding: 1px 2px; background: " << bottomBgColor.name() << " url('" << imagesFolderName << gradientImageFileName << "')"
@@ -227,7 +249,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->QScrollView::font());
 	stream <<
 		statesCss <<
-		"   .credits { margin: 3px 0 0 0; font-size: 80%; color: " << borderColor << "; }\n"
+		"   .credits { clear: both; text-align: right; margin: 3px 0 0 0; _margin-top: -17px; font-size: 80%; color: " << borderColor << "; }\n"
 		"  </style>\n"
 		"  <title>" << Tools::textToHTMLWithoutP(basket->basketName()) << "</title>\n"
 		"  <link rel=\"shortcut icon\" type=\"image/png\" href=\"" << basketIcon16 << "\">\n";
@@ -236,8 +258,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	painter.begin(&columnHandle);
 	Note::drawInactiveResizer(&painter, 0, 0, columnHandle.height(), basket->backgroundColor(), /*column=*/true);
 	painter.end();
-	columnHandle.save(imagesFolderPath + "column_handle.png", "PNG");
-	//
+	columnHandle.save(imagesFolderPath + "column_handle_" + backgroundColorName + ".png", "PNG");
+
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";
 	QFile transGIF(imagesFolderPath + gifFileName);
@@ -277,6 +299,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		" <body>\n"
 		"  <h1><img src=\"" << basketIcon32 << "\" width=\"32\" height=\"32\" alt=\"\"> " << Tools::textToHTMLWithoutP(basket->basketName()) << "</h1>\n";
 
+	writeBasketTree(basket);
+
 	// If filtering, only export filtered notes, inform to the user:
 	// TODO: Filtering tags too!!
 	// TODO: Make sure only filtered notes are exported!
@@ -284,26 +308,30 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 //		stream <<
 //			"  <p>" << i18n("Notes matching the filter &quot;%1&quot;:").arg(Tools::textToHTMLWithoutP(decoration()->filterData().string)) << "</p>\n";
 
+	stream <<
+		"  <div class=\"basketSurrounder\">\n";
+
 	if (basket->isColumnsLayout())
 		stream <<
-			"  <table class=\"basket\">\n"
-			"   <tr>\n";
+			"   <table class=\"basket\">\n"
+			"    <tr>\n";
 	else
 		stream <<
-			"  <div class=\"basket\" style=\"position: relative; height: " << basket->contentsHeight() << "px; width: " << basket->contentsWidth() << "px; min-width: 100%;\">\n";
+			"   <div class=\"basket\" style=\"position: relative; height: " << basket->contentsHeight() << "px; width: " << basket->contentsWidth() << "px; min-width: 100%;\">\n";
 
 	for (Note *note = basket->firstNote(); note; note = note->next())
-		exportNote(note, /*indent=*/(basket->isFreeLayout() ? 3 : 4));
+		exportNote(note, /*indent=*/(basket->isFreeLayout() ? 4 : 5));
 
 	// Output the footer:
 	if (basket->isColumnsLayout())
 		stream <<
-			"   </tr>\n"
-			"  </table>\n";
+			"    </tr>\n"
+			"   </table>\n";
 	else
 		stream <<
-			"  </div>\n";
+			"   </div>\n";
 	stream << QString(
+		"  </div>\n"
 		"  <p class=\"credits\">%1</p>\n"
 		" </body>\n"
 		"</html>\n").arg(
@@ -372,7 +400,7 @@ void HTMLExporter::exportNote(Note *note, int indent)
 		for (Note *child = note->firstChild(); child; child = child->next()) {
 			stream << spaces.fill(' ', indent);
 			if (i == 0)
-				stream << " <tr><td class=\"groupHandle\"><img src=\"" << imagesFolderName << (note->isFolded() ? "expand_group.png" : "fold_group.png")
+				stream << " <tr><td class=\"groupHandle\"><img src=\"" << imagesFolderName << (note->isFolded() ? "expand_group_" : "fold_group_") << backgroundColorName << ".png"
 				       << "\" width=\"" << Note::EXPANDER_WIDTH << "\" height=\"" << Note::EXPANDER_HEIGHT << "\"></td>\n";
 			else if (i == 1)
 				stream << " <tr><td class=\"freeSpace\" rowspan=\"" << note->countDirectChilds() << "\"></td>\n";
@@ -410,6 +438,46 @@ void HTMLExporter::exportNote(Note *note, int indent)
 		stream << "<td>";
 		note->content()->exportToHTML(this, indent);
 		stream << "</td></tr></table>";
+	}
+}
+
+void HTMLExporter::writeBasketTree(Basket *currentBasket)
+{
+	stream << "  <ul class=\"tree\">\n";
+	writeBasketTree(currentBasket, exortedBasket, 3);
+	stream << "  </ul>\n";
+}
+
+void HTMLExporter::writeBasketTree(Basket *currentBasket, Basket *basket, int indent)
+{
+	// Compute variable HTML code:
+	QString spaces;
+	QString cssClass = (basket == currentBasket ? " class=\"current\"" : "");
+	QString link = "#";
+	QString spanStyle = "";
+	if (basket->backgroundColorSetting().isValid() || basket->textColorSetting().isValid()) {
+		spanStyle = " style=\"background-color: " + basket->backgroundColor().name() + "; color: " + basket->textColor().name() + "\"";
+	}
+
+	// Write the basket tree line:
+	stream <<
+		spaces.fill(' ', indent) << "<li><a" << cssClass << " href=\"" << link << "\">"
+		"<span" << spanStyle << " title=\"" << Tools::textToHTMLWithoutP(basket->basketName()) << "\">"
+		"<img src=\"" << iconsFolderName <<  copyIcon(basket->icon(), 16) << "\" width=\"16\" height=\"16\" alt=\"\">" << Tools::textToHTMLWithoutP(basket->basketName()) << "</span></a>";
+
+	// Write the sub-baskets lines & end the current one:
+	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
+	if (item->firstChild() != 0) {
+		stream <<
+			"\n" <<
+			spaces.fill(' ', indent) << " <ul>\n";
+		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling())
+			writeBasketTree(currentBasket, child->basket(), indent + 2);
+		stream <<
+			spaces.fill(' ', indent) << " </ul>\n" <<
+			spaces.fill(' ', indent) << "</li>\n";
+	} else {
+		stream << "</li>\n";
 	}
 }
 
