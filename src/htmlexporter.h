@@ -49,6 +49,7 @@ class HTMLExporter
   public:
 	// Absolute path of the file name the user choosen:
 	QString filePath;          // eg.: "/home/seb/foo.html"
+	QString fileName;          // eg.: "foo.html"
 
 	// Absolute & relative paths for the current basket to be exported:
 	QString basketFilePath;    // eg.: "/home/seb/foo.html" or "/home/seb/foo.html_files/baskets/basketN.html"
@@ -68,7 +69,7 @@ class HTMLExporter
 
 	// Variables used by every export methods:
 	QTextStream stream;
-	Basket *exortedBasket;
+	Basket *exportedBasket;
 	bool withBasketTree;
 };
 

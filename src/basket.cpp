@@ -1183,7 +1183,7 @@ void Basket::load()
 		setFocus();
 	focusANote();
 
-	if (Settings::playAnimations() && !decoration()->filterBar()->filterData().isFiltering) // No animation when filtering all!
+	if (Settings::playAnimations() && !decoration()->filterBar()->filterData().isFiltering && Global::bnpView->currentBasket() == this) // No animation when filtering all!
 		animateLoad();//QTimer::singleShot( 0, this, SLOT(animateLoad()) );
 	else
 		m_loaded = true;

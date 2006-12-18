@@ -90,7 +90,8 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 {
 	// Remember the file path choosen by the user:
 	filePath = fullPath;
-	exortedBasket = basket;
+	fileName = KURL(fullPath).fileName();
+	exportedBasket = basket;
 
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	withBasketTree = (item->firstChild() != 0);
@@ -249,7 +250,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->QScrollView::font());
 	stream <<
 		statesCss <<
-		"   .credits { clear: both; text-align: right; margin: 3px 0 0 0; _margin-top: -17px; font-size: 80%; color: " << borderColor << "; }\n"
+		"   .credits { text-align: right; margin: 3px 0 0 0; _margin-top: -17px; font-size: 80%; color: " << borderColor << "; }\n"
 		"  </style>\n"
 		"  <title>" << Tools::textToHTMLWithoutP(basket->basketName()) << "</title>\n"
 		"  <link rel=\"shortcut icon\" type=\"image/png\" href=\"" << basketIcon16 << "\">\n";
@@ -259,40 +260,6 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	Note::drawInactiveResizer(&painter, 0, 0, columnHandle.height(), basket->backgroundColor(), /*column=*/true);
 	painter.end();
 	columnHandle.save(imagesFolderPath + "column_handle_" + backgroundColorName + ".png", "PNG");
-
-	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
-	QString gifFileName = "spacer.gif";
-	QFile transGIF(imagesFolderPath + gifFileName);
-	if (!transGIF.exists() && transGIF.open(IO_WriteOnly)) {
-		QDataStream streamGIF(&transGIF);
-		// This is a 1px*1px transparent GIF image:
-		const uchar blankGIF[] = {
-			0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x0a, 0x00, 0x0a, 0x00,
-			0x80, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x21,
-			0xfe, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x20,
-			0x77, 0x69, 0x74, 0x68, 0x20, 0x54, 0x68, 0x65, 0x20, 0x47,
-			0x49, 0x4d, 0x50, 0x00, 0x21, 0xf9, 0x04, 0x01, 0x0a, 0x00,
-			0x01, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x0a,
-			0x00, 0x00, 0x02, 0x08, 0x8c, 0x8f, 0xa9, 0xcb, 0xed, 0x0f,
-			0x63, 0x2b, 0x00, 0x3b };
-		streamGIF.writeRawBytes((const char*)blankGIF, (unsigned int)74);
-		transGIF.close();
-	}
-	stream <<
-		"  <!--[if gte IE 5.5000]>\n"
-		"  <script>\n"
-		"   window.attachEvent(\"onload\", pngFix);\n"
-		"   function pngFix() {\n"
-		"    for (i = document.images.length - 1; i >= 0; i--) {\n"
-		"     x = document.images[i];\n"
-		"     if (x.src.substr(x.src.length - 4) == \".png\") {\n"
-		"      x.style.filter = \"progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'\"+x.src+\"')\"\n"
-		"      x.src = \"" << imagesFolderName << gifFileName << "\";\n"
-		"     }\n"
-		"    }\n"
-		"   }\n"
-		"  </script>\n"
-		"  <![endif]-->\n";
 
 	stream <<
 		" </head>\n"
@@ -332,12 +299,51 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			"   </div>\n";
 	stream << QString(
 		"  </div>\n"
-		"  <p class=\"credits\">%1</p>\n"
-		" </body>\n"
-		"</html>\n").arg(
+		"  <p class=\"credits\">%1</p>\n").arg(
 			i18n("Made with %1, a KDE tool to take notes and keep a full range of data on hand.")
 				.arg("<a href=\"http://basket.kde.org/\">%1</a> %2")
 				.arg(kapp->aboutData()->programName(), VERSION));
+
+	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
+	QString gifFileName = "spacer.gif";
+	QFile transGIF(imagesFolderPath + gifFileName);
+	if (!transGIF.exists() && transGIF.open(IO_WriteOnly)) {
+		QDataStream streamGIF(&transGIF);
+		// This is a 1px*1px transparent GIF image:
+		const uchar blankGIF[] = {
+			0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x0a, 0x00, 0x0a, 0x00,
+			0x80, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x21,
+			0xfe, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x20,
+			0x77, 0x69, 0x74, 0x68, 0x20, 0x54, 0x68, 0x65, 0x20, 0x47,
+			0x49, 0x4d, 0x50, 0x00, 0x21, 0xf9, 0x04, 0x01, 0x0a, 0x00,
+			0x01, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x0a,
+			0x00, 0x00, 0x02, 0x08, 0x8c, 0x8f, 0xa9, 0xcb, 0xed, 0x0f,
+			0x63, 0x2b, 0x00, 0x3b };
+		streamGIF.writeRawBytes((const char*)blankGIF, (unsigned int)74);
+		transGIF.close();
+	}
+	stream <<
+		"  <!--[if lt IE 7]>\n"
+		"   <script>\n"
+		"    function fixPng(img) {\n"
+		"     if (!img.style.filter) {\n"
+		"      img.style.filter = \"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='\" + img.src + \"')\";\n"
+		"      img.src = \"" << imagesFolderName << gifFileName << "\";\n"
+		"     }\n"
+		"    }\n"
+		"    for (i = document.images.length - 1; i >= 0; i -= 1) {\n"
+		"     var img = document.images[i];\n"
+		"     if (img.src.substr(img.src.length - 4) == \".png\")\n"
+		"      if (img.complete)\n"
+		"       fixPng(img);\n"
+		"      else\n"
+		"       img.attachEvent(\"onload\", function() { fixPng(window.event.srcElement); });\n"
+		"    }\n"
+		"   </script>\n"
+		"  <![endif]-->\n"
+		" </body>\n"
+		"</html>\n";
+
 	file.close();
 	stream.unsetDevice();
 
@@ -444,7 +450,7 @@ void HTMLExporter::exportNote(Note *note, int indent)
 void HTMLExporter::writeBasketTree(Basket *currentBasket)
 {
 	stream << "  <ul class=\"tree\">\n";
-	writeBasketTree(currentBasket, exortedBasket, 3);
+	writeBasketTree(currentBasket, exportedBasket, 3);
 	stream << "  </ul>\n";
 }
 
@@ -454,6 +460,15 @@ void HTMLExporter::writeBasketTree(Basket *currentBasket, Basket *basket, int in
 	QString spaces;
 	QString cssClass = (basket == currentBasket ? " class=\"current\"" : "");
 	QString link = "#";
+	if (currentBasket != basket) {
+		if (currentBasket == exportedBasket) {
+			link = basketsFolderName + basket->folderName().left(basket->folderName().length() - 1) + ".html";
+		} else if (basket == exportedBasket) {
+			link = "../../" + fileName;
+		} else {
+			link = basket->folderName().left(basket->folderName().length() - 1) + ".html";
+		}
+	}
 	QString spanStyle = "";
 	if (basket->backgroundColorSetting().isValid() || basket->textColorSetting().isValid()) {
 		spanStyle = " style=\"background-color: " + basket->backgroundColor().name() + "; color: " + basket->textColor().name() + "\"";
