@@ -37,6 +37,7 @@
 #include <qfile.h>
 #include <qpainter.h>
 #include <kglobalsettings.h>
+#include <kprogress.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {
@@ -74,12 +75,21 @@ HTMLExporter::HTMLExporter(Basket *basket)
 			askAgain = false;
 	}
 
+	// Create the progress dialog that will always be shown during the export:
+	KProgressDialog dialog(0, 0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."), /*Not modal, for password dialogs!*/false);
+	dialog.showCancelButton(false);
+	dialog.setAutoClose(true);
+	dialog.show();
+	progress = dialog.progressBar();
+
 	// Remember the last folder used for HTML exporation:
 	config->writeEntry("lastFolder", KURL(destination).directory());
 	config->sync();
 
 	prepareExport(basket, destination);
 	exportBasket(basket, /*isSubBasket*/false);
+
+	progress->advance(1); // Finishing finished
 }
 
 HTMLExporter::~HTMLExporter()
@@ -88,6 +98,10 @@ HTMLExporter::~HTMLExporter()
 
 void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 {
+	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
+	progress->setValue(0);
+	kapp->processEvents();
+
 	// Remember the file path choosen by the user:
 	filePath = fullPath;
 	fileName = KURL(fullPath).fileName();
@@ -109,6 +123,8 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	dir.mkdir(iconsFolderPath);
 	dir.mkdir(imagesFolderPath);
 	dir.mkdir(basketsFolderPath);
+
+	progress->advance(1); // Preparation finished
 }
 
 #include <iostream>
@@ -346,6 +362,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	file.close();
 	stream.unsetDevice();
+	progress->advance(1); // Basket exportation finished
 
 	// Recursively export child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);

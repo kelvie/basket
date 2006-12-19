@@ -24,6 +24,8 @@
 #include <qstring.h>
 #include <qtextstream.h>
 
+class KProgress;
+
 class Basket;
 class Note;
 
@@ -71,6 +73,7 @@ class HTMLExporter
 	QTextStream stream;
 	Basket *exportedBasket;
 	bool withBasketTree;
+	KProgress *progress;
 };
 
 #endif // HTMLEXPORTER_H
