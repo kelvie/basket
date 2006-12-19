@@ -1,6 +1,6 @@
 Begin3
 Title:          BasKet Note Pads -- Taking care of your ideas.
-Version:        0.6.1Beta1
+Version:        0.6.1Beta2
 Entered-date:
 Description:
 Keywords:       KDE Qt Basket Note Pad Item Drop Paste Checklist Stack
@@ -9,8 +9,8 @@ Maintained-by:  Sébastien Laoût <slaout@linux62.org>
 Home-page:      http://basket.kde.org/
 Alternate-site:
 Primary-site:   ftp://ftp.kde.org/pub/kde/unstable/apps/utils
-                xxxxxx  basket-0.6.1Beta1.tar.gz
-                xxx     basket-0.6.1Beta1.lsm
+                xxxxxx  basket-0.6.1Beta2.tar.gz
+                xxx     basket-0.6.1Beta2.lsm
 Platform:       Linux. Needs KDE
 Copying-policy: GPL
 End
