@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2006-11-30 00:16+0100\n"
-"PO-Revision-Date: 2006-11-30 00:25+0100\n"
+"POT-Creation-Date: 2006-12-19 16:24+0100\n"
+"PO-Revision-Date: 2006-12-19 16:25+0100\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Icon"
 msgstr "Icône"
 
-#: archive.cpp:54 bnpview.cpp:1733
+#: archive.cpp:54 bnpview.cpp:1734
 msgid "Save as Basket Archive"
 msgstr "Enregistrer en tant qu'archive de paniers"
 
@@ -94,13 +94,21 @@ msgid ""
 "missing because they are of a type only available in new versions. When "
 "saving the file back, consider to save it to another file, to preserve the "
 "original one."
-msgstr "Ce fichier a été créé avec une version récente de %1. Il peut être ouvert mais il se peut que certaines informations soient manquantes. Par exemple, quelques notes peuvent manquer car elles sont d'un type disponible uniquement dans des nouvelles versions. En enregistrant ce fichier, il peut être judicieux de l'enregistrer dans un autre fichier, pour préserver l'original."
+msgstr ""
+"Ce fichier a été créé avec une version récente de %1. Il peut être ouvert "
+"mais il se peut que certaines informations soient manquantes. Par exemple, "
+"quelques notes peuvent manquer car elles sont d'un type disponible "
+"uniquement dans des nouvelles versions. En enregistrant ce fichier, il peut "
+"être judicieux de l'enregistrer dans un autre fichier, pour préserver "
+"l'original."
 
 #: archive.cpp:322
 msgid ""
 "This file was created with a recent version of %1. Please upgrade to a newer "
 "version to be able to open that file."
-msgstr "Ce fichier a été créé avec une version récente de %1. Veuillez installer une nouvelle version pour pouvoir ouvrir ce fichier."
+msgstr ""
+"Ce fichier a été créé avec une version récente de %1. Veuillez installer une "
+"nouvelle version pour pouvoir ouvrir ce fichier."
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -254,11 +262,11 @@ msgstr ""
 "<small>Pour que les paniers restent déverouillés, changez le temps<br>de "
 "vérouillage automatique dans les options de l'application.</small>"
 
-#: basket.cpp:3082 basketstatusbar.cpp:83 bnpview.cpp:1276 bnpview.cpp:1940
+#: basket.cpp:3082 basketstatusbar.cpp:83 bnpview.cpp:1277 bnpview.cpp:1941
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: basket.cpp:3323 basket.cpp:3344 bnpview.cpp:2244
+#: basket.cpp:3323 basket.cpp:3344 bnpview.cpp:2245
 msgid "&Customize..."
 msgstr "&Personnaliser..."
 
@@ -327,85 +335,27 @@ msgstr "Vous n'êtes pas autorisé à ouvrir ce fichier."
 msgid "Save to File"
 msgstr "Enregistrer dans un fichier"
 
-#: basket.cpp:4667
-msgid "HTML Documents"
-msgstr "Documents HTML"
-
-#: basket.cpp:4667 bnpview.cpp:1730 bnpview.cpp:1768
-msgid "All Files"
-msgstr "Tous les fichiers"
-
-#: basket.cpp:4670
-msgid "Export to HTML"
-msgstr "Exporter en HTML"
-
-#: basket.cpp:4676 bnpview.cpp:1739
-msgid "The file <b>%1</b> already exists. Do you really want to override it?"
-msgstr "Un fichier <b>%1</b> existe déjà. Voulez-vous vraiment l'écraser ?"
-
-#: basket.cpp:4678 bnpview.cpp:1741
-msgid "Override File?"
-msgstr "Écraser le fichier ?"
-
-#: basket.cpp:4679 bnpview.cpp:1742
-msgid "&Override"
-msgstr "Écras&er"
-
-#: basket.cpp:4709 basket.cpp:4710
-msgid ""
-"_: HTML export folder (files)\n"
-"%1_files"
-msgstr "%1_fichiers"
-
-#: basket.cpp:4716 basket.cpp:4717
-msgid ""
-"_: HTML export folder (icons)\n"
-"icons"
-msgstr "icones"
-
-#: basket.cpp:4718 basket.cpp:4719
-msgid ""
-"_: HTML export folder (images)\n"
-"images"
-msgstr "images"
-
-#: basket.cpp:4720 basket.cpp:4721
-msgid ""
-"_: HTML export folder (data)\n"
-"data"
-msgstr "donnees"
-
-#: basket.cpp:4847
-msgid "Notes matching the filter &quot;%1&quot;:"
-msgstr "Notes correspondant au filtre &quot;%1&quot; :"
-
-#: basket.cpp:4884
-msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
-msgstr ""
-"Fait avec %1, un outil KDE pour prendre des notes et garder une grande "
-"variété de données sous la main."
-
-#: basket.cpp:5489
+#: basket.cpp:5188
 msgid "Please enter the password for the following private key:"
 msgstr "Veuillez entrer le mot de passe pour la clef privée suivante :"
 
-#: basket.cpp:5491
+#: basket.cpp:5190
 msgid "Please enter the password for the basket <b>%1</b>:"
 msgstr "Veuillez entrer le mot de passe pour le panier <i>%1</i> :"
 
-#: basket.cpp:5536
+#: basket.cpp:5235
 msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "Veuillez assigner un mot de passe au panier <i>%1</i> :"
 
-#: basket.cpp:5598
+#: basket.cpp:5297
 msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "Espace disque insuffisant pour enregistrer le panier"
 
-#: basket.cpp:5599
+#: basket.cpp:5298
 msgid "Wrong Basket File Permissions"
 msgstr "Mauvaise permissions sur les fichiers du panier"
 
-#: basket.cpp:5602
+#: basket.cpp:5301
 msgid ""
 "Please remove files on the disk <b>%1</b> to let the application safely save "
 "your changes."
@@ -413,7 +363,7 @@ msgstr ""
 "Veuillez supprimer des fichiers sur le disque <b>%1</b> afin de permettre à "
 "l'application de sauvegarder vos changement en toute sécurité."
 
-#: basket.cpp:5604
+#: basket.cpp:5303
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check you have write access "
 "to it and the parent folders."
@@ -422,7 +372,7 @@ msgstr ""
 "vous avez les droits en écriture sur celui-ci, ainsi que sur les dossiers "
 "parents."
 
-#: basket.cpp:5640
+#: basket.cpp:5339
 msgid "Save Error"
 msgstr "Erreur d'enregistrement"
 
@@ -560,15 +510,15 @@ msgstr "<p>Ce panier est <b>vérouillé</b>.<br>Cliquez pour le dévérouiller.<
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr "<p>Ce panier est <b>dévérouillé</b>.<br>Cliquez pour le vérouiller.</p>"
 
-#: bnpview.cpp:173 bnpview.cpp:1118
+#: bnpview.cpp:174 bnpview.cpp:1119
 msgid "General"
 msgstr "Général"
 
-#: bnpview.cpp:229
+#: bnpview.cpp:230
 msgid "Show/hide main window"
 msgstr "Montrer / cacher la fenêtre principale"
 
-#: bnpview.cpp:230
+#: bnpview.cpp:231
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
@@ -576,11 +526,11 @@ msgstr ""
 "Vous permet de montrer la fenêtre principale si elle était cachée, et de la "
 "cacher si elle était affichée."
 
-#: bnpview.cpp:234
+#: bnpview.cpp:235
 msgid "Paste clipboard contents in current basket"
 msgstr "Coller le contenu du presse-papier dans le panier courant"
 
-#: bnpview.cpp:235
+#: bnpview.cpp:236
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
@@ -588,21 +538,21 @@ msgstr ""
 "Vous permet de coller le contenu du presse-papier dans le panier courant "
 "sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:238
+#: bnpview.cpp:239
 msgid "Show current basket name"
 msgstr "Montrer le nom du panier courrant"
 
-#: bnpview.cpp:239
+#: bnpview.cpp:240
 msgid "Allows you to know basket is current without opening the main window."
 msgstr ""
 "Vous permet de connaître quel est le panier courant sans ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:242
+#: bnpview.cpp:243
 msgid "Paste selection in current basket"
 msgstr "Coller la sélection dans le panier courant"
 
-#: bnpview.cpp:243
+#: bnpview.cpp:244
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
@@ -610,11 +560,11 @@ msgstr ""
 "Vous permet de coller la sélection dans le panier courant sans avoir à "
 "ouvrir la fenêtre principale."
 
-#: bnpview.cpp:246
+#: bnpview.cpp:247
 msgid "Create a new basket"
 msgstr "Crée un nouveau panier"
 
-#: bnpview.cpp:247
+#: bnpview.cpp:248
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -625,11 +575,11 @@ msgstr ""
 "pour ajouter un objet, coller le contenu du presse-papier ou coller la "
 "sélection dans le panier courant)."
 
-#: bnpview.cpp:250
+#: bnpview.cpp:251
 msgid "Go to previous basket"
 msgstr "Aller au panier précédent"
 
-#: bnpview.cpp:251
+#: bnpview.cpp:252
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
@@ -637,11 +587,11 @@ msgstr ""
 "Vous permet de changer le panier courant pour le précédent sans avoir à "
 "ouvrir la fenêtre principale."
 
-#: bnpview.cpp:254
+#: bnpview.cpp:255
 msgid "Go to next basket"
 msgstr "Aller au panier suivant"
 
-#: bnpview.cpp:255
+#: bnpview.cpp:256
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
@@ -649,47 +599,47 @@ msgstr ""
 "Vous permet de changer le panier courant pour le suivant sans avoir à ouvrir "
 "la fenêtre principale."
 
-#: bnpview.cpp:262
+#: bnpview.cpp:263
 msgid "Insert text note"
 msgstr "Insérer une note texte"
 
-#: bnpview.cpp:263
+#: bnpview.cpp:264
 msgid "Add a text note to the current basket without having to open main window."
 msgstr "Ajouter un texte au panier courant sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:266 settings.cpp:571
+#: bnpview.cpp:267 settings.cpp:571
 msgid "Insert image note"
 msgstr "Insérer une note image"
 
-#: bnpview.cpp:267
+#: bnpview.cpp:268
 msgid "Add an image note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une image au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:270 settings.cpp:572
+#: bnpview.cpp:271 settings.cpp:572
 msgid "Insert link note"
 msgstr "Insérer une note lien"
 
-#: bnpview.cpp:271
+#: bnpview.cpp:272
 msgid "Add a link note to the current basket without having to open main window."
 msgstr "Ajouter un lien au panier courant sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:274 settings.cpp:574
+#: bnpview.cpp:275 settings.cpp:574
 msgid "Insert color note"
 msgstr "Insérer une note couleur"
 
-#: bnpview.cpp:275
+#: bnpview.cpp:276
 msgid "Add a color note to the current basket without having to open main window."
 msgstr ""
 "Ajouter une couleur au panier courant sans avoir à ouvrir la fenêtre "
 "principale."
 
-#: bnpview.cpp:278
+#: bnpview.cpp:279
 msgid "Pick color from screen"
 msgstr "Puiser une couleur sur l'écran"
 
-#: bnpview.cpp:279
+#: bnpview.cpp:280
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -697,11 +647,11 @@ msgstr ""
 "Ajouter une couleur puisée sur un pixel à l'écran dans le panier courant "
 "sans avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:283 settings.cpp:575
+#: bnpview.cpp:284 settings.cpp:575
 msgid "Grab screen zone"
 msgstr "Capturer une zone de l'écran"
 
-#: bnpview.cpp:284
+#: bnpview.cpp:285
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -709,15 +659,15 @@ msgstr ""
 "Capturer une zone de l'écran en tant qu'image dans le panier courant sans "
 "avoir à ouvrir la fenêtre principale."
 
-#: bnpview.cpp:296
+#: bnpview.cpp:297
 msgid "Baskets"
 msgstr "Paniers"
 
-#: bnpview.cpp:344
+#: bnpview.cpp:345
 msgid "Please write in English or French."
 msgstr "Veuillez écrire en anglais ou en français."
 
-#: bnpview.cpp:353
+#: bnpview.cpp:354
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -730,235 +680,235 @@ msgstr ""
 "d'autres. Vous pouvez naviguer entre eux en cliquant un panier pour "
 "l'ouvrir, ou les réorganiser en utilisant le glisser / déposer."
 
-#: bnpview.cpp:364
+#: bnpview.cpp:365
 msgid "Save &as Basket Archive..."
 msgstr "&Enregistrer en tant qu'archive de paniers..."
 
-#: bnpview.cpp:366
+#: bnpview.cpp:367
 msgid "&Open Basket Archive..."
 msgstr "&Ouvrir une archive de paniers..."
 
-#: bnpview.cpp:369
+#: bnpview.cpp:370
 msgid "&Hide Window"
 msgstr "&Cacher la fenêtre"
 
-#: bnpview.cpp:373
+#: bnpview.cpp:374
 msgid "&Export to HTML..."
 msgstr "&Exporter en HTML..."
 
-#: bnpview.cpp:375
+#: bnpview.cpp:376
 msgid "K&Notes"
 msgstr "K&Notes"
 
-#: bnpview.cpp:377
+#: bnpview.cpp:378
 msgid "K&Jots"
 msgstr "K&Jots"
 
-#: bnpview.cpp:379
+#: bnpview.cpp:380
 msgid "&KnowIt..."
 msgstr "&KnowIt..."
 
-#: bnpview.cpp:381
+#: bnpview.cpp:382
 msgid "Tux&Cards..."
 msgstr "Tux&Cards..."
 
-#: bnpview.cpp:383
+#: bnpview.cpp:384
 msgid "&Sticky Notes"
 msgstr "&Sticky Notes"
 
-#: bnpview.cpp:385
+#: bnpview.cpp:386
 msgid "&Tomboy"
 msgstr "&Tomboy"
 
-#: bnpview.cpp:390
+#: bnpview.cpp:391
 msgid "D&elete"
 msgstr "Suppri&mer"
 
-#: bnpview.cpp:396
+#: bnpview.cpp:397
 msgid "Selects all notes"
 msgstr "Sélectionner toutes les notes"
 
-#: bnpview.cpp:397
+#: bnpview.cpp:398
 msgid "U&nselect All"
 msgstr "Tout &désélectionner"
 
-#: bnpview.cpp:399
+#: bnpview.cpp:400
 msgid "Unselects all selected notes"
 msgstr "Dé-sélectionne toutes les notes sélectionnées"
 
-#: bnpview.cpp:400
+#: bnpview.cpp:401
 msgid "&Invert Selection"
 msgstr "In&verser la sélection"
 
-#: bnpview.cpp:403
+#: bnpview.cpp:404
 msgid "Inverts the current selection of notes"
 msgstr "Inverser la sélection des notes"
 
-#: bnpview.cpp:405
+#: bnpview.cpp:406
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
 msgstr "&Éditer..."
 
-#: bnpview.cpp:410
+#: bnpview.cpp:411
 msgid "&Open"
 msgstr "&Ouvrir"
 
-#: bnpview.cpp:413
+#: bnpview.cpp:414
 msgid "Open &With..."
 msgstr "Ouvrir &avec..."
 
-#: bnpview.cpp:417
+#: bnpview.cpp:418
 msgid "&Save to File..."
 msgstr "&Enregistrer dans un fichier..."
 
-#: bnpview.cpp:420
+#: bnpview.cpp:421
 msgid "&Group"
 msgstr "&Grouper"
 
-#: bnpview.cpp:422
+#: bnpview.cpp:423
 msgid "U&ngroup"
 msgstr "Dég&rouper"
 
-#: bnpview.cpp:425
+#: bnpview.cpp:426
 msgid "Move on &Top"
 msgstr "Déplacer en &haut"
 
-#: bnpview.cpp:427
+#: bnpview.cpp:428
 msgid "Move &Up"
 msgstr "Déplacer au &dessus"
 
-#: bnpview.cpp:429
+#: bnpview.cpp:430
 msgid "Move &Down"
 msgstr "Déplacer en desso&us"
 
-#: bnpview.cpp:431
+#: bnpview.cpp:432
 msgid "Move on &Bottom"
 msgstr "Déplacer en &bas"
 
-#: bnpview.cpp:447
+#: bnpview.cpp:448
 msgid "&Text"
 msgstr "&Texte"
 
-#: bnpview.cpp:448
+#: bnpview.cpp:449
 msgid "&Link"
 msgstr "&Lien"
 
-#: bnpview.cpp:449
+#: bnpview.cpp:450
 msgid "&Image"
 msgstr "&Image"
 
-#: bnpview.cpp:450
+#: bnpview.cpp:451
 msgid "&Color"
 msgstr "&Couleur"
 
-#: bnpview.cpp:451
+#: bnpview.cpp:452
 msgid "L&auncher"
 msgstr "L&anceur"
 
-#: bnpview.cpp:453
+#: bnpview.cpp:454
 msgid "Import Launcher from &KDE Menu..."
 msgstr "Importer un lanceur depuis le menu &KDE..."
 
-#: bnpview.cpp:454
+#: bnpview.cpp:455
 msgid "Im&port Icon..."
 msgstr "Im&porter une icône..."
 
-#: bnpview.cpp:455
+#: bnpview.cpp:456
 msgid "Load From &File..."
 msgstr "Charger depuis un &fichier..."
 
-#: bnpview.cpp:478
+#: bnpview.cpp:479
 msgid "C&olor from Screen"
 msgstr "C&ouleur sur l'écran"
 
-#: bnpview.cpp:483
+#: bnpview.cpp:484
 msgid "Grab Screen &Zone"
 msgstr "Capturer une &zone de l'écran"
 
-#: bnpview.cpp:513
+#: bnpview.cpp:514
 msgid "&New Basket..."
 msgstr "&Nouveau panier..."
 
-#: bnpview.cpp:515
+#: bnpview.cpp:516
 msgid "New &Sub-Basket..."
 msgstr "Nouveau &sous-panier..."
 
-#: bnpview.cpp:517
+#: bnpview.cpp:518
 msgid "New Si&bling Basket..."
 msgstr "Nouveau panier &voisin..."
 
-#: bnpview.cpp:520
+#: bnpview.cpp:521
 msgid "&New"
 msgstr "&Nouveau"
 
-#: bnpview.cpp:528
+#: bnpview.cpp:529
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
 msgstr "S&upprimer"
 
-#: bnpview.cpp:531
+#: bnpview.cpp:532
 msgid ""
 "_: Password protection\n"
 "Pass&word..."
 msgstr "&Mot de passe..."
 
-#: bnpview.cpp:533
+#: bnpview.cpp:534
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
 msgstr "&Verouiller"
 
-#: bnpview.cpp:543
+#: bnpview.cpp:544
 msgid "&Filter"
 msgstr "&Filtrer"
 
-#: bnpview.cpp:547
+#: bnpview.cpp:548
 msgid "Filter all &Baskets"
 msgstr "Filtrer tous les &paniers"
 
-#: bnpview.cpp:551
+#: bnpview.cpp:552
 msgid "&Reset Filter"
 msgstr "Vider le filt&re"
 
-#: bnpview.cpp:556
+#: bnpview.cpp:557
 msgid "&Previous Basket"
 msgstr "&Panier précédent"
 
-#: bnpview.cpp:558
+#: bnpview.cpp:559
 msgid "&Next Basket"
 msgstr "Panier &suivant"
 
-#: bnpview.cpp:560
+#: bnpview.cpp:561
 msgid "&Fold Basket"
 msgstr "&Replier ce panier"
 
-#: bnpview.cpp:562
+#: bnpview.cpp:563
 msgid "&Expand Basket"
 msgstr "&Développer ce panier"
 
-#: bnpview.cpp:572
+#: bnpview.cpp:573
 msgid "Configure &Global Shortcuts..."
 msgstr "Configurer les raccourcis clavier &globaux..."
 
-#: bnpview.cpp:897
+#: bnpview.cpp:898
 msgid "Plain Text Notes Conversion"
 msgstr "Convertion des notes texte brut"
 
-#: bnpview.cpp:898
+#: bnpview.cpp:899
 msgid "Converting plain text notes to rich text ones..."
 msgstr "Convertion des notes textes bruts en notes textes enrichis..."
 
-#: bnpview.cpp:1274
+#: bnpview.cpp:1275
 msgid "Locked"
 msgstr "Vérouillé"
 
-#: bnpview.cpp:1278
+#: bnpview.cpp:1279
 msgid "No notes"
 msgstr "Pas de note"
 
-#: bnpview.cpp:1280
+#: bnpview.cpp:1281
 #, c-format
 msgid ""
 "_n: %n note\n"
@@ -967,7 +917,7 @@ msgstr ""
 "%n note\n"
 "%n notes"
 
-#: bnpview.cpp:1281
+#: bnpview.cpp:1282
 #, c-format
 msgid ""
 "_n: %n selected\n"
@@ -976,15 +926,15 @@ msgstr ""
 "%n sélectionnée\n"
 "%n sélectionnées"
 
-#: bnpview.cpp:1282
+#: bnpview.cpp:1283
 msgid "all matches"
 msgstr "toutes correspondent"
 
-#: bnpview.cpp:1282
+#: bnpview.cpp:1283
 msgid "no filter"
 msgstr "pas de filtre"
 
-#: bnpview.cpp:1284
+#: bnpview.cpp:1285
 #, c-format
 msgid ""
 "_n: %n match\n"
@@ -993,29 +943,29 @@ msgstr ""
 "%n correspondance\n"
 "%n correspondances"
 
-#: bnpview.cpp:1286
+#: bnpview.cpp:1287
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr "%1, %2, %3"
 
-#: bnpview.cpp:1403
+#: bnpview.cpp:1404
 msgid "Picked color to basket <i>%1</i>"
 msgstr "Puisé une couleur dans le panier <i>%1</i>"
 
-#: bnpview.cpp:1440
+#: bnpview.cpp:1441
 msgid "The plain text notes have been converted to rich text ones."
 msgstr "Les notes texte brut ont été converties en notes textes enrichis."
 
-#: bnpview.cpp:1440 bnpview.cpp:1442
+#: bnpview.cpp:1441 bnpview.cpp:1443
 msgid "Conversion Finished"
 msgstr "Convertion terminée"
 
-#: bnpview.cpp:1442
+#: bnpview.cpp:1443
 msgid "There is no plain text notes to convert."
 msgstr "Il n'y a pas de notes texte brut à convertir."
 
-#: bnpview.cpp:1467
+#: bnpview.cpp:1468
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1034,45 +984,45 @@ msgstr ""
 "l'application est bien installée mais que vous aviez une version précédente, "
 "essayez de supprimer le fichier %5basketui.rc</p>"
 
-#: bnpview.cpp:1478
+#: bnpview.cpp:1479
 msgid "Ressource not Found"
 msgstr "Ressource non trouvée"
 
-#: bnpview.cpp:1501 bnpview.cpp:1510
+#: bnpview.cpp:1502 bnpview.cpp:1511
 msgid "Cannot add note."
 msgstr "Ne peut ajouter une note."
 
-#: bnpview.cpp:1572
+#: bnpview.cpp:1573
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr "Capturé une zone de l'écran dans le panier <i>%1</i>"
 
-#: bnpview.cpp:1620
+#: bnpview.cpp:1621
 msgid "Delete Basket"
 msgstr "Supprimer le panier"
 
-#: bnpview.cpp:1623
+#: bnpview.cpp:1624
 msgid "Delete Only that Basket"
 msgstr "Supprimer seulement ce panier"
 
-#: bnpview.cpp:1624
+#: bnpview.cpp:1625
 msgid "Delete With its Childs"
 msgstr "Supprimer avec ses fils"
 
-#: bnpview.cpp:1632 bnpview.cpp:1638
+#: bnpview.cpp:1633 bnpview.cpp:1639
 msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
 msgstr ""
 "<qt>Voulez-vous réellement supprimer le panier <b>%1</b> et son contenu ?</"
 "qt>"
 
-#: bnpview.cpp:1640
+#: bnpview.cpp:1641
 msgid "Remove Basket"
 msgstr "Supprimer le panier"
 
-#: bnpview.cpp:1642
+#: bnpview.cpp:1643
 msgid "&Remove Basket"
 msgstr "&Supprimer le panier"
 
-#: bnpview.cpp:1653
+#: bnpview.cpp:1654
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
@@ -1080,47 +1030,63 @@ msgstr ""
 "<qt><b>%1</b> a les paniers fils suivants.<br>Voulez-vous les supprimer "
 "aussi ?</qt>"
 
-#: bnpview.cpp:1656
+#: bnpview.cpp:1657
 msgid "Remove Child Baskets"
 msgstr "Supprimer les paniers fils"
 
-#: bnpview.cpp:1658
+#: bnpview.cpp:1659
 msgid "&Remove Child Baskets"
 msgstr "&Supprimer les paniers fils"
 
-#: bnpview.cpp:1730 bnpview.cpp:1768
+#: bnpview.cpp:1731 bnpview.cpp:1769
 msgid "Basket Archives"
 msgstr "Archives de paniers"
 
-#: bnpview.cpp:1769
+#: bnpview.cpp:1731 bnpview.cpp:1769 htmlexporter.cpp:53
+msgid "All Files"
+msgstr "Tous les fichiers"
+
+#: bnpview.cpp:1740 htmlexporter.cpp:65
+msgid "The file <b>%1</b> already exists. Do you really want to override it?"
+msgstr "Un fichier <b>%1</b> existe déjà. Voulez-vous vraiment l'écraser ?"
+
+#: bnpview.cpp:1742 htmlexporter.cpp:67
+msgid "Override File?"
+msgstr "Écraser le fichier ?"
+
+#: bnpview.cpp:1743 htmlexporter.cpp:68
+msgid "&Override"
+msgstr "Écras&er"
+
+#: bnpview.cpp:1770
 msgid "Open Basket Archive"
 msgstr "Ouvrir une archive de paniers"
 
-#: bnpview.cpp:1852
+#: bnpview.cpp:1853
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr "Contenu du presse-papier collé dans le panier <i>%1</i>"
 
-#: bnpview.cpp:1860
+#: bnpview.cpp:1861
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "Sélection collée dans le panier <i>%1</i>"
 
-#: bnpview.cpp:1872
+#: bnpview.cpp:1873
 msgid "No note was added."
 msgstr "Aucune note n'a été ajoutée."
 
-#: bnpview.cpp:1899
+#: bnpview.cpp:1900
 msgid "Basket <i>%1</i> is locked"
 msgstr "Le panier <i>%1</i> est vérouillé"
 
-#: bnpview.cpp:1924
+#: bnpview.cpp:1925
 msgid "(Locked)"
 msgstr "(Vérouillé)"
 
-#: bnpview.cpp:2242
+#: bnpview.cpp:2243
 msgid "&Assign new Tag..."
 msgstr "&Attribuer une nouvelle marque..."
 
-#: bnpview.cpp:2243
+#: bnpview.cpp:2244
 msgid "&Remove All"
 msgstr "&Tout supprimer"
 
@@ -1251,6 +1217,54 @@ msgstr ""
 #: formatimporter.cpp:134
 msgid "Folder Mirror Import"
 msgstr "Importation d'un dossier reflété"
+
+#: htmlexporter.cpp:53
+msgid "HTML Documents"
+msgstr "Documents HTML"
+
+#: htmlexporter.cpp:57 htmlexporter.cpp:79
+msgid "Export to HTML"
+msgstr "Exporter en HTML"
+
+#: htmlexporter.cpp:79
+msgid "Exporting to HTML. Please wait..."
+msgstr "Exportation en HTML. Veuillez patienter..."
+
+#: htmlexporter.cpp:114 htmlexporter.cpp:147 htmlexporter.cpp:154
+msgid ""
+"_: HTML export folder (files)\n"
+"%1_files"
+msgstr "%1_fichiers"
+
+#: htmlexporter.cpp:120 htmlexporter.cpp:152
+msgid ""
+"_: HTML export folder (icons)\n"
+"icons"
+msgstr "icones"
+
+#: htmlexporter.cpp:121 htmlexporter.cpp:153
+msgid ""
+"_: HTML export folder (images)\n"
+"images"
+msgstr "images"
+
+#: htmlexporter.cpp:122 htmlexporter.cpp:150
+msgid ""
+"_: HTML export folder (baskets)\n"
+"baskets"
+msgstr "paniers"
+
+#: htmlexporter.cpp:142 htmlexporter.cpp:148 htmlexporter.cpp:149
+msgid ""
+"_: HTML export folder (data)\n"
+"data"
+msgstr "donnees"
+
+#: htmlexporter.cpp:319
+msgid "Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr ""
+"Fait avec %1, un outil KDE pour prendre des notes et garder une grande "
+"variété de données sous la main."
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
@@ -1769,347 +1783,347 @@ msgstr "Lib&re"
 msgid "Mind map"
 msgstr "Carte mentale"
 
-#: note.cpp:2908
+#: note.cpp:2818
 msgid "(Image)"
 msgstr "(Image)"
 
-#: notecontent.cpp:172
+#: notecontent.cpp:173
 msgid "Plain Text"
 msgstr "Texte brut"
 
-#: notecontent.cpp:173
+#: notecontent.cpp:174
 msgid "Text"
 msgstr "Texte"
 
-#: notecontent.cpp:174
+#: notecontent.cpp:175
 msgid "Image"
 msgstr "Image"
 
-#: notecontent.cpp:175
+#: notecontent.cpp:176
 msgid "Animation"
 msgstr "Animation"
 
-#: notecontent.cpp:176
+#: notecontent.cpp:177
 msgid "Sound"
 msgstr "Son"
 
-#: notecontent.cpp:178
+#: notecontent.cpp:179
 msgid "Link"
 msgstr "Lien"
 
-#: notecontent.cpp:179
+#: notecontent.cpp:180
 msgid "Launcher"
 msgstr "Lanceur"
 
-#: notecontent.cpp:180 noteedit.cpp:809
+#: notecontent.cpp:181 noteedit.cpp:809
 msgid "Color"
 msgstr "Couleur"
 
-#: notecontent.cpp:181
+#: notecontent.cpp:182
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: notecontent.cpp:322
+#: notecontent.cpp:323
 msgid "Edit this plain text"
 msgstr "Éditer ce texte brut"
 
-#: notecontent.cpp:323
+#: notecontent.cpp:324
 msgid "Edit this text"
 msgstr "Éditer ce texte"
 
-#: notecontent.cpp:324
+#: notecontent.cpp:325
 msgid "Edit this image"
 msgstr "Éditer cette image"
 
-#: notecontent.cpp:325
+#: notecontent.cpp:326
 msgid "Edit this animation"
 msgstr "Éditer cette animation"
 
-#: notecontent.cpp:326
+#: notecontent.cpp:327
 msgid "Edit the file name of this sound"
 msgstr "Éditer le nom de fichier de ce son"
 
-#: notecontent.cpp:327
+#: notecontent.cpp:328
 msgid "Edit the name of this file"
 msgstr "Éditer le nom de ce fichier"
 
-#: notecontent.cpp:328
+#: notecontent.cpp:329
 msgid "Edit this link"
 msgstr "Éditer ce lien"
 
-#: notecontent.cpp:329
+#: notecontent.cpp:330
 msgid "Edit this launcher"
 msgstr "Éditer ce lanceur"
 
-#: notecontent.cpp:330
+#: notecontent.cpp:331
 msgid "Edit this color"
 msgstr "Éditer cette couleur"
 
-#: notecontent.cpp:331
+#: notecontent.cpp:332
 msgid "Edit this unknown object"
 msgstr "Éditer cet objet inconnu"
 
-#: notecontent.cpp:557
+#: notecontent.cpp:558
 msgid "Opening plain text..."
 msgstr "Ouverture du texte brut..."
 
-#: notecontent.cpp:558
+#: notecontent.cpp:559
 msgid "Opening plain texts..."
 msgstr "Ouverture des textes bruts..."
 
-#: notecontent.cpp:559
+#: notecontent.cpp:560
 msgid "Opening plain text with..."
 msgstr "Ouverture du texte brut avec..."
 
-#: notecontent.cpp:560
+#: notecontent.cpp:561
 msgid "Opening plain texts with..."
 msgstr "Ouverture des textes bruts avec..."
 
-#: notecontent.cpp:561
+#: notecontent.cpp:562
 msgid "Open plain text with:"
 msgstr "Ouvrir le texte brut avec :"
 
-#: notecontent.cpp:562
+#: notecontent.cpp:563
 msgid "Open plain texts with:"
 msgstr "Ouvrir les textes bruts avec :"
 
-#: notecontent.cpp:648
+#: notecontent.cpp:649
 msgid "Opening text..."
 msgstr "Ouverture du texte..."
 
-#: notecontent.cpp:649
+#: notecontent.cpp:650
 msgid "Opening texts..."
 msgstr "Ouverture des textes..."
 
-#: notecontent.cpp:650
+#: notecontent.cpp:651
 msgid "Opening text with..."
 msgstr "Ouverture du texte avec..."
 
-#: notecontent.cpp:651
+#: notecontent.cpp:652
 msgid "Opening texts with..."
 msgstr "Ouverture des textes avec..."
 
-#: notecontent.cpp:652
+#: notecontent.cpp:653
 msgid "Open text with:"
 msgstr "Ouvrir ce texte avec :"
 
-#: notecontent.cpp:653
+#: notecontent.cpp:654
 msgid "Open texts with:"
 msgstr "Ouvrir ces textes avec :"
 
-#: notecontent.cpp:761 notecontent.cpp:972
+#: notecontent.cpp:762 notecontent.cpp:973
 msgid "Size"
 msgstr "Taille"
 
-#: notecontent.cpp:762 variouswidgets.cpp:147
+#: notecontent.cpp:763 variouswidgets.cpp:147
 msgid "%1 by %2 pixels"
 msgstr "%1 par %2 pixels"
 
-#: notecontent.cpp:768
+#: notecontent.cpp:769
 msgid "Opening image..."
 msgstr "Ouverture de l'image..."
 
-#: notecontent.cpp:769
+#: notecontent.cpp:770
 msgid "Opening images..."
 msgstr "Ouverture des images..."
 
-#: notecontent.cpp:770
+#: notecontent.cpp:771
 msgid "Opening image with..."
 msgstr "Ouverture de l'image avec..."
 
-#: notecontent.cpp:771
+#: notecontent.cpp:772
 msgid "Opening images with..."
 msgstr "Ouverture des images avec..."
 
-#: notecontent.cpp:772
+#: notecontent.cpp:773
 msgid "Open image with:"
 msgstr "Ouvrir l'image avec :"
 
-#: notecontent.cpp:773
+#: notecontent.cpp:774
 msgid "Open images with:"
 msgstr "Ouvrir les images avec :"
 
-#: notecontent.cpp:797
+#: notecontent.cpp:798
 msgid "Click for full size view"
 msgstr "Cliquez pour voir en tailler réelle"
 
-#: notecontent.cpp:861
+#: notecontent.cpp:862
 msgid "Opening animation..."
 msgstr "Ouverture de l'animation..."
 
-#: notecontent.cpp:862
+#: notecontent.cpp:863
 msgid "Opening animations..."
 msgstr "Ouverture des animations..."
 
-#: notecontent.cpp:863
+#: notecontent.cpp:864
 msgid "Opening animation with..."
 msgstr "Ouverture de l'animation avec..."
 
-#: notecontent.cpp:864
+#: notecontent.cpp:865
 msgid "Opening animations with..."
 msgstr "Ouverture des animations avec..."
 
-#: notecontent.cpp:865
+#: notecontent.cpp:866
 msgid "Open animation with:"
 msgstr "Ouvrir l'animation avec :"
 
-#: notecontent.cpp:866
+#: notecontent.cpp:867
 msgid "Open animations with:"
 msgstr "Ouvrir les animations avec :"
 
-#: notecontent.cpp:977
+#: notecontent.cpp:978
 msgid "Type"
 msgstr "Type"
 
-#: notecontent.cpp:1015
+#: notecontent.cpp:1016
 msgid "Open this file"
 msgstr "Ouvrir ce fichier"
 
-#: notecontent.cpp:1034
+#: notecontent.cpp:1035
 msgid "Opening file..."
 msgstr "Ouverture du fichier..."
 
-#: notecontent.cpp:1035
+#: notecontent.cpp:1036
 msgid "Opening files..."
 msgstr "Ouverture des fichiers..."
 
-#: notecontent.cpp:1036
+#: notecontent.cpp:1037
 msgid "Opening file with..."
 msgstr "Ouverture du fichier avec..."
 
-#: notecontent.cpp:1037
+#: notecontent.cpp:1038
 msgid "Opening files with..."
 msgstr "Ouverture des fichiers avec..."
 
-#: notecontent.cpp:1038
+#: notecontent.cpp:1039
 msgid "Open file with:"
 msgstr "Ouvrir le fichier avec :"
 
-#: notecontent.cpp:1039
+#: notecontent.cpp:1040
 msgid "Open files with:"
 msgstr "Ouvrir les fichiers avec :"
 
-#: notecontent.cpp:1110
+#: notecontent.cpp:1111
 msgid "Open this sound"
 msgstr "Ouvrir ce son"
 
-#: notecontent.cpp:1147
+#: notecontent.cpp:1148
 msgid "Opening sound..."
 msgstr "Ouverture du son..."
 
-#: notecontent.cpp:1148
+#: notecontent.cpp:1149
 msgid "Opening sounds..."
 msgstr "Ouverture des sons..."
 
-#: notecontent.cpp:1149
+#: notecontent.cpp:1150
 msgid "Opening sound with..."
 msgstr "Ouverture du son avec..."
 
-#: notecontent.cpp:1150
+#: notecontent.cpp:1151
 msgid "Opening sounds with..."
 msgstr "Ouverture des sons avec..."
 
-#: notecontent.cpp:1151
+#: notecontent.cpp:1152
 msgid "Open sound with:"
 msgstr "Ouvrir le son avec :"
 
-#: notecontent.cpp:1152
+#: notecontent.cpp:1153
 msgid "Open sounds with:"
 msgstr "Ouvrir les sons avec :"
 
-#: notecontent.cpp:1190
+#: notecontent.cpp:1191
 msgid "Target"
 msgstr "Cible"
 
-#: notecontent.cpp:1213
+#: notecontent.cpp:1214
 msgid "Open this link"
 msgstr "Ouvrir ce lien"
 
-#: notecontent.cpp:1239
+#: notecontent.cpp:1240
 msgid "Link have no URL to open."
 msgstr "Le lien n'a pas d'URL à ouvrir."
 
-#: notecontent.cpp:1242
+#: notecontent.cpp:1243
 msgid "Opening link target..."
 msgstr "Ouverture de la cible du lien..."
 
-#: notecontent.cpp:1243
+#: notecontent.cpp:1244
 msgid "Opening link targets..."
 msgstr "Ouverture de la cible des liens..."
 
-#: notecontent.cpp:1244
+#: notecontent.cpp:1245
 msgid "Opening link target with..."
 msgstr "Ouverture de la cible du lien avec..."
 
-#: notecontent.cpp:1245
+#: notecontent.cpp:1246
 msgid "Opening link targets with..."
 msgstr "Ouverture de la cible des liens avec..."
 
-#: notecontent.cpp:1246
+#: notecontent.cpp:1247
 msgid "Open link target with:"
 msgstr "Ouvrir la cible du lien avec :"
 
-#: notecontent.cpp:1247
+#: notecontent.cpp:1248
 msgid "Open link targets with:"
 msgstr "Ouvrir de la cible des liens avec :"
 
-#: notecontent.cpp:1373
+#: notecontent.cpp:1379
 msgid "%1 <i>(run in terminal)</i>"
 msgstr "%1 <i>(exécuter dans un terminal)</i>"
 
-#: notecontent.cpp:1376
+#: notecontent.cpp:1382
 msgid "Comment"
 msgstr "Commentaire"
 
-#: notecontent.cpp:1380
+#: notecontent.cpp:1386
 msgid "Command"
 msgstr "Commande"
 
-#: notecontent.cpp:1403
+#: notecontent.cpp:1409
 msgid "Launch this application"
 msgstr "Lancer cette application"
 
-#: notecontent.cpp:1424
+#: notecontent.cpp:1430
 msgid "The launcher have no command to run."
 msgstr "Le lanceur n'a pas de commande à exécuter."
 
-#: notecontent.cpp:1427
+#: notecontent.cpp:1433
 msgid "Launching application..."
 msgstr "Lancement de l'application..."
 
-#: notecontent.cpp:1428
+#: notecontent.cpp:1434
 msgid "Launching applications..."
 msgstr "Lancement des applications..."
 
-#: notecontent.cpp:1515
+#: notecontent.cpp:1521
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
 msgstr "RVB"
 
-#: notecontent.cpp:1516
+#: notecontent.cpp:1522
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
 msgstr "<i>Rouge</i>: %1, <i>Vert</i>: %2, <i>Bleu</i>: %3,"
 
-#: notecontent.cpp:1518
+#: notecontent.cpp:1524
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
 msgstr "TSV"
 
-#: notecontent.cpp:1519
+#: notecontent.cpp:1525
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
 msgstr "<i>Teinte</i>: %1, <i>Saturation</i>: %2, <i>Valeur</i>: %3,"
 
-#: notecontent.cpp:1672
+#: notecontent.cpp:1678
 msgid "CSS Color Name"
 msgstr "Nom de couleur CSS"
 
-#: notecontent.cpp:1682
+#: notecontent.cpp:1688
 msgid "CSS Extended Color Name"
 msgstr "Nom de couleur CSS étendu"
 
-#: notecontent.cpp:1688
+#: notecontent.cpp:1694
 msgid "Is Web Color"
 msgstr "Est une couleur Web"
 

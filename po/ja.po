@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: basket-ja\n"
-"POT-Creation-Date: 2006-11-30 00:16+0100\n"
+"POT-Creation-Date: 2006-12-19 16:24+0100\n"
 "PO-Revision-Date: 2006-12-01 23:00+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Icon"
 msgstr "アイコン"
 
-#: archive.cpp:54 bnpview.cpp:1733
+#: archive.cpp:54 bnpview.cpp:1734
 msgid "Save as Basket Archive"
 msgstr "バスケットアーカイブとして保存"
 
@@ -254,11 +254,11 @@ msgstr ""
 "バスケットがロックされないようにするには、設定ダイアログの<br>「バスケット」"
 "のページで自動ロックの時間を変更してください。"
 
-#: basket.cpp:3082 basketstatusbar.cpp:83 bnpview.cpp:1276 bnpview.cpp:1940
+#: basket.cpp:3082 basketstatusbar.cpp:83 bnpview.cpp:1277 bnpview.cpp:1941
 msgid "Loading..."
 msgstr "読み込み中..."
 
-#: basket.cpp:3323 basket.cpp:3344 bnpview.cpp:2244
+#: basket.cpp:3323 basket.cpp:3344 bnpview.cpp:2245
 msgid "&Customize..."
 msgstr "カスタマイズ(&C)..."
 
@@ -317,85 +317,27 @@ msgstr "このファイルを開く権限がありません。"
 msgid "Save to File"
 msgstr "ファイルに保存"
 
-#: basket.cpp:4667
-msgid "HTML Documents"
-msgstr "HTML ドキュメント"
-
-#: basket.cpp:4667 bnpview.cpp:1730 bnpview.cpp:1768
-msgid "All Files"
-msgstr "すべてのファイル"
-
-#: basket.cpp:4670
-msgid "Export to HTML"
-msgstr "HTML にエクスポート"
-
-#: basket.cpp:4676 bnpview.cpp:1739
-msgid "The file <b>%1</b> already exists. Do you really want to override it?"
-msgstr "ファイル <b>%1</b> は既に存在します。本当に上書きしますか？"
-
-#: basket.cpp:4678 bnpview.cpp:1741
-msgid "Override File?"
-msgstr "ファイルを上書きしますか？"
-
-#: basket.cpp:4679 bnpview.cpp:1742
-msgid "&Override"
-msgstr "上書き(&O)"
-
-#: basket.cpp:4709 basket.cpp:4710
-msgid ""
-"_: HTML export folder (files)\n"
-"%1_files"
-msgstr "%1_files"
-
-#: basket.cpp:4716 basket.cpp:4717
-msgid ""
-"_: HTML export folder (icons)\n"
-"icons"
-msgstr "icons"
-
-#: basket.cpp:4718 basket.cpp:4719
-msgid ""
-"_: HTML export folder (images)\n"
-"images"
-msgstr "images"
-
-#: basket.cpp:4720 basket.cpp:4721
-msgid ""
-"_: HTML export folder (data)\n"
-"data"
-msgstr "data"
-
-#: basket.cpp:4847
-msgid "Notes matching the filter &quot;%1&quot;:"
-msgstr "フィルタ &quot;%1&quot; にマッチするメモ:"
-
-#: basket.cpp:4884
-msgid ""
-"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
-msgstr ""
-"%1 (メモをとって様々なデータを手元に置いておくための KDE ツール) で作成"
-
-#: basket.cpp:5489
+#: basket.cpp:5188
 msgid "Please enter the password for the following private key:"
 msgstr "以下の秘密鍵のパスワードを入力してください:"
 
-#: basket.cpp:5491
+#: basket.cpp:5190
 msgid "Please enter the password for the basket <b>%1</b>:"
 msgstr "バスケット「%1」のパスワードを入力してください:"
 
-#: basket.cpp:5536
+#: basket.cpp:5235
 msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "バスケット「%1」のパスワードを設定してください:"
 
-#: basket.cpp:5598
+#: basket.cpp:5297
 msgid "Insufficient Disk Space to Save Basket Data"
 msgstr "バスケットのデータを保存するディスク容量が足りません"
 
-#: basket.cpp:5599
+#: basket.cpp:5298
 msgid "Wrong Basket File Permissions"
 msgstr "不正なバスケットファイルの許可属性"
 
-#: basket.cpp:5602
+#: basket.cpp:5301
 msgid ""
 "Please remove files on the disk <b>%1</b> to let the application safely save "
 "your changes."
@@ -403,7 +345,7 @@ msgstr ""
 "アプリケーションが安全にあなたの変更を保存できるように、ディスク <b>%1</b> 上"
 "のファイルを削除してください。"
 
-#: basket.cpp:5604
+#: basket.cpp:5303
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check you have write access "
 "to it and the parent folders."
@@ -411,7 +353,7 @@ msgstr ""
 "ファイル <b>%1</b> の許可属性が正しくありません。そのファイルと親フォルダに対"
 "して書き込み権限があるか確認してください。"
 
-#: basket.cpp:5640
+#: basket.cpp:5339
 msgid "Save Error"
 msgstr "保存エラー"
 
@@ -557,15 +499,15 @@ msgstr ""
 "<p>このバスケットはロック解除されています。<br>ロックするにはクリックしてくだ"
 "さい。</p>"
 
-#: bnpview.cpp:173 bnpview.cpp:1118
+#: bnpview.cpp:174 bnpview.cpp:1119
 msgid "General"
 msgstr "General (雑多)"
 
-#: bnpview.cpp:229
+#: bnpview.cpp:230
 msgid "Show/hide main window"
 msgstr "メインウィンドウを表示/隠す"
 
-#: bnpview.cpp:230
+#: bnpview.cpp:231
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
@@ -573,41 +515,41 @@ msgstr ""
 "メインウィンドウが非表示になっている場合は表示し、表示されている場合は隠しま"
 "す。"
 
-#: bnpview.cpp:234
+#: bnpview.cpp:235
 msgid "Paste clipboard contents in current basket"
 msgstr "クリップボードの内容を現在のバスケットに貼り付け"
 
-#: bnpview.cpp:235
+#: bnpview.cpp:236
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open main window."
 msgstr ""
 "メインウィンドウを開かずにクリップボードの内容を貼り付けることができます。"
 
-#: bnpview.cpp:238
+#: bnpview.cpp:239
 msgid "Show current basket name"
 msgstr "現在のバスケット名を表示"
 
-#: bnpview.cpp:239
+#: bnpview.cpp:240
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "メインウィンドウを開かずに現在のバスケットがわかります。"
 
-#: bnpview.cpp:242
+#: bnpview.cpp:243
 msgid "Paste selection in current basket"
 msgstr "選択を現在のバスケットに貼り付け"
 
-#: bnpview.cpp:243
+#: bnpview.cpp:244
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open main window."
 msgstr ""
 "メインウィンドウを開かずにクリップボードの選択を貼り付けることができます。"
 
-#: bnpview.cpp:246
+#: bnpview.cpp:247
 msgid "Create a new basket"
 msgstr "新しいバスケットを作成"
 
-#: bnpview.cpp:247
+#: bnpview.cpp:248
 msgid ""
 "Allows you to create a new basket without having to open main window (you "
 "then can use the other global shortcuts to add a note, paste clipboard or "
@@ -617,74 +559,74 @@ msgstr ""
 "他のグローバルショートカットを使って、そのバスケットにメモを追加したりクリッ"
 "プボードの内容や選択したものを貼り付けることができます。"
 
-#: bnpview.cpp:250
+#: bnpview.cpp:251
 msgid "Go to previous basket"
 msgstr "前のバスケットへ移動"
 
-#: bnpview.cpp:251
+#: bnpview.cpp:252
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open main window."
 msgstr "メインウィンドウを開かずに前のバスケットに切り替えることができます。"
 
-#: bnpview.cpp:254
+#: bnpview.cpp:255
 msgid "Go to next basket"
 msgstr "次のバスケットへ移動"
 
-#: bnpview.cpp:255
+#: bnpview.cpp:256
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "main window."
 msgstr "メインウィンドウを開かずに次のバスケットに切り替えることができます。"
 
-#: bnpview.cpp:262
+#: bnpview.cpp:263
 msgid "Insert text note"
 msgstr "テキストメモを挿入"
 
-#: bnpview.cpp:263
+#: bnpview.cpp:264
 msgid ""
 "Add a text note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットにテキストメモを追加することができ"
 "ます。"
 
-#: bnpview.cpp:266 settings.cpp:571
+#: bnpview.cpp:267 settings.cpp:571
 msgid "Insert image note"
 msgstr "画像メモを挿入"
 
-#: bnpview.cpp:267
+#: bnpview.cpp:268
 msgid ""
 "Add an image note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットに画像メモを追加することができま"
 "す。"
 
-#: bnpview.cpp:270 settings.cpp:572
+#: bnpview.cpp:271 settings.cpp:572
 msgid "Insert link note"
 msgstr "リンクメモを挿入"
 
-#: bnpview.cpp:271
+#: bnpview.cpp:272
 msgid ""
 "Add a link note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットにリンクメモを追加することができま"
 "す。"
 
-#: bnpview.cpp:274 settings.cpp:574
+#: bnpview.cpp:275 settings.cpp:574
 msgid "Insert color note"
 msgstr "色メモを挿入"
 
-#: bnpview.cpp:275
+#: bnpview.cpp:276
 msgid ""
 "Add a color note to the current basket without having to open main window."
 msgstr ""
 "メインウィンドウを開かずに現在のバスケットに色メモを追加することができます。"
 
-#: bnpview.cpp:278
+#: bnpview.cpp:279
 msgid "Pick color from screen"
 msgstr "スクリーンから色を採取"
 
-#: bnpview.cpp:279
+#: bnpview.cpp:280
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open main window."
@@ -692,11 +634,11 @@ msgstr ""
 "メインウィンドウを開かずに現在のバスケットにスクリーン上の 1 ピクセルから採取"
 "した色をメモとして追加することができます。"
 
-#: bnpview.cpp:283 settings.cpp:575
+#: bnpview.cpp:284 settings.cpp:575
 msgid "Grab screen zone"
 msgstr "スクリーンの領域を取り込む"
 
-#: bnpview.cpp:284
+#: bnpview.cpp:285
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "main window."
@@ -704,15 +646,15 @@ msgstr ""
 "メインウィンドウを開かずに現在のバスケットにスクリーンの領域を画像として取り"
 "込むことができます。"
 
-#: bnpview.cpp:296
+#: bnpview.cpp:297
 msgid "Baskets"
 msgstr "バスケット"
 
-#: bnpview.cpp:344
+#: bnpview.cpp:345
 msgid "Please write in English or French."
 msgstr "英語またはフランス語でお願いします。"
 
-#: bnpview.cpp:353
+#: bnpview.cpp:354
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -725,286 +667,286 @@ msgstr ""
 "スケットを切り替えるには、バスケットの上でクリックして開きます。バスケットは"
 "「ドラッグ&ドロップ」を使って再編成することができます。"
 
-#: bnpview.cpp:364
+#: bnpview.cpp:365
 msgid "Save &as Basket Archive..."
 msgstr "バスケットアーカイブとして保存(&A)..."
 
-#: bnpview.cpp:366
+#: bnpview.cpp:367
 msgid "&Open Basket Archive..."
 msgstr "バスケットアーカイブを開く(&O)..."
 
-#: bnpview.cpp:369
+#: bnpview.cpp:370
 msgid "&Hide Window"
 msgstr "ウィンドウを隠す(&H)"
 
-#: bnpview.cpp:373
+#: bnpview.cpp:374
 msgid "&Export to HTML..."
 msgstr "HTML にエクスポート(&E)..."
 
-#: bnpview.cpp:375
+#: bnpview.cpp:376
 msgid "K&Notes"
 msgstr "K&Notes"
 
-#: bnpview.cpp:377
+#: bnpview.cpp:378
 msgid "K&Jots"
 msgstr "K&Jots"
 
-#: bnpview.cpp:379
+#: bnpview.cpp:380
 msgid "&KnowIt..."
 msgstr "&KnowIt..."
 
-#: bnpview.cpp:381
+#: bnpview.cpp:382
 msgid "Tux&Cards..."
 msgstr "Tux&Cards..."
 
-#: bnpview.cpp:383
+#: bnpview.cpp:384
 msgid "&Sticky Notes"
 msgstr "&Sticky Notes"
 
-#: bnpview.cpp:385
+#: bnpview.cpp:386
 msgid "&Tomboy"
 msgstr "&Tomboy"
 
-#: bnpview.cpp:390
+#: bnpview.cpp:391
 msgid "D&elete"
 msgstr "削除(&E)"
 
-#: bnpview.cpp:396
+#: bnpview.cpp:397
 msgid "Selects all notes"
 msgstr "すべてのメモを選択"
 
-#: bnpview.cpp:397
+#: bnpview.cpp:398
 msgid "U&nselect All"
 msgstr "すべて選択解除(&N)"
 
-#: bnpview.cpp:399
+#: bnpview.cpp:400
 msgid "Unselects all selected notes"
 msgstr "すべてのメモの選択を解除"
 
-#: bnpview.cpp:400
+#: bnpview.cpp:401
 msgid "&Invert Selection"
 msgstr "選択を反転(&I)"
 
-#: bnpview.cpp:403
+#: bnpview.cpp:404
 msgid "Inverts the current selection of notes"
 msgstr "現在のメモの選択状態を反転"
 
-#: bnpview.cpp:405
+#: bnpview.cpp:406
 msgid ""
 "_: Verb; not Menu\n"
 "&Edit..."
 msgstr "編集(&E)..."
 
-#: bnpview.cpp:410
+#: bnpview.cpp:411
 msgid "&Open"
 msgstr "開く(&O)"
 
-#: bnpview.cpp:413
+#: bnpview.cpp:414
 msgid "Open &With..."
 msgstr "アプリケーションで開く(&W)..."
 
-#: bnpview.cpp:417
+#: bnpview.cpp:418
 msgid "&Save to File..."
 msgstr "ファイルに保存(&S)..."
 
-#: bnpview.cpp:420
+#: bnpview.cpp:421
 msgid "&Group"
 msgstr "グループ化(&G)"
 
-#: bnpview.cpp:422
+#: bnpview.cpp:423
 msgid "U&ngroup"
 msgstr "グループ解除(&N)"
 
-#: bnpview.cpp:425
+#: bnpview.cpp:426
 msgid "Move on &Top"
 msgstr "一番上に移動(&T)"
 
-#: bnpview.cpp:427
+#: bnpview.cpp:428
 msgid "Move &Up"
 msgstr "上に移動(&U)"
 
-#: bnpview.cpp:429
+#: bnpview.cpp:430
 msgid "Move &Down"
 msgstr "下に移動(&D)"
 
-#: bnpview.cpp:431
+#: bnpview.cpp:432
 msgid "Move on &Bottom"
 msgstr "一番下に移動(&B)"
 
-#: bnpview.cpp:447
+#: bnpview.cpp:448
 msgid "&Text"
 msgstr "テキスト(&T)"
 
-#: bnpview.cpp:448
+#: bnpview.cpp:449
 msgid "&Link"
 msgstr "リンク(&L)"
 
-#: bnpview.cpp:449
+#: bnpview.cpp:450
 msgid "&Image"
 msgstr "画像(&I)"
 
-#: bnpview.cpp:450
+#: bnpview.cpp:451
 msgid "&Color"
 msgstr "色(&C)"
 
-#: bnpview.cpp:451
+#: bnpview.cpp:452
 msgid "L&auncher"
 msgstr "ランチャー(&A)"
 
-#: bnpview.cpp:453
+#: bnpview.cpp:454
 msgid "Import Launcher from &KDE Menu..."
 msgstr "KDE メニューからランチャーをインポート(&K)..."
 
-#: bnpview.cpp:454
+#: bnpview.cpp:455
 msgid "Im&port Icon..."
 msgstr "アイコンをインポート(&P)..."
 
-#: bnpview.cpp:455
+#: bnpview.cpp:456
 msgid "Load From &File..."
 msgstr "ファイルから読み込む(&F)..."
 
-#: bnpview.cpp:478
+#: bnpview.cpp:479
 msgid "C&olor from Screen"
 msgstr "スクリーンから色を採取(&O)"
 
-#: bnpview.cpp:483
+#: bnpview.cpp:484
 msgid "Grab Screen &Zone"
 msgstr "スクリーンの領域を取り込む(&Z)"
 
-#: bnpview.cpp:513
+#: bnpview.cpp:514
 msgid "&New Basket..."
 msgstr "新しいバスケットを作成(&N)..."
 
-#: bnpview.cpp:515
+#: bnpview.cpp:516
 msgid "New &Sub-Basket..."
 msgstr "新しい子バスケットを作成(&S)..."
 
-#: bnpview.cpp:517
+#: bnpview.cpp:518
 msgid "New Si&bling Basket..."
 msgstr "新しい兄弟バスケットを作成(&B)..."
 
-#: bnpview.cpp:520
+#: bnpview.cpp:521
 msgid "&New"
 msgstr "新規(&N)"
 
-#: bnpview.cpp:528
+#: bnpview.cpp:529
 msgid ""
 "_: Remove Basket\n"
 "&Remove"
 msgstr "削除(&R)"
 
-#: bnpview.cpp:531
+#: bnpview.cpp:532
 msgid ""
 "_: Password protection\n"
 "Pass&word..."
 msgstr "パスワード保護(&W)..."
 
-#: bnpview.cpp:533
+#: bnpview.cpp:534
 msgid ""
 "_: Lock Basket\n"
 "&Lock"
 msgstr "ロック(&L)"
 
-#: bnpview.cpp:543
+#: bnpview.cpp:544
 msgid "&Filter"
 msgstr "フィルタ(&F)"
 
-#: bnpview.cpp:547
+#: bnpview.cpp:548
 msgid "Filter all &Baskets"
 msgstr "すべてのバスケットをフィルタ(&B)"
 
-#: bnpview.cpp:551
+#: bnpview.cpp:552
 msgid "&Reset Filter"
 msgstr "フィルタをリセット(&R)"
 
-#: bnpview.cpp:556
+#: bnpview.cpp:557
 msgid "&Previous Basket"
 msgstr "前のバスケット(&P)"
 
-#: bnpview.cpp:558
+#: bnpview.cpp:559
 msgid "&Next Basket"
 msgstr "次のバスケット(&N)"
 
-#: bnpview.cpp:560
+#: bnpview.cpp:561
 msgid "&Fold Basket"
 msgstr "バスケットをたたむ(&F)"
 
-#: bnpview.cpp:562
+#: bnpview.cpp:563
 msgid "&Expand Basket"
 msgstr "バスケットを展開(&E)"
 
-#: bnpview.cpp:572
+#: bnpview.cpp:573
 msgid "Configure &Global Shortcuts..."
 msgstr "グローバルショートカットを設定(&G)..."
 
-#: bnpview.cpp:897
+#: bnpview.cpp:898
 msgid "Plain Text Notes Conversion"
 msgstr "プレーンテキストメモの変換"
 
-#: bnpview.cpp:898
+#: bnpview.cpp:899
 msgid "Converting plain text notes to rich text ones..."
 msgstr "プレーンテキストのメモをリッチテキストメモに変換..."
 
-#: bnpview.cpp:1274
+#: bnpview.cpp:1275
 msgid "Locked"
 msgstr "ロック中"
 
-#: bnpview.cpp:1278
+#: bnpview.cpp:1279
 msgid "No notes"
 msgstr "メモはありません"
 
-#: bnpview.cpp:1280
+#: bnpview.cpp:1281
 #, c-format
 msgid ""
 "_n: %n note\n"
 "%n notes"
 msgstr "%n 件のメモ"
 
-#: bnpview.cpp:1281
+#: bnpview.cpp:1282
 #, c-format
 msgid ""
 "_n: %n selected\n"
 "%n selected"
 msgstr "%n 件選択"
 
-#: bnpview.cpp:1282
+#: bnpview.cpp:1283
 msgid "all matches"
 msgstr "すべてマッチ"
 
-#: bnpview.cpp:1282
+#: bnpview.cpp:1283
 msgid "no filter"
 msgstr "フィルタなし"
 
-#: bnpview.cpp:1284
+#: bnpview.cpp:1285
 #, c-format
 msgid ""
 "_n: %n match\n"
 "%n matches"
 msgstr "%n 件マッチ"
 
-#: bnpview.cpp:1286
+#: bnpview.cpp:1287
 msgid ""
 "_: e.g. '18 notes, 10 matches, 5 selected'\n"
 "%1, %2, %3"
 msgstr "%1、%2、%3"
 
-#: bnpview.cpp:1403
+#: bnpview.cpp:1404
 msgid "Picked color to basket <i>%1</i>"
 msgstr "バスケット「%1」に色を採取しました"
 
-#: bnpview.cpp:1440
+#: bnpview.cpp:1441
 msgid "The plain text notes have been converted to rich text ones."
 msgstr "プレーンテキストのメモをリッチテキストメモに変換しました。"
 
-#: bnpview.cpp:1440 bnpview.cpp:1442
+#: bnpview.cpp:1441 bnpview.cpp:1443
 msgid "Conversion Finished"
 msgstr "変換完了"
 
-#: bnpview.cpp:1442
+#: bnpview.cpp:1443
 msgid "There is no plain text notes to convert."
 msgstr "変換するプレーンテキストメモがありません。"
 
-#: bnpview.cpp:1467
+#: bnpview.cpp:1468
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1022,44 +964,44 @@ msgstr ""
 "トールされているけれども、以前にプレビューバージョンをインストールしていた場"
 "合は、最後の手段として、ファイル %5basketui.rc を削除してみてください。</p>"
 
-#: bnpview.cpp:1478
+#: bnpview.cpp:1479
 msgid "Ressource not Found"
 msgstr "リソースが見つかりません"
 
-#: bnpview.cpp:1501 bnpview.cpp:1510
+#: bnpview.cpp:1502 bnpview.cpp:1511
 msgid "Cannot add note."
 msgstr "メモを追加できません。"
 
-#: bnpview.cpp:1572
+#: bnpview.cpp:1573
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr "スクリーンの領域をバスケット「%1」に取り込みました"
 
-#: bnpview.cpp:1620
+#: bnpview.cpp:1621
 msgid "Delete Basket"
 msgstr "バスケットを削除"
 
-#: bnpview.cpp:1623
+#: bnpview.cpp:1624
 msgid "Delete Only that Basket"
 msgstr "このバスケットのみ削除"
 
-#: bnpview.cpp:1624
+#: bnpview.cpp:1625
 msgid "Delete With its Childs"
 msgstr "子も同時に削除"
 
-#: bnpview.cpp:1632 bnpview.cpp:1638
+#: bnpview.cpp:1633 bnpview.cpp:1639
 msgid ""
 "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
 msgstr "<qt>本当にバスケット「%1」とその内容を削除しますか？</qt>"
 
-#: bnpview.cpp:1640
+#: bnpview.cpp:1641
 msgid "Remove Basket"
 msgstr "バスケットを削除"
 
-#: bnpview.cpp:1642
+#: bnpview.cpp:1643
 msgid "&Remove Basket"
 msgstr "バスケットを削除(&R)"
 
-#: bnpview.cpp:1653
+#: bnpview.cpp:1654
 msgid ""
 "<qt><b>%1</b> have the following child baskets.<br>Do you want to remove "
 "them too?</qt>"
@@ -1067,47 +1009,63 @@ msgstr ""
 "<qt>「%1」には以下の子バスケットがあります。<br>それらも同時に削除しますか？"
 "</qt>"
 
-#: bnpview.cpp:1656
+#: bnpview.cpp:1657
 msgid "Remove Child Baskets"
 msgstr "子バスケットを削除"
 
-#: bnpview.cpp:1658
+#: bnpview.cpp:1659
 msgid "&Remove Child Baskets"
 msgstr "子バスケットを削除(&R)"
 
-#: bnpview.cpp:1730 bnpview.cpp:1768
+#: bnpview.cpp:1731 bnpview.cpp:1769
 msgid "Basket Archives"
 msgstr "バスケットアーカイブ"
 
-#: bnpview.cpp:1769
+#: bnpview.cpp:1731 bnpview.cpp:1769 htmlexporter.cpp:53
+msgid "All Files"
+msgstr "すべてのファイル"
+
+#: bnpview.cpp:1740 htmlexporter.cpp:65
+msgid "The file <b>%1</b> already exists. Do you really want to override it?"
+msgstr "ファイル <b>%1</b> は既に存在します。本当に上書きしますか？"
+
+#: bnpview.cpp:1742 htmlexporter.cpp:67
+msgid "Override File?"
+msgstr "ファイルを上書きしますか？"
+
+#: bnpview.cpp:1743 htmlexporter.cpp:68
+msgid "&Override"
+msgstr "上書き(&O)"
+
+#: bnpview.cpp:1770
 msgid "Open Basket Archive"
 msgstr "バスケットアーカイブを開く"
 
-#: bnpview.cpp:1852
+#: bnpview.cpp:1853
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr "クリップボードの内容をバスケット「%1」に貼り付けました"
 
-#: bnpview.cpp:1860
+#: bnpview.cpp:1861
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "選択をバスケット「%1」に貼り付けました"
 
-#: bnpview.cpp:1872
+#: bnpview.cpp:1873
 msgid "No note was added."
 msgstr "追加されたメモはありません。"
 
-#: bnpview.cpp:1899
+#: bnpview.cpp:1900
 msgid "Basket <i>%1</i> is locked"
 msgstr "バスケット「%1」はロックされています"
 
-#: bnpview.cpp:1924
+#: bnpview.cpp:1925
 msgid "(Locked)"
 msgstr "(ロック中)"
 
-#: bnpview.cpp:2242
+#: bnpview.cpp:2243
 msgid "&Assign new Tag..."
 msgstr "新しいタグを付ける(&A)..."
 
-#: bnpview.cpp:2243
+#: bnpview.cpp:2244
 msgid "&Remove All"
 msgstr "すべて削除(&R)"
 
@@ -1237,6 +1195,56 @@ msgstr ""
 #: formatimporter.cpp:134
 msgid "Folder Mirror Import"
 msgstr "フォルダの同期インポート"
+
+#: htmlexporter.cpp:53
+msgid "HTML Documents"
+msgstr "HTML ドキュメント"
+
+#: htmlexporter.cpp:57 htmlexporter.cpp:79
+msgid "Export to HTML"
+msgstr "HTML にエクスポート"
+
+#: htmlexporter.cpp:79
+#, fuzzy
+msgid "Exporting to HTML. Please wait..."
+msgstr "HTML にエクスポート(&E)..."
+
+#: htmlexporter.cpp:114 htmlexporter.cpp:147 htmlexporter.cpp:154
+msgid ""
+"_: HTML export folder (files)\n"
+"%1_files"
+msgstr "%1_files"
+
+#: htmlexporter.cpp:120 htmlexporter.cpp:152
+msgid ""
+"_: HTML export folder (icons)\n"
+"icons"
+msgstr "icons"
+
+#: htmlexporter.cpp:121 htmlexporter.cpp:153
+msgid ""
+"_: HTML export folder (images)\n"
+"images"
+msgstr "images"
+
+#: htmlexporter.cpp:122 htmlexporter.cpp:150
+#, fuzzy
+msgid ""
+"_: HTML export folder (baskets)\n"
+"baskets"
+msgstr "images"
+
+#: htmlexporter.cpp:142 htmlexporter.cpp:148 htmlexporter.cpp:149
+msgid ""
+"_: HTML export folder (data)\n"
+"data"
+msgstr "data"
+
+#: htmlexporter.cpp:319
+msgid ""
+"Made with %1, a KDE tool to take notes and keep a full range of data on hand."
+msgstr ""
+"%1 (メモをとって様々なデータを手元に置いておくための KDE ツール) で作成"
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
@@ -1734,347 +1742,347 @@ msgstr "自由"
 msgid "Mind map"
 msgstr "マインドマップ"
 
-#: note.cpp:2908
+#: note.cpp:2818
 msgid "(Image)"
 msgstr "(画像)"
 
-#: notecontent.cpp:172
+#: notecontent.cpp:173
 msgid "Plain Text"
 msgstr "プレーンテキスト"
 
-#: notecontent.cpp:173
+#: notecontent.cpp:174
 msgid "Text"
 msgstr "テキスト"
 
-#: notecontent.cpp:174
+#: notecontent.cpp:175
 msgid "Image"
 msgstr "画像"
 
-#: notecontent.cpp:175
+#: notecontent.cpp:176
 msgid "Animation"
 msgstr "アニメーション"
 
-#: notecontent.cpp:176
+#: notecontent.cpp:177
 msgid "Sound"
 msgstr "サウンド"
 
-#: notecontent.cpp:178
+#: notecontent.cpp:179
 msgid "Link"
 msgstr "リンク"
 
-#: notecontent.cpp:179
+#: notecontent.cpp:180
 msgid "Launcher"
 msgstr "ランチャー"
 
-#: notecontent.cpp:180 noteedit.cpp:809
+#: notecontent.cpp:181 noteedit.cpp:809
 msgid "Color"
 msgstr "色"
 
-#: notecontent.cpp:181
+#: notecontent.cpp:182
 msgid "Unknown"
 msgstr "不明"
 
-#: notecontent.cpp:322
+#: notecontent.cpp:323
 msgid "Edit this plain text"
 msgstr "このプレーンテキストを編集"
 
-#: notecontent.cpp:323
+#: notecontent.cpp:324
 msgid "Edit this text"
 msgstr "このテキストを編集"
 
-#: notecontent.cpp:324
+#: notecontent.cpp:325
 msgid "Edit this image"
 msgstr "この画像を編集"
 
-#: notecontent.cpp:325
+#: notecontent.cpp:326
 msgid "Edit this animation"
 msgstr "このアニメーションを編集"
 
-#: notecontent.cpp:326
+#: notecontent.cpp:327
 msgid "Edit the file name of this sound"
 msgstr "このサウンドのファイル名を編集"
 
-#: notecontent.cpp:327
+#: notecontent.cpp:328
 msgid "Edit the name of this file"
 msgstr "このファイルの名前を編集"
 
-#: notecontent.cpp:328
+#: notecontent.cpp:329
 msgid "Edit this link"
 msgstr "このリンクを編集"
 
-#: notecontent.cpp:329
+#: notecontent.cpp:330
 msgid "Edit this launcher"
 msgstr "このランチャーを編集"
 
-#: notecontent.cpp:330
+#: notecontent.cpp:331
 msgid "Edit this color"
 msgstr "この色を編集"
 
-#: notecontent.cpp:331
+#: notecontent.cpp:332
 msgid "Edit this unknown object"
 msgstr "この不明なオブジェクトを編集"
 
-#: notecontent.cpp:557
+#: notecontent.cpp:558
 msgid "Opening plain text..."
 msgstr "プレーンテキストを開きます..."
 
-#: notecontent.cpp:558
+#: notecontent.cpp:559
 msgid "Opening plain texts..."
 msgstr "プレーンテキストを開きます..."
 
-#: notecontent.cpp:559
+#: notecontent.cpp:560
 msgid "Opening plain text with..."
 msgstr "プレーンテキストをアプリケーションで開きます..."
 
-#: notecontent.cpp:560
+#: notecontent.cpp:561
 msgid "Opening plain texts with..."
 msgstr "プレーンテキストをアプリケーションで開きます..."
 
-#: notecontent.cpp:561
+#: notecontent.cpp:562
 msgid "Open plain text with:"
 msgstr "プレーンテキストを以下で開く:"
 
-#: notecontent.cpp:562
+#: notecontent.cpp:563
 msgid "Open plain texts with:"
 msgstr "プレーンテキストを以下で開く:"
 
-#: notecontent.cpp:648
+#: notecontent.cpp:649
 msgid "Opening text..."
 msgstr "テキストを開きます..."
 
-#: notecontent.cpp:649
+#: notecontent.cpp:650
 msgid "Opening texts..."
 msgstr "テキストを開きます..."
 
-#: notecontent.cpp:650
+#: notecontent.cpp:651
 msgid "Opening text with..."
 msgstr "テキストをアプリケーションで開きます..."
 
-#: notecontent.cpp:651
+#: notecontent.cpp:652
 msgid "Opening texts with..."
 msgstr "テキストをアプリケーションで開きます..."
 
-#: notecontent.cpp:652
+#: notecontent.cpp:653
 msgid "Open text with:"
 msgstr "テキストを以下で開く:"
 
-#: notecontent.cpp:653
+#: notecontent.cpp:654
 msgid "Open texts with:"
 msgstr "テキストを以下で開く:"
 
-#: notecontent.cpp:761 notecontent.cpp:972
+#: notecontent.cpp:762 notecontent.cpp:973
 msgid "Size"
 msgstr "サイズ"
 
-#: notecontent.cpp:762 variouswidgets.cpp:147
+#: notecontent.cpp:763 variouswidgets.cpp:147
 msgid "%1 by %2 pixels"
 msgstr "%1 x %2 ピクセル"
 
-#: notecontent.cpp:768
+#: notecontent.cpp:769
 msgid "Opening image..."
 msgstr "画像を開きます..."
 
-#: notecontent.cpp:769
+#: notecontent.cpp:770
 msgid "Opening images..."
 msgstr "画像を開きます..."
 
-#: notecontent.cpp:770
+#: notecontent.cpp:771
 msgid "Opening image with..."
 msgstr "画像をアプリケーションで開きます..."
 
-#: notecontent.cpp:771
+#: notecontent.cpp:772
 msgid "Opening images with..."
 msgstr "画像をアプリケーションで開きます..."
 
-#: notecontent.cpp:772
+#: notecontent.cpp:773
 msgid "Open image with:"
 msgstr "画像を以下で開く:"
 
-#: notecontent.cpp:773
+#: notecontent.cpp:774
 msgid "Open images with:"
 msgstr "画像を以下で開く:"
 
-#: notecontent.cpp:797
+#: notecontent.cpp:798
 msgid "Click for full size view"
 msgstr "クリックして実際のサイズで表示"
 
-#: notecontent.cpp:861
+#: notecontent.cpp:862
 msgid "Opening animation..."
 msgstr "アニメーションを開きます..."
 
-#: notecontent.cpp:862
+#: notecontent.cpp:863
 msgid "Opening animations..."
 msgstr "アニメーションを開きます..."
 
-#: notecontent.cpp:863
+#: notecontent.cpp:864
 msgid "Opening animation with..."
 msgstr "アニメーションをアプリケーションで開きます..."
 
-#: notecontent.cpp:864
+#: notecontent.cpp:865
 msgid "Opening animations with..."
 msgstr "アニメーションをアプリケーションで開きます..."
 
-#: notecontent.cpp:865
+#: notecontent.cpp:866
 msgid "Open animation with:"
 msgstr "アニメーションを以下で開く:"
 
-#: notecontent.cpp:866
+#: notecontent.cpp:867
 msgid "Open animations with:"
 msgstr "アニメーションを以下で開く:"
 
-#: notecontent.cpp:977
+#: notecontent.cpp:978
 msgid "Type"
 msgstr "タイプ"
 
-#: notecontent.cpp:1015
+#: notecontent.cpp:1016
 msgid "Open this file"
 msgstr "このファイルを開く"
 
-#: notecontent.cpp:1034
+#: notecontent.cpp:1035
 msgid "Opening file..."
 msgstr "ファイルを開きます..."
 
-#: notecontent.cpp:1035
+#: notecontent.cpp:1036
 msgid "Opening files..."
 msgstr "ファイルを開きます..."
 
-#: notecontent.cpp:1036
+#: notecontent.cpp:1037
 msgid "Opening file with..."
 msgstr "ファイルをアプリケーションで開きます..."
 
-#: notecontent.cpp:1037
+#: notecontent.cpp:1038
 msgid "Opening files with..."
 msgstr "ファイルをアプリケーションで開きます..."
 
-#: notecontent.cpp:1038
+#: notecontent.cpp:1039
 msgid "Open file with:"
 msgstr "ファイルを以下で開く:"
 
-#: notecontent.cpp:1039
+#: notecontent.cpp:1040
 msgid "Open files with:"
 msgstr "ファイルを以下で開く:"
 
-#: notecontent.cpp:1110
+#: notecontent.cpp:1111
 msgid "Open this sound"
 msgstr "このサウンドを再生"
 
-#: notecontent.cpp:1147
+#: notecontent.cpp:1148
 msgid "Opening sound..."
 msgstr "サウンドを再生します..."
 
-#: notecontent.cpp:1148
+#: notecontent.cpp:1149
 msgid "Opening sounds..."
 msgstr "サウンドを再生します..."
 
-#: notecontent.cpp:1149
+#: notecontent.cpp:1150
 msgid "Opening sound with..."
 msgstr "サウンドをアプリケーションで再生します..."
 
-#: notecontent.cpp:1150
+#: notecontent.cpp:1151
 msgid "Opening sounds with..."
 msgstr "サウンドをアプリケーションで再生します..."
 
-#: notecontent.cpp:1151
+#: notecontent.cpp:1152
 msgid "Open sound with:"
 msgstr "サウンドを以下で再生:"
 
-#: notecontent.cpp:1152
+#: notecontent.cpp:1153
 msgid "Open sounds with:"
 msgstr "サウンドを以下で再生:"
 
-#: notecontent.cpp:1190
+#: notecontent.cpp:1191
 msgid "Target"
 msgstr "リンク先"
 
-#: notecontent.cpp:1213
+#: notecontent.cpp:1214
 msgid "Open this link"
 msgstr "このリンクを開く"
 
-#: notecontent.cpp:1239
+#: notecontent.cpp:1240
 msgid "Link have no URL to open."
 msgstr "このリンクには開くURLがありません。"
 
-#: notecontent.cpp:1242
+#: notecontent.cpp:1243
 msgid "Opening link target..."
 msgstr "リンク先を開きます..."
 
-#: notecontent.cpp:1243
+#: notecontent.cpp:1244
 msgid "Opening link targets..."
 msgstr "リンク先を開きます..."
 
-#: notecontent.cpp:1244
+#: notecontent.cpp:1245
 msgid "Opening link target with..."
 msgstr "リンク先をアプリケーションで開きます..."
 
-#: notecontent.cpp:1245
+#: notecontent.cpp:1246
 msgid "Opening link targets with..."
 msgstr "リンク先をアプリケーションで開きます..."
 
-#: notecontent.cpp:1246
+#: notecontent.cpp:1247
 msgid "Open link target with:"
 msgstr "リンク先を以下で開く:"
 
-#: notecontent.cpp:1247
+#: notecontent.cpp:1248
 msgid "Open link targets with:"
 msgstr "リンク先を以下で開く:"
 
-#: notecontent.cpp:1373
+#: notecontent.cpp:1379
 msgid "%1 <i>(run in terminal)</i>"
 msgstr "%1 (端末で実行)"
 
-#: notecontent.cpp:1376
+#: notecontent.cpp:1382
 msgid "Comment"
 msgstr "コメント"
 
-#: notecontent.cpp:1380
+#: notecontent.cpp:1386
 msgid "Command"
 msgstr "コマンド"
 
-#: notecontent.cpp:1403
+#: notecontent.cpp:1409
 msgid "Launch this application"
 msgstr "このアプリケーションを起動"
 
-#: notecontent.cpp:1424
+#: notecontent.cpp:1430
 msgid "The launcher have no command to run."
 msgstr "このランチャーには実行するコマンドがありません。"
 
-#: notecontent.cpp:1427
+#: notecontent.cpp:1433
 msgid "Launching application..."
 msgstr "アプリケーションを起動..."
 
-#: notecontent.cpp:1428
+#: notecontent.cpp:1434
 msgid "Launching applications..."
 msgstr "アプリケーションを起動..."
 
-#: notecontent.cpp:1515
+#: notecontent.cpp:1521
 msgid ""
 "_: RGB Colorspace: Red/Green/Blue\n"
 "RGB"
 msgstr "RGB"
 
-#: notecontent.cpp:1516
+#: notecontent.cpp:1522
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
 msgstr "赤 (%1) 緑 (%2) 青 (%3) "
 
-#: notecontent.cpp:1518
+#: notecontent.cpp:1524
 msgid ""
 "_: HSV Colorspace: Hue/Saturation/Value\n"
 "HSV"
 msgstr "HSV"
 
-#: notecontent.cpp:1519
+#: notecontent.cpp:1525
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
 msgstr "色相 (%1) 彩度 (%2) 明度 (%3) "
 
-#: notecontent.cpp:1672
+#: notecontent.cpp:1678
 msgid "CSS Color Name"
 msgstr "CSS 色名"
 
-#: notecontent.cpp:1682
+#: notecontent.cpp:1688
 msgid "CSS Extended Color Name"
 msgstr "CSS 拡張色名"
 
-#: notecontent.cpp:1688
+#: notecontent.cpp:1694
 msgid "Is Web Color"
 msgstr "ウェブ色"
 
@@ -3176,3 +3184,6 @@ msgstr ""
 "画像のサイズを選択してください。\n"
 "ウィンドウを閉じるか Escape を\n"
 "押すと、変更が適用されます。"
+
+#~ msgid "Notes matching the filter &quot;%1&quot;:"
+#~ msgstr "フィルタ &quot;%1&quot; にマッチするメモ:"
