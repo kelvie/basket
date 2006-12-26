@@ -136,6 +136,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	}
 
 	// Compute the absolute & relative paths for this basket:
+	filesFolderPath   = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/";
 	if (isSubBasket) {
 		basketFilePath    = basketsFolderPath + basket->folderName().left(basket->folderName().length() - 1) + ".html";
 		filesFolderName   = "../";
@@ -151,8 +152,6 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	}
 	iconsFolderName   = (isSubBasket ? "../" : filesFolderName) + i18n("HTML export folder (icons)",   "icons")   + "/"; // eg.: "foo.html_files/icons/"   or "../icons/"
 	imagesFolderName  = (isSubBasket ? "../" : filesFolderName) + i18n("HTML export folder (images)",  "images")  + "/"; // eg.: "foo.html_files/images/"  or "../images/"
-	filesFolderPath   = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/";
-
 
 	std::cout << "Exporting ================================================" << std::endl;
 	std::cout << "  filePath:" << filePath << std::endl;
