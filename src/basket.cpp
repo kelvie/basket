@@ -3833,6 +3833,7 @@ bool Basket::closeEditor()
 void Basket::closeBasket()
 {
   closeEditor();
+  unbufferizeAll(); // Keep the memory footprint low
   if (isEncrypted()) {
 	if (Settings::enableReLockTimeout()) {
 	  int seconds = Settings::reLockTimeoutMinutes() * 60;
