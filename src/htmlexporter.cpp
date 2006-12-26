@@ -552,7 +552,7 @@ QString HTMLExporter::copyFile(const QString &srcPath, bool createIt)
 		// And then we copy the file AND overwriting the file we juste created:
 		new KIO::FileCopyJob(
 			KURL(srcPath), KURL(fullPath), 0666, /*move=*/false,
-			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
+			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/false );
 	} else
 		/*KIO::CopyJob *copyJob = */KIO::copy(KURL(srcPath), KURL(fullPath)); // Do it as before
 
