@@ -115,6 +115,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void importTuxCards();
 		void importStickyNotes();
 		void importTomboy();
+		void importTextFile();
 
 		/** Note */
 		void activatedTagShortcut();

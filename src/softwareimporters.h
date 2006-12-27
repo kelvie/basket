@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S锟絘stien Laot                                 *
+ *   Copyright (C) 2003 by S茅bastien Lao没t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,12 +27,13 @@
 class QString;
 class QVButtonGroup;
 class QDomElement;
+class KTextEdit;
 
 class Basket;
 class Note;
 
 /** The dialog to ask how to import hierarchical data.
-  * @author S閎astien Lao鹴
+  * @author S茅bastien Lao没t
   */
 class TreeImportDialog : public KDialogBase
 {
@@ -45,8 +46,26 @@ class TreeImportDialog : public KDialogBase
 	QVButtonGroup *m_choices;
 };
 
+/** The dialog to ask how to import text files.
+  * @author S茅bastien Lao没t
+  */
+class TextFileImportDialog : public KDialogBase
+{
+  Q_OBJECT
+  public:
+	TextFileImportDialog(QWidget *parent = 0);
+	~TextFileImportDialog();
+	QString separator();
+  protected slots:
+	void customSeparatorChanged();
+  private:
+	QVButtonGroup *m_choices;
+	QRadioButton  *m_anotherSeparator;
+	QTextEdit     *m_customSeparator;
+};
+
 /** Functions that import data from other softwares.
-  * @author S閎astien Lao鹴
+  * @author S茅bastien Lao没t
   */
 namespace SoftwareImporters
 {
@@ -63,6 +82,7 @@ namespace SoftwareImporters
 	void importTuxCards();
 	void importStickyNotes();
 	void importTomboy();
+	void importTextFile();
 
 	//
 	void importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy);

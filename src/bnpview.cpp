@@ -385,6 +385,8 @@ void BNPView::setupActions()
 	             this, SLOT(importStickyNotes()), actionCollection(), "basket_import_sticky_notes" );
 	new KAction( i18n("&Tomboy"), "tintin", 0,
 	             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
+	new KAction( i18n("Text &File..."), "txt", 0,
+	             this, SLOT(importTextFile()),    actionCollection(), "basket_import_text_file" );
 
 	/** Note : ****************************************************************/
 
@@ -1259,6 +1261,7 @@ void BNPView::importKnowIt()      { SoftwareImporters::importKnowIt();      }
 void BNPView::importTuxCards()    { SoftwareImporters::importTuxCards();    }
 void BNPView::importStickyNotes() { SoftwareImporters::importStickyNotes(); }
 void BNPView::importTomboy()      { SoftwareImporters::importTomboy();      }
+void BNPView::importTextFile()    { SoftwareImporters::importTextFile();    }
 
 void BNPView::countsChanged(Basket *basket)
 {

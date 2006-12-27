@@ -23,6 +23,8 @@
     <Separator/>
     <Action name="basket_import_sticky_notes" />
     <Action name="basket_import_tomboy" />
+    <Separator/>
+    <Action name="basket_import_text_file" />
    </Menu>
    <Separator/>
    <Action name="window_hide" />

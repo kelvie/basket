@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,7 @@
 #include <qvbuttongroup.h>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
+#include <qtextedit.h>
 
 #include "softwareimporters.h"
 #include "basket.h"
@@ -65,6 +66,62 @@ TreeImportDialog::~TreeImportDialog()
 int TreeImportDialog::choice()
 {
 	return m_choices->selectedId();
+}
+
+/** class TextFileImportDialog: */
+
+TextFileImportDialog::TextFileImportDialog(QWidget *parent)
+ : KDialogBase(KDialogBase::Swallow, i18n("Import Text File"), KDialogBase::Ok | KDialogBase::Cancel,
+               KDialogBase::Ok, parent, /*name=*/"ImportTextFile", /*modal=*/true, /*separator=*/false)
+{
+	QWidget *page = new QWidget(this);
+	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+
+	m_choices = new QVButtonGroup(i18n("Format of the Text File"), page);
+	new QRadioButton(i18n("Notes separated by an &empty line"), m_choices);
+	new QRadioButton(i18n("One &note per line"),                m_choices);
+	new QRadioButton(i18n("Notes begin with a &dash (-)"),      m_choices);
+	new QRadioButton(i18n("Notes begin with a &star (*)"),      m_choices);
+	m_anotherSeparator = new QRadioButton(i18n("&Use another separator:"),           m_choices);
+
+	QWidget *indentedTextEdit = new QWidget(m_choices);
+	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
+	hLayout->addSpacing(20);
+	m_customSeparator = new QTextEdit(indentedTextEdit);
+	m_customSeparator->setTextFormat(Qt::PlainText);
+	hLayout->addWidget(m_customSeparator);
+	m_choices->insertChild(indentedTextEdit);
+
+	new QRadioButton(i18n("&All in one note"),                  m_choices);
+	m_choices->setButton(0);
+	topLayout->addWidget(m_choices);
+
+	connect( m_customSeparator, SIGNAL(textChanged()), this, SLOT(customSeparatorChanged()) );
+
+	setMainWidget(page);
+}
+
+TextFileImportDialog::~TextFileImportDialog()
+{
+}
+
+QString TextFileImportDialog::separator()
+{
+	switch (m_choices->selectedId()) {
+		default:
+		case 0: return "\n\n";
+		case 1: return "\n";
+		case 2: return "\n-";
+		case 3: return "\n*";
+		case 4: return m_customSeparator->text();
+		case 5: return "";
+	}
+}
+
+void TextFileImportDialog::customSeparatorChanged()
+{
+	if (!m_anotherSeparator->isOn())
+		m_anotherSeparator->toggle();
 }
 
 /** namespace SoftwareImporters: */
@@ -410,6 +467,44 @@ void SoftwareImporters::importTomboy()
 
 	if (basket)
 		finishImport(basket);
+}
+
+void SoftwareImporters::importTextFile()
+{
+	QString fileName = KFileDialog::getOpenFileName(":ImportTextFile",  "*|All files");
+	if (fileName.isEmpty())
+		return;
+
+	TextFileImportDialog dialog;
+	if (dialog.exec() == QDialog::Rejected)
+		return;
+	QString separator = dialog.separator();
+
+	QFile file(fileName);
+	if (file.open(IO_ReadOnly)) {
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::Locale);
+		QString content = stream.read();
+		QStringList list = (separator.isEmpty()
+			? QStringList(content)
+			: QStringList::split(separator, content, /*allowEmptyEntries=*/false)
+		);
+
+		// First create a basket for it:
+		QString title = i18n("From TextFile.txt", "From %1").arg(KURL(fileName).fileName());
+		BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+		Basket *basket = Global::bnpView->currentBasket();
+		basket->load();
+
+		// Import every notes:
+		for (QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
+			Note *note = NoteFactory::createNoteFromText((*it).stripWhiteSpace(), basket);
+			basket->insertNote(note, basket->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
+		}
+
+		// Finish the export:
+		finishImport(basket);
+	}
 }
 
 /** @author Petri Damsten <petri.damsten@iki.fi>
