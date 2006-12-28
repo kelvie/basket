@@ -4,11 +4,13 @@
   <Menu name="basket" >
    <text>&amp;Basket</text>
    <Action name="basket_new_menu" />
-   <Action name="basket_open_archive" />
    <Separator/>
    <Action name="basket_properties" />
-   <Action name="basket_save_as_archive" />
-   <Action name="basket_export_html" />
+   <Menu icon="fileexport" >
+    <text>&amp;Export</text>
+    <Action name="basket_export_basket_archive" />
+    <Action name="basket_export_html" />
+   </Menu>
    <Action name="basket_remove" />
    <Separator/>
    <Action name="basket_password" />
@@ -16,6 +18,8 @@
    <Separator/>
    <Menu icon="fileimport" >
     <text>&amp;Import</text>
+    <Action name="basket_import_basket_archive" />
+    <Separator/>
     <Action name="basket_import_knotes" />
     <Action name="basket_import_kjots" />
     <Action name="basket_import_knowit" />
@@ -26,6 +30,7 @@
     <Separator/>
     <Action name="basket_import_text_file" />
    </Menu>
+   <Action name="basket_backup_restore" />
    <Separator/>
    <Action name="window_hide" />
    <Action name="file_quit" />
@@ -72,7 +77,6 @@
   </Menu>
   <Menu name="insert" >
    <text>&amp;Insert</text>
-<!--   <Action name="insert_text" />-->
    <Action name="insert_html" />
    <Action name="insert_image" />
    <Action name="insert_link" />
@@ -88,10 +92,6 @@
   </Menu>
   <Menu name="settings" >
    <text>&amp;Settings</text>
-<!--
-   <Action name="options_show_toolbar" />
-   <Action name="options_show_format_toolbar" />
--->
    <Merge name="StandardToolBarMenuHandler" />
    <Action name="options_show_statusbar" />
    <Separator/>
@@ -131,13 +131,13 @@
   <text>Text Formating Toolbar</text>
   <Action name="richtext_undo" />
   <Action name="richtext_redo" />
-  <Separator lineSeparator="true" name="separator_4" />
-  <Action name="richtext_font" />
-  <Separator lineSeparator="false" name="separator_3" />
-  <Action name="richtext_font_size" />
-  <Separator lineSeparator="false" name="separator_2" />
-  <Action name="richtext_color" />
   <Separator lineSeparator="true" name="separator_1" />
+  <Action name="richtext_font" />
+  <Separator lineSeparator="false" name="separator_2" />
+  <Action name="richtext_font_size" />
+  <Separator lineSeparator="false" name="separator_3" />
+  <Action name="richtext_color" />
+  <Separator lineSeparator="true" name="separator_4" />
   <Action name="richtext_bold" />
   <Action name="richtext_italic" />
   <Action name="richtext_underline" />
@@ -153,22 +153,52 @@
   <Action name="richtext_block" />
  </ToolBar>
  <Menu name="basket_popup" >
+  <Action name="basket_new_menu" />
+  <Separator/>
   <Action name="basket_properties" />
-  <Action name="basket_save_as_archive" />
-  <Action name="basket_export_html" />
+  <Menu icon="fileexport" >
+   <text>&amp;Export</text>
+   <Action name="basket_export_basket_archive" />
+   <Action name="basket_export_html" />
+  </Menu>
   <Action name="basket_remove" />
   <Separator/>
   <Action name="basket_password" />
   <Action name="basket_lock" />
   <Separator/>
-  <Action name="basket_new" />
-  <Action name="basket_new_sub" />
-  <Action name="basket_new_sibling" />
-  <Action name="basket_open_archive" />
+  <Menu icon="fileimport" >
+   <text>&amp;Import</text>
+   <Action name="basket_import_basket_archive" />
+   <Separator/>
+   <Action name="basket_import_knotes" />
+   <Action name="basket_import_kjots" />
+   <Action name="basket_import_knowit" />
+   <Action name="basket_import_tuxcards" />
+   <Separator/>
+   <Action name="basket_import_sticky_notes" />
+   <Action name="basket_import_tomboy" />
+   <Separator/>
+   <Action name="basket_import_text_file" />
+  </Menu>
+  <Action name="basket_backup_restore" />
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />
-  <Action name="basket_open_archive" />
+  <Menu icon="fileimport" >
+   <text>&amp;Import</text>
+   <Action name="basket_import_basket_archive" />
+   <Separator/>
+   <Action name="basket_import_knotes" />
+   <Action name="basket_import_kjots" />
+   <Action name="basket_import_knowit" />
+   <Action name="basket_import_tuxcards" />
+   <Separator/>
+   <Action name="basket_import_sticky_notes" />
+   <Action name="basket_import_tomboy" />
+   <Separator/>
+   <Action name="basket_import_text_file" />
+  </Menu>
+  <Action name="basket_backup_restore" />
  </Menu>
  <Menu noMerge="1" name="note_popup" >
   <Action name="note_edit" />
@@ -184,7 +214,7 @@
   <Action name="edit_delete" />
  </Menu>
  <Menu noMerge="1" name="insert_popup" >
-<!--  <Action name="insert_text" />-->  <Action name="insert_html" />
+  <Action name="insert_html" />
   <Action name="insert_image" />
   <Action name="insert_link" />
   <Action name="insert_launcher" />

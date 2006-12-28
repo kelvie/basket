@@ -362,16 +362,16 @@ void BNPView::initialize()
 
 void BNPView::setupActions()
 {
-	m_actSaveAsArchive = new KAction( i18n("Save &as Basket Archive..."), "filesaveas", 0,
-	                                  this, SLOT(saveAsArchive()),        actionCollection(), "basket_save_as_archive" );
-	m_actOpenArchive   = new KAction( i18n("&Open Basket Archive..."),    "fileopen", 0,
-	                                  this, SLOT(openArchive()),          actionCollection(), "basket_open_archive"    );
+	m_actSaveAsArchive = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
+	                                  this, SLOT(saveAsArchive()), actionCollection(), "basket_export_basket_archive" );
+	m_actOpenArchive   = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
+	                                  this, SLOT(openArchive()),   actionCollection(), "basket_import_basket_archive" );
 
 	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStdAccel::shortcut(KStdAccel::Close),
 								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
 	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
 
-	m_actExportToHtml = new KAction( i18n("&Export to HTML..."), "fileexport", 0,
+	m_actExportToHtml = new KAction( i18n("&HTML Web Page..."), "html", 0,
 	             this, SLOT(exportToHTML()),      actionCollection(), "basket_export_html" );
 	new KAction( i18n("K&Notes"), "knotes", 0,
 	             this, SLOT(importKNotes()),      actionCollection(), "basket_import_knotes" );
