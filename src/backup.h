@@ -23,6 +23,7 @@
 
 #include <kdialogbase.h>
 #include <qapplication.h>
+#include <qthread.h>
 
 /**
  * @author Sébastien Laoût
@@ -46,13 +47,22 @@ class BackupDialog : public KDialogBase
 class Backup
 {
   public:
-	Backup();
-	~Backup();
-
 	static void figureOutBinaryPath(const char *argv0, QApplication &app);
+	static void setFolderAndRestart(const QString &folder);
 
   private:
 	static QString binaryPath;
+};
+
+class BackupThread : public QThread
+{
+  public:
+	BackupThread(const QString &tarFile, const QString &folderToBackup);
+  protected:
+	virtual void run();
+  private:
+	QString m_tarFile;
+	QString m_folderToBackup;
 };
 
 #endif // BACKUP_H

@@ -30,6 +30,7 @@
 
 #include "global.h"
 #include "bnpview.h"
+#include "settings.h"
 
 /** Define initial values for global variables : */
 
@@ -48,19 +49,26 @@ void Global::setCustomSavesFolder(const QString &folder)
 	s_customSavesFolder = folder;
 }
 
+#include <iostream>
 QString Global::savesFolder()
 {
 	static QString *folder = 0L; // Memorize the folder to do not have to re-compute it each time it's needed
 
-	if (folder == 0L) {            // Initialize it if not yet done
-		if (s_customSavesFolder.isEmpty())
-			folder = new QString( KGlobal::dirs()->saveLocation("data", "basket/") );
-		else {
+	if (folder == 0L) {          // Initialize it if not yet done
+		if (!s_customSavesFolder.isEmpty()) { // Passed by command line (for development & debug purpose)
 			QDir dir;
 			dir.mkdir(s_customSavesFolder);
 			folder = new QString(s_customSavesFolder + "/");
+		} else if (!Settings::dataFolder().isEmpty()) { // Set by config option (in Basket -> Backup & Restore)
+			QDir dir;
+			dir.mkdir(s_customSavesFolder);
+			folder = new QString(Settings::dataFolder() + "/");
+		} else { // The default path (should be that for most computers)
+			folder = new QString(KGlobal::dirs()->saveLocation("data", "basket/"));
 		}
+		std::cout << "savesFolder() COMPUTE THE FIRST TIME: " << *folder << std::endl;
 	}
+
 	return *folder;
 }
 

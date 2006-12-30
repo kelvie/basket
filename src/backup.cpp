@@ -22,6 +22,7 @@
 
 #include "global.h"
 #include "variouswidgets.h"
+#include "settings.h"
 
 #include <qhbox.h>
 #include <qvbox.h>
@@ -33,6 +34,13 @@
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <qgroupbox.h>
+#include <kdirselectdialog.h>
+#include <krun.h>
+#include <kconfig.h>
+#include <ktar.h>
+#include <kfiledialog.h>
+#include <kprogress.h>
+#include <kmessagebox.h>
 
 /** class BackupDialog: */
 
@@ -44,7 +52,7 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 //	page->setSpacing(spacingHint());
 
 	QString savesFolder = Global::savesFolder();
-	savesFolder = savesFolder.left(savesFolder.length() - 1);
+	savesFolder = savesFolder.left(savesFolder.length() - 1); // savesFolder ends with "/"
 
 	QGroupBox *folderGroup = new QGroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
 	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>").arg(savesFolder), folderGroup);
@@ -94,14 +102,81 @@ BackupDialog::~BackupDialog()
 
 void BackupDialog::moveToAnotherFolder()
 {
+	KURL selectedURL = KDirSelectDialog::selectDirectory(
+		/*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
+		/*caption=*/i18n("Choose a Folder Where to Move Baskets"));
+
+	if (!selectedURL.isEmpty()) {
+		//TODO
+		//Backup::setFolderAndRestart(selectedURL.path());
+	}
 }
 
 void BackupDialog::useAnotherExistingFolder()
 {
+	KURL selectedURL = KDirSelectDialog::selectDirectory(
+		/*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
+		/*caption=*/i18n("Choose an Existing Folder to Store Baskets"));
+
+	if (!selectedURL.isEmpty()) {
+		Backup::setFolderAndRestart(selectedURL.path());
+	}
 }
 
 void BackupDialog::backup()
 {
+	QDir dir;
+
+	// Compute a default file name & path (eg. "Baskets_2007-01-31.tar.gz"):
+	KConfig *config = KGlobal::config();
+	config->setGroup("Backups");
+	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString fileName = i18n("Backup filename (without extension), %1 is the date", "Baskets_%1")
+		.arg(QDate::currentDate().toString(Qt::ISODate));
+	QString url = folder + fileName;
+
+	// Ask a file name & path to the user:
+	QString filter = "*.tar.gz|" + i18n("Tar Archives Compressed by Gzip") + "\n*|" + i18n("All Files");
+	QString destination = url;
+	for (bool askAgain = true; askAgain; ) {
+		// Ask:
+		destination = KFileDialog::getSaveFileName(destination, filter, 0, i18n("Backup Baskets"));
+		// User canceled?
+		if (destination.isEmpty())
+			return;
+		// File already existing? Ask for overriding:
+		if (dir.exists(destination)) {
+			int result = KMessageBox::questionYesNoCancel(
+				0,
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
+					.arg(KURL(destination).fileName()),
+				i18n("Override File?"),
+				KGuiItem(i18n("&Override"), "filesave")
+			);
+			if (result == KMessageBox::Cancel)
+				return;
+			else if (result == KMessageBox::Yes)
+				askAgain = false;
+		} else
+			askAgain = false;
+	}
+
+	KProgressDialog dialog(0, 0, i18n("Backup Baskets"), i18n("Backing up baskets. Please wait..."), /*modal=*/true);
+	dialog.setAllowCancel(false);
+	dialog.setAutoClose(true);
+	dialog.show();
+	KProgress *progress = dialog.progressBar();
+	progress->setTotalSteps(0/*Busy/Undefined*/);
+	progress->setProgress(0);
+	progress->setPercentageVisible(false);
+
+	BackupThread thread(destination, Global::savesFolder());
+	thread.start();
+	while (thread.running()) {
+		progress->advance(1); // Or else, the animation is not played!
+		kapp->processEvents();
+		usleep(2000);
+	}
 }
 
 void BackupDialog::restore()
@@ -112,12 +187,15 @@ void BackupDialog::restore()
 
 QString Backup::binaryPath = "";
 
-Backup::Backup()
+void Backup::setFolderAndRestart(const QString &folder)
 {
-}
+	// Set the folder:
+	Settings::setDataFolder(folder);
+	Settings::saveConfig();
 
-Backup::~Backup()
-{
+	// Restart the application:
+	KRun::runCommand(binaryPath, kapp->aboutData()->programName(), kapp->iconName());
+	exit(0);
 }
 
 #include <iostream>
@@ -141,6 +219,21 @@ void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)
 		binaryPath = app.applicationFilePath();
 
 	std::cout << "Binary path is " << binaryPath << std::endl;
+}
+
+/** class BackupThread: */
+
+BackupThread::BackupThread(const QString &tarFile, const QString &folderToBackup)
+ : m_tarFile(tarFile), m_folderToBackup(folderToBackup)
+{
+}
+
+void BackupThread::run()
+{
+	KTar tar(m_tarFile, "application/x-gzip");
+	tar.open(IO_WriteOnly);
+	tar.addLocalDirectory(m_folderToBackup, "BasKet-Note-Pads_Backup");
+	tar.close();
 }
 
 #include "backup.moc"

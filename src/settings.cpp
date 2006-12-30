@@ -95,6 +95,7 @@ int     Settings::s_defIconSize          = 32; // TODO: RENAME: importIconSize
 bool    Settings::s_blinkedFilter        = false;
 bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
+QString Settings::s_dataFolder           = "";
 QPoint  Settings::s_mainWindowPosition   = QPoint();
 QSize   Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_showEmptyBasketInfo  = true;
@@ -145,6 +146,7 @@ void Settings::loadConfig()
 	setTimeToShowOnMouseIn(  config->readNumEntry( "timeToShowOnMouseIn",  1)     );
 	setBasketTreeWidth(      config->readNumEntry( "basketTreeWidth",      -1)    );
 	setUsePassivePopup(      config->readBoolEntry("usePassivePopup",      true)  );
+	setDataFolder(           config->readPathEntry("dataFolder",           "")    );
 	setMainWindowPosition(   config->readPointEntry("position"             )      );
 	setMainWindowSize(       config->readSizeEntry( "size"                 )      );
 
@@ -192,12 +194,8 @@ void Settings::loadConfig()
 	}
 }
 
-#include <iostream>
-
 void Settings::saveConfig()
 {
-//	std::cout << "Settings::saveConfig()" << std::endl;
-
 	saveLinkLook(LinkLook::soundLook,       "Sound Look"       );
 	saveLinkLook(LinkLook::fileLook,        "File Look"        );
 	saveLinkLook(LinkLook::localLinkLook,   "Local Link Look"  );
@@ -233,6 +231,7 @@ void Settings::saveConfig()
 	config->writeEntry( "timeToShowOnMouseIn",  timeToShowOnMouseIn()  );
 	config->writeEntry( "basketTreeWidth",      basketTreeWidth()      );
 	config->writeEntry( "usePassivePopup",      usePassivePopup()      );
+	config->writePathEntry("dataFolder",        dataFolder()           );
 	config->writeEntry( "position",             mainWindowPosition()   );
 	config->writeEntry( "size",                 mainWindowSize()       );
 
@@ -260,6 +259,8 @@ void Settings::saveConfig()
 	config->writeEntry( "defImageX",         defImageX()         );
 	config->writeEntry( "defImageY",         defImageY()         );
 	config->writeEntry( "defIconSize",       defIconSize()       );
+
+	config->sync();
 }
 
 void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook)
