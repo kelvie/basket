@@ -281,7 +281,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		" <body>\n"
 		"  <h1><img src=\"" << basketIcon32 << "\" width=\"32\" height=\"32\" alt=\"\"> " << Tools::textToHTMLWithoutP(basket->basketName()) << "</h1>\n";
 
-	writeBasketTree(basket);
+	if (withBasketTree)
+		writeBasketTree(basket);
 
 	// If filtering, only export filtered notes, inform to the user:
 	// TODO: Filtering tags too!!
