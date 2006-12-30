@@ -44,6 +44,7 @@
 #include "basket.h"
 #include "aboutdata.h"
 #include "basket_options.h"
+#include "backup.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -69,12 +70,17 @@ class Application : public KUniqueApplication
 
 int main(int argc, char *argv[])
 {
+	// KCmdLineArgs::init will modify argv[0] so we remember it:
+	const char *argv0 = (argc >= 1 ? argv[0] : "");
+
 	KCmdLineArgs::init(argc, argv, Global::about());
 	KCmdLineArgs::addCmdLineOptions(basket_options);
 
 	KUniqueApplication::addCmdLineOptions();
 	//KUniqueApplication app;
 	Application app;
+
+	Backup::figureOutBinaryPath(argv0, app);
 
 	/* Main Window */
 	MainWindow* win = new MainWindow();

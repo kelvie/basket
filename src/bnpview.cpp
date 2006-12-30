@@ -73,6 +73,7 @@
 #include "htmlexporter.h"
 #include "crashhandler.h"
 #include "likeback.h"
+#include "backup.h"
 
 /** class BNPView: */
 
@@ -387,6 +388,9 @@ void BNPView::setupActions()
 	             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
 	new KAction( i18n("Text &File..."), "txt", 0,
 	             this, SLOT(importTextFile()),    actionCollection(), "basket_import_text_file" );
+
+	new KAction( i18n("&Backup && Restore..."), "", 0,
+	             this, SLOT(backupRestore()), actionCollection(), "basket_backup_restore" );
 
 	/** Note : ****************************************************************/
 
@@ -1262,6 +1266,12 @@ void BNPView::importTuxCards()    { SoftwareImporters::importTuxCards();    }
 void BNPView::importStickyNotes() { SoftwareImporters::importStickyNotes(); }
 void BNPView::importTomboy()      { SoftwareImporters::importTomboy();      }
 void BNPView::importTextFile()    { SoftwareImporters::importTextFile();    }
+
+void BNPView::backupRestore()
+{
+	BackupDialog dialog;
+	dialog.exec();
+}
 
 void BNPView::countsChanged(Basket *basket)
 {
