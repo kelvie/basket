@@ -39,6 +39,9 @@ class BackupDialog : public KDialogBase
 	void useAnotherExistingFolder();
 	void backup();
 	void restore();
+	void populateLastBackup();
+  private:
+	QLabel *m_lastBackup;
 };
 
 /**
@@ -48,7 +51,8 @@ class Backup
 {
   public:
 	static void figureOutBinaryPath(const char *argv0, QApplication &app);
-	static void setFolderAndRestart(const QString &folder);
+	static void setFolderAndRestart(const QString &folder, const QString &message);
+	static QString newSafetyFolder();
 
   private:
 	static QString binaryPath;

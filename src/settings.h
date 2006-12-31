@@ -32,6 +32,7 @@
 #include <kcmodule.h>
 #include <kaction.h>
 #include <kmainwindow.h>
+#include <qdatetime.h>
 
 #include "global.h"
 #include "bnpview.h"
@@ -204,6 +205,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_spellCheckTextNotes;
 	static int     s_basketTreeWidth;
 	static QString s_dataFolder;
+	static QDate   s_lastBackup;
 	static QPoint  s_mainWindowPosition;
 	static QSize   s_mainWindowSize;
 	static bool    s_showEmptyBasketInfo;
@@ -265,6 +267,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline int     dropTimeToShow()       { return 7;                      } // TODO: 700 ; TODO: There is certainly a KGlobalConfig ???
 	static inline bool    usePassivePopup()      { return s_usePassivePopup;      }
 	static inline QString dataFolder()           { return s_dataFolder;           }
+	static inline QDate   lastBackup()           { return s_lastBackup;           }
 	static inline QPoint  mainWindowPosition()   { return s_mainWindowPosition;   }
 	static inline QSize   mainWindowSize()       { return s_mainWindowSize;       }
 	static inline bool    showEmptyBasketInfo()  { return s_showEmptyBasketInfo;  }
@@ -351,6 +354,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline void setBasketTreeWidth(int width)            { s_basketTreeWidth      = width;       }
 	static inline void setUsePassivePopup(bool enable)          { s_usePassivePopup      = enable;      }
 	static inline void setDataFolder(const QString &folder)     { s_dataFolder           = folder;      }
+	static inline void setLastBackup(const QDate &date)         { s_lastBackup           = date;        }
 	static inline void setMainWindowPosition(const QPoint &pos) { s_mainWindowPosition   = pos;         }
 	static inline void setMainWindowSize(const QSize &size)     { s_mainWindowSize       = size;        }
 	static inline void setShowEmptyBasketInfo(bool show)        { s_showEmptyBasketInfo  = show;        }

@@ -43,6 +43,7 @@
 #include <kstandarddirs.h>
 #include <kgpgme.h>
 #include <kdebug.h>
+#include <qdatetime.h>
 
 #include "basket.h"
 #include "linklabel.h"
@@ -96,6 +97,7 @@ bool    Settings::s_blinkedFilter        = false;
 bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
 QString Settings::s_dataFolder           = "";
+QDate   Settings::s_lastBackup           = QDate();
 QPoint  Settings::s_mainWindowPosition   = QPoint();
 QSize   Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_showEmptyBasketInfo  = true;
@@ -147,6 +149,7 @@ void Settings::loadConfig()
 	setBasketTreeWidth(      config->readNumEntry( "basketTreeWidth",      -1)    );
 	setUsePassivePopup(      config->readBoolEntry("usePassivePopup",      true)  );
 	setDataFolder(           config->readPathEntry("dataFolder",           "")    );
+	setLastBackup(           config->readDateTimeEntry("lastBackup", new QDateTime()).date());
 	setMainWindowPosition(   config->readPointEntry("position"             )      );
 	setMainWindowSize(       config->readSizeEntry( "size"                 )      );
 
@@ -232,6 +235,7 @@ void Settings::saveConfig()
 	config->writeEntry( "basketTreeWidth",      basketTreeWidth()      );
 	config->writeEntry( "usePassivePopup",      usePassivePopup()      );
 	config->writePathEntry("dataFolder",        dataFolder()           );
+	config->writeEntry( "lastBackup",           QDateTime(lastBackup()));
 	config->writeEntry( "position",             mainWindowPosition()   );
 	config->writeEntry( "size",                 mainWindowSize()       );
 
