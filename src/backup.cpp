@@ -44,6 +44,12 @@
 #include <kprogress.h>
 #include <kmessagebox.h>
 
+/**
+ * Backups are wrapped in a .tar.gz, inside that folder name.
+ * An archive is not a backup or is corrupted if data are not in that folder!
+ */
+const QString backupMagicFolder = "BasKet-Note-Pads_Backup";
+
 /** class BackupDialog: */
 
 BackupDialog::BackupDialog(QWidget *parent, const char *name)
@@ -205,7 +211,7 @@ void BackupDialog::backup()
 	while (thread.running()) {
 		progress->advance(1); // Or else, the animation is not played!
 		kapp->processEvents();
-		usleep(2000);
+		usleep(300); // Not too long because if the backup process is finished, we wait for nothing
 	}
 
 	Settings::setLastBackup(QDate::currentDate());
@@ -213,7 +219,6 @@ void BackupDialog::backup()
 	populateLastBackup();
 }
 
-#include <iostream>
 void BackupDialog::restore()
 {
 	// Get last backup folder:
@@ -230,11 +235,6 @@ void BackupDialog::restore()
 	// Before replacing the basket data folder with the backup content, we safely backup the current baskets to the home folder.
 	// So if the backup is corrupted or something goes wrong while restoring (power cut...) the user will be able to restore the old working data:
 	QString safetyPath = Backup::newSafetyFolder();
-
-std::cout << safetyPath << std::endl;
-std::cout << safetyPath + i18n("README.txt") << std::endl;
-return;
-
 	FormatImporter copier;
 	copier.moveFolder(Global::savesFolder(), safetyPath);
 
@@ -243,20 +243,50 @@ return;
 	QFile file(readmePath);
 	if (file.open(IO_WriteOnly)) {
 		QTextStream stream(&file);
-		stream << i18n("This is a safety copy of your baskets before you started to restore the backup %1.") + "\n"
-		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n"
-		       << i18n("If something goes wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n"
-		       ;
+		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KURL(path).fileName()) + "\n\n"
+		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
+		       << i18n("If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n\n"
+		       << i18n("Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing Folder...\" and select that folder.") + "\n";
 		file.close();
 	}
 
-	// TODO: Check if it is really a backup file!
+	QString message =
+		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...").arg(KURL(path).fileName()) + "</nobr></p><p>" +
+		i18n("If something goes wrong during the restoration process, read the file <b>%1</b>.").arg(readmePath);
 
-	QString message;// Progress dialo contains:
-	//   Restoring *Baskets_2006-12-30.tar.gz*. Please wait...
-	//   If something goes wrong during the restoration process, read the file */home/seb/Baskets before restoration 2/README.txt*.
+	KProgressDialog *dialog = new KProgressDialog(0, 0, i18n("Restore Baskets"), message, /*modal=*/true);
+	dialog->setAllowCancel(false);
+	dialog->setAutoClose(true);
+	dialog->show();
+	KProgress *progress = dialog->progressBar();
+	progress->setTotalSteps(0/*Busy/Undefined*/);
+	progress->setProgress(0);
+	progress->setPercentageVisible(false);
 
 	// Uncompress:
+	RestoreThread thread(path, Global::savesFolder());
+	thread.start();
+	while (thread.running()) {
+		progress->advance(1); // Or else, the animation is not played!
+		kapp->processEvents();
+		usleep(300); // Not too long because if the restore process is finished, we wait for nothing
+	}
+
+	dialog->hide(); // The restore is finished, do not continue to show it while telling the user the application is going to be restarted
+	delete dialog; // If we only hidden it, it reappeared just after having restored a small backup... Very strange.
+	dialog = 0;    // This was annoying since it is modal and the "BasKet Note Pads is going to be restarted" message was not reachable.
+	//kapp->processEvents();
+
+	// Check for errors:
+	if (!thread.success()) {
+		// Restore the old baskets:
+		QDir dir;
+		dir.remove(readmePath);
+		copier.moveFolder(safetyPath, Global::savesFolder());
+		// Tell the user:
+		KMessageBox::error(0, i18n("This archive is either not a backup of baskets or is corrupted. It cannot be imported. Your old baskets have been preserved instead."), i18n("Restore Error"));
+		return;
+	}
 
 	// Note: The safety backup is not removed now because the code can has been wrong, somehow, or the user perhapse restored an older backup by error...
 	//       The restore process will not be called very often (it is possible it will only be called once or twice arround the world during the next years).
@@ -300,7 +330,13 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
 
 	// Rassure the user that the application main window disapearition is not a crash, but a normal restart.
 	// This is important for users to trust the application in such a critical phase and understands what's happening:
-	KMessageBox::information(0, message.arg(folder, kapp->aboutData()->programName()), i18n("Restart"));
+	KMessageBox::information(
+		0,
+		"<qt>" + message.arg(
+			(folder.endsWith("/") ? folder.left(folder.length() - 1) : folder),
+			kapp->aboutData()->programName()),
+		i18n("Restart")
+	);
 
 	// Restart the application:
 	KRun::runCommand(binaryPath, kapp->aboutData()->programName(), kapp->iconName());
@@ -336,8 +372,43 @@ void BackupThread::run()
 {
 	KTar tar(m_tarFile, "application/x-gzip");
 	tar.open(IO_WriteOnly);
-	tar.addLocalDirectory(m_folderToBackup, "BasKet-Note-Pads_Backup");
+	tar.addLocalDirectory(m_folderToBackup, backupMagicFolder);
+	// KArchive does not add hidden files. Basket description files (".basket") are hidden, we add them manually:
+	QDir dir(m_folderToBackup + "baskets/");
+	QStringList baskets = dir.entryList(QDir::Dirs);
+	for (QStringList::Iterator it = baskets.begin(); it != baskets.end(); ++it) {
+		tar.addLocalFile(
+			m_folderToBackup + "baskets/" + *it + "/.basket",
+			backupMagicFolder + "/baskets/" + *it + "/.basket"
+		);
+	}
+	// We finished:
 	tar.close();
+}
+
+/** class RestoreThread: */
+
+RestoreThread::RestoreThread(const QString &tarFile, const QString &destFolder)
+ : m_tarFile(tarFile), m_destFolder(destFolder)
+{
+}
+
+void RestoreThread::run()
+{
+	m_success = false;
+	KTar tar(m_tarFile, "application/x-gzip");
+	tar.open(IO_ReadOnly);
+	if (tar.isOpened()) {
+		const KArchiveDirectory *directory = tar.directory();
+		if (directory->entries().contains(backupMagicFolder)) {
+			const KArchiveEntry *entry = directory->entry(backupMagicFolder);
+			if (entry->isDirectory()) {
+				((const KArchiveDirectory*) entry)->copyTo(m_destFolder);
+				m_success = true;
+			}
+		}
+		tar.close();
+	}
 }
 
 #include "backup.moc"

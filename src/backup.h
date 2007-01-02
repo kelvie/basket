@@ -69,4 +69,17 @@ class BackupThread : public QThread
 	QString m_folderToBackup;
 };
 
+class RestoreThread : public QThread
+{
+  public:
+	RestoreThread(const QString &tarFile, const QString &destFolder);
+	inline bool success() { return m_success; }
+  protected:
+	virtual void run();
+  private:
+	QString m_tarFile;
+	QString m_destFolder;
+	bool m_success;
+};
+
 #endif // BACKUP_H
