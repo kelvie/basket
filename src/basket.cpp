@@ -1190,9 +1190,9 @@ void Basket::load()
 	enableActions();
 }
 
-void Basket::filterAgain()
+void Basket::filterAgain(bool andEnsureVisible/* = true*/)
 {
-	newFilter(decoration()->filterData());
+	newFilter(decoration()->filterData(), andEnsureVisible);
 }
 
 void Basket::filterAgainDelayed()
@@ -1200,7 +1200,7 @@ void Basket::filterAgainDelayed()
 	QTimer::singleShot( 0, this, SLOT(filterAgain()) );
 }
 
-void Basket::newFilter(const FilterData &data)
+void Basket::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
 {
 	if (!isLoaded())
 		return;
@@ -1214,7 +1214,7 @@ void Basket::newFilter(const FilterData &data)
 
 	if (hasFocus())   // if (!hasFocus()), focusANote() will be called at focusInEvent()
 		focusANote(); //  so, we avoid de-focus a note if it will be re-shown soon
-	if (m_focusedNote != 0L)
+	if (andEnsureVisible && m_focusedNote != 0L)
 		ensureNoteVisible(m_focusedNote);
 
 	Global::bnpView->setFiltering(data.isFiltering);
@@ -3665,12 +3665,15 @@ void Basket::selectionChangedInEditor()
 
 void Basket::contentChangedInEditor()
 {
-	if (m_inactivityAutoSaveTimer.isActive())
-		m_inactivityAutoSaveTimer.stop();
-
-	m_inactivityAutoSaveTimer.start(3 * 1000, /*singleShot=*/true);
-
-	Global::bnpView->setUnsavedStatus(true);
+	// Do not wait 3 seconds, because we need the note to expand as needed (if a line is too wider... the note should grow wider):
+	if (m_editor->textEdit())
+		m_editor->autoSave();
+	else {
+		if (m_inactivityAutoSaveTimer.isActive())
+			m_inactivityAutoSaveTimer.stop();
+		m_inactivityAutoSaveTimer.start(3 * 1000, /*singleShot=*/true);
+		Global::bnpView->setUnsavedStatus(true);
+	}
 }
 
 void Basket::inactivityAutoSaveTimeout()
@@ -3684,7 +3687,7 @@ void Basket::placeEditorAndEnsureVisible()
 	placeEditor(/*andEnsureVisible=*/true);
 }
 
-void Basket::placeEditor(bool andEnsureVisible /*= false*/)
+void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 {
 	if (!isDuringEdit())
 		return;
@@ -3702,23 +3705,25 @@ void Basket::placeEditor(bool andEnsureVisible /*= false*/)
 
 	if (textEdit) {
 		x -= 4;
-		// Need to do it 2 times, because it's wrong overwise:
+		// Need to do it 2 times, because it's wrong overwise
+		// (sometimes, width depends on height, and sometimes, height depends on with):
 		for (int i = 0; i < 2; i++) {
 			// FIXME: CRASH: Select all text, press Del or [<--] and editor->removeSelectedText() is called:
 			//        editor->sync() CRASH!!
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
 			height = textEdit->contentsHeight() + 2*frameWidth;
-			height = /*QMAX(*/height/*, note->height())*/;
-			height = QMIN(height, visibleHeight());
-			width  = /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
+//			height = /*QMAX(*/height/*, note->height())*/;
+//			height = QMIN(height, visibleHeight());
+			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
+//width=QMAX(width,textEdit->contentsWidth()+2*frameWidth);
 			if (y + height > maxHeight)
 				y = maxHeight - height;
 			textEdit->setFixedSize(width, height);
 		}
 	} else {
 		height = note->height() - 2*Note::NOTE_MARGIN + 2*frameWidth;
-		width  = note->rightLimit() - x + 2*frameWidth;
+		width  = note->x() + note->width() - x;//note->rightLimit() - x + 2*frameWidth;
 		m_editor->widget()->setFixedSize(width, height);
 		x -= 1;
 		y = note->y() + Note::NOTE_MARGIN - frameWidth;
@@ -3731,19 +3736,39 @@ void Basket::placeEditor(bool andEnsureVisible /*= false*/)
 	m_editorWidth  = width;
 	m_editorHeight = height;
 	addChild(m_editor->widget(), x, y);
+	m_editorX = x;
+	m_editorY = y;
 
 	m_leftEditorBorder->setFixedSize( (m_editor->textEdit() ? 3 : 0), height);
-	m_leftEditorBorder->raise();
+//	m_leftEditorBorder->raise();
 	addChild(m_leftEditorBorder,     x, y );
 	m_leftEditorBorder->setPosition( x, y );
 
 	m_rightEditorBorder->setFixedSize(3, height);
-	m_rightEditorBorder->raise();
-	addChild(m_rightEditorBorder,     note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
-	m_rightEditorBorder->setPosition( note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
+//	m_rightEditorBorder->raise();
+//	addChild(m_rightEditorBorder,     note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
+//	m_rightEditorBorder->setPosition( note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
+	addChild(m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
+	m_rightEditorBorder->setPosition( note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 
-	if (andEnsureVisible)
-		ensureNoteVisible(note);
+//	if (andEnsureVisible)
+//		ensureNoteVisible(note);
+}
+
+#include <iostream>
+#include <private/qrichtext_p.h>
+void Basket::editorCursorPositionChanged()
+{
+	if (!isDuringEdit())
+		return;
+
+	FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
+	const QTextCursor *cursor = textEdit->textCursor();
+//	std::cout << cursor->x() << ";" << cursor->y() << "      "
+//			  << cursor->globalX() << ";" << cursor->globalY() << "          "
+//			  << cursor->offsetX() << ";" << cursor->offsetY() << ";" << std::endl;
+
+	ensureVisible(m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50);
 }
 
 void Basket::closeEditorDelayed()
@@ -3805,7 +3830,7 @@ bool Basket::closeEditor()
 	}
 
 	unlockHovering();
-	filterAgain();
+	filterAgain(/*andEnsureVisible=*/false);
 
 // Does not work:
 //	if (Settings::playAnimations())
@@ -5014,6 +5039,9 @@ void Basket::focusOutEvent(QFocusEvent*)
 void Basket::ensureNoteVisible(Note *note)
 {
 	if (!note->isShown()) // Logical!
+		return;
+
+	if (note == editedNote()) // HACK: When filtering while editing big notes, etc... cause unwanted scrolls
 		return;
 
 	int finalBottom = note->finalY() + QMIN(note->finalHeight(),                                             visibleHeight());

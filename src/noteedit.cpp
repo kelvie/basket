@@ -147,6 +147,10 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	setInlineEditor(textEdit);
 	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
 	connect( textEdit, SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
+
+	connect( textEdit, SIGNAL(cursorPositionChanged(int, int)), textContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
+	// In case it is a very big note, the top is displayed and Enter is pressed: the cursor is on bottom, we should enure it visible:
+	QTimer::singleShot( 0, textContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
 }
 
 TextEditor::~TextEditor()
@@ -258,6 +262,10 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
 	InlineEditors::instance()->richTextUndo->setEnabled(false);
 	InlineEditors::instance()->richTextRedo->setEnabled(false);
+
+	connect( textEdit, SIGNAL(cursorPositionChanged(int, int)), htmlContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
+	// In case it is a very big note, the top is displayed and Enter is pressed: the cursor is on bottom, we should enure it visible:
+	QTimer::singleShot( 0, htmlContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
 }
 
 void HtmlEditor::cursorPositionChanged()

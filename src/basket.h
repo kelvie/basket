@@ -547,6 +547,11 @@ public slots:
 	void contentChangedInEditor();
 	void inactivityAutoSaveTimeout();
   public slots:
+	void editorCursorPositionChanged();
+  private:
+	int m_editorX;
+	int m_editorY;
+  public slots:
 	void placeEditor(bool andEnsureVisible = false);
 	void placeEditorAndEnsureVisible();
 	bool closeEditor();
@@ -558,10 +563,10 @@ public slots:
 
 /// FILTERING:
   public slots:
-	void newFilter(const FilterData &data);
+	void newFilter(const FilterData &data, bool andEnsureVisible = true);
 	void cancelFilter();
 	void validateFilter();
-	void filterAgain();
+	void filterAgain(bool andEnsureVisible = true);
 	void filterAgainDelayed();
 	bool isFiltering();
 

@@ -121,6 +121,12 @@ void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
 }
 
 
+QTextCursor* FocusedTextEdit::textCursor() const
+{
+	return KTextEdit::textCursor();
+}
+
+
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape) {
@@ -140,6 +146,13 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 	if (m_disableUpdatesOnKeyPress)
 		setUpdatesEnabled(false);
 	KTextEdit::keyPressEvent(event);
+	// Workarround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
+	if (event->key() == Qt::Key_Home || event->key() == Qt::Key_End || event->key() == Qt::Key_PageUp || event->key() == Qt::Key_PageDown) {
+		int para;
+		int index;
+		getCursorPosition(&para, &index);
+		emit cursorPositionChanged(para, index);
+	}
 	if (m_disableUpdatesOnKeyPress) {
 		setUpdatesEnabled(true);
 		if (text().isEmpty())

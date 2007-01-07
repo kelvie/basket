@@ -36,6 +36,7 @@ class FocusedTextEdit : public KTextEdit
 	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0, const char *name = 0);
 	~FocusedTextEdit();
 	void paste();
+	QTextCursor* textCursor() const;
   protected:
 	void adaptClipboardText(QClipboard::Mode mode);
 	void keyPressEvent(QKeyEvent *event);
