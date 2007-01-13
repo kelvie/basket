@@ -3233,6 +3233,8 @@ void Basket::relayoutNotes(bool animate)
 
 	if (isFreeLayout())
 		tmpHeight += 100;
+	else
+		tmpHeight += 15;
 
 	resizeContents( QMAX(tmpWidth, visibleWidth()), QMAX(tmpHeight, visibleHeight()) );
 	recomputeBlankRects();
