@@ -189,8 +189,8 @@
   </kdevcvs>
   <kdevcppsupport>
     <references>
-      <pcs>KDElibs</pcs>
       <pcs>Qt</pcs>
+      <pcs>KDElibs</pcs>
     </references>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
