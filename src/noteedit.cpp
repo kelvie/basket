@@ -379,7 +379,7 @@ ImageEditor::ImageEditor(ImageContent *imageContent, QWidget *parent)
 {
 	int choice = KMessageBox::questionYesNo(parent, i18n(
 		"Images can not be edited here at the moment (the next version of BasKet Note Pads will include an image editor).\n"
-		"Do you want to open it with an application that understands it?"),
+		"Do you want to open it with an application that understand it?"),
 		i18n("Edit Image Note"),
 		KStdGuiItem::open(),
 		KStdGuiItem::cancel());

@@ -423,7 +423,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 	// Hide Main Window when Mouse Goes out of it for Some Time:
 	m_timeToHideOnMouseOut = new KIntNumInput(0, m_systray);
-	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse goes out of it for"), m_systray);
+	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse leaves it for"), m_systray);
 	m_timeToHideOnMouseOut->setRange(0, 600, 1, false);
 	m_timeToHideOnMouseOut->setSuffix(i18n(" tenths of seconds"));
 	gs->addWidget(m_hideOnMouseOut,       0, 0);
@@ -871,7 +871,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	QString whatsthis = i18n(
 		"<p>If checked, the application defined below will be used when opening that type of note.</p>"
-		"<p>Otherwise, the application you've configured to in Konqueror will be used.</p>");
+		"<p>Otherwise, the application you've configured in Konqueror will be used.</p>");
 
 	QWhatsThis::add(m_htmlUseProg,      whatsthis);
 	QWhatsThis::add(m_imageUseProg,     whatsthis);
@@ -902,7 +902,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 	HelpLabel *hl1 = new HelpLabel(
 		i18n("How to change the application used to open Web links?"),
 		i18n("<p>When opening Web links, they are opened in different applications, depending on the content of the link "
-		     "(a Web page, an image, a PDF document...), like if they were files on your computer.</p>"
+		     "(a Web page, an image, a PDF document...), such as if they were files on your computer.</p>"
 		     "<p>Here is how to do if you want every Web addresses to be opened in your Web browser. "
 		     "It is useful if you are not using KDE (if you are using eg. GNOME, XFCE...).</p>"
 		     "<ul>"
@@ -911,7 +911,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 		     "<li>Choose \"Web Browser\", check \"In the following browser:\" and enter the name of your Web browser (like \"firefox\" or \"epiphany\").</li>"
 		     "</ul>"
 		     "<p>Now, when you click <i>any</i> link that start with \"http://...\", it will be opened in your Web browser (eg. Mozilla Firefox or Epiphany or...).</p>"
-		     "<p>For a more fine-grained configuration (like openning only Web pages in your Web browser), read the second help link.</p>"),
+		     "<p>For more fine-grained configuration (like opening only Web pages in your Web browser), read the second help link.</p>"),
 		this);
 	hLay->addWidget(hl1);
 	hLay->addStretch();
@@ -921,10 +921,10 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 	HelpLabel *hl2 = new HelpLabel(
 		i18n("How to change the applications used to open files and links?"),
 		i18n("<p>Here is how to set the application to be used for each type of file. "
-		     "This also applys to Web links if you choose not to open them systematically in a Web browser (see the first help link). "
+		     "This also applies to Web links if you choose not to open them systematically in a Web browser (see the first help link). "
 		     "The default settings should be good enough for you, but this tip is useful if you are using GNOME, XFCE, or another environment than KDE.</p>"
-		     "<p>This is an exemple how to open HTML pages in your Web browser (and keep using the other applications for other addresses or files). "
-		     "Repeat those steps for each type of file you want to open in a specific application.</p>"
+		     "<p>This is an example of how to open HTML pages in your Web browser (and keep using the other applications for other addresses or files). "
+		     "Repeat these steps for each type of file you want to open in a specific application.</p>"
 		     "<ul>"
 		     "<li>Open the KDE Control Center (if it is not available, try to type \"kcontrol\" in a command line terminal);</li>"
 		     "<li>Go to the \"KDE Components\" and then \"File Associations\" section;</li>"

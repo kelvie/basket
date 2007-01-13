@@ -234,7 +234,7 @@ void BNPView::setupGlobalShortcuts()
 							basketMainWindow, SLOT(changeActive()),           true, true );
 	}
 	globalAccel->insert( "global_paste", i18n("Paste clipboard contents in current basket"),
-						 i18n("Allows you to paste clipboard contents in the current basket without having to open main window."),
+						 i18n("Allows you to paste clipboard contents in the current basket without having to open the main window."),
 						 Qt::CTRL + Qt::SHIFT + Qt::Key_V, Qt::CTRL + Qt::SHIFT + Qt::Key_V,
 						 Global::bnpView, SLOT(globalPasteInCurrentBasket()), true, true );
 	globalAccel->insert( "global_show_current_basket", i18n("Show current basket name"),
@@ -242,49 +242,49 @@ void BNPView::setupGlobalShortcuts()
 						 "", "",
 						 Global::bnpView, SLOT(showPassiveContentForced()), true, true );
 	globalAccel->insert( "global_paste_selection", i18n("Paste selection in current basket"),
-						 i18n("Allows you to paste clipboard selection in the current basket without having to open main window."),
+						 i18n("Allows you to paste clipboard selection in the current basket without having to open the main window."),
 						 Qt::CTRL + Qt::SHIFT + Qt::Key_S, Qt::CTRL + Qt::SHIFT + Qt::Key_S,
 						 Global::bnpView, SLOT(pasteSelInCurrentBasket()),  true, true );
 	globalAccel->insert( "global_new_basket", i18n("Create a new basket"),
-						 i18n("Allows you to create a new basket without having to open main window (you then can use the other global shortcuts to add a note, paste clipboard or paste selection in this new basket)."),
+						 i18n("Allows you to create a new basket without having to open the main window (you then can use the other global shortcuts to add a note, paste clipboard or paste selection in this new basket)."),
 						 "", "",
 						 Global::bnpView, SLOT(askNewBasket()),       true, true );
 	globalAccel->insert( "global_previous_basket", i18n("Go to previous basket"),
-						 i18n("Allows you to change current basket to the previous one without having to open main window."),
+						 i18n("Allows you to change current basket to the previous one without having to open the main window."),
 						 "", "",
 						 Global::bnpView,    SLOT(goToPreviousBasket()), true, true );
 	globalAccel->insert( "global_next_basket", i18n("Go to next basket"),
-						 i18n("Allows you to change current basket to the next one without having to open main window."),
+						 i18n("Allows you to change current basket to the next one without having to open the main window."),
 						 "", "",
 						 Global::bnpView,    SLOT(goToNextBasket()),     true, true );
 //	globalAccel->insert( "global_note_add_text", i18n("Insert plain text note"),
-//						 i18n("Add a plain text note to the current basket without having to open main window."),
+//						 i18n("Add a plain text note to the current basket without having to open the main window."),
 //						 "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
 //						 Global::bnpView, SLOT(addNoteText()),        true, true );
 	globalAccel->insert( "global_note_add_html", i18n("Insert text note"),
-						 i18n("Add a text note to the current basket without having to open main window."),
+						 i18n("Add a text note to the current basket without having to open the main window."),
 						 Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T, //"", "",
 						 Global::bnpView, SLOT(addNoteHtml()),        true, true );
 	globalAccel->insert( "global_note_add_image", i18n("Insert image note"),
-						 i18n("Add an image note to the current basket without having to open main window."),
+						 i18n("Add an image note to the current basket without having to open the main window."),
 						 "", "",
 						 Global::bnpView, SLOT(addNoteImage()),       true, true );
 	globalAccel->insert( "global_note_add_link", i18n("Insert link note"),
-						 i18n("Add a link note to the current basket without having to open main window."),
+						 i18n("Add a link note to the current basket without having to open the main window."),
 						 "", "",
 						 Global::bnpView, SLOT(addNoteLink()),        true, true );
 	globalAccel->insert( "global_note_add_color", i18n("Insert color note"),
-						 i18n("Add a color note to the current basket without having to open main window."),
+						 i18n("Add a color note to the current basket without having to open the main window."),
 						 "", "",
 						 Global::bnpView, SLOT(addNoteColor()),       true, true );
 	globalAccel->insert( "global_note_pick_color", i18n("Pick color from screen"),
 						 i18n("Add a color note picked from one pixel on screen to the current basket without "
-								 "having to open main window."),
+								 "having to open the main window."),
 						 "", "",
 						 Global::bnpView, SLOT(slotColorFromScreenGlobal()), true, true );
 	globalAccel->insert( "global_note_grab_screenshot", i18n("Grab screen zone"),
 						 i18n("Grab a screen zone as an image in the current basket without "
-								 "having to open main window."),
+								 "having to open the main window."),
 						 "", "",
 						 Global::bnpView, SLOT(grabScreenshotGlobal()), true, true );
 	globalAccel->readSettings();
@@ -1451,9 +1451,9 @@ void BNPView::slotConvertTexts()
 		conversionsDone = convertTexts();
 
 	if (conversionsDone)
-		KMessageBox::information(this, i18n("The plain text notes have been converted to rich text ones."), i18n("Conversion Finished"));
+		KMessageBox::information(this, i18n("The plain text notes have been converted to rich text."), i18n("Conversion Finished"));
 	else
-		KMessageBox::information(this, i18n("There is no plain text notes to convert."), i18n("Conversion Finished"));
+		KMessageBox::information(this, i18n("There are no plain text notes to convert."), i18n("Conversion Finished"));
 }
 
 QPopupMenu* BNPView::popupMenu(const QString &menuName)
@@ -1481,10 +1481,10 @@ QPopupMenu* BNPView::popupMenu(const QString &menuName)
 					"<p><b>The file basketui.rc seems to not exist or is too old.<br>"
 							"%1 cannot run without it and will stop.</b></p>"
 							"<p>Please check your installation of %2.</p>"
-							"<p>If you haven't administrator access to install the application "
+							"<p>If you do not have administrator access to install the application "
 							"system wide, you can copy the file basketui.rc from the installation "
 							"archive to the folder <a href='file://%3'>%4</a>.</p>"
-							"<p>In last ressort, if you are sure the application is well installed "
+							"<p>As last ressort, if you are sure the application is correctly installed "
 							"but you had a preview version of it, try to remove the "
 							"file %5basketui.rc</p>")
 							.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName(),
@@ -1635,7 +1635,7 @@ void BNPView::delBasket()
 										  KDialogBase::User1 | KDialogBase::User2 | KDialogBase::No, KDialogBase::User1,
 										 /*separator=*/false,
 										 /*user1=*/KGuiItem(i18n("Delete Only that Basket")/*, icon=""*/),
-										 /*user2=*/KGuiItem(i18n("Delete With its Childs")/*, icon=""*/) );
+										 /*user2=*/KGuiItem(i18n("Delete Note & Children")/*, icon=""*/) );
 	QStringList basketsList;
 	basketsList.append("Basket 1");
 	basketsList.append("  Basket 2");
@@ -1664,12 +1664,12 @@ void BNPView::delBasket()
 	QStringList basketsList = listViewItemForBasket(basket)->childNamesTree();
 	if (basketsList.count() > 0) {
 		int deleteChilds = KMessageBox::questionYesNoList( this,
-				i18n("<qt><b>%1</b> have the following child baskets.<br>Do you want to remove them too?</qt>")
+				i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>")
 						.arg(Tools::textToHTMLWithoutP(basket->basketName())),
 				basketsList,
-				i18n("Remove Child Baskets")
+				i18n("Remove Children Baskets")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
-						, KGuiItem(i18n("&Remove Child Baskets"), "editdelete"));
+						, KGuiItem(i18n("&Remove Children Baskets"), "editdelete"));
 #else
 		);
 #endif

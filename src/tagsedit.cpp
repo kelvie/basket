@@ -493,15 +493,15 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	textEquivalentHelpLayout->addWidget(textEquivalentHelp);
 	textEquivalentHelpLayout->addStretch(255);
 
-	m_onEveryLines = new QCheckBox(i18n("On ever&y lines"), stateWidget);
+	m_onEveryLines = new QCheckBox(i18n("On ever&y line"), stateWidget);
 
 	QPixmap onEveryLinesPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_on_every_lines_help.png"));
 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export_on_every_lines.png", onEveryLinesPixmap);
 	HelpLabel *onEveryLinesHelp = new HelpLabel(
 		i18n("What does it mean?"),
-		"<p>" + i18n("When a note has several lines, you can choose to export the tag or the state on the first line or on every lines of the note.") + "</p>" +
+		"<p>" + i18n("When a note has several lines, you can choose to export the tag or the state on the first line or on every line of the note.") + "</p>" +
 		"<p align='center'><img src=\"__resource_help_tag_export_on_every_lines.png\"></p>" +
-		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every lines of the note."),
+		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every line of the note."),
 		stateWidget);
 	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
 	onEveryLinesHelpLayout->addWidget(onEveryLinesHelp);
@@ -898,14 +898,14 @@ void TagsEditDialog::deleteTag()
 	if (item->tagCopy() && item->tagCopy()->oldTag)
 		result = KMessageBox::warningContinueCancel(
 			this,
-			i18n("Deleting the tag will remove it from every notes it is currently assigned to."),
+			i18n("Deleting the tag will remove it from every note it is currently assigned to."),
 			i18n("Confirm Delete Tag"),
 			KGuiItem(i18n("Delete Tag"), "editdelete")
 		);
 	else if (item->stateCopy() && item->stateCopy()->oldState)
 		result = KMessageBox::warningContinueCancel(
 			this,
-			i18n("Deleting the state will remove the tag from every notes the state is currently assigned to."),
+			i18n("Deleting the state will remove the tag from every note the state is currently assigned to."),
 			i18n("Confirm Delete State"),
 			KGuiItem(i18n("Delete State"), "editdelete")
 		);
@@ -1196,7 +1196,7 @@ void TagsEditDialog::slotOk()
 	if (!m_deletedStates.isEmpty())
 		Global::bnpView->removedStates(m_deletedStates);
 
-	// Update every notes (change colors, size because of font change or added/removed emblems...):
+	// Update every note (change colors, size because of font change or added/removed emblems...):
 	Global::bnpView->relayoutAllBaskets();
 	Global::bnpView->recomputeAllStyles();
 

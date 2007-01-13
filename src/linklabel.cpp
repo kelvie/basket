@@ -606,7 +606,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		i18n("You disabled preview but still see images?"),
 		i18n("<p>This is normal because there are several type of notes.<br>"
 		     "This setting only applies to file and local link notes.<br>"
-		     "And the images you see are image notes, not file notes.<br>"
+		     "The images you see are image notes, not file notes.<br>"
 		     "File notes are generic documents, whereas image notes are pictures you can draw in.</p>"
 		     "<p>When dropping files to baskets, %1 detects their type and shows you the content of the files.<br>"
 		     "For instance, when dropping image or text files, image and text notes are created for them.<br>"

@@ -218,7 +218,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		"<li>Grouping baskets by themes or topics;</li>"
 		"<li>Grouping baskets in folders for different projects;</li>"
 		"<li>Making sections with sub-baskets representing chapters or pages;</li>"
-		"<li>Making group of baskets to export together (to eg. email them to people).</li></ul>"), page);
+		"<li>Making a group of baskets to export together (to eg. email them to people).</li></ul>"), page);
 	layout->addWidget(label);
 	layout->addWidget(m_createIn);
 	layout->addWidget(helpLabel);

@@ -25,7 +25,7 @@
 
 static const char description[] = I18N_NOOP(
 	"<p><b>Taking care of your ideas.</b></p>"
-	"<p>A note-taking application that makes it easy to write down ideas as you think, and quickly find them back later. "
+	"<p>A note-taking application that makes it easy to record ideas as you think, and quickly find them later. "
 	"Organizing your notes has never been so easy.</p>");
 
 	// Or how to make order of disorganized toughts.

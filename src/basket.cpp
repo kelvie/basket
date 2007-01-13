@@ -2335,7 +2335,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		case Note::None:
 		default:
 			KMessageBox::information(viewport(),
-				i18n("This message should never appear. If it's the case, this program is buggy! "
+				i18n("This message should never appear. If it does, this program is buggy! "
 				"Please report the bug to the developer."));
 			break;
 	}
@@ -5331,7 +5331,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 					(openSuccess
 						? i18n("Please remove files on the disk <b>%1</b> to let the application safely save your changes.")
 							.arg(KIO::findPathMountPoint(fullPath))
-						: i18n("File permissions are bad for <b>%1</b>. Please check you have write access to it and the parent folders.")
+						: i18n("File permissions are bad for <b>%1</b>. Please check that you have write access to it and the parent folders.")
 							.arg(fullPath)
 					),
 					kapp->activeWindow()

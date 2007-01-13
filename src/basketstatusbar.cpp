@@ -97,7 +97,7 @@ void BasketStatusBar::setupStatusBar()
 	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, QIconSet::Disabled));
 	//m_savedStatus->setEnabled(false);
 	addWidget( m_savedStatus, 0, true );
-	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not been saved yet."));
+	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not yet been saved."));
 }
 
 void BasketStatusBar::postStatusbarMessage(const QString& text)

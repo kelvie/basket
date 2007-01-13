@@ -139,8 +139,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 		"The first option allows to show the basket while the main window is active. "
 		"Global shortcuts are valid from anywhere, even if the window is hidden.</p>"
 		"<p><strong>Show vs Switch</strong>:<br>"
-		"The last option make this basket the current one without opening the main window. "
-		"It is useful in addition to the configurable global shortcuts to eg. paste the clipboard or the selection into the current basket from anywhere.</p>"),
+		"The last option makes this basket the current one without opening the main window. "
+		"It is useful in addition to the configurable global shortcuts, eg. to paste the clipboard or the selection into the current basket from anywhere.</p>"),
 		shortcutWidget);
 	shortcutLayout->addWidget(m_shortcut);
 	shortcutLayout->addStretch();

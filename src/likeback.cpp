@@ -456,7 +456,7 @@ void LikeBack::showInformationMessage()
 				:
 					i18n("Each time you discover a bug in the application, "
 						"please click the broken-object icon below the window title-bar, "
-						"briefly describe what is the mis-behaviour and click Send.")
+						"briefly describe the mis-behaviour and click Send.")
 				) + "</p>"
 			: "") +
 		"<p>" + i18n("Example:", "Examples:", nbButtons) + "</p>" +
