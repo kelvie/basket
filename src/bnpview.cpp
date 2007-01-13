@@ -578,6 +578,9 @@ void BNPView::setupActions()
 			actionCollection(), "options_configure_global_keybinding");
 	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
 
+	/** Help : ****************************************************************/
+
+	i18n("&Welcome Baskets");
 }
 
 QListViewItem* BNPView::firstListViewItem()
