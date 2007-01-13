@@ -4837,6 +4837,8 @@ void Basket::keyPressEvent(QKeyEvent *event)
 			closeEditor();
 		else if (decoration()->filterData().isFiltering)
 			cancelFilter();
+		else
+			unselectAll();
 	}
 
 	if (countFounds() == 0)
