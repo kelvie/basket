@@ -316,7 +316,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	stream << QString(
 		"  </div>\n"
 		"  <p class=\"credits\">%1</p>\n").arg(
-			i18n("Made with %1, a KDE tool to take notes and keep a full range of data on hand.")
+			i18n("Made with %1, a KDE tool to take notes and keep information at hand.")
 				.arg("<a href=\"http://basket.kde.org/\">%1</a> %2")
 				.arg(kapp->aboutData()->programName(), VERSION));
 
