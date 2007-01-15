@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Type=Service
 Name=Basket Archives & Templates
+Name[ja]=バスケットアーカイブとテンプレート
 ServiceTypes=ThumbCreator
 MimeTypes=application/x-basket-archive,application/x-basket-template
 CacheThumbnail=true
