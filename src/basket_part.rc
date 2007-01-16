@@ -16,7 +16,7 @@
    <Action name="basket_password" />
    <Action name="basket_lock" />
    <Separator/>
-   <Menu icon="fileimport" >
+   <Menu name="fileimport" icon="fileimport" >
     <text>&amp;Import</text>
     <Action name="basket_import_basket_archive" />
     <Separator/>
@@ -105,6 +105,7 @@
    <Action name="help_whats_this" />
    <Action name="help_show_tip" />
    <Separator/>
+   <Action name="help_welcome_baskets" />
 <!--   <Action name="help_report_bug" />-->
    <Action name="likeback_send_a_comment" />
    <Separator/>

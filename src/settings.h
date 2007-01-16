@@ -204,6 +204,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static bool    s_groupOnInsertionLine;
 	static bool    s_spellCheckTextNotes;
 	static int     s_basketTreeWidth;
+	static bool    s_welcomeBasketsAdded;
 	static QString s_dataFolder;
 	static QDate   s_lastBackup;
 	static QPoint  s_mainWindowPosition;
@@ -266,6 +267,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline int     basketTreeWidth()      { return s_basketTreeWidth;      }
 	static inline int     dropTimeToShow()       { return 7;                      } // TODO: 700 ; TODO: There is certainly a KGlobalConfig ???
 	static inline bool    usePassivePopup()      { return s_usePassivePopup;      }
+	static inline bool    welcomeBasketsAdded()  { return s_welcomeBasketsAdded;  }
 	static inline QString dataFolder()           { return s_dataFolder;           }
 	static inline QDate   lastBackup()           { return s_lastBackup;           }
 	static inline QPoint  mainWindowPosition()   { return s_mainWindowPosition;   }
@@ -353,6 +355,7 @@ class Settings // FIXME: Distaptch new config events ?
 	static inline void setTimeToShowOnMouseIn(int time)         { s_timeToShowOnMouseIn  = time;        }
 	static inline void setBasketTreeWidth(int width)            { s_basketTreeWidth      = width;       }
 	static inline void setUsePassivePopup(bool enable)          { s_usePassivePopup      = enable;      }
+	static inline void setWelcomeBasketsAdded(bool added)       { s_welcomeBasketsAdded  = added;       }
 	static inline void setDataFolder(const QString &folder)     { s_dataFolder           = folder;      }
 	static inline void setLastBackup(const QDate &date)         { s_lastBackup           = date;        }
 	static inline void setMainWindowPosition(const QPoint &pos) { s_mainWindowPosition   = pos;         }

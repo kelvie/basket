@@ -199,6 +199,8 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 	public:
 		static QString s_fileToOpen;
 
+	public slots:
+		void addWelcomeBaskets();
 	private slots:
 		void updateNotesActions();
 		void slotBasketNumberChanged(int number);

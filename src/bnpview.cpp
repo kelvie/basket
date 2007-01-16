@@ -174,13 +174,42 @@ void BNPView::lateInit()
 		// Create first basket:
 			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		}
-	// TODO: Create Welcome Baskets:
+	}
+
+	// Load the Welcome Baskets if it is the First Time:
+	if (!Settings::welcomeBasketsAdded()) {
+		addWelcomeBaskets();
+		Settings::setWelcomeBasketsAdded(true);
+		Settings::saveConfig();
 	}
 
 	m_tryHideTimer = new QTimer(this);
 	m_hideTimer    = new QTimer(this);
 	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
 	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
+}
+
+void BNPView::addWelcomeBaskets()
+{
+	// Possible paths where to find the welcome basket archive, trying the translated one, and falling back to the English one:
+	QStringList possiblePaths;
+	possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + KGlobal::locale()->language() + ".baskets"));
+	possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + QStringList::split("_", KGlobal::locale()->language())[0] + ".baskets"));
+	possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_en_US.baskets"));
+
+	// Take the first EXISTING basket archive found:
+	QDir dir;
+	QString path;
+	for (QStringList::Iterator it = possiblePaths.begin(); it != possiblePaths.end(); ++it) {
+		if (dir.exists(*it)) {
+			path = *it;
+			break;
+		}
+	}
+
+	// Extract:
+	if (!path.isEmpty())
+		Archive::open(path);
 }
 
 void BNPView::onFirstShow()
@@ -580,7 +609,7 @@ void BNPView::setupActions()
 
 	/** Help : ****************************************************************/
 
-	i18n("&Welcome Baskets");
+	new KAction( i18n("&Welcome Baskets"), "", "", this, SLOT(addWelcomeBaskets()), actionCollection(), "help_welcome_baskets" );
 }
 
 QListViewItem* BNPView::firstListViewItem()

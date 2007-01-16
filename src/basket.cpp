@@ -2313,8 +2313,16 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		case Note::Link:
 			link = clicked->linkAt(event->pos() - QPoint(clicked->x(), clicked->y()));
 			if ( ! link.isEmpty() ) {
-				KRun *run = new KRun(link); //  open the URL.
-				run->setAutoDelete(true);
+				if (link == "basket-internal:remove-basket") {
+					// TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
+					Global::bnpView->doBasketDeletion(this);
+				} else if (link == "basket-internal:import") {
+					QPopupMenu *menu = Global::bnpView->popupMenu("fileimport");
+					menu->exec(event->globalPos());
+				} else {
+					KRun *run = new KRun(link); //  open the URL.
+					run->setAutoDelete(true);
+				}
 				break;
 			} // If there is no link, edit note content
 		case Note::Content:

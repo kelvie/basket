@@ -96,6 +96,7 @@ int     Settings::s_defIconSize          = 32; // TODO: RENAME: importIconSize
 bool    Settings::s_blinkedFilter        = false;
 bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
+bool    Settings::s_welcomeBasketsAdded  = false;
 QString Settings::s_dataFolder           = "";
 QDate   Settings::s_lastBackup           = QDate();
 QPoint  Settings::s_mainWindowPosition   = QPoint();
@@ -148,6 +149,7 @@ void Settings::loadConfig()
 	setTimeToShowOnMouseIn(  config->readNumEntry( "timeToShowOnMouseIn",  1)     );
 	setBasketTreeWidth(      config->readNumEntry( "basketTreeWidth",      -1)    );
 	setUsePassivePopup(      config->readBoolEntry("usePassivePopup",      true)  );
+	setWelcomeBasketsAdded(  config->readBoolEntry("welcomeBasketsAdded",  false) );
 	setDataFolder(           config->readPathEntry("dataFolder",           "")    );
 	setLastBackup(           config->readDateTimeEntry("lastBackup", new QDateTime()).date());
 	setMainWindowPosition(   config->readPointEntry("position"             )      );
@@ -234,6 +236,7 @@ void Settings::saveConfig()
 	config->writeEntry( "timeToShowOnMouseIn",  timeToShowOnMouseIn()  );
 	config->writeEntry( "basketTreeWidth",      basketTreeWidth()      );
 	config->writeEntry( "usePassivePopup",      usePassivePopup()      );
+	config->writeEntry( "welcomeBasketsAdded",  welcomeBasketsAdded()  );
 	config->writePathEntry("dataFolder",        dataFolder()           );
 	config->writeEntry( "lastBackup",           QDateTime(lastBackup()));
 	config->writeEntry( "position",             mainWindowPosition()   );
