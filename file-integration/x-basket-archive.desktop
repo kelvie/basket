@@ -4,6 +4,7 @@ MimeType=application/x-basket-archive
 Type=MimeType
 Comment=Basket Archive
 Comment[fr]=Archive de paniers
+Comment[it]=Archivio di canestri
 Comment[ja]=バスケットアーカイブ
 Icon=baskets
 Patterns=*.baskets

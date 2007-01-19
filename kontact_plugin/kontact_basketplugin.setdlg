@@ -1,6 +1,7 @@
 [Basket]
 Name=Baskets
 Name[fr]=Paniers
+Name[it]=Canestri
 Name[ja]=バスケット
 Name[nn]=Korger
 Name[es]=Cestas
@@ -10,6 +11,7 @@ Name[de]=Körbe
 Comment=BasKet Note Pads component
 Comment[de]=Komponente BasKet Notizblätter
 Comment[fr]=Composant Blocs notes BasKet
+Comment[it]=Componente Blocco appunti BasKet
 Comment[ja]=BasKet メモパッドコンポーネント
 Comment[nn]=Korgnotat-komponent
 Comment[es]=Componente para las notas de basket

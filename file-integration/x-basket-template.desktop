@@ -4,6 +4,7 @@ MimeType=application/x-basket-template
 Type=MimeType
 Comment=Basket Template
 Comment[fr]=Modèle de panier
+Comment[it]=Modello di canestri
 Comment[ja]=バスケットテンプレート
 Icon=baskett
 Patterns=*.baskett
