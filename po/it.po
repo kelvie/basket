@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-01-19 01:26+0100\n"
+"PO-Revision-Date: 2007-01-19 15:45+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: italian <kde-i18n-it@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "Salva come archivio basket"
 
 #: archive.cpp:54
 msgid "Saving as basket archive. Please wait..."
-msgstr "Salvataggio come archivio basket. Attendere prego..."
+msgstr "Salvataggio come archivio basket in corso. Attendere prego..."
 
 #: archive.cpp:258
 msgid "This file is not a basket archive."
@@ -105,7 +105,6 @@ msgstr ""
 "aggiorna ad una versione più recente se vuoi aprire questo file."
 
 #: backup.cpp:56
-#, fuzzy
 msgid "Backup & Restore"
 msgstr "Salva e ripristina"
 
@@ -122,9 +121,8 @@ msgid "&Move to Another Folder..."
 msgstr "S&posta in un'altra cartella..."
 
 #: backup.cpp:70
-#, fuzzy
 msgid "&Use Another Existing Folder..."
-msgstr "&Usa un'altra cartella esistente"
+msgstr "&Usa un'altra cartella esistente..."
 
 #: backup.cpp:71
 msgid "Why to do that?"
@@ -239,9 +237,8 @@ msgid "Override File?"
 msgstr "Sostituisci il file?"
 
 #: backup.cpp:200
-#, fuzzy
 msgid "Backing up baskets. Please wait..."
-msgstr "Salvataggio canestri. Attendere prego..."
+msgstr "Salvataggio canestri in corso. Attendere prego..."
 
 #: backup.cpp:231 bnpview.cpp:1786
 msgid "Open Basket Archive"
@@ -281,6 +278,8 @@ msgid ""
 "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing "
 "Folder...\" and select that folder."
 msgstr ""
+"Scegli \"Canestro\"->\"Salva e ripristina...\"->\"Usa un'altra cartella "
+"esistente...\" e seleziona quella cartella."
 
 #: backup.cpp:254
 msgid "Restoring <b>%1</b>. Please wait..."
@@ -295,7 +294,6 @@ msgstr ""
 "file <b>%1</b>."
 
 #: backup.cpp:257
-#, fuzzy
 msgid "Restore Baskets"
 msgstr "Ripristina canestri"
 
@@ -304,6 +302,8 @@ msgid ""
 "This archive is either not a backup of baskets or is corrupted. It cannot be "
 "imported. Your old baskets have been preserved instead."
 msgstr ""
+"Questo archivio non è una copia di sicurezza di canestri, oppure è rovinato. "
+"Non può essere importato. I canestri preesistenti sono stati preservati."
 
 #: backup.cpp:287
 msgid "Restore Error"
@@ -314,6 +314,8 @@ msgid ""
 "Your backup has been successfuly restored to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
 msgstr ""
+"La copia di sicurezza è stata ripristinata correttamente in <b>%1</b>. %2 sta "
+"per essere riavviato per tenere in considerazione questo cambiamento."
 
 #: backup.cpp:338
 msgid "Restart"
@@ -323,13 +325,13 @@ msgstr "Riavvio"
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration"
-msgstr ""
+msgstr "Canestri prima del ripristino"
 
 #: backup.cpp:356
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration (%1)"
-msgstr ""
+msgstr "Canestri prima del ripristino (%1)"
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -922,7 +924,7 @@ msgstr "&Nascondi la finestra"
 
 #: bnpview.cpp:375
 msgid "&HTML Web Page..."
-msgstr "Pagina &HTML"
+msgstr "Pagina &HTML..."
 
 #: bnpview.cpp:377
 msgid "K&Notes"
@@ -949,13 +951,12 @@ msgid "&Tomboy"
 msgstr "&Tomboy"
 
 #: bnpview.cpp:389
-#, fuzzy
 msgid "Text &File..."
-msgstr "&Salva su file..."
+msgstr "&File di testo..."
 
 #: bnpview.cpp:392
 msgid "&Backup && Restore..."
-msgstr ""
+msgstr "&Salva e ripristina..."
 
 #: bnpview.cpp:397
 msgid "D&elete"
@@ -1130,9 +1131,8 @@ msgid "Configure &Global Shortcuts..."
 msgstr "Configura scorciatoie &globali..."
 
 #: bnpview.cpp:583
-#, fuzzy
 msgid "&Welcome Baskets"
-msgstr "&Rimuovi canestro"
+msgstr "Canestri di &benvenuto"
 
 #: bnpview.cpp:907
 msgid "Plain Text Notes Conversion"
@@ -1196,7 +1196,6 @@ msgid "Picked color to basket <i>%1</i>"
 msgstr "Selezionato colore nel basket <i>%1</i>"
 
 #: bnpview.cpp:1457
-#, fuzzy
 msgid "The plain text notes have been converted to rich text."
 msgstr "Le note di testo semplice sono state convertite in note arricchite."
 
@@ -1205,12 +1204,10 @@ msgid "Conversion Finished"
 msgstr "Conversione terminata"
 
 #: bnpview.cpp:1459
-#, fuzzy
 msgid "There are no plain text notes to convert."
 msgstr "Non ci sono note di testo semplice da convertire."
 
 #: bnpview.cpp:1484
-#, fuzzy
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1221,13 +1218,13 @@ msgid ""
 "it, try to remove the file %5basketui.rc</p>"
 msgstr ""
 "<p><b>Sembra che il file basketui.rc non esista o sia troppo vecchio.<br>%1 "
-"non può funzionare senza e si fermerà.</b></p><p>Controlla la tua "
+"non può funzionare senza e si fermerà.</b></p><p>Per favore, controlla la tua "
 "installazione di %2.</p><p>Se non hai i privilegi amministrativi per "
-"installare l'applicazione a livello di sistema puoi copiare il file basketui."
-"rc dall'archivio di installazione nella cartella <a href='file://%3'>%4</a>."
+"installare l'applicazione a livello di sistema puoi copiare il file basketui.rc "
+"dall'archivio di installazione nella cartella <a href='file://%3'>%4</a>."
 "</p><p>Come ultima risorsa, se sei sicuro che l'applicazione è installata "
-"correttamente ma hai avuto precedentemente una versione non definitiva, "
-"cerca di rimuovere il file %5basketui.rc</p>"
+"correttamente ma se in precedenza hai installato ed usato una versione non "
+"definitiva, prova a rimuovere il file %5basketui.rc</p>"
 
 #: bnpview.cpp:1495
 msgid "Ressource not Found"
@@ -1250,7 +1247,6 @@ msgid "Delete Only that Basket"
 msgstr "Cancella solo quel canestro"
 
 #: bnpview.cpp:1641
-#, fuzzy
 msgid "Delete Note & Children"
 msgstr "Cancella con tutti quelli contenuti"
 
@@ -1267,7 +1263,6 @@ msgid "&Remove Basket"
 msgstr "&Rimuovi canestro"
 
 #: bnpview.cpp:1670
-#, fuzzy
 msgid ""
 "<qt><b>%1</b> have the following children baskets.<br>Do you want to remove "
 "them too?</qt>"
@@ -1276,14 +1271,12 @@ msgstr ""
 "qt>"
 
 #: bnpview.cpp:1673
-#, fuzzy
 msgid "Remove Children Baskets"
-msgstr "Rimuovi sotto-canestri"
+msgstr "Rimuovi sottocanestri"
 
 #: bnpview.cpp:1675
-#, fuzzy
 msgid "&Remove Children Baskets"
-msgstr "&Rimuovi sotto-canestri"
+msgstr "&Rimuovi sottocanestri"
 
 #: bnpview.cpp:1747 bnpview.cpp:1785
 msgid "Basket Archives"
@@ -1487,7 +1480,6 @@ msgid ""
 msgstr "dati"
 
 #: htmlexporter.cpp:319
-#, fuzzy
 msgid "Made with %1, a KDE tool to take notes and keep information at hand."
 msgstr ""
 "Creato con %1, uno strumento KDE per prendere note e tenere sottomano una "
@@ -1653,7 +1645,6 @@ msgstr ""
 "destra della finestra, descrivilo e fai clic su Invia."
 
 #: likeback.cpp:457
-#, fuzzy
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe the mis-behaviour "
@@ -1877,7 +1868,6 @@ msgid "You disabled preview but still see images?"
 msgstr "Hai disabilitato l'anteprima ma vedi ancora le immagini?"
 
 #: linklabel.cpp:607
-#, fuzzy
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
 "only applies to file and local link notes.<br>The images you see are image "
@@ -1982,7 +1972,6 @@ msgid "How is it useful?"
 msgstr "In che modo è utile?"
 
 #: newbasketdialog.cpp:217
-#, fuzzy
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or topics;"
@@ -1991,11 +1980,11 @@ msgid ""
 "group of baskets to export together (to eg. email them to people).</li></ul>"
 msgstr ""
 "<p>Creare canestri all'interno di altri canestri a formare una gerarchia ti "
-"consente di essere più organizzato ad esempio:</p><ul><li>Raggruppando i "
+"consente di essere più organizzato, ad esempio:</p><ul><li>Raggruppando i "
 "canestri per temi o argomenti;</li><li>Raggruppando i canestri in cartelle "
 "per progetti differenti;</li><li>Creando sezioni con sottocanestri che "
 "rappresentano capitoli o pagine;</li><li>Creando gruppi di canestri da "
-"esportare insieme (ad esempio da inviare ad altre persone).</li></ul>"
+"esportare insieme (ad esempio per inviarli ad altre persone).</li></ul>"
 
 #: newbasketdialog.cpp:308
 msgid "Free-form"
@@ -2350,7 +2339,6 @@ msgid "Is Web Color"
 msgstr "È un colore web"
 
 #: noteedit.cpp:381
-#, fuzzy
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
@@ -2522,9 +2510,9 @@ msgstr "&Canestro"
 
 #. i18n: file basket_part.rc line 10
 #: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Export"
-msgstr "&Importa"
+msgstr "&Esporta"
 
 #. i18n: file basket_part.rc line 20
 #: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
@@ -2688,7 +2676,6 @@ msgid "&Show current basket icon in system tray icon"
 msgstr "Mo&stra l'icona del canestro corrente come icona nel vassoio di sistema"
 
 #: settings.cpp:426
-#, fuzzy
 msgid "&Hide main window when mouse leaves it for"
 msgstr "&Nascondi la finestra principale quando il mouse rimane fuori da essa per"
 
@@ -2720,7 +2707,7 @@ msgstr "Comportamento"
 
 #: settings.cpp:525
 msgid "&Transform lines starting with * or - to lists in text editors"
-msgstr "&Trasforma le linee che cominciano per * o - in liste negli editor di testo"
+msgstr "&Trasforma le righe che cominciano per * o - in liste negli editor di testo"
 
 #: settings.cpp:528
 msgid "Ask confirmation before &deleting notes"
@@ -2755,12 +2742,12 @@ msgid ""
 "empty checkbox and a checked box."
 msgstr ""
 "Ad esempio, una serie di note con le etichette <b>Da fare</b> e <b>Fatto</b> "
-"sarà esportata come una serie di linee precedute da <b>[ ]</b> o <b>[x]</b> "
+"sarà esportata come una serie di righe precedute da <b>[ ]</b> o <b>[x]</b> "
 "che rappresentano rispettivamente una casella vuota ed una marcata."
 
 #: settings.cpp:552
 msgid "&Group a new note when clicking on the right of the insertion line"
-msgstr "Ra&ggruppa una nuova nota facendo clic a destra della linea di inserimento"
+msgstr "Ra&ggruppa una nuova nota facendo clic a destra della riga di inserimento"
 
 #: settings.cpp:556
 msgid "How to group a new note?"
@@ -2772,7 +2759,7 @@ msgid ""
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
 msgstr ""
-"<p>Quando questa opzione è abilitata la linea di inserimento ti consente non "
+"<p>Quando questa opzione è abilitata la riga di inserimento ti consente non "
 "solo di inserire note in corrispondenza della posizione del cursore, ma "
 "anche di raggruppare una nuova nota con quella sotto il cursore:</p>"
 
@@ -2784,7 +2771,7 @@ msgid ""
 "or above</b>, depending on where your mouse is.</p>"
 msgstr ""
 "<p>Posiziona il mouse tra le note, dove ne vuoi aggiungere una nuova.<br>Fa "
-"clic a <b>sinistra</b> del segnaposto centrale nella linea di inserimento "
+"clic a <b>sinistra</b> del segnaposto centrale nella riga di inserimento "
 "per <b>inserire</b> una nota.<br>Fai clic a <b>destra</b> per "
 "<b>raggruppare</b> una nota con la nota <b>sottostante o sovrastante</b> in "
 "base alla posizione del mouse.</p>"
@@ -2951,13 +2938,12 @@ msgid "Open sound notes with:"
 msgstr "Apri note di tipo suono con:"
 
 #: settings.cpp:873
-#, fuzzy
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured in "
 "Konqueror will be used.</p>"
 msgstr ""
-"<p>Se marcata, l'applicazione impostata sotto verrà utilizzata per aprire "
+"<p>Se marcata, l'applicazione impostata di seguito verrà utilizzata per aprire "
 "quel tipo di nota.</p><p>Altrimenti verrà utilizzata l'applicazione che hai "
 "configurato in Konqueror.</p>"
 
@@ -2974,7 +2960,6 @@ msgid "How to change the application used to open Web links?"
 msgstr "Come modificare l'applicazione usata per aprire collegamenti Web?"
 
 #: settings.cpp:904
-#, fuzzy
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -3012,7 +2997,6 @@ msgid "How to change the applications used to open files and links?"
 msgstr "Come modificare le applicazioni usate per aprire file e collegamenti?"
 
 #: settings.cpp:923
-#, fuzzy
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applies to Web links if you choose not to open them systematically in a "
@@ -3066,37 +3050,35 @@ msgstr "T&utte le note nello stesso canestro"
 
 #: softwareimporters.cpp:74
 msgid "Import Text File"
-msgstr ""
+msgstr "Importa file di testo"
 
 #: softwareimporters.cpp:80
 msgid "Format of the Text File"
-msgstr ""
+msgstr "Formato del file di testo"
 
 #: softwareimporters.cpp:81
 msgid "Notes separated by an &empty line"
-msgstr ""
+msgstr "Note separat&e da una riga vuota"
 
 #: softwareimporters.cpp:82
-#, fuzzy
 msgid "One &note per line"
-msgstr "Su o&gni linea"
+msgstr "Una &nota per riga"
 
 #: softwareimporters.cpp:83
 msgid "Notes begin with a &dash (-)"
-msgstr ""
+msgstr "La note iniziano con un &trattino (-)"
 
 #: softwareimporters.cpp:84
 msgid "Notes begin with a &star (*)"
-msgstr ""
+msgstr "Le note iniziano con un a&sterisco (*)"
 
 #: softwareimporters.cpp:85
 msgid "&Use another separator:"
-msgstr ""
+msgstr "&Usa un'altro separatore:"
 
 #: softwareimporters.cpp:95
-#, fuzzy
 msgid "&All in one note"
-msgstr "T&utte le note nello stesso canestro"
+msgstr "Tutto in una not&a"
 
 #: softwareimporters.cpp:237
 msgid "From KJots"
@@ -3119,7 +3101,7 @@ msgstr "Da Tomboy"
 msgid ""
 "_: From TextFile.txt\n"
 "From %1"
-msgstr ""
+msgstr "Da %1"
 
 #: softwareimporters.cpp:643
 msgid "Can not import that file. It is either corrupted or not a TuxCards file."
@@ -3132,7 +3114,6 @@ msgid "Bad File Format"
 msgstr "Formato del file errato"
 
 #: softwareimporters.cpp:671
-#, fuzzy
 msgid ""
 "A note is encrypted. The importer does not yet support encrypted notes. "
 "Please remove the encryption with TuxCards and re-import the file."
@@ -3413,35 +3394,31 @@ msgstr ""
 "stato come il suo equivalente testuale."
 
 #: tagsedit.cpp:496
-#, fuzzy
 msgid "On ever&y line"
-msgstr "Su o&gni linea"
+msgstr "Su o&gni riga"
 
 #: tagsedit.cpp:501
 msgid "What does it mean?"
 msgstr "Cosa significa?"
 
 #: tagsedit.cpp:502
-#, fuzzy
 msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every line of the note."
 msgstr ""
-"Quando una nota comprende differenti linee puoi scegliere di esportare "
-"l'etichetta o lo stato solo sulla prima linea o su ogni linea della nota."
+"Quando una nota è costituita da differenti righe puoi scegliere di esportare "
+"l'etichetta o lo stato solo sulla prima riga o su ogni riga della nota."
 
 #: tagsedit.cpp:504
-#, fuzzy
 msgid ""
 "In the example above, the tag of the top note is only exported on the first "
 "line, while the tag of the bottom note is exported on every line of the note."
 msgstr ""
-"Nell'esempio riportato sopra l'etichetta della nota superiore è esportata "
-"solo nella prima linea, mentre l'etichetta della nota inferiore è esportata "
-"su ogni linea della nota."
+"Nell'esempio riportato precedente l'etichetta della nota superiore è esportata "
+"solo nella prima riga, mentre l'etichetta della nota inferiore è esportata "
+"su ogni riga della nota."
 
 #: tagsedit.cpp:901
-#, fuzzy
 msgid "Deleting the tag will remove it from every note it is currently assigned to."
 msgstr ""
 "Cancellando l'etichetta ne verranno rimosse tutte le occorrenze dalle note a "
@@ -3456,7 +3433,6 @@ msgid "Delete Tag"
 msgstr "Cancella etichetta"
 
 #: tagsedit.cpp:908
-#, fuzzy
 msgid ""
 "Deleting the state will remove the tag from every note the state is "
 "currently assigned to."
