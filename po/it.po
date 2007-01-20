@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-01-19 15:45+0100\n"
+"PO-Revision-Date: 2007-01-20 01:35+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: italian <kde-i18n-it@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -916,7 +916,7 @@ msgstr ""
 
 #: bnpview.cpp:366 bnpview.cpp:368
 msgid "&Basket Archive..."
-msgstr "Apri archivi&o basket..."
+msgstr "Archivio &basket..."
 
 #: bnpview.cpp:371
 msgid "&Hide Window"
@@ -1280,7 +1280,7 @@ msgstr "&Rimuovi sottocanestri"
 
 #: bnpview.cpp:1747 bnpview.cpp:1785
 msgid "Basket Archives"
-msgstr "Archivio basket"
+msgstr "Archivi basket"
 
 #: bnpview.cpp:1869
 msgid "Clipboard content pasted to basket <i>%1</i>"
