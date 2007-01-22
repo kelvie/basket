@@ -1,11 +1,11 @@
 # Translation of nn to Norwegian Nynorsk
 #
-# Karl Ove Hufthammer <karl@huftis.org>, 2006.
+# Karl Ove Hufthammer <karl@huftis.org>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2006-09-28 18:29+0200\n"
+"PO-Revision-Date: 2007-01-22 20:00+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -27,14 +27,12 @@ msgid ""
 msgstr "karl@huftis.org"
 
 #: aboutdata.cpp:27
-#, fuzzy
 msgid ""
 "<p><b>Taking care of your ideas.</b></p><p>A note-taking application that "
 "makes it easy to record ideas as you think, and quickly find them later. "
 "Organizing your notes has never been so easy.</p>"
 msgstr ""
-"<p><b>Ta vare på tankane dine.</b></p><p>Eit notatprogram som gjer det "
-"enkelt å skriva ned idéar og finna dei att seinare. Det har aldri vore "
+"<p><b>Ta vare på tankane dine.</b></p><p>Eit notatprogram som gjer det enkelt å skriva ned idéar og finna dei att seinare. Det har aldri vore "
 "lettare å halda orden i sysakene.</p>"
 
 #: aboutdata.cpp:34
@@ -63,25 +61,24 @@ msgstr "Ikon."
 
 #: archive.cpp:54 bnpview.cpp:1750
 msgid "Save as Basket Archive"
-msgstr ""
+msgstr "Lagra som korgarkiv"
 
 #: archive.cpp:54
 msgid "Saving as basket archive. Please wait..."
-msgstr ""
+msgstr "Lagrar som korgarkiv. Vent litt …"
 
 #: archive.cpp:258
 msgid "This file is not a basket archive."
-msgstr ""
+msgstr "Denne fila er ikkje eit korgarkiv."
 
 #: archive.cpp:258 archive.cpp:289 archive.cpp:316 archive.cpp:324
 #: archive.cpp:334 archive.cpp:381
-#, fuzzy
 msgid "Basket Archive Error"
-msgstr "Lagringsfeil"
+msgstr "Korgarkivfeil"
 
 #: archive.cpp:289 archive.cpp:334 archive.cpp:381
 msgid "This file is corrupted. It can not be opened."
-msgstr ""
+msgstr "Fila er øydelagd, og kan ikkje opnast."
 
 #: archive.cpp:311
 msgid ""
@@ -90,41 +87,37 @@ msgid ""
 "missing because they are of a type only available in new versions. When "
 "saving the file back, consider to save it to another file, to preserve the "
 "original one."
-msgstr ""
+msgstr "Denne fila vart lagra i ein nyare versjon av %1 enn du brukar. Fila kan opnast, men det er ikkje sikkert all informasjonen i ho vert tilgjengeleg. Det kan for eksempel vera at nokre notat manglar på grunn av at dei er av ein type som berre er tilgjengeleg i nye versjonar. Når du skal lagra fila, bør du vurdera å lagra ho under eit anna filnamn, slik at originalen ikkje går tapt."
 
 #: archive.cpp:322
 msgid ""
 "This file was created with a recent version of %1. Please upgrade to a newer "
 "version to be able to open that file."
-msgstr ""
+msgstr "Denne fila vart lagra i ein nyare versjon av %1 enn du brukar. Du må oppgradera til den nye versjonen for å kunna opna fila."
 
 #: backup.cpp:56
-#, fuzzy
 msgid "Backup & Restore"
-msgstr "&Gjenopprett"
+msgstr "Reservekopiar og gjenoppretting"
 
 #: backup.cpp:65
-#, fuzzy
 msgid "Save Folder"
-msgstr "Lagra til fil"
+msgstr "Lagringsmappe"
 
 #: backup.cpp:66
 msgid "Your baskets are currently stored in that folder:<br><b>%1</b>"
-msgstr ""
+msgstr "Korgene dine vert no lagra i mappa:<br><b>%1</b>"
 
 #: backup.cpp:69
-#, fuzzy
 msgid "&Move to Another Folder..."
-msgstr "&Lagra til fil …"
+msgstr "&Flytt til ei anna mappe …"
 
 #: backup.cpp:70
 msgid "&Use Another Existing Folder..."
-msgstr ""
+msgstr "&Bruk ei gammal mappe …"
 
 #: backup.cpp:71
-#, fuzzy
 msgid "Why to do that?"
-msgstr "Kva tyder dette?"
+msgstr "Korfor gjera dette?"
 
 #: backup.cpp:72
 msgid ""
@@ -142,193 +135,182 @@ msgstr ""
 
 #: backup.cpp:89
 msgid "Backups"
-msgstr ""
+msgstr "Reservekopiar"
 
 #: backup.cpp:92
 msgid "&Backup..."
-msgstr ""
+msgstr "&Ta reservekopi …"
 
 #: backup.cpp:93
 msgid "&Restore a Backup..."
-msgstr ""
+msgstr "&Gjenopprett frå reservekopi …"
 
 #: backup.cpp:113
 msgid "Last backup: never"
-msgstr ""
+msgstr "Siste reservekopi: aldri"
 
 #: backup.cpp:115
 #, c-format
 msgid "Last backup: %1"
-msgstr ""
+msgstr "Siste reservekopi: %1"
 
 #: backup.cpp:124
 msgid "Choose a Folder Where to Move Baskets"
-msgstr ""
+msgstr "Vel mappa du vil flytta korgene til"
 
 #: backup.cpp:136
 msgid "The folder <b>%1</b> is not empty. Do you want to override it?"
-msgstr ""
+msgstr "Mappa <b>%1</b> er ikkje tom. Ønskjer du å overskriva ho?"
 
 #: backup.cpp:137
 msgid "Override Folder?"
-msgstr ""
+msgstr "Vil du overskriva mappa?"
 
 #: backup.cpp:138 backup.cpp:190 bnpview.cpp:1759 htmlexporter.cpp:68
 msgid "&Override"
-msgstr ""
+msgstr "&Overskriv"
 
 #: backup.cpp:147
 msgid ""
 "Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
+msgstr "Korgene er no flytte til <b>%1</b>. %2 vert starta på nytt for at desse endringane skal trå i kraft."
 
 #: backup.cpp:155
 msgid "Choose an Existing Folder to Store Baskets"
-msgstr ""
+msgstr "Vel ei gammal mappe til å lagra korgene i"
 
 #: backup.cpp:158
 msgid ""
 "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is "
 "going to be restarted to take this change into account."
-msgstr ""
+msgstr "Lagringsmappa er no flytt til <b>%1</b>. %2 vert starta på nytt for at desse endringane skal trå i kraft."
 
 #: backup.cpp:170
 msgid ""
 "_: Backup filename (without extension), %1 is the date\n"
 "Baskets_%1"
-msgstr ""
+msgstr "Korger_%1"
 
 #: backup.cpp:175 backup.cpp:230
 msgid "Tar Archives Compressed by Gzip"
-msgstr ""
+msgstr "Tar-arkiv komprimert med Gzip"
 
 #: backup.cpp:175 backup.cpp:230 bnpview.cpp:1747 bnpview.cpp:1785
 #: htmlexporter.cpp:53
-#, fuzzy
 msgid "All Files"
-msgstr "&Filer"
+msgstr "Alle filer"
 
 #: backup.cpp:179 backup.cpp:200
-#, fuzzy
 msgid "Backup Baskets"
-msgstr "Korger"
+msgstr "Reservekopiering"
 
 #: backup.cpp:187 bnpview.cpp:1756 htmlexporter.cpp:65
 msgid "The file <b>%1</b> already exists. Do you really want to override it?"
-msgstr ""
+msgstr "Fila <b>%1</b> finst allereie. Er du sikker på at du vil skriva over ho?"
 
 #: backup.cpp:189 bnpview.cpp:1758 htmlexporter.cpp:67
 msgid "Override File?"
-msgstr ""
+msgstr "Skriva over?"
 
 #: backup.cpp:200
-#, fuzzy
 msgid "Backing up baskets. Please wait..."
-msgstr "Eksporter til &HTML …"
+msgstr "Lagrar reservekopi av korger. Vent litt …"
 
 #: backup.cpp:231 bnpview.cpp:1786
 msgid "Open Basket Archive"
-msgstr ""
+msgstr "Opna korgarkiv"
 
 #: backup.cpp:242
 msgid "README.txt"
-msgstr ""
+msgstr "LESMEG.txt"
 
 #: backup.cpp:246
 #, c-format
 msgid ""
 "This is a safety copy of your baskets like they were before you started to "
 "restore the backup %1."
-msgstr ""
+msgstr "Dette er ein reservekopi av korgene dine slik dei var før du begynte å gjenoppretta frå reservekopien %1."
 
 #: backup.cpp:247
 msgid ""
 "If the restoration was a success and you restored what you wanted to "
 "restore, you can remove this folder."
-msgstr ""
+msgstr "Viss gjenopprettinga gjekk bra, kan du fjerna denne mappa."
 
 #: backup.cpp:248
 msgid ""
 "If something went wrong during the restoration process, you can re-use this "
 "folder to store your baskets and nothing will be lost."
-msgstr ""
+msgstr "Viss noko gjekk galt under gjenopprettinga, kan du bruka denne mappa til å lagra korgene dine i, slik at ingenting går tapt."
 
 #: backup.cpp:249
 msgid ""
 "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing "
 "Folder...\" and select that folder."
-msgstr ""
+msgstr "Vel «Korg | Reservekopiar og gjenoppretting | Bruk ei gammal mappe» og vel den mappa."
 
 #: backup.cpp:254
-#, fuzzy
 msgid "Restoring <b>%1</b>. Please wait..."
-msgstr "Eksporter til &HTML …"
+msgstr "Gjenopprettar <b>%1</b>. Vent litt …"
 
 #: backup.cpp:255
 msgid ""
 "If something goes wrong during the restoration process, read the file <b>%1</"
 "b>."
-msgstr ""
+msgstr "Viss noko går galt under gjenopprettingsprosessen, bør du lesa fila <b>%1</b>."
 
 #: backup.cpp:257
-#, fuzzy
 msgid "Restore Baskets"
-msgstr "Slett korg"
+msgstr "Gjenopprett korger"
 
 #: backup.cpp:287
 msgid ""
 "This archive is either not a backup of baskets or is corrupted. It cannot be "
 "imported. Your old baskets have been preserved instead."
-msgstr ""
+msgstr "Dette arkivet er anten ikkje ein reservekopi av korger, eller så er det øydelagt. Du kan derfor ikkje opna arkivet, og dei gamle korgene dine er framleis gjeldande."
 
 #: backup.cpp:287
-#, fuzzy
 msgid "Restore Error"
-msgstr "&Gjenopprett"
+msgstr "Gjenopprettingsfeil"
 
 #: backup.cpp:295
 msgid ""
 "Your backup has been successfuly restored to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
+msgstr "Reservekopien din har blitt gjenoppretta til <b>%1</b>. %2 vert no starta på nytt for at desse endringane skal trå i kraft."
 
 #: backup.cpp:338
-#, fuzzy
 msgid "Restart"
-msgstr "&Gjenopprett"
+msgstr "Start på nytt"
 
 #: backup.cpp:351
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration"
-msgstr ""
+msgstr "Korger før gjenoppretting"
 
 #: backup.cpp:356
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration (%1)"
-msgstr ""
+msgstr "Korger før gjenoppretting (%1)"
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
-msgstr ""
-"Det nye notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+msgstr "Det nye notatet er ikkje i samsvar med filteret, og vert derfor skjult."
 
 #: basket.cpp:524
 msgid "A new note does not match the filter and is hidden."
-msgstr ""
-"Eit nytt notatet er ikkje i samsvar med filteret, og vert derfor skjult."
+msgstr "Eit nytt notatet er ikkje i samsvar med filteret, og vert derfor skjult."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
-msgstr ""
-"Nokre nye notat er ikkje i samsvar med filteret, og vert derfor skjulte."
+msgstr "Nokre nye notat er ikkje i samsvar med filteret, og vert derfor skjulte."
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"Dei nye notata er ikkje i samsvar med filteret, og vert derfor skjulte."
+msgstr "Dei nye notata er ikkje i samsvar med filteret, og vert derfor skjulte."
 
 #: basket.cpp:1542
 msgid ""
@@ -347,7 +329,6 @@ msgid "Dropped to basket <i>%1</i>"
 msgstr "La i korga <i>%1</i>"
 
 #: basket.cpp:2338
-#, fuzzy
 msgid ""
 "This message should never appear. If it does, this program is buggy! Please "
 "report the bug to the developer."
@@ -569,7 +550,6 @@ msgstr ""
 "endringane dine trygt."
 
 #: basket.cpp:5334
-#, fuzzy
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check that you have write "
 "access to it and the parent folders."
@@ -658,7 +638,6 @@ msgid "Learn some tips..."
 msgstr "Få nokre tips …"
 
 #: basketproperties.cpp:134
-#, fuzzy
 msgid ""
 "<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
 "option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
@@ -679,11 +658,9 @@ msgstr ""
 "til korga <i>Tips</i>, vert korga vist som <i><u>T</u>ips</i> i treet. Dette "
 "vil hjelpa deg å hugsa snar­vegane.</p><p><strong>Lokal eller global</strong>:"
 "<br>Med det første valet kan du visa korga mens hovud­vindauget er ope. "
-"Globale snar­vegar fungerer frå alle stader, sjølv om vindauget er skjult.</"
-"p><p><strong>Vis eller byt til</strong>:<br>Det siste valet gjer korga til "
+"Globale snar­vegar fungerer frå alle stader, sjølv om vindauget er skjult.</p><p><strong>Vis eller byt til</strong>:<br>Det siste valet gjer korga til "
 "den gjeldande utan å opna hovud­vindauget. Dette er nyttig når du brukar "
-"globale snar­vegar til å lima inn notat frå utklipps­tavla til gjeldande korg."
-"</p>"
+"globale snar­vegar til å lima inn notat frå utklipps­tavla til gjeldande korg.</p>"
 
 #: basketproperties.cpp:149
 msgid "S&how this basket"
@@ -698,14 +675,12 @@ msgid "S&witch to this basket (global shortcut)"
 msgstr "B&yt til denne korga (global snarveg)"
 
 #: basketstatusbar.cpp:100
-#, fuzzy
 msgid "Shows if there are changes that have not yet been saved."
 msgstr "Viser om det finst endringar som ikkje er lagra enno."
 
 #: basketstatusbar.cpp:128
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
-msgstr ""
-"«Ctrl + dra»: kopier, «Shift + dra»: flytt, «Shift + Ctrl + dra»: lag lenkje."
+msgstr "«Ctrl + dra»: kopier, «Shift + dra»: flytt, «Shift + Ctrl + dra»: lag lenkje."
 
 #: basketstatusbar.cpp:148
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
@@ -812,10 +787,8 @@ msgstr "Set inn tekstnotat"
 
 #: bnpview.cpp:265
 #, fuzzy
-msgid ""
-"Add a text note to the current basket without having to open the main window."
-msgstr ""
-"Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovud­vindauget."
+msgid "Add a text note to the current basket without having to open the main window."
+msgstr "Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:268 settings.cpp:576
 msgid "Insert image note"
@@ -826,8 +799,7 @@ msgstr "Set inn biletnotat"
 msgid ""
 "Add an image note to the current basket without having to open the main "
 "window."
-msgstr ""
-"Legg eit bilet­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
+msgstr "Legg eit bilet­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:272 settings.cpp:577
 msgid "Insert link note"
@@ -835,8 +807,7 @@ msgstr "Set inn lenkjenotat"
 
 #: bnpview.cpp:273
 #, fuzzy
-msgid ""
-"Add a link note to the current basket without having to open the main window."
+msgid "Add a link note to the current basket without having to open the main window."
 msgstr ""
 "Legg eit lenkje­notat til den gjeldande korga utan å måtta opna hovud­"
 "vindauget."
@@ -850,8 +821,7 @@ msgstr "Set inn fargenotat"
 msgid ""
 "Add a color note to the current basket without having to open the main "
 "window."
-msgstr ""
-"Legg eit farge­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
+msgstr "Legg eit farge­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:280
 msgid "Pick color from screen"
@@ -945,7 +915,7 @@ msgstr "&Lagra til fil …"
 
 #: bnpview.cpp:392
 msgid "&Backup && Restore..."
-msgstr ""
+msgstr "&Reservekopiar og gjenoppretting …"
 
 #: bnpview.cpp:397
 msgid "D&elete"
@@ -1245,10 +1215,8 @@ msgid "Delete Note & Children"
 msgstr "Slett korga og underkorgar"
 
 #: bnpview.cpp:1649 bnpview.cpp:1655
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr ""
-"<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Er du sikker på at du vil sletta korga <b>%1</b> og alt innhaldet?</qt>"
 
 #: bnpview.cpp:1657
 msgid "Remove Basket"
@@ -1481,8 +1449,7 @@ msgstr "data"
 #: htmlexporter.cpp:319
 #, fuzzy
 msgid "Made with %1, a KDE tool to take notes and keep information at hand."
-msgstr ""
-"Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
+msgstr "Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
@@ -1581,8 +1548,7 @@ msgstr "Send tilbakemelding til programutviklarane om ein feil i programmet."
 
 #: likeback.cpp:95
 msgid "Send application developers a comment about a new feature you desire"
-msgstr ""
-"Send tilbakemelding til programutviklarane med ønskje om ein ny funksjon."
+msgstr "Send tilbakemelding til programutviklarane med ønskje om ein ny funksjon."
 
 #: likeback.cpp:380
 msgid "&Send a Comment to Developers"
@@ -1600,8 +1566,7 @@ msgstr "Velkommen til %1."
 
 #: likeback.cpp:434
 msgid "To help us improve it, your comments are important."
-msgstr ""
-"Tilbakemeldingane dine er viktige for å hjelpa oss å forbetra programmet."
+msgstr "Tilbakemeldingane dine er viktige for å hjelpa oss å forbetra programmet."
 
 #: likeback.cpp:437
 msgid ""
@@ -1665,8 +1630,7 @@ msgid "<b>I like</b> the new artwork. Very refreshing."
 msgstr "<b>Eg liker</b> den flotte grafikken. Han er veldig frisk og fin."
 
 #: likeback.cpp:469
-msgid ""
-"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 msgstr ""
 "<b>Eg liker ikkje</b> velkomstsida i vegvisaren. Ho er for stor, og tar for "
 "lang tid å lesa."
@@ -1776,8 +1740,7 @@ msgstr ""
 
 #: likeback.cpp:771
 msgid "Do <b>not</b> ask for new features: your requests will be ignored."
-msgstr ""
-"Men <b>ikkje</b> be om nye funksjonar. Slike føre­spurnader vert oversett."
+msgstr "Men <b>ikkje</b> be om nye funksjonar. Slike føre­spurnader vert oversett."
 
 #: likeback.cpp:839
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
@@ -2725,8 +2688,7 @@ msgstr ""
 "eit skrive­­program."
 
 #: settings.cpp:541
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr "Lèt deg lima inn merke­lappar som rein­tekst­ekvivalentar."
 
 #: settings.cpp:542 tagsedit.cpp:488
@@ -3096,8 +3058,7 @@ msgid ""
 msgstr ""
 
 #: softwareimporters.cpp:643
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "Klarte ikkje importera fila. Ho er anten ugyldig, eller så er ho ikkje ei "
 "TuxCards-fil."
@@ -3416,10 +3377,8 @@ msgstr ""
 
 #: tagsedit.cpp:901
 #, fuzzy
-msgid ""
-"Deleting the tag will remove it from every note it is currently assigned to."
-msgstr ""
-"Viss du slettar merkelappen, vert han fjerna frå alle notata som har han."
+msgid "Deleting the tag will remove it from every note it is currently assigned to."
+msgstr "Viss du slettar merkelappen, vert han fjerna frå alle notata som har han."
 
 #: tagsedit.cpp:902
 msgid "Confirm Delete Tag"
@@ -3434,8 +3393,7 @@ msgstr "Fjern merkelapp"
 msgid ""
 "Deleting the state will remove the tag from every note the state is "
 "currently assigned to."
-msgstr ""
-"Viss du slettar tilstanden, vert han fjerna frå alle notata som har han."
+msgstr "Viss du slettar tilstanden, vert han fjerna frå alle notata som har han."
 
 #: tagsedit.cpp:909
 msgid "Confirm Delete State"
@@ -3605,3 +3563,4 @@ msgstr ""
 #~ msgstr ""
 #~ "Hugs at det er like viktig for oss å få veta kva du liker med programmet "
 #~ "som kva du ikkje liker."
+
