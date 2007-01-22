@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-01-22 20:00+0100\n"
+"PO-Revision-Date: 2007-01-22 20:19+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -132,6 +132,8 @@ msgid ""
 "folder manually (eg. adding a file in a basket folder will not add that file "
 "to the basket).</p>"
 msgstr ""
+"<p>Du kan flytta mappa der %1 lagrar korgene dine, av forskjellige grunnar:</p><ul><li>Lagra korgene i ein synleg plass i heimemappa, som for eksempel «~/Dokument/Notat/» eller «~/Korger».</li><li>Lagra korgene på ein tenar for å dela dei mellom fleire maskiner.<br>I dette tilfellet må du montera den delte fila til det lokale filsystemet, og be %2 brukar dette monteringspunktet.<br>Åtvaring: Ikkje finn på å køyra %3 samtidig på begge maskinene, då dette kan føra til tap av data."
+"</li></ul><p>Hugs at du ikkje må endra innhaldet i den mappa manuelt. (Viss du for eksempel legg til ei fil i ei korgmappe, vert ikkje denne lagt til korga.)</p>"
 
 #: backup.cpp:89
 msgid "Backups"
@@ -711,12 +713,11 @@ msgid "Paste clipboard contents in current basket"
 msgstr "Lim inn innhald frå utklippstavla i korga"
 
 #: bnpview.cpp:237
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open the main window."
 msgstr ""
-"Lèt deg lim inn innhaldet frå utklipps­tavla til den valde korga utan å måtta "
+"Lèt deg lima inn innhaldet frå utklipps­tavla til den valde korga utan å måtta "
 "opna hovud­vindauget."
 
 #: bnpview.cpp:240
@@ -732,12 +733,11 @@ msgid "Paste selection in current basket"
 msgstr "Lim inn utval i korg"
 
 #: bnpview.cpp:245
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open the main window."
 msgstr ""
-"Lèt deg lim inn utvalet på utklipps­tavla i gjeldande korg utan å måtta opna "
+"Lèt deg lima inn utvalet på utklipps­tavla i gjeldande korg utan å måtta opna "
 "hovud­vindauget."
 
 #: bnpview.cpp:248
@@ -745,14 +745,13 @@ msgid "Create a new basket"
 msgstr "Lag ny korg"
 
 #: bnpview.cpp:249
-#, fuzzy
 msgid ""
 "Allows you to create a new basket without having to open the main window "
 "(you then can use the other global shortcuts to add a note, paste clipboard "
 "or paste selection in this new basket)."
 msgstr ""
 "Lèt deg laga ei ny korg utan å opna hovud­vindauget. Etterpå kan du bruka "
-"andre globale snøgg­tastar for å leggja til notat, lima inn utklipps­tavle "
+"andre globale snøgg­tastar for å leggja til notat, lima inn utklipps­tavla "
 "eller lima inn utval i den nye korga."
 
 #: bnpview.cpp:252
@@ -760,42 +759,34 @@ msgid "Go to previous basket"
 msgstr "Gå til førre korg"
 
 #: bnpview.cpp:253
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open the main window."
-msgstr ""
-"Lèt deg byta frå gjeldande til den førre korga utan å måtta opna hovud­"
-"vindauget."
+msgstr "Lèt deg byta frå gjeldande til den førre korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:256
 msgid "Go to next basket"
 msgstr "Gå til neste korg"
 
 #: bnpview.cpp:257
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "the main window."
-msgstr ""
-"Lèt deg byta frå gjeldande til den neste korga utan å måtta opna hovud­"
-"vindauget."
+msgstr "Lèt deg byta frå gjeldande til den neste korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:264
 msgid "Insert text note"
 msgstr "Set inn tekstnotat"
 
 #: bnpview.cpp:265
-#, fuzzy
 msgid "Add a text note to the current basket without having to open the main window."
-msgstr "Legg eit tekstnotat til den gjeldande korga utan å måtta opna hovud­vindauget."
+msgstr "Legg eit tekst­notat til den gjeldande korga utan å måtta opna hovud­vindauget."
 
 #: bnpview.cpp:268 settings.cpp:576
 msgid "Insert image note"
 msgstr "Set inn biletnotat"
 
 #: bnpview.cpp:269
-#, fuzzy
 msgid ""
 "Add an image note to the current basket without having to open the main "
 "window."
@@ -806,18 +797,14 @@ msgid "Insert link note"
 msgstr "Set inn lenkjenotat"
 
 #: bnpview.cpp:273
-#, fuzzy
 msgid "Add a link note to the current basket without having to open the main window."
-msgstr ""
-"Legg eit lenkje­notat til den gjeldande korga utan å måtta opna hovud­"
-"vindauget."
+msgstr "Legg eit lenkje­notat til den gjeldande korga utan å måtta opna hovud­­vindauget."
 
 #: bnpview.cpp:276 settings.cpp:579
 msgid "Insert color note"
 msgstr "Set inn fargenotat"
 
 #: bnpview.cpp:277
-#, fuzzy
 msgid ""
 "Add a color note to the current basket without having to open the main "
 "window."
@@ -828,7 +815,6 @@ msgid "Pick color from screen"
 msgstr "Vel farge frå skjerm"
 
 #: bnpview.cpp:281
-#, fuzzy
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open the main window."
@@ -841,7 +827,6 @@ msgid "Grab screen zone"
 msgstr "Hent skjermbilete"
 
 #: bnpview.cpp:286
-#, fuzzy
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "the main window."
@@ -871,18 +856,16 @@ msgstr ""
 "dei."
 
 #: bnpview.cpp:366 bnpview.cpp:368
-#, fuzzy
 msgid "&Basket Archive..."
-msgstr "Ny &korg …"
+msgstr "&Korgarkiv …"
 
 #: bnpview.cpp:371
 msgid "&Hide Window"
 msgstr "Skjul &vindauge"
 
 #: bnpview.cpp:375
-#, fuzzy
 msgid "&HTML Web Page..."
-msgstr "&HTML-side"
+msgstr "&HTML-nettside …"
 
 #: bnpview.cpp:377
 msgid "K&Notes"
@@ -909,9 +892,8 @@ msgid "&Tomboy"
 msgstr "&Tomboy"
 
 #: bnpview.cpp:389
-#, fuzzy
 msgid "Text &File..."
-msgstr "&Lagra til fil …"
+msgstr "Tekst&fil …"
 
 #: bnpview.cpp:392
 msgid "&Backup && Restore..."
@@ -1090,9 +1072,8 @@ msgid "Configure &Global Shortcuts..."
 msgstr "Set opp &globale snarvegar …"
 
 #: bnpview.cpp:583
-#, fuzzy
 msgid "&Welcome Baskets"
-msgstr "&Slett korg"
+msgstr "&Velkommen-korger"
 
 #: bnpview.cpp:907
 msgid "Plain Text Notes Conversion"
@@ -1156,7 +1137,6 @@ msgid "Picked color to basket <i>%1</i>"
 msgstr "Henta farge til korga <i>%1</i>."
 
 #: bnpview.cpp:1457
-#, fuzzy
 msgid "The plain text notes have been converted to rich text."
 msgstr "Reintekstnotata er no gjort om til riktekstnotat."
 
@@ -1165,12 +1145,10 @@ msgid "Conversion Finished"
 msgstr "Omgjering fullført"
 
 #: bnpview.cpp:1459
-#, fuzzy
 msgid "There are no plain text notes to convert."
 msgstr "Det finst ingen reintekstnotat å gjera om."
 
 #: bnpview.cpp:1484
-#, fuzzy
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1186,8 +1164,7 @@ msgstr ""
 "installera programmet over heile systemet, kan du kopiera fila «basketui.rc» "
 "frå installasjonsarkivet og til mappa <a href='file://%3'>%4</a>.</p><p>Som "
 "ein siste utveg, viss du er sikker på at programmet er rett installert, men "
-"du hadde tidlegare ei testutgåve av det, kan du prøva å fjerna fila «%"
-"5basketui.rc».</p>"
+"du hadde tidlegare ei testutgåve av det, kan du prøva å fjerna fila «%5basketui.rc».</p>"
 
 #: bnpview.cpp:1495
 msgid "Ressource not Found"
@@ -1210,9 +1187,8 @@ msgid "Delete Only that Basket"
 msgstr "Berre slett den korga"
 
 #: bnpview.cpp:1641
-#, fuzzy
 msgid "Delete Note & Children"
-msgstr "Slett korga og underkorgar"
+msgstr "Slett notat og undernotat"
 
 #: bnpview.cpp:1649 bnpview.cpp:1655
 msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
@@ -1227,26 +1203,22 @@ msgid "&Remove Basket"
 msgstr "&Slett korg"
 
 #: bnpview.cpp:1670
-#, fuzzy
 msgid ""
 "<qt><b>%1</b> have the following children baskets.<br>Do you want to remove "
 "them too?</qt>"
 msgstr "<qt><b>%1</b> inneheld desse korgene.<br>Vil du òg sletta dei?</qt>"
 
 #: bnpview.cpp:1673
-#, fuzzy
 msgid "Remove Children Baskets"
 msgstr "Slett underkorger"
 
 #: bnpview.cpp:1675
-#, fuzzy
 msgid "&Remove Children Baskets"
 msgstr "&Slett underkorger"
 
 #: bnpview.cpp:1747 bnpview.cpp:1785
-#, fuzzy
 msgid "Basket Archives"
-msgstr "Korgeigenskapar"
+msgstr "Korgarkiv"
 
 #: bnpview.cpp:1869
 msgid "Clipboard content pasted to basket <i>%1</i>"
@@ -1403,17 +1375,15 @@ msgstr "Importering av mappespegel"
 
 #: htmlexporter.cpp:53
 msgid "HTML Documents"
-msgstr ""
+msgstr "HTML-dokument"
 
 #: htmlexporter.cpp:57 htmlexporter.cpp:79
-#, fuzzy
 msgid "Export to HTML"
-msgstr "Eksporter til &HTML …"
+msgstr "Eksporter til HTML"
 
 #: htmlexporter.cpp:79
-#, fuzzy
 msgid "Exporting to HTML. Please wait..."
-msgstr "Eksporter til &HTML …"
+msgstr "Eksporter til HTML. Vent litt …"
 
 #: htmlexporter.cpp:114 htmlexporter.cpp:139 htmlexporter.cpp:148
 msgid ""
@@ -1434,11 +1404,10 @@ msgid ""
 msgstr "bilete"
 
 #: htmlexporter.cpp:122 htmlexporter.cpp:151
-#, fuzzy
 msgid ""
 "_: HTML export folder (baskets)\n"
 "baskets"
-msgstr "bilete"
+msgstr "korger"
 
 #: htmlexporter.cpp:143 htmlexporter.cpp:149 htmlexporter.cpp:150
 msgid ""
@@ -1447,7 +1416,6 @@ msgid ""
 msgstr "data"
 
 #: htmlexporter.cpp:319
-#, fuzzy
 msgid "Made with %1, a KDE tool to take notes and keep information at hand."
 msgstr "Laga med %1 – eit KDE-verktøy for lett tilgang til all slags informasjon."
 
@@ -1607,7 +1575,6 @@ msgstr ""
 "øvst til høgre i vindauget, skriv inn feil­rapporten og trykk «Send»."
 
 #: likeback.cpp:457
-#, fuzzy
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe the mis-behaviour "
@@ -1827,7 +1794,6 @@ msgid "You disabled preview but still see images?"
 msgstr "Har du slått av førehandsvising men ser framleis bilete?"
 
 #: linklabel.cpp:607
-#, fuzzy
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
 "only applies to file and local link notes.<br>The images you see are image "
@@ -1841,11 +1807,11 @@ msgid ""
 "you drop, go to the \"General\" page and uncheck \"Image or animation\" in "
 "the \"View Content of Added Files for the Following Types\" group.</p>"
 msgstr ""
-"<p>Dette er normalt, då det finst fleire forskjellige typar notat. Denne inn­"
-"stillinga gjeld berre filer og lokal­lenkje­notat. Bileta du ser er bilet­"
-"notat, ikkje fil­notat. Fil­notat er generelle dokument, mens bilet­notat er "
-"bilete du kan teikna på.</p><p>Når du dreg filer til ei korg, vil %1 auto­"
-"matisk finna ut kva fil­type dei er, og visa inn­haldet i filene. For eksempel "
+"<p>Dette er normalt, då det finst fleire forskjellige typar notat. Denne "
+"inn­stillinga gjeld berre filer og lokal­lenkje­notat. Bileta du ser er "
+"biletnotat, ikkje fil­notat. Fil­notat er generelle dokument, mens bilet­notat er "
+"bilete du kan teikna på.</p><p>Når du dreg filer til ei korg, vil %1 "
+"auto­matisk finna ut kva fil­type dei er, og visa inn­haldet i filene. For eksempel "
 "vert det laga bilet- og tekstnotat når du dreg bilet­filer og tekst­filer. For "
 "filtypar som %2 ikkje kjenner til, vert dei vist som generelle fil­ikon med "
 "berre eit ikon eller ei føre­hands­vising og eit fil­namn.</p><p>Viss du ikkje "
@@ -1928,7 +1894,6 @@ msgid "How is it useful?"
 msgstr "Kva nytte har dette?"
 
 #: newbasketdialog.cpp:217
-#, fuzzy
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or topics;"
@@ -2296,7 +2261,6 @@ msgid "Is Web Color"
 msgstr "Er ein vevfarge"
 
 #: noteedit.cpp:381
-#, fuzzy
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
@@ -2468,9 +2432,9 @@ msgstr "&Korg"
 
 #. i18n: file basket_part.rc line 10
 #: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Export"
-msgstr "&Importer"
+msgstr "&Eksporter"
 
 #. i18n: file basket_part.rc line 20
 #: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
@@ -2633,9 +2597,8 @@ msgid "&Show current basket icon in system tray icon"
 msgstr "Vis &ikon for gjeldande korg i systemtrauet"
 
 #: settings.cpp:426
-#, fuzzy
 msgid "&Hide main window when mouse leaves it for"
-msgstr "&Skjul hovudvindauget når muspeikaren er utanfor"
+msgstr "&Skjul hovudvindauget når muspeikaren er utanfor i"
 
 #: settings.cpp:428 settings.cpp:439
 msgid " tenths of seconds"
@@ -2892,7 +2855,6 @@ msgid "Open sound notes with:"
 msgstr "Opna lydnotat med:"
 
 #: settings.cpp:873
-#, fuzzy
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured in "
@@ -2915,7 +2877,6 @@ msgid "How to change the application used to open Web links?"
 msgstr "Korleis endra programmet brukt til å opna nettadresser?"
 
 #: settings.cpp:904
-#, fuzzy
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -2951,7 +2912,6 @@ msgid "How to change the applications used to open files and links?"
 msgstr "Korleis endra programma brukt til å opna filer og lenkjer?"
 
 #: settings.cpp:923
-#, fuzzy
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applies to Web links if you choose not to open them systematically in a "
@@ -3002,37 +2962,35 @@ msgstr "&Alle notat i éi korg"
 
 #: softwareimporters.cpp:74
 msgid "Import Text File"
-msgstr ""
+msgstr "Importer tekstfil"
 
 #: softwareimporters.cpp:80
 msgid "Format of the Text File"
-msgstr ""
+msgstr "Format på tekstfila"
 
 #: softwareimporters.cpp:81
 msgid "Notes separated by an &empty line"
-msgstr ""
+msgstr "Notat skilde med ei &tom linje"
 
 #: softwareimporters.cpp:82
-#, fuzzy
 msgid "One &note per line"
-msgstr "&På kvar linje"
+msgstr "Eitt notat for &kvar linje"
 
 #: softwareimporters.cpp:83
 msgid "Notes begin with a &dash (-)"
-msgstr ""
+msgstr "Notat startar med ein &strek («-»)"
 
 #: softwareimporters.cpp:84
 msgid "Notes begin with a &star (*)"
-msgstr ""
+msgstr "Notat startar med ei st&jerne («*»)"
 
 #: softwareimporters.cpp:85
 msgid "&Use another separator:"
-msgstr ""
+msgstr "&Bruk eit anna skiljeteikn:"
 
 #: softwareimporters.cpp:95
-#, fuzzy
 msgid "&All in one note"
-msgstr "&Alle notat i éi korg"
+msgstr "&Alt i eitt notat"
 
 #: softwareimporters.cpp:237
 msgid "From KJots"
@@ -3055,7 +3013,7 @@ msgstr "Frå Tomboy"
 msgid ""
 "_: From TextFile.txt\n"
 "From %1"
-msgstr ""
+msgstr "Frå «%1»"
 
 #: softwareimporters.cpp:643
 msgid "Can not import that file. It is either corrupted or not a TuxCards file."
@@ -3068,7 +3026,6 @@ msgid "Bad File Format"
 msgstr "Ugyldig filformat"
 
 #: softwareimporters.cpp:671
-#, fuzzy
 msgid ""
 "A note is encrypted. The importer does not yet support encrypted notes. "
 "Please remove the encryption with TuxCards and re-import the file."
@@ -3348,35 +3305,31 @@ msgstr ""
 "rein­tekst."
 
 #: tagsedit.cpp:496
-#, fuzzy
 msgid "On ever&y line"
-msgstr "&På kvar linje"
+msgstr "På &kvar linje"
 
 #: tagsedit.cpp:501
 msgid "What does it mean?"
 msgstr "Kva tyder dette?"
 
 #: tagsedit.cpp:502
-#, fuzzy
 msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every line of the note."
 msgstr ""
-"Når eit notat har fleire linjer, kan du velja å visa merke­lappen eller "
+"Når eit notat har fleire linjer, kan du velja å eksportera merke­lappen eller "
 "tilstanden på anten første eller på alle linjene til notatet."
 
 #: tagsedit.cpp:504
-#, fuzzy
 msgid ""
 "In the example above, the tag of the top note is only exported on the first "
 "line, while the tag of the bottom note is exported on every line of the note."
 msgstr ""
-"I eksempelet ovanfor vert merkelappen til det øvste notatet berre vist på "
-"første linje, mens merkelappen til det nedste notatet vert vist på alle "
+"I eksempelet ovanfor vert merkelappen til det øvste notatet berre eksportert på "
+"første linje, mens merkelappen til det nedste notatet vert eksportert på alle "
 "linjene."
 
 #: tagsedit.cpp:901
-#, fuzzy
 msgid "Deleting the tag will remove it from every note it is currently assigned to."
 msgstr "Viss du slettar merkelappen, vert han fjerna frå alle notata som har han."
 
@@ -3389,7 +3342,6 @@ msgid "Delete Tag"
 msgstr "Fjern merkelapp"
 
 #: tagsedit.cpp:908
-#, fuzzy
 msgid ""
 "Deleting the state will remove the tag from every note the state is "
 "currently assigned to."
