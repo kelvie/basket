@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-01-13 17:14+0100\n"
+"PO-Revision-Date: 2007-01-22 19:47+0100\n"
 "Last-Translator: Sébastien Laoût <slaout@linux62.org>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -112,7 +112,7 @@ msgstr ""
 
 #: backup.cpp:56
 msgid "Backup & Restore"
-msgstr "Sauvegarder et Restaurer"
+msgstr "Sauvegarder et restaurer"
 
 #: backup.cpp:65
 msgid "Save Folder"
@@ -936,7 +936,7 @@ msgstr "&Fichier texte..."
 
 #: bnpview.cpp:392
 msgid "&Backup && Restore..."
-msgstr "&Sauvegarder et Restaurer..."
+msgstr "&Sauvegarder et restaurer..."
 
 #: bnpview.cpp:397
 msgid "D&elete"
