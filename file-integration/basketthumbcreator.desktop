@@ -5,6 +5,7 @@ Name=Basket Archives & Templates
 Name[fr]=Archive de paniers et modèles
 Name[it]=Archivi e modelli di canestri
 Name[ja]=バスケットアーカイブとテンプレート
+Name[no]=Korgarkiv og korgmalar
 ServiceTypes=ThumbCreator
 MimeTypes=application/x-basket-archive,application/x-basket-template
 CacheThumbnail=true
