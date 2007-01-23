@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -68,29 +68,29 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	NoteContent(Note *parent, const QString &fileName = "");              /// << Constructor. Inherited notes should call it to initialize the parent note.
 	virtual ~NoteContent()                                             {} /// << Virtual destructor. Reimplement it if you should destroy some data your custom types.
 	// Simple Abstract Generic Methods:
-	virtual NoteType::Id type()                                     = 0L; /// << @return the internal number that identify that note type.
-	virtual QString typeName()                                      = 0L; /// << @return the translated type name to display in the user interface.
-	virtual QString lowerTypeName()                                 = 0L; /// << @return the type name in lowercase without space, for eg. saving.
+	virtual NoteType::Id type()                                      = 0; /// << @return the internal number that identify that note type.
+	virtual QString typeName()                                       = 0; /// << @return the translated type name to display in the user interface.
+	virtual QString lowerTypeName()                                  = 0; /// << @return the type name in lowercase without space, for eg. saving.
 	virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
-	virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0L; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
+	virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
 	virtual QPixmap toPixmap()                      { return QPixmap(); } /// << @return an image equivalent of the content.
 	virtual void    toLink(KURL *url, QString *title, const QString &cuttedFullPath); /// << Set the link to the content. By default, it set them to fullPath() if useFile().
-	virtual bool    useFile()                                       = 0L; /// << @return true if it use a file to store the content.
-	virtual bool    canBeSavedAs()                                  = 0L; /// << @return true if the content can be saved as a file by the user.
-	virtual QString saveAsFilters()                                 = 0L; /// << @return the filters for the user to choose a file destination to save the note as.
-	virtual bool    match(const FilterData &data)                   = 0L; /// << @return true if the content match the filter criterias.
+	virtual bool    useFile()                                        = 0; /// << @return true if it use a file to store the content.
+	virtual bool    canBeSavedAs()                                   = 0; /// << @return true if the content can be saved as a file by the user.
+	virtual QString saveAsFilters()                                  = 0; /// << @return the filters for the user to choose a file destination to save the note as.
+	virtual bool    match(const FilterData &data)                    = 0; /// << @return true if the content match the filter criterias.
 	// Complexe Abstract Generic Methods:
-	virtual void exportToHTML(HTMLExporter *exporter, int indent)   = 0L; /// << Export the note in an HTML file.
-	virtual QString cssClass()                                      = 0L; /// << @return the CSS class of the note when exported to HTML
-	virtual int     setWidthAndGetHeight(int width)                 = 0L; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
-	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0L; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
+	virtual void exportToHTML(HTMLExporter *exporter, int indent)    = 0; /// << Export the note in an HTML file.
+	virtual QString cssClass()                                       = 0; /// << @return the CSS class of the note when exported to HTML
+	virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
+	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
 	virtual bool    loadFromFile()                      { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
 	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
 	virtual QString linkAt(const QPoint &/*pos*/)          { return ""; } /// << @return the link anchor at position @p pos or "" if there is no link.
 	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
-	virtual void    fontChanged()                                   = 0L; /// << If your content display textual data, called when the font have changed (from tags or basket font)
+	virtual void    fontChanged()                                    = 0; /// << If your content display textual data, called when the font have changed (from tags or basket font)
 	virtual void    linkLookChanged()                                  {} /// << If your content use LinkDisplay with preview enabled, reload the preview (can have changed size)
-	virtual QString editToolTipText()                               = 0L; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
+	virtual QString editToolTipText()                                = 0; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
 	virtual void    toolTipInfos(QStringList */*keys*/, QStringList */*values*/) {} /// << Get "key: value" couples to put in the tooltip for the note's content zone.
 	// Custom Zones:                                                      ///    Implement this if you want to store custom data.
 	virtual int     zoneAt(const QPoint &/*pos*/)           { return 0; } /// << If your note-type have custom zones, @return the zone at @p pos or 0 if it's not a custom zone!
@@ -103,7 +103,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual void    serialize(QDataStream &/*stream*/)                 {} /// << Serialize the content in a QDragObject. If it consists of a file, it can be serialized for you.
 	virtual bool    shouldSerializeFile()           { return useFile(); } /// << @return true if the dragging process should serialize the filename (and move the file if cutting).
 	virtual void    addAlternateDragObjects(KMultipleDrag*/*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
-	virtual QPixmap feedbackPixmap(int width, int height)           = 0L; /// << @return the pixmap to put under the cursor while dragging this object.
+	virtual QPixmap feedbackPixmap(int width, int height)            = 0; /// << @return the pixmap to put under the cursor while dragging this object.
 	virtual bool    needSpaceForFeedbackPixmap()        { return false; } /// << @return true if a space must be inserted before and after the DND feedback pixmap.
 	// Content Edition:
 	virtual int      xEditorIndent()                        { return 0; } /// << If the editor should be indented (eg. to not cover an icon), return the number of pixels.
