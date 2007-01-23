@@ -2990,7 +2990,7 @@ msgstr "&Bruk eit anna skiljeteikn:"
 
 #: softwareimporters.cpp:95
 msgid "&All in one note"
-msgstr "&Alt i eitt notat"
+msgstr "A&lt i eitt notat"
 
 #: softwareimporters.cpp:237
 msgid "From KJots"
