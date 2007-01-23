@@ -6,6 +6,6 @@ Comment=Basket Archive
 Comment[fr]=Archive de paniers
 Comment[it]=Archivio di canestri
 Comment[ja]=バスケットアーカイブ
-Comment[no]=Korgarkiv
+Comment[nn]=Korgarkiv
 Icon=baskets
 Patterns=*.baskets
