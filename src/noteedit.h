@@ -87,7 +87,7 @@ class NoteEditor : public QObject
 	void setInlineEditor(QWidget *inlineEditor);
   public:
 	virtual void validate() {}
-	virtual void autoSave() {} // Same as validate(), but does not precede editor close and is triggered either while the editor widget changed size or after 3 seconds of inactivity.
+	virtual void autoSave(bool /*toFileToo*/) {} // Same as validate(), but does not precede editor close and is triggered either while the editor widget changed size or after 3 seconds of inactivity.
 
   signals:
 	void askValidation();
@@ -104,7 +104,7 @@ class TextEditor : public NoteEditor
 	TextEditor(TextContent *textContent, QWidget *parent);
 	~TextEditor();
 	void validate();
-	void autoSave();
+	void autoSave(bool toFileToo);
   protected:
 	TextContent *m_textContent;
 };
@@ -116,7 +116,7 @@ class HtmlEditor : public NoteEditor
 	HtmlEditor(HtmlContent *htmlContent, QWidget *parent);
 	~HtmlEditor();
 	void validate();
-	void autoSave();
+	void autoSave(bool toFileToo);
   protected:
 	HtmlContent *m_htmlContent;
   public slots:
@@ -155,7 +155,7 @@ class FileEditor : public NoteEditor
 	FileEditor(FileContent *fileContent, QWidget *parent);
 	~FileEditor();
 	void validate();
-	void autoSave();
+	void autoSave(bool toFileToo);
   protected:
 	FileContent *m_fileContent;
 };

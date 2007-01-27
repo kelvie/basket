@@ -3677,19 +3677,19 @@ void Basket::contentChangedInEditor()
 {
 	// Do not wait 3 seconds, because we need the note to expand as needed (if a line is too wider... the note should grow wider):
 	if (m_editor->textEdit())
-		m_editor->autoSave();
-	else {
+		m_editor->autoSave(/*toFileToo=*/false);
+//	else {
 		if (m_inactivityAutoSaveTimer.isActive())
 			m_inactivityAutoSaveTimer.stop();
 		m_inactivityAutoSaveTimer.start(3 * 1000, /*singleShot=*/true);
 		Global::bnpView->setUnsavedStatus(true);
-	}
+//	}
 }
 
 void Basket::inactivityAutoSaveTimeout()
 {
 	if (m_editor)
-		m_editor->autoSave();
+		m_editor->autoSave(/*toFileToo=*/true);
 }
 
 void Basket::placeEditorAndEnsureVisible()
@@ -3741,7 +3741,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	if ((m_editorWidth > 0 && m_editorWidth != width) || (m_editorHeight > 0 && m_editorHeight != height)) {
 		m_editorWidth  = width; // Avoid infinite recursion!!!
 		m_editorHeight = height;
-		m_editor->autoSave();
+		m_editor->autoSave(/*toFileToo=*/true);
 	}
 	m_editorWidth  = width;
 	m_editorHeight = height;

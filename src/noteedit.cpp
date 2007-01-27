@@ -158,24 +158,28 @@ TextEditor::~TextEditor()
 	delete widget(); // TODO: delete that in validate(), so we can remove one method
 }
 
-void TextEditor::autoSave()
+void TextEditor::autoSave(bool toFileToo)
 {
-	if (Settings::spellCheckTextNotes() != textEdit()->checkSpellingEnabled()) {
-		Settings::setSpellCheckTextNotes(textEdit()->checkSpellingEnabled());
-		Settings::saveConfig();
+	bool autoSpellCheck;
+	if (toFileToo) {
+		if (Settings::spellCheckTextNotes() != textEdit()->checkSpellingEnabled()) {
+			Settings::setSpellCheckTextNotes(textEdit()->checkSpellingEnabled());
+			Settings::saveConfig();
+		}
+
+		autoSpellCheck = textEdit()->checkSpellingEnabled();
+		textEdit()->setCheckSpellingEnabled(false);
 	}
 
-	bool autoSpellCheck = textEdit()->checkSpellingEnabled();
-	textEdit()->setCheckSpellingEnabled(false);
-//	if (textEdit()->text().isEmpty())
-//		setEmpty();
 	m_textContent->setText(textEdit()->text());
-	m_textContent->saveToFile();
+
+	if (toFileToo)
+		m_textContent->saveToFile();
+
 	m_textContent->setEdited();
 
-//	delete widget();
-
-	textEdit()->setCheckSpellingEnabled(autoSpellCheck);
+	if (toFileToo)
+		textEdit()->setCheckSpellingEnabled(autoSpellCheck);
 }
 
 void TextEditor::validate()
@@ -345,10 +349,11 @@ HtmlEditor::~HtmlEditor()
 	delete widget();
 }
 
-void HtmlEditor::autoSave()
+void HtmlEditor::autoSave(bool toFileToo)
 {
 	m_htmlContent->setHtml(textEdit()->text());
-	m_htmlContent->saveToFile();
+	if (toFileToo)
+		m_htmlContent->saveToFile();
 	m_htmlContent->setEdited();
 }
 
@@ -428,10 +433,10 @@ FileEditor::~FileEditor()
 	delete widget();
 }
 
-void FileEditor::autoSave()
+void FileEditor::autoSave(bool toFileToo)
 {
 	// FIXME: How to detect cancel?
-	if (!lineEdit()->text().isEmpty() && m_fileContent->trySetFileName(lineEdit()->text())) {
+	if (toFileToo && !lineEdit()->text().isEmpty() && m_fileContent->trySetFileName(lineEdit()->text())) {
 		m_fileContent->setFileName(lineEdit()->text());
 		m_fileContent->setEdited();
 	}
@@ -439,7 +444,7 @@ void FileEditor::autoSave()
 
 void FileEditor::validate()
 {
-	autoSave();
+	autoSave(/*toFileToo=*/true);
 }
 
 /** class LinkEditor: */
