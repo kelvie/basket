@@ -3,6 +3,7 @@ Encoding=UTF-8
 MimeType=application/x-basket-archive
 Type=MimeType
 Comment=Basket Archive
+Comment[de]=Korbarchiv
 Comment[fr]=Archive de paniers
 Comment[it]=Archivio di canestri
 Comment[ja]=バスケットアーカイブ

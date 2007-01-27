@@ -1,5 +1,6 @@
 [Basket]
 Name=Baskets
+Name[de]=Körbe
 Name[fr]=Paniers
 Name[it]=Canestri
 Name[ja]=バスケット
@@ -8,7 +9,6 @@ Name[nb]=Kurver
 Name[es]=Cestas
 Name[pt]=Cestos
 Name[ru]=Корзины
-Name[de]=Körbe
 Comment=BasKet Note Pads component
 Comment[de]=Komponente BasKet Notizblätter
 Comment[fr]=Composant Blocs notes BasKet

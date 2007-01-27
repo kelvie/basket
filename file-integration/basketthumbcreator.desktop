@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Type=Service
 Name=Basket Archives & Templates
+Name[de]=Korbarchiv und Korbvorlagen
 Name[fr]=Archive de paniers et modèles
 Name[it]=Archivi e modelli di canestri
 Name[ja]=バスケットアーカイブとテンプレート
