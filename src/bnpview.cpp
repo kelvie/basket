@@ -1103,9 +1103,8 @@ void BNPView::setCurrentBasket(Basket *basket)
 	if (currentBasket() == basket)
 		return;
 
-        if (currentBasket()) {
-                currentBasket()->closeBasket();
-        }
+	if (currentBasket())
+		currentBasket()->closeBasket();
 
 	BasketListViewItem *item = listViewItemForBasket(basket);
 	if (item) {
@@ -1116,12 +1115,13 @@ void BNPView::setCurrentBasket(Basket *basket)
 		// the others will receive ony one just before they are shown.
 		// But this triggers unwanted animations, so we eliminate it:
 		basket->relayoutNotes(/*animate=*/false);
-        	basket->openBasket();
+		basket->openBasket();
 		setCaption(item->basket()->basketName());
 		countsChanged(basket);
 		updateStatusBarHint();
 		if (Global::systemTray)
 			Global::systemTray->updateToolTip();
+		m_tree->ensureItemVisible(m_tree->currentItem());
 	}
 	m_tree->viewport()->update();
 	emit basketChanged();
