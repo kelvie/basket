@@ -1,5 +1,6 @@
 welcomedir = $(kde_datadir)/basket/welcome
 welcome_DATA = \
+	Welcome_de_DE.baskets \
 	Welcome_en_US.baskets \
 	Welcome_fr.baskets \
 	Welcome_ja_JP.baskets \
