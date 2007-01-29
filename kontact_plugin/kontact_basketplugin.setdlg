@@ -1,21 +1,23 @@
 [Basket]
 Name=Baskets
 Name[de]=Körbe
+Name[es]=Cestas
 Name[fr]=Paniers
 Name[it]=Canestri
 Name[ja]=バスケット
-Name[nn]=Korger
 Name[nb]=Kurver
+Name[nn]=Korger
 Name[es]=Cestas
 Name[pt]=Cestos
 Name[ru]=Корзины
 Comment=BasKet Note Pads component
 Comment[de]=Komponente BasKet Notizblätter
+Comment[es]=Componente para las notas de basket
 Comment[fr]=Composant Blocs notes BasKet
 Comment[it]=Componente Blocco appunti BasKet
 Comment[ja]=BasKet メモパッドコンポーネント
-Comment[nn]=Korgnotat-komponent
 Comment[nb]=Kurvnotat-komponent
+Comment[nn]=Korgnotat-komponent
 Comment[es]=Componente para las notas de basket
 Comment[pt]=Componente do Bloco de Notas BasKet
 Comment[ru]=Модуль Альбом заметок Basket для Kontact

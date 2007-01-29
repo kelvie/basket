@@ -19,22 +19,22 @@ X-KDE-PluginInfo-EnabledByDefault=true
 
 Comment=BasKet Note Pads plugin for Kontact
 Comment[de]=Plugin BasKet Notizblätter für Kontact
+Comment[es]=Complemento de los blocs de notas BasKet para Kontact
 Comment[fr]=Module Blocs notes BasKet pour Kontact
 Comment[it]=Plugin Blocco appunti BasKet per Kontact
 Comment[ja]=BasKet メモパッドの Kontact 統合プラグイン
-Comment[nn]=Korgnotat-tillegg for Kontakt
 Comment[nb]=Kurvnotat-tillegg for Kontakt
-Comment[es]=Plugin de las notas de BasKet para Kontact
+Comment[nn]=Korgnotat-tillegg for Kontakt
 Comment[pt]=Plugin do Bloco de Notas BasKet para o Kontact
 Comment[ru]=Модуль Альбом заметок Basket для Kontact
 
 Name=Baskets
 Name[de]=Körbe
+Name[es]=Cestas
 Name[fr]=Paniers
 Name[it]=Canestri
 Name[ja]=バスケット
-Name[nn]=Korger
 Name[nb]=Kurver
-Name[es]=Cestas
+Name[nn]=Korger
 Name[pt]=Cestos
 Name[ru]=Корзины
