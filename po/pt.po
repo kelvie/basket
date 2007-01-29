@@ -1,11 +1,11 @@
-# translation of basket.po to Português
+# translation of pt.po to Português
 #
-# Nuno J. Silva <nunojsg@gmail.com>, 2006.
+# Nuno J. Silva <nunojsg@gmail.com>, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: basket\n"
+"Project-Id-Version: pt\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2006-10-25 22:07+0100\n"
+"PO-Revision-Date: 2007-01-29 16:46+0000\n"
 "Last-Translator: Nuno J. Silva <nunojsg@gmail.com>\n"
 "Language-Team: Português <pt@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,6 @@ msgid ""
 msgstr "nunojsg@gmail.com"
 
 #: aboutdata.cpp:27
-#, fuzzy
 msgid ""
 "<p><b>Taking care of your ideas.</b></p><p>A note-taking application that "
 "makes it easy to record ideas as you think, and quickly find them later. "
@@ -34,8 +33,7 @@ msgid ""
 msgstr ""
 "<p><b>Cuidando das suas ideias.</b></p><p>Uma aplicação para registar "
 "anotações que lhe permite escrever facilmente as suas ideias quando estas "
-"lhe vêm à cabeça, e encontrá-las facilmente mais tarde. Organizar as suas "
-"anotações nunca foi tão fácil.</p>"
+"lhe vêm à cabeça, e encontrá-las facilmente mais tarde. Organizar as suas anotações nunca foi tão fácil.</p>"
 
 #: aboutdata.cpp:34
 msgid "BasKet Note Pads"
@@ -63,25 +61,24 @@ msgstr "Ícone"
 
 #: archive.cpp:54 bnpview.cpp:1750
 msgid "Save as Basket Archive"
-msgstr ""
+msgstr "Guardar como ficheiro de cestos"
 
 #: archive.cpp:54
 msgid "Saving as basket archive. Please wait..."
-msgstr ""
+msgstr "Guardando como ficheiro de cestos. Por favor aguarde..."
 
 #: archive.cpp:258
 msgid "This file is not a basket archive."
-msgstr ""
+msgstr "Este não é um ficheiro de cestos."
 
 #: archive.cpp:258 archive.cpp:289 archive.cpp:316 archive.cpp:324
 #: archive.cpp:334 archive.cpp:381
-#, fuzzy
 msgid "Basket Archive Error"
-msgstr "Erro ao Guardar"
+msgstr "Erro do Ficheiro de Cestos"
 
 #: archive.cpp:289 archive.cpp:334 archive.cpp:381
 msgid "This file is corrupted. It can not be opened."
-msgstr ""
+msgstr "Este ficheiro está corrompido. Não pode ser aberto."
 
 #: archive.cpp:311
 msgid ""
@@ -90,41 +87,37 @@ msgid ""
 "missing because they are of a type only available in new versions. When "
 "saving the file back, consider to save it to another file, to preserve the "
 "original one."
-msgstr ""
+msgstr "Este ficheiro foi criado com uma versão recente do %1. Pode ser aberto, mas nem todas as informações estarão disponíveis. Por exemplo, algumas anotações poderão não aparecer porque são de um tipo apenas disponível em novas versões. Ao guardar o ficheiro, considere guardá-lo noutro ficheiro, para preservar o original."
 
 #: archive.cpp:322
 msgid ""
 "This file was created with a recent version of %1. Please upgrade to a newer "
 "version to be able to open that file."
-msgstr ""
+msgstr "Este ficheiro foi criado com uma versão recente do %1. Por favor actualize para uma nova versão a fim de conseguir abrir este ficheiro."
 
 #: backup.cpp:56
-#, fuzzy
 msgid "Backup & Restore"
-msgstr "&Restaurar"
+msgstr "Salvaguardar e restaurar"
 
 #: backup.cpp:65
-#, fuzzy
 msgid "Save Folder"
-msgstr "Guardar para Ficheiro"
+msgstr "Guardar pasta"
 
 #: backup.cpp:66
 msgid "Your baskets are currently stored in that folder:<br><b>%1</b>"
-msgstr ""
+msgstr "Os seus cestos estão actualmente guardados na seguinte pasta:<br><b>%1</b>"
 
 #: backup.cpp:69
-#, fuzzy
 msgid "&Move to Another Folder..."
-msgstr "&Guardar para Ficheiro"
+msgstr "&Mover para outra pasta..."
 
 #: backup.cpp:70
 msgid "&Use Another Existing Folder..."
-msgstr ""
+msgstr "&Usar outra pasta existente..."
 
 #: backup.cpp:71
-#, fuzzy
 msgid "Why to do that?"
-msgstr "O que significa isto?"
+msgstr "Porquê fazer isto?"
 
 #: backup.cpp:72
 msgid ""
@@ -138,177 +131,170 @@ msgid ""
 "</li></ul><p>Please remember that you should not change the content of that "
 "folder manually (eg. adding a file in a basket folder will not add that file "
 "to the basket).</p>"
-msgstr ""
+msgstr "<p>Pode mover a pasta onde o %1 guarda os seus cestos para:</p><ul><li>Guardar os seus cestos num sítio visível na sua pasta pessoal, como por exemplo ~/Anotações ou ~/Cestos, para que possa fazer manualmente cópias de segurança quando quiser.</li><li>Guarde os seus cestos num servidor para os partilhar entre dois computadores.<br>Neste caso, monte a pasta partilhada no sistema de ficheiros local e configure o %2 para usar esse ponto de montagem.<br>Aviso: Não deve correr o %3 ao mesmo tempo nos dois computadores, ou arrisca-se a perder dados enquanto as duas aplicações não estão sincronizadas.</li></ul><p>Lembre-se que não deve modificar manualmente o conteúdo dessa pasta (p. ex. adicionar um ficheiro na pasta de um cesto não irá adicionar esse ficheiro ao cesto).</p>"
 
 #: backup.cpp:89
 msgid "Backups"
-msgstr ""
+msgstr "Cópias de segurança"
 
 #: backup.cpp:92
 msgid "&Backup..."
-msgstr ""
+msgstr "&Salvaguardar..."
 
 #: backup.cpp:93
 msgid "&Restore a Backup..."
-msgstr ""
+msgstr "&Restaurar uma cópia de segurança..."
 
 #: backup.cpp:113
 msgid "Last backup: never"
-msgstr ""
+msgstr "Última cópia de segurança: nunca"
 
 #: backup.cpp:115
 #, c-format
 msgid "Last backup: %1"
-msgstr ""
+msgstr "Última cópia de segurança: %1"
 
 #: backup.cpp:124
 msgid "Choose a Folder Where to Move Baskets"
-msgstr ""
+msgstr "Escolha uma pasta para a qual mover os cestos"
 
 #: backup.cpp:136
 msgid "The folder <b>%1</b> is not empty. Do you want to override it?"
-msgstr ""
+msgstr "A pasta <b>%1</b> não está vazia. Deseja realmente subsituí-la?"
 
 #: backup.cpp:137
 msgid "Override Folder?"
-msgstr ""
+msgstr "Substituir pasta?"
 
 #: backup.cpp:138 backup.cpp:190 bnpview.cpp:1759 htmlexporter.cpp:68
 msgid "&Override"
-msgstr ""
+msgstr "&Substituir"
 
 #: backup.cpp:147
 msgid ""
 "Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
+msgstr "Os seus cestos foram movidos com sucesso para <b>%1</b>. O %2 vai ser reiniciado para finalizar a alteração."
 
 #: backup.cpp:155
 msgid "Choose an Existing Folder to Store Baskets"
-msgstr ""
+msgstr "Escolha uma pasta existente para guardar cestos"
 
 #: backup.cpp:158
 msgid ""
 "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is "
 "going to be restarted to take this change into account."
-msgstr ""
+msgstr "A pasta onde são guardados os cestos foi alterada com sucesso para <b>%1</b>. O %2 vai ser reiniciado para finalizar a alteração."
 
 #: backup.cpp:170
 msgid ""
 "_: Backup filename (without extension), %1 is the date\n"
 "Baskets_%1"
-msgstr ""
+msgstr "Cestos_%1"
 
 #: backup.cpp:175 backup.cpp:230
 msgid "Tar Archives Compressed by Gzip"
-msgstr ""
+msgstr "Arquivos Tar comprimidos pelo Gzip"
 
 #: backup.cpp:175 backup.cpp:230 bnpview.cpp:1747 bnpview.cpp:1785
 #: htmlexporter.cpp:53
-#, fuzzy
 msgid "All Files"
-msgstr "&Ficheiros"
+msgstr "Todos os ficheiros"
 
 #: backup.cpp:179 backup.cpp:200
-#, fuzzy
 msgid "Backup Baskets"
-msgstr "Cestos"
+msgstr "Salvaguardar Cestos"
 
 #: backup.cpp:187 bnpview.cpp:1756 htmlexporter.cpp:65
 msgid "The file <b>%1</b> already exists. Do you really want to override it?"
-msgstr ""
+msgstr "O ficheiro <b>%1</b> já existe. Deseja realmente substituí-lo?"
 
 #: backup.cpp:189 bnpview.cpp:1758 htmlexporter.cpp:67
 msgid "Override File?"
-msgstr ""
+msgstr "Substituir ficheiro?"
 
 #: backup.cpp:200
-#, fuzzy
 msgid "Backing up baskets. Please wait..."
-msgstr "&Exportar para HTML"
+msgstr "A salvaguardar os cestos. Por favor aguarde..."
 
 #: backup.cpp:231 bnpview.cpp:1786
 msgid "Open Basket Archive"
-msgstr ""
+msgstr "Abrir ficheiro de cestos"
 
 #: backup.cpp:242
 msgid "README.txt"
-msgstr ""
+msgstr "LEIAME.txt"
 
 #: backup.cpp:246
 #, c-format
 msgid ""
 "This is a safety copy of your baskets like they were before you started to "
 "restore the backup %1."
-msgstr ""
+msgstr "Esta é uma cópia dos seus cestos tal e qual como eles estavam antes de restaurar a cópia de segurança %1."
 
 #: backup.cpp:247
 msgid ""
 "If the restoration was a success and you restored what you wanted to "
 "restore, you can remove this folder."
-msgstr ""
+msgstr "Se o restauro foi efectuado com sucesso, e conseguiu recuperar o que queria, pode apagar esta pasta."
 
 #: backup.cpp:248
 msgid ""
 "If something went wrong during the restoration process, you can re-use this "
 "folder to store your baskets and nothing will be lost."
-msgstr ""
+msgstr "Se alguma coisa correu mal durante o processo de restauro, pode reutilizar esta pasta para guardar os seus cestos e não perderá nada."
 
 #: backup.cpp:249
 msgid ""
 "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing "
 "Folder...\" and select that folder."
-msgstr ""
+msgstr "Escolha \"Cesto\" -> \"Salvaguar e restaurar...\" -> \"Usar outra pasta existente...\" e escolha essa pasta."
 
 #: backup.cpp:254
-#, fuzzy
 msgid "Restoring <b>%1</b>. Please wait..."
-msgstr "&Exportar para HTML"
+msgstr "A restaurar <b>%1</b>. Por favor aguarde..."
 
 #: backup.cpp:255
 msgid ""
 "If something goes wrong during the restoration process, read the file <b>%1</"
 "b>."
-msgstr ""
+msgstr "Se algo correr mal durante o processo de restauro, leia o ficheiro <b>%1</b>."
 
 #: backup.cpp:257
-#, fuzzy
 msgid "Restore Baskets"
-msgstr "Remover Cesto"
+msgstr "Restaurar cestos"
 
 #: backup.cpp:287
 msgid ""
 "This archive is either not a backup of baskets or is corrupted. It cannot be "
 "imported. Your old baskets have been preserved instead."
-msgstr ""
+msgstr "Este ficheiro ou não é uma cópia de segurança de cestos ou está corrompido. Não pode ser importado. Em vez disso, os seus cestos antigos foram preservados."
 
 #: backup.cpp:287
-#, fuzzy
 msgid "Restore Error"
-msgstr "&Restaurar"
+msgstr "Erro de restauro"
 
 #: backup.cpp:295
 msgid ""
 "Your backup has been successfuly restored to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
+msgstr "A sua cópia de segurança foi restaurada com sucesso para <b>%1</b>. O %2 vai ser reiniciado"
 
 #: backup.cpp:338
-#, fuzzy
 msgid "Restart"
-msgstr "&Restaurar"
+msgstr "Reiniciar"
 
 #: backup.cpp:351
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration"
-msgstr ""
+msgstr "Cestos antes do restauro"
 
 #: backup.cpp:356
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration (%1)"
-msgstr ""
+msgstr "Cestos antes do restauro (%1)"
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -316,8 +302,7 @@ msgstr "A nova anotação não coincide com o filtro e por isso não está visí
 
 #: basket.cpp:524
 msgid "A new note does not match the filter and is hidden."
-msgstr ""
-"Uma nova anotação não coincide com o filtro e por isso não está visível."
+msgstr "Uma nova anotação não coincide com o filtro e por isso não está visível."
 
 #: basket.cpp:525
 msgid "Some new notes do not match the filter and are hidden."
@@ -327,8 +312,7 @@ msgstr ""
 
 #: basket.cpp:526
 msgid "The new notes do not match the filter and are hidden."
-msgstr ""
-"As novas anotações não coincidem com o filtro e por isso não estão visíveis."
+msgstr "As novas anotações não coincidem com o filtro e por isso não estão visíveis."
 
 #: basket.cpp:1542
 msgid ""
@@ -347,12 +331,11 @@ msgid "Dropped to basket <i>%1</i>"
 msgstr "Largado no cesto <i>%1</i>"
 
 #: basket.cpp:2338
-#, fuzzy
 msgid ""
 "This message should never appear. If it does, this program is buggy! Please "
 "report the bug to the developer."
 msgstr ""
-"Esta mensagem não devia ter aparecido. Se está a vê-la, é porque o programa "
+"Esta mensagem não devia aparecer. Se está a vê-la, é porque o programa "
 "tem falhas! Por favor informe o programador sobre a falha."
 
 #: basket.cpp:2755 basket.cpp:2800 basket.cpp:2803
@@ -569,12 +552,11 @@ msgstr ""
 "as suas alterações de uma forma segura."
 
 #: basket.cpp:5334
-#, fuzzy
 msgid ""
 "File permissions are bad for <b>%1</b>. Please check that you have write "
 "access to it and the parent folders."
 msgstr ""
-"As permissões estão incorrectas para <b>%1</b>. Por favor verifique se tem "
+"As permissões do ficheiro <b>%1</b> estão incorrectas. Por favor verifique se tem "
 "acesso de escrita ao mesmo e às pastas em que ele se encontra."
 
 #: basket.cpp:5370
@@ -591,8 +573,7 @@ msgstr "Criação do Cesto Falhou"
 
 #: basketfactory.cpp:90
 msgid "Sorry, but the template copying for this new basket has failed."
-msgstr ""
-"Desculpe, mas o processo de cópia do modelo para este novo cesto falhou."
+msgstr "Desculpe, mas o processo de cópia do modelo para este novo cesto falhou."
 
 #: basketfactory.cpp:111
 msgid "Sorry, but the template customization for this new basket has failed."
@@ -624,7 +605,7 @@ msgstr "&Imagem de fundo:"
 
 #: basketproperties.cpp:77
 msgid "&Background color:"
-msgstr "&Cor de fundo:"
+msgstr "Cor &de fundo:"
 
 #: basketproperties.cpp:78
 msgid "&Text color:"
@@ -659,7 +640,6 @@ msgid "Learn some tips..."
 msgstr "Leia alguns conselhos..."
 
 #: basketproperties.cpp:134
-#, fuzzy
 msgid ""
 "<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
 "option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
@@ -674,7 +654,7 @@ msgid ""
 "useful in addition to the configurable global shortcuts, eg. to paste the "
 "clipboard or the selection into the current basket from anywhere.</p>"
 msgstr ""
-"<p><strong>Lembre-se dos seus atalhos</strong>:<br>Com a primeira opção, ao "
+"<p><strong>Lembre-se facilmente dos seus atalhos</strong>:<br>Com a primeira opção, ao "
 "dar ao cesto um atalho do tipo <strong>Alt+Letra</strong> irá sublinhar essa "
 "letra na árvore de cestos.<br>Por exemplo, se associar o atalho <i>Alt+I</i> "
 "a um cesto chamado <i>Ideias</i>, o cesto irá aparecer na árvore como "
@@ -700,7 +680,6 @@ msgid "S&witch to this basket (global shortcut)"
 msgstr "Mu&dar para este cesto (atalho global)"
 
 #: basketstatusbar.cpp:100
-#, fuzzy
 msgid "Shows if there are changes that have not yet been saved."
 msgstr "Mostra se há alterações que ainda não tenham sido guardadas."
 
@@ -712,13 +691,11 @@ msgstr ""
 
 #: basketstatusbar.cpp:148
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
-msgstr ""
-"<p>Este cesto está <b>bloqueado</b>.<br>Clique aqui para o desbloquear.</p>"
+msgstr "<p>Este cesto está <b>bloqueado</b>.<br>Clique aqui para o desbloquear.</p>"
 
 #: basketstatusbar.cpp:153
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
-msgstr ""
-"<p>Este cesto está <b>desbloqueado</b>.<br>Clique aqui para o bloquear.</p>"
+msgstr "<p>Este cesto está <b>desbloqueado</b>.<br>Clique aqui para o bloquear.</p>"
 
 #: bnpview.cpp:175 bnpview.cpp:1128
 msgid "General"
@@ -741,7 +718,6 @@ msgid "Paste clipboard contents in current basket"
 msgstr "Colar o conteúdo da área-de-transferência no cesto actual"
 
 #: bnpview.cpp:237
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open the main window."
@@ -762,12 +738,11 @@ msgid "Paste selection in current basket"
 msgstr "Colar selecção no cesto actual"
 
 #: bnpview.cpp:245
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open the main window."
 msgstr ""
-"Permite-lhe colar a selecção que está na área-de-transferência para o cesto "
+"Permite-lhe colar a selecção para o cesto "
 "activo sem ter de abrir a janela principal."
 
 #: bnpview.cpp:248
@@ -775,7 +750,6 @@ msgid "Create a new basket"
 msgstr "Criar um novo cesto"
 
 #: bnpview.cpp:249
-#, fuzzy
 msgid ""
 "Allows you to create a new basket without having to open the main window "
 "(you then can use the other global shortcuts to add a note, paste clipboard "
@@ -790,7 +764,6 @@ msgid "Go to previous basket"
 msgstr "Ir para o cesto anterior"
 
 #: bnpview.cpp:253
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open the main window."
@@ -803,7 +776,6 @@ msgid "Go to next basket"
 msgstr "Ir para o cesto seguinte"
 
 #: bnpview.cpp:257
-#, fuzzy
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "the main window."
@@ -816,11 +788,9 @@ msgid "Insert text note"
 msgstr "Inserir anotação com texto"
 
 #: bnpview.cpp:265
-#, fuzzy
-msgid ""
-"Add a text note to the current basket without having to open the main window."
+msgid "Add a text note to the current basket without having to open the main window."
 msgstr ""
-"Adiciona uma anotação com texto ao cesto activo sem ser necessário abrir a "
+"Adicionar uma anotação com texto ao cesto activo sem ter de abrir a "
 "janela principal."
 
 #: bnpview.cpp:268 settings.cpp:576
@@ -828,63 +798,49 @@ msgid "Insert image note"
 msgstr "Inserir anotação com imagem"
 
 #: bnpview.cpp:269
-#, fuzzy
 msgid ""
 "Add an image note to the current basket without having to open the main "
 "window."
-msgstr ""
-"Adiciona uma anotação com imagem ao cesto activo sem ser necessário abrir a "
-"janela principal."
+msgstr "Adicionar uma anotação com imagem ao cesto activo sem ter de abrir a janela principal."
 
 #: bnpview.cpp:272 settings.cpp:577
 msgid "Insert link note"
 msgstr "Inserir anotação com ligação"
 
 #: bnpview.cpp:273
-#, fuzzy
-msgid ""
-"Add a link note to the current basket without having to open the main window."
-msgstr ""
-"Adiciona uma anotação com ligação ao cesto activo sem ser necessário abrir a "
-"janela principal."
+msgid "Add a link note to the current basket without having to open the main window."
+msgstr "Adicionar uma anotação com uma ligação ao cesto activo sem ter de abrir a janela principal."
 
 #: bnpview.cpp:276 settings.cpp:579
 msgid "Insert color note"
 msgstr "Inserir anotação com cor"
 
 #: bnpview.cpp:277
-#, fuzzy
 msgid ""
 "Add a color note to the current basket without having to open the main "
 "window."
-msgstr ""
-"Adiciona uma anotação com cor ao cesto activo sem ser necessário abrir a "
-"janela principal."
+msgstr "Adicionar uma anotação com uma cor ao cesto activo sem ter de abrir a janela principal."
 
 #: bnpview.cpp:280
 msgid "Pick color from screen"
 msgstr "Escolher cor a partir do ecrã"
 
 #: bnpview.cpp:281
-#, fuzzy
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open the main window."
-msgstr ""
-"Adiciona uma anotação com uma cor escolhida do ecrã ao cesto activo sem ser "
-"necessário abrir a janela principal."
+msgstr "Adicionar uma anotação com uma cor escolhida do ecrã ao cesto activo sem ter de abrir a janela principal."
 
 #: bnpview.cpp:285 settings.cpp:580
 msgid "Grab screen zone"
 msgstr "Fotografar zona do ecrã"
 
 #: bnpview.cpp:286
-#, fuzzy
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "the main window."
 msgstr ""
-"Fotografa uma zona no ecrã e guardá-la como uma imagem no cesto activo sem "
+"Fotografar uma zona no ecrã e guardá-la como uma imagem no cesto activo sem "
 "ter de abrir a janela principal."
 
 #: bnpview.cpp:298
@@ -908,18 +864,16 @@ msgstr ""
 "cesto para o abrir, ou reorganizá-los usando arrastar-e-largar."
 
 #: bnpview.cpp:366 bnpview.cpp:368
-#, fuzzy
 msgid "&Basket Archive..."
-msgstr "&Novo Cesto"
+msgstr "&Ficheiro de cestos..."
 
 #: bnpview.cpp:371
 msgid "&Hide Window"
 msgstr "&Ocultar Janela"
 
 #: bnpview.cpp:375
-#, fuzzy
 msgid "&HTML Web Page..."
-msgstr "Página &HTML"
+msgstr "Página web &HTML"
 
 #: bnpview.cpp:377
 msgid "K&Notes"
@@ -946,13 +900,12 @@ msgid "&Tomboy"
 msgstr "&Tomboy"
 
 #: bnpview.cpp:389
-#, fuzzy
 msgid "Text &File..."
-msgstr "&Guardar para Ficheiro"
+msgstr "Ficheiro &de texto..."
 
 #: bnpview.cpp:392
 msgid "&Backup && Restore..."
-msgstr ""
+msgstr "S&alvaguardar e restaurar..."
 
 #: bnpview.cpp:397
 msgid "D&elete"
@@ -1127,9 +1080,8 @@ msgid "Configure &Global Shortcuts..."
 msgstr "Configurar os Atalhos &Globais..."
 
 #: bnpview.cpp:583
-#, fuzzy
 msgid "&Welcome Baskets"
-msgstr "&Remover Cesto"
+msgstr "&Cestos de boas-vindas"
 
 #: bnpview.cpp:907
 msgid "Plain Text Notes Conversion"
@@ -1193,10 +1145,9 @@ msgid "Picked color to basket <i>%1</i>"
 msgstr "A cor escolhida foi guardada no cesto <i>%1</i>"
 
 #: bnpview.cpp:1457
-#, fuzzy
 msgid "The plain text notes have been converted to rich text."
 msgstr ""
-"As anotações de texto simples foram convertidas para anotações de texto "
+"As anotações de texto simples foram convertidas em texto "
 "formatado"
 
 #: bnpview.cpp:1457 bnpview.cpp:1459
@@ -1204,12 +1155,10 @@ msgid "Conversion Finished"
 msgstr "Conversão Terminada"
 
 #: bnpview.cpp:1459
-#, fuzzy
 msgid "There are no plain text notes to convert."
 msgstr "Não existem anotações de texto simples para converter."
 
 #: bnpview.cpp:1484
-#, fuzzy
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1219,14 +1168,12 @@ msgid ""
 "sure the application is correctly installed but you had a preview version of "
 "it, try to remove the file %5basketui.rc</p>"
 msgstr ""
-"<p><b>O ficheiro basketui.rc parece não existir ou é demasiado antigo.<br>O %"
-"1 não pode correr sem ele e irá parar.</b></p><p>Por favor verifique a sua "
+"<p><b>O ficheiro basketui.rc parece não existir ou é demasiado antigo.<br>O %1 não pode correr sem ele e irá encerrar.</b></p><p>Por favor verifique a sua "
 "instalação do %2.</p><p>Se não tiver direitos de administrador para instalar "
 "a aplicação ao nível do sistema, pode copiar o ficheiro basketui.rc do "
 "arquivo de instalação para a pasta <a href='file://%3'>%4</a>.</p><p>Como "
 "último recurso, se tem a certeza de que a aplicação está bem instalada, mas "
-"tinha uma versão de teste da mesma, experimente remover o ficheiro %"
-"5basketui.rc</p>"
+"tinha uma versão de teste da mesma, experimente remover o ficheiro %5basketui.rc</p>"
 
 #: bnpview.cpp:1495
 msgid "Ressource not Found"
@@ -1249,15 +1196,12 @@ msgid "Delete Only that Basket"
 msgstr "Apagar Apenas esse Cesto"
 
 #: bnpview.cpp:1641
-#, fuzzy
 msgid "Delete Note & Children"
-msgstr "Remover Com os seus Sub-cestos"
+msgstr "Apagar anotações e sub-anotações"
 
 #: bnpview.cpp:1649 bnpview.cpp:1655
-msgid ""
-"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
-msgstr ""
-"<qt>Deseja realmente remover o cesto<b>%1</b> e os seus conteúdos?</qt>"
+msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+msgstr "<qt>Deseja realmente remover o cesto<b>%1</b> e os seus conteúdos?</qt>"
 
 #: bnpview.cpp:1657
 msgid "Remove Basket"
@@ -1268,27 +1212,22 @@ msgid "&Remove Basket"
 msgstr "&Remover Cesto"
 
 #: bnpview.cpp:1670
-#, fuzzy
 msgid ""
 "<qt><b>%1</b> have the following children baskets.<br>Do you want to remove "
 "them too?</qt>"
-msgstr ""
-"<qt><b>%1</b> tem os seguintes sub-cestos.<br>Deseja removê-los também?</qt>"
+msgstr "<qt><b>%1</b> tem os seguintes sub-cestos.<br>Deseja removê-los também?</qt>"
 
 #: bnpview.cpp:1673
-#, fuzzy
 msgid "Remove Children Baskets"
 msgstr "Remover Sub-cestos"
 
 #: bnpview.cpp:1675
-#, fuzzy
 msgid "&Remove Children Baskets"
 msgstr "&Remover Sub-cestos"
 
 #: bnpview.cpp:1747 bnpview.cpp:1785
-#, fuzzy
 msgid "Basket Archives"
-msgstr "Propriedades do Cesto"
+msgstr "Ficheiros de cestos"
 
 #: bnpview.cpp:1869
 msgid "Clipboard content pasted to basket <i>%1</i>"
@@ -1445,17 +1384,15 @@ msgstr "Importação de Espelhamento de Pasta"
 
 #: htmlexporter.cpp:53
 msgid "HTML Documents"
-msgstr ""
+msgstr "Documentos HTML"
 
 #: htmlexporter.cpp:57 htmlexporter.cpp:79
-#, fuzzy
 msgid "Export to HTML"
-msgstr "&Exportar para HTML"
+msgstr "Exportar como HTML"
 
 #: htmlexporter.cpp:79
-#, fuzzy
 msgid "Exporting to HTML. Please wait..."
-msgstr "&Exportar para HTML"
+msgstr "A exportar como HTML. Por favor aguarde..."
 
 #: htmlexporter.cpp:114 htmlexporter.cpp:139 htmlexporter.cpp:148
 msgid ""
@@ -1476,11 +1413,10 @@ msgid ""
 msgstr "imagens"
 
 #: htmlexporter.cpp:122 htmlexporter.cpp:151
-#, fuzzy
 msgid ""
 "_: HTML export folder (baskets)\n"
 "baskets"
-msgstr "imagens"
+msgstr "cestos"
 
 #: htmlexporter.cpp:143 htmlexporter.cpp:149 htmlexporter.cpp:150
 msgid ""
@@ -1489,10 +1425,9 @@ msgid ""
 msgstr "dados"
 
 #: htmlexporter.cpp:319
-#, fuzzy
 msgid "Made with %1, a KDE tool to take notes and keep information at hand."
 msgstr ""
-"Feito com o %1, uma ferramenta KDE para registar apontamentos e ter toda a "
+"Feito com o %1, uma ferramenta KDE para registar anotações e ter toda a "
 "informação de que precisa sempre acessível."
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
@@ -1574,13 +1509,11 @@ msgstr "Tipos de Ficheiros"
 
 #: kicondialog.cpp:356
 msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
-msgstr ""
-"*.png *.xpm *.svg *.svgz|Ficheiros de Ícones (*.png *.xpm *.svg *.svgz)"
+msgstr "*.png *.xpm *.svg *.svgz|Ficheiros de Ícones (*.png *.xpm *.svg *.svgz)"
 
 #: likeback.cpp:74
 msgid "Send application developers a comment about something you like"
-msgstr ""
-"Envie um comentário aos programadores da aplicação sobre algo de que gosta"
+msgstr "Envie um comentário aos programadores da aplicação sobre algo de que gosta"
 
 #: likeback.cpp:81
 msgid "Send application developers a comment about something you dislike"
@@ -1659,14 +1592,13 @@ msgstr ""
 "descreva-o e clique em Enviar."
 
 #: likeback.cpp:457
-#, fuzzy
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe the mis-behaviour "
 "and click Send."
 msgstr ""
 "Cada vez que descobrir uma falha na aplicação, por favor clique no ícone de "
-"objecto quebrado debaixo da barra-de-título, descreva brevemente qual o "
+"objecto quebrado debaixo da barra-de-título, descreva brevemente o "
 "comportamento anormal e clique em Enviar."
 
 #: likeback.cpp:462
@@ -1682,8 +1614,7 @@ msgid "<b>I like</b> the new artwork. Very refreshing."
 msgstr "<b>Eu gosto</b> no novo aspecto gráfico. Muito refrescante."
 
 #: likeback.cpp:469
-msgid ""
-"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 msgstr ""
 "<b>Eu não gosto</b> da página de boas-vindas do assistente. Consome "
 "demasiado tempo."
@@ -1883,7 +1814,6 @@ msgid "You disabled preview but still see images?"
 msgstr "Desactivou a pré-visualização mas continua a ver imagens?"
 
 #: linklabel.cpp:607
-#, fuzzy
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
 "only applies to file and local link notes.<br>The images you see are image "
@@ -1986,7 +1916,6 @@ msgid "How is it useful?"
 msgstr "Qual a utilidade disto?"
 
 #: newbasketdialog.cpp:217
-#, fuzzy
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or topics;"
@@ -2354,7 +2283,6 @@ msgid "Is Web Color"
 msgstr "É uma Cor Web"
 
 #: noteedit.cpp:381
-#, fuzzy
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
@@ -2526,9 +2454,9 @@ msgstr "Ce&sto"
 
 #. i18n: file basket_part.rc line 10
 #: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Export"
-msgstr "&Importar"
+msgstr "&Exportar"
 
 #. i18n: file basket_part.rc line 20
 #: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
@@ -2691,7 +2619,6 @@ msgid "&Show current basket icon in system tray icon"
 msgstr "Mostrar o ícone no cesto act&ual no ícone do tabuleiro do sistema"
 
 #: settings.cpp:426
-#, fuzzy
 msgid "&Hide main window when mouse leaves it for"
 msgstr "Ocultar a janela pr&incipal quando o apontador está fora dela há"
 
@@ -2723,8 +2650,7 @@ msgstr "Comportamento"
 
 #: settings.cpp:525
 msgid "&Transform lines starting with * or - to lists in text editors"
-msgstr ""
-"&Transformar linhas começadas por * ou - em listas nos editores de texto"
+msgstr "&Transformar linhas começadas por * ou - em listas nos editores de texto"
 
 #: settings.cpp:528
 msgid "Ask confirmation before &deleting notes"
@@ -2747,8 +2673,7 @@ msgstr ""
 "de texto."
 
 #: settings.cpp:541
-msgid ""
-"If enabled, this property lets you paste the tags as textual equivalents."
+msgid "If enabled, this property lets you paste the tags as textual equivalents."
 msgstr ""
 "Se activado, esta propriedade permite-lhe colar as classificações como "
 "equivalentes textuais."
@@ -2959,15 +2884,13 @@ msgid "Open sound notes with:"
 msgstr "Abrir anotações com sons com:"
 
 #: settings.cpp:873
-#, fuzzy
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured in "
 "Konqueror will be used.</p>"
 msgstr ""
 "<p>Se estiver seleccionado, a aplicação definida de seguida será usada para "
-"abrir anotações desse tipo.</p><p>Caso contrário, será usada a aplicação que "
-"foi configurada no Konqueror.</p>"
+"abrir anotações desse tipo.</p><p>Caso contrário, será usada a aplicação definida no Konqueror.</p>"
 
 #: settings.cpp:882
 msgid ""
@@ -2982,7 +2905,6 @@ msgid "How to change the application used to open Web links?"
 msgstr "Como mudar as aplicações usadas para abrir ligações para a Web?"
 
 #: settings.cpp:904
-#, fuzzy
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -3000,7 +2922,7 @@ msgid ""
 "second help link.</p>"
 msgstr ""
 "<p>Ao abrir ligações para a Web, elas são abertas em aplicações diferentes, "
-"de acordo com o conteúdo da ligação (uma página Web, uma imagem, um "
+"dependendo do conteúdo da ligação (uma página Web, uma imagem, um "
 "documento PDF,...), tal como se fossem ficheiros armazenados no seu "
 "computador.</p><p>Eis como fazer se quiser abrir todos os endereços Web no "
 "seu navegador Web. Isto é útil se não estiver a usar o KDE (se estiver a "
@@ -3020,7 +2942,6 @@ msgid "How to change the applications used to open files and links?"
 msgstr "Como mudar as aplicações usadas para abrir ficheiros e ligações?"
 
 #: settings.cpp:923
-#, fuzzy
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applies to Web links if you choose not to open them systematically in a "
@@ -3073,37 +2994,35 @@ msgstr "Tod&as as notas num cesto"
 
 #: softwareimporters.cpp:74
 msgid "Import Text File"
-msgstr ""
+msgstr "Importar ficheiro de texto"
 
 #: softwareimporters.cpp:80
 msgid "Format of the Text File"
-msgstr ""
+msgstr "Formato do ficheiro de texto"
 
 #: softwareimporters.cpp:81
 msgid "Notes separated by an &empty line"
-msgstr ""
+msgstr "Anotações separadas por uma linha &em branco"
 
 #: softwareimporters.cpp:82
-#, fuzzy
 msgid "One &note per line"
-msgstr "Em toda&s as linhas"
+msgstr "Uma a&notação por linha"
 
 #: softwareimporters.cpp:83
 msgid "Notes begin with a &dash (-)"
-msgstr ""
+msgstr "As anotações começam com um &hífen (-)"
 
 #: softwareimporters.cpp:84
 msgid "Notes begin with a &star (*)"
-msgstr ""
+msgstr "As anotações começam com um a&sterisco (*)"
 
 #: softwareimporters.cpp:85
 msgid "&Use another separator:"
-msgstr ""
+msgstr "&Usar outro separador de anotações:"
 
 #: softwareimporters.cpp:95
-#, fuzzy
 msgid "&All in one note"
-msgstr "Tod&as as notas num cesto"
+msgstr "Tudo numa &anotação"
 
 #: softwareimporters.cpp:237
 msgid "From KJots"
@@ -3126,11 +3045,10 @@ msgstr "Do Tomboy"
 msgid ""
 "_: From TextFile.txt\n"
 "From %1"
-msgstr ""
+msgstr "De %1"
 
 #: softwareimporters.cpp:643
-msgid ""
-"Can not import that file. It is either corrupted or not a TuxCards file."
+msgid "Can not import that file. It is either corrupted or not a TuxCards file."
 msgstr ""
 "Não é possível importar esse ficheiro. Ou se encontra corrompido ou não é um "
 "ficheiro do TuxCards."
@@ -3140,7 +3058,6 @@ msgid "Bad File Format"
 msgstr "Formato de Ficheiro Incorrecto"
 
 #: softwareimporters.cpp:671
-#, fuzzy
 msgid ""
 "A note is encrypted. The importer does not yet support encrypted notes. "
 "Please remove the encryption with TuxCards and re-import the file."
@@ -3421,7 +3338,6 @@ msgstr ""
 "estado como o seu equivalente textual."
 
 #: tagsedit.cpp:496
-#, fuzzy
 msgid "On ever&y line"
 msgstr "Em toda&s as linhas"
 
@@ -3430,7 +3346,6 @@ msgid "What does it mean?"
 msgstr "O que significa isto?"
 
 #: tagsedit.cpp:502
-#, fuzzy
 msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every line of the note."
@@ -3440,19 +3355,16 @@ msgstr ""
 "anotação."
 
 #: tagsedit.cpp:504
-#, fuzzy
 msgid ""
 "In the example above, the tag of the top note is only exported on the first "
 "line, while the tag of the bottom note is exported on every line of the note."
 msgstr ""
-"No exemplo em cima, a etiqueta da anotação de cima só é explortada  na "
-"primeira linha, enquanto que a etiqueta da anotação de baixo é exportada em "
+"No exemplo em cima, a classificação da anotação de cima só é explortada  na "
+"primeira linha, enquanto que a classificação da anotação de baixo é exportada em "
 "todas as linhas da anotação."
 
 #: tagsedit.cpp:901
-#, fuzzy
-msgid ""
-"Deleting the tag will remove it from every note it is currently assigned to."
+msgid "Deleting the tag will remove it from every note it is currently assigned to."
 msgstr ""
 "Eliminiar a classificação irá removê-la de todas as notas às quais se "
 "encontra associada."
@@ -3466,7 +3378,6 @@ msgid "Delete Tag"
 msgstr "Eliminar Classificação"
 
 #: tagsedit.cpp:908
-#, fuzzy
 msgid ""
 "Deleting the state will remove the tag from every note the state is "
 "currently assigned to."
@@ -3518,8 +3429,3 @@ msgstr ""
 "Redimensione a janela para escolher o tamanho da imagem\n"
 "e feche-a ou pressione Escape para aceitar as modificações."
 
-#~ msgid "&Export to HTML..."
-#~ msgstr "&Exportar para HTML"
-
-#~ msgid "Notes matching the filter &quot;%1&quot;:"
-#~ msgstr "Anotações que coincidem com o filtro &quot;%1&quot;:"
