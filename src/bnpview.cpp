@@ -372,7 +372,10 @@ void BNPView::initialize()
 	/* LikeBack */
 	Global::likeBack = new LikeBack(LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about());
 	Global::likeBack->setServer("basket.linux62.org", "/likeback/send.php");
-	Global::likeBack->setAcceptedLanguages(QStringList::split(";", "en;fr"), i18n("Please write in English or French."));
+
+// There are too much comments, and people reading comments are more and more international, so we accept only English:
+//	Global::likeBack->setAcceptedLanguages(QStringList::split(";", "en;fr"), i18n("Please write in English or French."));
+
 //	if (isPart())
 //		Global::likeBack->disableBar(); // See BNPView::shown() and BNPView::hide().
 

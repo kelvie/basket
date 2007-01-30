@@ -44,7 +44,7 @@
       <runarguments>
         <basket/>
       </runarguments>
-      <globaldebugarguments></globaldebugarguments>
+      <globaldebugarguments/>
       <globalcwd>/home/seb/Programmation/basket/debug</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <autoinstall>false</autoinstall>
@@ -234,7 +234,7 @@
       <inlineSet>true</inlineSet>
     </creategettersetter>
     <qt>
-      <used>false</used>
+      <used>true</used>
       <version>3</version>
       <root>/usr/share/qt3</root>
       <includestyle>3</includestyle>
