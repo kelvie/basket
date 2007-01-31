@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-01-20 01:35+0100\n"
+"PO-Revision-Date: 2007-01-31 20:31+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: italian <kde-i18n-it@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -3355,7 +3355,7 @@ msgstr "Rimuo&vi"
 
 #: tagsedit.cpp:410
 msgid "&Emblem:"
-msgstr "&Emblema:"
+msgstr "Sim&bolo:"
 
 #: tagsedit.cpp:426
 msgid "&Background:"
