@@ -1106,7 +1106,7 @@ bool Basket::save()
 
 void Basket::load()
 {
-	fprintf(stderr,"basket is loading\n");
+	kdDebug() << "basket is loading" << endl ;
 	// Load only once:
 	if (m_loadingLaunched)
 		return;
@@ -3789,13 +3789,13 @@ void Basket::closeEditorDelayed()
 
 bool Basket::closeEditor()
 {
-	fprintf(stderr,"Editor is being closed\n");
+	kdDebug() << "Editor is being closed" << endl ;
 
 	if (!isDuringEdit())
 		return true;
 
 	if (m_doNotCloseEditor) {
-		fprintf(stderr,"But close canceled\n");
+		kdDebug() << "But close canceled" << endl ;
 		return true;
 	}
 
