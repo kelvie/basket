@@ -12,7 +12,7 @@ METASOURCES = AUTO
 basketdcopiface_DIR = $(top_srcdir)/src
 
 servicedir = $(kde_servicesdir)/kontact
-service_DATA = basket.desktop
+service_DATA = basket.desktop basket_v4.desktop
 
 basketsetdlgdir = $(kde_datadir)/kontact/ksettingsdialog
 basketsetdlg_DATA = kontact_basketplugin.setdlg
