@@ -34,12 +34,12 @@
 #include <qtooltip.h>
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)
-	: m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0)
+	: m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0), m_savedStatus(0)
 {
 }
 
 BasketStatusBar::BasketStatusBar(KParts::StatusBarExtension *extension)
-	: m_bar(0), m_extension(extension), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0)
+	: m_bar(0), m_extension(extension), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0), m_savedStatus(0)
 {
 }
 
@@ -163,14 +163,14 @@ void BasketStatusBar::setSelectionStatus(const QString &s)
 
 void BasketStatusBar::setUnsavedStatus(bool isUnsaved)
 {
+	if (!m_savedStatus)
+		return;
+
 	if (isUnsaved) {
 		if (m_savedStatus->pixmap() == 0)
 			m_savedStatus->setPixmap(m_savedStatusPixmap);
 	} else
 		m_savedStatus->clear();
-
-	//m_savedStatus->setEnabled(isUnsaved);
-	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, isUnsaved));
 }
 
 #include "basketstatusbar.moc"

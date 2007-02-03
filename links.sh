@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TARGET=`pwd`
 if [ -e $TARGET'/debug' ]; then
