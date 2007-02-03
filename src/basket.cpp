@@ -4276,9 +4276,9 @@ void Basket::noteSaveAs()
 {
 //	if (!note)
 //		note = theSelectedNote();
-//	if (!note)
-//		return;
 	Note *note = theSelectedNote();
+	if (!note)
+		return;
 
 	KURL url = note->content()->urlToOpen(/*with=*/false);
 	if (url.isEmpty())
