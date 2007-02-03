@@ -1255,14 +1255,18 @@ void BNPView::needSave(QListViewItem*)
 
 void BNPView::slotPressed(QListViewItem *item, const QPoint &/*pos*/, int /*column*/)
 {
+	Basket *basket = currentBasket();
+	if (basket == 0)
+		return;
+
 	// Impossible to Select no Basket:
 	if (!item)
-		m_tree->setSelected(listViewItemForBasket(currentBasket()), true);
+		m_tree->setSelected(listViewItemForBasket(basket), true);
 	else if (dynamic_cast<BasketListViewItem*>(item) != 0 && currentBasket() != ((BasketListViewItem*)item)->basket()) {
 		setCurrentBasket( ((BasketListViewItem*)item)->basket() );
 		needSave(0);
 	}
-	currentBasket()->setFocus();
+	basket->setFocus();
 }
 
 DecoratedBasket* BNPView::currentDecoratedBasket()
