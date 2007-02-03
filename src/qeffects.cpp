@@ -1,3 +1,5 @@
+#if 0
+
 // Note: this file has been copied from the Qt source.
 // Those classes are normally used internally in Qt
 // but we need them for immitate the roll-over effect of QComboBox.
@@ -596,3 +598,5 @@ void qFadeEffect( QWidget* w, int time )
     q_blend->run( time );
 }
 #endif //QT_NO_EFFECTS
+
+#endif // #if 0

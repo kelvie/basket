@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,7 @@
 
 #include "kcolorcombo2.h"
 
-#include "qeffects.h"
+//#include "qeffects.h"
 
 //#define DEBUG_COLOR_ARRAY
 //#define OUTPUT_GIMP_PALETTE
@@ -655,7 +655,8 @@ void KColorCombo2::popup()
 	//m_popup->setColor(m_color);
 	m_popup->doSelection();
 	m_popup->relayout(); // FIXME: In aboutToShow() ?
-#ifndef QT_NO_EFFECTS
+#if 0
+//#ifndef QT_NO_EFFECTS
 	if (QApplication::isEffectEnabled(UI_AnimateCombo)) {
 		if (m_popup->y() < mapToGlobal(QPoint(0,0)).y())
 			qScrollEffect(m_popup, QEffects::UpScroll);

@@ -1,3 +1,5 @@
+#if 0
+
 // Note: this file has been copied from the Qt source.
 // Those classes are normally used internally in Qt
 // but we need them for immitate the roll-over effect of QComboBox.
@@ -189,3 +191,5 @@ class QRollEffect : public QWidget, private QEffects
 #endif // QT_NO_EFFECTS
 
 #endif // QEFFECTS_P_H
+
+#endif // #if 0
