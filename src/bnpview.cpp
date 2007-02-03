@@ -83,7 +83,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
 	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
 	m_loading(true), m_newBasketPopup(false), m_firstShow(true),
-	m_regionGrabber(0), m_passivePopup(0L), m_actionCollection(actionCollection),
+	m_regionGrabber(0), m_passivePopup(0L), m_passiveDroppedSelection(0), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
 	/* Settings */
@@ -1923,7 +1923,7 @@ void BNPView::showPassiveDropped(const QString &title)
 
 void BNPView::showPassiveDroppedDelayed()
 {
-	if (isMainWindowActive())
+	if (isMainWindowActive() || m_passiveDroppedSelection == 0)
 		return;
 
 	QString title = m_passiveDroppedTitle;

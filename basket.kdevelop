@@ -33,7 +33,7 @@
       <mainprogram>/home/seb/Programmation/basket/debug/src/.libs/basket</mainprogram>
       <directoryradio>build</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs>--nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug -h</programargs>
+      <programargs>--nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars>
