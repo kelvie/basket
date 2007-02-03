@@ -4367,6 +4367,8 @@ void Basket::noteGroup()
 
 	// Get the first selected note: we will group selected items just before:
 	Note *first = firstSelected();
+	if (selectedGroup == 0 || first == 0)
+		return;
 
 	m_loaded = false; // Hack to avoid notes to be unselected and new notes to be selected:
 

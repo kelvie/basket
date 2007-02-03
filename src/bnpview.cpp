@@ -83,7 +83,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
 	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
 	m_loading(true), m_newBasketPopup(false), m_firstShow(true),
-	m_regionGrabber(0), m_passivePopup(0L), m_passiveDroppedSelection(0), m_actionCollection(actionCollection),
+	m_regionGrabber(0), m_passiveDroppedSelection(0), m_passivePopup(0), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
 	/* Settings */
@@ -1258,7 +1258,7 @@ void BNPView::slotPressed(QListViewItem *item, const QPoint &/*pos*/, int /*colu
 	// Impossible to Select no Basket:
 	if (!item)
 		m_tree->setSelected(listViewItemForBasket(currentBasket()), true);
-	else if (currentBasket() != ((BasketListViewItem*)item)->basket()) {
+	else if (dynamic_cast<BasketListViewItem*>(item) != 0 && currentBasket() != ((BasketListViewItem*)item)->basket()) {
 		setCurrentBasket( ((BasketListViewItem*)item)->basket() );
 		needSave(0);
 	}
