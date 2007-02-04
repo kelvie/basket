@@ -32,6 +32,7 @@
 #include <kapplication.h>
 #include <kiconloader.h>
 #include <kprogress.h>
+#include <kmainwindow.h>
 
 #include "archive.h"
 #include "global.h"
@@ -336,6 +337,9 @@ void Archive::open(const QString &path)
 					Tools::deleteRecursively(tempFolder);
 					return;
 				}
+
+				Global::mainWindow()->raise();
+
 				// Get the archive file:
 				QString tempArchive = tempFolder + "temp-archive.tar.gz";
 				QFile archiveFile(tempArchive);
