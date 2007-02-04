@@ -3065,7 +3065,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		{
 			m_decryptBox->show();
 		}
+#ifdef HAVE_LIBGPGME
 		m_button->setFocus();
+#endif
 		m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
 							(visibleHeight() - m_decryptBox->height()) / 2);
 	}
