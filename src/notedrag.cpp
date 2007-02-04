@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -270,6 +270,9 @@ void NoteDrag::setFeedbackPixmap(NoteSelection *noteList, KMultipleDrag *multipl
 
 QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 {
+	if (noteList == 0)
+		return QPixmap();
+
 	static const int MARGIN  = 2;
 	static const int SPACING = 1;
 
