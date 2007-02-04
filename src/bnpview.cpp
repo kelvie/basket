@@ -2244,6 +2244,8 @@ void BNPView::showMainWindow()
 void BNPView::populateTagsMenu()
 {
 	KPopupMenu *menu = (KPopupMenu*)(popupMenu("tags"));
+	if (menu == 0 || currentBasket() == 0) // TODO: Display a messagebox. [menu is 0, surely because on first launch, the XMLGUI does not work!]
+		return;
 	menu->clear();
 
 	Note *referenceNote;
@@ -2260,6 +2262,9 @@ void BNPView::populateTagsMenu()
 
 void BNPView::populateTagsMenu(KPopupMenu &menu, Note *referenceNote)
 {
+	if (currentBasket() == 0)
+		return;
+
 	currentBasket()->m_tagPopupNote = referenceNote;
 	bool enable = currentBasket()->countSelecteds() > 0;
 
