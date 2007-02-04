@@ -1387,7 +1387,10 @@ void Basket::leaveEvent(QEvent *)
 void Basket::setFocusIfNotInPopupMenu()
 {
 	if (!kapp->activePopupWidget())
-		setFocus();
+		if (isDuringEdit())
+			m_editor->widget()->setFocus();
+		else
+			setFocus();
 }
 
 void Basket::contentsMousePressEvent(QMouseEvent *event)
