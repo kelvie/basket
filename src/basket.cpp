@@ -3229,7 +3229,7 @@ void Basket::relayoutNotes(bool animate)
 		if (note->matching()) {
 			note->relayoutAt(0, h, animate);
 			if (note->hasResizer()) {
-				int minGroupWidth = note->minRight() - note->x();
+				int minGroupWidth = note->minRight() - note->finalX();
 				if (note->groupWidth() < minGroupWidth) {
 					note->setGroupWidth(minGroupWidth);
 					relayoutNotes(animate); // Redo the thing, but this time it should not recurse
