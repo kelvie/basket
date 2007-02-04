@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laot                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -318,8 +318,6 @@ void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)
 	binaryPath = QDir(argv0).canonicalPath();
 	if (binaryPath.isEmpty())
 		binaryPath = app.applicationFilePath();
-
-	std::cout << "Binary path is " << binaryPath << std::endl;
 }
 
 void Backup::setFolderAndRestart(const QString &folder, const QString &message)

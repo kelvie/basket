@@ -66,7 +66,6 @@ QString Global::savesFolder()
 		} else { // The default path (should be that for most computers)
 			folder = new QString(KGlobal::dirs()->saveLocation("data", "basket/"));
 		}
-		std::cout << "savesFolder() COMPUTE THE FIRST TIME: " << *folder << std::endl;
 	}
 
 	return *folder;

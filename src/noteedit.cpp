@@ -840,7 +840,6 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 
 	richTextUndo      = new KAction( i18n("Undo"), "undo", "", actionCollection, "richtext_undo");
 	richTextRedo      = new KAction( i18n("Redo"), "redo", "", actionCollection, "richtext_redo");
-	std::cout << "Created the Undo/Redo actions!" << std::endl;
 
 	disableRichTextToolBar();
 }

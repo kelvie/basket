@@ -1106,7 +1106,6 @@ bool Basket::save()
 
 void Basket::load()
 {
-	kdDebug() << "basket is loading" << endl ;
 	// Load only once:
 	if (m_loadingLaunched)
 		return;
@@ -3794,15 +3793,11 @@ void Basket::closeEditorDelayed()
 
 bool Basket::closeEditor()
 {
-	kdDebug() << "Editor is being closed" << endl ;
-
 	if (!isDuringEdit())
 		return true;
 
-	if (m_doNotCloseEditor) {
-		kdDebug() << "But close canceled" << endl ;
+	if (m_doNotCloseEditor)
 		return true;
-	}
 
 	if (m_redirectEditActions) {
 		disconnect( m_editor->widget(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()) );
