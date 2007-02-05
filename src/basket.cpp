@@ -1115,7 +1115,7 @@ void Basket::load()
 	QDomDocument *doc = 0;
 	QString content;
 
-	StopWatch::start(0);
+//	StopWatch::start(0);
 
 	if (loadFromFile(fullPath() + ".basket", &content)) {
 		doc = new QDomDocument("basket");
@@ -1161,7 +1161,7 @@ void Basket::load()
 	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
 	//END
 
-	StopWatch::check(0);
+//	StopWatch::check(0);
 
 	signalCountsChanged();
 	if (isColumnsLayout()) {
