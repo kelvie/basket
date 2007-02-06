@@ -11,5 +11,6 @@ Comment[ja]=バスケットアーカイブ
 Comment[nb]=Kurvarkiv
 Comment[nn]=Korgarkiv
 Comment[pt]=Ficheiro de cestos
+Comment[ru]=Контейнер Basket
 Icon=baskets
 Patterns=*.baskets

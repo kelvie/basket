@@ -11,5 +11,6 @@ Comment[ja]=バスケットテンプレート
 Comment[nb]=Kurvmal
 Comment[nn]=Korgmal
 Comment[pt]=Modelo de cesto
+Comment[ru]=Шаблон корзины
 Icon=baskett
 Patterns=*.baskett
