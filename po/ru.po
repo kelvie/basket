@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-02-05 18:13-0800\n"
+"PO-Revision-Date: 2007-02-05 23:13-0800\n"
 "Last-Translator: Daniel Dotsenko <dd@accentsolution.com>\n"
 "Language-Team:  <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,20 +63,20 @@ msgstr "Значок"
 
 #: archive.cpp:54 bnpview.cpp:1750
 msgid "Save as Basket Archive"
-msgstr "Сохранить как архив"
+msgstr "Сохранить как контейнер"
 
 #: archive.cpp:54
 msgid "Saving as basket archive. Please wait..."
-msgstr "Пакуем в файл архива..."
+msgstr "Пакуем в контейнер BasKet..."
 
 #: archive.cpp:258
 msgid "This file is not a basket archive."
-msgstr "Данный файл не является архивом данных BasKet."
+msgstr "Данный файл не является контейнер данных BasKet."
 
 #: archive.cpp:258 archive.cpp:289 archive.cpp:316 archive.cpp:324
 #: archive.cpp:334 archive.cpp:381
 msgid "Basket Archive Error"
-msgstr "Ошибка в архиве."
+msgstr "Ошибка в контейнер."
 
 #: archive.cpp:289 archive.cpp:334 archive.cpp:381
 msgid "This file is corrupted. It can not be opened."
@@ -98,37 +98,30 @@ msgid ""
 msgstr "Этот файл был создан другой версией %1. Пожалуйста, установите более новую версию приложения."
 
 #: backup.cpp:56
-#, fuzzy
 msgid "Backup & Restore"
-msgstr "Резервная копия"
+msgstr "Резервное копирование"
 
 #: backup.cpp:65
-#, fuzzy
 msgid "Save Folder"
 msgstr "Сохранить"
 
 #: backup.cpp:66
-#, fuzzy
 msgid "Your baskets are currently stored in that folder:<br><b>%1</b>"
 msgstr "Местонахождение всех корзин:<br><b>%1</b>"
 
 #: backup.cpp:69
-#, fuzzy
 msgid "&Move to Another Folder..."
-msgstr "Двинуть в &другую папку..."
+msgstr "Передвинуть в папку..."
 
 #: backup.cpp:70
-#, fuzzy
 msgid "&Use Another Existing Folder..."
 msgstr "Подсоединится к данным в другой папке..."
 
 #: backup.cpp:71
-#, fuzzy
 msgid "Why to do that?"
-msgstr "Что это значит?"
+msgstr "Когда это применимо?"
 
 #: backup.cpp:72
-#, fuzzy
 msgid ""
 "<p>You can move the folder where %1 store your baskets to:</p><ul><li>Store "
 "your baskets in a visible place in your home folder, like ~/Notes or ~/"
@@ -151,45 +144,40 @@ msgstr ""
 "</li></ul><p>Пожалуйста, не меняйте содержимое этой папки в-ручную; "
 "добавление файлов в структуру папки не добавит его в индекс данных.</p>"
 
-
 #: backup.cpp:89
 msgid "Backups"
 msgstr "Резервная копия"
 
 #: backup.cpp:92
 msgid "&Backup..."
-msgstr "Резервное копирование..."
+msgstr "Сохранить..."
 
 #: backup.cpp:93
-#, fuzzy
 msgid "&Restore a Backup..."
-msgstr "Резервная копия..."
+msgstr "Восстановить..."
 
 #: backup.cpp:113
 msgid "Last backup: never"
-msgstr "Последняя резервная копия: никогда"
+msgstr "Последняя: никогда"
 
 #: backup.cpp:115
 #, c-format
 msgid "Last backup: %1"
-msgstr "Последняя резервная копия: %1"
+msgstr "Последняя: %1"
 
 #: backup.cpp:124
 msgid "Choose a Folder Where to Move Baskets"
-msgstr "Новая папка для корзин"
+msgstr "Выберите папку"
 
 #: backup.cpp:136
-#, fuzzy
 msgid "The folder <b>%1</b> is not empty. Do you want to override it?"
 msgstr "Папка не пуста. Стереть содержимое?"
 
 #: backup.cpp:137
-#, fuzzy
 msgid "Override Folder?"
 msgstr "Заменить содержимое папки?"
 
 #: backup.cpp:138 backup.cpp:190 bnpview.cpp:1759 htmlexporter.cpp:68
-#, fuzzy
 msgid "&Override"
 msgstr "За&менить"
 
@@ -197,39 +185,34 @@ msgstr "За&менить"
 msgid ""
 "Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
-"Корзины передвинуты в <b>%1</b>. Перезапускаем %2."
+msgstr "Корзины передвинуты в <b>%1</b>. Перезапускаем %2."
 
 #: backup.cpp:155
-#, fuzzy
 msgid "Choose an Existing Folder to Store Baskets"
-msgstr "Вберите папку"
+msgstr "Выберите папку"
 
 #: backup.cpp:158
 msgid ""
 "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is "
 "going to be restarted to take this change into account."
-msgstr ""
-"Корзины переключены на папку <b>%1</b>. Перезапускаем %2."
+msgstr "Корзины переключены на папку <b>%1</b>. Перезапускаем %2."
 
 #: backup.cpp:170
 msgid ""
 "_: Backup filename (without extension), %1 is the date\n"
 "Baskets_%1"
-msgstr "архив_корзин_%1"
+msgstr "basket_архив_%1"
 
 #: backup.cpp:175 backup.cpp:230
 msgid "Tar Archives Compressed by Gzip"
-msgstr "Архив (Tar)Gzip"
+msgstr "Архив tar.gz"
 
 #: backup.cpp:175 backup.cpp:230 bnpview.cpp:1747 bnpview.cpp:1785
 #: htmlexporter.cpp:53
-#, fuzzy
 msgid "All Files"
 msgstr "Все файлы"
 
 #: backup.cpp:179 backup.cpp:200
-#, fuzzy
 msgid "Backup Baskets"
 msgstr "Резервная копия"
 
@@ -242,13 +225,12 @@ msgid "Override File?"
 msgstr "Переписать поверх файла?"
 
 #: backup.cpp:200
-#, fuzzy
 msgid "Backing up baskets. Please wait..."
 msgstr "Пакуем ..."
 
 #: backup.cpp:231 bnpview.cpp:1786
 msgid "Open Basket Archive"
-msgstr "Открыть архив"
+msgstr "Открыть контейнер"
 
 #: backup.cpp:242
 msgid "README.txt"
@@ -259,32 +241,27 @@ msgstr "README.txt"
 msgid ""
 "This is a safety copy of your baskets like they were before you started to "
 "restore the backup %1."
-msgstr ""
-"Специальная копия корзин созданная %1 для сохранности ваших данных во время процедуры восстановления резервной копии."
+msgstr "Специальная копия корзин созданная %1 для сохранности ваших данных во время процедуры восстановления резервной копии."
 
 #: backup.cpp:247
 msgid ""
 "If the restoration was a success and you restored what you wanted to "
 "restore, you can remove this folder."
-msgstr ""
-"Если восстановление данных прошло успешно, удалите эту папку."
+msgstr "Если восстановление данных прошло успешно, удалите эту папку."
 
 #: backup.cpp:248
 msgid ""
 "If something went wrong during the restoration process, you can re-use this "
 "folder to store your baskets and nothing will be lost."
-msgstr ""
-"Воспользуйтесь этой специальной копией корзин в случае провала процедуры восстановления резервной копии."
+msgstr "Воспользуйтесь этой специальной копией корзин в случае провала процедуры восстановления резервной копии."
 
 #: backup.cpp:249
 msgid ""
 "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing "
 "Folder...\" and select that folder."
-msgstr ""
-"Выберите \"Корзина\" -> \"Резервная копия...\" -> \"Подсоединится к данным в другой папке...\" и выберите папку."
+msgstr "Выберите \"Корзина\" -> \"Резервная копия...\" -> \"Подсоединится к данным в другой папке...\" и выберите папку."
 
 #: backup.cpp:254
-#, fuzzy
 msgid "Restoring <b>%1</b>. Please wait..."
 msgstr "Восстановление <b>%1</b>..."
 
@@ -292,11 +269,9 @@ msgstr "Восстановление <b>%1</b>..."
 msgid ""
 "If something goes wrong during the restoration process, read the file <b>%1</"
 "b>."
-msgstr ""
-"Читайте файл <b>%1</b> в случае ошибок."
+msgstr "Читайте файл <b>%1</b> в случае ошибок."
 
 #: backup.cpp:257
-#, fuzzy
 msgid "Restore Baskets"
 msgstr "Восстановить"
 
@@ -304,9 +279,7 @@ msgstr "Восстановить"
 msgid ""
 "This archive is either not a backup of baskets or is corrupted. It cannot be "
 "imported. Your old baskets have been preserved instead."
-msgstr ""
-"Ошибка чтения резервной копии. Возвращаемся к предыдущим корзинам."
-
+msgstr "Ошибка чтения резервной копии. Возвращаемся к предыдущим корзинам."
 
 #: backup.cpp:287
 msgid "Restore Error"
@@ -316,11 +289,9 @@ msgstr "Ошибка восстановления"
 msgid ""
 "Your backup has been successfuly restored to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
-msgstr ""
-"Успешное восстановление резервной копии в <b>%1</b>. Перезапускаем %2."
+msgstr "Успешное восстановление резервной копии в <b>%1</b>. Перезапускаем %2."
 
 #: backup.cpp:338
-#, fuzzy
 msgid "Restart"
 msgstr "Перезапустить"
 
@@ -328,15 +299,13 @@ msgstr "Перезапустить"
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration"
-msgstr ""
-"Корзины до восстановления резервной копии"
+msgstr "Корзины до восстановления резервной копии"
 
 #: backup.cpp:356
 msgid ""
 "_: Safety folder name before restoring a basket data archive\n"
 "Baskets Before Restoration (%1)"
-msgstr ""
-"Корзины до восстановления резервной копии (%1)"
+msgstr "Корзины до восстановления резервной копии (%1)"
 
 #: basket.cpp:523
 msgid "The new note does not match the filter and is hidden."
@@ -371,7 +340,6 @@ msgid "Dropped to basket <i>%1</i>"
 msgstr "(%1) помещено в корзину <i>%2</i>"
 
 #: basket.cpp:2338
-#, fuzzy
 msgid ""
 "This message should never appear. If it does, this program is buggy! Please "
 "report the bug to the developer."
@@ -682,7 +650,6 @@ msgid "Learn some tips..."
 msgstr "Несколько подсказок..."
 
 #: basketproperties.cpp:134
-#, fuzzy
 msgid ""
 "<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
 "option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
@@ -721,7 +688,6 @@ msgid "S&witch to this basket (global shortcut)"
 msgstr "Переключиться на эту корзину (глобальная комбинация)"
 
 #: basketstatusbar.cpp:100
-#, fuzzy
 msgid "Shows if there are changes that have not yet been saved."
 msgstr "Индикатор несохранённых данных."
 
@@ -786,7 +752,6 @@ msgid "Paste selection in current basket"
 msgstr "Вставить выделенное в выбранную корзину"
 
 #: bnpview.cpp:245
-#, fuzzy
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open the main window."
@@ -914,7 +879,7 @@ msgstr ""
 
 #: bnpview.cpp:366 bnpview.cpp:368
 msgid "&Basket Archive..."
-msgstr "Архив BasKet..."
+msgstr "Контейнер BasKet..."
 
 #: bnpview.cpp:371
 msgid "&Hide Window"
@@ -922,7 +887,7 @@ msgstr "Скрыть Окно"
 
 #: bnpview.cpp:375
 msgid "&HTML Web Page..."
-msgstr "страница HTML"
+msgstr "Страница HTML"
 
 #: bnpview.cpp:377
 msgid "K&Notes"
@@ -1129,7 +1094,6 @@ msgid "Configure &Global Shortcuts..."
 msgstr "Комбинации клавиш (глобальные)..."
 
 #: bnpview.cpp:583
-#, fuzzy
 msgid "&Welcome Baskets"
 msgstr "Удалить"
 
@@ -1198,7 +1162,6 @@ msgid "Picked color to basket <i>%1</i>"
 msgstr "Корзина <i>%1</i> оцвечена"
 
 #: bnpview.cpp:1457
-#, fuzzy
 msgid "The plain text notes have been converted to rich text."
 msgstr "Заметки с обычным текстом конвертированны в текст с форматированием."
 
@@ -1207,7 +1170,6 @@ msgid "Conversion Finished"
 msgstr "Конвертирование окончено"
 
 #: bnpview.cpp:1459
-#, fuzzy
 msgid "There are no plain text notes to convert."
 msgstr "Заметки с обычным текстом отсутствуют."
 
@@ -1249,7 +1211,6 @@ msgid "Delete Only that Basket"
 msgstr "Удалить только эту"
 
 #: bnpview.cpp:1641
-#, fuzzy
 msgid "Delete Note & Children"
 msgstr "Удалить вместе с дочерними"
 
@@ -1390,7 +1351,7 @@ msgstr "&Метка: "
 
 #: filter.cpp:69
 msgid "Filter all Baskets"
-msgstr "Фильтровать по всем корзинам"
+msgstr "Искать во всех корзинах"
 
 #: filter.cpp:149
 msgid "(Not tagged)"
@@ -1435,12 +1396,10 @@ msgid "HTML Documents"
 msgstr "Документы HTML"
 
 #: htmlexporter.cpp:57 htmlexporter.cpp:79
-#, fuzzy
 msgid "Export to HTML"
 msgstr "Экспорт в HTML"
 
 #: htmlexporter.cpp:79
-#, fuzzy
 msgid "Exporting to HTML. Please wait..."
 msgstr "Экспорт в HTML"
 
@@ -1475,10 +1434,8 @@ msgid ""
 msgstr "данные"
 
 #: htmlexporter.cpp:319
-#, fuzzy
 msgid "Made with %1, a KDE tool to take notes and keep information at hand."
-msgstr ""
-"Создано с %1. Организуем невозможное с лёгкостью."
+msgstr "Создано с %1. Организуем невозможное с лёгкостью."
 
 #: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
 #: tagsedit.cpp:470 variouswidgets.cpp:269
@@ -2482,9 +2439,9 @@ msgstr "&Корзина"
 
 #. i18n: file basket_part.rc line 10
 #: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "&Export"
-msgstr "&Импорт"
+msgstr "&Экспорт"
 
 #. i18n: file basket_part.rc line 20
 #: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
@@ -2646,7 +2603,6 @@ msgid "&Show current basket icon in system tray icon"
 msgstr "Значок выбранной корзины замещает стандартный"
 
 #: settings.cpp:426
-#, fuzzy
 msgid "&Hide main window when mouse leaves it for"
 msgstr "Скрыть главное окно если мышь выведена вне на"
 
@@ -2707,7 +2663,7 @@ msgid ""
 "empty checkbox and a checked box."
 msgstr ""
 "К примеру, лист заметок помеченный как <b>Сделать</b> и <b>Сделано</b>  "
-"экспортирован как <b>[ ]</b> or <b>[x]</b>."
+"экспортируется как <b>[ ]</b> or <b>[x]</b>."
 
 #: settings.cpp:552
 msgid "&Group a new note when clicking on the right of the insertion line"
@@ -3343,7 +3299,6 @@ msgid ""
 msgstr "Этот текст будет использован в замен состояния метки для внешних операций."
 
 #: tagsedit.cpp:496
-#, fuzzy
 msgid "On ever&y line"
 msgstr "Для каждой строки"
 
@@ -3357,7 +3312,7 @@ msgid ""
 "on the first line or on every line of the note."
 msgstr ""
 "Когда заметка имеет много строк, эта функция вставляет Словесный эквивалент "
-"меткив начало каждой строки."
+"метки в начало каждой строки."
 
 #: tagsedit.cpp:504
 msgid ""
