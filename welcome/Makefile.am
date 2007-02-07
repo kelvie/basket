@@ -6,4 +6,5 @@ welcome_DATA = \
 	Welcome_it.baskets \
 	Welcome_ja.baskets \
 	Welcome_nn.baskets \
-	Welcome_pt.baskets
+	Welcome_pt.baskets \
+	Welcome_ru.baskets
