@@ -447,7 +447,7 @@ void BNPView::setupActions()
 										 this, SLOT(editNote()), actionCollection(), "note_edit" );
 
 	m_actOpenNote         = KStdAction::open( this, SLOT(openNote()), actionCollection(), "note_open" );
-	m_actOpenNote->setIcon("window_new");
+	m_actOpenNote->setIcon("edit");
 	m_actOpenNote->setText(i18n("&Open"));
 	m_actOpenNote->setShortcut("F9");
 

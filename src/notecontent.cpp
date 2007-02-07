@@ -996,16 +996,16 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 
 int FileContent::zoneAt(const QPoint &pos)
 {
-	return (m_linkDisplay.iconButtonAt(pos) ? Note::Custom0 : 0);
+	return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
 QRect FileContent::zoneRect(int zone, const QPoint &/*pos*/)
 {
 	QRect linkRect = m_linkDisplay.iconButtonRect();
 
-	if (zone == Note::Content)
+	if (zone == Note::Custom0)
 		return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
-	else if (zone == Note::Custom0)
+	else if (zone == Note::Content)
 		return linkRect;
 	else
 		return QRect();
@@ -1194,16 +1194,16 @@ void LinkContent::toolTipInfos(QStringList *keys, QStringList *values)
 
 int LinkContent::zoneAt(const QPoint &pos)
 {
-	return (m_linkDisplay.iconButtonAt(pos) ? Note::Custom0 : 0);
+	return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
 QRect LinkContent::zoneRect(int zone, const QPoint &/*pos*/)
 {
 	QRect linkRect = m_linkDisplay.iconButtonRect();
 
-	if (zone == Note::Content)
+	if (zone == Note::Custom0)
 		return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
-	else if (zone == Note::Custom0)
+	else if (zone == Note::Content)
 		return linkRect;
 	else
 		return QRect();
@@ -1389,16 +1389,16 @@ void LauncherContent::toolTipInfos(QStringList *keys, QStringList *values)
 
 int LauncherContent::zoneAt(const QPoint &pos)
 {
-	return (m_linkDisplay.iconButtonAt(pos) ? Note::Custom0 : 0);
+	return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
 QRect LauncherContent::zoneRect(int zone, const QPoint &/*pos*/)
 {
 	QRect linkRect = m_linkDisplay.iconButtonRect();
 
-	if (zone == Note::Content)
+	if (zone == Note::Custom0)
 		return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
-	else if (zone == Note::Custom0)
+	else if (zone == Note::Content)
 		return linkRect;
 	else
 		return QRect();

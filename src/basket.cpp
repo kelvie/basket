@@ -2315,10 +2315,10 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		case Note::Link:
 			link = clicked->linkAt(event->pos() - QPoint(clicked->x(), clicked->y()));
 			if ( ! link.isEmpty() ) {
-				if (link == "basket-internal:remove-basket") {
+				if (link == "basket-internal-remove-basket") {
 					// TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
 					Global::bnpView->doBasketDeletion(this);
-				} else if (link == "basket-internal:import") {
+				} else if (link == "basket-internal-import") {
 					QPopupMenu *menu = Global::bnpView->popupMenu("fileimport");
 					menu->exec(event->globalPos());
 				} else {
@@ -2820,7 +2820,7 @@ void Basket::maybeTip(const QPoint &pos)
 				break;
 		}
 
-		if (zone == Note::Content || zone == Note::Link) {
+		if (zone == Note::Content || zone == Note::Link || zone == Note::Custom0) {
 			QStringList keys;
 			QStringList values;
 
