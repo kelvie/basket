@@ -76,9 +76,9 @@ QString Global::backgroundsFolder() { return savesFolder() + "backgrounds/"; }
 QString Global::templatesFolder()   { return savesFolder() + "templates/";   }
 QString Global::tempCutFolder()     { return savesFolder() + "temp-cut/";    }
 
-QString Global::openNoteIcon()
+QString Global::openNoteIcon() // FIXME: Now an edit icon
 {
-	return Global::bnpView->m_actOpenNote->icon();
+	return Global::bnpView->m_actEditNote->icon();
 }
 
 KMainWindow* Global::mainWindow()
