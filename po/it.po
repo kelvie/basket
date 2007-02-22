@@ -1116,7 +1116,7 @@ msgstr "Canestro &precedente"
 
 #: bnpview.cpp:565
 msgid "&Next Basket"
-msgstr "Cesti&no successivo"
+msgstr "Ca&nestro successivo"
 
 #: bnpview.cpp:567
 msgid "&Fold Basket"
