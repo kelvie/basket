@@ -4356,7 +4356,7 @@ bool Basket::convertTexts()
 
 void Basket::noteGroup()
 {
-	// Nothing to do?
+/*	// Nothing to do?
 	if (isLocked() || countSelecteds() <= 1)
 		return;
 
@@ -4364,11 +4364,19 @@ void Basket::noteGroup()
 	Note *selectedGroup = this->selectedGroup();
 	if (selectedGroup && !selectedGroup->isColumn())
 		return;
+*/
+
+	// Copied from BNPView::updateNotesActions()
+	bool severalSelected = countSelecteds() >= 2;
+	Note *selectedGroup = (severalSelected ? this->selectedGroup() : 0);
+	bool enabled = !isLocked() && severalSelected && (!selectedGroup || selectedGroup->isColumn());
+	if (!enabled)
+		return;
 
 	// Get the first selected note: we will group selected items just before:
 	Note *first = firstSelected();
-	if (selectedGroup == 0 || first == 0)
-		return;
+//	if (selectedGroup != 0 || first == 0)
+//		return;
 
 	m_loaded = false; // Hack to avoid notes to be unselected and new notes to be selected:
 
