@@ -37,7 +37,7 @@
 #include <kpixmapeffect.h>
 #include <qbitmap.h>
 #include <kurifilter.h>
-#include <kstringhandler.h>
+//#include <kstringhandler.h>
 #include <kfilemetainfo.h>
 #include <qdatetime.h>
 #include <kmultipledrag.h>
@@ -570,7 +570,7 @@ void TextContent::setText(const QString &text)
 	m_text = text;
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
-	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + KStringHandler::tagURLs(Tools::textToHTML(text)); // Don't collapse multiple spaces!
+	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(text)); // Don't collapse multiple spaces!
 	m_simpleRichText = new QSimpleRichText(html, note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
@@ -582,7 +582,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-	               KStringHandler::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
+	               Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
 	exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -661,7 +661,7 @@ void HtmlContent::setHtml(const QString &html)
 	m_html = html;
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
-	m_simpleRichText = new QSimpleRichText(KStringHandler::tagURLs(html), note()->font());
+	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(html), note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
@@ -671,7 +671,7 @@ void HtmlContent::setHtml(const QString &html)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
-	exporter->stream << Tools::htmlToParagraph(KStringHandler::tagURLs(html().replace("\t", "                ")))
+	exporter->stream << Tools::htmlToParagraph(Tools::tagURLs(html().replace("\t", "                ")))
 	                    .replace("  ", " &nbsp;")
 	                    .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }

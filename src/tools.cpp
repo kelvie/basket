@@ -95,6 +95,31 @@ QString Tools::htmlToParagraph(const QString &html)
 	return result.replace("</p>", "<br><br>").replace("<p>", "");
 }
 
+// The following is adapted from KStringHanlder::tagURLs
+// The adaptation lies in the change to urlEx
+// Thanks to Richard Heck
+QString Tools::tagURLs(const QString &text)
+{
+	QRegExp urlEx("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
+
+	QString richText(text);
+	int urlPos = 0;
+	int urlLen;
+	while ((urlPos = urlEx.search(richText, urlPos)) >= 0) {
+		urlLen = urlEx.matchedLength();
+		QString href = richText.mid(urlPos, urlLen);
+		// Qt doesn't support (?<=pattern) so we do it here
+		if ((urlPos > 0) && richText[urlPos-1].isLetterOrNumber()) {
+			urlPos++;
+			continue;
+		}
+		QString anchor = "<a href=\"" + href + "\">" + href + "</a>";
+		richText.replace(urlPos, urlLen, anchor);
+		urlPos += anchor.length();
+	}
+	return richText;
+}
+
 QString Tools::htmlToText(const QString &html)
 {
 	QString text = htmlToParagraph(html);

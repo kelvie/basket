@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +35,7 @@ class StopWatch
 };
 
 /** Some useful functions for that application.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 namespace Tools
 {
@@ -44,6 +44,7 @@ namespace Tools
 	QString textToHTMLWithoutP(const QString &text);
 	QString htmlToParagraph(const QString &html);
 	QString htmlToText(const QString &html);
+	QString tagURLs(const QString &test);
 	QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
 
 	// String Manipulations:
