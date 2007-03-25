@@ -220,6 +220,7 @@ class HtmlContent : public NoteContent
 	QString html() { return m_html; }     /// << @return the HTML note-content.
   protected:
 	QString          m_html;
+	QString          m_textEquivalent; //OPTIM_FILTER
 	QSimpleRichText *m_simpleRichText;
 };
 

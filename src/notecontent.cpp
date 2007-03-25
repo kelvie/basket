@@ -310,7 +310,7 @@ QString ColorContent::saveAsFilters()     { return "";                      }
 QString UnknownContent::saveAsFilters()   { return "";                      }
 
 bool TextContent::match(const FilterData &data)          { return (text().find(data.string, /*index=*/0, /*cs=*/false) != -1);         }
-bool HtmlContent::match(const FilterData &data)          { return (toText("").find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
+bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.find(data.string, /*index=*/0, /*cs=*/false) != -1);     } //OPTIM_FILTER
 bool ImageContent::match(const FilterData &/*data*/)     { return false;                                                               }
 bool AnimationContent::match(const FilterData &/*data*/) { return false;                                                               }
 bool SoundContent::match(const FilterData &data)         { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
@@ -659,6 +659,7 @@ QString HtmlContent::messageWhenOpenning(OpenMessage where)
 void HtmlContent::setHtml(const QString &html)
 {
 	m_html = html;
+	m_textEquivalent = toText(""); //OPTIM_FILTER
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
 	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(html), note()->font());
