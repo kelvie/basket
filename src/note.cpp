@@ -1995,7 +1995,8 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	}
 
 	// Draw content:
-	if (basket()->editedNote() != this) { // Optimization: do not draw text notes because it is time consuming and should be done nearly at each tetx modification.
+	// Optimization: do not draw text notes because it is time consuming and should be done nearly at each tetx modification.
+	if (basket()->editedNote() != this || basket()->editedNote()->content()->type() != NoteType::Html) {
 		painter2.translate(contentX(), NOTE_MARGIN);
 		painter2.setFont( m_computedState.font(painter2.font()) );
 		m_content->paint(&painter2, width() - contentX() - NOTE_MARGIN, height() - 2*NOTE_MARGIN, cg, !m_computedState.textColor().isValid(), isSelected(), hovered);

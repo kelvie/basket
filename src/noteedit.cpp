@@ -173,13 +173,11 @@ void TextEditor::autoSave(bool toFileToo)
 
 	m_textContent->setText(textEdit()->text());
 
-	if (toFileToo)
+	if (toFileToo) {
 		m_textContent->saveToFile();
-
-	m_textContent->setEdited();
-
-	if (toFileToo)
+		m_textContent->setEdited();
 		textEdit()->setCheckSpellingEnabled(autoSpellCheck);
+	}
 }
 
 void TextEditor::validate()
