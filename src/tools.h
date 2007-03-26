@@ -31,7 +31,9 @@ class StopWatch
 	static void start(uint id);
 	static void check(uint id);
   private:
-	static QMemArray<QTime> starts;
+	static QMemArray<QTime>  starts;
+	static QMemArray<double> totals;
+	static QMemArray<uint>   counts;
 };
 
 /** Some useful functions for that application.

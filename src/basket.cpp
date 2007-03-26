@@ -1111,6 +1111,8 @@ void Basket::load()
 		return;
 	m_loadingLaunched = true;
 
+//	StopWatch::start(10);
+
 	DEBUG_WIN << "Basket[" + folderName() + "]: Loading...";
 	QDomDocument *doc = 0;
 	QString content;
@@ -1144,7 +1146,7 @@ void Basket::load()
 	// Now that the background image is loaded and subscribed, we display it during the load process:
 	delete doc;
 	updateContents();
-	kapp->processEvents();
+//	kapp->processEvents();
 
 	//BEGIN Compatibility with 0.6.0 Pre-Alpha versions:
 	QDomElement notes = XMLWork::getElement(docElem, "notes");
@@ -1152,8 +1154,12 @@ void Basket::load()
 		notes = XMLWork::getElement(docElem, "items");
 	m_watcher->stopScan();
 	m_shouldConvertPlainTextNotes = false; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
+//	StopWatch::check(0);
 
+//	StopWatch::start(1);
 	loadNotes(notes, 0L);
+//	StopWatch::check(1);
+//	StopWatch::start(2);
 
 	if (m_shouldConvertPlainTextNotes)
 		convertTexts();
@@ -1187,6 +1193,9 @@ void Basket::load()
 	else
 		m_loaded = true;
 	enableActions();
+//	StopWatch::check(2);
+
+//	StopWatch::check(10);
 }
 
 void Basket::filterAgain(bool andEnsureVisible/* = true*/)

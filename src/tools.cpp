@@ -34,21 +34,32 @@
 
 #include "tools.h"
 
-QMemArray<QTime> StopWatch::starts;
+QMemArray<QTime>  StopWatch::starts;
+QMemArray<double> StopWatch::totals;
+QMemArray<uint>   StopWatch::counts;
 
 void StopWatch::start(uint id)
 {
-	if(id >= starts.size())
+	if (id >= starts.size()) {
+		totals.resize(id + 1);
+		counts.resize(id + 1);
+		for (uint i = starts.size(); i <= id; i++) {
+			totals[i] = 0;
+			counts[i] = 0;
+		}
 		starts.resize(id + 1);
+	}
 	starts[id] = QTime::currentTime();
 }
 
 void StopWatch::check(uint id)
 {
-	if(id >= starts.size())
+	if (id >= starts.size())
 		return;
-	kdDebug() << k_funcinfo << "Timer (" << id << "): " <<
-			starts[id].msecsTo(QTime::currentTime()) / 1000.0 << " s" <<  endl;
+	double time = starts[id].msecsTo(QTime::currentTime()) / 1000.0;
+	totals[id] += time;
+	counts[id]++;
+	kdDebug() << k_funcinfo << "Timer_" << id << ": " << time << " s    [" << counts[id] << " times, total: " << totals[id] << " s, average: " << totals[id] / counts[id] << " s]" <<  endl;
 }
 
 QString Tools::textToHTML(const QString &text)
