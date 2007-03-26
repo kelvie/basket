@@ -160,7 +160,7 @@ TextEditor::~TextEditor()
 
 void TextEditor::autoSave(bool toFileToo)
 {
-	bool autoSpellCheck;
+	bool autoSpellCheck = true;
 	if (toFileToo) {
 		if (Settings::spellCheckTextNotes() != textEdit()->checkSpellingEnabled()) {
 			Settings::setSpellCheckTextNotes(textEdit()->checkSpellingEnabled());

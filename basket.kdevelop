@@ -22,7 +22,7 @@
     <secondaryLanguages/>
     <versioncontrol>kdevsubversion</versioncontrol>
     <projectname>basket</projectname>
-    <defaultencoding/>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevautoproject>
     <general>
@@ -33,7 +33,7 @@
       <mainprogram>/home/seb/Programmation/basket/debug/src/.libs/basket</mainprogram>
       <directoryradio>build</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs>--nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket</programargs>
+      <programargs>--nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars>
@@ -44,7 +44,7 @@
       <runarguments>
         <basket/>
       </runarguments>
-      <globaldebugarguments/>
+      <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/seb/Programmation/basket/debug</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <autoinstall>false</autoinstall>
@@ -161,10 +161,10 @@
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -226,7 +226,7 @@
       <includePaths>.;</includePaths>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>

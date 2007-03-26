@@ -542,7 +542,7 @@ void SoftwareImporters::importKnowIt()
 		if(file.open(IO_ReadOnly))
 		{
 			QTextStream stream(&file);
-			uint level;
+			uint level = 0;
 			QString name;
 			QString line;
 			QStringList links;
