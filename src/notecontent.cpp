@@ -556,8 +556,6 @@ bool TextContent::finishLazyLoad()
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
 	contentChanged(minWidth + 1);
-
-	return true;
 }
 
 bool TextContent::saveToFile()
@@ -664,6 +662,8 @@ bool HtmlContent::finishLazyLoad()
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
 	contentChanged(minWidth + 1);
+
+	return true;
 }
 
 bool HtmlContent::saveToFile()
