@@ -665,6 +665,13 @@ public slots:
   public:
 
 	friend class SystemTray;
+
+/// SPEED OPTIMIZATION
+  private:
+	bool m_finishLoadOnFirstShow;
+	bool m_relayoutOnNextShow;
+  public:
+	void aboutToBeActivated();
 };
 
 

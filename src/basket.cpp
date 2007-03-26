@@ -713,7 +713,7 @@ void Basket::loadNotes(const QDomElement &notes, Note *parent)
 		// Load a Content-Based Note:
 		if (e.tagName() == "note" || e.tagName() == "item") { // Keep compatible with 0.6.0 Alpha 1
 			note = new Note(this);      // Create the note...
-			NoteFactory__loadNode(XMLWork::getElement(e, "content"), e.attribute("type"), note); // ... Populate it with content...
+			NoteFactory__loadNode(XMLWork::getElement(e, "content"), e.attribute("type"), note, /*lazyLoad=*/m_finishLoadOnFirstShow); // ... Populate it with content...
 			if (e.attribute("type") == "text")
 				m_shouldConvertPlainTextNotes = true; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
 			appendNoteIn(note, parent); // ... And insert it.
@@ -1104,6 +1104,22 @@ bool Basket::save()
 	return true;
 }
 
+void Basket::aboutToBeActivated()
+{
+	if (m_finishLoadOnFirstShow) {
+		FOR_EACH_NOTE (note)
+			note->finishLazyLoad();
+
+		//relayoutNotes(/*animate=*/false);
+		setFocusedNote(0); // So that during the focusInEvent that will come shortly, the FIRST note is focused.
+
+		if (Settings::playAnimations() && !decoration()->filterBar()->filterData().isFiltering && Global::bnpView->currentBasket() == this) // No animation when filtering all!
+			animateLoad();//QTimer::singleShot( 0, this, SLOT(animateLoad()) );
+
+		m_finishLoadOnFirstShow = false;
+	}
+}
+
 void Basket::load()
 {
 	// Load only once:
@@ -1111,7 +1127,7 @@ void Basket::load()
 		return;
 	m_loadingLaunched = true;
 
-//	StopWatch::start(10);
+	StopWatch::start(10);
 
 	DEBUG_WIN << "Basket[" + folderName() + "]: Loading...";
 	QDomDocument *doc = 0;
@@ -1157,6 +1173,7 @@ void Basket::load()
 //	StopWatch::check(0);
 
 //	StopWatch::start(1);
+	m_finishLoadOnFirstShow = (Global::bnpView->currentBasket() != this);
 	loadNotes(notes, 0L);
 //	StopWatch::check(1);
 //	StopWatch::start(2);
@@ -1195,7 +1212,7 @@ void Basket::load()
 	enableActions();
 //	StopWatch::check(2);
 
-//	StopWatch::check(10);
+	StopWatch::check(10);
 }
 
 void Basket::filterAgain(bool andEnsureVisible/* = true*/)
@@ -1322,7 +1339,8 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_editor(0), m_leftEditorBorder(0), m_rightEditorBorder(0), m_redirectEditActions(false), m_editorWidth(-1), m_editorHeight(-1),
    m_doNotCloseEditor(false), m_editParagraph(0), m_editIndex(0),
    m_isDuringDrag(false), m_draggedNotes(),
-   m_focusedNote(0), m_startOfShiftSelectionNote(0)
+   m_focusedNote(0), m_startOfShiftSelectionNote(0),
+   m_finishLoadOnFirstShow(false), m_relayoutOnNextShow(false)
 {
 	QString sAction = "local_basket_activate_" + folderName;
 	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), this, SLOT(activatedShortcut()), Global::bnpView->actionCollection(), sAction);
@@ -3224,6 +3242,9 @@ void Basket::unsetNotesWidth()
 
 void Basket::relayoutNotes(bool animate)
 {
+	if (Global::bnpView->currentBasket() != this)
+		return; // Optimize load time, and basket will be relaid out when activated, anyway
+
 	if (!Settings::playAnimations())
 		animate = false;
 
@@ -4581,7 +4602,7 @@ void Basket::slotCopyingDone2(KIO::Job *job)
 	Note *note = noteForFullPath(fileCopyJob->destURL().path());
 	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destURL().path() + (note ? "" : " --- NO CORRESPONDING NOTE");
 	if (note != 0L) {
-		note->content()->loadFromFile();
+		note->content()->loadFromFile(/*lazyLoad=*/false);
 		if(isEncrypted())
 			note->content()->saveToFile();
 		if (m_focusedNote == note)   // When inserting a new note we ensure it visble
@@ -5124,7 +5145,7 @@ void Basket::updateModifiedNotes()
 	for (QValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
 		Note *note = noteForFullPath(*it);
 		if (note)
-			note->content()->loadFromFile();
+			note->content()->loadFromFile(/*lazyLoad=*/false);
 	}
 	m_modifiedFiles.clear();
 }

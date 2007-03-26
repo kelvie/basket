@@ -84,7 +84,8 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual QString cssClass()                                       = 0; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
 	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
-	virtual bool    loadFromFile()                      { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
+	virtual bool    loadFromFile(bool /*lazyLoad*/)     { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
+	virtual bool    finishLazyLoad()                    { return false; } /// << Load what was not loaded by loadFromFile() if it was lazy-loaded
 	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
 	virtual QString linkAt(const QPoint &/*pos*/)          { return ""; } /// << @return the link anchor at position @p pos or "" if there is no link.
 	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
@@ -146,7 +147,7 @@ class TextContent : public NoteContent
 {
   public:
 	// Constructor and destructor:
-	TextContent(Note *parent, const QString &fileName);
+	TextContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	~TextContent();
 	// Simple Generic Methods:
 	NoteType::Id type();
@@ -163,7 +164,8 @@ class TextContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool lazyLoad);
+	bool    finishLazyLoad();
 	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
@@ -174,7 +176,7 @@ class TextContent : public NoteContent
 	QString messageWhenOpenning(OpenMessage where);
 //	QString customOpenCommand();
 	// Content-Specific Methods:
-	void    setText(const QString &text); /// << Change the text note-content and relayout the note.
+	void    setText(const QString &text, bool lazyLoad = false); /// << Change the text note-content and relayout the note.
 	QString text() { return m_text; }     /// << @return the text note-content.
   protected:
 	QString          m_text;
@@ -188,7 +190,7 @@ class HtmlContent : public NoteContent
 {
   public:
 	// Constructor and destructor:
-	HtmlContent(Note *parent, const QString &fileName);
+	HtmlContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	~HtmlContent();
 	// Simple Generic Methods:
 	NoteType::Id type();
@@ -205,7 +207,8 @@ class HtmlContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool lazyLoad);
+	bool    finishLazyLoad();
 	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
@@ -216,7 +219,7 @@ class HtmlContent : public NoteContent
 	QString messageWhenOpenning(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
-	void    setHtml(const QString &html); /// << Change the HTML note-content and relayout the note.
+	void    setHtml(const QString &html, bool lazyLoad = false); /// << Change the HTML note-content and relayout the note.
 	QString html() { return m_html; }     /// << @return the HTML note-content.
   protected:
 	QString          m_html;
@@ -231,7 +234,7 @@ class ImageContent : public NoteContent
 {
   public:
 	// Constructor and destructor:
-	ImageContent(Note *parent, const QString &fileName);
+	ImageContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	// Simple Generic Methods:
 	NoteType::Id type();
 	QString typeName();
@@ -247,7 +250,8 @@ class ImageContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool lazyLoad);
+	bool    finishLazyLoad();
 	bool    saveToFile();
 	void    fontChanged();
 	QString editToolTipText();
@@ -274,7 +278,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
   Q_OBJECT
   public:
 	// Constructor and destructor:
-	AnimationContent(Note *parent, const QString &fileName);
+	AnimationContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	// Simple Generic Methods:
 	NoteType::Id type();
 	QString typeName();
@@ -295,7 +299,8 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool lazyLoad);
+	bool    finishLazyLoad();
 	bool    saveToFile();
 	// Open Content or File:
 	QString messageWhenOpenning(OpenMessage where);
@@ -336,7 +341,7 @@ class FileContent : public QObject, public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	void    linkLookChanged();
 	QString editToolTipText();
@@ -485,7 +490,7 @@ class LauncherContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();
 	void    toolTipInfos(QStringList *keys, QStringList *values);
@@ -576,7 +581,7 @@ class UnknownContent : public NoteContent
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile();
+	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();
 	// Drag and Drop Content:
@@ -593,6 +598,6 @@ class UnknownContent : public NoteContent
 	static const int DECORATION_MARGIN;
 };
 
-void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent);
+void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent, bool lazyLoad);
 
 #endif // NOTECONTENT_H

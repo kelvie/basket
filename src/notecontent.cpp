@@ -350,7 +350,7 @@ void FileContent::fontChanged()      { setFileName(fileName());                 
 void LinkContent::fontChanged()      { setLink(url(), title(), icon(), autoTitle(), autoIcon()); }
 void LauncherContent::fontChanged()  { setLauncher(name(), icon(), exec());                      }
 void ColorContent::fontChanged()     { setColor(color());                                        }
-void UnknownContent::fontChanged()   { loadFromFile();                                           } // TODO: Optimize: setMimeTypes()
+void UnknownContent::fontChanged()   { loadFromFile(/*lazyLoad=*/false);                         } // TODO: Optimize: setMimeTypes()
 
 //QString TextContent::customOpenCommand()      { return (Settings::isTextUseProg()      && ! Settings::textProg().isEmpty()      ? Settings::textProg()      : QString()); }
 QString HtmlContent::customOpenCommand()      { return (Settings::isHtmlUseProg()      && ! Settings::htmlProg().isEmpty()      ? Settings::htmlProg()      : QString()); }
@@ -498,11 +498,11 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
 /** class TextContent:
  */
 
-TextContent::TextContent(Note *parent, const QString &fileName)
+TextContent::TextContent(Note *parent, const QString &fileName, bool lazyLoad)
  : NoteContent(parent, fileName), m_simpleRichText(0)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(lazyLoad);
 }
 
 TextContent::~TextContent()
@@ -512,18 +512,23 @@ TextContent::~TextContent()
 
 int TextContent::setWidthAndGetHeight(int width)
 {
-	width -= 1;
-	m_simpleRichText->setWidth(width);
-	return m_simpleRichText->height();
+	if (m_simpleRichText) {
+		width -= 1;
+		m_simpleRichText->setWidth(width);
+		return m_simpleRichText->height();
+	} else
+		return 10; // Lazy loaded
 }
 
 void TextContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	width -= 1;
-	m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+	if (m_simpleRichText) {
+		width -= 1;
+		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+	}
 }
 
-bool TextContent::loadFromFile()
+bool TextContent::loadFromFile(bool lazyLoad)
 {
 	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
@@ -531,14 +536,28 @@ bool TextContent::loadFromFile()
 	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 
 	if (success)
-		setText(content);
+		setText(content, lazyLoad);
 	else {
 		std::cout << "FAILED TO LOAD TextContent: " << fullPath() << std::endl;
-		setText("");
+		setText("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
 	}
 	return success;
+}
+
+bool TextContent::finishLazyLoad()
+{
+	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+	delete m_simpleRichText;
+	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
+	m_simpleRichText = new QSimpleRichText(html, note()->font());
+	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+	int minWidth = m_simpleRichText->widthUsed();
+	m_simpleRichText->setWidth(width);
+	contentChanged(minWidth + 1);
+
+	return true;
 }
 
 bool TextContent::saveToFile()
@@ -548,7 +567,10 @@ bool TextContent::saveToFile()
 
 QString TextContent::linkAt(const QPoint &pos)
 {
-	return m_simpleRichText->anchorAt(pos);
+	if (m_simpleRichText)
+		return m_simpleRichText->anchorAt(pos);
+	else
+		return ""; // Lazy loaded
 }
 
 
@@ -565,17 +587,13 @@ QString TextContent::messageWhenOpenning(OpenMessage where)
 	}
 }
 
-void TextContent::setText(const QString &text)
+void TextContent::setText(const QString &text, bool lazyLoad)
 {
 	m_text = text;
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
-	delete m_simpleRichText;
-	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new QSimpleRichText(html, note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-	int minWidth = m_simpleRichText->widthUsed();
-	m_simpleRichText->setWidth(width);
-	contentChanged(minWidth + 1);
+	if (!lazyLoad)
+		finishLazyLoad();
+	else
+		contentChanged(10);
 }
 
 void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
@@ -589,11 +607,11 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 /** class HtmlContent:
  */
 
-HtmlContent::HtmlContent(Note *parent, const QString &fileName)
+HtmlContent::HtmlContent(Note *parent, const QString &fileName, bool lazyLoad)
  : NoteContent(parent, fileName), m_simpleRichText(0)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(lazyLoad);
 }
 
 HtmlContent::~HtmlContent()
@@ -603,18 +621,23 @@ HtmlContent::~HtmlContent()
 
 int HtmlContent::setWidthAndGetHeight(int width)
 {
-	width -= 1;
-	m_simpleRichText->setWidth(width);
-	return m_simpleRichText->height();
+	if (m_simpleRichText) {
+		width -= 1;
+		m_simpleRichText->setWidth(width);
+		return m_simpleRichText->height();
+	} else
+		return 10; // Lazy loaded
 }
 
 void HtmlContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	width -= 1;
-	m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+	if (m_simpleRichText) {
+		width -= 1;
+		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+	}
 }
 
-bool HtmlContent::loadFromFile()
+bool HtmlContent::loadFromFile(bool lazyLoad)
 {
 	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
@@ -622,14 +645,25 @@ bool HtmlContent::loadFromFile()
 	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 
 	if (success)
-		setHtml(content);
+		setHtml(content, lazyLoad);
 	else {
 		std::cout << "FAILED TO LOAD HtmlContent: " << fullPath() << std::endl;
-		setHtml("");
+		setHtml("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
 	}
 	return success;
+}
+
+bool HtmlContent::finishLazyLoad()
+{
+	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+	delete m_simpleRichText;
+	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(m_html), note()->font());
+	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+	int minWidth = m_simpleRichText->widthUsed();
+	m_simpleRichText->setWidth(width);
+	contentChanged(minWidth + 1);
 }
 
 bool HtmlContent::saveToFile()
@@ -639,7 +673,10 @@ bool HtmlContent::saveToFile()
 
 QString HtmlContent::linkAt(const QPoint &pos)
 {
-	return m_simpleRichText->anchorAt(pos);
+	if (m_simpleRichText)
+		return m_simpleRichText->anchorAt(pos);
+	else
+		return ""; // Lazy loaded
 }
 
 
@@ -656,17 +693,14 @@ QString HtmlContent::messageWhenOpenning(OpenMessage where)
 	}
 }
 
-void HtmlContent::setHtml(const QString &html)
+void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 {
 	m_html = html;
 	m_textEquivalent = toText(""); //OPTIM_FILTER
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
-	delete m_simpleRichText;
-	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(html), note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-	int minWidth = m_simpleRichText->widthUsed();
-	m_simpleRichText->setWidth(width);
-	contentChanged(minWidth + 1);
+	if (!lazyLoad)
+		finishLazyLoad();
+	else
+		contentChanged(10);
 }
 
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
@@ -680,11 +714,11 @@ void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 /** class ImageContent:
  */
 
-ImageContent::ImageContent(Note *parent, const QString &fileName)
+ImageContent::ImageContent(Note *parent, const QString &fileName, bool lazyLoad)
  : NoteContent(parent, fileName), m_format(0)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(lazyLoad);
 }
 
 int ImageContent::setWidthAndGetHeight(int width)
@@ -715,7 +749,15 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QCo
 	}
 }
 
-bool ImageContent::loadFromFile()
+bool ImageContent::loadFromFile(bool lazyLoad)
+{
+	if (lazyLoad)
+		return true;
+	else
+		return finishLazyLoad();
+}
+
+bool ImageContent::finishLazyLoad()
 {
 	DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
 
@@ -745,7 +787,6 @@ bool ImageContent::loadFromFile()
 		saveToFile(); // Reserve the fileName so no new note will have the same name!
 	return false;
 }
-
 
 bool ImageContent::saveToFile()
 {
@@ -811,11 +852,11 @@ void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 
 int AnimationContent::INVALID_STATUS = -100;
 
-AnimationContent::AnimationContent(Note *parent, const QString &fileName)
+AnimationContent::AnimationContent(Note *parent, const QString &fileName, bool lazyLoad)
  : NoteContent(parent, fileName), m_oldStatus(INVALID_STATUS)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(lazyLoad);
 }
 
 int AnimationContent::setWidthAndGetHeight(int /*width*/)
@@ -835,7 +876,15 @@ void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const
 		painter->drawPixmap(0, 0, frame);  // TODO: Scall down
 }
 
-bool AnimationContent::loadFromFile()
+bool AnimationContent::loadFromFile(bool lazyLoad)
+{
+	if (lazyLoad)
+		return true;
+	else
+		return finishLazyLoad();
+}
+
+bool AnimationContent::finishLazyLoad()
 {
 	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
 //	return setMovie(QMovie(fullPath()));
@@ -848,7 +897,6 @@ bool AnimationContent::loadFromFile()
 		setMovie(QMovie());
 	return success;
 }
-
 
 bool AnimationContent::saveToFile()
 {
@@ -959,7 +1007,7 @@ void FileContent::paint(QPainter *painter, int width, int height, const QColorGr
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
-bool FileContent::loadFromFile()
+bool FileContent::loadFromFile(bool /*lazyLoad*/)
 {
 	setFileName(fileName()); // File changed: get new file preview!
 	return true;
@@ -1348,7 +1396,7 @@ LauncherContent::LauncherContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(/*lazyLoad=*/false);
 }
 
 int LauncherContent::setWidthAndGetHeight(int width)
@@ -1362,7 +1410,7 @@ void LauncherContent::paint(QPainter *painter, int width, int height, const QCol
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
-bool LauncherContent::loadFromFile() // TODO: saveToFile() ?? Is it possible?
+bool LauncherContent::loadFromFile(bool /*lazyLoad*/) // TODO: saveToFile() ?? Is it possible?
 {
 	DEBUG_WIN << "Loading LauncherContent From " + basket()->folderName() + fileName();
 	KService service(fullPath());
@@ -1749,7 +1797,7 @@ UnknownContent::UnknownContent(Note *parent, const QString &fileName)
  : NoteContent(parent, fileName)
 {
 	basket()->addWatchedFile(fullPath());
-	loadFromFile();
+	loadFromFile(/*lazyLoad=*/false);
 }
 
 int UnknownContent::setWidthAndGetHeight(int width)
@@ -1791,7 +1839,7 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QColo
 	                  Qt::AlignAuto | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
 }
 
-bool UnknownContent::loadFromFile()
+bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 {
 	DEBUG_WIN << "Loading UnknownContent From " + basket()->folderName() + fileName();
 	QFile file(fullPath());
@@ -1863,14 +1911,14 @@ void UnknownContent::exportToHTML(HTMLExporter *exporter, int indent)
 
 
 
-void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent)
+void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent, bool lazyLoad)
 {
-	if        (lowerTypeName == "text")      new TextContent(      parent, content.text()         );
-	else if   (lowerTypeName == "html")      new HtmlContent(      parent, content.text()         );
-	else if   (lowerTypeName == "image")     new ImageContent(     parent, content.text()         );
-	else if   (lowerTypeName == "animation") new AnimationContent( parent, content.text()         );
-	else if   (lowerTypeName == "sound")     new SoundContent(     parent, content.text()         );
-	else if   (lowerTypeName == "file")      new FileContent(      parent, content.text()         );
+	if        (lowerTypeName == "text")      new TextContent(      parent, content.text(), lazyLoad );
+	else if   (lowerTypeName == "html")      new HtmlContent(      parent, content.text(), lazyLoad );
+	else if   (lowerTypeName == "image")     new ImageContent(     parent, content.text(), lazyLoad );
+	else if   (lowerTypeName == "animation") new AnimationContent( parent, content.text(), lazyLoad );
+	else if   (lowerTypeName == "sound")     new SoundContent(     parent, content.text()           );
+	else if   (lowerTypeName == "file")      new FileContent(      parent, content.text()           );
 	else if   (lowerTypeName == "link") {
 		bool autoTitle = content.attribute("title") == content.text();
 		bool autoIcon  = content.attribute("icon")  == NoteFactory::iconForURL(KURL(content.text()));

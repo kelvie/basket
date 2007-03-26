@@ -1111,6 +1111,9 @@ void BNPView::setCurrentBasket(Basket *basket)
 	if (currentBasket())
 		currentBasket()->closeBasket();
 
+	if (basket)
+		basket->aboutToBeActivated();
+
 	BasketListViewItem *item = listViewItemForBasket(basket);
 	if (item) {
 		m_tree->setSelected(item, true);
@@ -1127,6 +1130,7 @@ void BNPView::setCurrentBasket(Basket *basket)
 		if (Global::systemTray)
 			Global::systemTray->updateToolTip();
 		m_tree->ensureItemVisible(m_tree->currentItem());
+		item->basket()->setFocus();
 	}
 	m_tree->viewport()->update();
 	emit basketChanged();

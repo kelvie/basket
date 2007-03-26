@@ -266,6 +266,15 @@ void Note::resetWasInLastSelectionRect()
 		child->resetWasInLastSelectionRect();
 }
 
+void Note::finishLazyLoad()
+{
+	if (content())
+		content()->finishLazyLoad();
+
+	FOR_EACH_CHILD (child)
+		child->finishLazyLoad();
+}
+
 void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers /*= true*/)
 {
 //	QRect myRect(x(), y(), width(), height());

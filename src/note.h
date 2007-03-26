@@ -332,6 +332,10 @@ class Note
 
 	void debug();
 
+/// SPEED OPTIMIZATION
+  public:
+	void finishLazyLoad();
+
   public:
 	// Values are provided here as info:
 	// Please see Settings::setBigNotes() to know whats values are assigned.
