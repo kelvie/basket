@@ -77,6 +77,8 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 
 	// Configure the Serach in all Baskets button:
 	m_inAllBasketsButton->setToggleButton(true);
+//	m_inAllBasketsButton->setOn(true);
+//	Global::bnpView->toggleFilterAllBaskets(true);
 
 //	m_lineEdit->setMaximumWidth(150);
 

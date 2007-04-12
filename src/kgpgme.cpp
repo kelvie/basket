@@ -34,6 +34,8 @@
 #include <klocale.h>
 #include <locale.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 // KGpgSelKey class based on class in KGpg with the same name
 

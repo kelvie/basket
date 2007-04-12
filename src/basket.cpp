@@ -749,6 +749,7 @@ void Basket::loadNotes(const QDomElement &notes, Note *parent)
 				}
 			}
 		}
+//		kapp->processEvents();
 	}
 }
 
@@ -1127,7 +1128,7 @@ void Basket::load()
 		return;
 	m_loadingLaunched = true;
 
-	StopWatch::start(10);
+//	StopWatch::start(10);
 
 	DEBUG_WIN << "Basket[" + folderName() + "]: Loading...";
 	QDomDocument *doc = 0;
@@ -1212,7 +1213,7 @@ void Basket::load()
 	enableActions();
 //	StopWatch::check(2);
 
-	StopWatch::check(10);
+//	StopWatch::check(10);
 }
 
 void Basket::filterAgain(bool andEnsureVisible/* = true*/)
@@ -1230,6 +1231,8 @@ void Basket::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
 	if (!isLoaded())
 		return;
 
+//StopWatch::start(20);
+
 	m_countFounds = 0;
 	for (Note *note = firstNote(); note; note = note->next())
 		m_countFounds += note->newFilter(data);
@@ -1243,6 +1246,8 @@ void Basket::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
 		ensureNoteVisible(m_focusedNote);
 
 	Global::bnpView->setFiltering(data.isFiltering);
+
+//StopWatch::check(20);
 }
 
 void Basket::cancelFilter()

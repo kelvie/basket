@@ -37,6 +37,8 @@
 #include <qfileinfo.h>
 #include <qdragobject.h>
 #include <cmath>
+#include <math.h>
+#include <algorithm>
 
 #ifdef HAVE_LIBART
 #include <svgicons/ksvgiconengine.h>

@@ -43,6 +43,7 @@
 #include <kfiledialog.h>
 #include <kprogress.h>
 #include <kmessagebox.h>
+#include <unistd.h> // usleep()
 
 /**
  * Backups are wrapped in a .tar.gz, inside that folder name.

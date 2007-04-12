@@ -187,6 +187,17 @@ void BNPView::lateInit()
 	m_hideTimer    = new QTimer(this);
 	connect( m_tryHideTimer, SIGNAL(timeout()), this, SLOT(timeoutTryHide()) );
 	connect( m_hideTimer,    SIGNAL(timeout()), this, SLOT(timeoutHide())    );
+
+	// Preload every baskets for instant filtering:
+/*StopWatch::start(100);
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = ((BasketListViewItem*)it.current());
+		item->basket()->load();
+		kapp->processEvents();
+		++it;
+	}
+StopWatch::check(100);*/
 }
 
 void BNPView::addWelcomeBaskets()
