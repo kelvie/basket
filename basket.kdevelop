@@ -3,7 +3,7 @@
   <general>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
-    <version>1.0</version>
+    <version>1.0.2</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -267,7 +267,7 @@
     <bzip>false</bzip>
     <archname>basket-%v.tar.gz</archname>
     <appname>basket</appname>
-    <version>1.0</version>
+    <version>1.0.2</version>
     <release/>
     <vendor/>
     <licence/>
