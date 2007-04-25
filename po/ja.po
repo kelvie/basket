@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: basket-ja\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-03-19 23:00+0900\n"
+"PO-Revision-Date: 2007-04-25 23:00+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -956,7 +956,7 @@ msgstr "すべてのメモの選択を解除"
 
 #: bnpview.cpp:407
 msgid "&Invert Selection"
-msgstr "選択を反転(&I)"
+msgstr "選択反転(&I)"
 
 #: bnpview.cpp:410
 msgid "Inverts the current selection of notes"
