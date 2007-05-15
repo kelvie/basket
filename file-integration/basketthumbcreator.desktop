@@ -11,6 +11,7 @@ Name[nb]=Kurvarkiv og kurvmaler
 Name[nn]=Korgarkiv og korgmalar
 Name[pt]=Arquivos e modelos de cestos
 Name[ru]=Шаблоны и контейнеры Basket
+Name[tr]=Basket Arşivleri & Şablonları
 ServiceTypes=ThumbCreator
 MimeTypes=application/x-basket-archive,application/x-basket-template
 CacheThumbnail=true

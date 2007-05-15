@@ -27,6 +27,7 @@ Comment[nb]=Kurvnotat-tillegg for Kontakt
 Comment[nn]=Korgnotat-tillegg for Kontakt
 Comment[pt]=Plugin do Bloco de Notas BasKet para o Kontact
 Comment[ru]=Модуль Альбом заметок Basket для Kontact
+Comment[tr]=Kontact için Basket Not Tutucu
 
 Name=Baskets
 Name[de]=Körbe
@@ -38,3 +39,4 @@ Name[nb]=Kurver
 Name[nn]=Korger
 Name[pt]=Cestos
 Name[ru]=Корзины
+Name[tr]=Sepetler
