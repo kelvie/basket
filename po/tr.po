@@ -5,9 +5,9 @@
 # Serdar Soytetir <tulliana@gmail.com>, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: basket\n"
+"Project-Id-Version: tr\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-02-27 14:34+0200\n"
+"PO-Revision-Date: 2007-05-15 04:17+0300\n"
 "Last-Translator: Serdar Soytetir <tulliana@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -130,6 +130,9 @@ msgid ""
 "folder manually (eg. adding a file in a basket folder will not add that file "
 "to the basket).</p>"
 msgstr ""
+"<p>%1'nun sepetlerinizi depoladığı dizini başka bir yere taşıyabilirsiniz:</p><ul><li>Sepetlerinizi "
+"Ev Dizininizdeki görünür bir yere taşıyarak, ~/Notlar ya da ~/Sepetler gibi, istediğiniz zaman elle yedekleyebilirsiniz.</li><li>Sepetlerinizi bir sunucu üzerine taşıyarak iki bilgisayar arasında paylaşabilirsiniz.<br>Bu durumda paylaşılan dizini yerel dosya sistemine bağlayıp %2'ya bu dizini kullanmasını söylemelisiniz.<br>Uyarı: %3'yu aynı anda iki bilgisayarda çalıştırmamalısınız. Aksi durumda iki uygulama arasında eşzamanlama kaybolabileceğinden veri kaybedebilirsiniz."
+"</li></ul><p>Lütfen dizin içeriğini elle değiştirmemeniz gerektiğini unutmayın (bir sepet dizinine dosya eklemek o dosyayı sepetinize eklemez).</p>"
 
 #: backup.cpp:89
 msgid "Backups"
@@ -1587,6 +1590,9 @@ msgid ""
 "your comments, ask you how to reproduce the bugs you report, send bug "
 "corrections for you to test, etc."
 msgstr ""
+"Bu sadece yorumlarınızla ilgili sizinle bağlantı kurmak, hatayı nasıl "
+"oluşturduğunuzu sormak ve hata düzeltmelerini test etmeniz için "
+"size gönderbilmek için kullanılacak."
 
 #: likeback.cpp:560
 msgid ""
