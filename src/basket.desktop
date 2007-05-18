@@ -16,9 +16,9 @@ Name[nb]=Kurvnotat
 Name[nn]=Korgnotat
 Name[pt]=Bloco de Notas BasKet
 Name[ru]=Альбом заметок BasKet
-Name[tr]=BasKet Not Tutucu
+Name[tr]=Basket
 Name[xx]=xxBasKet Note Padsxx
-
+GenericName[tr]=Not Tutma Aracı
 
 Comment=Taking care of your ideas.
 Comment[de]=Bewahren Sie Ihre Ideen.
@@ -30,5 +30,5 @@ Comment[nn]=Ta vare på tankane dine.
 Comment[ja]=あなたのアイデアのお世話をします。
 Comment[pt]=Cuidando das suas ideias.
 Comment[ru]=Заботимся о ваших идеях.
-Comment[tr]=Basket Not Tutucu
+Comment[tr]=Not Tutma Aracı
 Comment[xx]=xxTaking care of your ideas.xx

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "POT-Creation-Date: 2007-01-13 15:57+0100\n"
-"PO-Revision-Date: 2007-05-15 04:17+0300\n"
+"PO-Revision-Date: 2007-05-18 16:54+0300\n"
 "Last-Translator: Serdar Soytetir <tulliana@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "<p><b>Düşüncelerinize iyi bakın.</b></p><p>Düşüncelerinizi tam ol
 
 #: aboutdata.cpp:34
 msgid "BasKet Note Pads"
-msgstr "BasKet Not Tutucu"
+msgstr "Basket Not Tutma Aracı"
 
 #: aboutdata.cpp:41
 msgid "Author, maintainer"
