@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kicondialog.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qvbuttongroup.h>
@@ -35,6 +34,7 @@
 #include <kiconloader.h>
 #include <kglobalsettings.h>
 
+#include "kicondialog.h"
 #include "basketproperties.h"
 #include "basket.h"
 #include "kcolorcombo2.h"

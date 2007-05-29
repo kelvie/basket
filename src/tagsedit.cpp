@@ -24,7 +24,6 @@
 #include <kfontcombo.h>
 #include <qlayout.h>
 #include <kkeybutton.h>
-#include <kicondialog.h>
 #include <kiconloader.h>
 #include <kapplication.h>
 #include <kglobalsettings.h>
@@ -44,6 +43,7 @@
 
 #include <iostream>
 
+#include "kicondialog.h"
 #include "tag.h"
 #include "tagsedit.h"
 #include "kcolorcombo2.h"

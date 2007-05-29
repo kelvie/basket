@@ -24,7 +24,7 @@
 #include <kdialogbase.h>
 #include <kiconview.h>
 
-#include <kiconcanvas.h> // FIXME: BCI KDE 3 expects KIconCanvas to be defined in kicondialog.h
+#include "kiconcanvas.h" // FIXME: BCI KDE 3 expects KIconCanvas to be defined in kicondialog.h
 
 class KIconDialogUI;
 

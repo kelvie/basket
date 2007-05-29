@@ -19,9 +19,7 @@
  ***************************************************************************/
 
 #include "aboutdata.h"
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 static const char description[] = I18N_NOOP(
 	"<p><b>Taking care of your ideas.</b></p>"

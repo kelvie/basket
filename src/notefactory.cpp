@@ -39,7 +39,6 @@
 #include <qtextcodec.h>
 #include <kopenwith.h>
 #include <kfiledialog.h>
-#include <kicondialog.h>
 #include <kiconloader.h>
 #include <qfileinfo.h>
 #include <kpopupmenu.h>
@@ -58,6 +57,7 @@
 #include "keyboard.h"
 #include "variouswidgets.h"
 #include "tools.h"
+#include "kicondialog.h"
 
 #include "debugwindow.h"
 

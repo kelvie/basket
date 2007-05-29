@@ -26,11 +26,11 @@
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <bnpview.h>
-#include <aboutdata.h>
 #include <kparts/genericfactory.h>
 #include <kparts/statusbarextension.h>
+#include "aboutdata.h"
 #include "basketstatusbar.h"
+#include "bnpview.h"
 
 typedef KParts::GenericFactory< BasketPart > BasketFactory;
 K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory )

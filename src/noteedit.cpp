@@ -23,7 +23,6 @@
 #include <qlineedit.h>
 #include <klineedit.h>
 #include <kurlrequester.h>
-#include <kicondialog.h>
 #include <kcolordialog.h>
 #include <kservice.h>
 #include <kconfig.h>
@@ -37,6 +36,7 @@
 #include <kstdaction.h>
 #include <kglobalsettings.h>
 
+#include "kicondialog.h"
 #include "noteedit.h"
 #include "notecontent.h"
  // Use Tools::

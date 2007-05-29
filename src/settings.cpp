@@ -41,10 +41,10 @@
 #include <kaboutdata.h>
 #include <kmimetype.h>
 #include <kstandarddirs.h>
-#include <kgpgme.h>
 #include <kdebug.h>
 #include <qdatetime.h>
 
+#include "kgpgme.h"
 #include "basket.h"
 #include "linklabel.h"
 #include "settings.h"

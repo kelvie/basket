@@ -29,8 +29,9 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
-#include <kgpgme.h>
-#include <basket.h>
+
+#include "basket.h"
+#include "kgpgme.h"
 
 PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
 	:KDialogBase(Plain, i18n("Password Protection"), Ok|Cancel, Ok,
