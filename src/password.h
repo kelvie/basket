@@ -20,13 +20,11 @@
 #ifndef PASSWORD_H
 #define PASSWORD_H
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #ifdef HAVE_LIBGPGME
 
-#include <passwordlayout.h>
+#include "passwordlayout.h"
 #include <kdialogbase.h>
 
 /**

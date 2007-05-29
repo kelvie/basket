@@ -1,14 +1,21 @@
-project(basket)
+PROJECT(basket)
 
-find_package(KDE3 REQUIRED)
+FIND_PACKAGE(KDE3 REQUIRED)
+INCLUDE_DIRECTORIES(${KDE3_INCLUDE_DIRS})
+ADD_DEFINITIONS(${QT_DEFINITIONS} ${KDE3_DEFINITIONS})
+LINK_DIRECTORIES(${QT_LIB_DIR} ${KDE3_LIB_DIR})
 
-# tell cmake where to search for Qt/KDE headers:
-include_directories(${KDE3_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
-add_definitions(${QT_DEFINITIONS} ${KDE3_DEFINITIONS})
+FIND_LIBRARY(GPGME gpgme)
+IF(NOT GPGME-NOTFOUND)
+  SET(HAVE_LIBGPGME 1)
+  SET(GPGME_LIB gpgme)
+  ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64)
+ELSE(NOT GPGME-NOTFOUND)
+  MESSAGE("GPG not found, configuring without")
+ENDIF(NOT GPGME-NOTFOUND)
 
-# tell cmake where to search for libraries:
-link_directories(${QT_LIB_DIR} ${KDE3_LIB_DIR})
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-add_subdirectory(src)
+ADD_SUBDIRECTORY(src)
 

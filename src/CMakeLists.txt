@@ -58,4 +58,4 @@ kde3_automoc( ${basketSources} )
 
 kde3_add_executable(basket ${basketSources})
 
-target_link_libraries(basket ${QT_AND_KDECORE_LIBS} libkdeui.so libkio.so libkutils.so libkparts.so libartskde.so)
+target_link_libraries(basket ${QT_AND_KDECORE_LIBS} kdeui kio kutils kparts artskde ${GPGME_LIB})

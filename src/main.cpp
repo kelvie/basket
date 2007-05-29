@@ -46,9 +46,7 @@
 #include "basket_options.h"
 #include "backup.h"
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 /* Thanks to JuK for this Application class */
 /*#if KDE_IS_VERSION( 3, 1, 90 )
