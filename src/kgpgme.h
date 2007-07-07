@@ -41,7 +41,7 @@ class KGpgKey
 		QString email;
 };
 
-typedef QValueList< KGpgKey > KGpgKeyList;
+typedef QList< KGpgKey > KGpgKeyList;
 
 class KGpgMe
 {
@@ -57,7 +57,7 @@ class KGpgMe
 		bool saving() const { return m_saving; };
 		void clearCache();
 
-		bool encrypt(const QByteArray& inBuffer, Q_ULONG length,
+		bool encrypt(const QByteArray& inBuffer, qulonglong length,
 					 QByteArray* outBuffer, QString keyid = QString::null);
 		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer);
 
@@ -69,7 +69,7 @@ class KGpgMe
 		QString m_text;
 		bool m_saving;
 		bool m_useGnuPGAgent;
-		QCString m_cache;
+		QByteArray m_cache;
 
 		void init(gpgme_protocol_t proto);
 		gpgme_error_t readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const;

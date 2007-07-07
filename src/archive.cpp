@@ -87,7 +87,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.remove(tempFolder + "baskets.xml");
 
 	// Save a Small tags.xml Document:
-	QValueList<Tag*> tags;
+	QList<Tag*> tags;
 	listUsedTags(basket, withSubBaskets, tags);
 	Tag::saveTagsTo(tags, tempFolder + "tags.xml");
 	tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
@@ -148,7 +148,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 //		       << "write-compatible:0.6.1\n"
 		       << "preview*:" << previewSize << "\n";
 		// Copy the Preview File:
-		const Q_ULONG BUFFER_SIZE = 1024;
+		const qulonglong BUFFER_SIZE = 1024;
 		char *buffer = new char[BUFFER_SIZE];
 		Q_LONG sizeRead;
 		QFile previewFile(tempFolder + "preview.png");
@@ -231,7 +231,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	}
 }
 
-void Archive::listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list)
+void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -248,7 +248,7 @@ void Archive::open(const QString &path)
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
 	QDir dir;
 	dir.mkdir(tempFolder);
-	const Q_ULONG BUFFER_SIZE = 1024;
+	const qulonglong BUFFER_SIZE = 1024;
 
 	QFile file(path);
 	if (file.open(IO_ReadOnly)) {

@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qsimplerichtext.h>
+#include <QTextDocument>
 #include <qpixmap.h>
 #include <qmovie.h>
 #include <qcolor.h>
@@ -180,7 +180,7 @@ class TextContent : public NoteContent
 	QString text() { return m_text; }     /// << @return the text note-content.
   protected:
 	QString          m_text;
-	QSimpleRichText *m_simpleRichText;
+	QTextDocument *m_simpleRichText;
 };
 
 /** Real implementation of rich text (HTML) notes:
@@ -224,7 +224,7 @@ class HtmlContent : public NoteContent
   protected:
 	QString          m_html;
 	QString          m_textEquivalent; //OPTIM_FILTER
-	QSimpleRichText *m_simpleRichText;
+	QTextDocument *m_simpleRichText;
 };
 
 /** Real implementation of image notes:

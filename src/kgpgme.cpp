@@ -233,7 +233,7 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 	return keys;
 }
 
-bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
+bool KGpgMe::encrypt(const QByteArray& inBuffer, qulonglong length,
 					 QByteArray* outBuffer, QString keyid /* = QString::null */)
 {
 	gpgme_error_t err = 0;
@@ -420,7 +420,7 @@ gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
 		s += gpg_hint;
 
 	if(m_cache.isEmpty()){
-		QCString password;
+		QByteArray password;
 
 		if(m_saving)
 			result = KPasswordDialog::getNewPassword(password, s);

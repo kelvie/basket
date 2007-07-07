@@ -36,7 +36,7 @@ class HtmlExportData;
 class NoteSelection;
 
 class QPainter;
-class QSimpleRichText;
+class QTextDocument;
 
 /** Handle basket notes and groups!\n
   * After creation, the note is a group. You should create a NoteContent with this Note
@@ -172,14 +172,14 @@ class Note
 	void drawRoundings(QPainter *painter, int x, int y, int type, int width = 0, int height = 0);
 	void unbufferizeAll();
 	void bufferizeSelectionPixmap();
-	inline void unbufferize()  { m_bufferedPixmap.resize(0, 0); m_bufferedSelectionPixmap.resize(0, 0); }
+	inline void unbufferize()  { m_bufferedPixmap.scaled(0, 0); m_bufferedSelectionPixmap.scaled(0, 0); }
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
-	void recomputeBlankRects(QValueList<QRect> &blankAreas);
+	void recomputeBlankRects(QList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
 
 /// VISIBLE AREAS COMPUTATION:
   private:
-	QValueList<QRect> m_areas;
+	QList<QRect> m_areas;
 	bool              m_computedAreas;
 	bool              m_onTop;
 	void recomputeAreas();
@@ -280,7 +280,7 @@ class Note
 	bool stateForTagFromSelectedNotes(Tag *tag, State **state);
 	void   recomputeStyle();
 	void   recomputeAllStyles();
-	bool   removedStates(const QValueList<State*> &deletedStates);
+	bool   removedStates(const QList<State*> &deletedStates);
 	QFont  font(); // Computed!
 	QColor backgroundColor(); // Computed!
 	QColor textColor(); // Computed!
@@ -305,9 +305,9 @@ class Note
 	void update();
 	void linkLookChanged();
 
-	void usedStates(QValueList<State*> &states);
+	void usedStates(QList<State*> &states);
 
-	void listUsedTags(QValueList<Tag*> &list);
+	void listUsedTags(QList<Tag*> &list);
 
 
 	Note* nextInStack();

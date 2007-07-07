@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -269,8 +269,8 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const c
 		insertItem(i18n("(Default)"));
 
 	QFontDatabase fontDB;
-	QValueList<int> sizes = fontDB.standardSizes();
-	for (QValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
+	QList<int> sizes = fontDB.standardSizes();
+	for (QList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
 		insertItem(QString::number(*it));
 
 //	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );

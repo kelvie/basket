@@ -33,7 +33,7 @@
 #include <qfileinfo.h>
 
 #include <kconfig.h> // TMP IN ALPHA 1
-
+#include <QApplication>
 #include "application.h"
 #include "backgroundmanager.h"
 #include "mainwindow.h"
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 	/* Main Window */
 	MainWindow* win = new MainWindow();
 	Global::bnpView->handleCommandLine();
-	app.setMainWidget(win);
+	//app.setMainWidget(win);
 //	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
 //		win->show();
 

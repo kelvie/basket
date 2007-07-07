@@ -26,7 +26,7 @@
 #include <qtooltip.h>
 #include <qlistview.h>
 #include <qcursor.h>
-#include <qsimplerichtext.h>
+#include <QTextDocument>
 #include <qpushbutton.h>
 #include <ktextedit.h>
 #include <qpoint.h>
@@ -164,9 +164,9 @@ int NoteSelection::count()
 	return count;
 }
 
-QValueList<Note*> NoteSelection::parentGroups()
+QList<Note*> NoteSelection::parentGroups()
 {
-	QValueList<Note*> groups;
+	QList<Note*> groups;
 
 	// For each note:
 	for (NoteSelection *node = firstStacked(); node; node = node->nextStacked())
@@ -311,7 +311,7 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 /*
  * Defined in note.cpp:
  */
-extern void substractRectOnAreas(const QRect &rectToSubstract, QValueList<QRect> &areas, bool andRemove = true);
+extern void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove = true);
 
 void debugZone(int zone)
 {
@@ -1753,7 +1753,7 @@ void Basket::recomputeAllStyles()
 		note->recomputeAllStyles();
 }
 
-void Basket::removedStates(const QValueList<State*> &deletedStates)
+void Basket::removedStates(const QList<State*> &deletedStates)
 {
 	bool modifiedBasket = false;
 
@@ -2796,7 +2796,7 @@ void Basket::maybeTip(const QPoint &pos)
 	if (!note && isFreeLayout()) {
 		message = i18n("Insert note here\nRight click for more options");
 		QRect itRect;
-		for (QValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+		for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 			itRect = QRect(0, 0, visibleWidth(), visibleHeight()).intersect(*it);
 			if (itRect.contains(contentPos)) {
 				rect = itRect;
@@ -3123,7 +3123,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	if (!m_loaded) {
 		QPixmap pixmap(visibleWidth(), visibleHeight()); // TODO: Clip it to asked size only!
 		QPainter painter2(&pixmap);
-		QSimpleRichText rt(QString("<center>%1</center>").arg(i18n("Loading...")), QScrollView::font());
+		QTextDocument rt(QString("<center>%1</center>").arg(i18n("Loading...")), QScrollView::font());
 		rt.setWidth(visibleWidth());
 		int hrt = rt.height();
 		painter2.fillRect(0, 0, visibleWidth(), visibleHeight(), brush);
@@ -3147,7 +3147,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	QPixmap  pixmap;
 	QPainter painter2;
 	QRect    rect;
-	for (QValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+	for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 		rect = clipRect.intersect(*it);
 		if (rect.width() > 0 && rect.height() > 0) {
 			// If there is an inserter to draw, draw the image off screen,
@@ -3299,7 +3299,7 @@ void Basket::updateNote(Note *note)
 
 void Basket::animateObjects()
 {
-	QValueList<Note*>::iterator it;
+	QList<Note*>::iterator it;
 	for (it = m_animatedNotes.begin(); it != m_animatedNotes.end(); )
 //		if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
 //			updateNote(*it);
@@ -3374,7 +3374,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		menu.insertItem( SmallIconSet("search-filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
 		menu.insertTitle(tag->name());
-		QValueList<State*>::iterator it;
+		QList<State*>::iterator it;
 		State *currentState;
 
 		int i = 10;
@@ -3474,7 +3474,7 @@ void Basket::popupTagsMenu(Note *note)
 
 	KMenu menu(this);
 	menu.insertTitle(i18n("Tags"));
-// 	QValueList<Tag*>::iterator it;
+// 	QList<Tag*>::iterator it;
 // 	Tag *currentTag;
 // 	State *currentState;
 // 	int i = 10;
@@ -4634,9 +4634,9 @@ void Basket::deleteFiles()
 	Tools::deleteRecursively(fullPath());
 }
 
-QValueList<State*> Basket::usedStates()
+QList<State*> Basket::usedStates()
 {
-	QValueList<State*> states;
+	QList<State*> states;
 	FOR_EACH_NOTE (note)
 		note->usedStates(states);
 	return states;
@@ -4669,7 +4669,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 	return fileName;
 }
 
-void Basket::listUsedTags(QValueList<Tag*> &list)
+void Basket::listUsedTags(QList<Tag*> &list)
 {
 	if (!isLoaded()) {
 		load();
@@ -5147,7 +5147,7 @@ void Basket::watchedFileDeleted(const QString &fullPath)
 
 void Basket::updateModifiedNotes()
 {
-	for (QValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
+	for (QList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
 		Note *note = noteForFullPath(*it);
 		if (note)
 			note->content()->loadFromFile(/*lazyLoad=*/false);
@@ -5289,7 +5289,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 
 bool Basket::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	QByteArray bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
 	return saveToFile(fullPath, bytes, bytes.length());
 }
 
@@ -5298,7 +5298,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array)
 	return saveToFile(fullPath, array, array.size());
 }
 
-bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, qulonglong length)
 {
 	bool success = true;
 	QByteArray tmp;
@@ -5346,7 +5346,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
   * Basically, to save a file owned by a basket (a basket or a note file), use saveToFile().
   * But to save another file (eg. the basket hierarchy), use this safelySaveToFile() static method.
   */
-/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array, qulonglong length)
 {
 	// Here, we take a double protection:
 	// - We use KSaveFile to write atomically to the file (either it's a success or the file is untouched)
@@ -5412,7 +5412,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 
 /*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	QByteArray bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
 	return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
 }
 

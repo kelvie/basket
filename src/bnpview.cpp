@@ -257,7 +257,7 @@ void BNPView::onFirstShow()
     int treeWidth = Settings::basketTreeWidth();
     if (treeWidth < 0)
       treeWidth = m_tree->fontMetrics().maxWidth() * 11;
-    QValueList<int> splitterSizes;
+    QList<int> splitterSizes;
     splitterSizes.append(treeWidth);
     setSizes(splitterSizes);
 }
@@ -1216,7 +1216,7 @@ void BNPView::recomputeAllStyles()
 	}
 }
 
-void BNPView::removedStates(const QValueList<State*> &deletedStates)
+void BNPView::removedStates(const QList<State*> &deletedStates)
 {
 	QListViewItemIterator it(m_tree);
 	while (it.current()) {
@@ -2141,7 +2141,7 @@ void BNPView::handleCommandLine()
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
 	/* Custom data folder */
-	QCString customDataFolder = args->getOption("data-folder");
+	QByteArray customDataFolder = args->getOption("data-folder");
 	if (customDataFolder != 0 && !customDataFolder.isEmpty())
 	{
 		Global::setCustomSavesFolder(customDataFolder);
@@ -2286,7 +2286,7 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	currentBasket()->m_tagPopupNote = referenceNote;
 	bool enable = currentBasket()->countSelecteds() > 0;
 
-	QValueList<Tag*>::iterator it;
+	QList<Tag*>::iterator it;
 	Tag *currentTag;
 	State *currentState;
 	int i = 10;

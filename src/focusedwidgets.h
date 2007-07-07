@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 
 #include <ktextedit.h>
 #include <kcolorcombo.h>
-#include <kfontcombo.h>
+#include <QFontComboBox>
 #include <kcombobox.h>
 #include <klineedit.h>
 #include <kapplication.h>
@@ -65,7 +65,7 @@ class FocusedColorCombo : public KColorCombo
 };
 
 // TODO: Rename to EscapableKFontCombo
-class FocusedFontCombo : public KFontCombo
+class FocusedFontCombo : public QFontComboBox
 {
   Q_OBJECT
   public:

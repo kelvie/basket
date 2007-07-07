@@ -429,7 +429,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 
 	if (source->provides("text/html")) {
 		QString html;
-		QCString subtype("html");
+		QByteArray subtype("html");
 		// If the text/html comes from Mozilla or GNOME it can be UTF-16 encoded: we need ExtendedTextDrag to check that
 		ExtendedTextDrag::decode(source, html, subtype);
 		return createNoteHtml(html, parent);

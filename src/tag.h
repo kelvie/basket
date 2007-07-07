@@ -132,7 +132,7 @@ class Tag
 	void setShortcut(const KShortcut &shortcut) { m_action->setShortcut(shortcut);                   }
 	void setInheritedBySiblings(bool inherited) { m_inheritedBySiblings = inherited;                 }
 	void appendState(State *state)              { m_states.append(state); state->setParentTag(this); }
-	void removeState(State *state)              { m_states.remove(state); state->setParentTag(0);    }
+	void removeState(State *state)              { m_states.removeAll(state); state->setParentTag(0);    }
 	/// GET PROPERTIES:
 	QString      name()                const { return m_name;                 }
 	KShortcut    shortcut()            const { return m_action->shortcut();   }
@@ -190,8 +190,8 @@ class StateMenuItem : public QCustomMenuItem
 	QString  m_name;
 	QString  m_shortcut;
   public:
-	static QIconSet checkBoxIconSet(bool checked, QColorGroup cg);
-	static QIconSet radioButtonIconSet(bool checked, QColorGroup cg);
+	static QIcon checkBoxIconSet(bool checked, QColorGroup cg);
+	static QIcon radioButtonIconSet(bool checked, QColorGroup cg);
 	static int iconMargin() { return 5; }
 };
 

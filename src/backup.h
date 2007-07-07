@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,14 +21,14 @@
 #ifndef BACKUP_H
 #define BACKUP_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <qapplication.h>
 #include <qthread.h>
 
 /**
- * @author Sébastien Laoût
+ * @author Sï¿½bastien Laoï¿½t
  */
-class BackupDialog : public KDialogBase
+class BackupDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -45,7 +45,7 @@ class BackupDialog : public KDialogBase
 };
 
 /**
- * @author Sébastien Laoût <slaout@linux62.org>
+ * @author Sï¿½bastien Laoï¿½t <slaout@linux62.org>
  */
 class Backup
 {

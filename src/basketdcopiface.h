@@ -28,7 +28,7 @@ class BasketDcopInterface
 {
     Q_CLASSINFO("D-Bus Interface","org.kde.basket")
 public Q_SLOTS:
-    Q_SCRIPTABLE virtual Q_NOREPLY newBasket() = 0;
+    Q_SCRIPTABLE virtual Q_NOREPLY void newBasket() = 0;
     Q_SCRIPTABLE virtual void handleCommandLine() = 0;
 };
 

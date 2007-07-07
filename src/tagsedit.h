@@ -24,7 +24,7 @@
 #include <kdialogbase.h>
 #include <kcombobox.h>
 #include <qlistview.h>
-#include <qvaluelist.h>
+#include <QList>
 
 class QGroupBox;
 class QLineEdit;
@@ -46,7 +46,7 @@ class State;
 class StateCopy
 {
   public:
-	typedef QValueList<StateCopy*> List;
+	typedef QList<StateCopy*> List;
 	StateCopy(State *old = 0);
 	~StateCopy();
 	State *oldState;
@@ -57,7 +57,7 @@ class StateCopy
 class TagCopy
 {
   public:
-	typedef QValueList<TagCopy*> List;
+	typedef QList<TagCopy*> List;
 	TagCopy(Tag *old = 0);
 	~TagCopy();
 	Tag *oldTag;

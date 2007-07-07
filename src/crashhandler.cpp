@@ -50,7 +50,7 @@
     #endif
 
     static QString
-    runCommand( const QCString &command )
+    runCommand( const QByteArray &command )
     {
         static const uint SIZE = 40960; //40 KiB
         static char stdoutBuf[ SIZE ];
@@ -113,13 +113,13 @@
 
             const int handle = temp.handle();
 
-//             QCString gdb_command_string =
+//             QByteArray gdb_command_string =
 //                     "file amarokapp\n"
-//                     "attach " + QCString().setNum( ::getppid() ) + "\n"
+//                     "attach " + QByteArray().setNum( ::getppid() ) + "\n"
 //                     "bt\n" "echo \\n\n"
 //                     "thread apply all bt\n";
 
-            const QCString gdb_batch =
+            const QByteArray gdb_batch =
                     "bt\n"
                     "echo \\n\\n\n"
                     "bt full\n"
@@ -134,11 +134,11 @@
             ::dup2( fileno( stdout ), fileno( stderr ) );
 
 
-            QCString gdb;
+            QByteArray gdb;
             gdb  = "gdb --nw -n --batch -x ";
             gdb += temp.name().toLatin1();
             gdb += " basket ";
-            gdb += QCString().setNum( ::getppid() );
+            gdb += QByteArray().setNum( ::getppid() );
 
             QString bt = runCommand( gdb );
 

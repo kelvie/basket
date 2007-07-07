@@ -94,9 +94,9 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	//  we should not show that screenshot but only a text!
 
 	// 1. Determine if the user use a system tray area or not:
-	QCString screenstr;
+	QByteArray screenstr;
 	screenstr.setNum(qt_xscreen());
-	QCString trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
+	QByteArray trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
 	bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
 
 	// 2. And then if the icon is visible too (eg. this->show() has been called):

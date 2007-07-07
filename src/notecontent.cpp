@@ -376,7 +376,7 @@ QPixmap TextContent::feedbackPixmap(int width, int height)
 
 QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
-	QSimpleRichText richText(html(), note()->font());
+	QTextDocument richText(html(), note()->font());
 	richText.setWidth(width);
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
@@ -551,7 +551,7 @@ bool TextContent::finishLazyLoad()
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new QSimpleRichText(html, note()->font());
+	m_simpleRichText = new QTextDocument(html, note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
@@ -659,7 +659,7 @@ bool HtmlContent::finishLazyLoad()
 {
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
-	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(m_html), note()->font());
+	m_simpleRichText = new QTextDocument(Tools::tagURLs(m_html), note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
@@ -1875,7 +1875,7 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 	if (file.open(IO_ReadOnly)) {
 		QDataStream stream(&file);
 		// Get the MIME types names:
-		QValueList<QString> mimes;
+		QList<QString> mimes;
 		QString line;
 		do {
 			if (!stream.atEnd()) {

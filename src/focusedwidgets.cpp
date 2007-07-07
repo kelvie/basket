@@ -228,7 +228,7 @@ void FocusedColorCombo::keyPressEvent(QKeyEvent *event)
 /** class FocusedFontCombo: */
 
 FocusedFontCombo::FocusedFontCombo(QWidget *parent, const char *name)
- : KFontCombo(parent, name)
+ : QFontComboBox(parent, name)
 {
 }
 
@@ -243,7 +243,7 @@ void FocusedFontCombo::keyPressEvent(QKeyEvent *event)
 	else if (event->key() == Qt::Key_Return)
 		emit returnPressed2();
 	else
-		KFontCombo::keyPressEvent(event);
+		KQFontComboBox::keyPressEvent(event);
 }
 
 /** class FocusedComboBox: */

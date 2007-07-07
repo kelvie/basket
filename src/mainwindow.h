@@ -34,6 +34,7 @@
 #include <qdesktopwidget.h>
 #include <qtimer.h>
 #include <qsplitter.h>
+#include <QVBoxLayout>
 
 class QWidget;
 class QPoint;

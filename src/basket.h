@@ -21,7 +21,7 @@
 #ifndef BASKET_H
 #define BASKET_H
 
-#include <qscrollview.h>
+#include <QScrollArea>
 #include <qtooltip.h>
 #include <qlist.h>
 #include <qtimer.h>
@@ -36,7 +36,7 @@
 
 #include "filter.h"
 #include "note.h" // For Note::Zone
-#include "config.h"
+//#include "config.h"
 
 class QVBoxLayout;
 class QDomDocument;
@@ -126,7 +126,7 @@ class DecoratedBasket : public QWidget
 {
   Q_OBJECT
   public:
-	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, WFlags fl = 0);
+	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, Qt::WindowFlags f = 0);
 	~DecoratedBasket();
 	void setFilterBarPosition(bool onTop);
 	void resetFilter();
@@ -161,7 +161,7 @@ class TransparentWidget : public QWidget
 /**
   * @author S�astien Laot
   */
-class Basket : public QScrollView, public QToolTip
+class Basket : public QScrollArea, public QToolTip
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
   Q_OBJECT
@@ -325,10 +325,10 @@ public slots:
 	bool loadFromFile(const QString &fullPath, QString* string, bool isLocalEncoding = false);
 	bool loadFromFile(const QString &fullPath, QByteArray* array);
 	bool saveToFile(const QString& fullPath, const QByteArray& array);
-	bool saveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	bool saveToFile(const QString& fullPath, const QByteArray& array, qulonglong length);
 	bool saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
 	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array);
-	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array, qulonglong length);
 	static bool safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
 	bool setProtection(int type, QString key);
 	int  encryptionType()  { return m_encryptionType;  };
@@ -733,7 +733,7 @@ class FileEvent
 /** Basket that contain some Notes.
   * @author S�astien Laot
   */
-clas   s Bas    ket : public QScrollView
+clas   s Bas    ket : public Q
 {
   Q_OBJECT
   public:

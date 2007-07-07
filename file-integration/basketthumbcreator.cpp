@@ -35,7 +35,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 	QString tempFolder = tempDir.name();
 	QDir dir;
 	dir.mkdir(tempFolder);
-	const Q_ULONG BUFFER_SIZE = 1024;
+	const qulonglong BUFFER_SIZE = 1024;
 
 	QFile file(path);
 	if (file.open(IO_ReadOnly)) {

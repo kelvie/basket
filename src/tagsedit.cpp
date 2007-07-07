@@ -32,7 +32,7 @@
 #include <kpushbutton.h>
 #include <qgroupbox.h>
 #include <qheader.h>
-#include <qvaluelist.h>
+#include <QList>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kseparator.h>

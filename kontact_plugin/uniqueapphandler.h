@@ -107,7 +107,7 @@ class KDE_EXPORT UniqueAppWatcher : public QObject
     bool isRunningStandalone() const { return mRunningStandalone; }
 
   protected slots:
-    void unregisteredFromDCOP( const QCString& appId );
+    void unregisteredFromDCOP( const QByteArray& appId );
 
   private:
     bool mRunningStandalone;

@@ -23,7 +23,7 @@
 #include <qtooltip.h>
 #include <qcursor.h>
 #include <qwhatsthis.h>
-#include <qvaluelist.h>
+#include <QList>
 #include <qregexp.h>
 #include <qbuttongroup.h>
 #include <kstringhandler.h>

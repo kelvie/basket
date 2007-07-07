@@ -428,7 +428,7 @@ bool Tools::isAFileCut(QMimeSource *source)
 {
 	if (source->provides("application/x-kde-cutselection")) {
 		QByteArray array = source->encodedData("application/x-kde-cutselection");
-		return !array.isEmpty() && QCString(array.data(), array.size() + 1).at(0) == '1';
+		return !array.isEmpty() && QByteArray(array.data(), array.size() + 1).at(0) == '1';
 	} else
 		return false;
 }
