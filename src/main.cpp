@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 		if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
 			;
 		// When the application is restored by KDE session, restore its state:
-		else if (app.isRestored())
+		else if (app.isSessionRestored())
 			win->setShown(!Settings::startDocked());
 		// Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
 		else

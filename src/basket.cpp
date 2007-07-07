@@ -49,7 +49,7 @@
 
 #include <unistd.h> // For sleep()
 
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kiconloader.h>
 #include <krun.h>
 
@@ -1434,8 +1434,8 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		QTimer::singleShot(0, this, SLOT(setFocusIfNotInPopupMenu()));
 
 	// Convenient variables:
-	bool controlPressed = event->stateAfter() & Qt::ControlButton;
-	bool shiftPressed   = event->stateAfter() & Qt::ShiftButton;
+	bool controlPressed = event->stateAfter() & Qt::ControlModifier;
+	bool shiftPressed   = event->stateAfter() & Qt::ShiftModifier;
 
 	// Do nothing if we disabled the click some milliseconds sooner.
 	// For instance when a popup menu has been closed with click, we should not do action:
@@ -1570,7 +1570,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		m_clickedToInsert = clicked;
 		m_zoneToInsert    = zone;
 		m_posToInsert     = event->pos();
-		KPopupMenu* menu = (KPopupMenu*)(Global::bnpView->popupMenu("insert_popup"));
+		KMenu* menu = (KMenu*)(Global::bnpView->popupMenu("insert_popup"));
 		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeItem(/*id=*/120);
 		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18n("The verb (Group New Note)", "Group") : i18n("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
@@ -1608,7 +1608,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 
 	// Paste selection under cursor (but not "create new primary note under cursor" because this is on moveRelease):
 	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
-		if ((Settings::middleAction() != 0) && (event->state() == Qt::ShiftButton)) {
+		if ((Settings::middleAction() != 0) && (event->state() == Qt::ShiftModifier)) {
 			m_clickedToInsert = clicked;
 			m_zoneToInsert    = zone;
 			m_posToInsert     = event->pos();
@@ -2217,7 +2217,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 
 
 	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
-		if ((Settings::middleAction() != 0) && (event->stateAfter() == Qt::ShiftButton)) {
+		if ((Settings::middleAction() != 0) && (event->stateAfter() == Qt::ShiftModifier)) {
 			m_clickedToInsert = clicked;
 			m_zoneToInsert    = zone;
 			m_posToInsert     = event->pos();
@@ -2261,8 +2261,8 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 //	Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
 
 	// Convenient variables:
-	bool controlPressed = event->stateAfter() & Qt::ControlButton;
-	bool shiftPressed   = event->stateAfter() & Qt::ShiftButton;
+	bool controlPressed = event->stateAfter() & Qt::ControlModifier;
+	bool shiftPressed   = event->stateAfter() & Qt::ShiftModifier;
 
 	if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
 		if (controlPressed && shiftPressed)
@@ -2325,7 +2325,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 			// But the user can want to drag select_s_ notes, so it the note is selected, we only select it alone on mouseRelease:
 			if (event->stateAfter() == 0) {
 				std::cout << "EXEC" << std::endl;
-				if ( !(event->stateAfter() & Qt::ControlButton) && clicked->allSelected())
+				if ( !(event->stateAfter() & Qt::ControlModifier) && clicked->allSelected())
 					unselectAllBut(clicked);
 				if (zone == Note::Handle && isDuringEdit() && editedNote() == clicked) {
 					closeEditor();
@@ -2351,7 +2351,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 					// TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
 					Global::bnpView->doBasketDeletion(this);
 				} else if (link == "basket-internal-import") {
-					QPopupMenu *menu = Global::bnpView->popupMenu("fileimport");
+					QPopupMenu *menu = Global::bnpView->popupMenu("file-import");
 					menu->exec(event->globalPos());
 				} else {
 					KRun *run = new KRun(link); //  open the URL.
@@ -3079,7 +3079,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			label->setAlignment( int( QLabel::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );
 			QLabel* pixmap = new QLabel( m_decryptBox, "pixmap" );
-			pixmap->setPixmap( KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeHuge) );
+			pixmap->setPixmap( KIconLoader::global()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeHuge) );
 			layout->addMultiCellWidget( pixmap, 0, 1, 0, 0 );
 
 			QSpacerItem* spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -3283,7 +3283,7 @@ void Basket::relayoutNotes(bool animate)
 	else
 		tmpHeight += 15;
 
-	resizeContents( QMAX(tmpWidth, visibleWidth()), QMAX(tmpHeight, visibleHeight()) );
+	resizeContents( qMax(tmpWidth, visibleWidth()), qMax(tmpHeight, visibleHeight()) );
 	recomputeBlankRects();
 	placeEditor();
 	doHoverEffects();
@@ -3365,13 +3365,13 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	QKeySequence sequence = tag->shortcut().operator QKeySequence();
 	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isNull());
 
-	KPopupMenu menu(this);
+	KMenu menu(this);
 	if (tag->countStates() == 1) {
 		menu.insertTitle(/*SmallIcon(state->icon()), */tag->name());
-		menu.insertItem( SmallIconSet("editdelete"), i18n("&Remove"),             1 );
+		menu.insertItem( SmallIconSet("edit-delete"), i18n("&Remove"),             1 );
 		menu.insertItem( SmallIconSet("configure"),  i18n("&Customize..."),       2 );
 		menu.insertSeparator();
-		menu.insertItem( SmallIconSet("filter"),     i18n("&Filter by this Tag"), 3 );
+		menu.insertItem( SmallIconSet("search-filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
 		menu.insertTitle(tag->name());
 		QValueList<State*>::iterator it;
@@ -3389,11 +3389,11 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			++i;
 		}
 		menu.insertSeparator();
-		menu.insertItem( new IndentedMenuItem(i18n("&Remove"),               "editdelete", (sequenceOnDelete ? sequence : QKeySequence())), 1 );
+		menu.insertItem( new IndentedMenuItem(i18n("&Remove"),               "edit-delete", (sequenceOnDelete ? sequence : QKeySequence())), 1 );
 		menu.insertItem( new IndentedMenuItem(i18n("&Customize..."),         "configure"),  2 );
 		menu.insertSeparator();
-		menu.insertItem( new IndentedMenuItem(i18n("&Filter by this Tag"),   "filter"),     3 );
-		menu.insertItem( new IndentedMenuItem(i18n("Filter by this &State"), "filter"),     4 );
+		menu.insertItem( new IndentedMenuItem(i18n("&Filter by this Tag"),   "search-filter"),     3 );
+		menu.insertItem( new IndentedMenuItem(i18n("Filter by this &State"), "search-filter"),     4 );
 	}
 	if (sequenceOnDelete)
 		menu.setAccel(sequence, 1);
@@ -3472,7 +3472,7 @@ void Basket::popupTagsMenu(Note *note)
 {
 	m_tagPopupNote = note;
 
-	KPopupMenu menu(this);
+	KMenu menu(this);
 	menu.insertTitle(i18n("Tags"));
 // 	QValueList<Tag*>::iterator it;
 // 	Tag *currentTag;
@@ -3492,13 +3492,13 @@ void Basket::popupTagsMenu(Note *note)
 // 	}
 //
 // 	menu.insertSeparator();
-// //	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign New Tag...", 1 );
-// 	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
+// //	menu.insertItem( /*SmallIconSet("edit-delete"),*/ "&Assign New Tag...", 1 );
+// 	//id = menu.insertItem( SmallIconSet("edit-delete"), "&Remove All", -2 );
 // 	//if (note->states().isEmpty())
 // 	//	menu.setItemEnabled(id, false);
 // //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
 // 	menu.insertItem( new IndentedMenuItem(i18n("&Assign New Tag...")),          1 );
-// 	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
+// 	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "edit-delete"), 2 );
 // 	menu.insertItem( new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
 //
 // 	if (!selectedNotesHaveTags())//note->states().isEmpty())
@@ -3749,7 +3749,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	int frameWidth = (editorQFrame ? editorQFrame->frameWidth() : 0);
 	int x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
 	int y;
-	int maxHeight  = QMAX(visibleHeight(), contentsHeight());
+	int maxHeight  = qMax(visibleHeight(), contentsHeight());
 	int height, width;
 
 	if (textEdit) {
@@ -3762,10 +3762,10 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
 			height = textEdit->contentsHeight() + 2*frameWidth;
-//			height = /*QMAX(*/height/*, note->height())*/;
-//			height = QMIN(height, visibleHeight());
+//			height = /*qMax(*/height/*, note->height())*/;
+//			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
-//width=QMAX(width,textEdit->contentsWidth()+2*frameWidth);
+//width=qMax(width,textEdit->contentsWidth()+2*frameWidth);
 			if (y + height > maxHeight)
 				y = maxHeight - height;
 			textEdit->setFixedSize(width, height);
@@ -4109,7 +4109,7 @@ void Basket::noteDelete()
 			     countSelecteds()),
 			i18n("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
-			, KStdGuiItem::del(), KStdGuiItem::cancel());
+			, KStandardGuiItem::del(), KStandardGuiItem::cancel());
 #else
 		);
 #endif
@@ -4249,7 +4249,7 @@ void Basket::noteOpen(Note *note)
 	if (!note)
 		return;
 
-	KURL    url     = note->content()->urlToOpen(/*with=*/false);
+	KUrl    url     = note->content()->urlToOpen(/*with=*/false);
 	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
 	if (url.isEmpty()) {
 		if (message.isEmpty())
@@ -4271,12 +4271,12 @@ void Basket::noteOpen(Note *note)
 	}
 }
 
-/** Code from bool KRun::displayOpenWithDialog(const KURL::List& lst, bool tempFiles)
+/** Code from bool KRun::displayOpenWithDialog(const KUrl::List& lst, bool tempFiles)
   * It does not allow to set a text, so I ripped it to do that:
   */
-bool KRun__displayOpenWithDialog(const KURL::List& lst, bool tempFiles, const QString &text)
+bool KRun__displayOpenWithDialog(const KUrl::List& lst, bool tempFiles, const QString &text)
 {
-	if (kapp && !kapp->authorizeKAction("openwith")) {
+	if (kapp && !KAuthorized::authorizeKAction("openwith")) {
 		KMessageBox::sorry(0L, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
@@ -4285,7 +4285,7 @@ bool KRun__displayOpenWithDialog(const KURL::List& lst, bool tempFiles, const QS
 		KService::Ptr service = l.service();
 		if (!!service)
 			return KRun::run(*service, lst, tempFiles);
-		//kdDebug(250) << "No service set, running " << l.text() << endl;
+		//kDebug(250) << "No service set, running " << l.text() << endl;
 		return KRun::run(l.text(), lst); // TODO handle tempFiles
 	}
 	return false;
@@ -4298,7 +4298,7 @@ void Basket::noteOpenWith(Note *note)
 	if (!note)
 		return;
 
-	KURL    url     = note->content()->urlToOpen(/*with=*/true);
+	KUrl    url     = note->content()->urlToOpen(/*with=*/true);
 	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
 	QString text    = note->content()->messageWhenOpenning(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
 	if (url.isEmpty())
@@ -4315,7 +4315,7 @@ void Basket::noteSaveAs()
 	if (!note)
 		return;
 
-	KURL url = note->content()->urlToOpen(/*with=*/false);
+	KUrl url = note->content()->urlToOpen(/*with=*/false);
 	if (url.isEmpty())
 		return;
 
@@ -4325,7 +4325,7 @@ void Basket::noteSaveAs()
 		return;
 
 	// TODO: Convert format, etc. (use NoteContent::saveAs(fileName))
-	KIO::copy(url, KURL(fileName));
+	KIO::copy(url, KUrl(fileName));
 }
 
 Note* Basket::selectedGroup()
@@ -4645,7 +4645,7 @@ QValueList<State*> Basket::usedStates()
 QString Basket::saveGradientBackground(const QColor &color, const QFont &font, const QString &folder)
 {
 	// Construct file name and return if the file already exists:
-	QString fileName = "note_background_" + color.name().lower().mid(1) + ".png";
+	QString fileName = "note_background_" + color.name().toLower().mid(1) + ".png";
 	QString fullPath = folder + fileName;
 	if (QFile::exists(fullPath))
 		return fileName;
@@ -4657,7 +4657,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 
 	// Draw and save the gradient image:
 	int sampleTextHeight = QFontMetrics(font)
-	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, "Test text")
+	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, "Test text")
 	                       .height();
 	QPixmap noteGradient(100, sampleTextHeight + Note::NOTE_MARGIN);
 	QPainter painter(&noteGradient);
@@ -4989,7 +4989,7 @@ void Basket::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 
-	if (event->state() & Qt::ShiftButton) { // Shift+arrowKeys selection
+	if (event->state() & Qt::ShiftModifier) { // Shift+arrowKeys selection
 		if (m_startOfShiftSelectionNote == 0L)
 			m_startOfShiftSelectionNote = toFocus;
 		ensureNoteVisible(toFocus); // Important: this line should be before the other ones because else repaint would be done on the wrong part!
@@ -5001,7 +5001,7 @@ void Basket::keyPressEvent(QKeyEvent *event)
 		ensureNoteVisible(toFocus); // Important: this line should be before the other ones because else repaint would be done on the wrong part!
 		setFocusedNote(toFocus);
 		m_startOfShiftSelectionNote = toFocus;
-		if ( ! (event->state() & Qt::ControlButton) )       // ... select only current note if Control
+		if ( ! (event->state() & Qt::ControlModifier) )       // ... select only current note if Control
 			unselectAllBut(m_focusedNote);
 		event->accept();
 		return;
@@ -5101,8 +5101,8 @@ void Basket::ensureNoteVisible(Note *note)
 	if (note == editedNote()) // HACK: When filtering while editing big notes, etc... cause unwanted scrolls
 		return;
 
-	int finalBottom = note->finalY() + QMIN(note->finalHeight(),                                             visibleHeight());
-	int finalRight  = note->finalX() + QMIN(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
+	int finalBottom = note->finalY() + qMin(note->finalHeight(),                                             visibleHeight());
+	int finalRight  = note->finalX() + qMin(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
 	ensureVisible( finalRight,     finalBottom,    0,0 );
 	ensureVisible( note->finalX(), note->finalY(), 0,0 );
 }
@@ -5332,7 +5332,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		tmp = array;
 #endif
 	/*if (success && (success = file.open(IO_WriteOnly))){
-		success = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
+		success = (file.write(tmp) == (Q_LONG)tmp.size());
 		file.close();
 	}*/
 
@@ -5368,7 +5368,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		//std::cout << "==>>" << std::endl << "SAVE FILE CREATED: " << strerror(saveFile.status()) << std::endl;
 		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
 		if (openSuccess) {
-			saveFile.file()->writeBlock(array, length);
+			saveFile.file()->write(array, length);
 			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
 			closeSuccess = saveFile.close();
 			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;
@@ -5422,13 +5422,13 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 }
 
 DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent)
- : KDialogBase(KDialogBase::Plain, i18n("Save Error"),
-               (KDialogBase::ButtonCode)0, (KDialogBase::ButtonCode)0, parent, /*name=*/"DiskError")
+ : KDialog(KDialog::Plain, i18n("Save Error"),
+               (KDialog::ButtonCode)0, (KDialog::ButtonCode)0, parent, /*name=*/"DiskError")
 {
 	//enableButtonCancel(false);
 	//enableButtonClose(false);
 	//enableButton(Close, false);
-	//enableButtonOK(false);
+	//enableButtonOk(false);
 	setModal(true);
 	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
 	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIcon::NoGroup, 64, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
@@ -5476,7 +5476,7 @@ void Basket::lock()
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qcolor.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kurllabel.h>
 #include <qcheckbox.h>
 #include <qpalette.h>
@@ -5513,6 +5513,7 @@ void Basket::lock()
 
 #include <config.h>
 #include <qtextcodec.h>
+#include <kauthorized.h>
 
 #include "basket.h"
 #include "note.h"

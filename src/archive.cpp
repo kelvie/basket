@@ -153,15 +153,15 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		Q_LONG sizeRead;
 		QFile previewFile(tempFolder + "preview.png");
 		if (previewFile.open(IO_ReadOnly)) {
-			while ((sizeRead = previewFile.readBlock(buffer, BUFFER_SIZE)) > 0)
-				file.writeBlock(buffer, sizeRead);
+			while ((sizeRead = previewFile.read(buffer, BUFFER_SIZE)) > 0)
+				file.write(buffer, sizeRead);
 		}
 		stream << "archive*:" << archiveSize << "\n";
 		// Copy the Archive File:
 		QFile archiveFile(tempDestination);
 		if (archiveFile.open(IO_ReadOnly)) {
-			while ((sizeRead = archiveFile.readBlock(buffer, BUFFER_SIZE)) > 0)
-				file.writeBlock(buffer, sizeRead);
+			while ((sizeRead = archiveFile.read(buffer, BUFFER_SIZE)) > 0)
+				file.write(buffer, sizeRead);
 		}
 		// Clean Up:
 		delete buffer;
@@ -298,8 +298,8 @@ void Archive::open(const QString &path)
 //				if (previewFile.open(IO_WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
-					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
-//						previewFile.writeBlock(buffer, sizeRead);
+					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
+//						previewFile.write(buffer, sizeRead);
 						size -= sizeRead;
 					}
 //					previewFile.close();
@@ -346,8 +346,8 @@ void Archive::open(const QString &path)
 				if (archiveFile.open(IO_WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
-					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
-						archiveFile.writeBlock(buffer, sizeRead);
+					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
+						archiveFile.write(buffer, sizeRead);
 						size -= sizeRead;
 					}
 					archiveFile.close();
@@ -390,7 +390,7 @@ void Archive::open(const QString &path)
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
 				Q_LONG sizeRead;
-				while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
+				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
 				delete buffer;

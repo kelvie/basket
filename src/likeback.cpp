@@ -50,6 +50,7 @@
 #include <pwd.h>
 
 #include <iostream>
+#include <kglobal.h>
 
 #include "likeback.h"
 #include "likeback_private.h"
@@ -219,7 +220,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 
 	// Use default KApplication config and aboutData if not provided:
 	if (d->config == 0)
-		d->config = kapp->config();
+		d->config = KGlobal::config();
 	if (d->aboutData == 0)
 		d->aboutData = kapp->aboutData();
 
@@ -299,7 +300,7 @@ QString LikeBack::acceptedLanguagesMessage()
 	return d->acceptedLanguagesMessage;
 }
 
-void LikeBack::setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort)
+void LikeBack::setServer(const QString &hostName, const QString &remotePath, quint16 hostPort)
 {
 	d->hostName   = hostName;
 	d->remotePath = remotePath;
@@ -316,7 +317,7 @@ QString LikeBack::remotePath()
 	return d->remotePath;
 }
 
-Q_UINT16 LikeBack::hostPort()
+quint16 LikeBack::hostPort()
 {
 	return d->hostPort;
 }
@@ -582,11 +583,11 @@ bool LikeBack::isDevelopmentVersion(const QString &version)
 {
 	if (m_process)
 		return;
-	m_process = new KProcess();
+	m_process = new K3Process();
 	*m_process << QString::fromLatin1("kcmshell") << QString::fromLatin1("kcm_useraccount");
-	connect( m_process, SIGNAL(processExited(KProcess*)), SLOT(fetchUserEmail()) );
+	connect( m_process, SIGNAL(processExited(K3Process*)), SLOT(fetchUserEmail()) );
 	if (!m_process->start()) {
-		kdDebug() << "Couldn't start kcmshell.." << endl;
+		kDebug() << "Couldn't start kcmshell.." << endl;
 		delete m_process;
 		m_process = 0;
 		return;
@@ -719,11 +720,11 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	pageLayout->addWidget(m_showButtons);
 	connect( m_showButtons, SIGNAL(stateChanged(int)), this, SLOT(changeButtonBarVisible()) );
 
-	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail_send"));
-	enableButtonOK(false);
+	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail-send"));
+	enableButtonOk(false);
 	connect( m_comment, SIGNAL(textChanged()), this, SLOT(commentChanged()) );
 
-	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail_generic"));
+	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail"));
 
 	resize(QSize(kapp->desktop()->width() * 1 / 2, kapp->desktop()->height() * 3 / 5).expandedTo(sizeHint()));
 
@@ -807,14 +808,14 @@ void LikeBackDialog::send()
 	int reason = m_group->selectedId();
 	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
 	QString data =
-		"protocol=" + KURL::encode_string("1.0")                              + '&' +
-		"type="     + KURL::encode_string(type)                               + '&' +
-		"version="  + KURL::encode_string(m_likeBack->aboutData()->version()) + '&' +
-		"locale="   + KURL::encode_string(KGlobal::locale()->language())      + '&' +
-		"window="   + KURL::encode_string(m_windowPath)                       + '&' +
-		"context="  + KURL::encode_string(m_context)                          + '&' +
-		"comment="  + KURL::encode_string(m_comment->text())                  + '&' +
-		"email="    + KURL::encode_string(emailAddress);
+		"protocol=" + KUrl::encode_string("1.0")                              + '&' +
+		"type="     + KUrl::encode_string(type)                               + '&' +
+		"version="  + KUrl::encode_string(m_likeBack->aboutData()->version()) + '&' +
+		"locale="   + KUrl::encode_string(KGlobal::locale()->language())      + '&' +
+		"window="   + KUrl::encode_string(m_windowPath)                       + '&' +
+		"context="  + KUrl::encode_string(m_context)                          + '&' +
+		"comment="  + KUrl::encode_string(m_comment->text())                  + '&' +
+		"email="    + KUrl::encode_string(emailAddress);
 	QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	std::cout << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath() << std::endl;

@@ -25,8 +25,8 @@
 #include <qtabbar.h>
 #include <qtabwidget.h>
 #include <qlabel.h>
-#include <ksystemtray.h>
-#include <qptrlist.h>
+#include <ksystemtrayicon.h>
+#include <qlist.h>
 #include <qpoint.h>
 #include <qclipboard.h>
 #include <kaction.h>
@@ -94,7 +94,7 @@ class MainWindow : public KMainWindow
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;
-	QPtrList<KAction> actBasketsList;
+	QList<KAction*> actBasketsList;
 
   private:
 	QVBoxLayout        *m_layout;

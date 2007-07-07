@@ -422,7 +422,7 @@ void Tag::saveTags()
 	saveTagsTo(all, Global::savesFolder() + "tags.xml");
 }
 
-void Tag::saveTagsTo(QValueList<Tag*> &list, const QString &fullPath)
+void Tag::saveTagsTo(QList<Tag*> &list, const QString &fullPath)
 {
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");

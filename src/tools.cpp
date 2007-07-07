@@ -59,7 +59,7 @@ void StopWatch::check(uint id)
 	double time = starts[id].msecsTo(QTime::currentTime()) / 1000.0;
 	totals[id] += time;
 	counts[id]++;
-	kdDebug() << k_funcinfo << "Timer_" << id << ": " << time << " s    [" << counts[id] << " times, total: " << totals[id] << " s, average: " << totals[id] / counts[id] << " s]" <<  endl;
+	kDebug() << k_funcinfo << "Timer_" << id << ": " << time << " s    [" << counts[id] << " times, total: " << totals[id] << " s, average: " << totals[id] / counts[id] << " s]" <<  endl;
 }
 
 QString Tools::textToHTML(const QString &text)
@@ -357,7 +357,7 @@ void Tools::deleteRecursively(const QString &folderOrFile)
 	QFileInfo fileInfo(folderOrFile);
 	if (fileInfo.isDir()) {
 		// Delete the child files:
-		QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::All | QDir::Hidden);
+		QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
 		QStringList list = dir.entryList();
 		for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it )
 			if ( *it != "." && *it != ".." )
@@ -416,9 +416,9 @@ QString Tools::fileNameForNewFile(const QString &wantedName, const QString &dest
 
 
 // TODO: Move it from NoteFactory
-/*QString NoteFactory::iconForURL(const KURL &url)
+/*QString NoteFactory::iconForURL(const KUrl &url)
 {
-	QString icon = KMimeType::iconForURL(url.url());
+	QString icon = KMimeType::iconNameForURL(url.url());
 	if ( url.protocol() == "mailto" )
 		icon = "message";
 	return icon;
@@ -441,6 +441,6 @@ void Tools::printChildren(QObject* parent)
 
 	while((obj = it.current())!= 0){
 		++it;
-		kdDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
+		kDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
 	}
 }

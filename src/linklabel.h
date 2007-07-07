@@ -24,7 +24,7 @@
 #include <qframe.h>
 
 class QString;
-class KURL;
+class KUrl;
 class QColor;
 class QLabel;
 class QBoxLayout;
@@ -90,7 +90,7 @@ class LinkLook
 	static LinkLook *networkLinkLook;
 	static LinkLook *launcherLook;
 	/* Static method to get a LinkLook from an URL */
-	static LinkLook* lookForURL(const KURL &url);
+	static LinkLook* lookForURL(const KUrl &url);
 };
 
 /** Used to represent links with icon and specific look
@@ -160,7 +160,7 @@ class LinkDisplay
 	QFont   labelFont(QFont font, bool isIconButtonHovered) const;               /// << @return the font for this link, according to parent font AND LinkLook!
 	int     heightForWidth(int width) const;                                     /// << @return the needed height to display the link in function of a width.
 	QString toHtml(const QString &imageName) const;                              /// << Convert the link to HTML code, using the LinkLook to style it.
-	QString toHtml(HTMLExporter *exporter, const KURL &url, const QString &title = "");
+	QString toHtml(HTMLExporter *exporter, const KUrl &url, const QString &title = "");
   private:
 	QString   m_title;
 	QString   m_icon;

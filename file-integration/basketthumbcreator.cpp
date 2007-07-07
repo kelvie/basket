@@ -71,8 +71,8 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				if (previewFile.open(IO_WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
-					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
-						previewFile.writeBlock(buffer, sizeRead);
+					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
+						previewFile.write(buffer, sizeRead);
 						size -= sizeRead;
 					}
 					previewFile.close();
@@ -92,7 +92,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
 				Q_LONG sizeRead;
-				while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
+				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
 				delete buffer;

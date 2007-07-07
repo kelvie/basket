@@ -61,7 +61,7 @@ class KIconCanvasItem : public QIconViewItem
 
     int compare(QIconViewItem *rhs) const
     {
-        return QString::localeAwareCompare(text().lower(), rhs->text().lower());
+        return QString::localeAwareCompare(text().toLower(), rhs->text().toLower());
     }
 };
 
@@ -90,10 +90,10 @@ class KIconCanvas::KIconCanvasPrivate
  */
 
 KIconCanvas::KIconCanvas(QWidget *parent, const char *name)
-    : KIconView(parent, name)
+    : K3IconView(parent, name)
 {
     d = new KIconCanvasPrivate;
-    mpLoader = KGlobal::iconLoader();
+    mpLoader = KIconLoader::global();
     mpTimer = new QTimer(this);
     connect(mpTimer, SIGNAL(timeout()), SLOT(slotLoadFiles()));
     connect(this, SIGNAL(currentChanged(QIconViewItem *)),
@@ -119,7 +119,7 @@ void KIconCanvas::loadIcon(const QString &name)
     QImage img;
     QString path = mpLoader->iconPath(name,-d->mSize);
     // Use the extension as the format. Works for XPM and PNG, but not for SVG
-    QString ext = path.right(3).upper();
+    QString ext = path.right(3).toUpper();
     int maxSize = std::min(d->mSize, 60);
 
     if (ext != "SVG" && ext != "VGZ")
@@ -229,7 +229,7 @@ void KIconCanvas::setStrictIconSize( bool strictIconSize )
 
 QDragObject *KIconCanvas::dragObject()
 {
-    // We use QImageDrag rather than KURLDrag so that the user can't drag an icon out of the theme!
+    // We use QImageDrag rather than K3URLDrag so that the user can't drag an icon out of the theme!
     // TODO: support SVG?
     QPixmap *pixmap = currentItem()->pixmap();
     QPoint pos = viewportToContents( viewport()->mapFromGlobal( QCursor::pos() ) );

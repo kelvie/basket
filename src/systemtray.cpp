@@ -42,7 +42,7 @@
 #include <kmanagerselection.h>
 #include <kdeversion.h>
 #include <kapplication.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kiconloader.h>
 #include <kdebug.h>
 #include "systemtray.h"
@@ -122,11 +122,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 //		    kapp->widgetAt(g + QPoint(0, th-1)) != this ||
 //		    kapp->widgetAt(g + QPoint(tw-1, th-1)) != this) {
 			int systrayManagerWinId = topLevelWidget()->winId();
-			KWin::forceActiveWindow(systrayManagerWinId);
+			KWindowSystem::forceActiveWindow(systrayManagerWinId);
 			kapp->processEvents(); // Because without it the systrayManager is raised only after the messageBox is displayed
-//			KWin::activateWindow(systrayManagerWinId);
+//			KWindowSystem::activateWindow(systrayManagerWinId);
 //			kapp->processEvents(); // Because without it the systrayManager is raised only after the messageBox is displayed
-//				KWin::raiseWindow(systrayManagerWinId);
+//				KWindowSystem::raiseWindow(systrayManagerWinId);
 //			kapp->processEvents(); // Because without it the systrayManager is raised only after the messageBox is displayed
 			sleep(1);
 			// TODO: Re-verify that at least one corner is now visible
@@ -237,7 +237,7 @@ void SystemTray::mousePressEvent(QMouseEvent *event)
 			Global::bnpView->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
 		event->accept();
 	} else if (event->button() & Qt::RightButton) { // Popup menu
-		KPopupMenu menu(this);
+		KMenu menu(this);
 		menu.insertTitle( SmallIcon("basket"), kapp->aboutData()->programName() );
 
 		Global::bnpView->actNewBasket->plug(&menu);
@@ -431,8 +431,8 @@ void SystemTray::updateToolTipDelayed()
 {
 	Basket *basket = Global::bnpView->currentBasket();
 
-	QString tip = "<p><nobr>" + ( basket->isLocked() ? kapp->makeStdCaption(i18n("%1 (Locked)"))
-	                                                 : kapp->makeStdCaption(     "%1")          )
+	QString tip = "<p><nobr>" + ( basket->isLocked() ? KInstance::makeStandardCaption(i18n("%1 (Locked)"))
+	                                                 : KInstance::makeStandardCaption(     "%1")          )
 	                            .arg(Tools::textToHTMLWithoutP(basket->basketName()));
 
 	QToolTip::add(this, tip);

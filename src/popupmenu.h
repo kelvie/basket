@@ -24,7 +24,7 @@
 class QPopupMenu;
 class QRect;
 
-/** QPopupMenu/KPopupMenu doesn't provide metod to exec a menu
+/** QPopupMenu/KMenu doesn't provide metod to exec a menu
   * at a given rectangle !
   * eg, popup at bottom of a rectangle, and at top if not possible...
   * @author Sébastien Laoût
@@ -96,11 +96,11 @@ c l a s s   P o p u p M e n u T e s t   :   p u b l i c   Q W i d g e t
 
 		if (event->button() & Qt::LeftButton)
 			PopupMenu::execAtRectCenter(menu, rect);
-		else if ((event->button() & Qt::RightButton) && (event->state() & Qt::ShiftButton))
+		else if ((event->button() & Qt::RightButton) && (event->state() & Qt::ShiftModifier))
 			PopupMenu::execAtRectBottom(menu, rect, true);
 		else if (event->button() & Qt::RightButton)
 			PopupMenu::execAtRectBottom(menu, rect);
-		else if ((event->button() & Qt::MidButton) && (event->state() & Qt::ShiftButton))
+		else if ((event->button() & Qt::MidButton) && (event->state() & Qt::ShiftModifier))
 			PopupMenu::execAtRectRight(menu, rect, true);
 		else if (event->button() & Qt::MidButton)
 			PopupMenu::execAtRectRight(menu, rect);

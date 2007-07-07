@@ -22,7 +22,7 @@
 
 #include <kinstance.h>
 #include <kaction.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <klocale.h>

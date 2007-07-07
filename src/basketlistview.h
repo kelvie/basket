@@ -21,7 +21,7 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <klistview.h>
+#include <k3listview.h>
 #include <qtimer.h>
 
 class Basket;
@@ -74,7 +74,7 @@ class BasketListViewItem : public QListViewItem
 		bool m_isAbbreviated;
 };
 
-class BasketTreeListView : public KListView
+class BasketTreeListView : public K3ListView
 {
 	Q_OBJECT
 	public:

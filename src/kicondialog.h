@@ -22,7 +22,7 @@
 
 #include <kicontheme.h>
 #include <kdialogbase.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 
 #include <kiconcanvas.h> // FIXME: BCI KDE 3 expects KIconCanvas to be defined in kicondialog.h
 

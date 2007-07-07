@@ -23,7 +23,7 @@
 
 #include <qstring.h>
 #include <qpixmap.h>
-#include <kpixmap.h>
+#include <qpixmap.h>
 #include <qdatetime.h>
 
 #include "notecontent.h"
@@ -161,7 +161,7 @@ class Note
 /// DRAWING:
   private:
 	QPixmap m_bufferedPixmap;
-	KPixmap m_bufferedSelectionPixmap;
+	QPixmap m_bufferedSelectionPixmap;
   public:
 	void draw(QPainter *painter, const QRect &clipRect);
 	void drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap);

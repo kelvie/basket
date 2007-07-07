@@ -82,7 +82,7 @@ namespace Tools
 	QString fileNameForNewFile(const QString &wantedName, const QString &destFolder);
 
 	// Other:
-	//void iconForURL(const KURL &url);
+	//void iconForURL(const KUrl &url);
 	/** @Return true if the source is from a file cutting in Konqueror.
 	  * @Return false if it was just a copy or if it was a drag.
 	  */

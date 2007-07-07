@@ -266,18 +266,18 @@ void QAlphaWidget::alphaBlend()
 	switch( front.depth() ) {
 		case 32:
 		{
-			Q_UINT32** md = (Q_UINT32**)mixed.jumpTable();
-			Q_UINT32** bd = (Q_UINT32**)back.jumpTable();
-			Q_UINT32** fd = (Q_UINT32**)front.jumpTable();
+			quint32** md = (quint32**)mixed.jumpTable();
+			quint32** bd = (quint32**)back.jumpTable();
+			quint32** fd = (quint32**)front.jumpTable();
 
 			for (int sy = 0; sy < sh; sy++ ) {
-				Q_UINT32* bl = ((Q_UINT32*)bd[sy]);
-				Q_UINT32* fl = ((Q_UINT32*)fd[sy]);
+				quint32* bl = ((quint32*)bd[sy]);
+				quint32* fl = ((quint32*)fd[sy]);
 				for (int sx = 0; sx < sw; sx++ ) {
-					Q_UINT32 bp = bl[sx];
-					Q_UINT32 fp = fl[sx];
+					quint32 bp = bl[sx];
+					quint32 fp = fl[sx];
 
-					((Q_UINT32*)(md[sy]))[sx] =  qRgb(int (qRed(bp)*ia + qRed(fp)*alpha),
+					((quint32*)(md[sy]))[sx] =  qRgb(int (qRed(bp)*ia + qRed(fp)*alpha),
 					int (qGreen(bp)*ia + qGreen(fp)*alpha),
 					int (qBlue(bp)*ia + qBlue(fp)*alpha) );
 				}
@@ -332,8 +332,8 @@ QRollEffect::QRollEffect( QWidget* w, WFlags f, DirFlags orient )
 */
 void QRollEffect::paintEvent( QPaintEvent* )
 {
-	int x = orientation & RightScroll ? QMIN(0, currentWidth - totalWidth) : 0;
-	int y = orientation & DownScroll ? QMIN(0, currentHeight - totalHeight) : 0;
+	int x = orientation & RightScroll ? qMin(0, currentWidth - totalWidth) : 0;
+	int y = orientation & DownScroll ? qMin(0, currentHeight - totalHeight) : 0;
 
 	bitBlt( this, x, y, &pm,
 			0, 0, pm.width(), pm.height(), CopyROP, TRUE );
@@ -431,7 +431,7 @@ void QRollEffect::run( int time )
 			dist += totalWidth - currentWidth;
 		if ( orientation & (DownScroll|UpScroll) )
 			dist += totalHeight - currentHeight;
-		duration = QMIN( QMAX( dist/3, 50 ), 120 );
+		duration = qMin( qMax( dist/3, 50 ), 120 );
 	}
 
 	connect( &anim, SIGNAL(timeout()), this, SLOT(scroll()));
@@ -439,7 +439,7 @@ void QRollEffect::run( int time )
 	widget->setWState( WState_Visible );
 
 	move( widget->geometry().x(),widget->geometry().y() );
-	resize( QMIN( currentWidth, totalWidth ), QMIN( currentHeight, totalHeight ) );
+	resize( qMin( currentWidth, totalWidth ), qMin( currentHeight, totalHeight ) );
 
 	show();
 	setEnabled(FALSE);
@@ -488,15 +488,15 @@ void QRollEffect::scroll()
 		int y = widget->geometry().y();
 
 		if ( orientation & RightScroll || orientation & LeftScroll )
-			w = QMIN( currentWidth, totalWidth );
+			w = qMin( currentWidth, totalWidth );
 		if ( orientation & DownScroll || orientation & UpScroll )
-			h = QMIN( currentHeight, totalHeight );
+			h = qMin( currentHeight, totalHeight );
 
 		setUpdatesEnabled( FALSE );
 		if ( orientation & UpScroll )
-			y = widget->geometry().y() + QMAX( 0, totalHeight - currentHeight );
+			y = widget->geometry().y() + qMax( 0, totalHeight - currentHeight );
 		if ( orientation & LeftScroll )
-			x = widget->geometry().x() + QMAX( 0, totalWidth - currentWidth );
+			x = widget->geometry().x() + qMax( 0, totalWidth - currentWidth );
 		if ( orientation & UpScroll || orientation & LeftScroll )
 			move( x, y );
 

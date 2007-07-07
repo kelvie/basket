@@ -64,14 +64,14 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 	if (buffer.open(IO_WriteOnly)) {
 		QDataStream stream(&buffer);
 		// First append a pointer to the basket:
-		stream << (Q_UINT64)(noteList->firstStacked()->note->basket());
+		stream << (quint64)(noteList->firstStacked()->note->basket());
 		// Then a list of pointers to all notes, and parent groups:
 		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
-			stream << (Q_UINT64)(node->note);
+			stream << (quint64)(node->note);
 		QValueList<Note*> groups = noteList->parentGroups();
 		for (QValueList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
-			stream << (Q_UINT64)(*it);
-		stream << (Q_UINT64)0;
+			stream << (quint64)(*it);
+		stream << (quint64)0;
 		// And finally the notes themselves:
 		serializeNotes(noteList, stream, cutting);
 		// Append the object:
@@ -101,13 +101,13 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool cutting)
 {
 	for (NoteSelection *node = noteList; node; node = node->next) {
-		stream << (Q_UINT64)(node->note);
+		stream << (quint64)(node->note);
 		if (node->firstChild) {
-			stream << (Q_UINT64)(NoteType::Group) << (Q_UINT64)(node->note->groupWidth()) << (Q_UINT64)(node->note->isFolded());
+			stream << (quint64)(NoteType::Group) << (quint64)(node->note->groupWidth()) << (quint64)(node->note->isFolded());
 			serializeNotes(node->firstChild, stream, cutting);
 		} else {
 			NoteContent *content = node->note->content();
-			stream << (Q_UINT64)(content->type()) << (Q_UINT64)(node->note->groupWidth());
+			stream << (quint64)(content->type()) << (quint64)(node->note->groupWidth());
 			// Serialize file name, and move the file to a temporary place if the note is to be cuttted.
 			// If note does not have file name, we append empty string to be able to easily decode the notes later:
 			stream << content->fileName();
@@ -115,7 +115,7 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 				if (cutting) {
 					// Move file in a temporary place:
 					QString fullPath = Global::tempCutFolder() + Tools::fileNameForNewFile(content->fileName(), Global::tempCutFolder());
-					KIO::move(KURL(content->fullPath()), KURL(fullPath), /*showProgressInfo=*/false);
+					KIO::move(KUrl(content->fullPath()), KUrl(fullPath), /*showProgressInfo=*/false);
 					node->fullPath = fullPath;
 					stream << fullPath;
 				} else
@@ -126,11 +126,11 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 			content->serialize(stream);
 			State::List states = node->note->states();
 			for (State::List::Iterator it = states.begin(); it != states.end(); ++it)
-				stream << (Q_UINT64)(*it);
-			stream << (Q_UINT64)0;
+				stream << (quint64)(*it);
+			stream << (quint64)0;
 		}
 	}
-	stream << (Q_UINT64)0; // Mark the end of the notes in this group/hierarchy.
+	stream << (quint64)0; // Mark the end of the notes in this group/hierarchy.
 }
 
 void NoteDrag::serializeText(NoteSelection *noteList, KMultipleDrag *multipleDrag)
@@ -207,9 +207,9 @@ void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDr
 
 void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDrag, bool cutting)
 {
-	KURL::List  urls;
+	KUrl::List  urls;
 	QStringList titles;
-	KURL    url;
+	KUrl    url;
 	QString title;
 	for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked()) {
 		node->note->content()->toLink(&url, &title, node->fullPath);
@@ -221,12 +221,12 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 	if (!urls.isEmpty()) {
 		// First, the standard text/uri-list MIME format:
 #if KDE_IS_VERSION( 3, 3, 90 )
-		KURLDrag *urlsDrag = new KURLDrag(urls);
+		K3URLDrag *urlsDrag = new K3URLDrag(urls);
 		// ONLY export as text/uri-list, and not as text/plain* as we wil do that better ourself
 		urlsDrag->setExportAsText(false);
 		multipleDrag->addDragObject(urlsDrag);
 #else
-		KURLDrag2 *urlsDrag = new KURLDrag2(urls);
+		K3URLDrag2 *urlsDrag = new K3URLDrag2(urls);
 		QByteArray byteArray = urlsDrag->encodedData2("text/uri-list");
 		QStoredDrag *uriListDrag = new QStoredDrag("text/uri-list");
 		uriListDrag->setEncodedData(byteArray);
@@ -239,9 +239,9 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 		// FIXME: If no, only provide that if theire is only ONE URL.
 		QString xMozUrl;
 		for (uint i = 0; i < urls.count(); ++i)
-			xMozUrl += (xMozUrl.isEmpty() ? "" : "\n") + urls[i].prettyURL() + "\n" + titles[i];
+			xMozUrl += (xMozUrl.isEmpty() ? "" : "\n") + urls[i].prettyUrl() + "\n" + titles[i];
 /*		Code for only one: ===============
-		xMozUrl = note->title() + "\n" + note->url().prettyURL();*/
+		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
 		QTextStream stream(baMozUrl, IO_WriteOnly);
 		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
@@ -379,8 +379,8 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 	if (buffer.open(IO_ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		return (Basket*)basketPointer;
 	} else
 		return 0;
@@ -392,10 +392,10 @@ QValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 	if (buffer.open(IO_ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		// Get the note list:
-		Q_UINT64          notePointer;
+		quint64          notePointer;
 		QValueList<Note*> notes;
 		do {
 			stream >> notePointer;
@@ -414,11 +414,11 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 	if (buffer.open(IO_ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		Basket *basket = (Basket*)basketPointer;
 		// Get the note list:
-		Q_UINT64          notePointer;
+		quint64          notePointer;
 		QValueList<Note*> notes;
 		do {
 			stream >> notePointer;
@@ -437,8 +437,8 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 
 Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket)
 {
-	Q_UINT64  notePointer;
-	Q_UINT64  type;
+	quint64  notePointer;
+	quint64  type;
 	QString   fileName;
 	QString   fullPath;
 	QDateTime addedDate;
@@ -454,12 +454,12 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 		Note *oldNote = (Note*)notePointer;
 
 		Note *note = 0;
-		Q_UINT64 groupWidth;
+		quint64 groupWidth;
 		stream >> type >> groupWidth;
 		if (type == NoteType::Group) {
 			note = new Note(parent);
 			note->setGroupWidth(groupWidth);
-			Q_UINT64 isFolded;
+			quint64 isFolded;
 			stream >> isFolded;
 			if (isFolded)
 				note->toggleFolded(/*animate=*/false);
@@ -482,7 +482,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				if (note->basket() != parent) {
 					QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
 					note->content()->setFileName(newFileName);
-					KIO::FileCopyJob *copyJob = KIO::file_move(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 					parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
 					                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
@@ -505,10 +505,10 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
 				KIO::FileCopyJob *copyJob;
 				if (moveFiles)
-					copyJob = KIO::file_move(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 				else
-					copyJob = KIO::file_copy(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 				parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
 				                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
@@ -519,7 +519,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 		}
 		// Retreive the states (tags) and assign them to the note:
 		if (note && note->content()) {
-			Q_UINT64 statePointer;
+			quint64 statePointer;
 			do {
 				stream >> statePointer;
 				if (statePointer)

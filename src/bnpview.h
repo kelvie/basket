@@ -21,13 +21,13 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <klistview.h>
+#include <k3listview.h>
 #include <kxmlguiclient.h>
 #include <qtimer.h>
 #include <qclipboard.h>
 #include <qsplitter.h>
 #include <qlistview.h>
-#include <dcopref.h>
+#include <qdbusinterface.h>
 #include "global.h"
 #include "basketdcopiface.h"
 
@@ -39,7 +39,7 @@ class QDomElement;
 class KToggleAction;
 class KPassivePopup;
 class QPopupMenu;
-class KPopupMenu;
+class KMenu;
 class KTar;
 
 class DesktopColorPicker;
@@ -96,7 +96,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void save(QListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement);
 		void saveSubHierarchy(QListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
 		void load();
-		void load(KListView *listView, QListViewItem *item, const QDomElement &baskets);
+		void load(K3ListView *listView, QListViewItem *item, const QDomElement &baskets);
 		void loadNewBasket(const QString &folderName, const QDomElement &properties, Basket *parent);
 		void goToPreviousBasket();
 		void goToNextBasket();
@@ -302,7 +302,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KActionCollection *actionCollection() { return m_actionCollection; };
 
 		void populateTagsMenu();
-		void populateTagsMenu(KPopupMenu &menu, Note *referenceNote);
+		void populateTagsMenu(KMenu &menu, Note *referenceNote);
 		void connectTagsMenu();
 		void disconnectTagsMenu();
 		void disconnectTagsMenuDelayed();
@@ -310,12 +310,12 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void showEvent(QShowEvent*);
 		void hideEvent(QHideEvent*);
 	private:
-		KPopupMenu *m_lastOpenedTagsMenu;
+		KMenu *m_lastOpenedTagsMenu;
 
 	private slots:
 		void slotPressed(QListViewItem *item, const QPoint &/*pos*/ = QPoint(), int /*column*/ = 0);
 		void needSave(QListViewItem*);
-		void slotContextMenu(KListView *listView, QListViewItem *item, const QPoint &pos);
+		void slotContextMenu(K3ListView *listView, QListViewItem *item, const QPoint &pos);
 		void slotMouseButtonPressed(int button, QListViewItem *item, const QPoint &pos, int column);
 		void slotShowProperties(QListViewItem *item, const QPoint&, int);
 		void initialize();
@@ -331,7 +331,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void leaveEvent(QEvent*);
 
 	private:
-		KListView    *m_tree;
+		K3ListView    *m_tree;
 		QWidgetStack *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;

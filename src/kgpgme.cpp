@@ -24,9 +24,9 @@
 
 #include <kapplication.h>
 #include <kmessagebox.h>
-#include <kpassdlg.h>
+#include <kpassworddialog.h>
 #include <kiconloader.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <kdebug.h>
 #include <qcheckbox.h>
 #include <qlayout.h>
@@ -42,7 +42,7 @@
 class KGpgSelKey : public KDialogBase
 {
 	private:
-		KListView* keysListpr;
+		K3ListView* keysListpr;
 
 	public:
 
@@ -53,11 +53,11 @@ class KGpgSelKey : public KDialogBase
 			QVBoxLayout* vbox;
 			QWidget* page = new QWidget(this);
 			QLabel* labeltxt;
-			KIconLoader* loader = KGlobal::iconLoader();
+			KIconLoader* loader = KIconLoader::global();
 			QPixmap keyPair = loader->loadIcon("kgpg_key2", KIcon::Small, 20);
 
 			setMinimumSize(350,100);
-			keysListpr = new KListView(page);
+			keysListpr = new K3ListView(page);
 			keysListpr->setRootIsDecorated(true);
 			keysListpr->addColumn(i18n("Name"));
 			keysListpr->addColumn(i18n("Email"));
@@ -73,8 +73,8 @@ class KGpgSelKey : public KDialogBase
 
 			for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
 				QString name = gpg.checkForUtf8((*it).name);
-				KListViewItem *item = new
-					KListViewItem(keysListpr, name, (*it).email, (*it).id);
+				K3ListViewItem *item = new
+					K3ListViewItem(keysListpr, name, (*it).email, (*it).id);
 				item->setPixmap(0,keyPair);
 				if(preselected == (*it).id) {
 					keysListpr->setSelected(item, true);

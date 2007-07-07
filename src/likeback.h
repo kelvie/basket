@@ -188,7 +188,7 @@ class LikeBack : public QObject
 	 * @param remotePath The path to the send script on the server. For instance, "/likeback/send.php".
 	 * @param hostPort   Optionnal port used to contact the server using the HTTP protocol. By default, it is port 80.
 	 */
-	void setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort = 80);
+	void setServer(const QString &hostName, const QString &remotePath, quint16 hostPort = 80);
 
 	/**
 	 * @Returns The server host name to contact when sending comments.
@@ -206,7 +206,7 @@ class LikeBack : public QObject
 	 * @Returns The port used to contact the server using the HTTP protocol.
 	 * @see setServer()
 	 */
-	Q_UINT16 hostPort();
+	quint16 hostPort();
 
 	/**
 	 * Get the KAction letting user to show the comment dialog.

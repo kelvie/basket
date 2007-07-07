@@ -23,7 +23,7 @@
 #include <kontact/core.h>
 #include <klocale.h>
 #include <kcmdlineargs.h>
-#include <dcopref.h>
+#include <qdbusinterface.h>
 #include "basketdcopiface_stub.h"
 #include "basket_plugin.h"
 #include "basket_options.h"
@@ -64,7 +64,7 @@ void BasketPlugin::newBasket()
 	(void) part(); // ensure part is loaded
 	Q_ASSERT(m_stub);
 	if (m_stub) {
-		kdDebug() << k_funcinfo << endl;
+		kDebug() << k_funcinfo << endl;
 		m_stub->newBasket();
 	}
 }
@@ -77,7 +77,7 @@ void BasketPlugin::showPart()
 #if 0
 bool BasketPlugin::createDCOPInterface( const QString& serviceType )
 {
-	kdDebug() << k_funcinfo << serviceType << endl;
+	kDebug() << k_funcinfo << serviceType << endl;
 	return false;
 }
 #endif
@@ -94,7 +94,7 @@ void BasketUniqueAppHandler::loadCommandLineOptions()
 int BasketUniqueAppHandler::newInstance()
 {
 	(void)plugin()->part();
-	DCOPRef kmail("basket", "BasketIface");
+	QDBusInterface kmail("org.kde.basket", "BasketIface");
 	DCOPReply reply = kmail.call("handleCommandLine", false);
 	if (reply.isValid()) {
 		bool handled = reply;

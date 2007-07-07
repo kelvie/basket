@@ -21,7 +21,7 @@
 #ifndef SYSTEMTRAY_H
 #define SYSTEMTRAY_H
 
-#include <ksystemtray.h>
+#include <ksystemtrayicon.h>
 
 class MainWindow;
 
@@ -29,7 +29,7 @@ class MainWindow;
   * hopefuly integrated in KDE 3.4
   * @author S�astien Laot
   */
-class KSystemTray2 : public KSystemTray
+class KSystemTray2 : public KSystemTrayIcon
 {
   Q_OBJECT
   public:

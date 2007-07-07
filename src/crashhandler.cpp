@@ -32,6 +32,7 @@
 #include <sys/wait.h>     //waitpid
 //#include <taglib/taglib.h>
 #include <unistd.h>       //write, getpid
+#include <ktoolinvocation.h>
 
 
 
@@ -135,7 +136,7 @@
 
             QCString gdb;
             gdb  = "gdb --nw -n --batch -x ";
-            gdb += temp.name().latin1();
+            gdb += temp.name().toLatin1();
             gdb += " basket ";
             gdb += QCString().setNum( ::getppid() );
 
@@ -145,7 +146,7 @@
             bt.remove( "(no debugging symbols found)..." );
             bt.remove( "(no debugging symbols found)\n" );
             bt.replace( QRegExp("\n{2,}"), "\n" ); //clean up multiple \n characters
-            bt.stripWhiteSpace();
+            bt.trimmed();
 
             /// analyze usefulness
             bool useful = true;
@@ -188,11 +189,11 @@
                 body += fileCommandOutput + "\n";
                 body += "==== (gdb) bt =====================\n";
 				body += bt;//+ "\n\n";
-//                body += "==== kdBacktrace() ================\n";
-//                body += kdBacktrace();
+//                body += "==== kBacktrace() ================\n";
+//                body += kBacktrace();
 
                 //TODO startup notification
-                kapp->invokeMailer(
+                KToolInvocation::invokeMailer(
                         /*to*/          "slaout@linux62.org",
                         /*cc*/          QString(),
                         /*bcc*/         QString(),

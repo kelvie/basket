@@ -153,7 +153,7 @@ QString SoftwareImporters::fromICS(const QString &ics)
 QString SoftwareImporters::fromTomboy(QString tomboy)
 {
 	// The first line is the note title, and we already have it, so we remove it (yes, that's pretty stupid to duplicate it in the content...):
-	tomboy = tomboy.mid(tomboy.find("\n")).stripWhiteSpace();
+	tomboy = tomboy.mid(tomboy.find("\n")).trimmed();
 
 	// Font styles and decorations:
 	tomboy.replace("<bold>",           "<b>");
@@ -248,7 +248,7 @@ void SoftwareImporters::importKJots()
 			if ( !buf.isNull() && buf.left(9) == "\\NewEntry") {
 
 				// First create a basket for it:
-				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KURL(file.name()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
+				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.name()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
 				Basket *basket = Global::bnpView->currentBasket();
 				basket->load();
 
@@ -346,7 +346,7 @@ void SoftwareImporters::importKNotes()
 				} else if (inDescription && buf.startsWith(" ")) {
 					body += buf.mid(1, buf.length());
 				} else if (buf.startsWith("X-KDE-KNotes-RichText:")) {
-					isRichText = XMLWork::trueOrFalse(buf.mid(22, buf.length() - 22).stripWhiteSpace(), "false");
+					isRichText = XMLWork::trueOrFalse(buf.mid(22, buf.length() - 22).trimmed(), "false");
 				} else if (buf == "END:VJOURNAL") {
 					insertTitledNote(basket, fromICS(title), fromICS(body), (isRichText ? Qt::RichText : Qt::PlainText));
 					inVJournal    = false;
@@ -373,14 +373,14 @@ void SoftwareImporters::importStickyNotes()
 	// Sticky Notes file is usually located in ~/.gnome2/stickynotes_applet
 	// We will search all directories in "~/" that contain "gnome" in the name,
 	// and will search for "stickynotes_applet" file (that should be XML file with <stickynotes> root.
-	QDir dir(QDir::home().absPath(), QString::null, QDir::Name | QDir::IgnoreCase,
+	QDir dir(QDir::home().absolutePath(), QString::null, QDir::Name | QDir::IgnoreCase,
 	         QDir::Dirs | QDir::NoSymLinks | QDir::Hidden);
 	QStringList founds;
 
 	QStringList list = dir.entryList();
 	for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) { // For each folder
 		if ( (*it).contains("gnome", false) ) {
-			QString fullPath = QDir::home().absPath() + "/" + (*it) + "/stickynotes_applet";
+			QString fullPath = QDir::home().absolutePath() + "/" + (*it) + "/stickynotes_applet";
 			if (dir.exists(fullPath))
 				founds += fullPath;
 		}
@@ -428,7 +428,7 @@ QString loadUtf8FileToString(const QString &fileName)
 
 void SoftwareImporters::importTomboy()
 {
-	QString dirPath = QDir::home().absPath() + "/.tomboy/"; // I thing the assumption is good
+	QString path().absolutePath() + "/.tomboy/"; // I thing the assumption is good
 	QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
 	Basket *basket = 0; // Create the basket ONLY if we found at least one note to add!
@@ -491,14 +491,14 @@ void SoftwareImporters::importTextFile()
 		);
 
 		// First create a basket for it:
-		QString title = i18n("From TextFile.txt", "From %1").arg(KURL(fileName).fileName());
+		QString title = i18n("From TextFile.txt", "From %1").arg(KUrl(fileName).fileName());
 		BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		Basket *basket = Global::bnpView->currentBasket();
 		basket->load();
 
 		// Import every notes:
 		for (QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
-			Note *note = NoteFactory::createNoteFromText((*it).stripWhiteSpace(), basket);
+			Note *note = NoteFactory::createNoteFromText((*it).trimmed(), basket);
 			basket->insertNote(note, basket->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
 		}
 
@@ -511,7 +511,7 @@ void SoftwareImporters::importTextFile()
   */
 void SoftwareImporters::importKnowIt()
 {
-	KURL url = KFileDialog::getOpenURL(":ImportKnowIt",
+	KUrl url = KFileDialog::getOpenUrl(":ImportKnowIt",
 	                                   "*.kno|KnowIt files\n*|All files");
 	if (!url.isEmpty())
 	{
@@ -577,7 +577,7 @@ void SoftwareImporters::importKnowIt()
 							basket->load();
 						}
 
-						if(!text.stripWhiteSpace().isEmpty() ||
+						if(!text.trimmed().isEmpty() ||
 							hierarchy == 2 ||
 							(hierarchy == 1 && level > 0))
 						{

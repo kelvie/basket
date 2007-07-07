@@ -23,7 +23,7 @@
 
 #include <qscrollview.h>
 #include <qtooltip.h>
-#include <qvaluelist.h>
+#include <qlist.h>
 #include <qtimer.h>
 #include <qimage.h>
 #include <qdatetime.h>
@@ -32,7 +32,7 @@
 #include <kdirwatch.h>
 #include <kaction.h>
 #include <kio/job.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 #include "filter.h"
 #include "note.h" // For Note::Zone
@@ -54,7 +54,7 @@ class KGpgMe;
   * This dialog is modal and is shown until the user has made space on the disk.
   * @author S�astien Laot
   */
-class DiskErrorDialog : public KDialogBase
+class DiskErrorDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -100,7 +100,7 @@ class NoteSelection
 	void append(NoteSelection *node);
 	int count();
 
-	QValueList<Note*> parentGroups();
+	QList<Note*> parentGroups();
 };
 
 /** This store all needed information when exporting to HTML
@@ -276,7 +276,7 @@ class Basket : public QScrollView, public QToolTip
 
 /// ANIMATIONS:
   private:
-	QValueList<Note*> m_animatedNotes;
+	QList<Note*> m_animatedNotes;
 	QTimer            m_animationTimer;
 	int               m_deltaY;
 	QTime             m_lastFrameTime;
@@ -410,7 +410,7 @@ public slots:
   public slots:
 	void activatedTagShortcut(Tag *tag);
 	void recomputeAllStyles();
-	void removedStates(const QValueList<State*> &deletedStates);
+	void removedStates(const QList<State*> &deletedStates);
   private slots:
 	void toggledTagInMenu(int id);
 	void toggledStateInMenu(int id);
@@ -451,7 +451,7 @@ public slots:
 
 /// BLANK SPACES DRAWING:
   private:
-	QValueList<QRect> m_blankAreas;
+	QList<QRect> m_blankAreas;
 	void recomputeBlankRects();
 	QWidget *m_cornerWidget;
 
@@ -573,13 +573,13 @@ public slots:
 /// DRAG AND DROP:
   private:
 	bool m_isDuringDrag;
-	QValueList<Note*> m_draggedNotes;
+	QList<Note*> m_draggedNotes;
   public:
 	static void acceptDropEvent(QDropEvent *event, bool preCond = true);
 	void contentsDropEvent(QDropEvent *event);
 	void blindDrop(QDropEvent* event);
 	bool isDuringDrag() { return m_isDuringDrag; }
-	QValueList<Note*> draggedNotes() { return m_draggedNotes; }
+	QList<Note*> draggedNotes() { return m_draggedNotes; }
   protected:
 	void contentsDragEnterEvent(QDragEnterEvent*);
 	void contentsDragMoveEvent(QDragMoveEvent *event);
@@ -591,11 +591,11 @@ public slots:
 
 /// EXPORTATION:
   public:
-	QValueList<State*> usedStates();
+	QList<State*> usedStates();
 	static QString saveGradientBackground(const QColor &color, const QFont &font, const QString &folder);
 
   public:
-	void listUsedTags(QValueList<Tag*> &list);
+	void listUsedTags(QList<Tag*> &list);
 
 /// MANAGE FOCUS:
   private:
@@ -644,7 +644,7 @@ public slots:
   private:
 	KDirWatch           *m_watcher;
 	QTimer               m_watcherTimer;
-	QValueList<QString>  m_modifiedFiles;
+	QList<QString>  m_modifiedFiles;
   public:
 	void addWatchedFile(const QString &fullPath);
 	void removeWatchedFile(const QString &fullPath);

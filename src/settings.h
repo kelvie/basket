@@ -22,7 +22,7 @@
 #define SETTINGS_H
 
 #include <qstring.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qtooltip.h>

@@ -1,10 +1,12 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
+    <projectmanagement>KDevCustomProject</projectmanagement>
+    <projectdirectory>/home/pat/basket_kde4port/</projectdirectory>
+    <absoluteprojectpath>true</absoluteprojectpath>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
-    <version>1.0.2</version>
-    <projectmanagement>KDevKDEAutoProject</projectmanagement>
+    <version>1.5.0</version>
     <primarylanguage>C++</primarylanguage>
     <keywords>
       <keyword>C++</keyword>
@@ -12,11 +14,8 @@
       <keyword>Qt</keyword>
       <keyword>KDE</keyword>
     </keywords>
-    <projectdirectory>.</projectdirectory>
-    <absoluteprojectpath>false</absoluteprojectpath>
     <description>Taking care of your ideas.</description>
     <ignoreparts>
-      <part>kdevfileview</part>
       <part>kdevfileselector</part>
     </ignoreparts>
     <secondaryLanguages/>
@@ -26,6 +25,9 @@
   </general>
   <kdevautoproject>
     <general>
+      <projectmanagement>KDevCustomProject</projectmanagement>
+      <projectdirectory>/home/kde-devel/basket</projectdirectory>
+      <absoluteprojectpath>true</absoluteprojectpath>
       <activetarget>src/basket</activetarget>
       <useconfiguration>debug</useconfiguration>
     </general>
@@ -44,7 +46,7 @@
       <runarguments>
         <basket/>
       </runarguments>
-      <globaldebugarguments></globaldebugarguments>
+      <globaldebugarguments/>
       <globalcwd>/home/seb/Programmation/basket/debug</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <autoinstall>false</autoinstall>
@@ -52,7 +54,6 @@
     </run>
     <configurations>
       <optimized>
-        <builddir>optimized</builddir>
         <ccompiler>GccOptions</ccompiler>
         <cxxcompiler>GppOptions</cxxcompiler>
         <f77compiler>G77Options</f77compiler>
@@ -60,7 +61,6 @@
       </optimized>
       <debug>
         <configargs>--enable-debug=full --without-arts --prefix=$HOME/kde-debug</configargs>
-        <builddir>debug</builddir>
         <ccompiler>kdevgccoptions</ccompiler>
         <cxxcompiler>kdevgppoptions</cxxcompiler>
         <f77compiler>kdevpgf77options</f77compiler>
@@ -159,6 +159,9 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
+      <projectmanagement>KDevCustomProject</projectmanagement>
+      <projectdirectory>/home/kde-devel/basket</projectdirectory>
+      <absoluteprojectpath>true</absoluteprojectpath>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <gdbpath></gdbpath>
@@ -195,9 +198,7 @@
     <rshoptions/>
   </kdevcvs>
   <kdevcppsupport>
-    <references>
-      <pcs>Qt</pcs>
-    </references>
+    <references/>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
@@ -224,6 +225,8 @@
       <usePermanentCaching>true</usePermanentCaching>
       <alwaysIncludeNamespaces>true</alwaysIncludeNamespaces>
       <includePaths>.;</includePaths>
+      <parseMissingHeadersExperimental>false</parseMissingHeadersExperimental>
+      <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
       <prefixGet></prefixGet>
@@ -235,12 +238,12 @@
     </creategettersetter>
     <qt>
       <used>true</used>
-      <version>3</version>
+      <version>4</version>
       <root>/usr/share/qt3</root>
-      <includestyle>3</includestyle>
-      <designerintegration>EmbeddedKDevDesigner</designerintegration>
-      <qmake>/usr/bin/qmake-qt3</qmake>
-      <designer>/usr/bin/designer-qt3</designer>
+      <includestyle>4</includestyle>
+      <designerintegration>ExternalDesigner</designerintegration>
+      <qmake>/home/kde-devel/qt4/bin/qmake</qmake>
+      <designer>/home/kde-devel/qt4/bin/designer</designer>
       <designerpluginpaths/>
     </qt>
     <splitheadersource>
@@ -288,6 +291,76 @@
   </dist>
   <ctagspart>
     <customArguments/>
-    <customTagfilePath/>
+    <customTagfilePath>/home/pat/basket kde4port/tags</customTagfilePath>
+    <activeTagsFiles/>
   </ctagspart>
+  <kdevcustomproject>
+    <filelistdirectory>/home/kde-devel/basket</filelistdirectory>
+    <run>
+      <directoryradio>executable</directoryradio>
+      <mainprogram>/home/pat/basket_kde4port/</mainprogram>
+      <programargs></programargs>
+      <globaldebugarguments></globaldebugarguments>
+      <globalcwd>/home/pat/basket_kde4port/</globalcwd>
+      <useglobalprogram>false</useglobalprogram>
+      <terminal>false</terminal>
+      <autocompile>true</autocompile>
+      <autoinstall>false</autoinstall>
+      <autokdesu>false</autokdesu>
+      <envvars>
+        <envvar value="$HOME/kde" name="KDEDIR" />
+        <envvar value="$KDEDIR" name="KDEDIRS" />
+        <envvar value="$HOME/.kde4" name="KDEHOME" />
+        <envvar value="/tmp/$USER-kde4" name="KDETMP" />
+        <envvar value="/var/tmp/$USER-kde4" name="KDEVARTMP" />
+        <envvar value="42" name="LD_BIND_NOW" />
+        <envvar value="$QTDIR/lib:$KDEDIR/lib:$LD_LIBRARY_PATH" name="LD_LIBRARY_PATH" />
+        <envvar value="$QTDIR/bin:$KDEDIR/bin:/usr/local/bin:$PATH" name="PATH" />
+      </envvars>
+    </run>
+    <filetypes>
+      <filetype>*.java</filetype>
+      <filetype>*.h</filetype>
+      <filetype>*.H</filetype>
+      <filetype>*.hh</filetype>
+      <filetype>*.hxx</filetype>
+      <filetype>*.hpp</filetype>
+      <filetype>*.c</filetype>
+      <filetype>*.C</filetype>
+      <filetype>*.cc</filetype>
+      <filetype>*.cpp</filetype>
+      <filetype>*.c++</filetype>
+      <filetype>*.cxx</filetype>
+      <filetype>Makefile</filetype>
+      <filetype>CMakeLists.txt</filetype>
+    </filetypes>
+    <blacklist/>
+    <build>
+      <buildtool>make</buildtool>
+      <builddir>/home/pat/basket_kde4port/</builddir>
+    </build>
+    <other>
+      <prio>0</prio>
+      <otherbin></otherbin>
+      <defaulttarget></defaulttarget>
+      <otheroptions></otheroptions>
+      <selectedenvironment>default</selectedenvironment>
+      <environments>
+        <default/>
+      </environments>
+    </other>
+    <make>
+      <abortonerror>true</abortonerror>
+      <numberofjobs>1</numberofjobs>
+      <prio>0</prio>
+      <dontact>false</dontact>
+      <makebin></makebin>
+      <defaulttarget></defaulttarget>
+      <makeoptions></makeoptions>
+      <selectedenvironment>default</selectedenvironment>
+      <environments>
+        <default/>
+      </environments>
+    </make>
+  </kdevcustomproject>
 </kdevelop>

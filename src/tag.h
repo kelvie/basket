@@ -24,7 +24,7 @@
 #include <qstring.h>
 #include <qcolor.h>
 #include <qfont.h>
-#include <qvaluelist.h>
+#include <qlist.h>
 
 #include <kaction.h>
 #include <kshortcut.h>
@@ -40,7 +40,7 @@ class State
 {
   public:
 	/// LIST OF STATES:
-	typedef QValueList<State*> List;
+	typedef QList<State*> List;
 
   public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
@@ -110,14 +110,14 @@ class Tag
 {
   public:
 	/// LIST OF ALL TAGS IN THE APPLICATION:
-	typedef QValueList<Tag*> List;
+	typedef QList<Tag*> List;
 	static Tag::List all;
 	static State* stateForId(const QString &id);
 	static Tag* tagForKAction(KAction *action);
 	static Tag* tagSimilarTo(Tag *tagToTest);
 	static QMap<QString, QString> loadTags(const QString &path = QString()/*, bool merge = false*/); /// << Load the tags contained in the XML file @p path or those in the application settings if @p path isEmpty(). If @p merge is true and a tag with the id of a tag that should be loaded already exist, the tag will get a new id. Otherwise, the tag will be dismissed.
 	static void saveTags();
-	static void saveTagsTo(QValueList<Tag*> &list, const QString &fullPath);
+	static void saveTagsTo(QList<Tag*> &list, const QString &fullPath);
 	static void createDefaultTagsSet(const QString &file);
 	static long getNextStateUid();
   private:

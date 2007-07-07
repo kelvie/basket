@@ -23,7 +23,7 @@
 
 #include <kdialogbase.h>
 
-class KURLRequester;
+class KUrlRequester;
 class QCheckBox;
 class QString;
 
@@ -50,7 +50,7 @@ class ExporterDialog : public KDialogBase
 	void save();
   private:
 	Basket        *m_basket;
-	KURLRequester *m_url;
+	KUrlRequester *m_url;
 	QCheckBox     *m_embedLinkedFiles;
 	QCheckBox     *m_embedLinkedFolders;
 	QCheckBox     *m_erasePreviousFiles;

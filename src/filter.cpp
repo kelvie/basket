@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-//#include <ktoolbarbutton.h>
+//
 #include <qtoolbutton.h>
 #include <qlabel.h>
 //#include <qcombobox.h>
@@ -52,7 +52,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 
 	// Create every widgets:
 	QIconSet resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-	QIconSet inAllIconSet = kapp->iconLoader()->loadIconSet("find",              KIcon::Toolbar);
+	QIconSet inAllIconSet = kapp->iconLoader()->loadIconSet("edit-find",              KIcon::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);

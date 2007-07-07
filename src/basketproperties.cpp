@@ -56,7 +56,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
-	int size = QMAX(m_icon->sizeHint().width(), m_icon->sizeHint().height());
+	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_icon, i18n("Icon"));
 	m_name = new QLineEdit(m_basket->basketName(), page);
@@ -117,7 +117,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_disposition->insert(radio);
 	new QRadioButton(i18n("&Free-form"), m_disposition);
 	QRadioButton *mindMap = new QRadioButton(i18n("&Mind map"), m_disposition); // TODO: "Learn more..."
-	int height = QMAX(mindMap->sizeHint().height(), m_columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
+	int height = qMax(mindMap->sizeHint().height(), m_columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
 	mindMap->setMinimumSize(mindMap->sizeHint().width(), height); // Because the m_columnCount can be heigher, and make radio1 and radio2 more spaced than radio2 and radio3.
 	m_disposition->setButton(m_basket->isFreeLayout() ? (m_basket->isMindMap() ? 2 : 1) : 0);
 	topLayout->addWidget(m_disposition);

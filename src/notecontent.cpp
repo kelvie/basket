@@ -103,9 +103,9 @@ QRect NoteContent::zoneRect(int zone, const QPoint &/*pos*/)
 		return QRect();
 }
 
-KURL NoteContent::urlToOpen(bool /*with*/)
+KUrl NoteContent::urlToOpen(bool /*with*/)
 {
-	return (useFile() ? KURL(fullPath()) : KURL());
+	return (useFile() ? KUrl(fullPath()) : KUrl());
 }
 
 void NoteContent::setFileName(const QString &fileName)
@@ -202,15 +202,15 @@ QString HtmlContent::toText(const QString &/*cuttedFullPath*/)      { return Too
 QString LinkContent::toText(const QString &/*cuttedFullPath*/)
 {
 	if (autoTitle())
-		return url().prettyURL();
+		return url().prettyUrl();
 	else if (title().isEmpty() && url().isEmpty())
 		return "";
 	else if (url().isEmpty())
 		return title();
 	else if (title().isEmpty())
-		return url().prettyURL();
+		return url().prettyUrl();
 	else
-		return QString("%1 <%2>").arg(title(), url().prettyURL());
+		return QString("%1 <%2>").arg(title(), url().prettyUrl());
 }
 QString ColorContent::toText(const QString &/*cuttedFullPath*/)     { return color().name();                }
 QString UnknownContent::toText(const QString &/*cuttedFullPath*/)   { return "";                            }
@@ -235,7 +235,7 @@ QString FileContent::toHtml(const QString &/*imageName*/, const QString &cuttedF
 { return QString("<a href=\"%1\">%2</a>").arg((cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath), fileName()); } // With the icon?
 
 QString LinkContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
-{ return QString("<a href=\"%1\">%2</a>").arg(url().prettyURL(), title());                        } // With the icon?
+{ return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());                        } // With the icon?
 
 QString LauncherContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
 { return QString("<a href=\"%1\">%2</a>").arg((cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath), name());     } // With the icon?
@@ -249,30 +249,30 @@ QString UnknownContent::toHtml(const QString &/*imageName*/, const QString &/*cu
 QPixmap ImageContent::toPixmap()     { return pixmap();              }
 QPixmap AnimationContent::toPixmap() { return movie().framePixmap(); }
 
-void NoteContent::toLink(KURL *url, QString *title, const QString &cuttedFullPath)
+void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPath)
 {
 	if (useFile()) {
-		*url   = KURL(cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
+		*url   = KUrl(cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
 		*title =     (cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
 	} else {
-		*url   = KURL();
+		*url   = KUrl();
 		*title = QString();
 	}
 }
-void LinkContent::toLink(KURL *url, QString *title, const QString &/*cuttedFullPath*/)
+void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
 {
 	*url   = this->url();
 	*title = this->title();
 }
 
-void LauncherContent::toLink(KURL *url, QString *title, const QString &cuttedFullPath)
+void LauncherContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPath)
 {
-	*url   = KURL(cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
+	*url   = KUrl(cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
 	*title = name();
 }
-void UnknownContent::toLink(KURL *url, QString *title, const QString &/*cuttedFullPath*/)
+void UnknownContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
 {
-	*url   = KURL();
+	*url   = KUrl();
 	*title = QString();
 }
 
@@ -315,7 +315,7 @@ bool ImageContent::match(const FilterData &/*data*/)     { return false;        
 bool AnimationContent::match(const FilterData &/*data*/) { return false;                                                               }
 bool SoundContent::match(const FilterData &data)         { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
 bool FileContent::match(const FilterData &data)          { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
-bool LinkContent::match(const FilterData &data)          { return (title().find(data.string, 0, false) != -1 || url().prettyURL().find(data.string, 0, false) != -1); }
+bool LinkContent::match(const FilterData &data)          { return (title().find(data.string, 0, false) != -1 || url().prettyUrl().find(data.string, 0, false) != -1); }
 bool LauncherContent::match(const FilterData &data)      { return (exec().find(data.string, 0, false) != -1 || name().find(data.string, 0, false) != -1); }
 bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
 bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
@@ -337,7 +337,7 @@ QString ImageContent::cssClass()     { return "";         }
 QString AnimationContent::cssClass() { return "";         }
 QString SoundContent::cssClass()     { return "sound";    }
 QString FileContent::cssClass()      { return "file";     }
-QString LinkContent::cssClass()      { return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network"); }
+QString LinkContent::cssClass()      { return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network-wired"); }
 QString LauncherContent::cssClass()  { return "launcher"; }
 QString ColorContent::cssClass()     { return ""     ;    }
 QString UnknownContent::cssClass()   { return "";         }
@@ -358,18 +358,18 @@ QString ImageContent::customOpenCommand()     { return (Settings::isImageUseProg
 QString AnimationContent::customOpenCommand() { return (Settings::isAnimationUseProg() && ! Settings::animationProg().isEmpty() ? Settings::animationProg() : QString()); }
 QString SoundContent::customOpenCommand()     { return (Settings::isSoundUseProg()     && ! Settings::soundProg().isEmpty()     ? Settings::soundProg()     : QString()); }
 
-void LinkContent::serialize(QDataStream &stream)  { stream << url() << title() << icon() << (Q_UINT64)autoTitle() << (Q_UINT64)autoIcon(); }
+void LinkContent::serialize(QDataStream &stream)  { stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon(); }
 void ColorContent::serialize(QDataStream &stream) { stream << color();  }
 
 QPixmap TextContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, text());
-	QPixmap pixmap( QMIN(width, textRect.width()), QMIN(height, textRect.height()) );
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	QPixmap pixmap( qMin(width, textRect.width()), qMin(height, textRect.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
 	painter.setFont(note()->font());
-	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, text());
+	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
 	painter.end();
 	return pixmap;
 }
@@ -381,7 +381,7 @@ QPixmap HtmlContent::feedbackPixmap(int width, int height)
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPixmap pixmap( QMIN(width, richText.widthUsed()), QMIN(height, richText.height()) );
+	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
@@ -450,7 +450,7 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-	QPixmap pixmap( QMIN(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), QMIN(height, rectHeight) );
+	QPixmap pixmap( qMin(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), qMin(height, rectHeight) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	paint(&painter, pixmap.width(), pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
@@ -476,13 +476,13 @@ QPixmap LauncherContent::feedbackPixmap(int width, int height)
 
 QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-	QPixmap pixmap( QMIN(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), QMIN(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
+	QPixmap pixmap( qMin(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), qMin(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
 	QPainter painter(&pixmap);
 	paint(&painter, pixmap.width() + 1, pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
 	painter.setPen(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -1024,13 +1024,13 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 	keys->append(i18n("Size"));
 	values->append(humanFileSize);
 
-	KMimeType::Ptr mime = KMimeType::findByURL(KURL(fullPath()));
+	KMimeType::Ptr mime = KMimeType::findByURL(KUrl(fullPath()));
 	if (mime) {
 		keys->append(i18n("Type"));
 		values->append(mime->comment());
 	}
 
-	KFileMetaInfo infos = KFileMetaInfo(KURL(fullPath()));
+	KFileMetaInfo infos = KFileMetaInfo(KUrl(fullPath()));
 	if (infos.isValid() && !infos.isEmpty()) {
 		QStringList groups = infos.preferredKeys();
 		int i = 0;
@@ -1096,7 +1096,7 @@ QString FileContent::messageWhenOpenning(OpenMessage where)
 void FileContent::setFileName(const QString &fileName)
 {
 	NoteContent::setFileName(fileName);
-	KURL url = KURL(fullPath());
+	KUrl url = KUrl(fullPath());
 	if (linkLook()->previewEnabled())
 		m_linkDisplay.setLink(fileName, NoteFactory::iconForURL(url),            linkLook(), note()->font()); // FIXME: move iconForURL outside of NoteFactory !!!!!
 	else
@@ -1115,7 +1115,7 @@ void FileContent::linkLookChanged()
 void FileContent::newPreview(const KFileItem*, const QPixmap &preview)
 {
 	LinkLook *linkLook = this->linkLook();
-	m_linkDisplay.setLink(fileName(), NoteFactory::iconForURL(KURL(fullPath())), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
+	m_linkDisplay.setLink(fileName(), NoteFactory::iconForURL(KUrl(fullPath())), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
 	contentChanged(m_linkDisplay.minWidth());
 }
 
@@ -1126,13 +1126,13 @@ void FileContent::removePreview(const KFileItem*)
 
 void FileContent::startFetchingUrlPreview()
 {
-	KURL url(fullPath());
+	KUrl url(fullPath());
 	LinkLook *linkLook = this->linkLook();
 
 //	delete m_previewJob;
 	if (!url.isEmpty() && linkLook->previewSize() > 0) {
-		KURL filteredUrl = NoteFactory::filteredURL(url);//KURIFilter::self()->filteredURI(url);
-		KURL::List urlList;
+		KUrl filteredUrl = NoteFactory::filteredURL(url);//KURIFilter::self()->filteredURI(url);
+		KUrl::List urlList;
 		urlList.append(filteredUrl);
 		m_previewJob = KIO::filePreview(urlList, linkLook->previewSize(), linkLook->previewSize(), linkLook->iconSize());
 		connect( m_previewJob, SIGNAL(gotPreview(const KFileItem*, const QPixmap&)), this, SLOT(newPreview(const KFileItem*, const QPixmap&)) );
@@ -1144,7 +1144,7 @@ void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
 	QString fileName = exporter->copyFile(fullPath(), true);
-	exporter->stream << m_linkDisplay.toHtml(exporter, KURL(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	exporter->stream << m_linkDisplay.toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class SoundContent:
@@ -1209,7 +1209,7 @@ QString SoundContent::messageWhenOpenning(OpenMessage where)
 /** class LinkContent:
  */
 
-LinkContent::LinkContent(Note *parent, const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
+LinkContent::LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
  : NoteContent(parent), m_previewJob(0)
 {
 	setLink(url, title, icon, autoTitle, autoIcon);
@@ -1232,7 +1232,7 @@ void LinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
 	content.setAttribute("icon",       icon()                         );
 	content.setAttribute("autoTitle", (autoTitle() ? "true" : "false"));
 	content.setAttribute("autoIcon",  (autoIcon()  ? "true" : "false"));
-	QDomText textNode = doc.createTextNode(url().prettyURL());
+	QDomText textNode = doc.createTextNode(url().prettyUrl());
 	content.appendChild(textNode);
 }
 
@@ -1240,7 +1240,7 @@ void LinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
 void LinkContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	keys->append(i18n("Target"));
-	values->append(m_url.prettyURL());
+	values->append(m_url.prettyUrl());
 }
 
 int LinkContent::zoneAt(const QPoint &pos)
@@ -1274,13 +1274,13 @@ void LinkContent::setCursor(QWidget *widget, int zone)
 QString LinkContent::statusBarMessage(int zone)
 {
 	if (zone == Note::Custom0 || zone == Note::Content)
-		return m_url.prettyURL();
+		return m_url.prettyUrl();
 	else
 		return "";
 }
 
 
-KURL LinkContent::urlToOpen(bool /*with*/)
+KUrl LinkContent::urlToOpen(bool /*with*/)
 {
 	return NoteFactory::filteredURL(url());//KURIFilter::self()->filteredURI(url());
 }
@@ -1301,11 +1301,11 @@ QString LinkContent::messageWhenOpenning(OpenMessage where)
 	}
 }
 
-void LinkContent::setLink(const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
+void LinkContent::setLink(const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
 {
 	m_autoTitle = autoTitle;
 	m_autoIcon  = autoIcon;
-	m_url       = NoteFactory::filteredURL(KURL(url));//KURIFilter::self()->filteredURI(url);
+	m_url       = NoteFactory::filteredURL(KUrl(url));//KURIFilter::self()->filteredURI(url);
 	m_title     = (autoTitle ? NoteFactory::titleForURL(m_url) : title);
 	m_icon      = (autoIcon  ? NoteFactory::iconForURL(m_url)  : icon);
 
@@ -1338,13 +1338,13 @@ void LinkContent::removePreview(const KFileItem*)
 // Code dupicated from FileContent::startFetchingUrlPreview()
 void LinkContent::startFetchingUrlPreview()
 {
-	KURL url = this->url();
+	KUrl url = this->url();
 	LinkLook *linkLook = LinkLook::lookForURL(this->url());
 
 //	delete m_previewJob;
 	if (!url.isEmpty() && linkLook->previewSize() > 0) {
-		KURL filteredUrl = NoteFactory::filteredURL(url);//KURIFilter::self()->filteredURI(url);
-		KURL::List urlList;
+		KUrl filteredUrl = NoteFactory::filteredURL(url);//KURIFilter::self()->filteredURI(url);
+		KUrl::List urlList;
 		urlList.append(filteredUrl);
 		m_previewJob = KIO::filePreview(urlList, linkLook->previewSize(), linkLook->previewSize(), linkLook->iconSize());
 		connect( m_previewJob, SIGNAL(gotPreview(const KFileItem*, const QPixmap&)), this, SLOT(newPreview(const KFileItem*, const QPixmap&)) );
@@ -1358,16 +1358,16 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
 
 // TODO:
 //	// Append address (useful for print version of the page/basket):
-//	if (exportData.formatForImpression && (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyURL()))) {
+//	if (exportData.formatForImpression && (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyUrl()))) {
 //		// The address is on a new line, unless title is empty (empty lines was replaced by &nbsp;):
 //		if (linkTitle == " "/*"&nbsp;"*/)
-//			linkTitle = url().prettyURL()/*""*/;
+//			linkTitle = url().prettyUrl()/*""*/;
 //		else
-//			linkTitle = linkTitle + " <" + url().prettyURL() + ">"/*+ "<br>"*/;
-//		//linkTitle += "<i>" + url().prettyURL() + "</i>";
+//			linkTitle = linkTitle + " <" + url().prettyUrl() + ">"/*+ "<br>"*/;
+//		//linkTitle += "<i>" + url().prettyUrl() + "</i>";
 //	}
 
-	KURL linkURL;
+	KUrl linkURL;
 /*
 	QFileInfo fInfo(url().path());
 //	DEBUG_WIN << url().path()
@@ -1467,12 +1467,12 @@ void LauncherContent::setCursor(QWidget *widget, int zone)
 }
 
 
-KURL LauncherContent::urlToOpen(bool with)
+KUrl LauncherContent::urlToOpen(bool with)
 {
 	if (KService(fullPath()).exec().isEmpty())
-		return KURL();
+		return KUrl();
 
-	return (with ? KURL() : KURL(fullPath())); // Can open the appliation, but not with another application :-)
+	return (with ? KUrl() : KUrl(fullPath())); // Can open the appliation, but not with another application :-)
 }
 
 QString LauncherContent::messageWhenOpenning(OpenMessage where)
@@ -1505,7 +1505,7 @@ void LauncherContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
 	QString spaces;
 	QString fileName = exporter->copyFile(fullPath(), /*createIt=*/true);
-	exporter->stream << m_linkDisplay.toHtml(exporter, KURL(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+	exporter->stream << m_linkDisplay.toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class ColorContent:
@@ -1554,7 +1554,7 @@ void ColorContent::paint(QPainter *painter, int width, int height, const QColorG
 	// Draw the text:
 	painter->setFont(note()->font());
 	painter->setPen(colorGroup.text());
-	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignAuto | Qt::AlignVCenter, color().name());
+	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignLeft | Qt::AlignVCenter, color().name());
 }
 
 void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -1761,7 +1761,7 @@ void ColorContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 {
 	dragObject->addDragObject( new QColorDrag(color()) );
 
-//	addDragObject(new KColorDrag( note->color(), 0 ));
+//	addDragObject(new K3ColorDrag( note->color(), 0 ));
 //	addDragObject(new QTextDrag( note->color().name(), 0 ));
 
 /*	// Creata and add the QDragObject:
@@ -1778,7 +1778,7 @@ void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 	int rectHeight = (textRect.height() + 2)*3/2;
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
-	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().lower().mid(1))/*, exportData.iconsFolderPath)*/;
+	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().toLower().mid(1))/*, exportData.iconsFolderPath)*/;
 	QString fullPath = exporter->iconsFolderPath + fileName;
 	QPixmap colorIcon = KColorCombo2::colorRectPixmap(color(), /*isDefault=*/false, rectWidth, rectHeight);
 	colorIcon.save(fullPath, "PNG");
@@ -1805,7 +1805,7 @@ UnknownContent::UnknownContent(Note *parent, const QString &fileName)
 int UnknownContent::setWidthAndGetHeight(int width)
 {
 	width -= 1;
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 	return DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN;
 }
 
@@ -1838,7 +1838,7 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QColo
 
 	painter->setPen(colorGroup.text());
 	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
-	                  Qt::AlignAuto | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
+	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
 }
 
 bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
@@ -1864,7 +1864,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 		file.close();
 	}
 
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 	contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
 	return true;
 }
@@ -1885,7 +1885,7 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 			}
 		} while (!line.isEmpty() && !stream.atEnd());
 		// Add the streams:
-		Q_UINT64     size; // TODO: It was Q_UINT32 in version 0.5.0 !
+		quint64     size; // TODO: It was quint32 in version 0.5.0 !
 		QByteArray  *array;
 		QStoredDrag *storedDrag;
 		for (uint i = 0; i < mimes.count(); ++i) {
@@ -1923,10 +1923,10 @@ void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeN
 	else if   (lowerTypeName == "file")      new FileContent(      parent, content.text()           );
 	else if   (lowerTypeName == "link") {
 		bool autoTitle = content.attribute("title") == content.text();
-		bool autoIcon  = content.attribute("icon")  == NoteFactory::iconForURL(KURL(content.text()));
+		bool autoIcon  = content.attribute("icon")  == NoteFactory::iconForURL(KUrl(content.text()));
 		autoTitle = XMLWork::trueOrFalse( content.attribute("autoTitle"), autoTitle);
 		autoIcon  = XMLWork::trueOrFalse( content.attribute("autoIcon"),  autoIcon );
-		new LinkContent( parent, KURL(content.text()), content.attribute("title"), content.attribute("icon"), autoTitle, autoIcon );
+		new LinkContent( parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"), autoTitle, autoIcon );
 	} else if (lowerTypeName == "launcher")  new LauncherContent(  parent, content.text()         );
 	else if   (lowerTypeName == "color")     new ColorContent(     parent, QColor(content.text()) );
 	else if   (lowerTypeName == "unknown")   new UnknownContent(   parent, content.text()         );

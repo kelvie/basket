@@ -18,7 +18,7 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 
 class QTimer;
 class KIconLoader;
@@ -28,7 +28,7 @@ class QIconLoader;
 /**
  * Icon canvas for KIconDialog.
  */
-class KIO_EXPORT KIconCanvas: public KIconView
+class KIO_EXPORT KIconCanvas: public K3IconView
 /* NOTE: Why export this? */
 {
     Q_OBJECT

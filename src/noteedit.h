@@ -29,7 +29,7 @@ class QWidget;
 //class QLineEdit;
 class QPushButton;
 class KIconButton;
-class KURLRequester;
+class KUrlRequester;
 class KTextEdit;
 class KMainWindow;
 class KTooolBar;
@@ -223,7 +223,7 @@ class LinkEditDialog : public KDialogBase
   private:
 	LinkContent   *m_noteContent;
 	bool           m_isAutoModified;
-	KURLRequester *m_url;
+	KUrlRequester *m_url;
 	QLineEdit     *m_title;
 	KIconButton   *m_icon;
 	QPushButton   *m_autoTitle;

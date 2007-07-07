@@ -208,10 +208,10 @@ void TagListViewItem::setup()
 
 	QFont font = state->font(listView()->font());
 
-	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop, text);
+	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
 	widthChanged();
-	int height = TAG_MARGIN + QMAX(TAG_ICON_SIZE, textRect.height()) + TAG_MARGIN;
+	int height = TAG_MARGIN + qMax(TAG_ICON_SIZE, textRect.height()) + TAG_MARGIN;
 	setHeight(height);
 
 	repaint();
@@ -229,7 +229,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
 
 	QFontMetrics fontMetrics(font);
-	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop, text);
+	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
 	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
 
@@ -254,7 +254,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	int textWidth = width - xText;
 	if (thePainter.fontMetrics().width(text) > textWidth)
 		text = KStringHandler::rPixelSqueeze(text, fontMetrics, textWidth);
-	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignAuto | Qt::AlignVCenter | Qt::ShowPrefix, text);
+	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::ShowPrefix, text);
 
 	// Apply the buffer:
 	thePainter.end();
@@ -343,9 +343,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags->setSorting(-1); // Sort column -1, so disabled sorting
 	m_tags->setResizeMode(QListView::LastColumn);
 
-	m_moveUp    = new KPushButton( KGuiItem("", "1uparrow"),   plainPage() );
-	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), plainPage() );
-	m_deleteTag = new KPushButton( KGuiItem("", "editdelete"), plainPage() );
+	m_moveUp    = new KPushButton( KGuiItem("", "arrow-up"),   plainPage() );
+	m_moveDown  = new KPushButton( KGuiItem("", "arrow-down"), plainPage() );
+	m_deleteTag = new KPushButton( KGuiItem("", "edit-delete"), plainPage() );
 
 	QToolTip::add( m_moveUp,    i18n("Move Up (Ctrl+Shift+Up)")     );
 	QToolTip::add( m_moveDown,  i18n("Move Down (Ctrl+Shift+Down)") );
@@ -405,14 +405,14 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_emblem = new KIconButton(emblemWidget);
 	m_emblem->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_emblem->setIconSize(16);
-	m_emblem->setIcon("editdelete");
+	m_emblem->setIcon("edit-delete");
 	m_removeEmblem = new QPushButton(i18n("Remove tag emblem", "Remo&ve"), emblemWidget);
 	QLabel *emblemLabel = new QLabel(m_emblem, i18n("&Emblem:"), stateWidget);
 	connect( m_removeEmblem, SIGNAL(clicked()), this, SLOT(removeEmblem()) ); // m_emblem.resetIcon() is not a slot!
 
 	// Make the icon button and the remove button the same height:
-	int height = QMAX(m_emblem->sizeHint().width(), m_emblem->sizeHint().height());
-	height = QMAX(height, m_removeEmblem->sizeHint().height());
+	int height = qMax(m_emblem->sizeHint().width(), m_emblem->sizeHint().height());
+	height = qMax(height, m_removeEmblem->sizeHint().height());
 	m_emblem->setFixedSize(height, height); // Make it square
 	m_removeEmblem->setFixedHeight(height);
 	m_emblem->resetIcon();
@@ -429,26 +429,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIconSet boldIconSet = kapp->iconLoader()->loadIconSet("text_bold", KIcon::Small);
+	QIconSet boldIconSet = kapp->iconLoader()->loadIconSet("format-text-bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
-	int size = QMAX(m_bold->sizeHint().width(), m_bold->sizeHint().height());
+	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIconSet underlineIconSet = kapp->iconLoader()->loadIconSet("text_under", KIcon::Small);
+	QIconSet underlineIconSet = kapp->iconLoader()->loadIconSet("format-text-underline", KIcon::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIconSet italicIconSet = kapp->iconLoader()->loadIconSet("text_italic", KIcon::Small);
+	QIconSet italicIconSet = kapp->iconLoader()->loadIconSet("format-text-italic", KIcon::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIconSet strikeIconSet = kapp->iconLoader()->loadIconSet("text_strike", KIcon::Small);
+	QIconSet strikeIconSet = kapp->iconLoader()->loadIconSet("format-text-strikethrough", KIcon::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -545,13 +545,13 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	// Equalize the width of the first column of the two grids:
 	int maxWidth = tagNameLabel->sizeHint().width();
-	maxWidth = QMAX(maxWidth, shortcutLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, m_stateNameLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, emblemLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, textLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, fontLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, backgroundColorLabel->sizeHint().width());
-	maxWidth = QMAX(maxWidth, textEquivalentLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, shortcutLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, m_stateNameLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, emblemLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, textLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, fontLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, backgroundColorLabel->sizeHint().width());
+	maxWidth = qMax(maxWidth, textEquivalentLabel->sizeHint().width());
 
 	tagNameLabel->setFixedWidth(maxWidth);
 	m_stateNameLabel->setFixedWidth(maxWidth);
@@ -900,14 +900,14 @@ void TagsEditDialog::deleteTag()
 			this,
 			i18n("Deleting the tag will remove it from every note it is currently assigned to."),
 			i18n("Confirm Delete Tag"),
-			KGuiItem(i18n("Delete Tag"), "editdelete")
+			KGuiItem(i18n("Delete Tag"), "edit-delete")
 		);
 	else if (item->stateCopy() && item->stateCopy()->oldState)
 		result = KMessageBox::warningContinueCancel(
 			this,
 			i18n("Deleting the state will remove the tag from every note the state is currently assigned to."),
 			i18n("Confirm Delete State"),
-			KGuiItem(i18n("Delete State"), "editdelete")
+			KGuiItem(i18n("Delete State"), "edit-delete")
 		);
 	if (result != KMessageBox::Continue)
 		return;
@@ -1057,7 +1057,7 @@ void TagsEditDialog::ensureCurrentItemVisible()
 	// ensure the tag is still visible, even if the last states are not...
 	int y = m_tags->itemPos(tagItem);
 	int height = tagItem->totalHeight();
-	int bottom = y + QMIN(height, m_tags->visibleHeight());
+	int bottom = y + qMin(height, m_tags->visibleHeight());
 	int xMiddle = m_tags->contentsX() + m_tags->visibleWidth() / 2;
 	m_tags->ensureVisible( xMiddle, bottom, 0,0 );
 	m_tags->ensureVisible( xMiddle, y,      0,0 );

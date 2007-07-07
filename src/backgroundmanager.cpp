@@ -35,7 +35,7 @@
 BackgroundEntry::BackgroundEntry(const QString &location)
 {
 	this->location = location;
-	name           = KURL(location).fileName();
+	name           = KUrl(location).fileName();
 	tiled          = false;
 	pixmap         = 0;
 	preview        = 0;

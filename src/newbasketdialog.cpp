@@ -20,7 +20,7 @@
 
 #include <kicondialog.h>
 #include <qlineedit.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <klocale.h>
@@ -47,7 +47,7 @@
 /** class SingleSelectionKIconView: */
 
 SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, WFlags f)
- : KIconView(parent, name, f), m_lastSelected(0)
+ : K3IconView(parent, name, f), m_lastSelected(0)
 {
 	connect( this, SIGNAL(selectionChanged(QIconViewItem*)), this, SLOT(slotSelectionChanged(QIconViewItem*)) );
 	connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
@@ -98,13 +98,13 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
-	int size = QMAX(m_icon->sizeHint().width(), m_icon->sizeHint().height());
+	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_icon, i18n("Icon"));
 	m_name = new QLineEdit(/*i18n("Basket"), */page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
 	connect( m_name, SIGNAL(textChanged(const QString&)), this, SLOT(nameChanged(const QString&)) );
-	enableButtonOK(false);
+	enableButtonOk(false);
 	QToolTip::add(m_name, i18n("Name"));
 	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), page);
 	m_backgroundColor->setColor(QColor());
@@ -142,9 +142,9 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	// *
 	m_templates = new SingleSelectionKIconView(page);
 	m_templates->setItemsMovable(false);
-	m_templates->setMode(KIconView::Select);
+	m_templates->setMode(K3IconView::Select);
 	m_templates->setGridX(m_templates->maxItemWidth());
-	KIconViewItem *lastTemplate = 0;
+	K3IconViewItem *lastTemplate = 0;
 	QPixmap icon(40, 53);
 
 	QPainter painter(&icon);
@@ -152,7 +152,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.setPen(KGlobalSettings::textColor());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.end();
-	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("One column"), icon);
+	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("One column"), icon);
 
 	if (defaultTemplate == "1column")
 		m_templates->setSelected(lastTemplate, true);
@@ -163,7 +163,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawLine(icon.width() / 2, 0, icon.width() / 2, icon.height());
 	painter.end();
-	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Two columns"), icon);
+	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("Two columns"), icon);
 
 	if (defaultTemplate == "2columns")
 		m_templates->setSelected(lastTemplate, true);
@@ -175,7 +175,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.drawLine(icon.width() / 3, 0, icon.width() / 3, icon.height());
 	painter.drawLine(icon.width() * 2 / 3, 0, icon.width() * 2 / 3, icon.height());
 	painter.end();
-	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Three columns"), icon);
+	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("Three columns"), icon);
 
 	if (defaultTemplate == "3columns")
 		m_templates->setSelected(lastTemplate, true);
@@ -187,7 +187,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.drawRect(icon.width() / 5, icon.width() / 5, icon.width() / 4, icon.height() / 8);
 	painter.drawRect(icon.width() * 2 / 5, icon.width() * 2 / 5, icon.width() / 4, icon.height() / 8);
 	painter.end();
-	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Free"), icon);
+	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("Free"), icon);
 
 	if (defaultTemplate == "free")
 		m_templates->setSelected(lastTemplate, true);
@@ -198,7 +198,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawRect(icon.width() * 2 / 5, icon.height() * 3 / 7, icon.width() / 5, icon.height() / 7);
 	painter.end();
-	lastTemplate = new KIconViewItem(m_templates, lastTemplate, i18n("Mind map"), icon);*/
+	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("Mind map"), icon);*/
 
 	m_templates->setMinimumHeight(topLayout->minimumSize().width() * 9 / 16);
 
@@ -292,7 +292,7 @@ void NewBasketDialog::polish()
 
 void NewBasketDialog::nameChanged(const QString &newName)
 {
-	enableButtonOK(!newName.isEmpty());
+	enableButtonOk(!newName.isEmpty());
 }
 
 void NewBasketDialog::slotOk()

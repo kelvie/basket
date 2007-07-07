@@ -26,7 +26,7 @@
 #include <qcursor.h>
 #include <kiconloader.h>
 #include <kpixmapeffect.h>
-#include <kpixmap.h>
+#include <qpixmap.h>
 #include <kglobal.h>
 #include <klocale.h>
 #include <kurifilter.h>
@@ -654,7 +654,7 @@ QString Note::linkAt(const QPoint &pos)
 	if (link.isEmpty())
 		return link;
 	else
-		return NoteFactory::filteredURL(KURL(link)).prettyURL();//KURIFilter::self()->filteredURI(link);
+		return NoteFactory::filteredURL(KUrl(link)).prettyUrl();//KURIFilter::self()->filteredURI(link);
 }
 
 int Note::contentX()
@@ -898,7 +898,7 @@ int Note::minRight()
 		bool first = true;
 		while (child) {
 			if ((showSubNotes() || first) && child->matching())
-				right = QMAX(right, child->minRight());
+				right = qMax(right, child->minRight());
 			child = child->next();
 			first = false;
 		}
@@ -1202,7 +1202,7 @@ int Note::groupWidth()
 int Note::rightLimit()
 {
 	if (isColumn() && m_next == 0L) // The last column
-		return QMAX(x() + minWidth(), basket()->visibleWidth());
+		return qMax(x() + minWidth(), basket()->visibleWidth());
 	else if (parentNote())
 		return parentNote()->rightLimit();
 	else
@@ -1212,7 +1212,7 @@ int Note::rightLimit()
 int Note::finalRightLimit()
 {
 	if (isColumn() && m_next == 0L) // The last column
-		return QMAX(finalX() + minWidth(), basket()->visibleWidth());
+		return qMax(finalX() + minWidth(), basket()->visibleWidth());
 	else if (parentNote())
 		return parentNote()->finalRightLimit();
 	else
@@ -2375,8 +2375,8 @@ void Note::bufferizeSelectionPixmap()
 {
 	if (m_bufferedSelectionPixmap.isNull()) {
 		QColor insideColor = KGlobalSettings::highlightColor();
-		KPixmap kpixmap(m_bufferedPixmap);
-		m_bufferedSelectionPixmap = KPixmapEffect::fade(kpixmap, 0.25, insideColor);
+		QPixmap kpixmap(m_bufferedPixmap);
+		m_bufferedSelectionPixmap = QPixmapEffect::fade(kpixmap, 0.25, insideColor);
 	}
 }
 
@@ -2567,7 +2567,7 @@ bool Note::isShown()
 
 void Note::debug()
 {
-	std::cout << "Note@" << (Q_UINT64)this;
+	std::cout << "Note@" << (quint64)this;
 	if (!this) {
 		std::cout << std::endl;
 		return;
@@ -2869,8 +2869,8 @@ QString Note::toHtml(const QString &imageName)
 		case Link:
 			{
 				QString link = m_linkLabel->toHtml(imageName);
-				if (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyURL()))
-					link += "<br><i>" + url().prettyURL() + "</i>"; ///
+				if (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyUrl()))
+					link += "<br><i>" + url().prettyUrl() + "</i>"; ///
 				return link;
 			}
 		case Launcher:

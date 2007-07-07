@@ -28,7 +28,7 @@
 #include <kstandarddirs.h>
 #include <kiconloader.h>
 #include <kprogress.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kpushbutton.h>
@@ -84,7 +84,7 @@ KIconDialog::KIconDialog(QWidget *parent, const char*)
     : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
-    mpLoader = KGlobal::iconLoader();
+    mpLoader = KIconLoader::global();
     init();
     resize(minimumSize());
 }
@@ -107,9 +107,9 @@ void KIconDialog::init()
 
     // Read configuration
     KConfig *config = KGlobal::config();
-    KConfigGroupSaver saver(config, "KIconDialog");
-    d->recentMax = config->readNumEntry("RecentMax", 10);
-    d->recentList = config->readPathListEntry("RecentIcons");
+    KConfigGroup group(config, "KIconDialog");
+    d->recentMax = group.readNumEntry("RecentMax", 10);
+    d->recentList = group.readPathListEntry("RecentIcons");
 
     d->ui = new KIconDialogUI( this );
     setMainWidget(d->ui);
@@ -144,9 +144,9 @@ KIconDialog::~KIconDialog()
 {
     // Write configuration
     KConfig *config = KGlobal::config();
-    KConfigGroupSaver saver(config, "KIconDialog");
-    config->writeEntry("RecentMax", d->recentMax, true, true);
-    config->writePathEntry("RecentIcons", d->recentList, ',', true, true);
+    KConfigGroup group(config, "KIconDialog");
+    group.writeEntry("RecentMax", d->recentMax, KConfigBase::Normal|KConfigBase::Global);
+    group.writePathEntry("RecentIcons", d->recentList, ', ', KConfigBase::Normal|KConfigBase::Global);
 
     delete d;
 }
@@ -352,7 +352,7 @@ void KIconDialog::slotBrowse()
 {
     // Create a file dialog to select a PNG, XPM or SVG file,
     // with the image previewer shown.
-    // KFileDialog::getImageOpenURL doesn't allow svg.
+    // KFileDialog::getImageOpenUrl doesn't allow svg.
     KFileDialog dlg(QString::null, i18n("*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"),
                     this, "filedialog", true);
     dlg.setOperationMode( KFileDialog::Opening );
@@ -367,7 +367,7 @@ void KIconDialog::slotBrowse()
     {
         d->custom = file;
         if ( mType == 1 )
-            setCustomLocation(QFileInfo( file ).dirPath( true ));
+            setCustomLocation(QFileInfo( file ).absolutePath());
         slotOk();
     }
 }
@@ -426,7 +426,7 @@ class KIconButton::KIconButtonPrivate
 KIconButton::KIconButton(QWidget *parent, const char *name)
     : QPushButton(parent, name)
 {
-    init( KGlobal::iconLoader() );
+    init( KIconLoader::global() );
 }
 
 KIconButton::KIconButton(KIconLoader *loader,
@@ -551,7 +551,7 @@ void KIconButton::newIconName(const QString& name)
 }
 
 void KIconCanvas::virtual_hook( int id, void* data )
-{ KIconView::virtual_hook( id, data ); }
+{ K3IconView::virtual_hook( id, data ); }
 
 void KIconDialog::virtual_hook( int id, void* data )
 { KDialogBase::virtual_hook( id, data ); }

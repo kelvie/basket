@@ -137,10 +137,10 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 	// we redirect [Return] to simulate [Ctrl+Return] (create a new line in both modes).
 	// Create new paragraphes still possible in RichTextFormat mode with [Shift+Enter].
 	} else if (event->key() == Qt::Key_Return && event->state() == 0)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlButton,
+		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlModifier,
 		                      event->text(), event->isAutoRepeat(), event->count() );
-	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlButton)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftButton,
+	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlModifier)
+		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftModifier,
 		                      event->text(), event->isAutoRepeat(), event->count() );
 
 	if (m_disableUpdatesOnKeyPress)

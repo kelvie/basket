@@ -21,17 +21,15 @@
 #ifndef BASKETDCOPINTERFACE_H
 #define BASKETDCOPINTERFACE_H
 
-#include <dcopobject.h>
-
 /**
 	@author Petri Damsten <petri.damsten@iki.fi>
 */
-class BasketDcopInterface : virtual public DCOPObject
+class BasketDcopInterface
 {
-    K_DCOP
-  k_dcop:
-    virtual ASYNC newBasket() = 0;
-	virtual void handleCommandLine() = 0;
+    Q_CLASSINFO("D-Bus Interface","org.kde.basket")
+public Q_SLOTS:
+    Q_SCRIPTABLE virtual Q_NOREPLY newBasket() = 0;
+    Q_SCRIPTABLE virtual void handleCommandLine() = 0;
 };
 
 #endif

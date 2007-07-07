@@ -95,7 +95,7 @@ int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QList
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
 
-	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(column));
+	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(column));
 
 	return MARGIN + BASKET_ICON_SIZE + MARGIN + textRect.width() +   BASKET_ICON_SIZE/2   + MARGIN;
 */
@@ -131,9 +131,9 @@ void BasketListViewItem::setup()
 	setText(/*column=*/0, escapedName(m_basket->basketName()));
 
 	widthChanged();
-	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
 
-	int height = MARGIN + QMAX(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
+	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
 	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
@@ -266,7 +266,7 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 	}
 
 	// Compute the sizes of the image components:
-	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignAuto | Qt::AlignTop, text);
+	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
 	int xMargin = height / 6;
 	int width   = xMargin + textRect.width() + xMargin;
 
@@ -487,11 +487,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Draw the rounded rectangle:
 	if (drawRoundRect) {
-		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
 		int xRound = MARGIN;
 		int yRound = MARGIN;
 		int hRound = height() - 2 * MARGIN;
-		int wRound = QMIN(BASKET_ICON_SIZE + MARGIN + textRect.width() + hRound/2,  effectiveWidth - MARGIN - MARGIN);
+		int wRound = qMin(BASKET_ICON_SIZE + MARGIN + textRect.width() + hRound/2,  effectiveWidth - MARGIN - MARGIN);
 		if (wRound > 0) { // Do not crash if there is no space anymore to draw the rounded rectangle:
 			QPixmap buffer(wRound * 2, hRound * 2);
 			buffer.fill(background);
@@ -570,7 +570,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 			m_isAbbreviated = false;
 		}
 		theText = escapedName(theText);
-		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignAuto | Qt::AlignVCenter | Qt::ShowPrefix, theText);
+		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::ShowPrefix, theText);
 	}
 
 	// If we are filtering all baskets, and are effectively filtering on something:
@@ -580,7 +580,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		effectiveWidth += countPixmap.width() + MARGIN;
 	}
 	if (showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = kapp->iconLoader()->loadIcon("edit-find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
 	}
@@ -633,7 +633,7 @@ private:
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
-	: KListView(parent, name), m_autoOpenItem(0)
+	: K3ListView(parent, name), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
 	setWFlags(Qt::WStaticContents | WNoAutoErase);
@@ -646,7 +646,7 @@ BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 
 void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
 {
-	KListView::viewportResizeEvent(event);
+	K3ListView::viewportResizeEvent(event);
 	triggerUpdate();
 }
 
@@ -665,7 +665,7 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 		update();
 	}
 
-	KListView::contentsDragEnterEvent(event);
+	K3ListView::contentsDragEnterEvent(event);
 }
 
 void BasketTreeListView::removeExpands()
@@ -687,7 +687,7 @@ void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 	m_autoOpenTimer.stop();
 	setItemUnderDrag(0);
 	removeExpands();
-	KListView::contentsDragLeaveEvent(event);
+	K3ListView::contentsDragLeaveEvent(event);
 }
 
 void BasketTreeListView::contentsDropEvent(QDropEvent *event)
@@ -695,7 +695,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
 	{
-		KListView::contentsDropEvent(event);
+		K3ListView::contentsDropEvent(event);
 	}
 	else {
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
@@ -721,7 +721,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 {
 	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
-		KListView::contentsDragMoveEvent(event);
+		K3ListView::contentsDragMoveEvent(event);
 	else {
 		QListViewItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
@@ -735,7 +735,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 		}
 		setItemUnderDrag(bitem);
 
-		KListView::contentsDragMoveEvent(event); // FIXME: ADDED
+		K3ListView::contentsDragMoveEvent(event); // FIXME: ADDED
 	}
 }
 
@@ -767,7 +767,7 @@ void BasketTreeListView::autoOpen()
 
 void BasketTreeListView::resizeEvent(QResizeEvent *event)
 {
-	KListView::resizeEvent(event);
+	K3ListView::resizeEvent(event);
 }
 
 void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
@@ -793,12 +793,12 @@ void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 }
 
 /** We should NEVER get focus (because of QWidget::NoFocus focusPolicy())
- * but KListView can programatically give us the focus.
+ * but K3ListView can programatically give us the focus.
  * So we give it to the basket.
  */
 void BasketTreeListView::focusInEvent(QFocusEvent*)
 {
-	//KListView::focusInEvent(event);
+	//K3ListView::focusInEvent(event);
 	Basket *basket = Global::bnpView->currentBasket();
 	if (basket)
 		basket->setFocus();
