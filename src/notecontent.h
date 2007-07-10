@@ -38,7 +38,7 @@ class QWidget;
 class QPoint;
 class QRect;
 class QStringList;
-class KMultipleDrag;
+class K3MultipleDrag;
 
 class KFileItem;
 namespace KIO { class PreviewJob; }
@@ -103,7 +103,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	// Drag and Drop Content:
 	virtual void    serialize(QDataStream &/*stream*/)                 {} /// << Serialize the content in a QDragObject. If it consists of a file, it can be serialized for you.
 	virtual bool    shouldSerializeFile()           { return useFile(); } /// << @return true if the dragging process should serialize the filename (and move the file if cutting).
-	virtual void    addAlternateDragObjects(KMultipleDrag*/*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
+	virtual void    addAlternateDragObjects(K3MultipleDrag*/*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
 	virtual QPixmap feedbackPixmap(int width, int height)            = 0; /// << @return the pixmap to put under the cursor while dragging this object.
 	virtual bool    needSpaceForFeedbackPixmap()        { return false; } /// << @return true if a space must be inserted before and after the DND feedback pixmap.
 	// Content Edition:
@@ -307,7 +307,9 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	bool    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
-	QMovie  movie() { return m_movie; }    /// << @return the movie note-content.
+/* to DO	QMovie  movie() { return m_movie; }    /// << @return the movie note-content.*/
+
+	QMovie*  movie() { return &m_movie; }    /// << @return the movie note-content.
   protected slots:
 	void movieUpdated(const QRect&);
 	void movieResized(const QSize&);
@@ -548,7 +550,7 @@ class ColorContent : public NoteContent
 	void    serialize(QDataStream &stream);
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
-	void    addAlternateDragObjects(KMultipleDrag *dragObject);
+	void    addAlternateDragObjects(K3MultipleDrag *dragObject);
 	// Content-Specific Methods:
 	void    setColor(const QColor &color); /// << Change the color note-content and relayout the note.
 	QColor  color() { return m_color; }    /// << @return the color note-content.
@@ -586,7 +588,7 @@ class UnknownContent : public NoteContent
 	QString editToolTipText();
 	// Drag and Drop Content:
 	bool    shouldSerializeFile() { return false; }
-	void    addAlternateDragObjects(KMultipleDrag *dragObject);
+	void    addAlternateDragObjects(K3MultipleDrag *dragObject);
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Open Content or File:

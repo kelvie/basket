@@ -354,8 +354,11 @@ void Settings::setAutoBullet(bool yes)
 
 /** GeneralPage */
 
-GeneralPage::GeneralPage(QWidget * parent, const char * name)
- : KCModule(parent, name)
+typedef KGenericFactory<GeneralPage, QWidget> BasketFactory;
+K_EXPORT_COMPONENT_FACTORY(GeneralPage, BasketFactory("kcmbasket"))
+
+GeneralPage::GeneralPage(QWidget *parent, const QStringList& args)
+: KCModule(BasketFactory::componentData(), parent, args) {
 {
 	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 	QHBoxLayout *hLay;

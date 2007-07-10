@@ -131,7 +131,7 @@ class DecoratedBasket : public QWidget
 	void setFilterBarPosition(bool onTop);
 	void resetFilter();
 	void setFilterBarShown(bool show, bool switchFocus = true);
-	bool isFilterBarShown()        { return m_filter->isShown();    }
+	bool isFilterBarShown()        { return m_filter->isVisible();    }
 	const FilterData& filterData() { return m_filter->filterData(); }
 	FilterBar* filterBar()         { return m_filter;               }
 	Basket*    basket()            { return m_basket;               }

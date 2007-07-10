@@ -26,8 +26,8 @@
 #include <qdatastream.h>
 #include <qpixmap.h>
 #include <qlist.h>
-#include <kmultipledrag.h>
-
+#include <k3multipledrag.h>
+#include <k3urldrag.h>
 class QDataStream;
 
 class Basket;
@@ -37,11 +37,11 @@ class NoteSelection;
 /** Dragging/Copying/Cutting Scenario:
   * - User select some notes and cut them;
   * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see Basket::toSelectionTree()):
-  *   - This method create a new KMultipleDrag object, create a stream,
+  *   - This method create a new K3MultipleDrag object, create a stream,
   *   - And then browse all notes and call the virtual Note::serialize() with the stream as parameter for them to serialize theire content in the "native format".
   *   - This give the MIME type "application/x-basket-note" that will be used by the application to paste the notes exactly as they were.
   *   - Then the method try to set alterante formats for the dragged objects:
-  *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the KMultipleDrag object
+  *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the K3MultipleDrag object
   *   - It do the same with toHtml(), toImage() and toLink() to have those flavours as well, if possible...
   *   - If there is only ONE copied note, addAlternateDragObjects() is called on it, so that Unknown objects can be dragged "as is".
   *   - It's OK for the flavours. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
@@ -55,11 +55,11 @@ class NoteDrag
 {
   protected:
 	static void serializeNotes(     NoteSelection *noteList, QDataStream &stream,         bool cutting );
-	static void serializeText(      NoteSelection *noteList, KMultipleDrag *multipleDrag               );
-	static void serializeHtml(      NoteSelection *noteList, KMultipleDrag *multipleDrag               );
-	static void serializeImage(     NoteSelection *noteList, KMultipleDrag *multipleDrag               );
-	static void serializeLinks(     NoteSelection *noteList, KMultipleDrag *multipleDrag, bool cutting );
-	static void setFeedbackPixmap(  NoteSelection *noteList, KMultipleDrag *multipleDrag               );
+	static void serializeText(      NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
+	static void serializeHtml(      NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
+	static void serializeImage(     NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
+	static void serializeLinks(     NoteSelection *noteList, K3MultipleDrag *multipleDrag, bool cutting );
+	static void setFeedbackPixmap(  NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
 	static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
   public:
 	static QPixmap feedbackPixmap(NoteSelection *noteList);
@@ -78,7 +78,7 @@ class NoteDrag
   * with local encoding!
   * @author S�bastien Lao�t
   */
-class ExtendedTextDrag : public QTextDrag
+class ExtendedTextDrag : public QMimeData
 {
   Q_OBJECT
   public:

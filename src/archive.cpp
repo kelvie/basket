@@ -20,7 +20,7 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qvaluelist.h>
+#include <qlist.h>
 #include <qmap.h>
 #include <qdir.h>
 #include <ktar.h>

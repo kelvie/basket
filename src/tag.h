@@ -28,6 +28,7 @@
 
 #include <kaction.h>
 #include <kshortcut.h>
+#include <QMenu>
 
 class QPainter;
 
@@ -160,7 +161,7 @@ class QPainter;
   * Better suited to be used with StateMenuItem (or TagMenuItem).
   * @author S�astien Laot
   */
-class IndentedMenuItem : public QCustomMenuItem
+class IndentedMenuItem : public QMenu
 {
   public:
 	IndentedMenuItem(const QString &text, const QString &icon = "", const QString &shortcut = "");
@@ -177,7 +178,7 @@ class IndentedMenuItem : public QCustomMenuItem
 /** A menu item representing a State or a Tag.
   * @author S�astien Laot
   */
-class StateMenuItem : public QCustomMenuItem
+class StateMenuItem : public QMenu
 {
   public:
 	StateMenuItem(State *state, const QString &shortcut, bool withTagName = false);
