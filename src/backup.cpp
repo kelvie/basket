@@ -242,7 +242,7 @@ void BackupDialog::restore()
 	// Add the README file for user to cancel a bad restoration:
 	QString readmePath = safetyPath + i18n("README.txt");
 	QFile file(readmePath);
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KUrl(path).fileName()) + "\n\n"
 		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
@@ -371,7 +371,7 @@ BackupThread::BackupThread(const QString &tarFile, const QString &folderToBackup
 void BackupThread::run()
 {
 	KTar tar(m_tarFile, "application/x-gzip");
-	tar.open(IO_WriteOnly);
+	tar.open(QIODevice::WriteOnly);
 	tar.addLocalDirectory(m_folderToBackup, backupMagicFolder);
 	// KArchive does not add hidden files. Basket description files (".basket") are hidden, we add them manually:
 	QDir dir(m_folderToBackup + "baskets/");
@@ -397,7 +397,7 @@ void RestoreThread::run()
 {
 	m_success = false;
 	KTar tar(m_tarFile, "application/x-gzip");
-	tar.open(IO_ReadOnly);
+	tar.open(QIODevice::WriteOnly);
 	if (tar.isOpened()) {
 		const KArchiveDirectory *directory = tar.directory();
 		if (directory->entries().contains(backupMagicFolder)) {

@@ -38,7 +38,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 	const qulonglong BUFFER_SIZE = 1024;
 
 	QFile file(path);
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::Latin1);
 		QString line = stream.readLine();
@@ -68,7 +68,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				}
 				// Get the preview file:
 				QFile previewFile(tempFolder + "preview.png");
-				if (previewFile.open(IO_WriteOnly)) {
+				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {

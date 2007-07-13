@@ -195,7 +195,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	// Open the file to write:
 	QFile file(basketFilePath);
-	if (!file.open(IO_WriteOnly))
+	if (!file.open(QIODevice::WriteOnly))
 		return;
 	stream.setDevice(&file);
 	stream.setEncoding(QTextStream::UnicodeUTF8);
@@ -323,7 +323,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";
 	QFile transGIF(imagesFolderPath + gifFileName);
-	if (!transGIF.exists() && transGIF.open(IO_WriteOnly)) {
+	if (!transGIF.exists() && transGIF.open(QIODevice::WriteOnly)) {
 		QDataStream streamGIF(&transGIF);
 		// This is a 1px*1px transparent GIF image:
 		const uchar blankGIF[] = {
@@ -547,7 +547,7 @@ QString HTMLExporter::copyFile(const QString &srcPath, bool createIt)
 	if (createIt) {
 		// We create the file to be sure another very near call to copyFile() willn't choose the same name:
 		QFile file(KUrl(fullPath).path());
-		if (file.open(IO_WriteOnly))
+		if (file.open(QIODevice::WriteOnly))
 			file.close();
 		// And then we copy the file AND overwriting the file we juste created:
 		new KIO::FileCopyJob(

@@ -40,36 +40,40 @@
 /** class BasketListViewItem: */
 
 BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
-	: QListViewItem(parent), m_basket(basket)
+	: QListView(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
 
-BasketListViewItem::BasketListViewItem(QListViewItem *parent, Basket *basket)
-	: QListViewItem(parent), m_basket(basket)
+/* TO REMOVE
+BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
+	: QListView(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
+*/
 
 BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, Basket *basket)
-	: QListViewItem(parent, after), m_basket(basket)
+	: QListView(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
 
-BasketListViewItem::BasketListViewItem(QListViewItem *parent, QListViewItem *after, Basket *basket)
-	: QListViewItem(parent, after), m_basket(basket)
+/* TO REMOVE 
+BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, Basket *basket)
+	: QListView(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
 	setDropEnabled(true);
 }
+*/
 
 BasketListViewItem::~BasketListViewItem()
 {
@@ -145,7 +149,7 @@ void BasketListViewItem::setup()
 
 BasketListViewItem* BasketListViewItem::lastChild()
 {
-	QListViewItem *child = firstChild();
+	QListView *child = firstChild();
 	while (child) {
 		if (child->nextSibling())
 			child = child->nextSibling();
@@ -191,7 +195,7 @@ BasketListViewItem* BasketListViewItem::shownItemBelow()
 QStringList BasketListViewItem::childNamesTree(int deep)
 {
 	QStringList result;
-	for (QListViewItem *child = firstChild(); child; child = child->nextSibling()) {
+	for (QListView *child = firstChild(); child; child = child->nextSibling()) {
 		BasketListViewItem *item = (BasketListViewItem*)child;
 		// Compute indentation spaces:
 		QString spaces;
@@ -211,9 +215,9 @@ QStringList BasketListViewItem::childNamesTree(int deep)
 
 void BasketListViewItem::moveChildsBaskets()
 {
-	QListViewItem *insertAfterThis = this;
-	QListViewItem *nextOne;
-	for (QListViewItem *child = firstChild(); child; child = nextOne) {
+	QListView *insertAfterThis = this;
+	QListView *nextOne;
+	for (QListView *child = firstChild(); child; child = nextOne) {
 		nextOne = child->nextSibling();
 		// Re-insert the item with the good parent:
 		takeItem(child);
@@ -238,7 +242,7 @@ void BasketListViewItem::ensureVisible()
 
 bool BasketListViewItem::isShown()
 {
-	QListViewItem *item = parent();
+	QListView *item = parent();
 	while (item) {
 		if (!item->isOpen())
 			return false;
@@ -352,7 +356,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
 
 bool BasketListViewItem::haveChildsLoading()
 {
-	QListViewItem *child = firstChild();
+	QListView *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		if (!childItem->basket()->isLoaded() && !childItem->basket()->isLocked())
@@ -373,7 +377,7 @@ bool BasketListViewItem::haveHiddenChildsLoading()
 
 bool BasketListViewItem::haveChildsLocked()
 {
-	QListViewItem *child = firstChild();
+	QListView *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		if (/*!*/childItem->basket()->isLocked())
@@ -395,7 +399,7 @@ bool BasketListViewItem::haveHiddenChildsLocked()
 int BasketListViewItem::countChildsFound()
 {
 	int count = 0;
-	QListViewItem *child = firstChild();
+	QListView *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		count += childItem->basket()->countFounds();
@@ -620,7 +624,7 @@ public:
 public:
 	void maybeTip(const QPoint& pos)
 	{
-		QListViewItem *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
+		QListView *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (bitem && bitem->isAbbreviated()) {
 			tip(m_basketView->itemRect(bitem), bitem->basket()->basketName());
@@ -655,7 +659,7 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 	if (event->provides("application/x-qlistviewitem")) {
 		QListViewItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (it.current()) {
-			QListViewItem *item = it.current();
+			QListView *item = it.current();
 			if (!item->firstChild()) {
 				item->setExpandable(true);
 				item->setOpen(true);
@@ -670,14 +674,16 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 
 void BasketTreeListView::removeExpands()
 {
-	QListViewItemIterator it(this);
+// TODO
+/*	QListViewIterator it(this);
 	while (it.current()) {
-		QListViewItem *item = it.current();
+		QListView *item = it.current();
 		if (!item->firstChild())
 			item->setExpandable(false);
 		++it;
 	}
 	viewport()->update();
+*/
 }
 
 void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
@@ -699,7 +705,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 	}
 	else {
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
-		QListViewItem *item = itemAt(contentsToViewport(event->pos()));
+		QListView *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (bitem) {
 			bitem->basket()->blindDrop(event);
@@ -723,7 +729,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 	if (event->provides("application/x-qlistviewitem"))
 		K3ListView::contentsDragMoveEvent(event);
 	else {
-		QListViewItem *item = itemAt(contentsToViewport(event->pos()));
+		QListView *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (m_autoOpenItem != item) {
 			m_autoOpenItem = item;

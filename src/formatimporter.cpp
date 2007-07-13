@@ -159,7 +159,7 @@ void FormatImporter::importBaskets()
 	std::cout << "Import Baskets: Finalizing..." << std::endl;
 
 	QFile file(Global::basketsFolder() + "baskets.xml");
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		QString xml = document.toString();
@@ -234,7 +234,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QString annotFileName = Tools::fileNameForNewFile("annotations1.txt", Basket::fullPathForFolderName(folderName));
 				QString annotFullPath = Basket::fullPathForFolderName(folderName) + "/" + annotFileName;
 				QFile file(annotFullPath);
-				if (file.open(IO_WriteOnly)) {
+				if (file.open(QIODevice::WriteOnly)) {
 					QTextStream stream(&file);
 					stream << annotations;
 					file.close();
@@ -263,7 +263,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QString launcherFileName = Tools::fileNameForNewFile("launcher.desktop", Global::basketsFolder() + folderName /*+ "/"*/);
 				QString launcherFullPath = Global::basketsFolder() + folderName /*+ "/"*/ + launcherFileName;
 				QFile file(launcherFullPath);
-				if (file.open(IO_WriteOnly)) {
+				if (file.open(QIODevice::WriteOnly)) {
 					QTextStream stream(&file);
 					stream.setEncoding(QTextStream::UnicodeUTF8);
 					stream << launcherContent;
@@ -289,7 +289,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 
 	// Save the resulting XML file:
 	QFile file(Global::basketsFolder() + folderName + "/.basket");
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 //		QString xml = document->toString();

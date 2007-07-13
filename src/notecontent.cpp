@@ -769,7 +769,7 @@ bool ImageContent::finishLazyLoad()
 	{
 		QBuffer buffer(content);
 
-		buffer.open(IO_ReadOnly);
+		buffer.open(QIODevice::WriteOnly);
 		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
 		buffer.close();
 		if (m_format) {
@@ -795,7 +795,7 @@ bool ImageContent::saveToFile()
 	QByteArray ba;
 	QBuffer buffer(ba);
 
-	buffer.open(IO_WriteOnly);
+	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
 	return basket()->saveToFile(fullPath(), ba);
 }
@@ -1845,7 +1845,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 {
 	DEBUG_WIN << "Loading UnknownContent From " + basket()->folderName() + fileName();
 	QFile file(fullPath());
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&file);
 		QString line;
 		m_mimeTypes = "";
@@ -1872,7 +1872,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 {
 	QFile file(fullPath());
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&file);
 		// Get the MIME types names:
 		QList<QString> mimes;

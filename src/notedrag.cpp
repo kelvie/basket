@@ -61,7 +61,7 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 
 	// The "Native Format" Serialization:
 	QBuffer buffer;
-	if (buffer.open(IO_WriteOnly)) {
+	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// First append a pointer to the basket:
 		stream << (quint64)(noteList->firstStacked()->note->basket());
@@ -243,7 +243,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 /*		Code for only one: ===============
 		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
-		QTextStream stream(baMozUrl, IO_WriteOnly);
+		QTextStream stream(baMozUrl, QIODevice::WriteOnly);
 		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
 		stream << xMozUrl;
 		QStoredDrag *xMozUrlDrag = new QStoredDrag("text/x-moz-url");
@@ -376,7 +376,7 @@ bool NoteDrag::canDecode(QMimeSource *source)
 Basket* NoteDrag::basketOf(QMimeSource *source)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		quint64 basketPointer;
@@ -389,7 +389,7 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 QList<Note*> NoteDrag::notesOf(QMimeSource *source)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		quint64 basketPointer;
@@ -411,7 +411,7 @@ QList<Note*> NoteDrag::notesOf(QMimeSource *source)
 Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		quint64 basketPointer;

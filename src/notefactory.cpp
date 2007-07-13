@@ -269,7 +269,7 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 	QString fullPath = parent->fullPathForFileName(fileName);
 //	parent->dontCareOfCreation(fullPath);
 	QFile file(fullPath);
-	if ( file.open(IO_WriteOnly) ) {
+	if ( file.open(QIODevice::WriteOnly) ) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << content;
@@ -456,7 +456,7 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 	// Save the MimeSource in a file: create and open the file:
 	QString fileName = createFileForNewNote(parent, "unknown");
 	QFile file(parent->fullPath() + fileName);
-	if ( ! file.open(IO_WriteOnly) )
+	if ( ! file.open(QIODevice::WriteOnly) )
 		return 0L;
 	QDataStream stream(&file);
 
@@ -832,7 +832,7 @@ QString NoteFactory::createFileForNewNote(Basket *parent, const QString &extensi
 	// Create the file
 //	parent->dontCareOfCreation(fullName);
 	QFile file(fullName);
-	file.open(IO_WriteOnly);
+	file.open(QIODevice::WriteOnly);
 	file.close();
 
 	return fileName;

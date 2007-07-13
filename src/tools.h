@@ -20,7 +20,7 @@
 
 #ifndef TOOLS_H
 #define TOOLS_H
-
+#include <QVector>
 class QString;
 class QColor;
 class QMimeSource;
@@ -31,9 +31,9 @@ class StopWatch
 	static void start(uint id);
 	static void check(uint id);
   private:
-	static QMemArray<QTime>  starts;
-	static QMemArray<double> totals;
-	static QMemArray<uint>   counts;
+	static QVector<QTime>  starts;
+	static QVector<double> totals;
+	static QVector<uint>   counts;
 };
 
 /** Some useful functions for that application.

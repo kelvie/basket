@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +29,7 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 {
 	QDomDocument *doc = new QDomDocument(name);
 	QFile file(filePath);
-	if ( ! file.open(IO_ReadOnly) ) {
+	if ( ! file.open(QIODevice::WriteOnly) ) {
 		// QMessageBox::information(this, "Load an XML file", "Error : un-openable file");
 		delete doc;
 		return 0;

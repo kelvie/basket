@@ -239,7 +239,7 @@ void SoftwareImporters::importKJots()
 
 	for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) { // For each file
 		QFile file(dirPath + *it);
-		if (file.open(IO_ReadOnly)) {
+		if (file.open(QIODevice::WriteOnly)) {
 			QTextStream stream(&file);
 			stream.setEncoding(QTextStream::Locale);
 			QString buf = stream.readLine();
@@ -317,7 +317,7 @@ void SoftwareImporters::importKNotes()
 		if ( ! (*it).endsWith(".ics") ) // Don't process *.ics~ and otehr files
 			continue;
 		QFile file(dirPath + *it);
-		if (file.open(IO_ReadOnly)) {
+		if (file.open(QIODevice::WriteOnly)) {
 			QTextStream stream(&file);
 			stream.setEncoding(QTextStream::UnicodeUTF8);
 
@@ -414,7 +414,7 @@ void SoftwareImporters::importStickyNotes()
 QString loadUtf8FileToString(const QString &fileName)
 {
 	QFile file(fileName);
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		QString text;
@@ -481,7 +481,7 @@ void SoftwareImporters::importTextFile()
 	QString separator = dialog.separator();
 
 	QFile file(fileName);
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::Locale);
 		QString content = stream.read();
@@ -539,7 +539,7 @@ void SoftwareImporters::importKnowIt()
 		basket->load();
 		baskets.push(basket);
 
-		if(file.open(IO_ReadOnly))
+		if(file.open(QIODevice::WriteOnly))
 		{
 			QTextStream stream(&file);
 			uint level = 0;

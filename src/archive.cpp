@@ -52,12 +52,12 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 {
 	QDir dir;
 
-	KProgressDialog dialog(0, 0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
+	KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
 	dialog.showCancelButton(false);
 	dialog.setAutoClose(true);
 	dialog.show();
-	KProgress *progress = dialog.progressBar();
-	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
+	QProgressBar *progress = dialog.progressBar();
+	progress->setMaximum(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
 	progress->setValue(0);
 
 	// Create the temporar folder:
@@ -67,11 +67,11 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	// Create the temporar archive file:
 	QString tempDestination = tempFolder + "temp-archive.tar.gz";
 	KTar tar(tempDestination, "application/x-gzip");
-	tar.open(IO_WriteOnly);
+	tar.open(QIODevice::WriteOnly);
 	tar.writeDir("baskets", "", "");
 
-	progress->advance(1); // Preparation finished
-	std::cout << "Preparation finished out of " << progress->totalSteps() << std::endl;
+	progress->setValue(1); // Preparation finished
+	std::cout << "Preparation finished out of " << progress->maximum() << std::endl;
 
 	// Copy the baskets data into the archive:
 	QStringList backgrounds;
@@ -99,7 +99,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		State::List states = (*it)->states();
 		for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
 			State *state = (*it2);
-			QPixmap icon = kapp->iconLoader()->loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+			QPixmap icon =  KIconLoader::loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 			if (!icon.isNull()) {
 				icon.save(tempIconFile, "PNG");
 				QString iconFileName = state->emblem().replace('/', '_');
@@ -130,14 +130,14 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	previewBasket->doHoverEffects();
 	// End and save our splandid painting:
 	painter.end();
-	QImage previewImage = previewPixmap.convertToImage();
+	QImage previewImage = previewPixmap.toImage();
 	const int PREVIEW_SIZE = 256;
-	previewImage = previewImage.scale(PREVIEW_SIZE, PREVIEW_SIZE, QImage::ScaleMin);
+	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, QImage::ScaleMin);
 	previewImage.save(tempFolder + "preview.png", "PNG");
 
 	// Finaly Save to the Real Destination file:
 	QFile file(destination);
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
 		QTextStream stream(&file);
@@ -150,16 +150,16 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		// Copy the Preview File:
 		const qulonglong BUFFER_SIZE = 1024;
 		char *buffer = new char[BUFFER_SIZE];
-		Q_LONG sizeRead;
+		qlonglong sizeRead;
 		QFile previewFile(tempFolder + "preview.png");
-		if (previewFile.open(IO_ReadOnly)) {
+		if (previewFile.open(QIODevice::WriteOnly)) {
 			while ((sizeRead = previewFile.read(buffer, BUFFER_SIZE)) > 0)
 				file.write(buffer, sizeRead);
 		}
 		stream << "archive*:" << archiveSize << "\n";
 		// Copy the Archive File:
 		QFile archiveFile(tempDestination);
-		if (archiveFile.open(IO_ReadOnly)) {
+		if (archiveFile.open(QIODevice::WriteOnly)) {
 			while ((sizeRead = archiveFile.read(buffer, BUFFER_SIZE)) > 0)
 				file.write(buffer, sizeRead);
 		}
@@ -169,7 +169,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		file.close();
 	}
 
-	progress->advance(1); // Finishing finished
+	progress->setValue(1); // Finishing finished
 	std::cout << "Finishing finished" << std::endl;
 
 	// Clean Up Everything:
@@ -178,7 +178,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, KProgress *progress)
+void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
 {
 	// Basket need to be loaded for tags exportation.
 	// We load it NOW so that the progress bar really reflect the state of the exportation:
@@ -193,7 +193,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	// Save basket icon:
 	QString tempIconFile = tempFolder + "icon.png";
 	if (!basket->icon().isEmpty() && basket->icon() != "basket") {
-		QPixmap icon = kapp->iconLoader()->loadIcon(basket->icon(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+		QPixmap icon = KIconLoader::loadIcon(basket->icon(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 		if (!icon.isNull()) {
 			icon.save(tempIconFile, "PNG");
 			QString iconFileName = basket->icon().replace('/', '_');
@@ -219,8 +219,8 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 		backgrounds.append(imageName);
 	}
 
-	progress->advance(1); // Basket exportation finished
-	std::cout << basket->basketName() << " finished" << std::endl;
+	progress->setValue(1); // Basket exportation finished
+	std::cout << (basket->basketName()).toUtf8() << " finished" << std::endl;
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -251,7 +251,7 @@ void Archive::open(const QString &path)
 	const qulonglong BUFFER_SIZE = 1024;
 
 	QFile file(path);
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::Latin1);
 		QString line = stream.readLine();
@@ -267,7 +267,7 @@ void Archive::open(const QString &path)
 		while (!stream.atEnd()) {
 			// Get Key/Value Pair From the Line to Read:
 			line = stream.readLine();
-			int index = line.find(':');
+			int index = line.firstIndexOf(':');
 			QString key;
 			QString value;
 			if (index >= 0) {
@@ -280,9 +280,9 @@ void Archive::open(const QString &path)
 			if (key == "version") {
 				version = value;
 			} else if (key == "read-compatible") {
-				readCompatibleVersions = QStringList::split(value, ";");
+				readCompatibleVersions = value.split(";");
 			} else if (key == "write-compatible") {
-				writeCompatibleVersions = QStringList::split(value, ";");
+				writeCompatibleVersions = value.split(";");
 			} else if (key == "preview*") {
 				bool ok;
 				ulong size = value.toULong(&ok);
@@ -295,9 +295,9 @@ void Archive::open(const QString &path)
 				// Get the preview file:
 //FIXME: We do not need the preview for now
 //				QFile previewFile(tempFolder + "preview.png");
-//				if (previewFile.open(IO_WriteOnly)) {
+//				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					Q_LONG sizeRead;
+					qlonglong sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 //						previewFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -343,9 +343,9 @@ void Archive::open(const QString &path)
 				// Get the archive file:
 				QString tempArchive = tempFolder + "temp-archive.tar.gz";
 				QFile archiveFile(tempArchive);
-				if (archiveFile.open(IO_WriteOnly)) {
+				if (archiveFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					Q_LONG sizeRead;
+					qlonglong sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 						archiveFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -358,7 +358,7 @@ void Archive::open(const QString &path)
 					QDir dir;
 					dir.mkdir(extractionFolder);
 					KTar tar(tempArchive, "application/x-gzip");
-					tar.open(IO_ReadOnly);
+					tar.open(QIODevice::WriteOnly);
 					tar.directory()->copyTo(extractionFolder);
 					tar.close();
 
@@ -389,7 +389,7 @@ void Archive::open(const QString &path)
 				}
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
-				Q_LONG sizeRead;
+				qlonglong sizeRead;
 				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
@@ -432,12 +432,12 @@ void Archive::importTagEmblems(const QString &extractionFolder)
 				if ( (!subElement.isNull()) && subElement.tagName() == "state" ) {
 					QString emblemName = XMLWork::getElementText(subElement, "emblem");
 					if (!emblemName.isEmpty()) {
-						QPixmap emblem = kapp->iconLoader()->loadIcon(emblemName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+						QPixmap emblem = KIconLoader::loadIcon(emblemName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
 						// The icon does not exists on that computer, import it:
 						if (emblem.isNull()) {
 							// Of the emblem path was eg. "/home/seb/emblem.png", it was exported as "tag-emblems/_home_seb_emblem.png".
 							// So we need to copy that image to "~/.kde/share/apps/basket/tag-emblems/emblem.png":
-							int slashIndex = emblemName.findRev("/");
+							int slashIndex = emblemName.lastIndexOf("/");
 							QString emblemFileName = (slashIndex < 0 ? emblemName : emblemName.right(slashIndex - 2));
 							QString source      = extractionFolder + "tag-emblems/" + emblemName.replace('/', '_');
 							QString destination = Global::savesFolder() + "tag-emblems/" + emblemFileName;
@@ -547,7 +547,7 @@ void Archive::importBasketIcon(QDomElement properties, const QString &extraction
 {
 	QString iconName = XMLWork::getElementText(properties, "icon");
 	if (!iconName.isEmpty() && iconName != "basket") {
-		QPixmap icon = kapp->iconLoader()->loadIcon(iconName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+		QPixmap icon = KIconLoader::loadIcon(iconName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
 		// The icon does not exists on that computer, import it:
 		if (icon.isNull()) {
 			QDir dir;
@@ -555,7 +555,7 @@ void Archive::importBasketIcon(QDomElement properties, const QString &extraction
 			FormatImporter copier; // Only used to copy files synchronously
 			// Of the icon path was eg. "/home/seb/icon.png", it was exported as "basket-icons/_home_seb_icon.png".
 			// So we need to copy that image to "~/.kde/share/apps/basket/basket-icons/icon.png":
-			int slashIndex = iconName.findRev("/");
+			int slashIndex = iconName.lastIndexOf("/");
 			QString iconFileName = (slashIndex < 0 ? iconName : iconName.right(slashIndex - 2));
 			QString source       = extractionFolder + "basket-icons/" + iconName.replace('/', '_');
 			QString destination = Global::savesFolder() + "basket-icons/" + iconFileName;
@@ -581,7 +581,7 @@ void Archive::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedS
 			} else if (element.tagName() == "note") {
 				QString tags = XMLWork::getElementText(element, "tags");
 				if (!tags.isEmpty()) {
-					QStringList tagNames = QStringList::split(";", tags);
+					QStringList tagNames = tags.split(";");
 					for (QStringList::Iterator it = tagNames.begin(); it != tagNames.end(); ++it) {
 						QString &tag = *it;
 						if (mergedStates.contains(tag)) {

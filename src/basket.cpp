@@ -5233,7 +5233,7 @@ bool Basket::isFileEncrypted()
 {
 	QFile file(fullPath() + ".basket");
 
-	if (file.open(IO_ReadOnly)){
+	if (file.open(QIODevice::WriteOnly)){
 		QString line;
 
 		file.readLine(line, 32);
@@ -5248,7 +5248,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 	QFile file(fullPath);
 	bool encrypted = false;
 
-	if (file.open(IO_ReadOnly)){
+	if (file.open(QIODevice::WriteOnly)){
 		*array = file.readAll();
 		const char* magic = "-----BEGIN PGP MESSAGE-----";
 		uint i = 0;
@@ -5331,7 +5331,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, qulong
 	if(success)
 		tmp = array;
 #endif
-	/*if (success && (success = file.open(IO_WriteOnly))){
+	/*if (success && (success = file.open(QIODevice::WriteOnly))){
 		success = (file.write(tmp) == (Q_LONG)tmp.size());
 		file.close();
 	}*/

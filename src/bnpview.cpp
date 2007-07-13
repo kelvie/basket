@@ -687,7 +687,7 @@ void BNPView::save()
 	// Write to Disk:
 	Basket::safelySaveToFile(Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
 // 	QFile file(Global::basketsFolder() + "baskets.xml");
-// 	if (file.open(IO_WriteOnly)) {
+// 	if (file.open(QIODevice::WriteOnly)) {
 // 		QTextStream stream(&file);
 // 		stream.setEncoding(QTextStream::UnicodeUTF8);
 // 		QString xml = document.toString();

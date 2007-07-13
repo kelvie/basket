@@ -64,7 +64,7 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 	// Unpack the template file to that folder:
 	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
 	QFile file(fullPath + "/.basket");
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());

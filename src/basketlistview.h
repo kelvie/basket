@@ -21,19 +21,19 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <k3listview.h>
+#include <QListView>
 #include <qtimer.h>
 
 class Basket;
 
-class BasketListViewItem : public QListViewItem
+class BasketListViewItem : public QListView
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
 		BasketListViewItem(QListView     *parent, Basket *basket);
-		BasketListViewItem(QListViewItem *parent, Basket *basket);
-		BasketListViewItem(QListView     *parent, QListViewItem *after, Basket *basket);
-		BasketListViewItem(QListViewItem *parent, QListViewItem *after, Basket *basket);
+//		BasketListViewItem(QListView *parent, Basket *basket);
+		BasketListViewItem(QListView     *parent, QListView *after, Basket *basket);
+//		BasketListViewItem(QListView *parent, QListView *after, Basket *basket);
 		~BasketListViewItem();
 		///
 		bool acceptDrop(const QMimeSource *mime) const;
@@ -91,7 +91,7 @@ class BasketTreeListView : public K3ListView
 		void viewportResizeEvent(QResizeEvent *event);
 	private:
 		QTimer         m_autoOpenTimer;
-		QListViewItem *m_autoOpenItem;
+		QListView *m_autoOpenItem;
 	private slots:
 		void autoOpen();
 	private:

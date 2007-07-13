@@ -23,7 +23,7 @@
 #include <config.h>
 #endif
 
-static const char description[] = I18N_NOOP(
+static const char description[] = i18n(
 	"<p><b>Taking care of your ideas.</b></p>"
 	"<p>A note-taking application that makes it easy to record ideas as you think, and quickly find them later. "
 	"Organizing your notes has never been so easy.</p>");
@@ -31,9 +31,9 @@ static const char description[] = I18N_NOOP(
 	// Or how to make order of disorganized toughts.
 
 AboutData::AboutData()
- : KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),
+ : KAboutData( "basket", i18n("BasKet Note Pads"),
    VERSION, description, KAboutData::License_GPL_V2,
-   "(c) 2003-2007, S\303\251bastien Lao\303\273t", 0,
+   i18n("(c) 2003-2007, Sébastien Laoût"), 0,
    "http://basket.kde.org/",
    "slaout@linux62.org" )
 {
