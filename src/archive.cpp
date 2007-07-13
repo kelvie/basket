@@ -31,7 +31,7 @@
 #include <kstandarddirs.h>
 #include <kapplication.h>
 #include <kiconloader.h>
-#include <kprogress.h>
+#include <kprogressdialog.h>
 #include <kmainwindow.h>
 
 #include "archive.h"

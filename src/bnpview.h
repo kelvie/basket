@@ -30,7 +30,7 @@
 #include <qdbusinterface.h>
 #include "global.h"
 #include "basketdcopiface.h"
-
+#include <kaction.h>
  /// NEW:
 
 class QWidgetStack;

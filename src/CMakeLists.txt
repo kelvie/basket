@@ -49,14 +49,14 @@ SET(basketcommon_LIB_SRCS
    backup.cpp
    )
 
-KDE4_AUTOMOC(${basketcommon_LIB_SRCS})
+#kde4_automoc(${basketcommon_LIB_SRCS})
 
-SET( basketcommon_UI
+SET(basketcommon_UI
    kicondialogui.ui
    passwordlayout.ui
    )
 
-KDE4_ADD_UI_FILES(basketcommon_LIB_SRCS ${basketcommon_UI} )
+KDE4_ADD_UI_FILES(basketcommon_LIB_SRCS ${basketcommon_UI})
 
 SET( basketcommon_DCOP_SKEL_SRCS
    basketdcopiface.h
@@ -66,7 +66,7 @@ SET( basketcommon_DCOP_SKEL_SRCS
 
 KDE4_ADD_LIBRARY(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-TARGET_LINK_LIBRARIES(basketcommon  ${QT_AND_KDECORE_LIBS} kio kdeui kparts DCOP kdefx kdeui )
+TARGET_LINK_LIBRARIES(basketcommon  ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts DCOP kdefx  )
 
 SET_TARGET_PROPERTIES(basketcommon PROPERTIES VERSION 4.2.0 SOVERSION 4 )
 INSTALL(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
@@ -80,7 +80,7 @@ SET(basket_SRCS
    application.cpp
    )
 
-KDE4_AUTOMOC(${basket_SRCS})
+#KDE4_AUTOMOC(${basket_SRCS})
 
 KDE4_ADD_EXECUTABLE(basket ${basket_SRCS})
 
@@ -95,7 +95,7 @@ SET(kcm_basket_PART_SRCS
    kcm_basket.cpp
    )
 
-KDE4_AUTOMOC(${kcm_basket_PART_SRCS})
+#KDE4_AUTOMOC(${kcm_basket_PART_SRCS})
 
 KDE4_ADD_PLUGIN(kcm_basket ${kcm_basket_PART_SRCS})
 
@@ -110,7 +110,7 @@ SET(basketpart_PART_SRCS
    basket_part.cpp
    )
 
-KDE4_AUTOMOC(${basketpart_PART_SRCS})
+#KDE_AUTOMOC(${basketpart_PART_SRCS})
 
 KDE4_ADD_PLUGIN(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 

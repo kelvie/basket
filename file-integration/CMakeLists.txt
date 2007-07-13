@@ -7,7 +7,7 @@ SET(basketthumbcreator_PART_SRCS
    basketthumbcreator.cpp
    )
 
-KDE4_AUTOMOC(${basketthumbcreator_PART_SRCS})
+#KDE4_AUTOMOC(${basketthumbcreator_PART_SRCS})
 
 KDE4_ADD_PLUGIN(basketthumbcreator ${basketthumbcreator_PART_SRCS})
 

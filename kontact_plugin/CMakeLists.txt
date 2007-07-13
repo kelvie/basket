@@ -8,7 +8,7 @@ SET(kontact_basket_PART_SRCS
    uniqueapphandler.cpp
    )
 
-KDE4_AUTOMOC(${kontact_basket_PART_SRCS})
+#KDE4_AUTOMOC(${kontact_basket_PART_SRCS})
 
 SET( kontact_basket_DCOP_STUB_SRCS
    basketdcopiface.h
