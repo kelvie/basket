@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 #include <qdialog.h>
 #include <kurllabel.h>
 #include <qstring.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 class QLineEdit;
 class K3IconViewItem;
@@ -36,7 +36,7 @@ class Basket;
 
 /** A widget to select a command to run,
   * with a QLineEdit and a QPushButton.
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 class RunCommandRequester : public QWidget
 {
@@ -55,7 +55,7 @@ class RunCommandRequester : public QWidget
 };
 
 /** QComboBox to ask icon size
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 class IconSizeCombo : public QComboBox
 {
@@ -69,7 +69,7 @@ class IconSizeCombo : public QComboBox
 
 /** A window that the user resize to graphically choose a new image size
   * TODO: Create a SizePushButton or even SizeWidget
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 class ViewSizeDialog : public QDialog
 {
@@ -83,7 +83,7 @@ class ViewSizeDialog : public QDialog
 };
 
 /** A label displaying a link that, once clicked, offer a What's This messageBox to help users.
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 class HelpLabel : public KUrlLabel
 {
@@ -102,9 +102,9 @@ class HelpLabel : public KUrlLabel
 };
 
 /** A dialog to choose the size of an icon.
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
-class IconSizeDialog : public KDialogBase
+class IconSizeDialog : public KDialog
 {
   Q_OBJECT
   public:

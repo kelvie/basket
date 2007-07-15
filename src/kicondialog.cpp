@@ -81,7 +81,7 @@ class KIconDialog::KIconDialogPrivate
  */
 
 KIconDialog::KIconDialog(QWidget *parent, const char*)
-    : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
+    : KDialog(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
     mpLoader = KIconLoader::global();
@@ -91,7 +91,7 @@ KIconDialog::KIconDialog(QWidget *parent, const char*)
 
 KIconDialog::KIconDialog(KIconLoader *loader, QWidget *parent,
 	const char *name)
-    : KDialogBase(parent, name, true, i18n("Select Icon"), Ok|Cancel, Ok)
+    : KDialog(parent, name, true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
     mpLoader = loader;
@@ -333,7 +333,7 @@ void KIconDialog::slotOk()
     }
 
     emit newIconName(key);
-    KDialogBase::slotOk();
+    KDialog::slotOk();
 }
 
 QString KIconDialog::getIcon(KIcon::Group group, KIcon::Context context,
@@ -554,6 +554,6 @@ void KIconCanvas::virtual_hook( int id, void* data )
 { K3IconView::virtual_hook( id, data ); }
 
 void KIconDialog::virtual_hook( int id, void* data )
-{ KDialogBase::virtual_hook( id, data ); }
+{ KDialog::virtual_hook( id, data ); }
 
 #include "kicondialog.moc"

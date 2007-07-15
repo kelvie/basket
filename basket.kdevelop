@@ -21,7 +21,7 @@
     <secondaryLanguages/>
     <versioncontrol>kdevsubversion</versioncontrol>
     <projectname>basket</projectname>
-    <defaultencoding/>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevautoproject>
     <general>
@@ -164,10 +164,10 @@
       <absoluteprojectpath>true</absoluteprojectpath>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -229,7 +229,7 @@
       <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
@@ -299,8 +299,8 @@
     <run>
       <directoryradio>executable</directoryradio>
       <mainprogram>/home/pat/basket_kde4port/</mainprogram>
-      <programargs/>
-      <globaldebugarguments/>
+      <programargs></programargs>
+      <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/pat/basket_kde4port/</globalcwd>
       <useglobalprogram>false</useglobalprogram>
       <terminal>false</terminal>
@@ -341,9 +341,9 @@
     </build>
     <other>
       <prio>0</prio>
-      <otherbin/>
-      <defaulttarget/>
-      <otheroptions/>
+      <otherbin></otherbin>
+      <defaulttarget></defaulttarget>
+      <otheroptions></otheroptions>
       <selectedenvironment>default</selectedenvironment>
       <environments>
         <default/>
@@ -354,9 +354,9 @@
       <numberofjobs>1</numberofjobs>
       <prio>0</prio>
       <dontact>false</dontact>
-      <makebin/>
-      <defaulttarget/>
-      <makeoptions/>
+      <makebin></makebin>
+      <defaulttarget></defaulttarget>
+      <makeoptions></makeoptions>
       <selectedenvironment>default</selectedenvironment>
       <environments>
         <default/>

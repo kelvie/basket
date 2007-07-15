@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
 #ifndef EXPORTERDIALOG_H
 #define EXPORTERDIALOG_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 class KUrlRequester;
 class QCheckBox;
@@ -30,9 +30,9 @@ class QString;
 class Basket;
 
 /**
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laoï¿½t
   */
-class ExporterDialog : public KDialogBase
+class ExporterDialog : public KDialog
 {
   Q_OBJECT
   public:

@@ -21,7 +21,7 @@
 #ifndef NOTEEDIT_H
 #define NOTEEDIT_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <qtextedit.h>
 #include <qlineedit.h>
 
@@ -206,7 +206,7 @@ class DebuggedLineEdit : public QLineEdit
 /** The dialog to edit Link Note content.
   * @author S�astien Laot
   */
-class LinkEditDialog : public KDialogBase
+class LinkEditDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -234,7 +234,7 @@ class LinkEditDialog : public KDialogBase
 /** The dialog to edit Launcher Note content.
   * @author S�astien Laot
   */
-class LauncherEditDialog : public KDialogBase
+class LauncherEditDialog : public KDialog
 {
   Q_OBJECT
   public:

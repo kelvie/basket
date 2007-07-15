@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
 #ifndef BASKETPROPERTIES_H
 #define BASKETPROPERTIES_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <qmap.h>
 #include <qstring.h>
 
@@ -37,9 +37,9 @@ class Basket;
 class KColorCombo2;
 
 /** The dialog that hold basket settings.
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laoï¿½t
   */
-class BasketPropertiesDialog : public KDialogBase
+class BasketPropertiesDialog : public KDialog
 {
   Q_OBJECT
   public:

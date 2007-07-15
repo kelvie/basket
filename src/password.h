@@ -27,7 +27,7 @@
 #ifdef HAVE_LIBGPGME
 
 #include <passwordlayout.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 /**
 	@author Petri Damsten <damu@iki.fi>
@@ -40,7 +40,7 @@ class Password : public PasswordLayout
 		~Password();
 };
 
-class PasswordDlg : public KDialogBase
+class PasswordDlg : public KDialog
 {
 	Q_OBJECT
 	public:

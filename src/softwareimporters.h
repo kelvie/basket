@@ -22,7 +22,8 @@
 #define SOFTWAREIMPORTERS_H
 
 #include <qnamespace.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
+#include <QRadioButton>
 
 class QString;
 class QVButtonGroup;
@@ -35,7 +36,7 @@ class Note;
 /** The dialog to ask how to import hierarchical data.
   * @author Sébastien Laoût
   */
-class TreeImportDialog : public KDialogBase
+class TreeImportDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -49,7 +50,7 @@ class TreeImportDialog : public KDialogBase
 /** The dialog to ask how to import text files.
   * @author Sébastien Laoût
   */
-class TextFileImportDialog : public KDialogBase
+class TextFileImportDialog : public KDialog
 {
   Q_OBJECT
   public:

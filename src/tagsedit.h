@@ -21,7 +21,7 @@
 #ifndef TAGEDIT_H
 #define TAGEDIT_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kcombobox.h>
 #include <qlistview.h>
 #include <QList>
@@ -70,13 +70,13 @@ class TagCopy
 class TagListViewItem : public QListViewItem
 {
   public:
-	TagListViewItem(QListView     *parent, TagCopy *tagCopy);
+	TagListViewItem(QListWidgetItem     *parent, TagCopy *tagCopy);
 	TagListViewItem(QListViewItem *parent, TagCopy *tagCopy);
-	TagListViewItem(QListView     *parent, QListViewItem *after, TagCopy *tagCopy);
+	TagListViewItem(QListWidgetItem     *parent, QListViewItem *after, TagCopy *tagCopy);
 	TagListViewItem(QListViewItem *parent, QListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(QListView     *parent, StateCopy *stateCopy);
+	TagListViewItem(QListWidgetItem     *parent, StateCopy *stateCopy);
 	TagListViewItem(QListViewItem *parent, StateCopy *stateCopy);
-	TagListViewItem(QListView     *parent, QListViewItem *after, StateCopy *stateCopy);
+	TagListViewItem(QListWidgetItem     *parent, QListViewItem *after, StateCopy *stateCopy);
 	TagListViewItem(QListViewItem *parent, QListViewItem *after, StateCopy *stateCopy);
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
@@ -85,7 +85,7 @@ class TagListViewItem : public QListViewItem
 	TagListViewItem* lastChild();
 	TagListViewItem* prevSibling();
 	TagListViewItem* parent() const; // Reimplemented to cast the return value
-	int width(const QFontMetrics &fontMetrics, const QListView *listView, int column) const;
+	int width(const QFontMetrics &fontMetrics, const QListWidgetItem *listView, int column) const;
 	void setup();
 	void paintCell(QPainter *painter, const QColorGroup &colorGroup, int column, int width, int align);
 
@@ -115,7 +115,7 @@ class TagListView : public QListView
 /**
   * @author S�astien Laot
   */
-class TagsEditDialog : public KDialogBase
+class TagsEditDialog : public KDialog
 {
   Q_OBJECT
   public:

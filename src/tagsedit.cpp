@@ -100,7 +100,7 @@ bool TagCopy::isMultiState()
 
 /** class TagListViewItem: */
 
-TagListViewItem::TagListViewItem(QListView *parent, TagCopy *tagCopy)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, TagCopy *tagCopy)
  : QListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
@@ -112,7 +112,7 @@ TagListViewItem::TagListViewItem(QListViewItem *parent, TagCopy *tagCopy)
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListView *parent, QListViewItem *after, TagCopy *tagCopy)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListViewItem *after, TagCopy *tagCopy)
  : QListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
@@ -126,7 +126,7 @@ TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, Ta
 
 /* */
 
-TagListViewItem::TagListViewItem(QListView *parent, StateCopy *stateCopy)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, StateCopy *stateCopy)
  : QListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
@@ -138,7 +138,7 @@ TagListViewItem::TagListViewItem(QListViewItem *parent, StateCopy *stateCopy)
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListView *parent, QListViewItem *after, StateCopy *stateCopy)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListViewItem *after, StateCopy *stateCopy)
  : QListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
@@ -193,7 +193,7 @@ TagListViewItem* TagListViewItem::parent() const
 int TAG_ICON_SIZE = 16;
 int TAG_MARGIN = 1;
 
-int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
+int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListWidgetItem */*listView*/, int /* column */) const
 {
 	return listView()->visibleWidth();
 }
@@ -292,14 +292,14 @@ void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
 
 void TagListView::contentsMousePressEvent(QMouseEvent *event)
 {
-	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
+	// When clicking on an empty space, QListWidgetItem would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMousePressEvent(event);
 }
 
 void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
 {
-	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
+	// When clicking on an empty space, QListWidgetItem would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMouseReleaseEvent(event);
 }
@@ -322,8 +322,8 @@ TagListViewItem* TagListView::lastItem() const
 /** class TagsEditDialog: */
 
 TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewTag)
- : KDialogBase(KDialogBase::Plain, i18n("Customize Tags"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
+ : KDialog(KDialog::Plain, i18n("Customize Tags"), KDialog::Ok | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
    m_loading(false)
 {
 	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
@@ -1161,7 +1161,7 @@ void TagsEditDialog::slotCancel()
 		delete (*tagCopyIt)->newTag;
 	}
 
-	KDialogBase::slotCancel();
+	KDialog::slotCancel();
 }
 
 void TagsEditDialog::slotOk()
@@ -1200,7 +1200,7 @@ void TagsEditDialog::slotOk()
 	Global::bnpView->relayoutAllBaskets();
 	Global::bnpView->recomputeAllStyles();
 
-	KDialogBase::slotOk();
+	KDialog::slotOk();
 }
 
 #include "tagsedit.moc"

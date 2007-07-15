@@ -54,8 +54,8 @@ const QString backupMagicFolder = "BasKet-Note-Pads_Backup";
 /** class BackupDialog: */
 
 BackupDialog::BackupDialog(QWidget *parent, const char *name)
- : KDialogBase(parent, name, /*modal=*/true, i18n("Backup & Restore"),
-               KDialogBase::Close, KDialogBase::Close, /*separator=*/false)
+ : KDialog(parent, name, /*modal=*/true, i18n("Backup & Restore"),
+               KDialog::Close, KDialog::Close, /*separator=*/false)
 {
 	KVBox *page  = makeVBoxMainWidget();
 //	page->setSpacing(spacingHint());

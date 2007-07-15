@@ -43,8 +43,8 @@
 #include "backgroundmanager.h"
 
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Basket Properties"), KDialogBase::Ok | KDialogBase::Apply | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
+ : KDialog(KDialog::Swallow, i18n("Basket Properties"), KDialog::Ok | KDialog::Apply | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
    m_basket(basket)
 {
 	QWidget *page = new QWidget(this);
@@ -164,7 +164,7 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 
 void BasketPropertiesDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	m_name->setFocus();
 }
 
@@ -180,13 +180,13 @@ void BasketPropertiesDialog::applyChanges()
 void BasketPropertiesDialog::slotApply()
 {
 	applyChanges();
-	KDialogBase::slotApply();
+	KDialog::slotApply();
 }
 
 void BasketPropertiesDialog::slotOk()
 {
 	applyChanges();
-	KDialogBase::slotOk();
+	KDialog::slotOk();
 }
 
 void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)

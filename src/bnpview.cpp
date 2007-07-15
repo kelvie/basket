@@ -20,7 +20,7 @@
 
  /// NEW:
 
-#include <qwidgetstack.h>
+#include <QStackedWidget>
 #include <qregexp.h>
 #include <qpixmap.h>
 #include <qpainter.h>
@@ -36,21 +36,21 @@
 #include <kstringhandler.h>
 #include <kmessagebox.h>
 #include <kfiledialog.h>
-#include <kprogress.h>
+#include <QProgressBar>
 #include <kstandarddirs.h>
 #include <kaboutdata.h>
 #include <kwindowsystem.h>
-#include <kaccel.h>
+#include <kaction.h>
 #include <kpassivepopup.h>
 #include <kxmlguifactory.h>
 #include <kcmdlineargs.h>
 #include <kglobalaccel.h>
 #include <kapplication.h>
-#include <kkeydialog.h>
+#include <kshortcutsdialog.h>
 #include <dcopclient.h>
 #include <kdebug.h>
 #include <iostream>
-#include <KShortcutsDialog>
+#include <kshortcutsdialog.h>
 #include "bnpview.h"
 #include "basket.h"
 #include "tools.h"
@@ -372,12 +372,12 @@ void BNPView::initialize()
 	connect( m_tree, SIGNAL(pressed(QListViewItem*)),          this, SLOT(slotPressed(QListViewItem*)) );
 	connect( m_tree, SIGNAL(expanded(QListViewItem*)),         this, SLOT(needSave(QListViewItem*))    );
 	connect( m_tree, SIGNAL(collapsed(QListViewItem*)),        this, SLOT(needSave(QListViewItem*))    );
-	connect( m_tree, SIGNAL(contextMenu(K3ListView*, QListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(K3ListView*, QListViewItem*, const QPoint&))      );
-	connect( m_tree, SIGNAL(mouseButtonPressed(int, QListViewItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QListViewItem*, const QPoint&, int)) );
-	connect( m_tree, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QListViewItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(contextMenu(K3ListView*, QListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(K3ListView*, QListWidgetItem*, const QPoint&))      );
+	connect( m_tree, SIGNAL(mouseButtonPressed(int, QListViewItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QListWidgetItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(doubleClicked(QListWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QListWidgetItem*, const QPoint&, int)) );
 
-	connect( m_tree, SIGNAL(expanded(QListViewItem*)),  this, SIGNAL(basketChanged()) );
-	connect( m_tree, SIGNAL(collapsed(QListViewItem*)), this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(expanded(QListWidgetItem*)),  this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(collapsed(QListWidgetItem*)), this, SIGNAL(basketChanged()) );
 	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
 
 	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
@@ -1688,8 +1688,8 @@ void BNPView::delBasket()
 	Basket          *basket        = currentBasket();
 
 #if 0
-	KDialogBase *dialog = new KDialogBase(this, /*name=*/0, /*modal=*/true, /*caption=*/i18n("Delete Basket"),
-										  KDialogBase::User1 | KDialogBase::User2 | KDialogBase::No, KDialogBase::User1,
+	KDialog *dialog = new KDialog(this, /*name=*/0, /*modal=*/true, /*caption=*/i18n("Delete Basket"),
+										  KDialog::User1 | KDialog::User2 | KDialog::No, KDialog::User1,
 										 /*separator=*/false,
 										 /*user1=*/KGuiItem(i18n("Delete Only that Basket")/*, icon=""*/),
 										 /*user2=*/KGuiItem(i18n("Delete Note & Children")/*, icon=""*/) );

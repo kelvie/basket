@@ -57,7 +57,7 @@
 #include <qaction.h>
 #include <kstdaccel.h>
 #include <kglobalaccel.h>
-#include <kkeydialog.h>
+#include <kshortcutsdialog.h>
 #include <kpassivepopup.h>
 #include <kconfig.h>
 #include <kcolordialog.h>
@@ -203,8 +203,8 @@ void MainWindow::showSettingsDialog()
 	if(m_settings == 0)
 		m_settings = new KSettings::Dialog(kapp->activeWindow());
 	if (Global::mainWindow()) {
-		m_settings->dialog()->showButton(KDialogBase::Help,    false); // Not implemented!
-		m_settings->dialog()->showButton(KDialogBase::Default, false); // Not implemented!
+		m_settings->dialog()->showButton(KDialog::Help,    false); // Not implemented!
+		m_settings->dialog()->showButton(KDialog::Default, false); // Not implemented!
 		m_settings->dialog()->exec();
 	} else
 		m_settings->show();

@@ -21,26 +21,26 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <QListView>
+#include <QListWidgetItem>
 #include <qtimer.h>
 
 class Basket;
 
-class BasketListViewItem : public QListView
+class BasketListViewItem : public QListWidget
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QListView     *parent, Basket *basket);
-//		BasketListViewItem(QListView *parent, Basket *basket);
-		BasketListViewItem(QListView     *parent, QListView *after, Basket *basket);
-//		BasketListViewItem(QListView *parent, QListView *after, Basket *basket);
+		BasketListViewItem(QListWidgetItem     *parent, Basket *basket);
+//		BasketListViewItem(QListWidgetItem *parent, Basket *basket);
+		BasketListViewItem(QListWidgetItem     *parent, QListWidgetItem *after, Basket *basket);
+//		BasketListViewItem(QListWidgetItem *parent, QListWidgetItem *after, Basket *basket);
 		~BasketListViewItem();
 		///
 		bool acceptDrop(const QMimeSource *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
-		int width(const QFontMetrics &fontMetrics, const QListView *listView, int column) const;
+		int width(const QFontMetrics &fontMetrics, const QListWidgetItem *listView, int column) const;
 		BasketListViewItem* lastChild();
 		BasketListViewItem* prevSibling();
 		BasketListViewItem* shownItemAbove();
@@ -91,7 +91,7 @@ class BasketTreeListView : public K3ListView
 		void viewportResizeEvent(QResizeEvent *event);
 	private:
 		QTimer         m_autoOpenTimer;
-		QListView *m_autoOpenItem;
+		QListWidgetItem *m_autoOpenItem;
 	private slots:
 		void autoOpen();
 	private:

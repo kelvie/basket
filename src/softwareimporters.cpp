@@ -42,8 +42,8 @@
 /** class TreeImportDialog: */
 
 TreeImportDialog::TreeImportDialog(QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Import Hierarchy"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"ImportHierarchy", /*modal=*/true, /*separator=*/false)
+ : KDialog(KDialog::Swallow, i18n("Import Hierarchy"), KDialog::Ok | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"ImportHierarchy", /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
 	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
@@ -71,8 +71,8 @@ int TreeImportDialog::choice()
 /** class TextFileImportDialog: */
 
 TextFileImportDialog::TextFileImportDialog(QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Import Text File"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"ImportTextFile", /*modal=*/true, /*separator=*/false)
+ : KDialog(KDialog::Swallow, i18n("Import Text File"), KDialog::Ok | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"ImportTextFile", /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
 	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());

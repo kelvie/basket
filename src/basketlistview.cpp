@@ -39,8 +39,8 @@
 
 /** class BasketListViewItem: */
 
-BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
-	: QListView(parent), m_basket(basket)
+BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, Basket *basket)
+	: QListWidgetItem(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
@@ -48,7 +48,7 @@ BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
 }
 
 /* TO REMOVE
-BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
+BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, Basket *basket)
 	: QListView(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
@@ -57,8 +57,8 @@ BasketListViewItem::BasketListViewItem(QListView *parent, Basket *basket)
 }
 */
 
-BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, Basket *basket)
-	: QListView(parent, after), m_basket(basket)
+BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListWidgetItem *after, Basket *basket)
+	: QListWidgetItem(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
@@ -66,7 +66,7 @@ BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, 
 }
 
 /* TO REMOVE 
-BasketListViewItem::BasketListViewItem(QListView *parent, QListViewItem *after, Basket *basket)
+BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListViewItem *after, Basket *basket)
 	: QListView(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
@@ -92,7 +92,7 @@ void BasketListViewItem::dropped(QDropEvent *event)
 	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
-int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
+int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListWidgetItem */*listView*/, int /* column */) const
 {
 	return listView()->visibleWidth() + 100;
 /*
@@ -149,7 +149,7 @@ void BasketListViewItem::setup()
 
 BasketListViewItem* BasketListViewItem::lastChild()
 {
-	QListView *child = firstChild();
+	QListWidgetItem *child = firstChild();
 	while (child) {
 		if (child->nextSibling())
 			child = child->nextSibling();
@@ -195,7 +195,7 @@ BasketListViewItem* BasketListViewItem::shownItemBelow()
 QStringList BasketListViewItem::childNamesTree(int deep)
 {
 	QStringList result;
-	for (QListView *child = firstChild(); child; child = child->nextSibling()) {
+	for (QListWidgetItem *child = firstChild(); child; child = child->nextSibling()) {
 		BasketListViewItem *item = (BasketListViewItem*)child;
 		// Compute indentation spaces:
 		QString spaces;
@@ -215,9 +215,9 @@ QStringList BasketListViewItem::childNamesTree(int deep)
 
 void BasketListViewItem::moveChildsBaskets()
 {
-	QListView *insertAfterThis = this;
-	QListView *nextOne;
-	for (QListView *child = firstChild(); child; child = nextOne) {
+	QListWidgetItem *insertAfterThis = this;
+	QListWidgetItem *nextOne;
+	for (QListWidgetItem *child = firstChild(); child; child = nextOne) {
 		nextOne = child->nextSibling();
 		// Re-insert the item with the good parent:
 		takeItem(child);
@@ -242,7 +242,7 @@ void BasketListViewItem::ensureVisible()
 
 bool BasketListViewItem::isShown()
 {
-	QListView *item = parent();
+	QListWidgetItem *item = parent();
 	while (item) {
 		if (!item->isOpen())
 			return false;
@@ -356,7 +356,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
 
 bool BasketListViewItem::haveChildsLoading()
 {
-	QListView *child = firstChild();
+	QListWidgetItem *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		if (!childItem->basket()->isLoaded() && !childItem->basket()->isLocked())
@@ -377,7 +377,7 @@ bool BasketListViewItem::haveHiddenChildsLoading()
 
 bool BasketListViewItem::haveChildsLocked()
 {
-	QListView *child = firstChild();
+	QListWidgetItem *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		if (/*!*/childItem->basket()->isLocked())
@@ -399,7 +399,7 @@ bool BasketListViewItem::haveHiddenChildsLocked()
 int BasketListViewItem::countChildsFound()
 {
 	int count = 0;
-	QListView *child = firstChild();
+	QListWidgetItem *child = firstChild();
 	while (child) {
 		BasketListViewItem *childItem = (BasketListViewItem*)child;
 		count += childItem->basket()->countFounds();
@@ -624,7 +624,7 @@ public:
 public:
 	void maybeTip(const QPoint& pos)
 	{
-		QListView *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
+		QListWidgetItem *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (bitem && bitem->isAbbreviated()) {
 			tip(m_basketView->itemRect(bitem), bitem->basket()->basketName());
@@ -659,7 +659,7 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 	if (event->provides("application/x-qlistviewitem")) {
 		QListViewItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (it.current()) {
-			QListView *item = it.current();
+			QListWidgetItem *item = it.current();
 			if (!item->firstChild()) {
 				item->setExpandable(true);
 				item->setOpen(true);
@@ -677,7 +677,7 @@ void BasketTreeListView::removeExpands()
 // TODO
 /*	QListViewIterator it(this);
 	while (it.current()) {
-		QListView *item = it.current();
+		QListWidgetItem *item = it.current();
 		if (!item->firstChild())
 			item->setExpandable(false);
 		++it;
@@ -705,7 +705,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 	}
 	else {
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
-		QListView *item = itemAt(contentsToViewport(event->pos()));
+		QListWidgetItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (bitem) {
 			bitem->basket()->blindDrop(event);
@@ -729,7 +729,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 	if (event->provides("application/x-qlistviewitem"))
 		K3ListView::contentsDragMoveEvent(event);
 	else {
-		QListView *item = itemAt(contentsToViewport(event->pos()));
+		QListWidgetItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (m_autoOpenItem != item) {
 			m_autoOpenItem = item;
@@ -778,7 +778,7 @@ void BasketTreeListView::resizeEvent(QResizeEvent *event)
 
 void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 {
-	QListView::paintEmptyArea(painter, rect);
+	QListWidgetItem::paintEmptyArea(painter, rect);
 
 	BasketListViewItem *last = Global::bnpView->lastListViewItem();
 	if (last && !last->isShown())

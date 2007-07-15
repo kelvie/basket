@@ -45,6 +45,7 @@
 #include "tools.h"
 #include "backgroundmanager.h"
 #include "formatimporter.h"
+#include <kcmdlineargs.h>
 
 #include <iostream>
 
@@ -99,7 +100,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		State::List states = (*it)->states();
 		for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
 			State *state = (*it2);
-			QPixmap icon =  KIconLoader::loadIcon(state->emblem(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+			QPixmap icon =   KIconLoader::global()->loadIcon(state->emblem(), K3Icon::Small, 16, K3Icon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 			if (!icon.isNull()) {
 				icon.save(tempIconFile, "PNG");
 				QString iconFileName = state->emblem().replace('/', '_');
@@ -114,7 +115,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 
 	// Computing the File Preview:
 	Basket *previewBasket = basket; // FIXME: Use the first non-empty basket!
-	QPixmap previewPixmap(previewBasket->visibleWidth(), previewBasket->visibleHeight());
+	QPixmap previewPixmap(previewBasket->width(), previewBasket->height());
 	QPainter painter(&previewPixmap);
 	// Save old state, and make the look clean ("smile, you are filmed!"):
 	NoteSelection *selection = previewBasket->selectedNotes();
@@ -132,7 +133,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	painter.end();
 	QImage previewImage = previewPixmap.toImage();
 	const int PREVIEW_SIZE = 256;
-	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, QImage::ScaleMin);
+	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, Qt::KeepAspectRatio);
 	previewImage.save(tempFolder + "preview.png", "PNG");
 
 	// Finaly Save to the Real Destination file:
@@ -141,7 +142,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+// TODO NOT NEED ANY MORE		stream.setEncoding(QTextStream::Latin1);
 		stream << "BasKetNP:archive\n"
 		       << "version:0.6.1\n"
 //		       << "read-compatible:0.6.1\n"
@@ -193,7 +194,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	// Save basket icon:
 	QString tempIconFile = tempFolder + "icon.png";
 	if (!basket->icon().isEmpty() && basket->icon() != "basket") {
-		QPixmap icon = KIconLoader::loadIcon(basket->icon(), KIcon::Small, 16, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+		QPixmap icon =  KIconLoader::global()->loadIcon(basket->icon(), K3Icon::Small, 16, K3Icon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 		if (!icon.isNull()) {
 			icon.save(tempIconFile, "PNG");
 			QString iconFileName = basket->icon().replace('/', '_');
@@ -220,13 +221,13 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	}
 
 	progress->setValue(1); // Basket exportation finished
-	std::cout << (basket->basketName()).toUtf8() << " finished" << std::endl;
+	std::cout << (basket->basketName()).toAscii().data() << " finished" << std::endl;
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, tempFolder, progress);
+	if (recursive && item->count()) {
+		for (int i= 0; i<item->count(); i++) {
+// TODO	kde4.0		saveBasketToArchive(qobject_cast<Basket*>(item->item(i)), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
 }
@@ -235,9 +236,9 @@ void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			listUsedTags(child->basket(), recursive, list);
+	if (recursive && item->count()) {
+		for (int i= 0; i<item->count(); i++) {
+// TODO	kde4.0		listUsedTags(qobject_cast<Basket*>(item->item(i)), recursive, list);
 		}
 	}
 }
@@ -253,7 +254,7 @@ void Archive::open(const QString &path)
 	QFile file(path);
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+// TODO NOT NEED ANY MORE		stream.setEncoding(QTextStream::Latin1);
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive") {
 			KMessageBox::error(0, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));
@@ -267,7 +268,7 @@ void Archive::open(const QString &path)
 		while (!stream.atEnd()) {
 			// Get Key/Value Pair From the Line to Read:
 			line = stream.readLine();
-			int index = line.firstIndexOf(':');
+			int index = line.indexOf(':');
 			QString key;
 			QString value;
 			if (index >= 0) {
@@ -285,7 +286,7 @@ void Archive::open(const QString &path)
 				writeCompatibleVersions = value.split(";");
 			} else if (key == "preview*") {
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qulonglong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -297,7 +298,7 @@ void Archive::open(const QString &path)
 //				QFile previewFile(tempFolder + "preview.png");
 //				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					qlonglong sizeRead;
+					qulonglong sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 //						previewFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -313,7 +314,7 @@ void Archive::open(const QString &path)
 						     "It can be opened but not every information will be available to you. "
 						     "For instance, some notes may be missing because they are of a type only available in new versions. "
 						     "When saving the file back, consider to save it to another file, to preserve the original one.")
-							.arg(kapp->aboutData()->programName()),
+							.arg(KCmdLineArgs::aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 				}
@@ -321,7 +322,7 @@ void Archive::open(const QString &path)
 					KMessageBox::error(
 						0,
 						i18n("This file was created with a recent version of %1. Please upgrade to a newer version to be able to open that file.")
-							.arg(kapp->aboutData()->programName()),
+							.arg(KCmdLineArgs::aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 					file.close();
@@ -330,7 +331,7 @@ void Archive::open(const QString &path)
 				}
 
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qulonglong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -345,7 +346,7 @@ void Archive::open(const QString &path)
 				QFile archiveFile(tempArchive);
 				if (archiveFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					qlonglong sizeRead;
+					qulonglong sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 						archiveFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -380,7 +381,7 @@ void Archive::open(const QString &path)
 			} else if (key.endsWith("*")) {
 				// We do not know what it is, but we should read the embedded-file in order to discard it:
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qulonglong size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -389,7 +390,7 @@ void Archive::open(const QString &path)
 				}
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
-				qlonglong sizeRead;
+				qulonglong sizeRead;
 				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
@@ -432,7 +433,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
 				if ( (!subElement.isNull()) && subElement.tagName() == "state" ) {
 					QString emblemName = XMLWork::getElementText(subElement, "emblem");
 					if (!emblemName.isEmpty()) {
-						QPixmap emblem = KIconLoader::loadIcon(emblemName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+						QPixmap emblem = KIconLoader::global()->loadIcon(emblemName, K3Icon::NoGroup, 16, K3Icon::DefaultState, 0L, /*canReturnNull=*/true);
 						// The icon does not exists on that computer, import it:
 						if (emblem.isNull()) {
 							// Of the emblem path was eg. "/home/seb/emblem.png", it was exported as "tag-emblems/_home_seb_emblem.png".
@@ -547,7 +548,7 @@ void Archive::importBasketIcon(QDomElement properties, const QString &extraction
 {
 	QString iconName = XMLWork::getElementText(properties, "icon");
 	if (!iconName.isEmpty() && iconName != "basket") {
-		QPixmap icon = KIconLoader::loadIcon(iconName, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+		QPixmap icon = KIconLoader::global()->loadIcon(iconName, K3Icon::NoGroup, 16, K3Icon::DefaultState, 0L, /*canReturnNull=*/true);
 		// The icon does not exists on that computer, import it:
 		if (icon.isNull()) {
 			QDir dir;
@@ -619,7 +620,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
 				// Append and load the basket in the tree:
 				Basket *basket = Global::bnpView->loadBasket(newFolderName);
 				BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
-				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
+// TODO kde4.0				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
 				QDomElement properties = XMLWork::getElement(element, "properties");
 				importBasketIcon(properties, extractionFolder); // Rename the icon fileName if necessary
 				basket->loadProperties(properties);

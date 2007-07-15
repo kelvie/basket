@@ -33,7 +33,7 @@
 #include <qimage.h>
 #include <qpainter.h>
 #include <qbitmap.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 #include "filter.h"
 //#include "settings.h"
@@ -85,13 +85,13 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	// Layout all those widgets:
 //	hBox->addStretch();
 	hBox->addWidget(m_resetButton);
-	hBox->addSpacing(KDialogBase::spacingHint());
+	hBox->addSpacing(KDialog::spacingHint());
 	hBox->addWidget(label);
 	hBox->addWidget(m_lineEdit);
-	hBox->addSpacing(KDialogBase::spacingHint());
+	hBox->addSpacing(KDialog::spacingHint());
 	hBox->addWidget(label2);
 	hBox->addWidget(m_tagsBox);
-	hBox->addSpacing(KDialogBase::spacingHint());
+	hBox->addSpacing(KDialog::spacingHint());
 	hBox->addWidget(m_inAllBasketsButton);
 
 	m_data = new FilterData(); // TODO: Not a pointer! and return a const &  !!

@@ -530,8 +530,8 @@ void DebuggedLineEdit::keyPressEvent(QKeyEvent *event)
 /** class LinkEditDialog: */
 
 LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
- : KDialogBase(KDialogBase::Plain, i18n("Edit Link Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"EditLink", /*modal=*/true, /*separator=*/true),
+ : KDialog(KDialog::Plain, i18n("Edit Link Note"), KDialog::Ok | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"EditLink", /*modal=*/true, /*separator=*/true),
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();
@@ -608,7 +608,7 @@ LinkEditDialog::~LinkEditDialog()
 
 void LinkEditDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	if (m_url->lineEdit()->text().isEmpty()) {
 		m_url->setFocus();
 		m_url->lineEdit()->end(false);
@@ -683,14 +683,14 @@ void LinkEditDialog::slotOk()
 	else
 		m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
 
-	KDialogBase::slotOk();
+	KDialog::slotOk();
 }
 
 /** class LauncherEditDialog: */
 
 LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *parent)
- : KDialogBase(KDialogBase::Plain, i18n("Edit Launcher Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"EditLauncher", /*modal=*/true, /*separator=*/true),
+ : KDialog(KDialog::Plain, i18n("Edit Launcher Note"), KDialog::Ok | KDialog::Cancel,
+               KDialog::Ok, parent, /*name=*/"EditLauncher", /*modal=*/true, /*separator=*/true),
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();
@@ -745,7 +745,7 @@ LauncherEditDialog::~LauncherEditDialog()
 
 void LauncherEditDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	if (m_command->runCommand().isEmpty()) {
 		m_command->lineEdit()->setFocus();
 		m_command->lineEdit()->end(false);
@@ -769,7 +769,7 @@ void LauncherEditDialog::slotOk()
 	m_noteContent->setLauncher(m_name->text(), m_icon->icon(), m_command->runCommand());
 	m_noteContent->setEdited();
 
-	KDialogBase::slotOk();
+	KDialog::slotOk();
 }
 
 void LauncherEditDialog::guessIcon()

@@ -39,7 +39,7 @@
 #include <qtextedit.h>
 #include <qlayout.h>
 #include <qlabel.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <qhttp.h>
 #include <kurl.h>
 #include <kinputdialog.h>
@@ -631,8 +631,8 @@ void LikeBack::fetchUserEmail()
 /*******************************************/
 
 LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack)
- : KDialogBase(KDialogBase::Swallow, i18n("Send a Comment to Developers"), KDialogBase::Ok | KDialogBase::Cancel | KDialogBase::Default,
-               KDialogBase::Ok, kapp->activeWindow(), /*name=*/"_likeback_feedback_window_", /*modal=*/true, /*separator=*/true)
+ : KDialog(KDialog::Swallow, i18n("Send a Comment to Developers"), KDialog::Ok | KDialog::Cancel | KDialog::Default,
+               KDialog::Ok, kapp->activeWindow(), /*name=*/"_likeback_feedback_window_", /*modal=*/true, /*separator=*/true)
  , m_likeBack(likeBack)
  , m_windowPath(windowPath)
  , m_context(context)
@@ -776,7 +776,7 @@ QString LikeBackDialog::introductionText()
 
 void LikeBackDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	m_comment->setFocus();
 }
 
@@ -848,7 +848,7 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
 	}
 	m_likeBack->enableBar();
 
-	KDialogBase::slotOk();
+	KDialog::slotOk();
 }
 
 #include "likeback_private.moc.cpp"
