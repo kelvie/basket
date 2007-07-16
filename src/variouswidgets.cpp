@@ -179,7 +179,7 @@ void HelpLabel::keyPressEvent(QKeyEvent *event)
 class UndraggableKIconView : public K3IconView
 {
   public:
-	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, WFlags f = 0) : K3IconView(parent, name, f) {}
+	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
 	QDragObject* dragObject() { return 0; }
 };
 
@@ -216,8 +216,8 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
 	}
 
-	connect( iconView, SIGNAL(executed(QIconViewItem*)),      this, SLOT(choose(QIconViewItem*)) );
-	connect( iconView, SIGNAL(returnPressed(QIconViewItem*)), this, SLOT(choose(QIconViewItem*)) );
+	connect( iconView, SIGNAL(executed(QListWidgetItem*)),      this, SLOT(choose(QListWidgetItem*)) );
+	connect( iconView, SIGNAL(returnPressed(QListWidgetItem*)), this, SLOT(choose(QListWidgetItem*)) );
 	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
 
 	setMainWidget(page);
@@ -249,7 +249,7 @@ void IconSizeDialog::slotSelectionChanged()
 	}
 }
 
-void IconSizeDialog::choose(QIconViewItem*)
+void IconSizeDialog::choose(QListWidgetItem*)
 {
 	actionButton(KDialog::Ok)->animateClick();
 }

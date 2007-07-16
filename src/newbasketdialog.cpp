@@ -46,19 +46,20 @@
 
 /** class SingleSelectionKIconView: */
 
-SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, WFlags f)
- : K3IconView(parent, name, f), m_lastSelected(0)
+SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, Qt::WFlags f)
+ : KListWidget(parent, name, f), m_lastSelected(0)
 {
-	connect( this, SIGNAL(selectionChanged(QIconViewItem*)), this, SLOT(slotSelectionChanged(QIconViewItem*)) );
+	connect( this, SIGNAL(selectionChanged(QListWidgetItem*)), this, SLOT(slotSelectionChanged(QListWidgetItem*)) );
 	connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
 }
 
-QDragObject* SingleSelectionKIconView::dragObject()
+QMimeData* SingleSelectionKIconView::dragObject()
 {
-	return 0;
+
+	return new QMimeData(this);
 }
 
-void SingleSelectionKIconView::slotSelectionChanged(QIconViewItem *item)
+void SingleSelectionKIconView::slotSelectionChanged(QListWidgetItem *item)
 {
 	if (item)
 		m_lastSelected = item;
@@ -229,8 +230,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
 	populateBasketsList(Global::bnpView->firstListViewItem(), /*indent=*/1, /*index=*/1);
 
-	connect( m_templates, SIGNAL(doubleClicked(QIconViewItem*)), this, SLOT(slotOk())        );
-	connect( m_templates, SIGNAL(returnPressed(QIconViewItem*)), this, SLOT(returnPressed()) );
+	connect( m_templates, SIGNAL(doubleClicked(QListWidgetItem*)), this, SLOT(slotOk())        );
+	connect( m_templates, SIGNAL(returnPressed(QListWidgetItem*)), this, SLOT(returnPressed()) );
 
 	if (parentBasket) {
 		int index = 0;
@@ -297,7 +298,7 @@ void NewBasketDialog::nameChanged(const QString &newName)
 
 void NewBasketDialog::slotOk()
 {
-	QIconViewItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
+	QListWidgetItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
 	QString templateName;
 	if (item->text() == i18n("One column"))
 		templateName = "1column";

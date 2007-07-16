@@ -22,9 +22,9 @@
 #define NEWBASKETDIALOG_H
 
 #include <kdialog.h>
-#include <k3iconview.h>
+#include <klistwidget.h>
 #include <qmap.h>
-
+#include <QMimeData>
 class KIconButton;
 class QLineEdit;
 class QDragObject;
@@ -38,18 +38,18 @@ class KColorCombo2;
   * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
   * @author S�astien Lao�t
   */
-class SingleSelectionKIconView : public K3IconView
+class SingleSelectionKIconView : public KListWidget
 {
   Q_OBJECT
   public:
-	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, WFlags f = 0);
-	QDragObject* dragObject();
-	QIconViewItem* selectedItem() { return m_lastSelected; }
+	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
+	QMimeData* dragObject();
+	QListWidgetItem* selectedItem() { return m_lastSelected; }
   private slots:
-	void slotSelectionChanged(QIconViewItem *item);
+	void slotSelectionChanged(QListWidgetItem *item);
 	void slotSelectionChanged();
   private:
-	QIconViewItem *m_lastSelected;
+	QListWidgetItem *m_lastSelected;
 };
 
 /** Struct to store default properties of a new basket.
@@ -92,7 +92,7 @@ class NewBasketDialog : public KDialog
 	KIconButton                *m_icon;
 	QLineEdit                  *m_name;
 	KColorCombo2               *m_backgroundColor;
-	K3IconView                  *m_templates;
+	KListWidget                  *m_templates;
 	QComboBox                  *m_createIn;
 	QMap<int, Basket*>          m_basketsMap;
 };

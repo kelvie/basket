@@ -47,7 +47,7 @@
 #include <kglobalaccel.h>
 #include <kapplication.h>
 #include <kshortcutsdialog.h>
-#include <dcopclient.h>
+#include <QDBusConnection>
 #include <kdebug.h>
 #include <iostream>
 #include <kshortcutsdialog.h>
@@ -82,7 +82,7 @@ const int BNPView::c_delayTooltipTime = 275;
 
 BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 				 KActionCollection *actionCollection, BasketStatusBar *bar)
-	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
+	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent), m_actLockBasket(0), m_actPassBasket(0),
 	m_loading(true), m_newBasketPopup(false), m_firstShow(true),
 	m_regionGrabber(0), m_passiveDroppedSelection(0), m_passivePopup(0), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
@@ -93,8 +93,8 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	Global::bnpView = this;
 
 	// Needed when loading the baskets:
-	Global::globalAccel       = new KGlobalAccel(this); // FIXME: might be null (KPart case)!
-	Global::backgroundManager = new BackgroundManager();
+// TO DO add to KAction with  setGlobalShortcut()	Global::globalAccel       = new KGlobalAccel(this); // FIXME: might be null (KPart case)!
+// TO DO AS UPPER	Global::backgroundManager = new BackgroundManager();
 
 	setupGlobalShortcuts();
 	initialize();
@@ -207,7 +207,7 @@ void BNPView::addWelcomeBaskets()
 	QStringList possiblePaths;
 	if (QString(KGlobal::locale()->encoding()) == QString("UTF-8")) { // Welcome baskets are encoded in UTF-8. If the system is not, then use the English version:
 		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + KGlobal::locale()->language() + ".baskets"));
-		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + QStringList::split("_", KGlobal::locale()->language())[0] + ".baskets"));
+		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + (KGlobal::locale()->language().split("_"))[0] + ".baskets"));
 	}
 	possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_en_US.baskets"));
 

@@ -122,8 +122,8 @@ void KIconDialog::init()
 
     connect(d->ui->browseButton, SIGNAL(clicked()), SLOT(slotBrowse()));
     connect(d->ui->listBox, SIGNAL(highlighted(int)), SLOT(slotContext(int)));
-    connect(d->ui->iconCanvas, SIGNAL(executed(QIconViewItem *)), SLOT(slotOk()));
-    connect(d->ui->iconCanvas, SIGNAL(returnPressed(QIconViewItem *)), SLOT(slotOk()));
+    connect(d->ui->iconCanvas, SIGNAL(executed(QListWidgetItem *)), SLOT(slotOk()));
+    connect(d->ui->iconCanvas, SIGNAL(returnPressed(QListWidgetItem *)), SLOT(slotOk()));
     connect(d->ui->iconCanvas, SIGNAL(startLoading(int)), SLOT(slotStartLoading(int)));
     connect(d->ui->iconCanvas, SIGNAL(progress(int)), SLOT(slotProgress(int)));
     connect(d->ui->iconCanvas, SIGNAL(finished()), SLOT(slotFinished()));

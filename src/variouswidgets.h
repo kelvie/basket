@@ -30,7 +30,7 @@
 
 class QLineEdit;
 class K3IconViewItem;
-class QIconViewItem;
+class QListWidgetItem;
 
 class Basket;
 
@@ -114,7 +114,7 @@ class IconSizeDialog : public KDialog
   protected slots:
 	void slotCancel();
 	void slotSelectionChanged();
-	void choose(QIconViewItem*);
+	void choose(QListWidgetItem*);
   private:
 	K3IconViewItem *m_size16;
 	K3IconViewItem *m_size22;
