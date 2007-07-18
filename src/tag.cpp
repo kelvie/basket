@@ -719,7 +719,7 @@ IndentedMenuItem::~IndentedMenuItem()
 {
 }
 
-void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h)
+void IndentedMenuItem::paint(QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h)
 {
 	QPen  pen  = painter->pen();
 	QFont font = painter->font();
@@ -788,7 +788,7 @@ StateMenuItem::~StateMenuItem()
 {
 }
 
-void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h)
+void StateMenuItem::paint(QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h)
 {
 	QPen  pen  = painter->pen();
 	QFont font = painter->font();
@@ -849,7 +849,7 @@ QSize StateMenuItem::sizeHint()
 	return QSize(iconSize + iconMargin() + textSize.width(), textSize.height());
 }
 
-QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
+QIconSet StateMenuItem::checkBoxIconSet(bool checked, QPalette cg)
 {
 	int width  = kapp->style().pixelMetric(QStyle::PM_IndicatorWidth,  0);
 	int height = kapp->style().pixelMetric(QStyle::PM_IndicatorHeight, 0);
@@ -862,7 +862,7 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	pixmap.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	QPainter painter(&pixmap);
 	int style = QStyle::Style_Enabled | QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
-	QColor background = cg.color(QColorGroup::Background);
+	QColor background = cg.color(QPalette::Background);
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
@@ -871,7 +871,7 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	pixmapHover.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	painter.begin(&pixmapHover);
 	style |= QStyle::Style_MouseOver;
-	cg.setColor(QColorGroup::Background, KGlobalSettings::highlightColor());
+	cg.setColor(QPalette::Background, KGlobalSettings::highlightColor());
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
@@ -880,7 +880,7 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	pixmapDisabled.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	painter.begin(&pixmapDisabled);
 	style = /*QStyle::Style_Enabled | */QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
-	cg.setColor(QColorGroup::Background, background);
+	cg.setColor(QPalette::Background, background);
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
@@ -890,7 +890,7 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	return iconSet;
 }
 
-QIconSet StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
+QIconSet StateMenuItem::radioButtonIconSet(bool checked, QPalette cg)
 {
 	int width  = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorWidth,  0);
 	int height = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorHeight, 0);
@@ -923,7 +923,7 @@ QIconSet StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
 	painter.begin(&pixmapHover);
 	//kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
 	style |= QStyle::Style_MouseOver;
-	cg.setColor(QColorGroup::Background, KGlobalSettings::highlightColor());
+	cg.setColor(QPalette::Background, KGlobalSettings::highlightColor());
 	kapp->style().drawControl(QStyle::CE_RadioButton, &painter, &rb, rect, cg, style);
 	painter.end();
 	pixmapHover.setMask(pixmapHover.createHeuristicMask());

@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <config.h>
+/*FIXME 1.5 #include <config.h>*/
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qhbox.h>
-#include <qvbox.h>
+/* FIXME 1.5 #include <qhbox.h>
+#include <qvbox.h>*/
 #include <qtabwidget.h>
 #include <qgroupbox.h>
 #include <qlabel.h>
@@ -36,12 +36,12 @@
 #include <qwhatsthis.h>
 #include <qbuttongroup.h>
 #include <qradiobutton.h>
-#include <qvbuttongroup.h>
+/* FIXME 1.5 #include <qvbuttongroup.h>*/
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kmimetype.h>
 #include <kstandarddirs.h>
-#include <kgpgme.h>
+/*FIXME 1.5 #include <kgpgme.h>*/
 #include <kdebug.h>
 #include <qdatetime.h>
 
@@ -50,7 +50,7 @@
 #include "settings.h"
 #include "variouswidgets.h"
 #include "note.h"
-
+#include "basketfactory.h"
 /** Settings */
 
 // General:                                      // TODO: Use this grouping everywhere!
@@ -124,7 +124,7 @@ void Settings::loadConfig()
 	loadLinkLook(LinkLook::launcherLook,    "Launcher Look",     defaultLauncherLook   );
 
 	KConfig* config = Global::config();
-	config->setGroup("Main window"); // TODO: Split with a "System tray icon" group !
+/* FIXME 1.5	config->setGroup("Main window"); // TODO: Split with a "System tray icon" group !
 	setTreeOnLeft(           config->readBoolEntry("treeOnLeft",           true)  );
 	setFilterOnTop(          config->readBoolEntry("filterOnTop",          true)  );
 	setPlayAnimations(       config->readBoolEntry("playAnimations",       true)  );
@@ -196,7 +196,7 @@ void Settings::loadConfig()
 		config->writeEntry("Index",    "1");        // ... and the rich text toolbar is on the right of the main toolbar
 		config->setGroup("MainWindow Toolbar mainToolBar");
 		config->writeEntry("alreadySetToolbarSettings", true);
-	}
+	}*/
 }
 
 void Settings::saveConfig()
@@ -208,7 +208,7 @@ void Settings::saveConfig()
 	saveLinkLook(LinkLook::launcherLook,    "Launcher Look"    );
 
  KConfig* config = Global::config();
-	config->setGroup("Main window");
+/* FIXME 1.5	config->setGroup("Main window");
 	config->writeEntry( "treeOnLeft",           treeOnLeft()           );
 	config->writeEntry( "filterOnTop",          filterOnTop()          );
 	config->writeEntry( "playAnimations",       playAnimations()       );
@@ -267,7 +267,7 @@ void Settings::saveConfig()
 	config->writeEntry( "defImageY",         defImageY()         );
 	config->writeEntry( "defIconSize",       defIconSize()       );
 
-	config->sync();
+	config->sync();*/
 }
 
 void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook)
@@ -284,8 +284,8 @@ void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook 
 	bool    italic            = config->readBoolEntry(     "italic",      defaultLook.italic()     );
 	bool    bold              = config->readBoolEntry(     "bold",        defaultLook.bold()       );
 	QString underliningString = config->readEntry(         "underlining", defaultUnderliningString );
-	QColor  color             = config->readPropertyEntry( "color",       defaultLook.color()      ).asColor();
-	QColor  hoverColor        = config->readPropertyEntry( "hoverColor",  defaultLook.hoverColor() ).asColor();
+	QColor  color             = config->readPropertyEntry( "color",       defaultLook.color()      ).value<QColor>();
+	QColor  hoverColor        = config->readPropertyEntry( "hoverColor",  defaultLook.hoverColor() ).value<QColor>();
 	int     iconSize          = config->readNumEntry(      "iconSize",    defaultLook.iconSize()   );
 	QString previewString     = config->readEntry(         "preview",     defaultPreviewString     );
 
@@ -354,8 +354,8 @@ void Settings::setAutoBullet(bool yes)
 
 /** GeneralPage */
 
-typedef KGenericFactory<GeneralPage, QWidget> BasketFactory;
-K_EXPORT_COMPONENT_FACTORY(GeneralPage, BasketFactory("kcmbasket"))
+ typedef KGenericFactory<GeneralPage, QWidget> BasketFactory;
+ K_EXPORT_COMPONENT_FACTORY(GeneralPage, BasketFactory("kcmbasket"))
 
 GeneralPage::GeneralPage(QWidget *parent, const QStringList& args)
 : KCModule(BasketFactory::componentData(), parent, args) {

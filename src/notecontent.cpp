@@ -378,9 +378,9 @@ QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
 	QTextDocument richText(html(), note()->font());
 	richText.setWidth(width);
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
@@ -433,9 +433,9 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
 
 QPixmap LinkContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
@@ -446,9 +446,9 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 	int rectHeight = (textRect.height() + 2)*3/2;
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
 	QPixmap pixmap( qMin(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), qMin(height, rectHeight) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -460,17 +460,17 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 
 QPixmap FileContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
 QPixmap LauncherContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
@@ -478,9 +478,9 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette colorGroup(basket()->colorGroup());
+	colorGroup.setColor(QPalette::Text,       note()->textColor());
+	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
 	QPixmap pixmap( qMin(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), qMin(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
 	QPainter painter(&pixmap);
@@ -520,7 +520,7 @@ int TextContent::setWidthAndGetHeight(int width)
 		return 10; // Lazy loaded
 }
 
-void TextContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void TextContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	if (m_simpleRichText) {
 		width -= 1;
@@ -629,7 +629,7 @@ int HtmlContent::setWidthAndGetHeight(int width)
 		return 10; // Lazy loaded
 }
 
-void HtmlContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void HtmlContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	if (m_simpleRichText) {
 		width -= 1;
@@ -735,7 +735,7 @@ int ImageContent::setWidthAndGetHeight(int width)
 	}
 }
 
-void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	width -= 1;
 //	KPixmap pixmap = m_pixmap;
@@ -867,7 +867,7 @@ int AnimationContent::setWidthAndGetHeight(int /*width*/)
 	return  m_movie.framePixmap().height()  ; // TODO!!!
 }
 
-void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	/*width -= 1*/;
 //	DEBUG_WIN << "AnimationContent::paint()";
@@ -1004,7 +1004,7 @@ int FileContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void FileContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void FileContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
 {
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
@@ -1221,7 +1221,7 @@ int LinkContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void LinkContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void LinkContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
 {
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
@@ -1407,7 +1407,7 @@ int LauncherContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void LauncherContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void LauncherContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
 {
 	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
@@ -1527,7 +1527,7 @@ int ColorContent::setWidthAndGetHeight(int /*width*/) // We do not need width be
 	return rectHeight;
 }
 
-void ColorContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void ColorContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	// FIXME: Duplicate from setColor():
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
@@ -1814,7 +1814,7 @@ extern void drawGradient( QPainter *p, const QColor &colorTop, const QColor & co
 						  int x, int y, int w, int h,
 						  bool sunken, bool horz, bool flat  ); /*const*/
 
-void UnknownContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void UnknownContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	width -= 1;
 	painter->setPen(colorGroup.text());

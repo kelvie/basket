@@ -1284,8 +1284,8 @@ void Note::drawExpander(QPainter *painter, int x, int y, const QColor &backgroun
 	// If the current style is a KStyle, use it to draw the expander (plus or minus):
 	if (dynamic_cast<KStyle*>(&(kapp->style())) != NULL) {
 		// Set the 4 rounded corners background to background color:
-		QColorGroup cg(basket->colorGroup());
-		cg.setColor(QColorGroup::Base, background);
+		QPalette cg(basket->colorGroup());
+		cg.setColor(QPalette::Base, background);
 
 		// Fill the inside of the expander in white, typically:
 		QBrush brush(KGlobalSettings::baseColor());
@@ -1304,7 +1304,7 @@ void Note::drawExpander(QPainter *painter, int x, int y, const QColor &backgroun
 	} else {
 		int width  = EXPANDER_WIDTH;
 		int height = EXPANDER_HEIGHT;
-		const QColorGroup &cg = basket->colorGroup();
+		const QPalette &cg = basket->colorGroup();
 
 		// Fill white area:
 		painter->fillRect(x + 1, y + 1, width - 2, height - 2, cg.base());
@@ -1979,15 +1979,15 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	}
 
 	// Determine the colors (for the richText drawing) and the text color (for the tags arrow too):
-	QColorGroup cg(basket()->colorGroup());
-	cg.setColor(QColorGroup::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
-	cg.setColor(QColorGroup::Background, bgColor);
+	QPalette cg(basket()->colorGroup());
+	cg.setColor(QPalette::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
+	cg.setColor(QPalette::Background, bgColor);
 	if (isSelected())
-		cg.setColor(QColorGroup::Text, KGlobalSettings::highlightedTextColor());
+		cg.setColor(QPalette::Text, KGlobalSettings::highlightedTextColor());
 
 	// Draw the Tags Arrow:
 	if (hovered) {
-		QColor textColor = cg.color(QColorGroup::Text);
+		QColor textColor = cg.color(QPalette::Text);
 		QColor light     = Tools::mixColor(textColor, bgColor);
 		QColor mid       = Tools::mixColor(textColor, light);
 		painter2.setPen(light);//QPen(basket()->colorGroup().dark().light(150)));
@@ -1997,7 +1997,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 		painter2.setPen(textColor);//QPen(basket()->colorGroup().foreground()));
 		painter2.drawPoint(xIcon + 2, yIcon + 8);
 	} else if (m_haveInvisibleTags) {
-		painter2.setPen(cg.color(QColorGroup::Text)/*QPen(basket()->colorGroup().foreground())*/);
+		painter2.setPen(cg.color(QPalette::Text)/*QPen(basket()->colorGroup().foreground())*/);
 		painter2.drawPoint(xIcon,     yIcon + 7);
 		painter2.drawPoint(xIcon + 2, yIcon + 7);
 		painter2.drawPoint(xIcon + 4, yIcon + 7);

@@ -83,7 +83,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual void exportToHTML(HTMLExporter *exporter, int indent)    = 0; /// << Export the note in an HTML file.
 	virtual QString cssClass()                                       = 0; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
-	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
+	virtual void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
 	virtual bool    loadFromFile(bool /*lazyLoad*/)     { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
 	virtual bool    finishLazyLoad()                    { return false; } /// << Load what was not loaded by loadFromFile() if it was lazy-loaded
 	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
@@ -163,7 +163,7 @@ class TextContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -206,7 +206,7 @@ class HtmlContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -249,7 +249,7 @@ class ImageContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -298,7 +298,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -342,7 +342,7 @@ class FileContent : public QObject, public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	void    linkLookChanged();
@@ -428,7 +428,7 @@ class LinkContent : public QObject, public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
 	void    linkLookChanged();
@@ -491,7 +491,7 @@ class LauncherContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();
@@ -541,7 +541,7 @@ class ColorContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
 	QString editToolTipText();
@@ -582,7 +582,7 @@ class UnknownContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();

@@ -34,12 +34,12 @@
 #include <QListWidgetItem>
  /// NEW:
 
-class QWidgetStack;
+class QStackedWidget;
 class QDomDocument;
 class QDomElement;
 class KToggleAction;
 class KPassivePopup;
-class QPopupMenu;
+class QMenu;
 class KMenu;
 class KTar;
 
@@ -54,6 +54,7 @@ class BasketStatusBar;
 class Tag;
 class State;
 class Note;
+class BasketFactory;
 
 class BNPView : public QSplitter, virtual public BasketDcopInterface
 {
@@ -282,7 +283,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		BasketListViewItem* appendBasket(Basket *basket, BasketListViewItem *parentItem); // Public only for class Archive
 
 		Basket* basketForFolderName(const QString &folderName);
-		QPopupMenu* popupMenu(const QString &menuName);
+		QMenu* popupMenu(const QString &menuName);
 		bool isPart();
 		bool isMainWindowActive();
 		void showMainWindow();
@@ -333,7 +334,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 
 	private:
 		K3ListView    *m_tree;
-		QWidgetStack *m_stack;
+		QStackedWidget *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;
 		bool          m_firstShow;

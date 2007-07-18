@@ -22,6 +22,7 @@
 #define LINKLABEL_H
 
 #include <qframe.h>
+#include <QPalette>
 
 class QString;
 class KUrl;
@@ -151,8 +152,8 @@ class LinkDisplay
 	int     width()    const { return m_width;    }                              /// << @return the width of the link. It is never less than minWidth()!
 	int     height()   const { return m_height;   }                              /// << @return the height if the link after having set it a width.
 	// And finaly, use it:
-	void    paint(QPainter *painter, int x, int y, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const; /// << Draw the link on a painter. Set textColor to be !isValid() to use the LinkLook color. Otherwise it will use this color!
-	QPixmap feedbackPixmap(int width, int height, const QColorGroup &colorGroup, bool isDefaultColor); /// << @return the pixmap to put under the cursor while dragging this object.
+	void    paint(QPainter *painter, int x, int y, int width, int height, const QPalette &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const; /// << Draw the link on a painter. Set textColor to be !isValid() to use the LinkLook color. Otherwise it will use this color!
+	QPixmap feedbackPixmap(int width, int height, const QPalette &colorGroup, bool isDefaultColor); /// << @return the pixmap to put under the cursor while dragging this object.
 	// Eventually get some information about the link display:
 	bool    iconButtonAt(const QPoint &pos) const;                               /// << @return true if the icon button is under point @p pos.
 	QRect   iconButtonRect() const;                                              /// << @return the rectangle of the icon button.

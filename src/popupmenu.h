@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,19 +21,19 @@
 #ifndef POPUPMENU_H
 #define POPUPMENU_H
 
-class QPopupMenu;
+class QMenu;
 class QRect;
 
-/** QPopupMenu/KMenu doesn't provide metod to exec a menu
+/** QMenu/KMenu doesn't provide metod to exec a menu
   * at a given rectangle !
   * eg, popup at bottom of a rectangle, and at top if not possible...
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laoï¿½t
   */
 namespace PopupMenu
 {
 	/** Show the popup menu centered into rect.
 	  */
-	void execAtRectCenter(QPopupMenu &menu, const QRect &rect);
+	void execAtRectCenter(QMenu &menu, const QRect &rect);
 
 	/** Show the popup menu at left-bottom of rect, or at right-bottom
 	  * if not possible (not enought place).
@@ -42,7 +42,7 @@ namespace PopupMenu
 	  * If center is true, it will try to horizontaly center the popup with
 	  * rect, so it will try two positions : bottom center and then top center.
 	  */
-	void execAtRectBottom(QPopupMenu &menu, const QRect &rect, bool centered = false);
+	void execAtRectBottom(QMenu &menu, const QRect &rect, bool centered = false);
 
 	/** Idem execAtRectBottom but on the right or left sides,
 	  * prior aligned with the top of the rect, and at the bottom
@@ -50,7 +50,7 @@ namespace PopupMenu
 	  * If center is true, it will try to vertically center the popup with
 	  * rect, so it will try two positions : right center and then left center.
 	  */
-	void execAtRectRight(QPopupMenu &menu, const QRect &rect, bool centered = false);
+	void execAtRectRight(QMenu &menu, const QRect &rect, bool centered = false);
 }
 
 /** Test window of PopupMenu methods.
@@ -59,13 +59,13 @@ namespace PopupMenu
   * Click the window for more explications.
   * Resize it to test particular cases.
   * (Comment the class, if it isn't done yet to do not compile it :-) ).
-  * @author Sébastien Laoût
+  * @author Sï¿½astien Laoï¿½t
   */
 
 /*****
 
 #include <qwidget.h>
-#include <qpopupmenu.h>
+#include <QMenu>
 #include <qpainter.h>
 #include <qpen.h>
 
@@ -82,7 +82,7 @@ c l a s s   P o p u p M e n u T e s t   :   p u b l i c   Q W i d g e t
 
 	void mousePressEvent(QMouseEvent *event)
 	{
-		QPopupMenu menu;
+		QMenu menu;
 		QRect rect( mapToGlobal(QPoint(0,0)), size() );
 
 		menu.insertItem("A test of popup menu!");

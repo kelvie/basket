@@ -87,7 +87,7 @@ class TagListViewItem : public QListViewItem
 	TagListViewItem* parent() const; // Reimplemented to cast the return value
 	int width(const QFontMetrics &fontMetrics, const QListWidgetItem *listView, int column) const;
 	void setup();
-	void paintCell(QPainter *painter, const QColorGroup &colorGroup, int column, int width, int align);
+	void paintCell(QPainter *painter, const QPalette &colorGroup, int column, int width, int align);
 
   private:
 	TagCopy   *m_tagCopy;

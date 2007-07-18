@@ -52,6 +52,7 @@ class LinkLook;
 class LinkLookEditWidget;
 class RunCommandRequester;
 class IconSizeCombo;
+class BasketFactory;
 
 class GeneralPage : public KCModule
 {

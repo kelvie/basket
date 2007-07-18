@@ -427,7 +427,7 @@ void LinkDisplay::setWidth(int width)
   *       unless [the LinkLook !color.isValid() and it does not useLinkColor()] or [@p isDefaultColor is false]: in this case it will use @p colorGroup.text().
   *       It will draw the button if @p isIconButtonHovered.
   */
-void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QColorGroup &colorGroup,
+void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QPalette &colorGroup,
                         bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const
 {
 	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
@@ -468,7 +468,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_title);
 }
 
-QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QColorGroup &colorGroup, bool isDefaultColor)
+QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &colorGroup, bool isDefaultColor)
 {
 	int theWidth  = qMin(width, maxWidth());
 	int theHeight = qMin(height, heightForWidth(theWidth));

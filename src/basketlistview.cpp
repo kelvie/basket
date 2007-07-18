@@ -416,7 +416,7 @@ int BasketListViewItem::countHiddenChildsFound()
 	return countChildsFound();
 }
 
-void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGroup*/, int /*column*/, int width, int /*align*/)
+void BasketListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGroup*/, int /*column*/, int width, int /*align*/)
 {
 	// Workaround a Qt bug:
 	// When the splitter is moved to hide the tree view and then the application is restarted,

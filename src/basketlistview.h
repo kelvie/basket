@@ -50,7 +50,7 @@ class BasketListViewItem : public QListWidget
 		void ensureVisible();
 		bool isShown();
 		bool isCurrentBasket();
-		void paintCell(QPainter *painter, const QColorGroup &colorGroup, int column, int width, int align);
+		void paintCell(QPainter *painter, const QPalette &colorGroup, int column, int width, int align);
 		QString escapedName(const QString &string);
 		///
 		QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);

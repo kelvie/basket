@@ -35,7 +35,7 @@
 #include <qbuttongroup.h>
 #include <qvgroupbox.h>
 #include <kguiitem.h>
-#include <qpopupmenu.h>
+#include <QMenu>
 #include <qtextedit.h>
 #include <qlayout.h>
 #include <qlabel.h>

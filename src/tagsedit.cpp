@@ -217,7 +217,7 @@ void TagListViewItem::setup()
 	repaint();
 }
 
-void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGroup*/, int /*column*/, int width, int /*align*/)
+void TagListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGroup*/, int /*column*/, int width, int /*align*/)
 {
 	bool withIcon = m_stateCopy || (m_tagCopy && !m_tagCopy->isMultiState());
 	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());

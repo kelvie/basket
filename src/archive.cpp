@@ -512,7 +512,7 @@ void Archive::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 			QString folderName = element.attribute("folderName");
 			if (!folderName.isEmpty()) {
 				// Find a folder name:
-				QString newFolderName = BasketFactory::newFolderName();
+/* FIXME 1.5				QString newFolderName = BasketFactory::newFolderName();
 				folderMap[folderName] = newFolderName;
 				// Reserve the folder name:
 				QDir dir;
@@ -523,7 +523,7 @@ void Archive::renameBasketFolder(const QString &extractionFolder, QDomNode &bask
 //				}
 				// Child baskets:
 				QDomNode node = element.firstChild();
-				renameBasketFolder(extractionFolder, node, folderMap, mergedStates);
+				renameBasketFolder(extractionFolder, node, folderMap, mergedStates);*/
 			}
 		}
 		n = n.nextSibling();

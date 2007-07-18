@@ -40,7 +40,7 @@ class QWidget;
 class QPoint;
 class KAction;
 class KToggleAction;
-class QPopupMenu;
+class QMenu;
 class QSignalMapper;
 class QStringList;
 class QToolTipGroup;

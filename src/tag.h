@@ -29,6 +29,7 @@
 #include <kaction.h>
 #include <kshortcut.h>
 #include <QMenu>
+#include <QPalette>
 
 class QPainter;
 
@@ -166,7 +167,7 @@ class IndentedMenuItem : public QMenu
   public:
 	IndentedMenuItem(const QString &text, const QString &icon = "", const QString &shortcut = "");
 	~IndentedMenuItem();
-	void paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h);
+	void paint(QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h);
 	QSize sizeHint();
 	bool fullSpan() { return true; }
   private:
@@ -183,7 +184,7 @@ class StateMenuItem : public QMenu
   public:
 	StateMenuItem(State *state, const QString &shortcut, bool withTagName = false);
 	~StateMenuItem();
-	void paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h);
+	void paint(QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h);
 	QSize sizeHint();
 	bool fullSpan() { return true; }
   private:
@@ -191,8 +192,8 @@ class StateMenuItem : public QMenu
 	QString  m_name;
 	QString  m_shortcut;
   public:
-	static QIcon checkBoxIconSet(bool checked, QColorGroup cg);
-	static QIcon radioButtonIconSet(bool checked, QColorGroup cg);
+	static QIcon checkBoxIconSet(bool checked, QPalette cg);
+	static QIcon radioButtonIconSet(bool checked, QPalette cg);
 	static int iconMargin() { return 5; }
 };
 

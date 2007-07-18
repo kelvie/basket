@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qpopupmenu.h>
+#include <QMenu>
 #include <klocale.h>
 
 #include <iostream>
@@ -181,9 +181,9 @@ void FocusedTextEdit::enterEvent(QEvent *event)
 	KTextEdit::enterEvent(event);
 }
 
-QPopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
+QMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 {
-	QPopupMenu *menu = KTextEdit::createPopupMenu(pos);
+	QMenu *menu = KTextEdit::createPopupMenu(pos);
 
 	int index = 0;
 	int id = 0;
