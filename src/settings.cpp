@@ -276,8 +276,7 @@ void Settings::saveConfig()
 
 void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook)
 {
- KConfig* config = Global::config();
-	config->setGroup(name);
+ KConfigGroup config = KGlobal::config()->group(name);
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
 	QString defaultUnderliningString = underliningStrings[defaultLook.underlining()];
@@ -285,13 +284,13 @@ void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook 
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
 	QString defaultPreviewString = previewStrings[defaultLook.preview()];
 
-	bool    italic            = config->readBoolEntry(     "italic",      defaultLook.italic()     );
-	bool    bold              = config->readBoolEntry(     "bold",        defaultLook.bold()       );
-	QString underliningString = config->readEntry(         "underlining", defaultUnderliningString );
-	QColor  color             = config->readPropertyEntry( "color",       defaultLook.color()      ).value<QColor>();
-	QColor  hoverColor        = config->readPropertyEntry( "hoverColor",  defaultLook.hoverColor() ).value<QColor>();
-	int     iconSize          = config->readNumEntry(      "iconSize",    defaultLook.iconSize()   );
-	QString previewString     = config->readEntry(         "preview",     defaultPreviewString     );
+	bool    italic            = config.readEntry(     "italic",      defaultLook.italic()     );
+	bool    bold              = config.readEntry(     "bold",        defaultLook.bold()       );
+	QString underliningString = config.readEntry(         "underlining", defaultUnderliningString );
+	QColor  color             = config.readEntry( "color",       QVariant(defaultLook.color())      ).value<QColor>();
+	QColor  hoverColor        = config.readEntry( "hoverColor",  QVariant(defaultLook.hoverColor()) ).value<QColor>();
+	int     iconSize          = config.readEntry(      "iconSize",    defaultLook.iconSize()   );
+	QString previewString     = config.readEntry(         "preview",     defaultPreviewString     );
 
 	int underlining = 0;
 	if      (underliningString == underliningStrings[1]) underlining = 1;
@@ -308,8 +307,7 @@ void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook 
 
 void Settings::saveLinkLook(LinkLook *look, const QString &name)
 {
- KConfig* config = Global::config();
-	config->setGroup(name);
+ KConfigGroup config = KGlobal::config()->group(name);
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
 	QString underliningString = underliningStrings[look->underlining()];
@@ -317,13 +315,13 @@ void Settings::saveLinkLook(LinkLook *look, const QString &name)
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
 	QString previewString = previewStrings[look->preview()];
 
-	config->writeEntry( "italic",      look->italic()     );
-	config->writeEntry( "bold",        look->bold()       );
-	config->writeEntry( "underlining", underliningString  );
-	config->writeEntry( "color",       look->color()      );
-	config->writeEntry( "hoverColor",  look->hoverColor() );
-	config->writeEntry( "iconSize",    look->iconSize()   );
-	config->writeEntry( "preview",     previewString      );
+	config.writeEntry( "italic",      look->italic()     );
+	config.writeEntry( "bold",        look->bold()       );
+	config.writeEntry( "underlining", underliningString  );
+	config.writeEntry( "color",       look->color()      );
+	config.writeEntry( "hoverColor",  look->hoverColor() );
+	config.writeEntry( "iconSize",    look->iconSize()   );
+	config.writeEntry( "preview",     previewString      );
 }
 
 void Settings::setBigNotes(bool big)
