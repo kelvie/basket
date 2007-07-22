@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <qdir.h>
+#include <QString>
 #include <klocale.h>
 #include <kmessagebox.h>
 

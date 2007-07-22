@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,13 +21,14 @@
 #ifndef XMLWORKXMLWORK_H
 #define XMLWORKXMLWORK_H
 
-class QString;
-class QDomDocument;
-class QDomElement;
+//class QString;
+//class QDomDocument;
+//class QDomElement;
 
 /** All related functions to manage XML files and trees
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
+
 namespace XMLWork
 {
 	// Manage XML files :

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@ class QString;
 class Basket;
 
 /** Methods to create various baskets (mkdir, init the properties and load it).
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 namespace BasketFactory
 {

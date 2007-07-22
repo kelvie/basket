@@ -20,10 +20,11 @@
 
 #ifndef TOOLS_H
 #define TOOLS_H
+
 #include <QVector>
-class QString;
-class QColor;
-class QMimeSource;
+#include <QString>
+#include <QColor>
+#include <QMimeSource>
 
 class StopWatch
 {

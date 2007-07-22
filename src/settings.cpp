@@ -23,6 +23,9 @@
 #include <qlineedit.h>
 /* FIXME 1.5 #include <qhbox.h>
 #include <qvbox.h>*/
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
 #include <qtabwidget.h>
 #include <qgroupbox.h>
 #include <qlabel.h>
@@ -50,6 +53,7 @@
 #include "settings.h"
 #include "variouswidgets.h"
 #include "note.h"
+#include "kgenericfactory.h"
 #include "basketfactory.h"
 /** Settings */
 
@@ -359,107 +363,107 @@ void Settings::setAutoBullet(bool yes)
 
 GeneralPage::GeneralPage(QWidget *parent, const QStringList& args)
 : KCModule(BasketFactory::componentData(), parent, args) {
-{
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
-	QHBoxLayout *hLay;
-	QLabel      *label;
-	HelpLabel   *hLabel;
+//{
+// FIXME 1.5	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+//	QHBoxLayout *hLay;
+//	QLabel      *label;
+//	HelpLabel   *hLabel;
+//
+//	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
+//	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
-	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
-	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
+//	// Basket Tree Position:
+//	m_treeOnLeft = new QComboBox(this);
+//	m_treeOnLeft->insertItem(i18n("On left"));
+//	m_treeOnLeft->insertItem(i18n("On right"));
+//	label = new QLabel(m_treeOnLeft, i18n("&Basket tree position:"), this);
+//	gl->addWidget(label,        0, 0);
+//	gl->addWidget(m_treeOnLeft, 0, 1);
+//	connect( m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()) );
 
-	// Basket Tree Position:
-	m_treeOnLeft = new QComboBox(this);
-	m_treeOnLeft->insertItem(i18n("On left"));
-	m_treeOnLeft->insertItem(i18n("On right"));
-	label = new QLabel(m_treeOnLeft, i18n("&Basket tree position:"), this);
-	gl->addWidget(label,        0, 0);
-	gl->addWidget(m_treeOnLeft, 0, 1);
-	connect( m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()) );
+//	// Filter Bar Position:
+//	m_filterOnTop = new QComboBox(this);
+//	m_filterOnTop->insertItem(i18n("On top"));
+//	m_filterOnTop->insertItem(i18n("On bottom"));
+//	label = new QLabel(m_filterOnTop, i18n("&Filter bar position:"), this);
+//	gl->addWidget(label,         1, 0);
+//	gl->addWidget(m_filterOnTop, 1, 1);
+//	connect( m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()) );
 
-	// Filter Bar Position:
-	m_filterOnTop = new QComboBox(this);
-	m_filterOnTop->insertItem(i18n("On top"));
-	m_filterOnTop->insertItem(i18n("On bottom"));
-	label = new QLabel(m_filterOnTop, i18n("&Filter bar position:"), this);
-	gl->addWidget(label,         1, 0);
-	gl->addWidget(m_filterOnTop, 1, 1);
-	connect( m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()) );
+//	// Use Baloons to Report Results of Global Actions:
+//	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+//	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
+//	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+//	hLabel = new HelpLabel(
+//		i18n("What are global actions?"),
+//		("<p>" + i18n("You can configure global shortcuts to do some actions without having to show the main window. For instance, you can paste the clipboard content, take a color from "
+//		              "a point of the screen, etc. You can also use the mouse scroll wheel over the system tray icon to change the current basket. Or use the middle mouse button "
+//		              "on that icon to paste the current selection.") + "</p>" +
+//		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.") + "</p>" +
+//		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>")
+//			.arg(kapp->aboutData()->programName()),
+//		this);
+//	hLay->addWidget(m_usePassivePopup);
+//	hLay->addWidget(hLabel);
+//	hLay->addStretch();
+//	layout->addLayout(hLay);
+//
+//	// System Tray Icon:
+//	QGroupBox *gbSys = new QGroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
+//	layout->addWidget(gbSys);
+//	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialog::spacingHint());
+//
+//	// Dock in System Tray:
+//	m_useSystray = new QCheckBox(i18n("&Dock in system tray"), gbSys);
+//	sysLay->addWidget(m_useSystray);
+//	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	// Use Baloons to Report Results of Global Actions:
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
-	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
-	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-	hLabel = new HelpLabel(
-		i18n("What are global actions?"),
-		("<p>" + i18n("You can configure global shortcuts to do some actions without having to show the main window. For instance, you can paste the clipboard content, take a color from "
-		              "a point of the screen, etc. You can also use the mouse scroll wheel over the system tray icon to change the current basket. Or use the middle mouse button "
-		              "on that icon to paste the current selection.") + "</p>" +
-		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.") + "</p>" +
-		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>")
-			.arg(kapp->aboutData()->programName()),
-		this);
-	hLay->addWidget(m_usePassivePopup);
-	hLay->addWidget(hLabel);
-	hLay->addStretch();
-	layout->addLayout(hLay);
+//	m_systray = new QWidget(gbSys);
+//	QVBoxLayout *subSysLay = new QVBoxLayout(m_systray, /*margin=*/0, KDialog::spacingHint());
+//	sysLay->addWidget(m_systray);
+//
+//	// Show Current Basket Icon in System Tray Icon:
+//	m_showIconInSystray = new QCheckBox(i18n("&Show current basket icon in system tray icon"), m_systray);
+//	subSysLay->addWidget(m_showIconInSystray);
+//	connect(m_showIconInSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+//
+//	QGridLayout *gs = new QGridLayout(0, /*nRows=*/2, /*nCols=*/3);
+//	subSysLay->addLayout(gs);
+//	gs->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
+//
+//	// Hide Main Window when Mouse Goes out of it for Some Time:
+//	m_timeToHideOnMouseOut = new KIntNumInput(0, m_systray);
+//	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse leaves it for"), m_systray);
+//	m_timeToHideOnMouseOut->setRange(0, 600, 1, false);
+//	m_timeToHideOnMouseOut->setSuffix(i18n(" tenths of seconds"));
+//	gs->addWidget(m_hideOnMouseOut,       0, 0);
+//	gs->addWidget(m_timeToHideOnMouseOut, 0, 1);
+//	connect(m_hideOnMouseOut, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+//	connect(m_timeToHideOnMouseOut, SIGNAL(valueChanged (int)), this, SLOT(changed()));
+////	subSysLay->addWidget(
 
-	// System Tray Icon:
-	QGroupBox *gbSys = new QGroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
-	layout->addWidget(gbSys);
-	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialog::spacingHint());
-
-	// Dock in System Tray:
-	m_useSystray = new QCheckBox(i18n("&Dock in system tray"), gbSys);
-	sysLay->addWidget(m_useSystray);
-	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	m_systray = new QWidget(gbSys);
-	QVBoxLayout *subSysLay = new QVBoxLayout(m_systray, /*margin=*/0, KDialog::spacingHint());
-	sysLay->addWidget(m_systray);
-
-	// Show Current Basket Icon in System Tray Icon:
-	m_showIconInSystray = new QCheckBox(i18n("&Show current basket icon in system tray icon"), m_systray);
-	subSysLay->addWidget(m_showIconInSystray);
-	connect(m_showIconInSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-
-	QGridLayout *gs = new QGridLayout(0, /*nRows=*/2, /*nCols=*/3);
-	subSysLay->addLayout(gs);
-	gs->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
-
-	// Hide Main Window when Mouse Goes out of it for Some Time:
-	m_timeToHideOnMouseOut = new KIntNumInput(0, m_systray);
-	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse leaves it for"), m_systray);
-	m_timeToHideOnMouseOut->setRange(0, 600, 1, false);
-	m_timeToHideOnMouseOut->setSuffix(i18n(" tenths of seconds"));
-	gs->addWidget(m_hideOnMouseOut,       0, 0);
-	gs->addWidget(m_timeToHideOnMouseOut, 0, 1);
-	connect(m_hideOnMouseOut, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_timeToHideOnMouseOut, SIGNAL(valueChanged (int)), this, SLOT(changed()));
-//	subSysLay->addWidget(
-
-	// Show Main Window when Mouse Hovers over the System Tray Icon for Some Time:
-	m_timeToShowOnMouseIn = new KIntNumInput(0, m_systray);
-	m_showOnMouseIn  = new QCheckBox(i18n("Show &main window when mouse hovers over the system tray icon for"), m_systray);
-	m_timeToShowOnMouseIn->setRange(0, 600, 1, false);
-	m_timeToShowOnMouseIn->setSuffix(i18n(" tenths of seconds"));
-	gs->addWidget(m_showOnMouseIn,       1, 0);
-	gs->addWidget(m_timeToShowOnMouseIn, 1, 1);
-	connect(m_showOnMouseIn, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-	connect(m_timeToShowOnMouseIn, SIGNAL(valueChanged (int)), this, SLOT(changed()));
-
-	connect( m_hideOnMouseOut, SIGNAL(toggled(bool)), m_timeToHideOnMouseOut, SLOT(setEnabled(bool)) );
-	connect( m_showOnMouseIn,  SIGNAL(toggled(bool)), m_timeToShowOnMouseIn,  SLOT(setEnabled(bool)) );
-
-	connect( m_useSystray,     SIGNAL(toggled(bool)), m_systray,              SLOT(setEnabled(bool)) );
-
-	layout->insertStretch(-1);
-	load();
+//	// Show Main Window when Mouse Hovers over the System Tray Icon for Some Time:
+//	m_timeToShowOnMouseIn = new KIntNumInput(0, m_systray);
+//	m_showOnMouseIn  = new QCheckBox(i18n("Show &main window when mouse hovers over the system tray icon for"), m_systray);
+//	m_timeToShowOnMouseIn->setRange(0, 600, 1, false);
+//	m_timeToShowOnMouseIn->setSuffix(i18n(" tenths of seconds"));
+//	gs->addWidget(m_showOnMouseIn,       1, 0);
+//	gs->addWidget(m_timeToShowOnMouseIn, 1, 1);
+//	connect(m_showOnMouseIn, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+//	connect(m_timeToShowOnMouseIn, SIGNAL(valueChanged (int)), this, SLOT(changed()));
+//
+//	connect( m_hideOnMouseOut, SIGNAL(toggled(bool)), m_timeToHideOnMouseOut, SLOT(setEnabled(bool)) );
+//	connect( m_showOnMouseIn,  SIGNAL(toggled(bool)), m_timeToShowOnMouseIn,  SLOT(setEnabled(bool)) );
+//
+//	connect( m_useSystray,     SIGNAL(toggled(bool)), m_systray,              SLOT(setEnabled(bool)) );
+//
+//	layout->insertStretch(-1);
+//	load();
 }
 
 void GeneralPage::load()
 {
-	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
+/* FIXME 1.5	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
 	m_filterOnTop->setCurrentItem( (int)!Settings::filterOnTop() );
 
 	m_usePassivePopup->setChecked(Settings::usePassivePopup());
@@ -477,12 +481,12 @@ void GeneralPage::load()
 	m_timeToShowOnMouseIn->setValue(    Settings::timeToShowOnMouseIn()  );
 	m_timeToShowOnMouseIn->setEnabled(  Settings::showOnMouseIn()        );
 
-
+*/
 }
 
 void GeneralPage::save()
 {
-	Settings::setTreeOnLeft(           ! m_treeOnLeft->currentItem()    );
+/* FIXME 1.5	Settings::setTreeOnLeft(           ! m_treeOnLeft->currentItem()    );
 	Settings::setFilterOnTop(          ! m_filterOnTop->currentItem()   );
 
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()   );
@@ -492,7 +496,7 @@ void GeneralPage::save()
 	Settings::setShowOnMouseIn(        m_showOnMouseIn->isChecked()     );
 	Settings::setTimeToShowOnMouseIn(  m_timeToShowOnMouseIn->value()   );
 	Settings::setHideOnMouseOut(       m_hideOnMouseOut->isChecked()    );
-	Settings::setTimeToHideOnMouseOut( m_timeToHideOnMouseOut->value()  );
+	Settings::setTimeToHideOnMouseOut( m_timeToHideOnMouseOut->value()  );*/
 }
 
 void GeneralPage::defaults()
@@ -505,125 +509,125 @@ void GeneralPage::defaults()
 BasketsPage::BasketsPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
-	QHBoxLayout *hLay;
-	HelpLabel   *hLabel;
-
-	// Appearance:
-
-	QGroupBox *appearanceBox = new QGroupBox(3, Qt::Vertical, i18n("Appearance"), this);
-	layout->addWidget(appearanceBox);
-
-	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
-	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	m_showNotesToolTip = new QCheckBox(i18n("&Show tooltips in baskets"), appearanceBox);
-	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	m_bigNotes = new QCheckBox(i18n("&Big notes"), appearanceBox);
-	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	// Behavior:
-
-	QGroupBox *behaviorBox = new QGroupBox(5, Qt::Vertical, i18n("Behavior"), this);
-	layout->addWidget(behaviorBox);
-
-	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
-	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), behaviorBox);
-	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	QWidget *widget = new QWidget(behaviorBox);
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
-	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
-	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-
-	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
-	hLabel = new HelpLabel(
-		i18n("When does this apply?"),
-		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
-		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +
-		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
-		     "representing an empty checkbox and a checked box.") + "</p>" +
-		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
-		widget);
-	hLay->addWidget(m_exportTextTags);
-	hLay->addWidget(hLabel);
-	hLay->addStretch();
-
-	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
-	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
-	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
-	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
-	HelpLabel *helpV = new HelpLabel(
-		i18n("How to group a new note?"),
-		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
-		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
-		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
-		"Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
-		"Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"),
-		m_groupOnInsertionLineWidget);
-	hLayV->addWidget(m_groupOnInsertionLine);
-	hLayV->addWidget(helpV);
-	hLayV->insertStretch(-1);
-	layout->addWidget(m_groupOnInsertionLineWidget);
-	connect(m_groupOnInsertionLine, SIGNAL(stateChanged(int)), this, SLOT(changed()));
-
-	widget = new QWidget(behaviorBox);
-	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialog::spacingHint());
-	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
-
-	m_middleAction = new QComboBox(widget);
-	m_middleAction->insertItem( i18n("Do nothing")                    );
-	m_middleAction->insertItem( i18n("Paste clipboard")               );
-	m_middleAction->insertItem( i18n("Insert image note")             );
-	m_middleAction->insertItem( i18n("Insert link note")              );
-	m_middleAction->insertItem( i18n("Insert launcher note")          );
-	m_middleAction->insertItem( i18n("Insert color note")             );
-	m_middleAction->insertItem( i18n("Grab screen zone")              );
-	m_middleAction->insertItem( i18n("Insert color from screen")      );
-	m_middleAction->insertItem( i18n("Load note from file")           );
-	m_middleAction->insertItem( i18n("Import Launcher from KDE Menu") );
-	m_middleAction->insertItem( i18n("Import icon")                   );
-	QLabel *labelM = new QLabel(m_middleAction, i18n("&Shift+middle-click anywhere:"), widget);
-	ga->addWidget(labelM,                                          0, 0);
-	ga->addWidget(m_middleAction,                                  0, 1);
-	ga->addWidget(new QLabel(i18n("at cursor position"), widget),  0, 2);
-	connect( m_middleAction, SIGNAL(activated(int)), this, SLOT(changed()) );
-
-	// Protection:
-
-	QGroupBox *protectionBox = new QGroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
-	layout->addWidget(protectionBox);
-	widget = new QWidget(protectionBox);
-
-	// Re-Lock timeout configuration
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
-	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("A&utomatically lock protected baskets when closed for"), widget);
-	hLay->addWidget(m_enableReLockTimeoutMinutes);
-	m_reLockTimeoutMinutes = new KIntNumInput(widget);
-	m_reLockTimeoutMinutes->setMinValue(0);
-	m_reLockTimeoutMinutes->setSuffix(i18n(" minutes"));
-	hLay->addWidget(m_reLockTimeoutMinutes);
-	//label = new QLabel(i18n("minutes"), this);
-	//hLay->addWidget(label);
-	hLay->addStretch();
-//	layout->addLayout(hLay);
-	connect( m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this,                   SLOT(changed())        );
-	connect( m_reLockTimeoutMinutes,       SIGNAL(valueChanged(int)), this,                   SLOT(changed())        );
-	connect( m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)),     m_reLockTimeoutMinutes, SLOT(setEnabled(bool)) );
-
-#ifdef HAVE_LIBGPGME
-	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), protectionBox);
-//	hLay->addWidget(m_useGnuPGAgent);
-	connect( m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
-#endif
-
-	layout->insertStretch(-1);
-	load();
+// /* FIXME 1.5	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+// 	QHBoxLayout *hLay;
+// 	HelpLabel   *hLabel;
+// 
+// 	// Appearance:
+// 
+// 	QGroupBox *appearanceBox = new QGroupBox(3, Qt::Vertical, i18n("Appearance"), this);
+// 	layout->addWidget(appearanceBox);
+// 
+// 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
+// 	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	m_showNotesToolTip = new QCheckBox(i18n("&Show tooltips in baskets"), appearanceBox);
+// 	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	m_bigNotes = new QCheckBox(i18n("&Big notes"), appearanceBox);
+// 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	// Behavior:
+// 
+// 	QGroupBox *behaviorBox = new QGroupBox(5, Qt::Vertical, i18n("Behavior"), this);
+// 	layout->addWidget(behaviorBox);
+// 
+// 	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
+// 	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), behaviorBox);
+// 	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	QWidget *widget = new QWidget(behaviorBox);
+// 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
+// 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
+// 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// 
+// 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
+// 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
+// 	hLabel = new HelpLabel(
+// 		i18n("When does this apply?"),
+// 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
+// 		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +
+// 		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
+// 		     "representing an empty checkbox and a checked box.") + "</p>" +
+// 		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
+// 		widget);
+// 	hLay->addWidget(m_exportTextTags);
+// 	hLay->addWidget(hLabel);
+// 	hLay->addStretch();
+// 
+// 	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
+// 	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
+// 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
+// 	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
+// 	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
+// 	HelpLabel *helpV = new HelpLabel(
+// 		i18n("How to group a new note?"),
+// 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
+// 		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
+// 		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
+// 		"Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
+// 		"Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"),
+// 		m_groupOnInsertionLineWidget);
+// 	hLayV->addWidget(m_groupOnInsertionLine);
+// 	hLayV->addWidget(helpV);
+// 	hLayV->insertStretch(-1);
+// 	layout->addWidget(m_groupOnInsertionLineWidget);
+// 	connect(m_groupOnInsertionLine, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+// 
+// 	widget = new QWidget(behaviorBox);
+// 	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialog::spacingHint());
+// 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
+// 
+// 	m_middleAction = new QComboBox(widget);
+// 	m_middleAction->insertItem( i18n("Do nothing")                    );
+// 	m_middleAction->insertItem( i18n("Paste clipboard")               );
+// 	m_middleAction->insertItem( i18n("Insert image note")             );
+// 	m_middleAction->insertItem( i18n("Insert link note")              );
+// 	m_middleAction->insertItem( i18n("Insert launcher note")          );
+// 	m_middleAction->insertItem( i18n("Insert color note")             );
+// 	m_middleAction->insertItem( i18n("Grab screen zone")              );
+// 	m_middleAction->insertItem( i18n("Insert color from screen")      );
+// 	m_middleAction->insertItem( i18n("Load note from file")           );
+// 	m_middleAction->insertItem( i18n("Import Launcher from KDE Menu") );
+// 	m_middleAction->insertItem( i18n("Import icon")                   );
+// 	QLabel *labelM = new QLabel(m_middleAction, i18n("&Shift+middle-click anywhere:"), widget);
+// 	ga->addWidget(labelM,                                          0, 0);
+// 	ga->addWidget(m_middleAction,                                  0, 1);
+// 	ga->addWidget(new QLabel(i18n("at cursor position"), widget),  0, 2);
+// 	connect( m_middleAction, SIGNAL(activated(int)), this, SLOT(changed()) );
+// 
+// 	// Protection:
+// 
+// 	QGroupBox *protectionBox = new QGroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
+// 	layout->addWidget(protectionBox);
+// 	widget = new QWidget(protectionBox);
+// 
+// 	// Re-Lock timeout configuration
+// 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
+// 	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("A&utomatically lock protected baskets when closed for"), widget);
+// 	hLay->addWidget(m_enableReLockTimeoutMinutes);
+// 	m_reLockTimeoutMinutes = new KIntNumInput(widget);
+// 	m_reLockTimeoutMinutes->setMinValue(0);
+// 	m_reLockTimeoutMinutes->setSuffix(i18n(" minutes"));
+// 	hLay->addWidget(m_reLockTimeoutMinutes);
+// 	//label = new QLabel(i18n("minutes"), this);
+// 	//hLay->addWidget(label);
+// 	hLay->addStretch();
+// //	layout->addLayout(hLay);
+// 	connect( m_enableReLockTimeoutMinutes, SIGNAL(stateChanged(int)), this,                   SLOT(changed())        );
+// 	connect( m_reLockTimeoutMinutes,       SIGNAL(valueChanged(int)), this,                   SLOT(changed())        );
+// 	connect( m_enableReLockTimeoutMinutes, SIGNAL(toggled(bool)),     m_reLockTimeoutMinutes, SLOT(setEnabled(bool)) );
+// 
+// #ifdef HAVE_LIBGPGME
+// 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), protectionBox);
+// //	hLay->addWidget(m_useGnuPGAgent);
+// 	connect( m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+// #endif
+// 
+// 	layout->insertStretch(-1);
+// 	load();*/
 }
 
 void BasketsPage::load()
@@ -637,7 +641,7 @@ void BasketsPage::load()
 	m_exportTextTags->setChecked(Settings::exportTextTags());
 
 	m_groupOnInsertionLine->setChecked(Settings::groupOnInsertionLine());
-	m_middleAction->setCurrentItem(Settings::middleAction());
+	m_middleAction->setCurrentIndex(Settings::middleAction());
 
 	// The correctness of this code depends on the default of enableReLockTimeout
 	// being true - otherwise, the reLockTimeoutMinutes widget is not disabled properly.
@@ -666,7 +670,7 @@ void BasketsPage::save()
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
-	Settings::setMiddleAction(         m_middleAction->currentItem()       );
+	Settings::setMiddleAction(         m_middleAction->currentIndex()       );
 
 	Settings::setEnableReLockTimeout(  m_enableReLockTimeoutMinutes->isChecked());
 	Settings::setReLockTimeoutMinutes(m_reLockTimeoutMinutes->value());
@@ -685,18 +689,22 @@ void BasketsPage::defaults()
 NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing(KDialog::spacingHint());
 	QHBoxLayout *hLay;
 	QLabel      *label;
 
 	// Place of New Notes:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout(0L);
+	hLay->setMargin(0);
+	hLay->setSpacing(KDialog::spacingHint());
 	m_newNotesPlace = new QComboBox(this);
 	label = new QLabel(m_newNotesPlace, i18n("&Place of new notes:"), this);
-	m_newNotesPlace->insertItem(i18n("On top"));
-	m_newNotesPlace->insertItem(i18n("On bottom"));
-	m_newNotesPlace->insertItem(i18n("At current note"));
+	m_newNotesPlace->insertItem(m_newNotesPlace->count(),i18n("On top"));
+	m_newNotesPlace->insertItem(m_newNotesPlace->count(),i18n("On bottom"));
+	m_newNotesPlace->insertItem(m_newNotesPlace->count(),i18n("At current note"));
 	hLay->addWidget(label);
 	hLay->addWidget(m_newNotesPlace);
 	hLay->addStretch();
@@ -707,7 +715,9 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// New Images Size:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout(0L);
+	hLay->setMargin(0);
+	hLay->setSpacing(KDialog::spacingHint());
 	m_imgSizeX = new KIntNumInput(this);
 	m_imgSizeX->setMinValue(1);
 	m_imgSizeX->setMaxValue(4096);
@@ -734,12 +744,16 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// View File Content:
 
-	QVButtonGroup *buttonGroup = new QVButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
-	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
-	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
-	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
-	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
-	layout->addWidget(buttonGroup);
+	QButtonGroup *buttonGroup = new QButtonGroup(i18n("View Content of Added Files for the Following Types"), layout);
+	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         layout );
+	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          layout );
+	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), layout );
+	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              layout );
+	buttonGroup->addButton(m_viewTextFileContent);
+	buttonGroup->addButton(m_viewHtmlFileContent);
+	buttonGroup->addButton(m_viewImageFileContent);
+	buttonGroup->addButton(m_viewSoundFileContent);
+//	layout->addWidget(buttonGroup);
 	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewImageFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
@@ -751,7 +765,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 void NewNotesPage::load()
 {
-	m_newNotesPlace->setCurrentItem(Settings::newNotesPlace());
+	m_newNotesPlace->setCurrentIndex(Settings::newNotesPlace());
 
 	m_imgSizeX->setValue(Settings::defImageX());
 	m_imgSizeY->setValue(Settings::defImageY());
@@ -764,7 +778,7 @@ void NewNotesPage::load()
 
 void NewNotesPage::save()
 {
-	Settings::setNewNotesPlace(m_newNotesPlace->currentItem());
+	Settings::setNewNotesPlace(m_newNotesPlace->currentIndex());
 
 	Settings::setDefImageX(m_imgSizeX->value());
 	Settings::setDefImageY(m_imgSizeY->value());
@@ -793,14 +807,16 @@ void NewNotesPage::visualize()
 NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
+ 	layout->setMargin(0);
+	layout->setSpacing(KDialog::spacingHint());
 	QTabWidget *tabs = new QTabWidget(this);
 	layout->addWidget(tabs);
 
 	m_soundLook       = new LinkLookEditWidget(this, i18n("Conference audio record"),                         "sound",       tabs);
 	m_fileLook        = new LinkLookEditWidget(this, i18n("Annual report"),                                   "document",    tabs);
 	m_localLinkLook   = new LinkLookEditWidget(this, i18n("Home folder"),                                     "user-home", tabs);
-	m_networkLinkLook = new LinkLookEditWidget(this, "www.kde.org",             KMimeType::iconNameForURL("http://www.kde.org"), tabs);
+	m_networkLinkLook = new LinkLookEditWidget(this, "www.kde.org",             KIO::pixmapForUrl(KUrl("http://www.kde.org")), tabs);
 	m_launcherLook    = new LinkLookEditWidget(this, i18n("Launch %1").arg(kapp->aboutData()->programName()), "basket",      tabs);
 	tabs->addTab(m_soundLook,       i18n("&Sounds")       );
 	tabs->addTab(m_fileLook,        i18n("&Files")        );
@@ -841,11 +857,15 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
 	/* Applications page */
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
+ 	layout->setMargin(0);
+	layout->setSpacing(KDialog::spacingHint());
 
 	m_htmlUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
 	m_htmlProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
-	QHBoxLayout *hLayH = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayH = new QHBoxLayout(0L);
+ 	hLayH->setMargin(0);
+	hLayH->setSpacing(KDialog::spacingHint());
 	hLayH->insertSpacing(-1, 20);
 	hLayH->addWidget(m_htmlProg);
 	connect(m_htmlUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -853,7 +873,9 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_imageUseProg = new QCheckBox(i18n("Open &image notes with a custom application:"), this);
 	m_imageProg    = new RunCommandRequester("", i18n("Open image notes with:"), this);
-	QHBoxLayout *hLayI = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayI = new QHBoxLayout(0L);
+ 	hLayI->setMargin(0);
+	hLayI->setSpacing(KDialog::spacingHint());
 	hLayI->insertSpacing(-1, 20);
 	hLayI->addWidget(m_imageProg);
 	connect(m_imageUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -861,7 +883,9 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_animationUseProg = new QCheckBox(i18n("Open a&nimation notes with a custom application:"), this);
 	m_animationProg    = new RunCommandRequester("", i18n("Open animation notes with:"), this);
-	QHBoxLayout *hLayA = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayA = new QHBoxLayout(0L);
+ 	hLayA->setMargin(0);
+	hLayA->setSpacing(KDialog::spacingHint());
 	hLayA->insertSpacing(-1, 20);
 	hLayA->addWidget(m_animationProg);
 	connect(m_animationUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -869,7 +893,9 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_soundUseProg = new QCheckBox(i18n("Open so&und notes with a custom application:"), this);
 	m_soundProg    = new RunCommandRequester("", i18n("Open sound notes with:"), this);
-	QHBoxLayout *hLayS = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayS = new QHBoxLayout(0L);
+ 	hLayS->setMargin(0);
+	hLayS->setSpacing(KDialog::spacingHint());
 	hLayS->insertSpacing(-1, 20);
 	hLayS->addWidget(m_soundProg);
 	connect(m_soundUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -904,7 +930,9 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	layout->addSpacing(KDialog::spacingHint());
 
-	QHBoxLayout *hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	QHBoxLayout *hLay = new QHBoxLayout(0L);
+	hLay->setMargin(0);
+	hLay->setSpacing(0);
 	HelpLabel *hl1 = new HelpLabel(
 		i18n("How to change the application used to open Web links?"),
 		i18n("<p>When opening Web links, they are opened in different applications, depending on the content of the link "
@@ -923,7 +951,10 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	/* QHBoxLayout(int, int, int) dont exist without qt3 support*/
+	hLay = new QHBoxLayout(0L);
+	hLay->setMargin(0);
+	hLay->setSpacing(0);
 	HelpLabel *hl2 = new HelpLabel(
 		i18n("How to change the applications used to open files and links?"),
 		i18n("<p>Here is how to set the application to be used for each type of file. "
