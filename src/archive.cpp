@@ -100,7 +100,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		State::List states = (*it)->states();
 		for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
 			State *state = (*it2);
-			QPixmap icon =   KIconLoader::global()->loadIcon(state->emblem(), K3Icon::Small, 16, K3Icon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+			QPixmap icon =   KIconLoader::global()->loadIcon(state->emblem(), K3Icon::Small, 16, K3Icon::DefaultState, QStringList() /*overlays a list of emblem icons to overlay*/, /*path_store=*/0L, /*canReturnNull=*/true);
 			if (!icon.isNull()) {
 				icon.save(tempIconFile, "PNG");
 				QString iconFileName = state->emblem().replace('/', '_');
@@ -194,7 +194,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	// Save basket icon:
 	QString tempIconFile = tempFolder + "icon.png";
 	if (!basket->icon().isEmpty() && basket->icon() != "basket") {
-		QPixmap icon =  KIconLoader::global()->loadIcon(basket->icon(), K3Icon::Small, 16, K3Icon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+		QPixmap icon =  KIconLoader::global()->loadIcon(basket->icon(), K3Icon::Small, 16, K3Icon::DefaultState, QStringList() /*overlays a list of emblem icons to overlay*/, /*path_store=*/0L, /*canReturnNull=*/true);
 		if (!icon.isNull()) {
 			icon.save(tempIconFile, "PNG");
 			QString iconFileName = basket->icon().replace('/', '_');
@@ -433,7 +433,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
 				if ( (!subElement.isNull()) && subElement.tagName() == "state" ) {
 					QString emblemName = XMLWork::getElementText(subElement, "emblem");
 					if (!emblemName.isEmpty()) {
-						QPixmap emblem = KIconLoader::global()->loadIcon(emblemName, K3Icon::NoGroup, 16, K3Icon::DefaultState, 0L, /*canReturnNull=*/true);
+						QPixmap emblem = KIconLoader::global()->loadIcon(emblemName, K3Icon::NoGroup, 16, K3Icon::DefaultState, QStringList(), 0L, /*canReturnNull=*/true);
 						// The icon does not exists on that computer, import it:
 						if (emblem.isNull()) {
 							// Of the emblem path was eg. "/home/seb/emblem.png", it was exported as "tag-emblems/_home_seb_emblem.png".
@@ -548,7 +548,7 @@ void Archive::importBasketIcon(QDomElement properties, const QString &extraction
 {
 	QString iconName = XMLWork::getElementText(properties, "icon");
 	if (!iconName.isEmpty() && iconName != "basket") {
-		QPixmap icon = KIconLoader::global()->loadIcon(iconName, K3Icon::NoGroup, 16, K3Icon::DefaultState, 0L, /*canReturnNull=*/true);
+		QPixmap icon = KIconLoader::global()->loadIcon(iconName, K3Icon::NoGroup, 16, K3Icon::DefaultState, QStringList(), 0L, /*canReturnNull=*/true);
 		// The icon does not exists on that computer, import it:
 		if (icon.isNull()) {
 			QDir dir;

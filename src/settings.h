@@ -53,6 +53,7 @@ class LinkLookEditWidget;
 class RunCommandRequester;
 class IconSizeCombo;
 class BasketFactory;
+class KCmdLineArgs;
 
 class GeneralPage : public KCModule
 {
@@ -85,7 +86,7 @@ class BasketsPage : public KCModule
 {
   Q_OBJECT
   public:
-	BasketsPage(QWidget *parent = 0L, const QStringList& = QStringList());
+	BasketsPage(QWidget *parent, const QStringList& = QStringList());
 
 	virtual void load();
 	virtual void save();
