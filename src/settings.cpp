@@ -25,9 +25,9 @@
 #include <qvbox.h>*/
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <kcmdLineargs.h>
+#include <kcmdlineargs.h>
 #include <qtabwidget.h>
-#include <qgroupbox.h>
+#include <QGroupBox>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <knuminput.h>
@@ -37,7 +37,6 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <qwhatsthis.h>
-#include <qbuttongroup.h>
 #include <qradiobutton.h>
 /* FIXME 1.5 #include <qvbuttongroup.h>*/
 #include <kapplication.h>
@@ -509,7 +508,7 @@ void GeneralPage::defaults()
 
 /** BasketsPage */
 
-BasketsPage::BasketsPage ( QWidget * parent, QStringList args )
+BasketsPage::BasketsPage ( QWidget * parent, const QStringList& args )
 		: KCModule ( BasKetGeneralFactory::componentData(), parent,args )
 {
 // /* FIXME 1.5	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
@@ -692,8 +691,8 @@ void BasketsPage::defaults()
 
 /** class NewNotesPage: */
 
-NewNotesPage::NewNotesPage ( QWidget * parent, const char * name )
-		: KCModule ( parent, name )
+NewNotesPage::NewNotesPage ( QWidget * parent,  const QStringList& args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
 {
 	QVBoxLayout *layout = new QVBoxLayout ( this );
 	layout->setMargin ( 0 );
@@ -754,22 +753,29 @@ NewNotesPage::NewNotesPage ( QWidget * parent, const char * name )
 
 	// View File Content:
 
-	QButtonGroup *buttonGroup = new QButtonGroup ( i18n ( "View Content of Added Files for the Following Types" ), layout );
-	m_viewTextFileContent  = new QCheckBox ( i18n ( "&Plain text" ),         layout );
-	m_viewHtmlFileContent  = new QCheckBox ( i18n ( "&HTML page" ),          layout );
-	m_viewImageFileContent = new QCheckBox ( i18n ( "&Image or animation" ), layout );
-	m_viewSoundFileContent = new QCheckBox ( i18n ( "&Sound" ),              layout );
-	buttonGroup->addButton ( m_viewTextFileContent );
-	buttonGroup->addButton ( m_viewHtmlFileContent );
-	buttonGroup->addButton ( m_viewImageFileContent );
-	buttonGroup->addButton ( m_viewSoundFileContent );
-//	layout->addWidget(buttonGroup);
+	QGroupBox *buttonGroup = new QGroupBox ( i18n ( "View Content of Added Files for the Following Types" ) );
+	layout->addWidget(buttonGroup);
+	layout->insertStretch ( -1 );
+
+	layout = new QVBoxLayout ( 0L );
+	layout->setMargin ( 0 );
+	layout->setSpacing ( KDialog::spacingHint() );
+
+	m_viewTextFileContent  = new QCheckBox ( i18n ( "&Plain text" ) );
+	m_viewHtmlFileContent  = new QCheckBox ( i18n ( "&HTML page" ) );
+	m_viewImageFileContent = new QCheckBox ( i18n ( "&Image or animation" ));
+	m_viewSoundFileContent = new QCheckBox ( i18n ( "&Sound" ));
+	layout->addWidget ( m_viewTextFileContent );
+	layout->addWidget ( m_viewHtmlFileContent );
+	layout->addWidget ( m_viewImageFileContent );
+	layout->addWidget ( m_viewSoundFileContent );
+	buttonGroup->setLayout(layout);
+
 	connect ( m_viewTextFileContent,  SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
 	connect ( m_viewHtmlFileContent,  SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
 	connect ( m_viewImageFileContent, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
 	connect ( m_viewSoundFileContent, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
 
-	layout->insertStretch ( -1 );
 	load();
 }
 
@@ -814,8 +820,8 @@ void NewNotesPage::visualize()
 
 /** class NotesAppearancePage: */
 
-NotesAppearancePage::NotesAppearancePage ( QWidget * parent, const char * name )
-		: KCModule ( parent, name )
+NotesAppearancePage::NotesAppearancePage ( QWidget * parent, const QStringList& args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
 {
 	QVBoxLayout *layout = new QVBoxLayout ( this );
 	layout->setMargin ( 0 );
@@ -826,7 +832,7 @@ NotesAppearancePage::NotesAppearancePage ( QWidget * parent, const char * name )
 	m_soundLook       = new LinkLookEditWidget ( this, i18n ( "Conference audio record" ),                         "sound",       tabs );
 	m_fileLook        = new LinkLookEditWidget ( this, i18n ( "Annual report" ),                                   "document",    tabs );
 	m_localLinkLook   = new LinkLookEditWidget ( this, i18n ( "Home folder" ),                                     "user-home", tabs );
-	m_networkLinkLook = new LinkLookEditWidget ( this, "www.kde.org",             KIO::pixmapForUrl ( KUrl ( "http://www.kde.org" ) ), tabs );
+	m_networkLinkLook = new LinkLookEditWidget ( this, "www.kde.org",  "http://www.kde.org", tabs );
 	m_launcherLook    = new LinkLookEditWidget ( this, i18n ( "Launch %1" ).arg ( KCmdLineArgs::aboutData(   )->programName() ), "basket",      tabs );
 	tabs->addTab ( m_soundLook,       i18n ( "&Sounds" ) );
 	tabs->addTab ( m_fileLook,        i18n ( "&Files" ) );
@@ -863,8 +869,8 @@ void NotesAppearancePage::defaults()
 
 /** class ApplicationsPage: */
 
-ApplicationsPage::ApplicationsPage ( QWidget * parent, const char * name )
-		: KCModule ( parent, name )
+ApplicationsPage::ApplicationsPage ( QWidget * parent,  const QStringList& args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
 {
 	/* Applications page */
 	QVBoxLayout *layout = new QVBoxLayout ( this );
@@ -915,19 +921,19 @@ ApplicationsPage::ApplicationsPage ( QWidget * parent, const char * name )
 	                        "<p>If checked, the application defined below will be used when opening that type of note.</p>"
 	                        "<p>Otherwise, the application you've configured in Konqueror will be used.</p>" );
 
-	QWhatsThis::add ( m_htmlUseProg,      whatsthis );
-	QWhatsThis::add ( m_imageUseProg,     whatsthis );
-	QWhatsThis::add ( m_animationUseProg, whatsthis );
-	QWhatsThis::add ( m_soundUseProg,     whatsthis );
+	m_htmlUseProg->setWhatsThis( whatsthis );
+	m_imageUseProg->setWhatsThis( whatsthis );
+	m_animationUseProg->setWhatsThis( whatsthis );
+	m_soundUseProg->setWhatsThis( whatsthis );
 
 	whatsthis = i18n (
 	                "<p>Define the application to use for opening that type of note instead of the "
 	                "application configured in Konqueror.</p>" );
 
-	QWhatsThis::add ( m_htmlProg,      whatsthis );
-	QWhatsThis::add ( m_imageProg,     whatsthis );
-	QWhatsThis::add ( m_animationProg, whatsthis );
-	QWhatsThis::add ( m_soundProg,     whatsthis );
+	m_htmlProg->setWhatsThis( whatsthis );
+	m_imageProg->setWhatsThis( whatsthis );
+	m_animationProg->setWhatsThis( whatsthis );
+	m_soundProg->setWhatsThis( whatsthis );
 
 	layout->addWidget ( m_htmlUseProg );
 	layout->addItem ( hLayH );
