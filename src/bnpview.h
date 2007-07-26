@@ -289,6 +289,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		// dcop calls
 		virtual void newBasket();
 		virtual void handleCommandLine();
+		virtual void reloadBasket(const QString &folderName);
 
 	public slots:
 		void setCaption(QString s);

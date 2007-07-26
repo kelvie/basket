@@ -1121,6 +1121,19 @@ void Basket::aboutToBeActivated()
 	}
 }
 
+void Basket::reload()
+{
+	closeEditor();
+	unbufferizeAll(); // Keep the memory footprint low
+
+	m_firstNote = 0;
+
+	m_loaded = false;
+	m_loadingLaunched = false;
+
+	updateContents();
+}
+
 void Basket::load()
 {
 	// Load only once:

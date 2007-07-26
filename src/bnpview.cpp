@@ -1642,7 +1642,7 @@ void BNPView::screenshotGrabbed(const QPixmap &pixmap)
 		showPassiveDropped(i18n("Grabbed screen zone to basket <i>%1</i>"));
 }
 
-Basket* BNPView::basketForFolderName(const QString &/*folderName*/)
+Basket* BNPView::basketForFolderName(const QString &folderName)
 {
 /*	QPtrList<Basket> basketsList = listBaskets();
 	Basket *basket;
@@ -1650,6 +1650,20 @@ Basket* BNPView::basketForFolderName(const QString &/*folderName*/)
 	if (basket->folderName() == folderName)
 	return basket;
 */
+
+	QString name = folderName;
+	if (!name.endsWith("/"))
+		name += "/";
+
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = ((BasketListViewItem*)it.current());
+		if (item->basket()->folderName() == name)
+			return item->basket();
+		++it;
+	}
+
+
 	return 0;
 }
 
@@ -2156,6 +2170,11 @@ void BNPView::handleCommandLine()
 	if (!args->isSet("use-drkonquy"))
 		KCrash::setCrashHandler(Crash::crashHandler);
 #endif
+}
+
+void BNPView::reloadBasket(const QString &folderName)
+{
+	basketForFolderName(folderName)->reload();
 }
 
 /** Scenario of "Hide main window to system tray icon when mouse move out of the window" :

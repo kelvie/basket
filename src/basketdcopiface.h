@@ -32,6 +32,8 @@ class BasketDcopInterface : virtual public DCOPObject
   k_dcop:
     virtual ASYNC newBasket() = 0;
 	virtual void handleCommandLine() = 0;
+
+	virtual void reloadBasket(const QString &folderName) = 0;
 };
 
 #endif

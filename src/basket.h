@@ -315,6 +315,7 @@ public slots:
 	void loadProperties(const QDomElement &properties);
 	void saveProperties(QDomDocument &document, QDomElement &properties);
 	bool save();
+	void reload();
   public:
 	bool isEncrypted();
 	bool isFileEncrypted();
