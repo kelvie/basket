@@ -442,7 +442,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 		int           iconSize   = m_look->iconSize();
 		QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
 		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIcon::DefaultState);
-		pixmap = kapp->iconLoader()->loadIcon(iconName, KIcon::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
+		pixmap = KIconLoader::global()->loadIcon(iconName, KIcon::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
 	}
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
@@ -614,7 +614,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		     "<p>If you do not want the application to create notes depending on the content of the files you drop, "
 		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>")
 		// TODO: Note: you can resize down maximum size of images...
-			.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName()),
+			.arg(KCmdLineArgs::aboutData( )->programName(), KCmdLineArgs::aboutData( )->programName()),
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);

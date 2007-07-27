@@ -51,8 +51,8 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
 
 	// Create every widgets:
-	QIconSet resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-	QIconSet inAllIconSet = kapp->iconLoader()->loadIconSet("edit-find",              KIcon::Toolbar);
+	QIconSet resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIcon::Toolbar);
+	QIconSet inAllIconSet = KIconLoader::global()->loadIconSet("edit-find",              KIcon::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);
@@ -168,7 +168,7 @@ void FilterBar::repopulateTagsComnbo()
 			text = state->name();
 			icon = state->emblem();
 		}
-		emblem = kapp->iconLoader()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+		emblem = KIconLoader::global()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
 		m_tagsBox->insertItem(emblem, text, index);
 		// Update the mapping:
 		m_tagsMap.insert(index, tag);
@@ -180,7 +180,7 @@ void FilterBar::repopulateTagsComnbo()
 				// Insert the state:
 				text = state->name();
 				icon = state->emblem();
-				emblem = kapp->iconLoader()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+				emblem = KIconLoader::global()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
 				// Indent the emblem to show the hierarchy relation:
 				if (!emblem.isNull())
 					emblem = Tools::indentPixmap(emblem, /*depth=*/1, /*deltaX=*/2 * ICON_SIZE / 3);

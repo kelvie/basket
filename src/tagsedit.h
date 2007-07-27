@@ -25,6 +25,7 @@
 #include <kcombobox.h>
 #include <qlistview.h>
 #include <QList>
+#include <QListWidget>
 
 class QGroupBox;
 class QLineEdit;
@@ -67,17 +68,17 @@ class TagCopy
 	bool isMultiState();
 };
 
-class TagListViewItem : public QListViewItem
+class TagListViewItem : public QListWidget
 {
   public:
 	TagListViewItem(QListWidgetItem     *parent, TagCopy *tagCopy);
-	TagListViewItem(QListViewItem *parent, TagCopy *tagCopy);
-	TagListViewItem(QListWidgetItem     *parent, QListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(QListViewItem *parent, QListViewItem *after, TagCopy *tagCopy);
+	TagListViewItem(QListWidget *parent, TagCopy *tagCopy);
+	TagListViewItem(QListWidgetItem     *parent, QListWidget *after, TagCopy *tagCopy);
+	TagListViewItem(QListWidget *parent, QListWidget *after, TagCopy *tagCopy);
 	TagListViewItem(QListWidgetItem     *parent, StateCopy *stateCopy);
-	TagListViewItem(QListViewItem *parent, StateCopy *stateCopy);
-	TagListViewItem(QListWidgetItem     *parent, QListViewItem *after, StateCopy *stateCopy);
-	TagListViewItem(QListViewItem *parent, QListViewItem *after, StateCopy *stateCopy);
+	TagListViewItem(QListWidget *parent, StateCopy *stateCopy);
+	TagListViewItem(QListWidgetItem     *parent, QListWidget *after, StateCopy *stateCopy);
+	TagListViewItem(QListWidget *parent, QListWidget *after, StateCopy *stateCopy);
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
@@ -98,7 +99,7 @@ class TagListView : public QListView
 {
   Q_OBJECT
   public:
-	TagListView(QWidget *parent = 0, const char *name = 0, WFlags flags = 0);
+	TagListView(QWidget *parent = 0, const char *name = 0, Qt::WFlags flags = 0);
 	~TagListView();
 	void keyPressEvent(QKeyEvent *event);
 	void contentsMouseDoubleClickEvent(QMouseEvent *event);
@@ -135,7 +136,7 @@ class TagsEditDialog : public KDialog
 	void removeShortcut();
 	void removeEmblem();
 	void modified();
-	void currentItemChanged(QListViewItem *item);
+	void currentItemChanged(QListWidget *item);
 	void slotCancel();
 	void slotOk();
 	void selectUp();

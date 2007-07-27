@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +37,7 @@ void Keyboard::pressedKeys(bool &shiftPressed, bool &controlPressed)
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display (), QX11Info::appRootWindow (), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	shiftPressed   = keybstate & ShiftMask;
@@ -54,7 +54,7 @@ bool Keyboard::shiftPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display (), QX11Info::appRootWindow (), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & ShiftMask) != 0;
@@ -72,7 +72,7 @@ bool Keyboard::controlPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display (), QX11Info::appRootWindow (), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & ControlMask) != 0;
@@ -90,7 +90,7 @@ bool Keyboard::altPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display (), QX11Info::appRootWindow(), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & Mod1Mask) != 0;

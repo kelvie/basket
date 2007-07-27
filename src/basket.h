@@ -126,7 +126,7 @@ class DecoratedBasket : public QWidget
 {
   Q_OBJECT
   public:
-	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, Qt::WindowFlags f = 0);
+	DecoratedBasket(QWidget *parent, const QString &folderName, Qt::WindowFlags f = 0);
 	~DecoratedBasket();
 	void setFilterBarPosition(bool onTop);
 	void resetFilter();

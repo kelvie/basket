@@ -743,7 +743,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QPalette &cg, bool active,
 	} else
 		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
 	if (!m_icon.isEmpty() && !drawingEtchedText) {
-		QPixmap icon = kapp->iconLoader()->loadIcon(m_icon, KIcon::Small, iconSize,
+		QPixmap icon = KIconLoader::global()->loadIcon(m_icon, KIcon::Small, iconSize,
 		                                            (enabled ? (active ? KIcon::ActiveState : KIcon::DefaultState) : KIcon::DisabledState),
 		                                            /*path_store=*/0L, /*canReturnNull=*/true);
 		painter->drawPixmap(x, y + (h-iconSize)/2, icon);
@@ -813,7 +813,7 @@ void StateMenuItem::paint(QPainter *painter, const QPalette &cg, bool active, bo
 	} else
 		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
 	if (!m_state->emblem().isEmpty() && !drawingEtchedText) {
-		QPixmap icon = kapp->iconLoader()->loadIcon(m_state->emblem(), KIcon::Small, iconSize,
+		QPixmap icon = KIconLoader::global()->loadIcon(m_state->emblem(), KIcon::Small, iconSize,
 		                                            (enabled ? (active ? KIcon::ActiveState : KIcon::DefaultState) : KIcon::DisabledState),
 		                                            /*path_store=*/0L, /*canReturnNull=*/true);
 		painter->drawPixmap(x, y + (h-iconSize)/2, icon);

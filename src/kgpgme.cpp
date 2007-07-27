@@ -91,7 +91,7 @@ class KGpgSelKey : public KDialog
 		};
 
 		QString key() {
-			QListViewItem* item = keysListpr->selectedItem();
+			QListWidget* item = keysListpr->selectedItem();
 
 			if(item)
 				return item->text(2);

@@ -28,7 +28,7 @@
 class KIconButton;
 class QLineEdit;
 class QDragObject;
-class QListViewItem;
+class QListWidget;
 
 class Basket;
 
@@ -87,7 +87,7 @@ class NewBasketDialog : public KDialog
 	void manageTemplates();
 	void nameChanged(const QString &newName);
   private:
-	int populateBasketsList(QListViewItem *item, int indent, int index);
+	int populateBasketsList(QListWidget *item, int indent, int index);
 	NewBasketDefaultProperties  m_defaultProperties;
 	KIconButton                *m_icon;
 	QLineEdit                  *m_name;

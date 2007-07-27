@@ -445,7 +445,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	QString message = i18n("<p>%1 doesn't support the data you've dropped.<br>"
 			"It however created a generic note, allowing you to drag or copy it to an application that understand it.</p>"
 			"<p>If you want the support of these data, please contact developer or visit the "
-			"<a href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>").arg(kapp->aboutData()->programName());
+			"<a href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>").arg(KCmdLineArgs::aboutData( )->programName());
 	KMessageBox::information(parent, message, i18n("Unsupported MIME Type(s)"),
 							 "unsupportedDropInfo", KMessageBox::AllowLink);
 	return note;
@@ -937,7 +937,7 @@ QString NoteFactory::iconForCommand(const QString &command)
 
 bool NoteFactory::isIconExist(const QString &icon)
 {
-	return ! kapp->iconLoader()->loadIcon(icon, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true).isNull();
+	return ! KIconLoader::global()->loadIcon(icon, K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, true).isNull();
 }
 
 Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)

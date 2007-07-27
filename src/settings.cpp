@@ -403,7 +403,7 @@ GeneralPage::GeneralPage ( QWidget *parent, const QStringList& args )
 //		              "on that icon to paste the current selection.") + "</p>" +
 //		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.") + "</p>" +
 //		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>")
-//			.arg(kapp->aboutData()->programName()),
+//			.arg(KCmdLineArgs::aboutData( )->programName()),
 //		this);
 //	hLay->addWidget(m_usePassivePopup);
 //	hLay->addWidget(hLabel);

@@ -214,7 +214,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		"<html>\n"
 		" <head>\n"
 		"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-		"  <meta name=\"Generator\" content=\"" << kapp->aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
+		"  <meta name=\"Generator\" content=\"" << KCmdLineArgs::aboutData( )->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
 		"  <style type=\"text/css\">\n"
 //		"   @media print {\n"
 //		"    span.printable { display: inline; }\n"
@@ -318,7 +318,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		"  <p class=\"credits\">%1</p>\n").arg(
 			i18n("Made with %1, a KDE tool to take notes and keep information at hand.")
 				.arg("<a href=\"http://basket.kde.org/\">%1</a> %2")
-				.arg(kapp->aboutData()->programName(), VERSION));
+				.arg(KCmdLineArgs::aboutData( )->programName(), VERSION));
 
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";

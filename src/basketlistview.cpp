@@ -66,7 +66,7 @@ BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListWidgetItem 
 }
 
 /* TO REMOVE 
-BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListViewItem *after, Basket *basket)
+BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListWidget *after, Basket *basket)
 	: QListView(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
@@ -140,7 +140,7 @@ void BasketListViewItem::setup()
 	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
-	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+	QPixmap icon = KIconLoader::global()->loadIcon(m_basket->icon(), K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 
 	setPixmap(/*column=*/0, icon);
 
@@ -584,12 +584,12 @@ void BasketListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGro
 		effectiveWidth += countPixmap.width() + MARGIN;
 	}
 	if (showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("edit-find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon("edit-find", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
 	}
 	if (showEncryptedIcon && !showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon("encrypted", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
 
@@ -657,7 +657,7 @@ void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
 void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 {
 	if (event->provides("application/x-qlistviewitem")) {
-		QListViewItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
+		QListWidgetIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (it.current()) {
 			QListWidgetItem *item = it.current();
 			if (!item->firstChild()) {

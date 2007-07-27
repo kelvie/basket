@@ -76,9 +76,9 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 		"In this case, mount the shared-folder to the local file system and ask %2 to use that mount point.<br>"
 		"Warning: you should not run %3 at the same time on both computers, or you risk to loss data while the two applications are desynced.</li>"
 		"</ul><p>Please remember that you should not change the content of that folder manually (eg. adding a file in a basket folder will not add that file to the basket).</p>")
-			.arg(kapp->aboutData()->programName())
-			.arg(kapp->aboutData()->programName())
-			.arg(kapp->aboutData()->programName()),
+			.arg(KCmdLineArgs::aboutData( )->programName())
+			.arg(KCmdLineArgs::aboutData( )->programName())
+			.arg(KCmdLineArgs::aboutData( )->programName()),
 		folderWidget);
 	folderLayout->addWidget(moveFolder);
 	folderLayout->addWidget(useFolder);
@@ -168,7 +168,7 @@ void BackupDialog::backup()
 	KConfig *config = KGlobal::config();
 	config->setGroup("Backups");
 	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
-	QString fileName = i18n("Backup filename (without extension), %1 is the date", "Baskets_%1")
+	QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1")
 		.arg(QDate::currentDate().toString(Qt::ISODate));
 	QString url = folder + fileName;
 
@@ -334,12 +334,12 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
 		0,
 		"<qt>" + message.arg(
 			(folder.endsWith("/") ? folder.left(folder.length() - 1) : folder),
-			kapp->aboutData()->programName()),
+			KCmdLineArgs::aboutData( )->programName()),
 		i18n("Restart")
 	);
 
 	// Restart the application:
-	KRun::runCommand(binaryPath, kapp->aboutData()->programName(), kapp->iconName());
+	KRun::runCommand(binaryPath, KCmdLineArgs::aboutData( )->programName(), kapp->iconName());
 	exit(0);
 }
 
@@ -348,12 +348,12 @@ QString Backup::newSafetyFolder()
 	QDir dir;
 	QString fullPath;
 
-	fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
+	fullPath = QDir::homePath() + "/" + i18nc("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
 	if (!dir.exists(fullPath))
 		return fullPath;
 
 	for (int i = 2; ; ++i) {
-		fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
+		fullPath = QDir::homePath() + "/" + i18np("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
 		if (!dir.exists(fullPath))
 			return fullPath;
 	}
@@ -398,7 +398,7 @@ void RestoreThread::run()
 	m_success = false;
 	KTar tar(m_tarFile, "application/x-gzip");
 	tar.open(QIODevice::WriteOnly);
-	if (tar.isOpened()) {
+	if (tar.isOpen()) {
 		const KArchiveDirectory *directory = tar.directory();
 		if (directory->entries().contains(backupMagicFolder)) {
 			const KArchiveEntry *entry = directory->entry(backupMagicFolder);

@@ -60,15 +60,15 @@
 /****************************************/
 
 LikeBackBar::LikeBackBar(LikeBack *likeBack)
- : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
+ : QWidget(0, "LikeBackBar", Qt::X11BypassWindowManagerHint | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
  , m_likeBack(likeBack)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	QIconSet likeIconSet    = kapp->iconLoader()->loadIconSet("likeback_like",    KIcon::Small);
-	QIconSet dislikeIconSet = kapp->iconLoader()->loadIconSet("likeback_dislike", KIcon::Small);
-	QIconSet bugIconSet     = kapp->iconLoader()->loadIconSet("likeback_bug",     KIcon::Small);
-	QIconSet featureIconSet = kapp->iconLoader()->loadIconSet("likeback_feature", KIcon::Small);
+	QIconSet likeIconSet    = KIconLoader::global()->loadIconSet("likeback_like",    KIcon::Small);
+	QIconSet dislikeIconSet = KIconLoader::global()->loadIconSet("likeback_dislike", KIcon::Small);
+	QIconSet bugIconSet     = KIconLoader::global()->loadIconSet("likeback_bug",     KIcon::Small);
+	QIconSet featureIconSet = KIconLoader::global()->loadIconSet("likeback_feature", KIcon::Small);
 
 	m_likeButton = new QToolButton(this, "likeback_like");
 	m_likeButton->setIconSet(likeIconSet);
@@ -222,7 +222,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 	if (d->config == 0)
 		d->config = KGlobal::config();
 	if (d->aboutData == 0)
-		d->aboutData = kapp->aboutData();
+		d->aboutData = KCmdLineArgs::aboutData( );
 
 	// Initialize properties (2/2) [Needs aboutData to be set]:
 	d->showBar          = userWantsToShowBar();
@@ -412,10 +412,10 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 void LikeBack::showInformationMessage()
 {
 	// Load and register the images needed by the message:
-	QPixmap likeIcon    = kapp->iconLoader()->loadIcon("likeback_like",    KIcon::Small);
-	QPixmap dislikeIcon = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
-	QPixmap bugIcon     = kapp->iconLoader()->loadIcon("likeback_bug",     KIcon::Small);
-	QPixmap featureIcon = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::Small);
+	QPixmap likeIcon    = KIconLoader::global()->loadIcon("likeback_like",    KIcon::Small);
+	QPixmap dislikeIcon = KIconLoader::global()->loadIcon("likeback_dislike", KIcon::Small);
+	QPixmap bugIcon     = KIconLoader::global()->loadIcon("likeback_bug",     KIcon::Small);
+	QPixmap featureIcon = KIconLoader::global()->loadIcon("likeback_feature", KIcon::Small);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
@@ -668,7 +668,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	QWidget *buttons = new QWidget(box);
 	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
-		QPixmap likePixmap = kapp->iconLoader()->loadIcon("likeback_like", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap likePixmap = KIconLoader::global()->loadIcon("likeback_like", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, true);
 		QLabel *likeIcon = new QLabel(buttons);
 		likeIcon->setPixmap(likePixmap);
 		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -678,7 +678,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(likeButton, LikeBack::Like);
 	}
 	if (m_likeBack->buttons() & LikeBack::Dislike) {
-		QPixmap dislikePixmap = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap dislikePixmap = KIconLoader::global()->loadIcon("likeback_dislike", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, true);
 		QLabel *dislikeIcon = new QLabel(buttons);
 		dislikeIcon->setPixmap(dislikePixmap);
 		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -688,7 +688,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(dislikeButton, LikeBack::Dislike);
 	}
 	if (m_likeBack->buttons() & LikeBack::Bug) {
-		QPixmap bugPixmap = kapp->iconLoader()->loadIcon("likeback_bug", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap bugPixmap = KIconLoader::global()->loadIcon("likeback_bug", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, true);
 		QLabel *bugIcon = new QLabel(buttons);
 		bugIcon->setPixmap(bugPixmap);
 		bugIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -698,7 +698,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(bugButton, LikeBack::Bug);
 	}
 	if (m_likeBack->buttons() & LikeBack::Feature) {
-		QPixmap featurePixmap = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap featurePixmap = KIconLoader::global()->loadIcon("likeback_feature", K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, true);
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
 		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);

@@ -39,7 +39,7 @@
 #include "systemtray.h"
 
 class QGroupBox;
-class QButtonGroup;
+class QGroupBox;
 class KColorCombo;
 class KIntNumInput;
 class KGlobalAccel;
@@ -86,7 +86,7 @@ class BasketsPage : public KCModule
 {
   Q_OBJECT
   public:
-	BasketsPage(QWidget *parent, const QStringList& = QStringList());
+	BasketsPage(QWidget *parent, const QStringList& args= QStringList());
 
 	virtual void load();
 	virtual void save();
@@ -116,7 +116,7 @@ class NewNotesPage : public KCModule
 {
   Q_OBJECT
   public:
-	NewNotesPage(QWidget *parent = 0L, const QStringList& = QStringList());
+	NewNotesPage(QWidget *parent = 0L, const QStringList& args= QStringList());
 
 	virtual void load();
 	virtual void save();
@@ -143,7 +143,7 @@ class NotesAppearancePage : public KCModule
 {
   Q_OBJECT
   public:
-	NotesAppearancePage(QWidget *parent = 0L, const QStringList& = QStringList());
+	NotesAppearancePage(QWidget *parent = 0L, const QStringList& args= QStringList());
 
 	virtual void load();
 	virtual void save();
@@ -162,7 +162,7 @@ class ApplicationsPage : public KCModule
 {
   Q_OBJECT
   public:
-	ApplicationsPage(QWidget *parent = 0L, const QStringList& = QStringList());
+	ApplicationsPage(QWidget *parent = 0L, const QStringList& args= QStringList());
 
 	virtual void load();
 	virtual void save();

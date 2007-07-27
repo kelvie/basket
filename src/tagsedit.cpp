@@ -101,25 +101,25 @@ bool TagCopy::isMultiState()
 /** class TagListViewItem: */
 
 TagListViewItem::TagListViewItem(QListWidgetItem *parent, TagCopy *tagCopy)
- : QListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+ : QListWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, TagCopy *tagCopy)
- : QListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QListWidget *parent, TagCopy *tagCopy)
+ : QListWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListViewItem *after, TagCopy *tagCopy)
- : QListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListWidget *after, TagCopy *tagCopy)
+ : QListWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, TagCopy *tagCopy)
- : QListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QListWidget *parent, QListWidget *after, TagCopy *tagCopy)
+ : QListWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
@@ -127,25 +127,25 @@ TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, Ta
 /* */
 
 TagListViewItem::TagListViewItem(QListWidgetItem *parent, StateCopy *stateCopy)
- : QListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+ : QListWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, StateCopy *stateCopy)
- : QListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QListWidget *parent, StateCopy *stateCopy)
+ : QListWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListViewItem *after, StateCopy *stateCopy)
- : QListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListWidget *after, StateCopy *stateCopy)
+ : QListWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, StateCopy *stateCopy)
- : QListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QListWidget *parent, QListWidget *after, StateCopy *stateCopy)
+ : QListWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
@@ -186,7 +186,7 @@ TagListViewItem* TagListViewItem::prevSibling()
 
 TagListViewItem* TagListViewItem::parent() const
 {
-	return (TagListViewItem*) QListViewItem::parent();
+	return (TagListViewItem*) QListWidget::parent();
 }
 
 // TODO: TagListViewItem::
@@ -231,7 +231,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGroup*
 	QFontMetrics fontMetrics(font);
 	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
-	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
+	QPixmap emblem = (withIcon ? KIconLoader::global()->loadIcon(state->emblem(), K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
 
 	QColor backgroundColor = (isSelected() ? KGlobalSettings::highlightColor()
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
@@ -403,7 +403,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *emblemWidget = new QWidget(stateWidget);
 	m_emblem = new KIconButton(emblemWidget);
-	m_emblem->setIconType(KIcon::NoGroup, KIcon::Action);
+	m_emblem->setIconType(K3Icon::NoGroup, KIcon::Action);
 	m_emblem->setIconSize(16);
 	m_emblem->setIcon("edit-delete");
 	m_removeEmblem = new QPushButton(i18n("Remove tag emblem", "Remo&ve"), emblemWidget);
@@ -429,26 +429,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIconSet boldIconSet = kapp->iconLoader()->loadIconSet("format-text-bold", KIcon::Small);
+	QIconSet boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIconSet underlineIconSet = kapp->iconLoader()->loadIconSet("format-text-underline", KIcon::Small);
+	QIconSet underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIcon::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIconSet italicIconSet = kapp->iconLoader()->loadIconSet("format-text-italic", KIcon::Small);
+	QIconSet italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIcon::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIconSet strikeIconSet = kapp->iconLoader()->loadIconSet("format-text-strikethrough", KIcon::Small);
+	QIconSet strikeIconSet = KIconLoader::global()->loadIconSet("format-text-strikethrough", KIcon::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -604,11 +604,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
-	connect( m_tags,            SIGNAL(currentChanged(QListViewItem*)),     this, SLOT(currentItemChanged(QListViewItem*)) );
+	connect( m_tags,            SIGNAL(currentChanged(QListWidget*)),     this, SLOT(currentItemChanged(QListWidget*)) );
 	connect( m_tags,            SIGNAL(deletePressed()),                    this, SLOT(deleteTag())                        );
 	connect( m_tags,            SIGNAL(doubleClickedItem()),                this, SLOT(renameIt())                         );
 
-	QListViewItem *firstItem = m_tags->firstChild();
+	QListWidget *firstItem = m_tags->firstChild();
 	if (stateToEdit != 0) {
 		TagListViewItem *item = itemForState(stateToEdit);
 		if (item)
@@ -687,9 +687,9 @@ void TagsEditDialog::resetTreeSizeHint()
 TagListViewItem* TagsEditDialog::itemForState(State *state)
 {
 	// Browse all tags:
-	QListViewItemIterator it(m_tags);
+	QListWidgetIterator it(m_tags);
 	while (it.current()) {
-		QListViewItem *item = it.current();
+		QListWidget *item = it.current();
 
 		// Return if we found the tag item:
 		TagListViewItem *tagItem = (TagListViewItem*)item;
@@ -697,9 +697,9 @@ TagListViewItem* TagsEditDialog::itemForState(State *state)
 			return tagItem;
 
 		// Browser all sub-states:
-		QListViewItemIterator it2(item);
+		QListWidgetIterator it2(item);
 		while (it2.current()) {
-			QListViewItem *subItem = it2.current();
+			QListWidget *subItem = it2.current();
 
 			// Return if we found the state item:
 			TagListViewItem *stateItem = (TagListViewItem*)subItem;
@@ -1010,7 +1010,7 @@ void TagsEditDialog::modified()
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
-void TagsEditDialog::currentItemChanged(QListViewItem *item)
+void TagsEditDialog::currentItemChanged(QListWidget *item)
 {
 	if (item == 0)
 		return;

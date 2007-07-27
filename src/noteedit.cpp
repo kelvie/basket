@@ -553,7 +553,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
-	m_icon->setIconType(KIcon::NoGroup, KIcon::MimeType);
+	m_icon->setIconType(K3Icon::NoGroup, KIcon::MimeType);
 	m_icon->setIconSize(LinkLook::lookForURL(filteredURL)->iconSize());
 	m_autoIcon = new QPushButton(i18n("Auto"), wid); // Create before to know size here:
 	/* Icon button: */
@@ -705,7 +705,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
-	m_icon->setIconType(KIcon::NoGroup, KIcon::Application);
+	m_icon->setIconType(K3Icon::NoGroup, KIcon::Application);
 	m_icon->setIconSize(LinkLook::launcherLook->iconSize());
 	QPushButton *guessButton = new QPushButton(i18n("&Guess"), wid);
 	/* Icon button: */

@@ -96,7 +96,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	// Icon, Name and Background Color:
 	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
+	m_icon->setIconType(K3Icon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
@@ -256,14 +256,14 @@ void NewBasketDialog::returnPressed()
 	actionButton(KDialog::Ok)->animateClick();
 }
 
-int NewBasketDialog::populateBasketsList(QListViewItem *item, int indent, int index)
+int NewBasketDialog::populateBasketsList(QListWidget *item, int indent, int index)
 {
 	static const int ICON_SIZE = 16;
 
 	while (item) {
 		// Get the basket data:
 		Basket *basket = ((BasketListViewItem*)item)->basket();
-		QPixmap icon = kapp->iconLoader()->loadIcon(basket->icon(), KIcon::NoGroup, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon(basket->icon(), K3Icon::NoGroup, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
 		icon = Tools::indentPixmap(icon, indent, 2 * ICON_SIZE / 3);
 
 		// Append item to the list:

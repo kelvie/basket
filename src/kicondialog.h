@@ -250,7 +250,7 @@ public:
     bool strictIconSize() const;
 
     /**
-     * Sets the icon group and context. Use KIcon::NoGroup if you want to
+     * Sets the icon group and context. Use K3Icon::NoGroup if you want to
      * allow icons for any group in the given context.
      */
     void setIconType(KIcon::Group group, KIcon::Context context, bool user=false);
