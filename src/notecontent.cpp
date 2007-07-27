@@ -1358,7 +1358,7 @@ void LinkContent::httpReadyRead(const QHttpResponseHeader& )
 			(*m_httpBuff) += buf;
 		}
 	
-		QRegExp reg("<title>([^<>]+)</title>");
+		QRegExp reg("<title>([^<>]+)</title>", false);
 		int offset = 0;
 		
 		if((offset = reg.search(*m_httpBuff)) >= 0) {
@@ -1394,7 +1394,6 @@ void LinkContent::startFetchingLinkTitle()
 	connect(&m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
 	connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader&)), this,
 			SLOT(httpReadyRead(const QHttpResponseHeader&)));
-    connect(&m_http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader&)), this, SLOT(headerReceived(const QHttpResponseHeader&)));
 	m_http.setHost(this->url().host(), this->url().port() == 0 ? 80: this->url().port());
 	m_http.get(this->url().path());
 
