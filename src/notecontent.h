@@ -28,6 +28,7 @@
 #include <qmovie.h>
 #include <qcolor.h>
 #include <kurl.h>
+#include <qhttp.h>
 
 #include "linklabel.h"
 
@@ -451,6 +452,7 @@ class LinkContent : public QObject, public NoteContent
 	QString icon()      { return m_icon;      } /// << @return the displayed icon of the link note-content.
 	bool    autoTitle() { return m_autoTitle; } /// << @return if the title is auto-computed from the URL.
 	bool    autoIcon()  { return m_autoIcon;  } /// << @return if the icon is auto-computed from the URL.
+	void startFetchingLinkTitle();
   protected:
 	KURL        m_url;
 	QString     m_title;
@@ -458,8 +460,12 @@ class LinkContent : public QObject, public NoteContent
 	bool        m_autoTitle;
 	bool        m_autoIcon;
 	LinkDisplay m_linkDisplay;
+	QHttp       m_http;
+	QString*    m_httpBuff;
 	// File Preview Management:
   protected slots:
+	void httpDone(bool err);
+	void httpReadyRead(const QHttpResponseHeader& resp);
 	void newPreview(const KFileItem*, const QPixmap &preview);
 	void removePreview(const KFileItem*);
 	void startFetchingUrlPreview();

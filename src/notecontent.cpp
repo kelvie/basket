@@ -37,6 +37,7 @@
 #include <kpixmapeffect.h>
 #include <qbitmap.h>
 #include <kurifilter.h>
+#include <qregexp.h>
 //#include <kstringhandler.h>
 #include <kfilemetainfo.h>
 #include <qdatetime.h>
@@ -1210,7 +1211,7 @@ QString SoundContent::messageWhenOpenning(OpenMessage where)
  */
 
 LinkContent::LinkContent(Note *parent, const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
- : NoteContent(parent), m_previewJob(0)
+	: NoteContent(parent), m_httpBuff(0), m_previewJob(0)
 {
 	setLink(url, title, icon, autoTitle, autoIcon);
 }
@@ -1315,6 +1316,8 @@ void LinkContent::setLink(const KURL &url, const QString &title, const QString &
 	else
 		m_linkDisplay.setLink(m_title, m_icon, QPixmap(), look, note()->font());
 	startFetchingUrlPreview();
+        if(autoTitle)
+            startFetchingLinkTitle();
 	contentChanged(m_linkDisplay.minWidth());
 }
 
@@ -1333,6 +1336,68 @@ void LinkContent::newPreview(const KFileItem*, const QPixmap &preview)
 void LinkContent::removePreview(const KFileItem*)
 {
 	newPreview(0, QPixmap());
+}
+
+// QHttp slots for getting link title
+void LinkContent::httpReadyRead(const QHttpResponseHeader& )
+{
+	Q_ULONG bytesAvailable = m_http.bytesAvailable();
+	if(bytesAvailable <= 0)
+		return;
+	
+	char* buf = new char[bytesAvailable+1];
+	
+	Q_LONG bytes_read = m_http.readBlock(buf, bytesAvailable);
+	if(bytes_read > 0) {
+	
+		// m_httpBuff will keep data if title is not found in initial read
+		if(m_httpBuff == 0)	{
+			m_httpBuff = new QString(buf);
+		}
+		else {
+			(*m_httpBuff) += buf;
+		}
+	
+		QRegExp reg("<title>([^<>]+)</title>");
+		int offset = 0;
+		
+		if((offset = reg.search(*m_httpBuff)) >= 0) {
+			m_title = reg.cap(1);
+			m_autoTitle = false;
+			setEdited();
+			
+			// refresh the title
+			setLink(url(), title(), icon(), autoTitle(), autoIcon());
+			
+			// stop the http connection
+			m_http.abort();
+			
+			delete m_httpBuff;
+			m_httpBuff = 0;
+		}
+		// Stop at 10k bytes
+		else if(m_httpBuff->length() > 10000)	{
+			m_http.abort();
+			delete m_httpBuff;
+			m_httpBuff = 0;
+		}
+	}
+	delete buf;
+}
+void LinkContent::httpDone(bool)
+{
+	m_http.closeConnection();
+}
+
+void LinkContent::startFetchingLinkTitle()
+{
+	connect(&m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
+	connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader&)), this,
+			SLOT(httpReadyRead(const QHttpResponseHeader&)));
+    connect(&m_http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader&)), this, SLOT(headerReceived(const QHttpResponseHeader&)));
+	m_http.setHost(this->url().host(), this->url().port() == 0 ? 80: this->url().port());
+	m_http.get(this->url().path());
+
 }
 
 // Code dupicated from FileContent::startFetchingUrlPreview()
