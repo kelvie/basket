@@ -412,6 +412,7 @@ class LinkContent : public QObject, public NoteContent
   public:
 	// Constructor and destructor:
 	LinkContent(Note *parent, const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon);
+	~LinkContent();
 	// Simple Generic Methods:
 	NoteType::Id type();
 	QString typeName();
@@ -460,7 +461,7 @@ class LinkContent : public QObject, public NoteContent
 	bool        m_autoTitle;
 	bool        m_autoIcon;
 	LinkDisplay m_linkDisplay;
-	QHttp       m_http;
+	QHttp*      m_http;
 	QString*    m_httpBuff;
 	// File Preview Management:
   protected slots:
