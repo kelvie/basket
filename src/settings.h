@@ -39,7 +39,6 @@
 #include "systemtray.h"
 
 class QGroupBox;
-class QGroupBox;
 class KColorCombo;
 class KIntNumInput;
 class KGlobalAccel;

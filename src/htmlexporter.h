@@ -73,7 +73,7 @@ class HTMLExporter
 	QTextStream stream;
 	Basket *exportedBasket;
 	bool withBasketTree;
-	KProgress *progress;
+	QProgressBar *progress;
 };
 
 #endif // HTMLEXPORTER_H

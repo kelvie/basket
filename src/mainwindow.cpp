@@ -67,7 +67,7 @@
 #include <qdesktopwidget.h>
 #include <kwindowsystem.h>
 
-#include <kprogress.h>
+#include <QProgressBar>
 
 #include "mainwindow.h"
 #include "basket.h"

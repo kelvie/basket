@@ -194,7 +194,7 @@ private:
     QComboBox *mpCombo;
     QPushButton *mpBrowseBut;
     QRadioButton *mpRb1, *mpRb2;
-    KProgress *mpProgress;
+    QProgressBar *mpProgress;
 
     KIconLoader *mpLoader;
 

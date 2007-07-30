@@ -24,6 +24,7 @@
 #include <kdialog.h>
 #include <qapplication.h>
 #include <qthread.h>
+#include <QLabel>
 
 /**
  * @author S�bastien Lao�t
@@ -32,7 +33,7 @@ class BackupDialog : public KDialog
 {
   Q_OBJECT
   public:
-	BackupDialog(QWidget *parent = 0, const char *name = 0);
+	BackupDialog(QWidget *parent = 0);
 	~BackupDialog();
   private slots:
 	void moveToAnotherFolder();

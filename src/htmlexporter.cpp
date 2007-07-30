@@ -37,7 +37,7 @@
 #include <qfile.h>
 #include <qpainter.h>
 #include <kglobalsettings.h>
-#include <kprogress.h>
+#include <QProgressBar>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {

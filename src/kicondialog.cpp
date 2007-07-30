@@ -27,7 +27,7 @@
 #include <kglobal.h>
 #include <kstandarddirs.h>
 #include <kiconloader.h>
-#include <kprogress.h>
+#include <QProgressBar>
 #include <k3iconview.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
