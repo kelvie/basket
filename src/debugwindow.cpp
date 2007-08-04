@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,16 +27,16 @@
 #include "global.h"
 #include "debugwindow.h"
 
-DebugWindow::DebugWindow(QWidget *parent, const char *name )
- : QWidget(parent, name != 0 ? name : "DebugWindow")
+DebugWindow::DebugWindow(QWidget *parent)
+ : QWidget(parent)
 {
 	Global::debugWindow = this;
-	setCaption(i18n("Debug Window"));
+	setObjectName("DebugWindow");
+	setWindowTitle(i18n("Debug Window"));
 
 	layout      = new QVBoxLayout(this);
 	textBrowser = new QTextBrowser(this);
-
-	textBrowser->setWordWrap(QTextBrowser::NoWrap);
+	textBrowser->setWordWrapMode(QTextOption::NoWrap);
 
 	layout->addWidget(textBrowser);
 	textBrowser->show();

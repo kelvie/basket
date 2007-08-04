@@ -31,8 +31,8 @@ class ClickableLabel : public QLabel
   Q_OBJECT
   public:
 	/** Construtor, initializer and destructor */
-	ClickableLabel(QWidget *parent = 0, const char *name = 0)
-	 : QLabel(parent, name) {}
+	ClickableLabel(QWidget *parent = 0)
+	 : QLabel(parent) {}
 	~ClickableLabel()       {}
   signals:
 	void clicked();

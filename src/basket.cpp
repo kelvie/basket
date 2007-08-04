@@ -87,6 +87,7 @@
 #endif
 
 #include <iostream>
+#include <kcmdlineargs.h>
 
 /** Class NoteSelection: */
 

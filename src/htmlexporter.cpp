@@ -111,15 +111,15 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	withBasketTree = (item->firstChild() != 0);
 
 	// Create and empty the files folder:
-	QString filesFolderPath = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
+	QString filesFolderPath = i18nc("HTML export folder (files)", "%1_files").arg(filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
 	Tools::deleteRecursively(filesFolderPath);
 	QDir dir;
 	dir.mkdir(filesFolderPath);
 
 	// Create sub-folders:
-	iconsFolderPath   = filesFolderPath + i18n("HTML export folder (icons)",   "icons")   + "/"; // eg.: "/home/seb/foo.html_files/icons/"
-	imagesFolderPath  = filesFolderPath + i18n("HTML export folder (images)",  "images")  + "/"; // eg.: "/home/seb/foo.html_files/images/"
-	basketsFolderPath = filesFolderPath + i18n("HTML export folder (baskets)", "baskets") + "/"; // eg.: "/home/seb/foo.html_files/baskets/"
+	iconsFolderPath   = filesFolderPath + i18nc("HTML export folder (icons)",   "icons")   + "/"; // eg.: "/home/seb/foo.html_files/icons/"
+	imagesFolderPath  = filesFolderPath + i18nc("HTML export folder (images)",  "images")  + "/"; // eg.: "/home/seb/foo.html_files/images/"
+	basketsFolderPath = filesFolderPath + i18nc("HTML export folder (baskets)", "baskets") + "/"; // eg.: "/home/seb/foo.html_files/baskets/"
 	dir.mkdir(iconsFolderPath);
 	dir.mkdir(imagesFolderPath);
 	dir.mkdir(basketsFolderPath);
@@ -136,36 +136,63 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	}
 
 	// Compute the absolute & relative paths for this basket:
-	filesFolderPath   = i18n("HTML export folder (files)", "%1_files").arg(filePath) + "/";
+	filesFolderPath   = i18nc("HTML export folder (files)", "%1_files").arg(filePath) + "/";
 	if (isSubBasket) {
 		basketFilePath    = basketsFolderPath + basket->folderName().left(basket->folderName().length() - 1) + ".html";
 		filesFolderName   = "../";
-		dataFolderName    = basket->folderName().left(basket->folderName().length() - 1) + "-" + i18n("HTML export folder (data)", "data") + "/";
+		dataFolderName    = basket->folderName().left(basket->folderName().length() - 1) + "-" + i18nc("HTML export folder (data)", "data") + "/";
 		dataFolderPath    = basketsFolderPath + dataFolderName;
 		basketsFolderName = "";
 	} else {
 		basketFilePath    = filePath;
-		filesFolderName   = i18n("HTML export folder (files)", "%1_files").arg(KUrl(filePath).fileName()) + "/";
-		dataFolderName    = filesFolderName + i18n("HTML export folder (data)",    "data")  + "/";
-		dataFolderPath    = filesFolderPath + i18n("HTML export folder (data)",    "data")  + "/";
-		basketsFolderName = filesFolderName + i18n("HTML export folder (baskets)", "baskets")  + "/";
+		filesFolderName   = i18nc("HTML export folder (files)", "%1_files").arg(KUrl(filePath).fileName()) + "/";
+		dataFolderName    = filesFolderName + i18nc("HTML export folder (data)",    "data")  + "/";
+		dataFolderPath    = filesFolderPath + i18nc("HTML export folder (data)",    "data")  + "/";
+		basketsFolderName = filesFolderName + i18nc("HTML export folder (baskets)", "baskets")  + "/";
 	}
-	iconsFolderName   = (isSubBasket ? "../" : filesFolderName) + i18n("HTML export folder (icons)",   "icons")   + "/"; // eg.: "foo.html_files/icons/"   or "../icons/"
-	imagesFolderName  = (isSubBasket ? "../" : filesFolderName) + i18n("HTML export folder (images)",  "images")  + "/"; // eg.: "foo.html_files/images/"  or "../images/"
+	iconsFolderName   = (isSubBasket ? "../" : filesFolderName) + i18nc("HTML export folder (icons)",   "icons")   + "/"; // eg.: "foo.html_files/icons/"   or "../icons/"
+	imagesFolderName  = (isSubBasket ? "../" : filesFolderName) + i18nc("HTML export folder (images)",  "images")  + "/"; // eg.: "foo.html_files/images/"  or "../images/"
 
-	std::cout << "Exporting ================================================" << std::endl;
-	std::cout << "  filePath:" << filePath << std::endl;
-	std::cout << "  basketFilePath:" << basketFilePath << std::endl;
-	std::cout << "  filesFolderPath:" << filesFolderPath << std::endl;
-	std::cout << "  filesFolderName:" << filesFolderName << std::endl;
-	std::cout << "  iconsFolderPath:" << iconsFolderPath << std::endl;
-	std::cout << "  iconsFolderName:" << iconsFolderName << std::endl;
-	std::cout << "  imagesFolderPath:" << imagesFolderPath << std::endl;
-	std::cout << "  imagesFolderName:" << imagesFolderName << std::endl;
-	std::cout << "  dataFolderPath:" << dataFolderPath << std::endl;
-	std::cout << "  dataFolderName:" << dataFolderName << std::endl;
-	std::cout << "  basketsFolderPath:" << basketsFolderPath << std::endl;
-	std::cout << "  basketsFolderName:" << basketsFolderName << std::endl;
+	QString debugStr;
+	debugStr="Exporting ================================================";
+	qDebug()<<debugStr;
+
+	debugStr="  filePath:";
+	QTextStream(&debugStr)<<filePath;
+	qDebug()<<debugStr;
+	debugStr="  basketFilePath:";
+	QTextStream(&debugStr)<<basketFilePath;
+	qDebug()<<debugStr;
+	debugStr="  filesFolderPath:";
+	QTextStream(&debugStr)<<filesFolderPath;
+	qDebug()<<debugStr;
+	debugStr="  filesFolderName:";
+	QTextStream(&debugStr)<<filesFolderName;
+	qDebug()<<debugStr;
+	debugStr="  iconsFolderPath:";
+	QTextStream(&debugStr)<<iconsFolderPath;
+	qDebug()<<debugStr;
+	debugStr="  iconsFolderName:";
+	QTextStream(&debugStr)<<iconsFolderName;
+	qDebug()<<debugStr;
+	debugStr="  imagesFolderPath:";
+	QTextStream(&debugStr)<<imagesFolderPath;
+	qDebug()<<debugStr;
+	debugStr="  imagesFolderName:";
+	QTextStream(&debugStr)<<imagesFolderName;
+	qDebug()<<debugStr;
+	debugStr="  dataFolderPath:";
+	QTextStream(&debugStr)<<dataFolderPath;
+	qDebug()<<debugStr;
+	debugStr="  dataFolderName:";
+	QTextStream(&debugStr)<<dataFolderName;
+	qDebug()<<debugStr;
+	debugStr="  basketsFolderPath:";
+	QTextStream(&debugStr)<<basketsFolderPath;
+	qDebug()<<debugStr;
+	debugStr="  basketsFolderName:";
+	QTextStream(&debugStr)<<basketsFolderName;
+	qDebug()<<debugStr;
 
 	// Create the data folder for this basket:
 	QDir dir;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,14 +29,14 @@ class QString;
 class QCloseEvent;
 
 /**A simple window that display text through debuging messages.
-  *@author Sébastien Laoût
+  *@author Sï¿½bastien Laoï¿½t
   */
 
 class DebugWindow : public QWidget  {
   Q_OBJECT
   public:
 	/** Construtor and destructor */
-	DebugWindow(QWidget *parent = 0, const char *name = 0);
+	DebugWindow(QWidget *parent = 0);
 	~DebugWindow();
 	/** Methods to post a message to the debug window */
 	void postMessage(const QString msg);

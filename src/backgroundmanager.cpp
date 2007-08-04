@@ -311,7 +311,7 @@ QPixmap* BackgroundManager::preview(const QString &image)
 	// And create the resulting pixmap:
 	QPixmap *result = new QPixmap(width, height);
 	result->fill(PREVIEW_BG);
-	QImage imageToScale = entry->pixmap->convertToImage();
+	QImage imageToScale = entry->pixmap->toImage();
 	QPixmap pmScaled;
 	pmScaled.convertFromImage(imageToScale.smoothScale(width, height));
 	QPainter painter(result);
@@ -384,7 +384,7 @@ void BackgroundManager::doGarbage()
 ///			std::cout << " [Deleted entry]";
 			delete entry->pixmap;
 			entry->pixmap = 0;
-			it = m_opaqueBackgroundsList.remove(it);
+			it = m_opaqueBackgroundsList.erase(it);
 		} else
 			++it;
 ///		std::cout << std::endl;

@@ -19,11 +19,12 @@
  ***************************************************************************/
 
 #include "aboutdata.h"
+#include <klocale.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-static const char description[] = i18n(
+static const char description[] = I18N_NOOP(
 	"<p><b>Taking care of your ideas.</b></p>"
 	"<p>A note-taking application that makes it easy to record ideas as you think, and quickly find them later. "
 	"Organizing your notes has never been so easy.</p>");
@@ -37,19 +38,19 @@ AboutData::AboutData()
    "http://basket.kde.org/",
    "slaout@linux62.org" )
 {
-	addAuthor( "S\303\251bastien Lao\303\273t",
-	           I18N_NOOP("Author, maintainer"),
+	addAuthor( ki18n("Sebastien Laoût"),
+	           ki18n("Author, maintainer"),
 	           "slaout@linux62.org" );
 
-	addAuthor( "Petri Damst\303\251n",
-	           I18N_NOOP("Basket encryption, Kontact integration, KnowIt importer"),
+	addAuthor( ki18n("Petri Damst\303\251n"),
+	           ki18n("Basket encryption, Kontact integration, KnowIt importer"),
 	           "damu@iki.fi" );
 
-	addAuthor( "Alex Gontmakher",
-	           I18N_NOOP("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
+	addAuthor( ki18n("Alex Gontmakher"),
+	           ki18n("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
 	           "gsasha@cs.technion.ac.il" );
 
-	addAuthor( "Marco Martin",
-	           I18N_NOOP("Icon"),
+	addAuthor( ki18n("Marco Martin"),
+	           ki18n("Icon"),
 	           "m4rt@libero.it" );
 }

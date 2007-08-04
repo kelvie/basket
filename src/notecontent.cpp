@@ -538,7 +538,9 @@ bool TextContent::loadFromFile(bool lazyLoad)
 	if (success)
 		setText(content, lazyLoad);
 	else {
-		std::cout << "FAILED TO LOAD TextContent: " << fullPath() << std::endl;
+		QString debugStr;
+		QTextStream(&debugStr)<< "FAILED TO LOAD TextContent: " << fullPath();
+		qDebug()<<debugStr;
 		setText("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -647,7 +649,9 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 	if (success)
 		setHtml(content, lazyLoad);
 	else {
-		std::cout << "FAILED TO LOAD HtmlContent: " << fullPath() << std::endl;
+	QString debugStr;
+	QTextStream(&debugStr) << "FAILED TO LOAD HtmlContent: " << fullPath();
+	qDebug()<<debugStr;
 		setHtml("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -778,8 +782,8 @@ bool ImageContent::finishLazyLoad()
 			return true;
 		}
 	}
-
-	std::cout << "FAILED TO LOAD ImageContent: " << fullPath() << std::endl;
+<< "FAILED TO LOAD ImageContent: " << fullPath();
+	qDebug()<<debugStr;
 	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
 	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
 	m_pixmap.fill();
