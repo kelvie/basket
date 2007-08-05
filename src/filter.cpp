@@ -51,8 +51,8 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
 
 	// Create every widgets:
-	QIconSet resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-	QIconSet inAllIconSet = KIconLoader::global()->loadIconSet("edit-find",              KIcon::Toolbar);
+	QIcon resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIcon::Toolbar);
+	QIcon inAllIconSet = KIconLoader::global()->loadIconSet("edit-find",              KIcon::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);

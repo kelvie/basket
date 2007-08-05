@@ -22,7 +22,7 @@
 #include <kaboutdata.h>
 #include <kconfig.h>
 #include <kaction.h>
-#include <kiconloader.h>
+#include <kicon.h>
 #include <kaboutdata.h>
 #include <klocale.h>
 #include <kdebug.h>
@@ -33,7 +33,6 @@
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qbuttongroup.h>
-#include <qvgroupbox.h>
 #include <kguiitem.h>
 #include <QMenu>
 #include <qtextedit.h>
@@ -54,49 +53,56 @@
 
 #include "likeback.h"
 #include "likeback_private.h"
+#include <QIcon>
+#include <kcmdlineargs.h>
 
 /****************************************/
 /********** class LikeBackBar: **********/
 /****************************************/
 
 LikeBackBar::LikeBackBar ( LikeBack *likeBack )
-		: QWidget ( 0, "LikeBackBar", Qt::X11BypassWindowManagerHint | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader )
+		: QWidget ( 0, Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint )
 		, m_likeBack ( likeBack )
 {
+	setObjectName ( "LikeBackBar" );
 	QHBoxLayout *layout = new QHBoxLayout ( this );
 
-	QIconSet likeIconSet    = KIconLoader::global()->loadIconSet ( "likeback_like",    KIcon::Small );
-	QIconSet dislikeIconSet = KIconLoader::global()->loadIconSet ( "likeback_dislike", KIcon::Small );
-	QIconSet bugIconSet     = KIconLoader::global()->loadIconSet ( "likeback_bug",     KIcon::Small );
-	QIconSet featureIconSet = KIconLoader::global()->loadIconSet ( "likeback_feature", KIcon::Small );
+	QIcon likeIconSet    = KIcon ( "likeback_like" );
+	QIcon dislikeIconSet = KIcon ( "likeback_dislike" );
+	QIcon bugIconSet     = KIcon ( "likeback_bug" );
+	QIcon featureIconSet = KIcon ( "likeback_feature" );
 
-	m_likeButton = new QToolButton ( this, "likeback_like" );
-	m_likeButton->setIconSet ( likeIconSet );
-	m_likeButton->setTextLabel ( "<p>" + i18n ( "Send application developers a comment about something you like" ) );
+	m_likeButton = new QToolButton ( this );
+	m_likeButton->setObjectName ( "likeback_like" );
+	m_likeButton->setIcon ( likeIconSet );
+	m_likeButton->setText ( "<p>" + i18n ( "Send application developers a comment about something you like" ) );
 	m_likeButton->setAutoRaise ( true );
 	connect ( m_likeButton, SIGNAL ( clicked() ), this, SLOT ( clickedLike() ) );
-	layout->add ( m_likeButton );
+	layout->addWidget ( m_likeButton );
 
-	m_dislikeButton = new QToolButton ( this, "likeback_dislike" );
-	m_dislikeButton->setIconSet ( dislikeIconSet );
-	m_dislikeButton->setTextLabel ( "<p>" + i18n ( "Send application developers a comment about something you dislike" ) );
+	m_dislikeButton = new QToolButton ( this );
+	m_dislikeButton->setObjectName ( "likeback_dislike" );
+	m_dislikeButton->setIcon ( dislikeIconSet );
+	m_dislikeButton->setText ( "<p>" + i18n ( "Send application developers a comment about something you dislike" ) );
 	m_dislikeButton->setAutoRaise ( true );
 	connect ( m_dislikeButton, SIGNAL ( clicked() ), this, SLOT ( clickedDislike() ) );
-	layout->add ( m_dislikeButton );
+	layout->addWidget ( m_dislikeButton );
 
-	m_bugButton = new QToolButton ( this, "likeback_bug" );
-	m_bugButton->setIconSet ( bugIconSet );
-	m_bugButton->setTextLabel ( "<p>" + i18n ( "Send application developers a comment about an improper behavior of the application" ) );
+	m_bugButton = new QToolButton ( this );
+	m_bugButton->setObjectName ( "likeback_bug" );
+	m_bugButton->setIcon ( bugIconSet );
+	m_bugButton->setText ( "<p>" + i18n ( "Send application developers a comment about an improper behavior of the application" ) );
 	m_bugButton->setAutoRaise ( true );
 	connect ( m_bugButton, SIGNAL ( clicked() ), this, SLOT ( clickedBug() ) );
-	layout->add ( m_bugButton );
+	layout->addWidget ( m_bugButton );
 
-	m_featureButton = new QToolButton ( this, "likeback_feature" );
-	m_featureButton->setIconSet ( featureIconSet );
-	m_featureButton->setTextLabel ( "<p>" + i18n ( "Send application developers a comment about a new feature you desire" ) );
+	m_featureButton = new QToolButton ( this );
+	m_featureButton->setObjectName ( "likeback_feature" );
+	m_featureButton->setIcon ( featureIconSet );
+	m_featureButton->setText ( "<p>" + i18n ( "Send application developers a comment about a new feature you desire" ) );
 	m_featureButton->setAutoRaise ( true );
 	connect ( m_featureButton, SIGNAL ( clicked() ), this, SLOT ( clickedFeature() ) );
-	layout->add ( m_featureButton );
+	layout->addWidget ( m_featureButton );
 
 	connect ( &m_timer, SIGNAL ( timeout() ), this, SLOT ( autoMove() ) );
 
@@ -138,9 +144,9 @@ void LikeBackBar::autoMove()
 
 		if ( window != lastWindow && m_likeBack->windowNamesListing() != LikeBack::NoListing )
 		{
-			if ( qstricmp ( window->name(), "" ) == 0 || qstricmp ( window->name(), "unnamed" ) == 0 )
+			if ( qstricmp ( window->objectName(), QString ( "" ) ) == 0 || qstricmp ( window->objectName(), QString ( "unnamed" ) ) == 0 )
 			{
-				QTextStream ( &debugStr ) << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << LikeBack::activeWindowPath();
+				QTextStream ( &debugStr ) << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->metaObject()->className() << " ======" << LikeBack::activeWindowPath();
 				qDebug() <<debugStr;
 			}
 			else if ( m_likeBack->windowNamesListing() == LikeBack::AllWindows )
@@ -153,11 +159,11 @@ void LikeBackBar::autoMove()
 	}
 
 	// Show or hide the bar accordingly:
-	if ( shouldShow && !isShown() )
+	if ( shouldShow && !isVisible() )
 	{
 		show();
 	}
-	else if ( !shouldShow && isShown() )
+	else if ( !shouldShow && isVisible() )
 	{
 		hide();
 	}
@@ -389,12 +395,9 @@ KConfig* LikeBack::config()
 KAction* LikeBack::sendACommentAction ( KActionCollection *parent )
 {
 	if ( d->action == 0 )
-		d->action = new KAction (
-		                i18n ( "&Send a Comment to Developers" ), /*icon=*/"mail_new", /*shortcut=*/"",
-		                this, SLOT ( execCommentDialog() ),
-		                parent, "likeback_send_a_comment"
-		            );
-
+		d->action = new KAction ( "mail_new", i18n ( "&Send a Comment to Developers" ), parent, "likeback_send_a_comment" );
+	d->action->setShortcut ( "" );
+	connect ( d->action, SIGNAL ( triggered ( bool ) ), SLOT ( execCommentDialog() ) );
 	return d->action;
 }
 
@@ -424,10 +427,10 @@ void LikeBack::setUserWantsToShowBar ( bool showBar )
 void LikeBack::showInformationMessage()
 {
 	// Load and register the images needed by the message:
-	QPixmap likeIcon    = KIconLoader::global()->loadIcon ( "likeback_like",    KIcon::Small );
-	QPixmap dislikeIcon = KIconLoader::global()->loadIcon ( "likeback_dislike", KIcon::Small );
-	QPixmap bugIcon     = KIconLoader::global()->loadIcon ( "likeback_bug",     KIcon::Small );
-	QPixmap featureIcon = KIconLoader::global()->loadIcon ( "likeback_feature", KIcon::Small );
+	QPixmap likeIcon    = KIcon ( "likeback_like" );
+	QPixmap dislikeIcon = KIcon ( "likeback_dislike" );
+	QPixmap bugIcon     = KIcon ( "likeback_bug" );
+	QPixmap featureIcon = KIcon ( "likeback_feature" );
 	QMimeSourceFactory::defaultFactory()->setPixmap ( "likeback_icon_like",    likeIcon );
 	QMimeSourceFactory::defaultFactory()->setPixmap ( "likeback_icon_dislike", dislikeIcon );
 	QMimeSourceFactory::defaultFactory()->setPixmap ( "likeback_icon_bug",     bugIcon );
@@ -472,7 +475,7 @@ void LikeBack::showInformationMessage()
 	                                      "briefly describe the mis-behaviour and click Send." )
 	                             ) + "</p>"
                              : "" ) +
-	                           "<p>" + i18n ( "Example:", "Examples:", nbButtons ) + "</p>" +
+	                           "<p>" + i18nc ( "Example:", "Examples:", nbButtons ) + "</p>" +
 	                           ( buttons & LikeBack::Like ?
 	                             "<p><img source=\"likeback_icon_like\"> &nbsp;" +
 	                             i18n ( "<b>I like</b> the new artwork. Very refreshing." ) + "</p>"
@@ -881,5 +884,5 @@ void LikeBackDialog::requestFinished ( int /*id*/, bool error )
 	KDialog::slotOk();
 }
 
-#include "likeback_private.moc.cpp"
-#include "likeback.moc"
+//#include "likeback_private.moc.cpp"
+//#include "likeback.moc"

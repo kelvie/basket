@@ -429,26 +429,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIconSet boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIcon::Small);
+	QIcon boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIconSet underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIcon::Small);
+	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIcon::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIconSet italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIcon::Small);
+	QIcon italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIcon::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIconSet strikeIconSet = KIconLoader::global()->loadIconSet("format-text-strikethrough", KIcon::Small);
+	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("format-text-strikethrough", KIcon::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!

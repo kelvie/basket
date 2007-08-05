@@ -523,7 +523,7 @@ void KIconButton::setCustomLocation(const QString &custom)
 void KIconButton::resetIcon()
 {
     mIcon = QString::null;
-    setIconSet(QIconSet());
+    setIconSet(QIcon());
 }
 
 void KIconButton::slotChangeIcon()
@@ -543,7 +543,7 @@ void KIconButton::newIconName(const QString& name)
     if (name.isEmpty())
         return;
 
-    QIconSet iconset = mpLoader->loadIconSet(name, mGroup, d->iconSize);
+    QIcon iconset = mpLoader->loadIconSet(name, mGroup, d->iconSize);
     setIconSet(iconset);
     mIcon = name;
 

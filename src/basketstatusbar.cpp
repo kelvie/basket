@@ -95,7 +95,7 @@ void BasketStatusBar::setupStatusBar()
 	m_savedStatus->setPixmap ( m_savedStatusPixmap );
 	m_savedStatus->setFixedSize ( m_savedStatus->sizeHint() );
 	m_savedStatus->clear();
-	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, QIconSet::Disabled));
+	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIcon::Small, QIcon::Disabled));
 	//m_savedStatus->setEnabled(false);
 	addWidget ( m_savedStatus, 0, true );
 	m_savedStatus->setToolTip ( "<p>" + i18n ( "Shows if there are changes that have not yet been saved." ) );

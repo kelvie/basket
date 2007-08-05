@@ -561,10 +561,10 @@ void qScrollEffect( QWidget* w, QEffects::DirFlags orient, int time )
 	qApp->sendPostedEvents( w, QEvent::Move );
 	qApp->sendPostedEvents( w, QEvent::Resize );
 #ifdef Q_WS_X11
-    uint flags = Qt::WStyle_Customize | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop
+    uint flags = Qt::WStyle_Customize | Qt::WNoAutoErase | Qt::WindowStaysOnTopHint
 	| (w->isPopup() ? Qt::WType_Popup : (Qt::WX11BypassWM | Qt::WStyle_Tool));
 #else
-    uint flags = Qt::WStyle_Customize | Qt::WType_Popup | Qt::WX11BypassWM | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop;
+    uint flags = Qt::WStyle_Customize | Qt::WType_Popup | Qt::WX11BypassWM | Qt::WNoAutoErase | Qt::WindowStaysOnTopHint;
 #endif
 
     // those can popups - they would steal the focus, but are disabled
@@ -586,10 +586,10 @@ void qFadeEffect( QWidget* w, int time )
 	qApp->sendPostedEvents( w, QEvent::Resize );
 
 #ifdef Q_WS_X11
-    uint flags = Qt::WStyle_Customize | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop
+    uint flags = Qt::WStyle_Customize | Qt::WNoAutoErase | Qt::WindowStaysOnTopHint
 	| (w->isPopup() ? Qt::WType_Popup : (Qt::WX11BypassWM | Qt::WStyle_Tool));
 #else
-    uint flags = Qt::WStyle_Customize | Qt::WType_Popup | Qt::WX11BypassWM | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop;
+    uint flags = Qt::WStyle_Customize | Qt::WType_Popup | Qt::WX11BypassWM | Qt::WNoAutoErase | Qt::WindowStaysOnTopHint;
 #endif
 
     // those can popups - they would steal the focus, but are disabled

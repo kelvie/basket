@@ -892,7 +892,7 @@ QSize StateMenuItem::sizeHint()
 	return QSize ( iconSize + iconMargin() + textSize.width(), textSize.height() );
 }
 
-QIconSet StateMenuItem::checkBoxIconSet ( bool checked, QPalette cg )
+QIcon StateMenuItem::checkBoxIconSet ( bool checked, QPalette cg )
 {
 	int width  = kapp->style().pixelMetric ( QStyle::PM_IndicatorWidth,  0 );
 	int height = kapp->style().pixelMetric ( QStyle::PM_IndicatorHeight, 0 );
@@ -927,13 +927,13 @@ QIconSet StateMenuItem::checkBoxIconSet ( bool checked, QPalette cg )
 	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
 	painter.end();
 
-	QIconSet iconSet ( pixmap );
-	iconSet.setPixmap ( pixmapHover,         QIconSet::Automatic, QIconSet::Active );
-	iconSet.setPixmap ( pixmapDisabled,      QIconSet::Automatic, QIconSet::Disabled );
+	QIcon iconSet ( pixmap );
+	iconSet.setPixmap ( pixmapHover,         QIcon::Automatic, QIcon::Active );
+	iconSet.setPixmap ( pixmapDisabled,      QIcon::Automatic, QIcon::Disabled );
 	return iconSet;
 }
 
-QIconSet StateMenuItem::radioButtonIconSet ( bool checked, QPalette cg )
+QIcon StateMenuItem::radioButtonIconSet ( bool checked, QPalette cg )
 {
 	int width  = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorWidth,  0 );
 	int height = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorHeight, 0 );
@@ -971,7 +971,7 @@ QIconSet StateMenuItem::radioButtonIconSet ( bool checked, QPalette cg )
 	painter.end();
 	pixmapHover.setMask ( pixmapHover.createHeuristicMask() );
 
-	QIconSet iconSet ( pixmap );
-	iconSet.setPixmap ( pixmapHover, QIconSet::Automatic, QIconSet::Active );
+	QIcon iconSet ( pixmap );
+	iconSet.setPixmap ( pixmapHover, QIcon::Automatic, QIcon::Active );
 	return iconSet;
 }

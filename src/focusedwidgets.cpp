@@ -39,7 +39,7 @@ FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent,
  : KTextEdit(parent, name),
    m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
-	setWFlags(Qt::WNoAutoErase); // Does not work, we still need the disableUpdatesOnKeyPress hack!
+//FIXME 1.5 dont exist any more	setWFlags(Qt::WNoAutoErase); // Does not work, we still need the disableUpdatesOnKeyPress hack!
 }
 
 FocusedTextEdit::~FocusedTextEdit()

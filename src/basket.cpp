@@ -2451,7 +2451,7 @@ void Basket::contentsMouseReleaseEvent ( QMouseEvent *event )
 						return;
 					it = clicked->states().insert ( it, state );
 					++it;
-					clicked->states().remove ( it );
+					clicked->states().erase ( it );
 					clicked->recomputeStyle();
 					clicked->unbufferize();
 					updateNote ( clicked );
@@ -3944,7 +3944,7 @@ bool Basket::hasTextInEditor()
 		return false;
 
 	if ( m_editor->textEdit() )
-		return ! m_editor->textEdit()->text().isEmpty();
+		return ! m_editor->textEdit()->toPlainText().isEmpty();
 	else if ( m_editor->lineEdit() )
 		return ! m_editor->lineEdit()->text().isEmpty();
 	else
@@ -3975,7 +3975,7 @@ bool Basket::selectedAllTextInEditor()
 		return false;
 
 	if ( m_editor->textEdit() )
-		return m_editor->textEdit()->text().isEmpty() || m_editor->textEdit()->text() == m_editor->textEdit()->selectedText();
+		return m_editor->textEdit()->text().isEmpty() || m_editor->textEdit()->text() == m_editor->textEdit()->textCursor().selectedText();
 	else if ( m_editor->lineEdit() )
 		return m_editor->lineEdit()->text().isEmpty() || m_editor->lineEdit()->text() == m_editor->lineEdit()->selectedText();
 	else
