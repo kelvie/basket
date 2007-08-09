@@ -204,7 +204,7 @@ void TagListViewItem::setup()
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
-		text = i18n("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = state->font(listView()->font());
 

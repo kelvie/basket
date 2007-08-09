@@ -62,7 +62,7 @@ namespace NoteFactory
 	Note* loadFile(           const QString &fileName, Basket *parent); /// << Determine the content of the file (the file SHOULD exists) and return a note of the good type.
 	Note* loadFile(           const QString &fileName, NoteType::Id type, Basket *parent ); /// <<  Create a note of type @p type. The file is not obliged to exist.
 	/** Functions to create a new note from a drop or past event */
-	Note* dropNote(QMimeSource *source, Basket *parent,
+	Note* dropNote(const QMimeData *source, Basket *parent,
 	               bool fromDrop = false, Qt::DropAction action = Qt::CopyAction, Note *noteSource = 0);
 	bool movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, Qt::DropAction action);
 	Note* dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop);

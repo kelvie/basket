@@ -687,7 +687,7 @@ void LinkLookEditWidget::saveChanges()
 
 void LinkLookEditWidget::saveToLook(LinkLook *look)
 {
-	look->setLook( m_italic->isOn(), m_bold->isOn(), m_underlining->currentItem(),
+	look->setLook( m_italic->isChecked(), m_bold->isChecked(), m_underlining->currentItem(),
 	               m_color->color(), m_hoverColor->color(),
 	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentItem() : LinkLook::None) );
 }

@@ -20,9 +20,8 @@
 
 #include "aboutdata.h"
 #include <klocale.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
+
 
 static const char description[] = I18N_NOOP(
 	"<p><b>Taking care of your ideas.</b></p>"
@@ -32,9 +31,9 @@ static const char description[] = I18N_NOOP(
 	// Or how to make order of disorganized toughts.
 
 AboutData::AboutData()
- : KAboutData( "basket", i18n("BasKet Note Pads"),
-   VERSION, description, KAboutData::License_GPL_V2,
-   i18n("(c) 2003-2007, Sébastien Laoût"), 0,
+ : KAboutData( "basket", 0, ki18n("BasKet Note Pads"),
+   VERSION, ki18n(description), KAboutData::License_GPL_V2,
+   ki18n("(c) 2003-2007, Sébastien Laoût"),  KLocalizedString(),
    "http://basket.kde.org/",
    "slaout@linux62.org" )
 {

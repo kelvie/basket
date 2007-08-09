@@ -23,8 +23,6 @@
 #include <kfiledialog.h>
 #include <qcheckbox.h>
 #include <qdir.h>
-#include <qhbox.h>
-#include <qvbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <klocale.h>
@@ -32,6 +30,7 @@
 
 #include "exporterdialog.h"
 #include "basket.h"
+#include <kvbox.h>
 
 ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name)
  : KDialog(parent, name, /*modal=*/true, i18n("Export Basket to HTML"),
@@ -41,7 +40,9 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
 	KVBox *page  = makeVBoxMainWidget();
 
 	QWidget     *wid  = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid);
+	hLay->setMargin(0);
+	hLay->setSpacing(KDialog::spacingHint());
 	m_url = new KUrlRequester("", wid);
 	m_url->setCaption(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");

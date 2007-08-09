@@ -161,7 +161,7 @@ class TransparentWidget : public QWidget
 /**
   * @author S�astien Laot
   */
-class Basket : public QScrollArea, public QToolTip
+class Basket : public QScrollArea
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
   Q_OBJECT

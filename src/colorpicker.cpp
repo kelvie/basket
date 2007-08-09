@@ -21,7 +21,7 @@
 #include "colorpicker.h"
 #include "qtimer.h"
 #include <kcolordialog.h>
-
+#include <QMouseEvent>
 /// ///
 
 /** DektopColorPicker */
@@ -37,7 +37,7 @@
 DesktopColorPicker::DesktopColorPicker()
  : QDesktopWidget()
 {
-	setName("DesktopColorPicker");
+	setObjectName("DesktopColorPicker");
 	m_gettingColorFromScreen = false;
 }
 
@@ -62,7 +62,7 @@ void DesktopColorPicker::pickColor()
 void DesktopColorPicker::slotDelayedPick()
 {
 	grabKeyboard();
-	grabMouse(crossCursor);
+	grabMouse(Qt::CrossCursor);
 }
 
 /* Validate the color

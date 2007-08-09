@@ -76,25 +76,24 @@ QString Global::backgroundsFolder() { return savesFolder() + "backgrounds/"; }
 QString Global::templatesFolder()   { return savesFolder() + "templates/";   }
 QString Global::tempCutFolder()     { return savesFolder() + "temp-cut/";    }
 
-QString Global::openNoteIcon() // FIXME: Now an edit icon
+QIcon Global::openNoteIcon() // FIXME: Now an edit icon
 {
 	return Global::bnpView->m_actEditNote->icon();
 }
 
 KMainWindow* Global::mainWindow()
 {
-	QWidget* res = kapp->mainWidget();
-
-	if(res && res->inherits("KMainWindow"))
-	{
-		return static_cast<KMainWindow*>(res);
-	}
+ 	QWidgetList list = QApplication::topLevelWidgets();
+     for (int i = 0; i < list.size(); ++i) {
+         if (KMainWindow *mainWin = qobject_cast<KMainWindow*>(list.at(i)))
+             return mainWin;
+     }
 	return 0;
 }
 
 KConfig* Global::config()
 {
-	if(!Global::basketConfig)
-		Global::basketConfig = KSharedConfig::openConfig("basketrc");
+//FIXME 1.5	if(!Global::basketConfig)
+//		Global::basketConfig = qobject_cast<KConfig*>(KSharedConfig::openConfig("basketrc"));
 	return Global::basketConfig;
 }

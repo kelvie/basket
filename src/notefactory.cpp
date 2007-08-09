@@ -58,6 +58,7 @@
 #include "keyboard.h"
 #include "variouswidgets.h"
 #include "tools.h"
+#include <QMimeData>
 
 #include "debugwindow.h"
 
@@ -308,7 +309,7 @@ bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent
 		return false;
 }
 
-Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, QDropEvent::Action action, Note */*noteSource*/)
+Note* NoteFactory::dropNote(QMimeData *source, Basket *parent, bool fromDrop, QDropEvent::Action action, Note */*noteSource*/)
 {
 	Note *note = 0L;
 

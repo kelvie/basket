@@ -88,6 +88,8 @@
 
 #include <iostream>
 #include <kcmdlineargs.h>
+#include <kactioncollection.h>
+#include <copyjob.h>
 
 /** Class NoteSelection: */
 
@@ -1425,14 +1427,20 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 		m_finishLoadOnFirstShow ( false ), m_relayoutOnNextShow ( false )
 {
 	QString sAction = "local_basket_activate_" + folderName;
-	m_action = new KAction ( "FAKE TEXT", "FAKE ICON", KShortcut(), this, SLOT ( activatedShortcut() ), Global::bnpView->actionCollection(), sAction );
+	
+	m_action = new KAction ( this);
+m_action->setText(i18n("FAKE TEXT"));
+m_action->setIcon(KIcon("FAKE ICON"));
+m_action->setShortcut( KShortcut());
+Global::bnpView->actionCollection()->addAction(sAction,m_action);
+	connect(m_action, SIGNAL(triggered(bool)), SLOT ( activatedShortcut() ));
 	m_action->setShortcutConfigurable ( false ); // We do it in the basket properties dialog (and keep it in sync with the global one)
 
 	if ( !m_folderName.endsWith ( "/" ) )
 		m_folderName += "/";
 
 	setFocusPolicy ( Qt::StrongFocus );
-	setDragAutoScroll ( true );
+//FIXME 1.5	setDragAutoScroll ( true );
 
 	// By default, there is no corner widget: we set one for the corner area to be painted!
 	// If we don't set one and there are two scrollbars present, slowly resizing up the window show graphical glitches in that area!
@@ -1441,7 +1449,6 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 
 	widget()->setAcceptDrops ( true );
 	widget()->setMouseTracking ( true );
-	widget()->setBackgroundMode ( NoBackground ); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
 
 	// File Watcher:
 	m_watcher = new KDirWatch ( this );
@@ -1562,7 +1569,8 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 				if ( m_editor && m_editor->textEdit() )
 				{
 					QTextEdit *editor = m_editor->textEdit();
-					editor->getCursorPosition ( &m_editParagraph, &m_editIndex );
+					m_editParagraph=editor->textCursor().anchor();
+					m_editIndex=editor->textCursor().position();
 				}
 			}
 		}
@@ -1663,9 +1671,14 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 		m_zoneToInsert    = zone;
 		m_posToInsert     = event->pos();
 		KMenu* menu = ( KMenu* ) ( Global::bnpView->popupMenu ( "insert_popup" ) );
-		if ( !menu->title ( /*id=*/120 ).isEmpty() ) // If we already added a title, remove it because it would be kept and then added several times:
-			menu->removeItem ( /*id=*/120 );
-		menu->insertTitle ( ( zone == Note::TopGroup || zone == Note::BottomGroup ? i18nc ( "The verb (Group New Note)", "Group" ) : i18nc ( "The verb (Insert New Note)", "Insert" ) ), /*id=*/120, /*index=*/0 );
+		foreach(QAction* a, menu->actions()){
+		if(a->text()==i18nc ( "The verb (Group New Note)", "Group" ) || a->text()==i18nc ( "The verb (Insert New Note)", "Insert" )){
+}
+			 // If we already added a title, remove it because it would be kept and then added several times:
+			menu->removeAction ( a );
+			delete a;
+		}
+		menu->addAction ( ( zone == Note::TopGroup || zone == Note::BottomGroup ? i18nc ( "The verb (Group New Note)", "Group" ) : i18nc ( "The verb (Insert New Note)", "Insert" )  ));
 		setInsertPopupMenu();
 		connect ( menu, SIGNAL ( aboutToHide() ),  this, SLOT ( delayedCancelInsertPopupMenu() ) );
 		connect ( menu, SIGNAL ( aboutToHide() ),  this, SLOT ( unlockHovering() ) );
@@ -1818,7 +1831,8 @@ void Basket::contentsContextMenuEvent ( QContextMenuEvent *event )
 
 QRect Basket::noteVisibleRect ( Note *note )
 {
-	QRect rect ( contentsToViewport ( QPoint ( note->x(), note->y() ) ), QSize ( note->width(),note->height() ) );
+//FIXME 1.5	QRect rect ( contentsToViewport ( QPoint ( note->x(), note->y() ) ), QSize ( note->width(),note->height() ) );
+QRect rect;
 	QPoint basketPoint = mapToGlobal ( QPoint ( 0,0 ) );
 	rect.moveTopLeft ( rect.topLeft() + basketPoint + QPoint ( frameWidth(), frameWidth() ) );
 
@@ -1967,7 +1981,7 @@ void Basket::clickedToInsert ( QMouseEvent *event, Note *clicked, /*Note::Zone*/
 {
 	Note *note;
 	if ( event->button() == Qt::MidButton )
-		note = NoteFactory::dropNote ( KApplication::clipboard()->data ( QClipboard::Selection ), this );
+		note = NoteFactory::dropNote ( KApplication::clipboard()->mimeData ( QClipboard::Selection ), this );
 	else
 		note = NoteFactory::createNoteText ( "", this );
 
@@ -2014,8 +2028,7 @@ void Basket::contentsDragMoveEvent ( QDragMoveEvent *event )
 		acceptDropEvent ( event );
 	else
 	{
-		event->acceptAction ( false );
-		event->accept ( false );
+		event->ignore ( );
 	}
 
 	/*	Note *hoveredNote = noteAt(event->pos().x(), event->pos().y());
@@ -2058,17 +2071,17 @@ void Basket::contentsDropEvent ( QDropEvent *event )
 	// Should, of course, not return 0:
 	Note *clicked = noteAt ( event->pos().x(), event->pos().y() );
 
-	if ( NoteFactory::movingNotesInTheSameBasket ( event, this, event->dropAction() ) && event->dropAction() == QDropEvent::Move )
+	if ( NoteFactory::movingNotesInTheSameBasket ( event, this, event->dropAction() ) && event->dropAction() == Qt::MoveAction )
 	{
 		m_doNotCloseEditor = true;
 	}
 
-	Note *note = NoteFactory::dropNote ( event, this, true, event->action(), dynamic_cast<Note*> ( event->source() ) );
+	Note *note = NoteFactory::dropNote ( event->mimeData(), this, true, event->dropAction(), dynamic_cast<Note*> ( event->source() ) );
 
 	if ( note )
 	{
 		Note::Zone zone = ( clicked ? clicked->zoneAt ( event->pos() - QPoint ( clicked->x(), clicked->y() ), /*toAdd=*/true ) : Note::None );
-		bool animateNewPosition = NoteFactory::movingNotesInTheSameBasket ( event, this, event->action() );
+		bool animateNewPosition = NoteFactory::movingNotesInTheSameBasket ( event, this, event->dropAction() );
 		if ( animateNewPosition )
 		{
 			FOR_EACH_NOTE ( n )
@@ -2125,7 +2138,7 @@ void Basket::blindDrop ( QDropEvent* event )
 		}
 		closeEditor();
 		unselectAll();
-		Note *note = NoteFactory::dropNote ( event, this, true, event->action(),
+		Note *note = NoteFactory::dropNote ( event->mimeData(), this, true, event->dropAction(),
 		                                     dynamic_cast<Note*> ( event->source() ) );
 		if ( note )
 		{
@@ -2204,7 +2217,7 @@ void Basket::pasteNote ( QClipboard::Mode mode )
 		}
 		closeEditor();
 		unselectAll();
-		Note *note = NoteFactory::dropNote ( KApplication::clipboard()->data ( mode ), this );
+		Note *note = NoteFactory::dropNote ( KApplication::clipboard()->mimeData ( mode ), this );
 		if ( note )
 		{
 			insertCreatedNote ( note );
@@ -2291,8 +2304,7 @@ void Basket::timeoutHideInsertPopupMenu()
 void Basket::acceptDropEvent ( QDropEvent *event, bool preCond )
 {
 	// FIXME: Should not accept all actions! Or not all actions (link not supported?!)
-	event->acceptAction ( preCond && 1 );
-	event->accept ( preCond );
+	event->setAccepted(preCond);
 }
 
 void Basket::contentsMouseReleaseEvent ( QMouseEvent *event )
@@ -2578,7 +2590,7 @@ void Basket::contentsMouseMoveEvent ( QMouseEvent *event )
 		NoteSelection *selection = selectedNotes();
 		if ( selection->firstStacked() )
 		{
-			QDragObject *d = NoteDrag::dragObject ( selection, /*cutting=*/false, /*source=*/this ); // d will be deleted by QT
+			QDrag *d = NoteDrag::dragObject ( selection, /*cutting=*/false, /*source=*/this ); // d will be deleted by QT
 			/*bool shouldRemove = */d->drag();
 //		delete selection;
 
@@ -2660,8 +2672,8 @@ void Basket::doAutoScrollSelection()
 	m_selectionRect = QRect ( m_selectionBeginPoint, m_selectionEndPoint ).normalize();
 	if ( m_selectionRect.left() < 0 )                    m_selectionRect.setLeft ( 0 );
 	if ( m_selectionRect.top() < 0 )                     m_selectionRect.setTop ( 0 );
-	if ( m_selectionRect.right() >= contentsWidth() )    m_selectionRect.setRight ( contentsWidth() - 1 );
-	if ( m_selectionRect.bottom() >= contentsHeight() )  m_selectionRect.setBottom ( contentsHeight() - 1 );
+	if ( m_selectionRect.right() >= widget()->width() )    m_selectionRect.setRight ( widget()->width() - 1 );
+	if ( m_selectionRect.bottom() >= widget()->height() )  m_selectionRect.setBottom ( widget()->height() - 1 );
 
 	if ( ( m_selectionBeginPoint - m_selectionEndPoint ).manhattanLength() > QApplication::startDragDistance() )
 	{
@@ -2708,7 +2720,7 @@ void Basket::doAutoScrollSelection()
 	if ( dx || dy )
 	{
 		kapp->sendPostedEvents(); // Do the repaints, because the scrolling will make the area to repaint to be wrong
-		scrollBy ( dx, dy );
+		scrollContentsBy ( dx, dy );
 		if ( !m_autoScrollSelectionTimer.isActive() )
 			m_autoScrollSelectionTimer.start ( AUTO_SCROLL_DELAY );
 	}
@@ -2875,7 +2887,7 @@ void Basket::doHoverEffects ( const QPoint &pos )
 	// Ending the drag INSIDE the basket area will make NO hoverEffects() because m_underMouse is false.
 	// User need to leave the area and re-enter it to get effects.
 	// This hack solve that by dismissing the m_underMouse variable:
-	bool underMouse = Global::bnpView->currentBasket() == this && QRect ( contentsX(), contentsY(), width(), height() ).contains ( pos );
+	bool underMouse = Global::bnpView->currentBasket() == this && QRect ( widget()->pos().x(), widget()->pos().y(), width(), height() ).contains ( pos );
 
 	// Don't do hover effects when a popup menu is opened.
 	// Primarily because the basket area will only receive mouseEnterEvent and mouveLeaveEvent.
@@ -2955,7 +2967,7 @@ void Basket::drawInserter ( QPainter &painter, int xPainter, int yPainter )
 		return;
 
 	QRect rect = m_inserterRect; // For shorter code-lines when drawing!
-	rect.moveBy ( -xPainter, -yPainter );
+	rect.translate ( -xPainter, -yPainter );
 	int lineY  = ( m_inserterGroup && m_inserterTop ? 0 : 2 );
 	int roundY = ( m_inserterGroup && m_inserterTop ? 0 : 1 );
 
@@ -3008,8 +3020,8 @@ void Basket::maybeTip ( const QPoint &pos )
 			if ( itRect.contains ( contentPos ) )
 			{
 				rect = itRect;
-				rect.moveLeft ( rect.left() - contentsX() );
-				rect.moveTop ( rect.top()  - contentsY() );
+				rect.moveLeft ( rect.left() - widget()->pos().x() );
+				rect.moveTop ( rect.top()  - widget()->pos().y() );
 				break;
 			}
 		}
@@ -3080,7 +3092,7 @@ void Basket::maybeTip ( const QPoint &pos )
 			QStringList::iterator key;
 			QStringList::iterator value;
 			for ( key = keys.begin(), value = values.begin(); key != keys.end() && value != values.end(); ++key, ++value )
-				message += "<br>" + i18ncp ( "of the form 'key: value'", "<b>%1</b>: %2" ).arg ( *key, *value );
+				message += "<br>" + i18nc ( "of the form 'key: value'", "<b>%1</b>: %2" ).arg ( *key, *value );
 			message += "</nobr></qt>";
 		}
 		else if ( m_inserterSplit && ( zone == Note::TopInsert || zone == Note::BottomInsert ) )
@@ -3090,8 +3102,8 @@ void Basket::maybeTip ( const QPoint &pos )
 
 		rect = note->zoneRect ( zone, contentPos - QPoint ( note->x(), note->y() ) );
 
-		rect.moveLeft ( rect.left() - contentsX() );
-		rect.moveTop ( rect.top()  - contentsY() );
+		rect.moveLeft ( rect.left() - widget()->pos().x() );
+		rect.moveTop ( rect.top()  - widget()->pos().y() );
 
 		rect.moveLeft ( rect.left() + note->x() );
 		rect.moveTop ( rect.top()  + note->y() );
@@ -3143,7 +3155,7 @@ Note* Basket::noteAt ( int x, int y )
 // 	// the note is first removed, and relayoutNotes() compute the new height that is smaller
 // 	// Then noteAt() is called for the mouse pointer position, because the basket is now smaller, the cursor is out of boundaries!!!
 // 	// Should, of course, not return 0:
-	if ( x < 0 || x > contentsWidth() || y < 0 || y > contentsHeight() )
+	if ( x < 0 || x > widget()->width() || y < 0 || y > widget()->height() )
 		return 0;
 
 	// When resizing a note/group, keep it highlighted:
@@ -3197,7 +3209,7 @@ void Basket::viewportResizeEvent ( QResizeEvent *event )
 {
 	relayoutNotes ( true );
 	//cornerWidget()->setShown(horizontalScrollBar()->isShown() && verticalScrollBar()->isShown());
-	if ( horizontalScrollBar()->isShown() && verticalScrollBar()->isShown() )
+	if ( horizontalScrollBar()->isVisible() && verticalScrollBar()->isVisible() )
 	{
 		if ( !cornerWidget() )
 			setCornerWidget ( m_cornerWidget );
@@ -3209,12 +3221,12 @@ void Basket::viewportResizeEvent ( QResizeEvent *event )
 	}
 //	if (isDuringEdit())
 //		ensureNoteVisible(editedNote());
-	QScrollView::viewportResizeEvent ( event );
+//FIXME 1.5	QScrollView::viewportResizeEvent ( event );
 }
 
 void Basket::animateLoad()
 {
-	const int viewHeight = contentsY() + height();
+	const int viewHeight = widget()->pos().y() + widget()->height();
 
 	QTime t = QTime::currentTime(); // Set random seed
 	srand ( t.hour() *12 + t.minute() *60 + t.second() *60 );
@@ -3281,7 +3293,8 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 	{
 		if ( !m_decryptBox )
 		{
-			m_decryptBox = new QFrame ( this, "m_decryptBox" );
+			m_decryptBox = new QFrame ( this);
+			m_decryptBox->setObjectName( "m_decryptBox" );
 			m_decryptBox->setFrameShape ( QFrame::StyledPanel );
 			m_decryptBox->setFrameShadow ( QFrame::Plain );
 			m_decryptBox->setLineWidth ( 1 );
@@ -3294,7 +3307,8 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 			layout->addWidget ( m_button, 1, 2 );
 			connect ( m_button, SIGNAL ( clicked() ), this, SLOT ( unlock() ) );
 #endif
-			QLabel* label = new QLabel ( m_decryptBox, "label" );
+			QLabel* label = new QLabel ( m_decryptBox);
+			label->setObjectName("label" );
 			QString text = "<b>" + i18n ( "Password protected basket." ) + "</b><br/>";
 #ifdef HAVE_LIBGPGME
 			label->setText ( text + i18n ( "Press Unlock to access it." ) );
@@ -3303,7 +3317,8 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 #endif
 			label->setAlignment ( int ( QLabel::AlignTop ) );
 			layout->addMultiCellWidget ( label, 0, 0, 1, 2 );
-			QLabel* pixmap = new QLabel ( m_decryptBox, "pixmap" );
+			QLabel* pixmap = new QLabel ( m_decryptBox);
+			pixmap->setObjectName( "pixmap" );
 			pixmap->setPixmap ( KIconLoader::global()->loadIcon ( "encrypted", K3Icon::NoGroup, KIcon::SizeHuge ) );
 			layout->addMultiCellWidget ( pixmap, 0, 1, 0, 0 );
 
@@ -3454,7 +3469,7 @@ void Basket::blendBackground ( QPainter &painter, const QRect &rect, int xPainte
 void Basket::recomputeBlankRects()
 {
 	m_blankAreas.clear();
-	m_blankAreas.append ( QRect ( 0, 0, contentsWidth(), contentsHeight() ) );
+	m_blankAreas.append ( QRect ( 0, 0, widget()->width(), widget()->height() ) );
 
 	FOR_EACH_NOTE ( note )
 	note->recomputeBlankRects ( m_blankAreas );
@@ -3549,7 +3564,7 @@ void Basket::animateObjects()
 //		if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
 //			updateNote(*it);
 		if ( ( *it )->advance() )
-			it = m_animatedNotes.remove ( it );
+			it = m_animatedNotes.erase ( it );
 		else
 		{
 //			if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
@@ -3622,10 +3637,10 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 		QAction* tmpAction;
 		menu.addMenu ( /*SmallIcon(state->icon()), */tag->name() );
 		tmpAction =menu.addTitle( i18n ( "&Remove" ) );
-		tmpAction->setIcon((SmallIconSet ("edit-delete" ));
-		menu.insertItem ( SmallIconSet ( "configure" ),  i18n ( "&Customize..." ),       2 );
+		tmpAction->setIcon(KIcon ("edit-delete" ));
+		menu.insertItem ( KIcon ( "configure" ),  i18n ( "&Customize..." ),       2 );
 		menu.insertSeparator();
-		menu.insertItem ( SmallIconSet ( "search-filter" ),     i18n ( "&Filter by this Tag" ), 3 );
+		menu.insertItem ( KIcon ( "search-filter" ),     i18n ( "&Filter by this Tag" ), 3 );
 	}
 	else
 	{
@@ -4230,11 +4245,14 @@ Note* Basket::theSelectedNote()
 
 void debugSel ( NoteSelection* sel, int n = 0 )
 {
+	QString debugStr;
 	for ( NoteSelection *node = sel; node; node = node->next )
 	{
+		debugStr=QString();
 		for ( int i = 0; i < n; i++ )
-			std::cout << "-";
-		std::cout << ( node->firstChild ? "Group" : node->note->content()->toText ( "" ).toLatin() ) << std::endl;
+			QTextStream(&debugStr) << "-";
+		QTextStream(&debugStr) << ( node->firstChild ? "Group" : node->note->content()->toText ( "" ));
+		qDebug()<<debugStr;
 		if ( node->firstChild )
 			debugSel ( node->firstChild, n+1 );
 	}
@@ -5155,7 +5173,7 @@ Note* Basket::noteOn ( NoteOn side )
 {
 	Note *bestNote = 0;
 	int   distance = -1;
-	int   bestDistance = contentsWidth() * contentsHeight() * 10;
+	int   bestDistance = widget()->width() * widget()->height() * 10;
 
 	Note *note    = firstNoteShownInStack();
 	Note *primary = m_focusedNote->parentPrimaryNote();
@@ -5296,13 +5314,13 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 			toFocus = ( isFreeLayout() ? noteOn ( BOTTOM_SIDE ) : m_focusedNote->nextShownInStack() );
 			if ( toFocus )
 				break;
-			scrollBy ( 0, 30 ); // This cases do not move focus to another note...
+			scrollContentsBy ( 0, 30 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_Up:
 			toFocus = ( isFreeLayout() ? noteOn ( TOP_SIDE ) : m_focusedNote->prevShownInStack() );
 			if ( toFocus )
 				break;
-			scrollBy ( 0, -30 ); // This cases do not move focus to another note...
+			scrollContentsBy ( 0, -30 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_PageDown:
 			if ( isFreeLayout() )
@@ -5323,7 +5341,7 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 				toFocus = ( isFreeLayout() ? noteOnEnd() : lastNoteShownInStack() );
 			if ( toFocus && toFocus != m_focusedNote )
 				break;
-			scrollBy ( 0, height() / 2 ); // This cases do not move focus to another note...
+			scrollContentsBy ( 0, height() / 2 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_PageUp:
 			if ( isFreeLayout() )
@@ -5344,7 +5362,7 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 				toFocus = ( isFreeLayout() ? noteOnHome() : firstNoteShownInStack() );
 			if ( toFocus && toFocus != m_focusedNote )
 				break;
-			scrollBy ( 0, - height() / 2 ); // This cases do not move focus to another note...
+			scrollContentsBy ( 0, - height() / 2 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_Home:
 			toFocus = noteOnHome();
@@ -5359,14 +5377,14 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 				break;
 			if ( ( toFocus = firstNoteInGroup() ) )
 				break;
-			scrollBy ( -30, 0 ); // This cases do not move focus to another note...
+			scrollContentsBy ( -30, 0 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_Right:
 			if ( m_focusedNote->tryExpandParent() )
 				return;
 			if ( ( toFocus = noteOn ( RIGHT_SIDE ) ) )
 				break;
-			scrollBy ( 30, 0 ); // This cases do not move focus to another note...
+			scrollContentsBy ( 30, 0 ); // This cases do not move focus to another note...
 			return;
 		case Qt::Key_Space:  // This case do not move focus to another note...
 			if ( m_focusedNote )

@@ -62,7 +62,7 @@ class Global
 	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
 
 	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
+	static QIcon openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
 	static KMainWindow* mainWindow();
 	static KConfig* config();
 	static KAboutData* about() { return &basketAbout; };

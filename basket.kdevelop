@@ -2,7 +2,7 @@
 <kdevelop>
   <general>
     <projectmanagement>KDevCustomProject</projectmanagement>
-    <projectdirectory>/home/pat/basket_kde4port/</projectdirectory>
+    <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
     <absoluteprojectpath>true</absoluteprojectpath>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
@@ -26,7 +26,7 @@
   <kdevautoproject>
     <general>
       <projectmanagement>KDevCustomProject</projectmanagement>
-      <projectdirectory>/home/kde-devel/basket</projectdirectory>
+      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
       <absoluteprojectpath>true</absoluteprojectpath>
       <activetarget>src/basket</activetarget>
       <useconfiguration>debug</useconfiguration>
@@ -160,7 +160,7 @@
   <kdevdebugger>
     <general>
       <projectmanagement>KDevCustomProject</projectmanagement>
-      <projectdirectory>/home/kde-devel/basket</projectdirectory>
+      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
       <absoluteprojectpath>true</absoluteprojectpath>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
@@ -295,7 +295,7 @@
     <activeTagsFiles/>
   </ctagspart>
   <kdevcustomproject>
-    <filelistdirectory>/home/kde-devel/basket</filelistdirectory>
+    <filelistdirectory>/home/pat/basket_kde4port</filelistdirectory>
     <run>
       <directoryradio>executable</directoryradio>
       <mainprogram>/home/pat/basket_kde4port/</mainprogram>
@@ -314,7 +314,7 @@
         <envvar value="/tmp/$USER-kde4" name="KDETMP" />
         <envvar value="/var/tmp/$USER-kde4" name="KDEVARTMP" />
         <envvar value="42" name="LD_BIND_NOW" />
-        <envvar value="$QTDIR/lib:$KDEDIR/lib:$LD_LIBRARY_PATH" name="LD_LIBRARY_PATH" />
+        <envvar value="/usr/lib/gcc/i686-pc-linux-gnu/4.1.2:$QTDIR/lib:$KDEDIR/lib:$LD_LIBRARY_PATH" name="LD_LIBRARY_PATH" />
         <envvar value="$QTDIR/bin:$KDEDIR/bin:/usr/local/bin:$PATH" name="PATH" />
       </envvars>
     </run>
@@ -337,7 +337,7 @@
     <blacklist/>
     <build>
       <buildtool>make</buildtool>
-      <builddir>/home/pat/basket_kde4port/</builddir>
+      <builddir>/home/pat/basket_kde4port</builddir>
     </build>
     <other>
       <prio>0</prio>

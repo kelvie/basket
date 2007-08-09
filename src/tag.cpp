@@ -701,8 +701,8 @@ void Tag::createDefaultTagsSet ( const QString &fullPath )
 	                  "  </tag>""\n"
 	                  "\n" )
 	              .arg ( i18n ( "Important" ), i18n ( "Very Important" ),              i18n ( "Information" ) )       // %1 %2 %3
-	              .arg ( i18n ( "Idea" ),      i18n ( "The initial of 'Idea'", "I." ), i18n ( "Title" ) )             // %4 %5 %6
-	              .arg ( i18n ( "Code" ),      i18n ( "Work" ),                        i18n ( "The initial of 'Work'", "W." ) ) // %7 %8 %9
+	              .arg ( i18n ( "Idea" ),      i18nc ( "The initial of 'Idea'", "I." ), i18n ( "Title" ) )             // %4 %5 %6
+	              .arg ( i18n ( "Code" ),      i18n ( "Work" ),                        i18nc ( "The initial of 'Work'", "W." ) ) // %7 %8 %9
 	              + QString (
 	                  "  <tag>\n"
 	                  "    <state id=\"personal\">\n"
@@ -720,7 +720,7 @@ void Tag::createDefaultTagsSet ( const QString &fullPath )
 	                  "  </tag>\n"
 	                  "</basketTags>\n"
 	                  "" )
-	              .arg ( i18n ( "Personal" ), i18n ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3
+	              .arg ( i18n ( "Personal" ), i18nc ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3
 
 	// Write to Disk:
 	QFile file ( fullPath );
