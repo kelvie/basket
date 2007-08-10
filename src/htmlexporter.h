@@ -25,7 +25,7 @@
 #include <qtextstream.h>
 
 class KProgress;
-
+class QProgressBar;
 class Basket;
 class Note;
 

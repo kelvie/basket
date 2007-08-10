@@ -21,7 +21,7 @@
 /** KSystemTray2 */
 
 // To draw the systray screenshot image:
-#include <qdockwindow.h>
+#include <QDockWidget>
 #include <qmovie.h>
 #include <qvariant.h>
 #include "linklabel.h"
@@ -34,7 +34,7 @@
 #include <qpixmap.h>
 // To know the program name:
 #include <kglobal.h>
-#include <kinstance.h>
+#include <kcomponentdata.h>
 #include <kaboutdata.h>
 #include <kiconeffect.h>
 // Others:
@@ -50,9 +50,14 @@
 #include "settings.h"
 #include "global.h"
 #include "tools.h"
-
-KSystemTray2::KSystemTray2(QWidget *parent, const char *name)
- : KSystemTray(parent, name)
+#include <QWheelEvent>
+#include <kdialog.h>
+#include <QIcon>
+#include <kactioncollection.h>
+#include <kcmdlineargs.h>
+#include <QX11Info>
+KSystemTray2::KSystemTray2(QWidget *parent)
+ : KSystemTrayIcon(parent)
 {
 }
 
@@ -83,11 +88,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		fileMenu = i18n("File");
 
 	// Some values we need:
-	QPoint g = mapToGlobal(pos());
+	QPoint g = parentWidget()->mapToGlobal(parentWidget()->pos());
 	int desktopWidth  = kapp->desktop()->width();
 	int desktopHeight = kapp->desktop()->height();
-	int tw = width();
-	int th = height();
+	int tw = geometry().width();
+	int th = geometry().height();
 
 	// We are triying to make a live screenshot of the systray icon to circle it
 	//  and show it to the user. If no systray is used or if the icon is not visible,
@@ -95,9 +100,9 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 
 	// 1. Determine if the user use a system tray area or not:
 	QByteArray screenstr;
-	screenstr.setNum(qt_xscreen());
+	screenstr.setNum(QX11Info::appScreen ());
 	QByteArray trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
-	bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
+	bool useSystray = (KSelectionWatcher(trayatom.data()).owner() != 0L);
 
 	// 2. And then if the icon is visible too (eg. this->show() has been called):
 	useSystray = useSystray && isVisible();
@@ -139,7 +144,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	QString message = i18n(
 		"<p>Closing the main window will keep %1 running in the system tray. "
 		"Use <b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
-			).arg(KGlobal::instance()->aboutData()->programName());
+			).arg(KGlobal::mainComponent().aboutData()->programName());
 	// We are sure the systray icon is visible: ouf!
 	if (useSystray) {
 		// Compute size and position of the pixmap to be grabbed:
@@ -153,7 +158,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		if (y + h > desktopHeight) y = desktopHeight - h;
 
 		// Grab the desktop and draw a circle arround the icon:
-		QPixmap shot = QPixmap::grabWindow(qt_xrootwin(), x, y, w, h);
+		QPixmap shot = QPixmap::grabWindow(QX11Info::appRootWindow(), x, y, w, h);
 		QPainter painter(&shot);
 		const int CIRCLE_MARGINS = 6;
 		const int CIRCLE_WIDTH   = 3;
@@ -161,30 +166,30 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		const int IMAGE_BORDER   = 1;
 		int ax = g.x() - x - CIRCLE_MARGINS - 1;
 		int ay = g.y() - y - CIRCLE_MARGINS - 1;
-		painter.setPen( QPen(KApplication::palette().active().dark(), CIRCLE_WIDTH) );
+		painter.setPen( QPen(KApplication::palette().dark(), CIRCLE_WIDTH) );
 		painter.drawArc(ax + SHADOW_OFFSET, ay + SHADOW_OFFSET,
 		                tw + 2*CIRCLE_MARGINS, th + 2*CIRCLE_MARGINS, 0, 16*360);
 		painter.setPen( QPen(Qt::red/*KApplication::palette().active().highlight()*/, CIRCLE_WIDTH) );
 		painter.drawArc(ax, ay, tw + 2*CIRCLE_MARGINS, th + 2*CIRCLE_MARGINS, 0, 16*360);
 #if 1
 		// Draw the pixmap over the screenshot in case a window hide the icon:
-		painter.drawPixmap(g.x() - x, g.y() - y + 1, *pixmap());
+		painter.drawPixmap(g.x() - x, g.y() - y + 1, shot);
 #endif
 		painter.end();
 
 		// Then, we add a border arround the image to make it more visible:
 		QPixmap finalShot(w + 2*IMAGE_BORDER, h + 2*IMAGE_BORDER);
-		finalShot.fill(KApplication::palette().active().foreground());
+		finalShot.fill(KApplication::palette().color(QPalette::Foreground));
 		painter.begin(&finalShot);
 		painter.drawPixmap(IMAGE_BORDER, IMAGE_BORDER, shot);
 		painter.end();
 
 		// Associate source to image and show the dialog:
-		QMimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
+//FIXME 1.5		QMimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
 		KMessageBox::information(kapp->activeWindow(),
 			message + "<p><center><img source=\"systray_shot\"></center></p>",
 			i18n("Docking in System Tray"), "hideOnCloseInfo");
-		QMimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
+// FIXME 1.5		QMimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
 	} else {
 		KMessageBox::information(kapp->activeWindow(),
 			message,
@@ -194,10 +199,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 
 /** SystemTray */
 
-SystemTray::SystemTray(QWidget *parent, const char *name)
- : KSystemTray2(parent, name != 0 ? name : "SystemTray"), m_showTimer(0), m_autoShowTimer(0)
+SystemTray::SystemTray(QWidget *parent)
+ : KSystemTray2(parent), m_showTimer(0), m_autoShowTimer(0)
 {
-	setAcceptDrops(true);
+	setObjectName("SystemTray");
+// FIXME 1.5	setAcceptDrops(true);
 
 	m_showTimer = new QTimer(this);
 	connect( m_showTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()) );
@@ -206,15 +212,15 @@ SystemTray::SystemTray(QWidget *parent, const char *name)
 	connect( m_autoShowTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()) );
 
 	// Create pixmaps for the icon:
-	m_iconPixmap              = loadIcon("basket");
+	m_iconPixmap              = KIcon("basket").pixmap(32);
 //	FIXME: When main window is shown at start, the icon is loaded 1 pixel too high
 //	       and then reloaded instantly after at the right position.
 //	setPixmap(m_iconPixmap); // Load it the sooner as possible to avoid flicker
-	QImage  lockedIconImage   = m_iconPixmap.convertToImage();
-	QPixmap lockOverlayPixmap = loadIcon("lockoverlay");
-	QImage  lockOverlayImage  = lockOverlayPixmap.convertToImage();
+	QImage  lockedIconImage   = m_iconPixmap.toImage();
+	QPixmap lockOverlayPixmap = loadIcon("lockoverlay").pixmap(32);// FIXME 1.5
+	QImage  lockOverlayImage  = lockOverlayPixmap.toImage();
 	KIconEffect::overlay(lockedIconImage, lockOverlayImage);
-	m_lockedIconPixmap.convertFromImage(lockedIconImage);
+	m_lockedIconPixmap.fromImage(lockedIconImage);
 
 	updateToolTip(); // Set toolTip AND icon
 }
@@ -237,32 +243,33 @@ void SystemTray::mousePressEvent(QMouseEvent *event)
 			Global::bnpView->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
 		event->accept();
 	} else if (event->button() & Qt::RightButton) { // Popup menu
-		KMenu menu(this);
-		menu.insertTitle( SmallIcon("basket"), KCmdLineArgs::aboutData( )->programName() );
-
-		Global::bnpView->actNewBasket->plug(&menu);
-		Global::bnpView->actNewSubBasket->plug(&menu);
-		Global::bnpView->actNewSiblingBasket->plug(&menu);
-		menu.insertSeparator();
-		Global::bnpView->m_actPaste->plug(&menu);
-		Global::bnpView->m_actGrabScreenshot->plug(&menu);
-		Global::bnpView->m_actColorPicker->plug(&menu);
+		KMenu menu(parentWidget());
+		setContextMenu(qobject_cast<QMenu*>(&menu)); 
+		menu.setTitle( KCmdLineArgs::aboutData( )->programName() );
+		menu.setIcon(KIcon("basket"));
+		menu.addAction(Global::bnpView->actNewBasket);
+		menu.addAction(Global::bnpView->actNewSubBasket);
+		menu.addAction(Global::bnpView->actNewSiblingBasket);
+			menu.insertSeparator(menu.actions().last());
+		menu.addAction(Global::bnpView->m_actPaste);
+		menu.addAction(Global::bnpView->m_actGrabScreenshot);
+		menu.addAction(Global::bnpView->m_actColorPicker);
 
 		if(!Global::bnpView->isPart())
 		{
-			KAction* action;
+			QAction* action;
 
-			menu.insertSeparator();
+			menu.insertSeparator(menu.actions().last());
 
 			action = Global::bnpView->actionCollection()->action("options_configure_global_keybinding");
 			if(action)
-				action->plug(&menu);
+				menu.addAction(action);
 
 			action = Global::bnpView->actionCollection()->action("options_configure");
 			if(action)
-				action->plug(&menu);
+				menu.addAction(action);
 
-			menu.insertSeparator();
+			menu.insertSeparator(menu.actions().last());
 
 			// Minimize / restore : since we manage the popup menu by ourself, we should do that work :
 			action = Global::bnpView->actionCollection()->action("minimizeRestore");
@@ -272,12 +279,12 @@ void SystemTray::mousePressEvent(QMouseEvent *event)
 					action->setText(i18n("&Minimize"));
 				else
 					action->setText(i18n("&Restore"));
-				action->plug(&menu);
+				menu.addAction(action);
 			}
 
 			action = Global::bnpView->actionCollection()->action("file_quit");
 			if(action)
-				action->plug(&menu);
+				menu.addAction(action);
 		}
 
 		Global::bnpView->currentBasket()->setInsertPopupMenu();
@@ -297,7 +304,7 @@ void SystemTray::mouseReleaseEvent(QMouseEvent *event)
 {
 	m_canDrag = false;
 	if (event->button() == Qt::LeftButton)         // Show / hide main window
-		if ( rect().contains(event->pos()) ) {     // Accept only if released in systemTray
+		if ( parentWidget()->rect().contains(event->pos()) ) {     // Accept only if released in systemTray
 			toggleActive();
 			emit showPart();
 			event->accept();
@@ -307,7 +314,8 @@ void SystemTray::mouseReleaseEvent(QMouseEvent *event)
 
 void SystemTray::dragEnterEvent(QDragEnterEvent *event)
 {
-	m_showTimer->start( Settings::dropTimeToShow() * 100, true );
+	m_showTimer->setSingleShot(true);
+	m_showTimer->start( Settings::dropTimeToShow() * 100 );
 	Global::bnpView->currentBasket()->showFrameInsertTo();
 ///	m_parentContainer->setStatusBarDrag(); // FIXME: move this line in Basket::showFrameInsertTo() ?
 	Basket::acceptDropEvent(event);
@@ -376,9 +384,9 @@ static bool copyImage(QImage &dest, QImage &src, int x, int y)
 	// However, we do have to specifically ensure that setAlphaBuffer is set
 	// to false
 
-	large_src.setAlphaBuffer(false);
+//FIXME 1.5	large_src.setAlphaBuffer(false);
 	large_src.fill(0); // All transparent pixels
-	large_src.setAlphaBuffer(true);
+//FIXME 1.5	large_src.setAlphaBuffer(true);
 
 	int w = src.width();
 	int h = src.height();
@@ -402,15 +410,15 @@ void SystemTray::updateToolTip()
 		return;
 
 	if (basket->icon().isEmpty() || basket->icon() == "basket" || ! Settings::showIconInSystray())
-		setPixmap(basket->isLocked() ? m_lockedIconPixmap : m_iconPixmap);
+		setIcon(basket->isLocked() ? m_lockedIconPixmap : m_iconPixmap);
 	else {
 		// Code that comes from JuK:
-		QPixmap bgPix = loadIcon("basket");
+		QPixmap bgPix = loadIcon("basket").pixmap(32);//FIXME 1.5 find the icon curent size
 		QPixmap fgPix = SmallIcon(basket->icon());
 
-		QImage bgImage = bgPix.convertToImage(); // Probably 22x22
-		QImage fgImage = fgPix.convertToImage(); // Should be 16x16
-		QImage lockOverlayImage = loadIcon("lockoverlay").convertToImage();
+		QImage bgImage = bgPix.toImage(); // Probably 22x22
+		QImage fgImage = fgPix.toImage(); // Should be 16x16
+		QImage lockOverlayImage = loadIcon("lockoverlay").pixmap(32).toImage();//FIXME 1.5 find the icon curent size
 
 		KIconEffect::semiTransparent(bgImage);
 		copyImage(bgImage, fgImage, (bgImage.width() - fgImage.width()) / 2,
@@ -418,8 +426,8 @@ void SystemTray::updateToolTip()
 		if (basket->isLocked())
 			KIconEffect::overlay(bgImage, lockOverlayImage);
 
-		bgPix.convertFromImage(bgImage);
-		setPixmap(bgPix);
+		bgPix.fromImage(bgImage);
+		setIcon(bgPix);
 	}
 
 	//QTimer::singleShot( Container::c_delayTooltipTime, this, SLOT(updateToolTipDelayed()) );
@@ -431,11 +439,11 @@ void SystemTray::updateToolTipDelayed()
 {
 	Basket *basket = Global::bnpView->currentBasket();
 
-	QString tip = "<p><nobr>" + ( basket->isLocked() ? KInstance::makeStandardCaption(i18n("%1 (Locked)"))
-	                                                 : KInstance::makeStandardCaption(     "%1")          )
+	QString tip = "<p><nobr>" + ( basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
+	                                                 : KDialog::makeStandardCaption(     "%1")          )
 	                            .arg(Tools::textToHTMLWithoutP(basket->basketName()));
 
-	QToolTip::add(this, tip);
+	this->setToolTip(tip);
 }
 
 void SystemTray::wheelEvent(QWheelEvent *event)
@@ -451,8 +459,10 @@ void SystemTray::wheelEvent(QWheelEvent *event)
 
 void SystemTray::enterEvent(QEvent*)
 {
-	if (Settings::showOnMouseIn())
-		m_autoShowTimer->start(Settings::timeToShowOnMouseIn() * 100, true );
+	if (Settings::showOnMouseIn()){
+	m_autoShowTimer->setSingleShot(true);
+	m_autoShowTimer->start(Settings::timeToShowOnMouseIn() * 100);
+	}
 }
 
 void SystemTray::leaveEvent(QEvent*)

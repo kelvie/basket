@@ -25,24 +25,28 @@
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qsizepolicy.h>
-#include <kopenwith.h>
+#include <kopenwithdialog.h>
 #include <klocale.h>
 #include <qwhatsthis.h>
 #include <k3iconview.h>
 #include <kiconloader.h>
-#include <qdragobject.h>
+#include <QMimeData>
 #include <qfontdatabase.h>
 
 #include "variouswidgets.h"
+#include <QKeyEvent>
 
 /** class RunCommandRequester: */
 
 RunCommandRequester::RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent, const char *name)
- : QWidget(parent, name)
+ : QWidget(parent)
 {
+	setObjectName(name);
 	m_message = message;
 
-	QHBoxLayout *layout = new QHBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing( KDialog::spacingHint());
 	m_runCommand        = new QLineEdit(runCommand, this);
 	QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
@@ -60,7 +64,7 @@ RunCommandRequester::~RunCommandRequester()
 
 void RunCommandRequester::slotSelCommand()
 {
-	KOpenWithDlg *dlg =  new KOpenWithDlg(KUrl::List(), m_message, m_runCommand->text(), this);
+	KOpenWithDialog *dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
 	dlg->exec();
 	if ( ! dlg->text().isEmpty() )
 		m_runCommand->setText(dlg->text());
@@ -79,15 +83,17 @@ void RunCommandRequester::setRunCommand(const QString &runCommand)
 /** class IconSizeCombo: */
 
 IconSizeCombo::IconSizeCombo(bool rw, QWidget *parent, const char *name)
- : QComboBox(rw, parent, name)
+ : QComboBox(parent)
 {
-	insertItem(i18n("16 by 16 pixels"));
-	insertItem(i18n("22 by 22 pixels"));
-	insertItem(i18n("32 by 32 pixels"));
-	insertItem(i18n("48 by 48 pixels"));
-	insertItem(i18n("64 by 64 pixels"));
-	insertItem(i18n("128 by 128 pixels"));
-	setCurrentItem(2);
+	setEditable(rw);
+	setObjectName(name);
+	addItem(i18n("16 by 16 pixels"));
+	addItem(i18n("22 by 22 pixels"));
+	addItem(i18n("32 by 32 pixels"));
+	addItem(i18n("48 by 48 pixels"));
+	addItem(i18n("64 by 64 pixels"));
+	addItem(i18n("128 by 128 pixels"));
+	setCurrentIndex(2);
 }
 
 IconSizeCombo::~IconSizeCombo()
@@ -96,7 +102,7 @@ IconSizeCombo::~IconSizeCombo()
 
 int IconSizeCombo::iconSize()
 {
-	switch (currentItem()) {
+	switch (currentIndex()) {
 		default:
 		case 0: return 16;
 		case 1: return 22;
@@ -111,20 +117,21 @@ void IconSizeCombo::setSize(int size)
 {
 	switch (size) {
 		default:
-		case 16:  setCurrentItem(0); break;
-		case 22:  setCurrentItem(1); break;
-		case 32:  setCurrentItem(2); break;
-		case 48:  setCurrentItem(3); break;
-		case 64:  setCurrentItem(4); break;
-		case 128: setCurrentItem(5); break;
+		case 16:  setCurrentIndex(0); break;
+		case 22:  setCurrentIndex(1); break;
+		case 32:  setCurrentIndex(2); break;
+		case 48:  setCurrentIndex(3); break;
+		case 64:  setCurrentIndex(4); break;
+		case 128: setCurrentIndex(5); break;
 	}
 }
 
 /** class ViewSizeDialog: */
 
 ViewSizeDialog::ViewSizeDialog(QWidget *parent, int w, int h)
- : QDialog(parent, "ViewSizeDialog")
+ : QDialog(parent)
 {
+	setObjectName("ViewSizeDialog");
 	QLabel *label = new QLabel(i18n(
 		"Resize the window to select the image size\n"
 		"and close it or press Escape to accept changes."), this);
@@ -144,7 +151,7 @@ ViewSizeDialog::~ViewSizeDialog()
 
 void ViewSizeDialog::resizeEvent(QResizeEvent *)
 {
-	setCaption( i18n("%1 by %2 pixels").arg(QString::number(width())).arg(QString::number(height())) );
+	setWindowTitle( i18n("%1 by %2 pixels").arg(QString::number(width())).arg(QString::number(height())) );
 	m_sizeGrip->move( width() - m_sizeGrip->width(), height() - m_sizeGrip->height() );
 }
 
@@ -163,7 +170,7 @@ HelpLabel::~HelpLabel()
 
 void HelpLabel::showMessage()
 {
-	QWhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
+	QWhatsThis::showText(mapToGlobal( QPoint(width() / 2, height()) ), m_message, this);
 }
 
 void HelpLabel::keyPressEvent(QKeyEvent *event)
@@ -180,15 +187,19 @@ class UndraggableKIconView : public K3IconView
 {
   public:
 	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
-	QDragObject* dragObject() { return 0; }
+//FIXME 1.5	QMimeData* dragObject() { return 0; }
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
- : KDialog(KDialog::Swallow, caption, KDialog::Ok | KDialog::Cancel,
-               KDialog::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false)
-{
+ : KDialog(parent){
+	setCaption( caption );
+   	setButtons( KDialog::Ok | KDialog::Cancel );
+	setModal(true);
+	showButtonSeparator(false);
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
+	topLayout->setMargin(0);
+	topLayout->setSpacing(spacingHint());
 
 	QLabel *label = new QLabel(message, page);
 	topLayout->addWidget(label);
@@ -251,27 +262,28 @@ void IconSizeDialog::slotSelectionChanged()
 
 void IconSizeDialog::choose(QListWidgetItem*)
 {
-	actionButton(KDialog::Ok)->animateClick();
+//FIXME 1.5	actionButton(KDialog::Ok)->animateClick();
 }
 
 void IconSizeDialog::slotCancel()
 {
 	m_iconSize = -1;
-	KDialog::slotCancel();
+	KDialog::reject();
 }
 
 /** class FontSizeCombo: */
 
 FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const char *name)
- : KComboBox(rw, parent, name), m_withDefault(withDefault)
+ : KComboBox(rw, parent), m_withDefault(withDefault)
 {
+	setObjectName(name);
 	if (m_withDefault)
-		insertItem(i18n("(Default)"));
+		addItem(i18n("(Default)"));
 
 	QFontDatabase fontDB;
 	QList<int> sizes = fontDB.standardSizes();
 	for (QList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
-		insertItem(QString::number(*it));
+		addItem(QString::number(*it));
 
 //	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
 	connect( this, SIGNAL(textChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
@@ -303,7 +315,7 @@ void FontSizeCombo::keyPressEvent(QKeyEvent *event)
 
 void FontSizeCombo::setFontSize(int size)
 {
-	setCurrentText(QString::number(size));
+	setItemText(currentIndex(),QString::number(size));
 
 	// TODO: SEE KFontSizeAction::setFontSize( int size ) !!! for a more complete method!
 }
@@ -315,7 +327,7 @@ int FontSizeCombo::fontSize()
 	if (ok)
 		return size;
 
-	size = text(currentItem()).toInt(&ok);
+	size = itemText(currentIndex()).toInt(&ok);
 	if (ok)
 		return size;
 

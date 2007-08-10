@@ -38,6 +38,7 @@
 #include <qpainter.h>
 #include <kglobalsettings.h>
 #include <QProgressBar>
+#include <kcmdlineargs.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {
@@ -89,7 +90,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	prepareExport(basket, destination);
 	exportBasket(basket, /*isSubBasket*/false);
 
-	progress->advance(1); // Finishing finished
+	progress->setValue(progress->()+1); // Finishing finished
 }
 
 HTMLExporter::~HTMLExporter()
@@ -98,7 +99,7 @@ HTMLExporter::~HTMLExporter()
 
 void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 {
-	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
+	progress->setMaximun(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
 	progress->setValue(0);
 	kapp->processEvents();
 
@@ -327,7 +328,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			"    <tr>\n";
 	else
 		stream <<
-			"   <div class=\"basket\" style=\"position: relative; height: " << basket->contentsHeight() << "px; width: " << basket->contentsWidth() << "px; min-width: 100%;\">\n";
+			"   <div class=\"basket\" style=\"position: relative; height: " << basket->widget()->height() << "px; width: " << basket->widget()->width() << "px; min-width: 100%;\">\n";
 
 	for (Note *note = basket->firstNote(); note; note = note->next())
 		exportNote(note, /*indent=*/(basket->isFreeLayout() ? 4 : 5));
@@ -389,7 +390,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	file.close();
 	stream.unsetDevice();
-	progress->advance(1); // Basket exportation finished
+	progress->setValue(progress->value()+1); // Basket exportation finished
 
 	// Recursively export child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -411,7 +412,7 @@ void HTMLExporter::exportNote(Note *note, int indent)
 			// we output a percentage that is approximatively correct.
 			// For instance, we compute the currently used percentage of width in the basket
 			// and try make make it the same on a 1024*768 display in a Web browser:
-			int availableSpaceForColumnsInThisBasket = note->basket()->contentsWidth() - (note->basket()->columnsCount() - 1) * Note::RESIZER_WIDTH;
+			int availableSpaceForColumnsInThisBasket = note->basket()->widget()->width() - (note->basket()->columnsCount() - 1) * Note::RESIZER_WIDTH;
 			int availableSpaceForColumnsInBrowser    = 1024    /* typical screen width */
 			                                           - 25    /* window border and scrollbar width */
 			                                           - 2 * 5 /* page margin */

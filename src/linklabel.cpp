@@ -27,7 +27,7 @@
 #include <qpushbutton.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qhgroupbox.h>
+#include <QGroupBox>
 #include <qpainter.h>
 #include <kglobalsettings.h>
 #include <qstyle.h>
@@ -43,6 +43,7 @@
 #include "global.h"
 #include "kcolorcombo2.h"
 #include "htmlexporter.h"
+#include <kcmdlineargs.h>
 
 /** LinkLook */
 
@@ -165,23 +166,26 @@ QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor)
 
 /** LinkLabel */
 
-LinkLabel::LinkLabel(int hAlign, int vAlign, QWidget *parent, const char *name, WFlags f)
- : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+LinkLabel::LinkLabel(int hAlign, int vAlign, QWidget *parent, const char *name, Qt::WFlags f)
+ : QFrame(parent, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
+	if(name!=0)
+	setObjectName(name);
 	initLabel(hAlign, vAlign);
 }
 
 LinkLabel::LinkLabel(const QString &title, const QString &icon, LinkLook *look, int hAlign, int vAlign,
-                     QWidget *parent, const char *name, WFlags f)
- : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+                     QWidget *parent, const char *name, Qt::WFlags f)
+ : QFrame(parent, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
+	setObjectName(name);
 	initLabel(hAlign, vAlign);
 	setLink(title, icon, look);
 }
 
 void LinkLabel::initLabel(int hAlign, int vAlign)
 {
-	m_layout  = new QBoxLayout(this, QBoxLayout::LeftToRight);
+	m_layout  = new QBoxLayout(QBoxLayout::LeftToRight,this);
 	m_icon    = new QLabel(this);
 	m_title   = new QLabel(this);
 	m_spacer1 = new QSpacerItem(0, 0, QSizePolicy::Preferred/*Expanding*/, QSizePolicy::Preferred/*Expanding*/);
@@ -212,7 +216,7 @@ void LinkLabel::setLink(const QString &title, const QString &icon, LinkLook *loo
 	if (icon.isEmpty())
 		m_icon->clear();
 	else {
-		QPixmap pixmap = DesktopIcon(icon, m_look->iconSize(), m_look->iconSize(), kapp);
+		QPixmap pixmap = DesktopIcon(icon, m_look->iconSize());
 		if (!pixmap.isNull())
 			m_icon->setPixmap(pixmap);
 	}
@@ -323,7 +327,7 @@ void LinkLabel::setSelected(bool selected)
 {
 	m_isSelected = selected;
 	if (selected)
-		m_title->setPaletteForegroundColor(KApplication::palette().active().highlightedText());
+		m_title->setPaletteForegroundColor(KApplication::palette().color(QPalette::HighlightedText));
 	else if (m_isHovered)
 		m_title->setPaletteForegroundColor(m_look->effectiveHoverColor());
 	else
@@ -338,9 +342,9 @@ void LinkLabel::setPaletteBackgroundColor(const QColor &color)
 
 int LinkLabel::heightForWidth(int w) const
 {
-	int iconS  = (m_icon->isShown())   ? m_look->iconSize()                 : 0; // Icon size
+	int iconS  = (m_icon->isVisible())   ? m_look->iconSize()                 : 0; // Icon size
 	int iconW  = iconS;                                                          // Icon width to remove to w
-	int titleH = (m_title->isShown())  ? m_title->heightForWidth(w - iconW) : 0; // Title height
+	int titleH = (m_title->isVisible())  ? m_title->heightForWidth(w - iconW) : 0; // Title height
 
 	return (titleH >= iconS) ? titleH : iconS; // No margin for the moment !
 }
@@ -555,11 +559,14 @@ QString LinkDisplay::toHtml(HTMLExporter *exporter, const KUrl &url, const QStri
 /** LinkLookEditWidget **/
 
 LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, const QString exIcon,
-                                       QWidget *parent, const char *name, WFlags fl)
- : QWidget(parent, name, fl)
+                                       QWidget *parent, const char *name, Qt::WFlags fl)
+ : QWidget(parent, fl)
 {
+	setObjectName(name);
 	QLabel      *label;
-	QVBoxLayout *layout = new QVBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setMargin(KDialog::marginHint());
+	layout->setSpacing(KDialog::spacingHint());
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
@@ -567,41 +574,51 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
 	layout->addWidget(m_bold);
 
-	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
+	QGridLayout *gl = new QGridLayout();
+	layout->addItem(gl);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
-	m_underlining = new QComboBox(false, this);
-	m_underlining->insertItem(i18n("Always"));
-	m_underlining->insertItem(i18n("Never"));
-	m_underlining->insertItem(i18n("On mouse hovering"));
-	m_underlining->insertItem(i18n("When mouse is outside"));
-	label = new QLabel(m_underlining, i18n("&Underline:"), this);
+	m_underlining = new QComboBox(this);
+	m_underlining->setEditable(false);
+	m_underlining->addItem(i18n("Always"));
+	m_underlining->addItem(i18n("Never"));
+	m_underlining->addItem(i18n("On mouse hovering"));
+	m_underlining->addItem(i18n("When mouse is outside"));
+	label = new QLabel(i18n("&Underline:"), this);
+	label->setBuddy(m_underlining);
 	gl->addWidget(label,         0, 0);
 	gl->addWidget(m_underlining, 0, 1);
 
 	m_color = new KColorCombo2(QRgb(), this);
-	label = new QLabel(m_color, i18n("Colo&r:"), this);
+	label = new QLabel(i18n("Colo&r:"), this);
+	label->setBuddy(m_color);
 	gl->addWidget(label,   1, 0);
 	gl->addWidget(m_color, 1, 1);
 
 	m_hoverColor = new KColorCombo2(QRgb(), this);
-	label = new QLabel(m_hoverColor, i18n("&Mouse hover color:"), this);
+	label = new QLabel(i18n("&Mouse hover color:"), this);
+	label->setBuddy(m_hoverColor);
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
 
-	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L);
+	icoLay->setMargin(0);
+	icoLay->setSpacing(KDialog::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
 	icoLay->addWidget(m_iconSize);
-	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);
+	label = new QLabel(i18n("&Icon size:"), this);
+	label->setBuddy(m_iconSize);
 	gl->addWidget(label,  3, 0);
 	gl->addItem(  icoLay, 3, 1);
 
-	m_preview = new QComboBox(false, this);
-	m_preview->insertItem(i18n("None"));
-	m_preview->insertItem(i18n("Icon size"));
-	m_preview->insertItem(i18n("Twice the icon size"));
-	m_preview->insertItem(i18n("Three times the icon size"));
-	m_label = new QLabel(m_preview, i18n("&Preview:"), this);
+	m_preview = new QComboBox(this);
+	m_preview->setEditable(false);
+	m_preview->addItem(i18n("None"));
+	m_preview->addItem(i18n("Icon size"));
+	m_preview->addItem(i18n("Twice the icon size"));
+	m_preview->addItem(i18n("Three times the icon size"));
+	m_label = new QLabel(i18n("&Preview:"), this);
+	m_label->setBuddy(m_preview);
 	m_hLabel = new HelpLabel(
 		i18n("You disabled preview but still see images?"),
 		i18n("<p>This is normal because there are several type of notes.<br>"
@@ -618,9 +635,9 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);
-	gl->addMultiCellWidget(m_hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
+	gl->addWidget(m_hLabel, /*fromRow=*/5, /*fromCol=*/1, /*rowSpan=*/1,  /*colSpan*/2);
 
-	QGroupBox *gb = new QHGroupBox(i18n("Example"), this);
+	QGroupBox *gb = new QGroupBox(i18n("Example"), this);
 	m_exLook = new LinkLook;
 	m_example = new LinkLabel(exTitle, exIcon, m_exLook, 1, 1, gb);
 	m_example->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -652,8 +669,8 @@ void LinkLookEditWidget::set(LinkLook *look)
 
 	m_italic->setChecked(look->italic());
 	m_bold->setChecked(look->bold());
-	m_underlining->setCurrentItem(look->underlining());
-	m_preview->setCurrentItem(look->preview());
+	m_underlining->setCurrentIndex(look->underlining());
+	m_preview->setCurrentIndex(look->preview());
 	m_color->setDefaultColor(m_look->defaultColor());
 	m_color->setColor(m_look->color());
 	m_hoverColor->setDefaultColor(m_look->defaultHoverColor());
@@ -687,9 +704,9 @@ void LinkLookEditWidget::saveChanges()
 
 void LinkLookEditWidget::saveToLook(LinkLook *look)
 {
-	look->setLook( m_italic->isChecked(), m_bold->isChecked(), m_underlining->currentItem(),
+	look->setLook( m_italic->isChecked(), m_bold->isChecked(), m_underlining->currentIndex(),
 	               m_color->color(), m_hoverColor->color(),
-	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentItem() : LinkLook::None) );
+	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentIndex() : LinkLook::None) );
 }
 
 #include "linklabel.moc"

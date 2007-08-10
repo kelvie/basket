@@ -33,7 +33,7 @@
 //#include <taglib/taglib.h>
 #include <unistd.h>       //write, getpid
 #include <ktoolinvocation.h>
-
+#include <kcmdlineargs.h>
 
 
 //#ifndef TAGLIB_PATCH_VERSION

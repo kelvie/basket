@@ -33,7 +33,7 @@ class KSystemTray2 : public KSystemTrayIcon
 {
   Q_OBJECT
   public:
-	KSystemTray2(QWidget *parent = 0, const char *name = 0);
+	KSystemTray2(QWidget *parent = 0);
 	~KSystemTray2();
 	/**
 	  * Call this method when the user clicked the close button of the window
@@ -54,7 +54,7 @@ class SystemTray : public KSystemTray2
 {
   Q_OBJECT
   public:
-	SystemTray(QWidget *parent = 0, const char *name = 0);
+	SystemTray(QWidget *parent = 0);
 	~SystemTray();
   protected:
 	void mousePressEvent(QMouseEvent *event);
