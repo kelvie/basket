@@ -23,20 +23,21 @@
 
 #include <QListWidgetItem>
 #include <qtimer.h>
-
+#include <QMimeData>
+#include <klistwidget.h>
 class Basket;
 
-class BasketListViewItem : public QListWidget
+class BasketListViewItem : public QListWidgetItem
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QListWidgetItem     *parent, Basket *basket);
+		BasketListViewItem(QListWidget     *parent, Basket *basket);
 //		BasketListViewItem(QListWidgetItem *parent, Basket *basket);
-		BasketListViewItem(QListWidgetItem     *parent, QListWidgetItem *after, Basket *basket);
+		BasketListViewItem(QListWidget     *parent, QListWidgetItem *after, Basket *basket);
 //		BasketListViewItem(QListWidgetItem *parent, QListWidgetItem *after, Basket *basket);
 		~BasketListViewItem();
 		///
-		bool acceptDrop(const QMimeSource *mime) const;
+		bool acceptDrop(const QMimeData *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
@@ -74,7 +75,7 @@ class BasketListViewItem : public QListWidget
 		bool m_isAbbreviated;
 };
 
-class BasketTreeListView : public K3ListView
+class BasketTreeListView : public KListWidget
 {
 	Q_OBJECT
 	public:
@@ -88,7 +89,6 @@ class BasketTreeListView : public K3ListView
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
 	protected:
 		void focusInEvent(QFocusEvent*);
-		void viewportResizeEvent(QResizeEvent *event);
 	private:
 		QTimer         m_autoOpenTimer;
 		QListWidgetItem *m_autoOpenItem;

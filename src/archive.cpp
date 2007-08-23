@@ -58,7 +58,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dialog.setAutoClose(true);
 	dialog.show();
 	QProgressBar *progress = dialog.progressBar();
-	progress->setMaximum(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
+	progress->setMaximum(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(qobject_cast<QListWidget*>(basket->widget())) : 0));
 	progress->setValue(0);
 
 	// Create the temporar folder:

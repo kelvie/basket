@@ -89,7 +89,8 @@
 #include <iostream>
 #include <kcmdlineargs.h>
 #include <kactioncollection.h>
-#include <copyjob.h>
+#include <kio/copyjob.h>
+#include <kcolorscheme.h>
 
 /** Class NoteSelection: */
 
@@ -2606,7 +2607,7 @@ void Basket::contentsMouseMoveEvent ( QMouseEvent *event )
 	{
 		int groupWidth = event->pos().x() - m_resizingNote->x() - m_pickedResizer;
 		int minRight   = m_resizingNote->minRight();
-		int maxRight   = 100 * contentsWidth(); // A big enough value (+infinity) for free layouts.
+		int maxRight   = 100 * widget()->width(); // A big enough value (+infinity) for free layouts.
 		Note *nextColumn = m_resizingNote->next();
 		if ( m_resizingNote->isColumn() )
 		{
@@ -2974,7 +2975,7 @@ void Basket::drawInserter ( QPainter &painter, int xPainter, int yPainter )
 	QColor dark  = KApplication::palette().active().dark();
 	QColor light = dark.light().light();
 	if ( m_inserterGroup && Settings::groupOnInsertionLine() )
-		light = Tools::mixColor ( light, KGlobalSettings::highlightColor() );
+		light = Tools::mixColor ( light, KColorScheme(KColorScheme::Selection).background().color() );
 	painter.setPen ( dark );
 	// The horizontal line:
 	//painter.drawRect(       rect.x(),                    rect.y() + lineY,  rect.width(), 2);
@@ -3244,7 +3245,7 @@ void Basket::animateLoad()
 
 QColor Basket::selectionRectInsideColor()
 {
-	return Tools::mixColor ( Tools::mixColor ( backgroundColor(), KGlobalSettings::highlightColor() ), backgroundColor() );
+	return Tools::mixColor ( Tools::mixColor ( backgroundColor(), KColorScheme(KColorScheme::Selection).background().color() ), backgroundColor() );
 }
 
 QColor alphaBlendColors ( const QColor &bgColor, const QColor &fgColor, const int a )
@@ -3418,9 +3419,9 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 						selectionRectInside.moveBy ( rect.x(), rect.y() );
 						blendBackground ( painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap );
 					}
-					painter2.setPen ( KGlobalSettings::highlightColor().dark() );
+					painter2.setPen ( KColorScheme(KColorScheme::Selection).background().color().darker() );
 					painter2.drawRect ( selectionRect );
-					painter2.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), backgroundColor() ) );
+					painter2.setPen ( Tools::mixColor ( (KColorScheme::Selection).background().color().darker(), backgroundColor() ) );
 					painter2.drawPoint ( selectionRect.topLeft() );
 					painter2.drawPoint ( selectionRect.topRight() );
 					painter2.drawPoint ( selectionRect.bottomLeft() );
@@ -3928,7 +3929,7 @@ QColor Basket::backgroundColor()
 	if ( m_backgroundColorSetting.isValid() )
 		return m_backgroundColorSetting;
 	else
-		return KGlobalSettings::baseColor();
+		return KColorScheme(KColorScheme::View).background().color();
 }
 
 QColor Basket::textColor()
@@ -3936,7 +3937,7 @@ QColor Basket::textColor()
 	if ( m_textColorSetting.isValid() )
 		return m_textColorSetting;
 	else
-		return KGlobalSettings::textColor();
+		return KColorScheme(KColorScheme::View).foreground().color();
 }
 
 void Basket::unbufferizeAll()
@@ -3990,7 +3991,7 @@ bool Basket::selectedAllTextInEditor()
 		return false;
 
 	if ( m_editor->textEdit() )
-		return m_editor->textEdit()->text().isEmpty() || m_editor->textEdit()->text() == m_editor->textEdit()->textCursor().selectedText();
+		return m_editor->textEdit()->toPlainText().isEmpty() || m_editor->textEdit()->toPlainText() == m_editor->textEdit()->textCursor().selectedText();
 	else if ( m_editor->lineEdit() )
 		return m_editor->lineEdit()->text().isEmpty() || m_editor->lineEdit()->text() == m_editor->lineEdit()->selectedText();
 	else
@@ -5801,15 +5802,15 @@ bool Basket::saveToFile ( const QString& fullPath, const QByteArray& array, qulo
 	{
 		KSaveFile saveFile ( fullPath );
 		//std::cout << "==>>" << std::endl << "SAVE FILE CREATED: " << strerror(saveFile.status()) << std::endl;
-		openSuccess = ( saveFile.status() == 0 && saveFile.file() != 0 );
+		openSuccess = ( saveFile.error() ==  QFile::NoError );
 		if ( openSuccess )
 		{
-			saveFile.file()->write ( array, length );
+			saveFile.write ( array, length );
 			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
 			closeSuccess = saveFile.close();
 			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;
 		}
-		errorWhileWritting = ( !openSuccess || !closeSuccess || saveFile.status() != 0 );
+		errorWhileWritting = ( !openSuccess || !closeSuccess || saveFile.error() != QFile::NoError );
 		if ( errorWhileWritting )
 		{
 			//std::cout << "ERROR DETECTED" << std::endl;

@@ -107,7 +107,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	connect( m_name, SIGNAL(textChanged(const QString&)), this, SLOT(nameChanged(const QString&)) );
 	enableButtonOk(false);
 	QToolTip::add(m_name, i18n("Name"));
-	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), page);
+	m_backgroundColor = new KColorCombo2(QColor(), KColorScheme(KColorScheme::View).background().color(), page);
 	m_backgroundColor->setColor(QColor());
 	m_backgroundColor->setFixedSize(m_backgroundColor->sizeHint());
 	m_backgroundColor->setColor(m_defaultProperties.backgroundColor);
@@ -149,8 +149,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	QPixmap icon(40, 53);
 
 	QPainter painter(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.end();
 	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("One column"), icon);
@@ -159,8 +159,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		m_templates->setSelected(lastTemplate, true);
 
 	painter.begin(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawLine(icon.width() / 2, 0, icon.width() / 2, icon.height());
 	painter.end();
@@ -170,8 +170,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		m_templates->setSelected(lastTemplate, true);
 
 	painter.begin(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawLine(icon.width() / 3, 0, icon.width() / 3, icon.height());
 	painter.drawLine(icon.width() * 2 / 3, 0, icon.width() * 2 / 3, icon.height());
@@ -182,8 +182,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		m_templates->setSelected(lastTemplate, true);
 
 	painter.begin(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawRect(icon.width() / 5, icon.width() / 5, icon.width() / 4, icon.height() / 8);
 	painter.drawRect(icon.width() * 2 / 5, icon.width() * 2 / 5, icon.width() / 4, icon.height() / 8);
@@ -194,8 +194,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		m_templates->setSelected(lastTemplate, true);
 
 /*	painter.begin(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.drawRect(icon.width() * 2 / 5, icon.height() * 3 / 7, icon.width() / 5, icon.height() / 7);
 	painter.end();

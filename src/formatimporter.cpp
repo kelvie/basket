@@ -38,6 +38,7 @@
 #include "global.h"
 #include "xmlwork.h"
 #include "tools.h"
+#include <kcolorscheme.h>
 
 bool FormatImporter::shouldImportBaskets()
 {
@@ -114,8 +115,8 @@ void FormatImporter::importBaskets()
 	if (list.count() > 2) // Pass "." and ".."
 		for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) // For each folder
 			if (*it != "." && *it != ".." && dir.exists(Global::savesFolder() + *it + "/.basket")) // If it can be a basket folder
-				if ( baskets.find((*it) + "/") == baskets.end() &&
-				     baskets.find(*it)         == baskets.end()    ) // And if it is not already in the imported baskets list
+				if ( baskets.indexOf(QRegExp((*it) + "/")) == baskets.indexOf(baskets.end()) &&
+				     baskets.indexOf(*it)         == baskets.indexOf(baskets.end())    ) // And if it is not already in the imported baskets list
 					baskets.append(*it);
 
 	std::cout << "Import Baskets: Found " << baskets.count() << " baskets to import." << std::endl;
@@ -161,7 +162,7 @@ void FormatImporter::importBaskets()
 	QFile file(Global::basketsFolder() + "baskets.xml");
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 		QString xml = document.toString();
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
@@ -188,7 +189,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	QDomElement properties = XMLWork::getElement(docElem, "properties");
 	QDomElement background = XMLWork::getElement(properties, "background");
 	QColor backgroundColor = QColor(background.attribute("color"));
-	if (backgroundColor.isValid() && (backgroundColor != KGlobalSettings::baseColor())) { // Use the default color if it was already that color:
+	if (backgroundColor.isValid() && (backgroundColor != KColorScheme(KColorScheme::View).background().color())) { // Use the default color if it was already that color:
 		QDomElement appearance = document->createElement("appearance");
 		appearance.setAttribute("backgroundColor", backgroundColor.name());
 		properties.appendChild(appearance);
@@ -265,7 +266,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QFile file(launcherFullPath);
 				if (file.open(QIODevice::WriteOnly)) {
 					QTextStream stream(&file);
-					stream.setEncoding(QTextStream::UnicodeUTF8);
+					stream.setCodec("UTF-8");
 					stream << launcherContent;
 					file.close();
 				}
@@ -291,7 +292,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	QFile file(Global::basketsFolder() + folderName + "/.basket");
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+
 //		QString xml = document->toString();
 //		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 //		stream << xml;

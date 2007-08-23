@@ -31,6 +31,7 @@ class QTextEdit;
 class QCheckBox;
 class QButtonGroup;
 class Kaction;
+class KSharedConfigPtr;
 
 class LikeBackPrivate
 {
@@ -38,7 +39,7 @@ class LikeBackPrivate
 	LikeBackPrivate();
 	~LikeBackPrivate();
 	LikeBackBar             *bar;
-	KConfig                 *config;
+	KConfig*        config;
 	const KAboutData        *aboutData;
 	LikeBack::Button         buttons;
 	QString                  hostName;

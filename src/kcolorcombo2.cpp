@@ -84,8 +84,8 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 	// Initialize the pixmap:
 	m_pixmap.resize(width, height);
 	QPainter painter(&m_pixmap);
-	painter.fillRect(0, 0, width, height, KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, width, height, KColorScheme(KColorScheme::View).background().color());
+	painter.setPen(KColorScheme(KColorScheme::View).foreground().color());
 	painter.drawRect(0, 0, width, height);
 
 	// Needed to draw:
@@ -119,7 +119,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 			painter.fillRect(selectionRect, KGlobalSettings::highlightColor());
 			textColor = KGlobalSettings::highlightedTextColor();
 		} else
-			textColor = KGlobalSettings::textColor();
+			textColor = KColorScheme(KColorScheme::View).foreground().color();
 		m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
 		painter.setFont(m_selector->font());
 		painter.setPen(textColor);
@@ -131,7 +131,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 		painter.fillRect(selectionRect, KGlobalSettings::highlightColor());
 		textColor = KGlobalSettings::highlightedTextColor();
 	} else
-		textColor = KGlobalSettings::textColor();
+		textColor = KColorScheme(KColorScheme::View).foreground().color();
 	m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
 	painter.setFont(m_selector->font());
 	painter.setPen(textColor);
@@ -561,7 +561,7 @@ void KColorCombo2::drawColorRect(QPainter &painter, int x, int y, const QColor &
 	// Stroke:
 	int dontCare, value;
 	color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
-	QColor stroke = (color.isValid() ? color.dark(125) : KGlobalSettings::textColor());
+	QColor stroke = (color.isValid() ? color.dark(125) : KColorScheme(KColorScheme::View).foreground().color());
 	painter.setPen(/*color);//*/stroke);
 	painter.drawLine(x + 1,         y,              x + width - 2, y);
 	painter.drawLine(x,             y + 1,          x,             y + height - 2);

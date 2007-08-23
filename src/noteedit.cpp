@@ -800,7 +800,7 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 	QFont defaultFont;
 	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
 		Global::bnpView->currentBasket()->textColor() :
-		KGlobalSettings::textColor());
+		KColorScheme(KColorScheme::View).foreground().color());
 
 	// Init the RichTextEditor Toolbar:
 	richTextFont = new FocusedFontCombo(Global::mainWindow());
@@ -899,7 +899,7 @@ void InlineEditors::disableRichTextToolBar()
 	QFont defaultFont;
 	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
 		Global::bnpView->currentBasket()->textColor() :
-		KGlobalSettings::textColor());
+		KColorScheme(KColorScheme::View).foreground().color());
 	richTextFont->setCurrentFont(defaultFont.family());
 	richTextFontSize->setFontSize(defaultFont.pointSize());
 	richTextColor->setColor(textColor);

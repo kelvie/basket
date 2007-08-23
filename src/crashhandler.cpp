@@ -20,7 +20,7 @@
 #include <kaboutdata.h>
 #include <kdeversion.h>
 #include <klocale.h>
-#include <ktempfile.h>
+#include <ktemporaryfile.h>
 
 #include <qfile.h>
 #include <qregexp.h>
@@ -108,8 +108,7 @@
 
             /// obtain the backtrace with gdb
 
-            KTempFile temp;
-            temp.setAutoDelete( true );
+            KTemporaryFile temp;
 
             const int handle = temp.handle();
 
@@ -136,7 +135,7 @@
 
             QByteArray gdb;
             gdb  = "gdb --nw -n --batch -x ";
-            gdb += temp.name().toLatin1();
+            gdb += temp.fileName().toLatin1();
             gdb += " basket ";
             gdb += QByteArray().setNum( ::getppid() );
 
@@ -152,14 +151,14 @@
             bool useful = true;
             const QString fileCommandOutput = runCommand( "file `which basket`" );
 
-            if( fileCommandOutput.find( "not stripped", false ) == -1 )
+            if( fileCommandOutput.indexOf( "not stripped", Qt::CaseInsensitive ) == -1 )
                 subject += "[___stripped]"; //same length as below
             else
                 subject += "[NOTstripped]";
 
             if( !bt.isEmpty() ) {
-                const int invalidFrames = bt.contains( QRegExp("\n#[0-9]+\\s+0x[0-9A-Fa-f]+ in \\?\\?") );
-                const int validFrames = bt.contains( QRegExp("\n#[0-9]+\\s+0x[0-9A-Fa-f]+ in [^?]") );
+                const int invalidFrames = bt.count( QRegExp("\n#[0-9]+\\s+0x[0-9A-Fa-f]+ in \\?\\?"));
+                const int validFrames = bt.count( QRegExp("\n#[0-9]+\\s+0x[0-9A-Fa-f]+ in [^?]") );
                 const int totalFrames = invalidFrames + validFrames;
 
                 if( totalFrames > 0 ) {
@@ -169,7 +168,7 @@
                 }
                 subject += QString("[frames: %1]").arg( totalFrames, 3 /*padding*/ );
 
-                if( bt.find( QRegExp(" at \\w*\\.cpp:\\d+\n") ) >= 0 )
+                if( bt.indexOf( QRegExp(" at \\w*\\.cpp:\\d+\n") ) >= 0 )
                     subject += "[line numbers]";
             }
             else
@@ -204,10 +203,10 @@
                         /*startup_id*/  "" );
             }
             else {
-				std::cout << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
+				qDebug()<< i18n( "%1 has crashed! We're sorry about this.\n\n"
                                           "But, all is not lost! Perhaps an upgrade is already available "
                                           "which fixes the problem. Please check your distribution's software repository." )
-						.arg(KCmdLineArgs::aboutData( )->programName()).local8Bit() << std::endl;
+						.arg(KCmdLineArgs::aboutData( )->programName());
             }
 
             //_exit() exits immediately, otherwise this

@@ -817,13 +817,8 @@ Basket* BNPView::loadBasket(const QString &folderName)
 int BNPView::basketCount(QListWidget *parent)
 {
 	int count = 0;
-
-/* FIXME 1.5	QListWidgetItem *item = (parent ? parent->firstChild() : m_tree->firstChild());
-	while (item) {
-		count += 1 + basketCount(item);
-		item = item->nextSibling();
-	}*/
-
+	if(parent!=0)
+		count=parent->count();
 	return count;
 }
 

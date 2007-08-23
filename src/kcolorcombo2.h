@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by Sï¿½astien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +39,7 @@ class KColorPopup;
  *
  * @par Quick usage:
  * Just create a new KColorCombo2() with the initial color and eventually an allowed default color
- * (eg. KGlobalSettings::baseColor() for a background color, KGlobalSettings::textColor()...).\n
+ * (eg. KColorScheme(KColorScheme::View).background().color() for a background color, KColorScheme(KColorScheme::View).foreground().color()...).\n
  * You will be noticed of the color the user selects with the signal changed(), or you can use color() to get the color at any moment.\n
  * Note that they can return an invalid color (see QColor::isValid()) if the user chosen the default color (if he can choose that).\n
  * It's then easy to save in settings, but if you want the real color (even for the default), you can get it with effectiveColor().
@@ -69,7 +69,7 @@ class KColorPopup;
  * @see KGlobalSettings Use one of the static functions to get KDE standard colors for default values.
  * @see KColorButton    The same, but without the rainbow popup or the choice of a default color.
  * @see KColorDialog    The dialog that is shown when the user click the "Other..." entry.
- * @author Sébastien Laoût <slaout@linux62.org>
+ * @author Sï¿½astien Laoï¿½t <slaout@linux62.org>
  *
  * @image html commoncolorselector.png "Common Color Selector ComboBox"
  */

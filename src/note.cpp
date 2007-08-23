@@ -1386,7 +1386,7 @@ void Note::drawExpander ( QPainter *painter, int x, int y, const QColor &backgro
 		cg.setColor ( QPalette::Base, background );
 
 		// Fill the inside of the expander in white, typically:
-		QBrush brush ( KGlobalSettings::baseColor() );
+		QBrush brush ( KColorScheme(KColorScheme::View).background().color() );
 		painter->fillRect ( x, y, 9, 9, brush );
 
 		// Draw it:

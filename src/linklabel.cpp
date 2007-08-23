@@ -117,7 +117,7 @@ QColor LinkLook::defaultColor() const
 	if (m_useLinkColor)
 		return KGlobalSettings::linkColor();
 	else
-		return KGlobalSettings::textColor();
+		return KColorScheme(KColorScheme::View).foreground().color();
 }
 
 QColor LinkLook::defaultHoverColor() const
@@ -268,10 +268,10 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 	wBreak = Qt::WordBreak * (hAlign != 1);
 
 	// Clear the widget :
-	m_layout->removeItem(m_spacer1);
-	m_layout->remove(m_icon);
-	m_layout->remove(m_title);
-	m_layout->removeItem(m_spacer2);
+	m_layout->removeWidget(m_spacer1);
+	m_layout->removeWidget(m_icon);
+	m_layout->removeWidget(m_title);
+	m_layout->removeWidget(m_spacer2);
 
 	// Otherwise, minimumSize will be incoherent (last size ? )
 	m_layout->setResizeMode(QLayout::Minimum);

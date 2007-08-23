@@ -148,7 +148,7 @@ void KIconCanvas::loadIcon(const QString &name)
        }
    }
    QPixmap pm;
-   pm.convertFromImage(img);
+   pm.fromImage(img);
 
    (void) new KIconCanvasItem(this, name, pm);
 }
@@ -231,7 +231,7 @@ QDragObject *KIconCanvas::dragObject()
 {
     // We use QImageDrag rather than K3URLDrag so that the user can't drag an icon out of the theme!
     // TODO: support SVG?
-    QPixmap *pixmap = currentItem()->pixmap();
+    QPixmap *pixmap = currentIndex()->pixmap();
     QPoint pos = viewportToContents( viewport()->mapFromGlobal( QCursor::pos() ) );
     QPoint hot;
     hot.setX(pos.x() - currentItem()->pos().x() - (currentItem()->width() - pixmap->width()) / 2);

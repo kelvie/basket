@@ -36,15 +36,17 @@
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
+#include <kcolorscheme.h>
+#include <QDropEvent>
 
 /** class BasketListViewItem: */
 
-BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, Basket *basket)
+BasketListViewItem::BasketListViewItem(QListWidget *parent, Basket *basket)
 	: QListWidgetItem(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setDropEnabled(true);
+// TO REMOVE	setAcceptDrops(true);
 }
 
 /* TO REMOVE
@@ -57,12 +59,12 @@ BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, Basket *basket)
 }
 */
 
-BasketListViewItem::BasketListViewItem(QListWidgetItem *parent, QListWidgetItem *after, Basket *basket)
-	: QListWidgetItem(parent, after), m_basket(basket)
+BasketListViewItem::BasketListViewItem(QListWidget *parent, QListWidgetItem *after, Basket *basket)
+	: QListWidgetItem(parent, parent->row(after)), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setDropEnabled(true);
+//	setDropEnabled(true);
 }
 
 /* TO REMOVE 
@@ -79,7 +81,7 @@ BasketListViewItem::~BasketListViewItem()
 {
 }
 
-bool BasketListViewItem::acceptDrop(const QMimeSource *) const
+bool BasketListViewItem::acceptDrop(const QMimeData *) const
 {
 	std::cout << "accept" << std::endl;
 	return true;
@@ -87,14 +89,14 @@ bool BasketListViewItem::acceptDrop(const QMimeSource *) const
 
 void BasketListViewItem::dropped(QDropEvent *event)
 {
-	std::cout << "Dropping into basket " << m_basket->name() << std::endl;
+	qDebug()<< "Dropping into basket " << m_basket->objectName();
 	m_basket->contentsDropEvent(event);
 	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
 int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListWidgetItem */*listView*/, int /* column */) const
 {
-	return listView()->visibleWidth() + 100;
+	return listWidget ()->width() + 100;
 /*
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
@@ -115,12 +117,12 @@ QString BasketListViewItem::escapedName(const QString &string)
 	QString shiftKey = /*i18n(*/"Shift"/*)*/; //i18n("The [Shift] key, as shown in shortcuts like Alt+Shift+1...", "Shift");
 	QRegExp altLetterExp(      QString("^%1\\+(.)$").arg(altKey)                );
 	QRegExp altShiftLetterExp( QString("^%1\\+%2\\+(.)$").arg(altKey, shiftKey) );
-	if (altLetterExp.search(m_basket->shortcut().toStringInternal()) != -1)
+	if (altLetterExp.indexIn(m_basket->shortcut().toString()) != -1)
 		letter = altLetterExp.cap(1);
-	if (letter.isEmpty() && altShiftLetterExp.search(m_basket->shortcut().toStringInternal()) != -1)
+	if (letter.isEmpty() && altShiftLetterExp.indexIn(m_basket->shortcut().toString()) != -1)
 		letter = altShiftLetterExp.cap(1);
 	if (!letter.isEmpty()) {
-		int index = basketName.find(letter, /*index=*/0, /*caseSensitive=*/false);
+		int index = basketName.count(letter, Qt::CaseInsensitive);
 		if (index != -1)
 			basketName.insert(index, '&');
 	}
@@ -132,19 +134,15 @@ void BasketListViewItem::setup()
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
 
-	setText(/*column=*/0, escapedName(m_basket->basketName()));
+	setText( escapedName(m_basket->basketName()));
 
 	widthChanged();
-	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+	QRect textRect = listWidget()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextShowMnemonic, text());
 
 	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
-	QPixmap icon = KIconLoader::global()->loadIcon(m_basket->icon(), K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
-
-	setPixmap(/*column=*/0, icon);
-
-	repaint();
+	setIcon(KIcon(m_basket->icon()));
 }
 
 BasketListViewItem* BasketListViewItem::lastChild()
@@ -278,17 +276,17 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 	QPixmap gradient(3 * width, 3 * height); // We double the size to be able to smooth scale down it (== antialiased curves)
 	QPainter gradientPainter(&gradient);
 #if 1 // Enable the new look of the gradient:
-	QColor topColor       = KGlobalSettings::highlightColor().light(130); //120
-	QColor topMidColor    = KGlobalSettings::highlightColor().light(105); //105
-	QColor bottomMidColor = KGlobalSettings::highlightColor().dark(130);  //120
-	QColor bottomColor    = KGlobalSettings::highlightColor();
+	QColor topColor       = KColorScheme(KColorScheme::Selection).background().color().lighter(130); //120
+	QColor topMidColor    = KColorScheme(KColorScheme::Selection).background().color().lighter(105); //105
+	QColor bottomMidColor = KColorScheme(KColorScheme::Selection).background().color().darker(130);  //120
+	QColor bottomColor    = KColorScheme(KColorScheme::Selection).background().color();
 	drawGradient(&gradientPainter, topColor, topMidColor,
 				  0, 0, gradient.width(), gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 	drawGradient(&gradientPainter, bottomMidColor, bottomColor,
 				  0, gradient.height() / 2, gradient.width(), gradient.height() - gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-	gradientPainter.fillRect(0, 0, gradient.width(), 3, KGlobalSettings::highlightColor());
+	gradientPainter.fillRect(0, 0, gradient.width(), 3, KColorScheme(KColorScheme::Selection).background().color());
 #else
-	drawGradient(&gradientPainter, KGlobalSettings::highlightColor(), KGlobalSettings::highlightColor().dark(),
+	drawGradient(&gradientPainter, KColorScheme(KColorScheme::Selection).background().color(), KColorScheme(KColorScheme::Selection).background().color().darker(),
 				  0, 0, gradient.width(), gradient.height(), /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 #endif
 	gradientPainter.end();
@@ -309,12 +307,12 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 
 	// Apply the curved rectangle as the mask of the gradient:
 	gradient.setMask(curvedRectangle);
-	QImage resultImage = gradient.convertToImage();
+	QImage resultImage = gradient.toImage();
 	resultImage.setAlphaBuffer(true);
 
 	// Scale down the image smoothly to get anti-aliasing:
 	QPixmap pmScaled;
-	pmScaled.convertFromImage(resultImage.smoothScale(width, height));
+	pmScaled.fromImage(resultImage.smoothScale(width, height));
 
 	// Draw the text, and return the result:
 	QPainter painter(&pmScaled);
@@ -351,7 +349,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
 			return QPixmap();
 	}
 
-	return circledTextPixmap(text, height, boldFont, KGlobalSettings::highlightedTextColor());
+	return circledTextPixmap(text, height, boldFont, KColorScheme(KColorScheme::Selection).foreground().color());
 }
 
 bool BasketListViewItem::haveChildsLoading()
@@ -448,7 +446,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGro
 
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
-	QColor textColor = (drawRoundRect ? m_basket->textColor() : (isCurrentBasket() ? KGlobalSettings::highlightedTextColor() : KGlobalSettings::textColor()));
+	QColor textColor = (drawRoundRect ? m_basket->textColor() : (isCurrentBasket() ? KColorScheme(KColorScheme::Selection).foreground().color() : KColorScheme(KColorScheme::View).foreground().color()));
 
 	BasketListViewItem *shownAbove = shownItemAbove();
 	BasketListViewItem *shownBelow = shownItemBelow();
@@ -484,7 +482,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGro
 	QPainter thePainter(&theBuffer);
 
 	// Fill with the basket background color:
-	QColor background = (isCurrentBasket() ? KGlobalSettings::highlightColor() : listView()->paletteBackgroundColor());
+	QColor background = (isCurrentBasket() ? KColorScheme(KColorScheme::Selection).background().color() : listView()->paletteBackgroundColor());
 	thePainter.fillRect(0, 0, width, height(), background);
 
 	int textWidth = effectiveWidth - MARGIN - BASKET_ICON_SIZE - MARGIN - MARGIN;
@@ -510,16 +508,16 @@ void BasketListViewItem::paintCell(QPainter *painter, const QPalette &/*colorGro
 			} else
 				pBuffer.drawEllipse(0, 0, wRound * 2, hRound * 2);
 				pBuffer.end();
-				QImage imageToScale = buffer.convertToImage();
+				QImage imageToScale = buffer.toImage();
 				QPixmap pmScaled;
-				pmScaled.convertFromImage(imageToScale.smoothScale(wRound, hRound));
+				pmScaled.fromImage(imageToScale.smoothScale(wRound, hRound));
 				thePainter.drawPixmap(xRound, yRound, pmScaled);
 				textWidth -= hRound/2;
 		}
 	}
 
 	QColor bgColor  = listView()->paletteBackgroundColor();
-	QColor selColor = KGlobalSettings::highlightColor();
+	QColor selColor = KColorScheme(KColorScheme::Selection).background().color();
 	QColor midColor = Tools::mixColor(bgColor, selColor);
 	// Draw the left selection roundings:
 	if (isCurrentBasket()) {
@@ -637,9 +635,10 @@ private:
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
-	: K3ListView(parent, name), m_autoOpenItem(0)
+	:  KListWidget(parent), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
+	setObjectName(name);
 	setWFlags(Qt::WStaticContents | WNoAutoErase);
 	clearWFlags(Qt::WStaticContents | WNoAutoErase);
 	//viewport()->clearWFlags(Qt::WStaticContents);
@@ -648,9 +647,9 @@ BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 	new BasketTreeListView_ToolTip(this);
 }
 
-void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
+void BasketTreeListView::resizeEvent(QResizeEvent *event)
 {
-	K3ListView::viewportResizeEvent(event);
+	KListWidget::resizeEvent(event);
 	triggerUpdate();
 }
 
@@ -669,7 +668,7 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 		update();
 	}
 
-	K3ListView::contentsDragEnterEvent(event);
+	KListWidget::dragEnterEvent(event);
 }
 
 void BasketTreeListView::removeExpands()
@@ -693,7 +692,7 @@ void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 	m_autoOpenTimer.stop();
 	setItemUnderDrag(0);
 	removeExpands();
-	K3ListView::contentsDragLeaveEvent(event);
+	KListWidget::dragLeaveEvent(event);
 }
 
 void BasketTreeListView::contentsDropEvent(QDropEvent *event)
@@ -701,7 +700,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
 	{
-		K3ListView::contentsDropEvent(event);
+		KListWidget::dropEvent(event);
 	}
 	else {
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
@@ -727,13 +726,14 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 {
 	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
-		K3ListView::contentsDragMoveEvent(event);
+		KListWidget::dragMoveEvent(event);
 	else {
 		QListWidgetItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (m_autoOpenItem != item) {
 			m_autoOpenItem = item;
-			m_autoOpenTimer.start(1700, /*singleShot=*/true);
+			m_autoOpenTimer.setSingleShot(true);
+			m_autoOpenTimer.start(1700);
 		}
 		if (item) {
 			event->acceptAction(true);
@@ -741,7 +741,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 		}
 		setItemUnderDrag(bitem);
 
-		K3ListView::contentsDragMoveEvent(event); // FIXME: ADDED
+		KListWidget::dragMoveEvent(event); // FIXME: ADDED
 	}
 }
 
@@ -751,7 +751,7 @@ void BasketTreeListView::setItemUnderDrag(BasketListViewItem* item)
 		if (m_itemUnderDrag) {
 			// Remove drag status from the old item
 			m_itemUnderDrag->setUnderDrag(false);
-			repaintItem(m_itemUnderDrag);
+// TO REMOVE			repaintItem(m_itemUnderDrag);
 		}
 
 		m_itemUnderDrag = item;
@@ -759,7 +759,7 @@ void BasketTreeListView::setItemUnderDrag(BasketListViewItem* item)
 		if (m_itemUnderDrag) {
 			// add drag status to the new item
 			m_itemUnderDrag->setUnderDrag(true);
-			repaintItem(m_itemUnderDrag);
+// TO REMOVE			repaintItem(m_itemUnderDrag);
 		}
 	}
 }
@@ -773,7 +773,7 @@ void BasketTreeListView::autoOpen()
 
 void BasketTreeListView::resizeEvent(QResizeEvent *event)
 {
-	K3ListView::resizeEvent(event);
+	KListWidget::resizeEvent(event);
 }
 
 void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
@@ -785,16 +785,16 @@ void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 		last = last->shownItemAbove();
 	if (last && last->isCurrentBasket()) {
 		int y = last->itemPos() + last->height();
-		QColor bgColor  = paletteBackgroundColor();
-		QColor selColor = KGlobalSettings::highlightColor();
+		QColor bgColor  = KColorScheme(KColorScheme::View).background().color();
+		QColor selColor = KColorScheme(KColorScheme::Selection).background().color();
 		QColor midColor = Tools::mixColor(bgColor, selColor);
 		painter->setPen(selColor);
-		painter->drawPoint(visibleWidth() - 1, y);
-		painter->drawPoint(visibleWidth() - 2, y);
-		painter->drawPoint(visibleWidth() - 1, y + 1);
+		painter->drawPoint(width() - 1, y);
+		painter->drawPoint(width() - 2, y);
+		painter->drawPoint(width() - 1, y + 1);
 		painter->setPen(midColor);
-		painter->drawPoint(visibleWidth() - 3, y);
-		painter->drawPoint(visibleWidth() - 1, y + 2);
+		painter->drawPoint(width() - 3, y);
+		painter->drawPoint(width() - 1, y + 2);
 	}
 }
 

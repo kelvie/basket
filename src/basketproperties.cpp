@@ -71,8 +71,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	QWidget *appearanceWidget = new QWidget(appearance);
 	QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
 	m_backgroundImage = new QComboBox(appearanceWidget);
-	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), KGlobalSettings::baseColor(), appearanceWidget);
-	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       KGlobalSettings::textColor(), appearanceWidget);
+	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), KColorScheme(KColorScheme::View).background().color(), appearanceWidget);
+	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       KColorScheme(KColorScheme::View).foreground().color(), appearanceWidget);
 		QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &image:"), appearanceWidget);
 	QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background color:"), appearanceWidget);
 	QLabel *label3 = new QLabel(m_textColor,       i18n("&Text color:"),       appearanceWidget);

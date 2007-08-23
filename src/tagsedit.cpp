@@ -422,7 +422,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
 
-	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), stateWidget);
+	m_backgroundColor = new KColorCombo2(QColor(), KColorScheme(KColorScheme::View).background().color(), stateWidget);
 	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
 
 	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
@@ -463,7 +463,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	textLayout->addWidget(m_strike);
 	textLayout->addStretch();
 
-	m_textColor = new KColorCombo2(QColor(), KGlobalSettings::textColor(), stateWidget);
+	m_textColor = new KColorCombo2(QColor(), KColorScheme(KColorScheme::View).foreground().color(), stateWidget);
 	QLabel *textColorLabel = new QLabel(m_textColor, i18n("Co&lor:"), stateWidget);
 
 	m_font = new KFontCombo(stateWidget);
