@@ -58,7 +58,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dialog.setAutoClose(true);
 	dialog.show();
 	QProgressBar *progress = dialog.progressBar();
-	progress->setMaximum(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(qobject_cast<QListWidget*>(basket->widget())) : 0));
+	progress->setMaximum(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount((QTreeWidgetItem*)(basket)) : 0));
 	progress->setValue(0);
 
 	// Create the temporar folder:
@@ -225,8 +225,8 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->count()) {
-		for (int i= 0; i<item->count(); i++) {
+	if (recursive && item->childCount()) {
+		for (int i= 0; i<item->childCount(); i++) {
 // TODO	kde4.0		saveBasketToArchive(qobject_cast<Basket*>(item->item(i)), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
@@ -236,8 +236,8 @@ void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->count()) {
-		for (int i= 0; i<item->count(); i++) {
+	if (recursive && item->childCount()) {
+		for (int i= 0; i<item->childCount(); i++) {
 // TODO	kde4.0		listUsedTags(qobject_cast<Basket*>(item->item(i)), recursive, list);
 		}
 	}

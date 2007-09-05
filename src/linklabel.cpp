@@ -44,7 +44,7 @@
 #include "kcolorcombo2.h"
 #include "htmlexporter.h"
 #include <kcmdlineargs.h>
-
+#include <kcolorscheme.h>
 /** LinkLook */
 
 LinkLook *LinkLook::soundLook       = new LinkLook(/*useLinkColor=*/false, /*canPreview=*/false);

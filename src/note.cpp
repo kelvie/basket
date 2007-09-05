@@ -535,7 +535,7 @@ Note* Note::lastSibling()
 int Note::yExpander()
 {
 	Note *child = firstRealChild();
-	if ( child && !child->isShown() )
+	if ( child && !child->isVisible() )
 		child = child->nextShownInStack(); // FIXME: Restrict scope to 'this'
 
 	if ( child )
@@ -1048,7 +1048,7 @@ void Note::toggleFolded ( bool animate )
 		}
 	}
 
-	//if (basket()->focusedNote() && !basket()->focusedNote()->isShown()) {
+	//if (basket()->focusedNote() && !basket()->focusedNote()->isVisible()) {
 	if ( basket()->isLoaded() )
 	{
 		basket()->setFocusedNote ( firstRealChild() );
@@ -2716,7 +2716,7 @@ Note* Note::prevInStack()
 Note* Note::nextShownInStack()
 {
 	Note *next = nextInStack();
-	while ( next && !next->isShown() )
+	while ( next && !next->isVisible() )
 		next = next->nextInStack();
 	return next;
 }
@@ -2724,12 +2724,12 @@ Note* Note::nextShownInStack()
 Note* Note::prevShownInStack()
 {
 	Note *prev = prevInStack();
-	while ( prev && !prev->isShown() )
+	while ( prev && !prev->isVisible() )
 		prev = prev->prevInStack();
 	return prev;
 }
 
-bool Note::isShown()
+bool Note::isVisible()
 {
 	// First, the easy one: groups are always shown:
 	if ( isGroup() )

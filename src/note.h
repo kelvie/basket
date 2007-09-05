@@ -122,7 +122,7 @@ class Note
 	/*inline*/ bool showSubNotes();//            { return !m_isFolded || !m_collapseFinished; }
 	inline void setParentNote(Note *note) { m_parentNote = note;     }
 	inline void setFirstChild(Note *note) { m_firstChild = note;     }
-	bool isShown();
+	bool isVisible();
 	void  toggleFolded(bool animate);
 	Note* noteAt(int x, int y);
 	Note* firstRealChild();

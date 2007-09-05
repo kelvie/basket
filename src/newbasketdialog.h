@@ -28,7 +28,7 @@
 class KIconButton;
 class QLineEdit;
 class QDragObject;
-class QListWidget;
+class QTreeWidget;
 
 class Basket;
 
@@ -44,12 +44,12 @@ class SingleSelectionKIconView : public KListWidget
   public:
 	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
 	QMimeData* dragObject();
-	QListWidgetItem* selectedItem() { return m_lastSelected; }
+	QTreeWidgetItem* selectedItem() { return m_lastSelected; }
   private slots:
-	void slotSelectionChanged(QListWidgetItem *item);
+	void slotSelectionChanged(QTreeWidgetItem *item);
 	void slotSelectionChanged();
   private:
-	QListWidgetItem *m_lastSelected;
+	QTreeWidgetItem *m_lastSelected;
 };
 
 /** Struct to store default properties of a new basket.
@@ -87,7 +87,7 @@ class NewBasketDialog : public KDialog
 	void manageTemplates();
 	void nameChanged(const QString &newName);
   private:
-	int populateBasketsList(QListWidget *item, int indent, int index);
+	int populateBasketsList(QTreeWidget *item, int indent, int index);
 	NewBasketDefaultProperties  m_defaultProperties;
 	KIconButton                *m_icon;
 	QLineEdit                  *m_name;

@@ -39,15 +39,16 @@
 #include <kglobalsettings.h>
 #include <QProgressBar>
 #include <kcmdlineargs.h>
-
+#include <kconfiggroup.h>
+#include <kcolorscheme.h>
+#include <kio/copyjob.h>
 HTMLExporter::HTMLExporter(Basket *basket)
 {
 	QDir dir;
 
 	// Compute a default file name & path:
-	KConfig *config = KGlobal::config();
-	config->setGroup("Export to HTML");
-	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
+	KConfigGroup config = KGlobal::config()->group("Export to HTML");
+	QString folder = config.readEntry("lastFolder", QDir::homePath()) + "/";
 	QString url = folder + QString(basket->basketName()).replace("/", "_") + ".html";
 
 	// Ask a file name & path to the user:
@@ -84,8 +85,8 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	progress = dialog.progressBar();
 
 	// Remember the last folder used for HTML exporation:
-	config->writeEntry("lastFolder", KUrl(destination).directory());
-	config->sync();
+	config.writeEntry("lastFolder", KUrl(destination).directory());
+	config.sync();
 
 	prepareExport(basket, destination);
 	exportBasket(basket, /*isSubBasket*/false);
@@ -260,8 +261,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			"   .tree span { -moz-border-radius: 6px; display: block; float: left;\n"
 			"                line-height: 16px; height: 16px; vertical-align: middle; padding: 0 1px; }\n"
 			"   .tree img { vertical-align: top; padding-right: 1px; }\n"
-			"   .tree .current { background-color: " << KGlobalSettings::highlightColor().name() << "; "
-			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << KGlobalSettings::highlightedTextColor().name() << "; }\n"
+			"   .tree .current { background-color: " << KColorScheme(KColorScheme::Selection).background().color().name() << "; "
+			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << KColorScheme(KColorScheme::Selection).foreground().color().name() << "; }\n"
 			"   .basketSurrounder { margin-left: 152px; _margin: 0; _float: right; }\n";
 	}
 	stream <<
@@ -363,7 +364,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			0x01, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x0a,
 			0x00, 0x00, 0x02, 0x08, 0x8c, 0x8f, 0xa9, 0xcb, 0xed, 0x0f,
 			0x63, 0x2b, 0x00, 0x3b };
-		streamGIF.writeRawBytes((const char*)blankGIF, (unsigned int)74);
+		streamGIF.writeRawData((const char*)blankGIF, (unsigned int)74);
 		transGIF.close();
 	}
 	stream <<
@@ -389,7 +390,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		"</html>\n";
 
 	file.close();
-	stream.unsetDevice();
+	stream.setDevice(0);
 	progress->setValue(progress->value()+1); // Basket exportation finished
 
 	// Recursively export child baskets:

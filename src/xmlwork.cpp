@@ -21,7 +21,7 @@
 
 #include "xmlwork.h"
 
-#include <QString>
+
 #include <QDomDocument>
 #include <QDomElement>
 #include <qdom.h>
@@ -49,12 +49,12 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 
 QDomElement XMLWork::getElement(const QDomElement &startElement, const QString &elementPath)
 {
-	QStringList elements = QStringList::split("/", elementPath, false);
+	QStringList elements = elementPath.split("/",  QString::KeepEmptyParts,Qt::CaseInsensitive);
 	QDomNode n = startElement.firstChild();
 	for (unsigned int i = 0; i < elements.count(); ++i) {               // For each elements
 		while ( ! n.isNull() ) {                                        // Browse theire sub elements
 			QDomElement e = n.toElement();                              //  and search the good one
-			if ( (!e.isNull()) && e.tagName() == *elements.at(i) ) {    // If found
+			if ( (!e.isNull()) && e.tagName() == elements.at(i) ) {    // If found
 				if ( i + 1 == elements.count() )                        // And if it is the asked element
 					return e;                                           // Return the first corresponding
 				else {                                                  // Or if it is an intermediate element

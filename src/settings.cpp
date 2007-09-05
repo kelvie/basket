@@ -363,7 +363,7 @@ typedef KGenericFactory<GeneralPage, QWidget> BasKetGeneralFactory;
 K_EXPORT_COMPONENT_FACTORY ( GeneralPage, BasKetGeneralFactory ( "kcmbasket" ) )
 
 GeneralPage::GeneralPage ( QWidget *parent, const QStringList& args )
-		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
+		: KCModule (  BasKetGeneralFactory::componentData(), parent )
 {
 //{
 // FIXME 1.5	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
@@ -509,7 +509,7 @@ void GeneralPage::defaults()
 /** BasketsPage */
 
 BasketsPage::BasketsPage ( QWidget * parent, const QStringList& args )
-		: KCModule ( BasKetGeneralFactory::componentData(), parent,args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent )
 {
 // /* FIXME 1.5	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
 // 	QHBoxLayout *hLay;
@@ -692,7 +692,7 @@ void BasketsPage::defaults()
 /** class NewNotesPage: */
 
 NewNotesPage::NewNotesPage ( QWidget * parent,  const QStringList& args )
-		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent )
 {
 	QVBoxLayout *layout = new QVBoxLayout ( this );
 	layout->setMargin ( 0 );
@@ -821,7 +821,7 @@ void NewNotesPage::visualize()
 /** class NotesAppearancePage: */
 
 NotesAppearancePage::NotesAppearancePage ( QWidget * parent, const QStringList& args )
-		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent )
 {
 	QVBoxLayout *layout = new QVBoxLayout ( this );
 	layout->setMargin ( 0 );
@@ -870,7 +870,7 @@ void NotesAppearancePage::defaults()
 /** class ApplicationsPage: */
 
 ApplicationsPage::ApplicationsPage ( QWidget * parent,  const QStringList& args )
-		: KCModule ( BasKetGeneralFactory::componentData(), parent, args )
+		: KCModule ( BasKetGeneralFactory::componentData(), parent )
 {
 	/* Applications page */
 	QVBoxLayout *layout = new QVBoxLayout ( this );

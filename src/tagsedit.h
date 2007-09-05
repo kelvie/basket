@@ -25,7 +25,7 @@
 #include <kcombobox.h>
 #include <qlistview.h>
 #include <QList>
-#include <QListWidget>
+#include <QTreeWidget>
 
 class QGroupBox;
 class QLineEdit;
@@ -68,17 +68,17 @@ class TagCopy
 	bool isMultiState();
 };
 
-class TagListViewItem : public QListWidget
+class TagListViewItem : public QTreeWidget
 {
   public:
-	TagListViewItem(QListWidgetItem     *parent, TagCopy *tagCopy);
-	TagListViewItem(QListWidget *parent, TagCopy *tagCopy);
-	TagListViewItem(QListWidgetItem     *parent, QListWidget *after, TagCopy *tagCopy);
-	TagListViewItem(QListWidget *parent, QListWidget *after, TagCopy *tagCopy);
-	TagListViewItem(QListWidgetItem     *parent, StateCopy *stateCopy);
-	TagListViewItem(QListWidget *parent, StateCopy *stateCopy);
-	TagListViewItem(QListWidgetItem     *parent, QListWidget *after, StateCopy *stateCopy);
-	TagListViewItem(QListWidget *parent, QListWidget *after, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidgetItem     *parent, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidget *parent, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidgetItem     *parent, QTreeWidget *after, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidget *parent, QTreeWidget *after, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidgetItem     *parent, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidget *parent, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidgetItem     *parent, QTreeWidget *after, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidget *parent, QTreeWidget *after, StateCopy *stateCopy);
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
@@ -86,7 +86,7 @@ class TagListViewItem : public QListWidget
 	TagListViewItem* lastChild();
 	TagListViewItem* prevSibling();
 	TagListViewItem* parent() const; // Reimplemented to cast the return value
-	int width(const QFontMetrics &fontMetrics, const QListWidgetItem *listView, int column) const;
+	int width(const QFontMetrics &fontMetrics, const QTreeWidgetItem *listView, int column) const;
 	void setup();
 	void paintCell(QPainter *painter, const QPalette &colorGroup, int column, int width, int align);
 
@@ -136,7 +136,7 @@ class TagsEditDialog : public KDialog
 	void removeShortcut();
 	void removeEmblem();
 	void modified();
-	void currentItemChanged(QListWidget *item);
+	void currentItemChanged(QTreeWidget *item);
 	void slotCancel();
 	void slotOk();
 	void selectUp();

@@ -21,9 +21,9 @@
 #ifndef XMLWORKXMLWORK_H
 #define XMLWORKXMLWORK_H
 
-//class QString;
-//class QDomDocument;
-//class QDomElement;
+#include <QString>
+class QDomDocument;
+class QDomElement;
 
 /** All related functions to manage XML files and trees
   * @author S�bastien Lao�t
@@ -35,7 +35,7 @@ namespace XMLWork
 	QDomDocument* openFile(const QString &name, const QString &filePath);
 	// Manage XML trees :
 	QDomElement   getElement(const QDomElement &startElement, const QString &elementPath);
-	QString       getElementText(const QDomElement &startElement, const QString &elementPath, const QString &defaultTxt = "");
+	QString       getElementText(const QDomElement &startElement, const QString &elementPath, const QString &defaultTxt = QString());
 	void          addElement(QDomDocument &document, QDomElement &parent, const QString &name, const QString &text);
 	QString       innerXml(QDomElement &element);
 	// Not directly related to XML :

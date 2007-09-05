@@ -42,7 +42,7 @@
 class KGpgSelKey : public KDialog
 {
 	private:
-		K3ListView* keysListpr;
+		QTreeWidget* keysListpr;
 
 	public:
 
@@ -57,7 +57,7 @@ class KGpgSelKey : public KDialog
 			QPixmap keyPair = loader->loadIcon("kgpg_key2", KIcon::Small, 20);
 
 			setMinimumSize(350,100);
-			keysListpr = new K3ListView(page);
+			keysListpr = new QTreeWidget(page);
 			keysListpr->setRootIsDecorated(true);
 			keysListpr->addColumn(i18n("Name"));
 			keysListpr->addColumn(i18n("Email"));
@@ -73,8 +73,8 @@ class KGpgSelKey : public KDialog
 
 			for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
 				QString name = gpg.checkForUtf8((*it).name);
-				K3ListViewItem *item = new
-					K3ListViewItem(keysListpr, name, (*it).email, (*it).id);
+				QTreeWidgetItem *item = new
+					QTreeWidgetItem(keysListpr, name, (*it).email, (*it).id);
 				item->setPixmap(0,keyPair);
 				if(preselected == (*it).id) {
 					keysListpr->setSelected(item, true);
@@ -91,7 +91,7 @@ class KGpgSelKey : public KDialog
 		};
 
 		QString key() {
-			QListWidget* item = keysListpr->selectedItem();
+			QTreeWidget* item = keysListpr->selectedItem();
 
 			if(item)
 				return item->text(2);

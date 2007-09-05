@@ -45,11 +45,11 @@
 #include <svgicons/ksvgiconpainter.h>
 #endif
 
-class KIconCanvasItem : public QListWidgetItem
+class KIconCanvasItem : public QTreeWidgetItem
 {
   public:
     KIconCanvasItem ( QIconView * parent, const QString & key, const QPixmap & pixmap )
-        : QListWidgetItem(parent)
+        : QTreeWidgetItem(parent)
     {
         setText(QFileInfo(key).baseName());
         setKey(key);
@@ -59,7 +59,7 @@ class KIconCanvasItem : public QListWidgetItem
 
     }
 
-    int compare(QListWidgetItem *rhs) const
+    int compare(QTreeWidgetItem *rhs) const
     {
         return QString::localeAwareCompare(text().toLower(), rhs->text().toLower());
     }
@@ -96,8 +96,8 @@ KIconCanvas::KIconCanvas(QWidget *parent, const char *name)
     mpLoader = KIconLoader::global();
     mpTimer = new QTimer(this);
     connect(mpTimer, SIGNAL(timeout()), SLOT(slotLoadFiles()));
-    connect(this, SIGNAL(currentChanged(QListWidgetItem *)),
-	    SLOT(slotCurrentChanged(QListWidgetItem *)));
+    connect(this, SIGNAL(currentChanged(QTreeWidgetItem *)),
+	    SLOT(slotCurrentChanged(QTreeWidgetItem *)));
     setAcceptDrops(false);
     setShowToolTips(true);
     setStrictIconSize(false);
@@ -210,7 +210,7 @@ void KIconCanvas::stopLoading()
     d->m_bLoading = false;
 }
 
-void KIconCanvas::slotCurrentChanged(QListWidgetItem *item)
+void KIconCanvas::slotCurrentChanged(QTreeWidgetItem *item)
 {
     emit nameChanged((item != 0L) ? item->text() : QString::null);
 }

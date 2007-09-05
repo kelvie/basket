@@ -49,7 +49,7 @@
 SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, Qt::WFlags f)
  : KListWidget(parent, name, f), m_lastSelected(0)
 {
-	connect( this, SIGNAL(selectionChanged(QListWidgetItem*)), this, SLOT(slotSelectionChanged(QListWidgetItem*)) );
+	connect( this, SIGNAL(selectionChanged(QTreeWidgetItem*)), this, SLOT(slotSelectionChanged(QTreeWidgetItem*)) );
 	connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
 }
 
@@ -59,7 +59,7 @@ QMimeData* SingleSelectionKIconView::dragObject()
 	return new QMimeData(this);
 }
 
-void SingleSelectionKIconView::slotSelectionChanged(QListWidgetItem *item)
+void SingleSelectionKIconView::slotSelectionChanged(QTreeWidgetItem *item)
 {
 	if (item)
 		m_lastSelected = item;
@@ -230,8 +230,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
 	populateBasketsList(Global::bnpView->firstListViewItem(), /*indent=*/1, /*index=*/1);
 
-	connect( m_templates, SIGNAL(doubleClicked(QListWidgetItem*)), this, SLOT(slotOk())        );
-	connect( m_templates, SIGNAL(returnPressed(QListWidgetItem*)), this, SLOT(returnPressed()) );
+	connect( m_templates, SIGNAL(doubleClicked(QTreeWidgetItem*)), this, SLOT(slotOk())        );
+	connect( m_templates, SIGNAL(returnPressed(QTreeWidgetItem*)), this, SLOT(returnPressed()) );
 
 	if (parentBasket) {
 		int index = 0;
@@ -256,7 +256,7 @@ void NewBasketDialog::returnPressed()
 	actionButton(KDialog::Ok)->animateClick();
 }
 
-int NewBasketDialog::populateBasketsList(QListWidget *item, int indent, int index)
+int NewBasketDialog::populateBasketsList(QTreeWidget *item, int indent, int index)
 {
 	static const int ICON_SIZE = 16;
 
@@ -298,7 +298,7 @@ void NewBasketDialog::nameChanged(const QString &newName)
 
 void NewBasketDialog::slotOk()
 {
-	QListWidgetItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
+	QTreeWidgetItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
 	QString templateName;
 	if (item->text() == i18n("One column"))
 		templateName = "1column";

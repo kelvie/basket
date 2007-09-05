@@ -227,8 +227,8 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
 	}
 
-	connect( iconView, SIGNAL(executed(QListWidgetItem*)),      this, SLOT(choose(QListWidgetItem*)) );
-	connect( iconView, SIGNAL(returnPressed(QListWidgetItem*)), this, SLOT(choose(QListWidgetItem*)) );
+	connect( iconView, SIGNAL(executed(QTreeWidgetItem*)),      this, SLOT(choose(QTreeWidgetItem*)) );
+	connect( iconView, SIGNAL(returnPressed(QTreeWidgetItem*)), this, SLOT(choose(QTreeWidgetItem*)) );
 	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
 
 	setMainWidget(page);
@@ -260,7 +260,7 @@ void IconSizeDialog::slotSelectionChanged()
 	}
 }
 
-void IconSizeDialog::choose(QListWidgetItem*)
+void IconSizeDialog::choose(QTreeWidgetItem*)
 {
 //FIXME 1.5	actionButton(KDialog::Ok)->animateClick();
 }

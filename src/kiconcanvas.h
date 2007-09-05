@@ -69,7 +69,7 @@ signals:
 
 private slots:
     void slotLoadFiles();
-    void slotCurrentChanged(QListWidgetItem *item);
+    void slotCurrentChanged(QTreeWidgetItem *item);
 
 private:
     QStringList mFiles;

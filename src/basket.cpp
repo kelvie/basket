@@ -3209,7 +3209,7 @@ Basket::~Basket()
 void Basket::viewportResizeEvent ( QResizeEvent *event )
 {
 	relayoutNotes ( true );
-	//cornerWidget()->setShown(horizontalScrollBar()->isShown() && verticalScrollBar()->isShown());
+	//cornerWidget()->setShown(horizontalScrollBar()->isVisible() && verticalScrollBar()->isVisible());
 	if ( horizontalScrollBar()->isVisible() && verticalScrollBar()->isVisible() )
 	{
 		if ( !cornerWidget() )
@@ -3348,7 +3348,7 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 	}
 	else
 	{
-		if ( m_decryptBox && m_decryptBox->isShown() )
+		if ( m_decryptBox && m_decryptBox->isVisible() )
 			m_decryptBox->hide();
 	}
 
@@ -5075,7 +5075,7 @@ void Basket::listUsedTags ( QList<Tag*> &list )
 void Basket::setFocusedNote ( Note *note ) // void Basket::changeFocusTo(Note *note)
 {
 	// Don't focus an hidden note:
-	if ( note != 0L && !note->isShown() )
+	if ( note != 0L && !note->isVisible() )
 		return;
 	// When clicking a group, this group gets focused. But only content-based notes should be focused:
 	if ( note && note->isGroup() )
@@ -5115,7 +5115,7 @@ void Basket::focusANote()
 
 	// Search a visible note to focus if the focused one isn't shown :
 	Note *toFocus = m_focusedNote;
-	if ( toFocus && !toFocus->isShown() )
+	if ( toFocus && !toFocus->isVisible() )
 		toFocus = toFocus->nextShownInStack();
 	if ( !toFocus && m_focusedNote )
 		toFocus = m_focusedNote->prevShownInStack();
@@ -5152,7 +5152,7 @@ Note* Basket::lastNoteInStack()
 Note* Basket::firstNoteShownInStack()
 {
 	Note *first = firstNoteInStack();
-	while ( first && !first->isShown() )
+	while ( first && !first->isVisible() )
 		first = first->nextInStack();
 	return first;
 }
@@ -5160,7 +5160,7 @@ Note* Basket::firstNoteShownInStack()
 Note* Basket::lastNoteShownInStack()
 {
 	Note *last = lastNoteInStack();
-	while ( last && !last->isShown() )
+	while ( last && !last->isVisible() )
 		last = last->prevInStack();
 	return last;
 }
@@ -5254,10 +5254,10 @@ Note* Basket::noteOnEnd()
 		lastChild = parent->lastRealChild();
 		if ( lastChild && lastChild != m_focusedNote )
 		{
-			if ( lastChild->isShown() )
+			if ( lastChild->isVisible() )
 				return lastChild;
 			lastChild = lastChild->prevShownInStack();
-			if ( lastChild && lastChild->isShown() && lastChild != m_focusedNote )
+			if ( lastChild && lastChild->isVisible() && lastChild != m_focusedNote )
 				return lastChild;
 		}
 		child  = parent;
@@ -5487,7 +5487,7 @@ void Basket::selectRange ( Note *start, Note *end, bool unselectOthers /*= true*
 
 	for ( /*cur = cur*/; cur != 0L; cur = cur->nextInStack() )
 	{
-		cur->setSelected ( cur->isShown() ); // Select all notes in the range, but only if they are shown
+		cur->setSelected ( cur->isVisible() ); // Select all notes in the range, but only if they are shown
 		if ( cur == realEnd )
 			break;
 	}
@@ -5522,7 +5522,7 @@ void Basket::focusOutEvent ( QFocusEvent* )
 
 void Basket::ensureNoteVisible ( Note *note )
 {
-	if ( !note->isShown() ) // Logical!
+	if ( !note->isVisible() ) // Logical!
 		return;
 
 	if ( note == editedNote() ) // HACK: When filtering while editing big notes, etc... cause unwanted scrolls
@@ -6017,7 +6017,7 @@ void Basket::computeInsertPlace ( const QPoint &cursorPosition )
 	//       If the mouse is not over the last note, compute which new is :
 	// TODO: Optimization : start from m_insertAtNote and compare y position to search before or after (or the same)
 	for ( Note *it = firstNote(); it != 0L; it = it->next() )
-		if ( ( it->isShown() ) && ( it->y() + it->height() >= y ) && ( it->y() < y ) )
+		if ( ( it->isVisible() ) && ( it->y() + it->height() >= y ) && ( it->y() < y ) )
 		{
 			int center = it->y() + ( it->height() / 2 );
 			m_insertAtNote = it;
@@ -6138,8 +6138,8 @@ void Basket::moveNoteUp()
 	// AND to quit early if a selected note is the first shown one
 	for ( Note *it = firstShownNote(); it != 0L; it = it->next() )
 	{
-		if ( it->isSelected() && it->isShown() )
-		{ // it->isShown() not necessary, but in case...
+		if ( it->isSelected() && it->isVisible() )
+		{ // it->isVisible() not necessary, but in case...
 			if ( it == firstShownNote() )
 				return; // No way...
 			m_insertAtNote = nextShownNoteFrom ( it, -1 ); // Previous shown note
@@ -6166,8 +6166,8 @@ void Basket::moveNoteDown()
 	// AND to quit early if a selected note is the last shown one
 	for ( Note *it = lastShownNote(); it != 0L; it = it->previous() )
 	{
-		if ( it->isSelected() && it->isShown() )
-		{ // it->isShown() not necessary, but in case...
+		if ( it->isSelected() && it->isVisible() )
+		{ // it->isVisible() not necessary, but in case...
 			if ( it == lastShownNote() )
 				return; // No way...
 			m_insertAtNote = nextShownNoteFrom ( it, 1 ); // Next shown note

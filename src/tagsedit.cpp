@@ -100,52 +100,52 @@ bool TagCopy::isMultiState()
 
 /** class TagListViewItem: */
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, TagCopy *tagCopy)
- : QListWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, TagCopy *tagCopy)
+ : QTreeWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidget *parent, TagCopy *tagCopy)
- : QListWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, TagCopy *tagCopy)
+ : QTreeWidget(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListWidget *after, TagCopy *tagCopy)
- : QListWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, QTreeWidget *after, TagCopy *tagCopy)
+ : QTreeWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidget *parent, QListWidget *after, TagCopy *tagCopy)
- : QListWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, QTreeWidget *after, TagCopy *tagCopy)
+ : QTreeWidget(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
 /* */
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, StateCopy *stateCopy)
- : QListWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, StateCopy *stateCopy)
+ : QTreeWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidget *parent, StateCopy *stateCopy)
- : QListWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, StateCopy *stateCopy)
+ : QTreeWidget(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidgetItem *parent, QListWidget *after, StateCopy *stateCopy)
- : QListWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, QTreeWidget *after, StateCopy *stateCopy)
+ : QTreeWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListWidget *parent, QListWidget *after, StateCopy *stateCopy)
- : QListWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, QTreeWidget *after, StateCopy *stateCopy)
+ : QTreeWidget(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
@@ -186,14 +186,14 @@ TagListViewItem* TagListViewItem::prevSibling()
 
 TagListViewItem* TagListViewItem::parent() const
 {
-	return (TagListViewItem*) QListWidget::parent();
+	return (TagListViewItem*) QTreeWidget::parent();
 }
 
 // TODO: TagListViewItem::
 int TAG_ICON_SIZE = 16;
 int TAG_MARGIN = 1;
 
-int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListWidgetItem */*listView*/, int /* column */) const
+int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QTreeWidgetItem */*listView*/, int /* column */) const
 {
 	return listView()->visibleWidth();
 }
@@ -292,14 +292,14 @@ void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
 
 void TagListView::contentsMousePressEvent(QMouseEvent *event)
 {
-	// When clicking on an empty space, QListWidgetItem would unselect the current item! We forbid that!
+	// When clicking on an empty space, QTreeWidgetItem would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMousePressEvent(event);
 }
 
 void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
 {
-	// When clicking on an empty space, QListWidgetItem would unselect the current item! We forbid that!
+	// When clicking on an empty space, QTreeWidgetItem would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
 		QListView::contentsMouseReleaseEvent(event);
 }
@@ -604,11 +604,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
-	connect( m_tags,            SIGNAL(currentChanged(QListWidget*)),     this, SLOT(currentItemChanged(QListWidget*)) );
+	connect( m_tags,            SIGNAL(currentChanged(QTreeWidget*)),     this, SLOT(currentItemChanged(QTreeWidget*)) );
 	connect( m_tags,            SIGNAL(deletePressed()),                    this, SLOT(deleteTag())                        );
 	connect( m_tags,            SIGNAL(doubleClickedItem()),                this, SLOT(renameIt())                         );
 
-	QListWidget *firstItem = m_tags->firstChild();
+	QTreeWidget *firstItem = m_tags->firstChild();
 	if (stateToEdit != 0) {
 		TagListViewItem *item = itemForState(stateToEdit);
 		if (item)
@@ -687,9 +687,9 @@ void TagsEditDialog::resetTreeSizeHint()
 TagListViewItem* TagsEditDialog::itemForState(State *state)
 {
 	// Browse all tags:
-	QListWidgetIterator it(m_tags);
+	QTreeWidgetIterator it(m_tags);
 	while (it.current()) {
-		QListWidget *item = it.current();
+		QTreeWidget *item = it.current();
 
 		// Return if we found the tag item:
 		TagListViewItem *tagItem = (TagListViewItem*)item;
@@ -697,9 +697,9 @@ TagListViewItem* TagsEditDialog::itemForState(State *state)
 			return tagItem;
 
 		// Browser all sub-states:
-		QListWidgetIterator it2(item);
+		QTreeWidgetIterator it2(item);
 		while (it2.current()) {
-			QListWidget *subItem = it2.current();
+			QTreeWidget *subItem = it2.current();
 
 			// Return if we found the state item:
 			TagListViewItem *stateItem = (TagListViewItem*)subItem;
@@ -1010,7 +1010,7 @@ void TagsEditDialog::modified()
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
-void TagsEditDialog::currentItemChanged(QListWidget *item)
+void TagsEditDialog::currentItemChanged(QTreeWidget *item)
 {
 	if (item == 0)
 		return;

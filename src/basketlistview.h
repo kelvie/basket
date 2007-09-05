@@ -21,27 +21,30 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
+#include <QTreeWidget>
 #include <qtimer.h>
 #include <QMimeData>
-#include <klistwidget.h>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 class Basket;
 
-class BasketListViewItem : public QListWidgetItem
+class BasketListViewItem : public QTreeWidgetItem
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QListWidget     *parent, Basket *basket);
-//		BasketListViewItem(QListWidgetItem *parent, Basket *basket);
-		BasketListViewItem(QListWidget     *parent, QListWidgetItem *after, Basket *basket);
-//		BasketListViewItem(QListWidgetItem *parent, QListWidgetItem *after, Basket *basket);
+		BasketListViewItem(QTreeWidgetItem     *parent, Basket *basket);
+//		BasketListViewItem(QTreeWidgetItem *parent, Basket *basket);
+		BasketListViewItem(QTreeWidgetItem     *parent, QTreeWidgetItem *after, Basket *basket);
+//		BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket);
 		~BasketListViewItem();
 		///
 		bool acceptDrop(const QMimeData *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
-		int width(const QFontMetrics &fontMetrics, const QListWidgetItem *listView, int column) const;
+		int width(const QFontMetrics &fontMetrics, const QTreeWidgetItem *listView, int column) const;
+		BasketListViewItem* firstChild(){return (BasketListViewItem*) child(0);}
 		BasketListViewItem* lastChild();
 		BasketListViewItem* prevSibling();
 		BasketListViewItem* shownItemAbove();
@@ -49,7 +52,7 @@ class BasketListViewItem : public QListWidgetItem
 		QStringList childNamesTree(int deep = 0);
 		void moveChildsBaskets();
 		void ensureVisible();
-		bool isShown();
+		bool isVisible();
 		bool isCurrentBasket();
 		void paintCell(QPainter *painter, const QPalette &colorGroup, int column, int width, int align);
 		QString escapedName(const QString &string);
@@ -75,7 +78,7 @@ class BasketListViewItem : public QListWidgetItem
 		bool m_isAbbreviated;
 };
 
-class BasketTreeListView : public KListWidget
+class BasketTreeListView : public QTreeWidget
 {
 	Q_OBJECT
 	public:
@@ -87,11 +90,12 @@ class BasketTreeListView : public KListWidget
 		void contentsDropEvent(QDropEvent *event);
 		void resizeEvent(QResizeEvent *event);
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
+		BasketListViewItem* firstChild(){return (BasketListViewItem*) topLevelItem(0);}
 	protected:
 		void focusInEvent(QFocusEvent*);
 	private:
 		QTimer         m_autoOpenTimer;
-		QListWidgetItem *m_autoOpenItem;
+		QTreeWidgetItem *m_autoOpenItem;
 	private slots:
 		void autoOpen();
 	private:

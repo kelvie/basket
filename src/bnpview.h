@@ -21,7 +21,7 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <k3listview.h>
+#include <QTreeWidget>
 #include <kxmlguiclient.h>
 #include <qtimer.h>
 #include <qclipboard.h>
@@ -31,7 +31,7 @@
 #include "global.h"
 #include "basketdcopiface.h"
 #include <kaction.h>
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
  /// NEW:
 
 class QStackedWidget;
@@ -81,13 +81,13 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		QListView* firstListViewItem();
 		///
 		BasketListViewItem* lastListViewItem();
-		int basketCount(QListWidget *parent = 0);
+		int basketCount(QTreeWidgetItem *parent = 0);
 		bool canFold();
 		bool canExpand();
 		void enableActions();
 
 	private:
-		QDomElement basketElement(QListWidgetItem *item, QDomDocument &document, QDomElement &parentElement);
+		QDomElement basketElement(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement);
 	public slots:
 		void countsChanged(Basket *basket);
 		void notesStateChanged();
@@ -95,10 +95,10 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 
 		void updateBasketListViewItem(Basket *basket);
 		void save();
-		void save(QListWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
-		void saveSubHierarchy(QListWidget *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
+		void save(QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
+		void saveSubHierarchy(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
 		void load();
-		void load(K3ListView *listView, QListWidgetItem *item, const QDomElement &baskets);
+		void load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets);
 		void loadNewBasket(const QString &folderName, const QDomElement &properties, Basket *parent);
 		void goToPreviousBasket();
 		void goToNextBasket();
@@ -315,11 +315,11 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		KMenu *m_lastOpenedTagsMenu;
 
 	private slots:
-		void slotPressed(QListWidgetItem *item, const QPoint &/*pos*/ = QPoint(), int /*column*/ = 0);
-		void needSave(QListWidgetItem*);
-		void slotContextMenu(K3ListView *listView, QListWidgetItem *item, const QPoint &pos);
-		void slotMouseButtonPressed(int button, QListWidgetItem *item, const QPoint &pos, int column);
-		void slotShowProperties(QListWidgetItem *item, const QPoint&, int);
+		void slotPressed(QTreeWidgetItem *item, const QPoint &/*pos*/ = QPoint(), int /*column*/ = 0);
+		void needSave(QTreeWidgetItem*);
+		void slotContextMenu(QTreeWidget *listView, QTreeWidgetItem *item, const QPoint &pos);
+		void slotMouseButtonPressed(int button, QTreeWidgetItem *item, const QPoint &pos, int column);
+		void slotShowProperties(QTreeWidgetItem *item, const QPoint&, int);
 		void initialize();
 
 	signals:
@@ -333,7 +333,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		void leaveEvent(QEvent*);
 
 	private:
-		K3ListView    *m_tree;
+		QTreeWidget    *m_tree;
 		QStackedWidget *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;
