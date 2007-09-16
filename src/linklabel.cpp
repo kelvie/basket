@@ -115,9 +115,9 @@ QColor LinkLook::effectiveHoverColor() const
 QColor LinkLook::defaultColor() const
 {
 	if (m_useLinkColor)
-		return KGlobalSettings::linkColor();
+		return  KColorScheme(QPalette::Active, KColorScheme::View).foreground(KColorScheme::LinkText).color();
 	else
-		return KColorScheme(KColorScheme::View).foreground().color();
+		return KColorScheme(QPalette::Active, KColorScheme::View).foreground().color();
 }
 
 QColor LinkLook::defaultHoverColor() const

@@ -12,9 +12,7 @@
  * Public License, version 2. See the file "COPYING.LIB" for the
  * exact licensing terms.
  */
-
 #include "kiconcanvas.h"
-#include "kicondialog.h"
 
 #include <config.h>
 
@@ -39,6 +37,8 @@
 #include <cmath>
 #include <math.h>
 #include <algorithm>
+#include <QTreeWidgetItem>
+#include <QTreeWidget>
 
 #ifdef HAVE_LIBART
 #include <svgicons/ksvgiconengine.h>
@@ -212,7 +212,7 @@ void KIconCanvas::stopLoading()
 
 void KIconCanvas::slotCurrentChanged(QTreeWidgetItem *item)
 {
-    emit nameChanged((item != 0L) ? item->text() : QString::null);
+    emit nameChanged((item != 0L) ? item->text(0) : QString::null);
 }
 
 void KIconCanvas::setGroupOrSize( int groupOrSize )

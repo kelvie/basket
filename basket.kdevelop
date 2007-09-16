@@ -1,9 +1,9 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
-  <projectmanagement>KDevCustomProject</projectmanagement>
-  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-  <absoluteprojectpath>true</absoluteprojectpath>
+    <projectmanagement>KDevCustomProject</projectmanagement>
+    <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+    <absoluteprojectpath>true</absoluteprojectpath>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
     <version>1.5.0</version>
@@ -25,9 +25,9 @@
   </general>
   <kdevautoproject>
     <general>
-  <projectmanagement>KDevCustomProject</projectmanagement>
-  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-  <absoluteprojectpath>true</absoluteprojectpath>
+      <projectmanagement>KDevCustomProject</projectmanagement>
+      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+      <absoluteprojectpath>true</absoluteprojectpath>
       <activetarget>src/basket</activetarget>
       <useconfiguration>debug</useconfiguration>
     </general>
@@ -159,9 +159,9 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-  <projectmanagement>KDevCustomProject</projectmanagement>
-  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-  <absoluteprojectpath>true</absoluteprojectpath>
+      <projectmanagement>KDevCustomProject</projectmanagement>
+      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+      <absoluteprojectpath>true</absoluteprojectpath>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
       <gdbpath/>
@@ -242,8 +242,8 @@
       <root>/usr/share/qt3</root>
       <includestyle>4</includestyle>
       <designerintegration>ExternalDesigner</designerintegration>
-      <qmake>/home/kde-devel/qt4/bin/qmake</qmake>
-      <designer>/home/kde-devel/qt4/bin/designer</designer>
+      <qmake>/usr/bin/qmake</qmake>
+      <designer>/usr/bin/designer</designer>
       <designerpluginpaths/>
     </qt>
     <splitheadersource>

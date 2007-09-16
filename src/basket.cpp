@@ -91,6 +91,7 @@
 #include <kactioncollection.h>
 #include <kio/copyjob.h>
 #include <kcolorscheme.h>
+#include <QScrollBar>
 
 /** Class NoteSelection: */
 
@@ -2115,7 +2116,7 @@ void Basket::contentsDropEvent ( QDropEvent *event )
 	if ( m_editor && m_editor->textEdit() )
 	{
 		QTextEdit *editor = m_editor->textEdit();
-		editor->setCursorPosition ( m_editParagraph, m_editIndex );
+//FIXME 1.5		editor->setCursorPosition ( m_editParagraph, m_editIndex );
 	}
 }
 
@@ -2537,7 +2538,7 @@ void Basket::contentsMouseReleaseEvent ( QMouseEvent *event )
 				}
 				else
 				{
-					KRun *run = new KRun ( link ); //  open the URL.
+					KRun *run = new KRun ( KUrl(link),this); //  open the URL.
 					run->setAutoDelete ( true );
 				}
 				break;
@@ -2591,8 +2592,9 @@ void Basket::contentsMouseMoveEvent ( QMouseEvent *event )
 		NoteSelection *selection = selectedNotes();
 		if ( selection->firstStacked() )
 		{
-			QDrag *d = NoteDrag::dragObject ( selection, /*cutting=*/false, /*source=*/this ); // d will be deleted by QT
-			/*bool shouldRemove = */d->drag();
+			QMimeData *d = NoteDrag::dragObject ( selection, /*cutting=*/false, /*source=*/this ); // d will be deleted by QT
+			/*bool shouldRemove = */
+//FIXME 1.5			d->drag();
 //		delete selection;
 
 			// Never delete because URL is dragged and the file must be available for the extern appliation
@@ -2614,7 +2616,7 @@ void Basket::contentsMouseMoveEvent ( QMouseEvent *event )
 			if ( nextColumn )
 				maxRight = nextColumn->x() + nextColumn->rightLimit() - nextColumn->minRight() - Note::RESIZER_WIDTH;
 			else
-				maxRight = contentsWidth();
+				maxRight = widget()->width();
 		}
 		if ( groupWidth > maxRight - m_resizingNote->x() )
 			groupWidth = maxRight - m_resizingNote->x();
@@ -2662,15 +2664,15 @@ void Basket::doAutoScrollSelection()
 	static const int AUTO_SCROLL_MARGIN = 50;  // pixels
 	static const int AUTO_SCROLL_DELAY  = 100; // milliseconds
 
-	QPoint pos = viewport()->mapFromGlobal ( QCursor::pos() );
+	QPoint pos = widget()->mapFromGlobal ( QCursor::pos() );
 
 	// Do the selection:
 
 /*FIXME 1.5	if ( m_isSelecting )
 		updateContents ( m_selectionRect );
 */
-	m_selectionEndPoint = viewportToContents ( pos );
-	m_selectionRect = QRect ( m_selectionBeginPoint, m_selectionEndPoint ).normalize();
+	m_selectionEndPoint =  pos ;
+	m_selectionRect = QRect ( m_selectionBeginPoint, m_selectionEndPoint ).normalized();
 	if ( m_selectionRect.left() < 0 )                    m_selectionRect.setLeft ( 0 );
 	if ( m_selectionRect.top() < 0 )                     m_selectionRect.setTop ( 0 );
 	if ( m_selectionRect.right() >= widget()->width() )    m_selectionRect.setRight ( widget()->width() - 1 );
@@ -2780,7 +2782,7 @@ void Basket::unselectAll()
 	{
 		if ( m_editor->textEdit() )
 		{
-			m_editor->textEdit()->removeSelection();
+			m_editor->textEdit()->textCursor().clearSelection ();
 			selectionChangedInEditor(); // THIS IS NOT EMITED BY Qt!!!
 		}
 		else if ( m_editor->lineEdit() )
@@ -2820,7 +2822,7 @@ void Basket::selectNotesIn ( const QRect &rect, bool invertSelection, bool unsel
 
 void Basket::doHoverEffects()
 {
-	doHoverEffects ( viewportToContents ( viewport()->mapFromGlobal ( QCursor::pos() ) ) );
+	doHoverEffects ( widget()->mapFromGlobal ( QCursor::pos()  ) );
 }
 
 void Basket::doHoverEffects ( Note *note, Note::Zone zone, const QPoint &pos )
@@ -2929,9 +2931,9 @@ void Basket::placeInserter ( Note *note, int zone )
 	}
 
 	// Update the old position:
-	if ( inserterShown() )
+/*FIXME 1.5	if ( inserterShown() )
 		updateContents ( m_inserterRect );
-	// Some comodities:
+*/	// Some comodities:
 	m_inserterShown = true;
 	m_inserterTop   = ( zone == Note::TopGroup || zone == Note::TopInsert );
 	m_inserterGroup = ( zone == Note::TopGroup || zone == Note::BottomGroup );
@@ -2972,10 +2974,10 @@ void Basket::drawInserter ( QPainter &painter, int xPainter, int yPainter )
 	int lineY  = ( m_inserterGroup && m_inserterTop ? 0 : 2 );
 	int roundY = ( m_inserterGroup && m_inserterTop ? 0 : 1 );
 
-	QColor dark  = KApplication::palette().active().dark();
+	QColor dark  = KColorScheme(QPalette::Active, KColorScheme::View).background().color().darker();
 	QColor light = dark.light().light();
 	if ( m_inserterGroup && Settings::groupOnInsertionLine() )
-		light = Tools::mixColor ( light, KColorScheme(KColorScheme::Selection).background().color() );
+		light = Tools::mixColor ( light, KColorScheme(QPalette::Active, KColorScheme::Selection).background().color() );
 	painter.setPen ( dark );
 	// The horizontal line:
 	//painter.drawRect(       rect.x(),                    rect.y() + lineY,  rect.width(), 2);
@@ -3008,7 +3010,7 @@ void Basket::maybeTip ( const QPoint &pos )
 	QString message;
 	QRect   rect;
 
-	QPoint contentPos = viewportToContents ( pos );
+	QPoint contentPos = widget()->mapFromGlobal ( pos );
 	Note *note = noteAt ( contentPos.x(), contentPos.y() );
 
 	if ( !note && isFreeLayout() )
@@ -3110,7 +3112,7 @@ void Basket::maybeTip ( const QPoint &pos )
 		rect.moveTop ( rect.top()  + note->y() );
 	}
 
-	tip ( rect, message );
+	setToolTip ( message );
 }
 
 Note* Basket::lastNote()
@@ -3245,7 +3247,7 @@ void Basket::animateLoad()
 
 QColor Basket::selectionRectInsideColor()
 {
-	return Tools::mixColor ( Tools::mixColor ( backgroundColor(), KColorScheme(KColorScheme::Selection).background().color() ), backgroundColor() );
+	return Tools::mixColor ( Tools::mixColor ( backgroundColor(), KColorScheme(QPalette::Active, KColorScheme::Selection).background().color() ), backgroundColor() );
 }
 
 QColor alphaBlendColors ( const QColor &bgColor, const QColor &fgColor, const int a )
@@ -3300,7 +3302,8 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 			m_decryptBox->setFrameShadow ( QFrame::Plain );
 			m_decryptBox->setLineWidth ( 1 );
 
-			QGridLayout* layout = new QGridLayout ( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout" );
+			QGridLayout* layout = new QGridLayout ( m_decryptBox);
+			layout->setObjectName("decryptBoxLayout" );
 
 #ifdef HAVE_LIBGPGME
 			m_button = new QPushButton ( m_decryptBox, "button" );
@@ -3316,12 +3319,12 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 #else
 			label->setText ( text + i18n ( "Encryption is not supported by<br/>this version of %1." ).arg ( KCmdLineArgs::aboutData( )->programName() ) );
 #endif
-			label->setAlignment ( int ( QLabel::AlignTop ) );
-			layout->addMultiCellWidget ( label, 0, 0, 1, 2 );
+			label->setAlignment ( Qt::AlignTop );
+			layout->addWidget ( label, 0, 1, 1, 2 );
 			QLabel* pixmap = new QLabel ( m_decryptBox);
 			pixmap->setObjectName( "pixmap" );
-			pixmap->setPixmap ( KIconLoader::global()->loadIcon ( "encrypted", K3Icon::NoGroup, KIcon::SizeHuge ) );
-			layout->addMultiCellWidget ( pixmap, 0, 1, 0, 0 );
+			pixmap->setPixmap ( KIcon("encrypted").pixmap(32,32) );
+			layout->addWidget ( pixmap, 0, 0, 2, 1 );
 
 			QSpacerItem* spacer = new QSpacerItem ( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
 			layout->addItem ( spacer, 1, 1 );
@@ -3331,8 +3334,8 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 			                            "locking duration in the application settings." ) + "</small>",
 			                     m_decryptBox );
 			//label->setFixedWidth(label->sizeHint().width() / 2);
-			label->setAlignment ( int ( QLabel::AlignTop ) );
-			layout->addMultiCellWidget ( label, 2,2,0,2 );
+			label->setAlignment (  Qt::AlignTop );
+			layout->addWidget ( label, 2,0,1,3 );
 
 			m_decryptBox->resize ( layout->sizeHint() );
 		}
@@ -3366,9 +3369,12 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 	{
 		QPixmap pixmap ( width(), height() ); // TODO: Clip it to asked size only!
 		QPainter painter2 ( &pixmap );
-		QTextDocument rt ( QString ( "<center>%1</center>" ).arg ( i18n ( "Loading..." ) ), QScrollView::font() );
-		rt.setWidth ( width() );
-		int hrt = rt.height();
+		QTextDocument rt ( QString ( "<center>%1</center>" ).arg ( i18n ( "Loading..." ) ));
+rt.setDefaultFont(QScrollArea::font() );
+		QSizeF pageSize=rt.pageSize();
+		pageSize.setWidth(width());
+		rt.setPageSize(pageSize);
+		int hrt = rt.pageSize().height();
 		painter2.fillRect ( 0, 0, width(), height(), brush );
 		blendBackground ( painter2, QRect ( 0, 0, width(), height() ), -1, -1, /*opaque=*/true );
 		QPalette cg = colorGroup();
@@ -3419,7 +3425,7 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 						selectionRectInside.moveBy ( rect.x(), rect.y() );
 						blendBackground ( painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap );
 					}
-					painter2.setPen ( KColorScheme(KColorScheme::Selection).background().color().darker() );
+					painter2.setPen ( KColorScheme(QPalette::Active,KColorScheme::Selection).background().color().darker() );
 					painter2.drawRect ( selectionRect );
 					painter2.setPen ( Tools::mixColor ( (KColorScheme::Selection).background().color().darker(), backgroundColor() ) );
 					painter2.drawPoint ( selectionRect.topLeft() );
@@ -3929,7 +3935,7 @@ QColor Basket::backgroundColor()
 	if ( m_backgroundColorSetting.isValid() )
 		return m_backgroundColorSetting;
 	else
-		return KColorScheme(KColorScheme::View).background().color();
+		return KColorScheme(QPalette::Active, KColorScheme::View).background().color();
 }
 
 QColor Basket::textColor()
@@ -3937,7 +3943,7 @@ QColor Basket::textColor()
 	if ( m_textColorSetting.isValid() )
 		return m_textColorSetting;
 	else
-		return KColorScheme(KColorScheme::View).foreground().color();
+		return KColorScheme(QPalette::Active, KColorScheme::View).foreground().color();
 }
 
 void Basket::unbufferizeAll()
@@ -4626,11 +4632,11 @@ void Basket::noteOpen ( Note *note )
 		QString customCommand = note->content()->customOpenCommand();
 		if ( customCommand.isEmpty() )
 		{
-			KRun *run = new KRun ( url );
+			KRun *run = new KRun ( url, this );
 			run->setAutoDelete ( true );
 		}
 		else
-			KRun::run ( customCommand, url );
+			KRun::run ( customCommand, url, this );
 	}
 }
 
@@ -4649,7 +4655,7 @@ bool KRun__displayOpenWithDialog ( const KUrl::List& lst, bool tempFiles, const 
 	{
 		KService::Ptr service = l.service();
 		if ( !!service )
-			return KRun::run ( *service, lst, tempFiles );
+			return KRun::run ( *service, lst, this,tempFiles );
 		//kDebug(250) << "No service set, running " << l.text() << endl;
 		return KRun::run ( l.text(), lst ); // TODO handle tempFiles
 	}
@@ -4967,7 +4973,7 @@ void Basket::noteMoveNoteDown()
 
 void Basket::wheelEvent ( QWheelEvent *event )
 {
-	QScrollView::wheelEvent ( event );
+	QScrollArea::wheelEvent ( event );
 }
 
 void Basket::linkLookChanged()
