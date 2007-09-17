@@ -22,6 +22,7 @@
 #define BASKETDCOPINTERFACE_H
 
 #include <dcopobject.h>
+#include <qstringlist.h>
 
 /**
 	@author Petri Damsten <petri.damsten@iki.fi>
@@ -33,7 +34,11 @@ class BasketDcopInterface : virtual public DCOPObject
     virtual ASYNC newBasket() = 0;
 	virtual void handleCommandLine() = 0;
 
+	virtual bool createNoteHtml(const QString content, const QString basket) = 0;
 	virtual void reloadBasket(const QString &folderName) = 0;
+	virtual QStringList listBaskets() = 0;
+	virtual bool createNoteFromFile(const QString url, const QString basket) = 0;
+	virtual bool changeNoteHtml(const QString content, const QString basket, const QString noteName) = 0;
 };
 
 #endif

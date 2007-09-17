@@ -281,6 +281,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		BasketListViewItem* appendBasket(Basket *basket, QListViewItem *parentItem); // Public only for class Archive
 
 		Basket* basketForFolderName(const QString &folderName);
+		Note* noteForFileName(const QString &fileName, Basket &basket, Note* note = 0);
 		QPopupMenu* popupMenu(const QString &menuName);
 		bool isPart();
 		bool isMainWindowActive();
@@ -290,6 +291,10 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		virtual void newBasket();
 		virtual void handleCommandLine();
 		virtual void reloadBasket(const QString &folderName);
+		virtual bool createNoteHtml(const QString content, const QString basket);
+		virtual QStringList listBaskets();
+		virtual bool createNoteFromFile(const QString url, const QString basket);
+		virtual bool changeNoteHtml(const QString content, const QString basket, const QString noteName);
 
 	public slots:
 		void setCaption(QString s);

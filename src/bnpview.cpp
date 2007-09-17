@@ -74,6 +74,8 @@
 #include "crashhandler.h"
 #include "likeback.h"
 #include "backup.h"
+#include "notefactory.h"
+#include "notecontent.h"
 
 /** class BNPView: */
 
@@ -1667,6 +1669,24 @@ Basket* BNPView::basketForFolderName(const QString &folderName)
 	return 0;
 }
 
+Note* BNPView::noteForFileName(const QString &fileName, Basket &basket, Note* note)
+{
+	if (!note)
+		note = basket.firstNote();
+	if (note->fullPath().endsWith(fileName))
+		return note;
+	Note* child = note->firstChild();
+	Note* found;
+	while(child)
+	{
+		found = noteForFileName(fileName, basket, child);
+		if (found)
+			return found;
+		child = child->next();
+	}
+	return 0;
+}
+
 void BNPView::setFiltering(bool filtering)
 {
 	m_actShowFilter->setChecked(filtering);
@@ -2147,6 +2167,61 @@ bool BNPView::isMainWindowActive()
 void BNPView::newBasket()
 {
 	askNewBasket();
+}
+
+bool BNPView::createNoteHtml(const QString content, const QString basket)
+{
+	Basket* b = basketForFolderName(basket);
+	if (!b)
+		return false;
+	Note* note = NoteFactory::createNoteHtml(content, b);
+	if (!note)
+		return false;
+	b -> insertCreatedNote(note);
+	return true;
+}
+
+bool BNPView::changeNoteHtml(const QString content, const QString basket, const QString noteName)
+{
+	Basket* b = basketForFolderName(basket);
+	if (!b)
+		return false;
+	Note* note = noteForFileName(noteName , *b);
+	if (!note || note->content()->type()!=NoteType::Html)
+		return false;
+	HtmlContent* noteContent = (HtmlContent*)note->content();
+	noteContent->setHtml(content);
+	note->saveAgain();
+	return true;
+}
+
+bool BNPView::createNoteFromFile(const QString url, const QString basket)
+{
+	Basket* b = basketForFolderName(basket);
+	if (!b)
+		return false;
+	KURL kurl(url);
+	if ( url.isEmpty() )
+		return false;
+	Note* n = NoteFactory::copyFileAndLoad(kurl, b);
+	if (!n)
+		return false;
+	b->insertCreatedNote(n);
+	return true;
+}
+
+QStringList BNPView::listBaskets()
+{
+	QStringList basketList;
+
+	QListViewItemIterator it(m_tree);
+	while (it.current()) {
+		BasketListViewItem *item = ((BasketListViewItem*)it.current());
+		basketList.append(item->basket()->basketName());
+		basketList.append(item->basket()->folderName());
+		++it;
+	}	
+	return basketList;
 }
 
 void BNPView::handleCommandLine()
