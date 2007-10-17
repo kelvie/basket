@@ -48,6 +48,7 @@
 #include <kcmdlineargs.h>
 
 #include <iostream>
+#include <QTextStream>
 
 void Archive::save(Basket *basket, bool withSubBaskets, const QString &destination)
 {
@@ -138,16 +139,16 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 
 	// Finaly Save to the Real Destination file:
 	QFile file(destination);
-	if (file.open(QIODevice::WriteOnly)) {
+	if (file.open(QFile::WriteOnly)) {
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
 		QTextStream stream(&file);
 // TODO NOT NEED ANY MORE		stream.setEncoding(QTextStream::Latin1);
-		stream << "BasKetNP:archive\n"
-		       << "version:0.6.1\n"
+		//stream << "BasKetNP:archive\n"
+		//       << "version:0.6.1\n"
 //		       << "read-compatible:0.6.1\n"
 //		       << "write-compatible:0.6.1\n"
-		       << "preview*:" << previewSize << "\n";
+		 //      << "preview*:" << previewSize << "\n";
 		// Copy the Preview File:
 		const qulonglong BUFFER_SIZE = 1024;
 		char *buffer = new char[BUFFER_SIZE];
