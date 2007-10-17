@@ -30,7 +30,7 @@ INCLUDE_DIRECTORIES( ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_
 
 ADD_SUBDIRECTORY(doc)
 ADD_SUBDIRECTORY(src)
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake src/config.h )
+#CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake src/config.h )
 ########### install files ###############
 
 
