@@ -952,7 +952,7 @@ void Basket::setAppearance ( const QString &icon, const QString &name, const QSt
 	m_action->setText ( "BASKET SHORTCUT: " + name );
 
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
-	QPixmap iconTest = KIconLoader::global()->loadIcon ( m_icon, K3Icon::NoGroup, 16, K3Icon::DefaultState, QStringList(), 0L, /*canReturnNull=*/true );
+	QPixmap iconTest = KIconLoader::global()->loadIcon ( m_icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState, QStringList(), 0L, /*canReturnNull=*/true );
 	if ( iconTest.isNull() )
 		m_icon = "basket";
 
@@ -3370,16 +3370,17 @@ void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWid
 		QPixmap pixmap ( width(), height() ); // TODO: Clip it to asked size only!
 		QPainter painter2 ( &pixmap );
 		QTextDocument rt ( QString ( "<center>%1</center>" ).arg ( i18n ( "Loading..." ) ));
-rt.setDefaultFont(QScrollArea::font() );
+		rt.setDefaultFont(QScrollArea::font() );
 		QSizeF pageSize=rt.pageSize();
 		pageSize.setWidth(width());
 		rt.setPageSize(pageSize);
 		int hrt = rt.pageSize().height();
 		painter2.fillRect ( 0, 0, width(), height(), brush );
 		blendBackground ( painter2, QRect ( 0, 0, width(), height() ), -1, -1, /*opaque=*/true );
-		QPalette cg = colorGroup();
+		QPalette cg = palette();
 		cg.setColor ( QPalette::Text, textColor() );
-		rt.draw ( &painter2, 0, ( height() - hrt ) / 2, QRect(), cg );
+		//rt.drawContents ( &painter2, 0, ( height() - hrt ) / 2, QRect(), cg );
+		rt.drawContents ( &painter2 );
 		painter2.end();
 		painter->drawPixmap ( 0, 0, pixmap );
 		return; // TODO: Clip to the wanted rectangle
@@ -3393,7 +3394,6 @@ rt.setDefaultFont(QScrollArea::font() );
 	// If the background image is not tiled, we know that recomputeBlankRects() broken rects so that they are full of either background pixmap or color, but not a mix.
 
 	// Draw blank areas (see the last preparation above):
-	QPixmap  pixmap;
 	QPainter painter2;
 	QRect    rect;
 	for ( QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it )
@@ -3405,7 +3405,7 @@ rt.setDefaultFont(QScrollArea::font() );
 			// apply the inserter and then draw the image on screen:
 			if ( ( inserterShown() && rect.intersects ( inserterRect() ) )  || ( m_isSelecting && rect.intersects ( m_selectionRect ) ) )
 			{
-				pixmap.resize ( rect.width(), rect.height() );
+				QPixmap pixmap( rect.width(), rect.height() );
 				painter2.begin ( &pixmap );
 				painter2.fillRect ( 0, 0, rect.width(), rect.height(), backgroundColor() );
 				blendBackground ( painter2, rect, -1, -1, /*opaque=*/true );
@@ -3416,18 +3416,18 @@ rt.setDefaultFont(QScrollArea::font() );
 				if ( m_isSelecting && rect.intersects ( m_selectionRect ) )
 				{
 					QRect selectionRect = m_selectionRect;
-					selectionRect.moveBy ( -rect.x(), -rect.y() );
+					selectionRect.moveTo ( -rect.x(), -rect.y() );
 					QRect selectionRectInside ( selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2 );
 					if ( selectionRectInside.width() > 0 && selectionRectInside.height() > 0 )
 					{
 						QColor insideColor = selectionRectInsideColor();
 						painter2.fillRect ( selectionRectInside, insideColor );
-						selectionRectInside.moveBy ( rect.x(), rect.y() );
+						selectionRectInside.moveTo ( rect.x(), rect.y() );
 						blendBackground ( painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap );
 					}
 					painter2.setPen ( KColorScheme(QPalette::Active,KColorScheme::Selection).background().color().darker() );
 					painter2.drawRect ( selectionRect );
-					painter2.setPen ( Tools::mixColor ( (KColorScheme::Selection).background().color().darker(), backgroundColor() ) );
+					painter2.setPen ( Tools::mixColor ( KColorScheme(QPalette::Active, KColorScheme::Selection).background().color().darker(), backgroundColor() ) );
 					painter2.drawPoint ( selectionRect.topLeft() );
 					painter2.drawPoint ( selectionRect.topRight() );
 					painter2.drawPoint ( selectionRect.bottomLeft() );
@@ -3550,18 +3550,18 @@ void Basket::relayoutNotes ( bool animate )
 	else
 		tmpHeight += 15;
 
-	resizeContents ( qMax ( tmpWidth, width() ), qMax ( tmpHeight, height() ) );
+	resize ( qMax ( tmpWidth, width() ), qMax ( tmpHeight, height() ) );
 	recomputeBlankRects();
 	placeEditor();
 	doHoverEffects();
-	updateContents();
+	updateGeometry();
 }
 
 void Basket::updateNote ( Note *note )
 {
-	updateContents ( note->rect() );
+	update ( note->rect() );
 	if ( note->hasResizer() )
-		updateContents ( note->resizerRect() );
+		update ( note->resizerRect() );
 }
 
 void Basket::animateObjects()
@@ -3606,7 +3606,7 @@ void Basket::animateObjects()
 			doHoverEffects();
 		recomputeBlankRects();
 		//relayoutNotes(true); // In case an animated note was to the contents view boundaries, resize the view!
-		updateContents();
+		updateGeometry();
 		// If the drawing of the last frame was too long, we skip the drawing of the current and do the next one:
 	}
 	else
@@ -3635,23 +3635,23 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 	Tag *tag = state->parentTag();
 	m_tagPopup = tag;
 
-	QKeySequence sequence = tag->shortcut().operator QKeySequence();
-	bool sequenceOnDelete = ( nextState == 0 && !tag->shortcut().isNull() );
+	QKeySequence sequence = tag->shortcut().primary();
+	bool sequenceOnDelete = ( nextState == 0 && !tag->shortcut().isEmpty() );
 
 	KMenu menu ( this );
 	if ( tag->countStates() == 1 )
 	{
 		QAction* tmpAction;
 		menu.addMenu ( /*SmallIcon(state->icon()), */tag->name() );
-		tmpAction =menu.addTitle( i18n ( "&Remove" ) );
+		tmpAction = menu.addTitle( i18n ( "&Remove" ) );
 		tmpAction->setIcon(KIcon ("edit-delete" ));
 		menu.insertItem ( KIcon ( "configure" ),  i18n ( "&Customize..." ),       2 );
-		menu.insertSeparator();
+		menu.insertSeparator(0);
 		menu.insertItem ( KIcon ( "search-filter" ),     i18n ( "&Filter by this Tag" ), 3 );
 	}
 	else
 	{
-		menu.insertTitle ( tag->name() );
+		menu.addTitle ( tag->name() );
 		QList<State*>::iterator it;
 		State *currentState;
 
@@ -3660,10 +3660,10 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 		{
 			currentState = *it;
 			QKeySequence sequence;
-			if ( currentState == nextState && !tag->shortcut().isNull() )
-				sequence = tag->shortcut().operator QKeySequence();
+			if ( currentState == nextState && !tag->shortcut().isEmpty() )
+				sequence = tag->shortcut().primary();
 			menu.insertItem ( StateMenuItem::radioButtonIconSet ( state == currentState, menu.colorGroup() ), new StateMenuItem ( currentState, sequence, false ), i );
-			if ( currentState == nextState && !tag->shortcut().isNull() )
+			if ( currentState == nextState && !tag->shortcut().isEmpty() )
 				menu.setAccel ( sequence, i );
 			++i;
 		}
