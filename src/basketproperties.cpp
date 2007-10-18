@@ -18,12 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kicondialog.h>
+//#include <kicondialog.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
-#include <qvbuttongroup.h>
+#include <qbuttongroup.h>
 #include <knuminput.h>
-#include <kkeybutton.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qbuttongroup.h>
@@ -34,6 +33,7 @@
 #include <kapplication.h>
 #include <kiconloader.h>
 #include <kglobalsettings.h>
+#include <kicondialog.h>
 
 #include "basketproperties.h"
 #include "basket.h"
@@ -43,15 +43,22 @@
 #include "backgroundmanager.h"
 
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
- : KDialog(KDialog::Swallow, i18n("Basket Properties"), KDialog::Ok | KDialog::Apply | KDialog::Cancel,
-               KDialog::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
+ : //KDialog(KDialog::Swallow, i18n("Basket Properties"), KDialog::Ok | KDialog::Apply | KDialog::Cancel,
+   //            KDialog::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
+   KDialog(parent),
    m_basket(basket)
 {
+	//TODO set all other parameters
+	setButtons( KDialog::Ok | KDialog::Apply | KDialog::Cancel );
+
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	//TODO QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
 
 	// Icon and Name:
-	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
+	//TODO QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
+	QHBoxLayout *nameLayout = new QHBoxLayout();
+
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(K3Icon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
