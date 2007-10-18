@@ -47,7 +47,7 @@
 #include <kdebug.h>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-
+#include <kopenwithdialog.h>
 #include <unistd.h> // For sleep()
 
 #include <kmenu.h>
@@ -92,6 +92,7 @@
 #include <kio/copyjob.h>
 #include <kcolorscheme.h>
 #include <QScrollBar>
+#include <kmountpoint.h>
 
 /** Class NoteSelection: */
 
@@ -3645,9 +3646,9 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 		menu.addMenu ( /*SmallIcon(state->icon()), */tag->name() );
 		tmpAction = menu.addTitle( i18n ( "&Remove" ) );
 		tmpAction->setIcon(KIcon ("edit-delete" ));
-		menu.insertItem ( KIcon ( "configure" ),  i18n ( "&Customize..." ),       2 );
-		menu.insertSeparator(0);
-		menu.insertItem ( KIcon ( "search-filter" ),     i18n ( "&Filter by this Tag" ), 3 );
+//TODO 		menu.insertItem ( KIcon ( "configure" ),  i18n ( "&Customize..." ),       2 );
+ 		menu.insertSeparator(0);
+		//TODO		menu.insertItem ( KIcon ( "search-filter" ),     i18n ( "&Filter by this Tag" ), 3 );
 	}
 	else
 	{
@@ -3662,20 +3663,20 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 			QKeySequence sequence;
 			if ( currentState == nextState && !tag->shortcut().isEmpty() )
 				sequence = tag->shortcut().primary();
-			menu.insertItem ( StateMenuItem::radioButtonIconSet ( state == currentState, menu.colorGroup() ), new StateMenuItem ( currentState, sequence, false ), i );
+			//TODO menu.insertItem ( StateMenuItem::radioButtonIconSet ( state == currentState, menu.colorGroup() ), new StateMenuItem ( currentState, sequence, false ), i );
 			if ( currentState == nextState && !tag->shortcut().isEmpty() )
-				menu.setAccel ( sequence, i );
+			  //TODO				menu.setAccel ( sequence, i );
 			++i;
 		}
-		menu.insertSeparator();
-		menu.insertItem ( new IndentedMenuItem ( i18n ( "&Remove" ),               "edit-delete", ( sequenceOnDelete ? sequence : QKeySequence() ) ), 1 );
-		menu.insertItem ( new IndentedMenuItem ( i18n ( "&Customize..." ),         "configure" ),  2 );
-		menu.insertSeparator();
-		menu.insertItem ( new IndentedMenuItem ( i18n ( "&Filter by this Tag" ),   "search-filter" ),     3 );
-		menu.insertItem ( new IndentedMenuItem ( i18n ( "Filter by this &State" ), "search-filter" ),     4 );
+		//TODO		menu.insertSeparator();
+		//TODO	menu.insertItem ( new IndentedMenuItem ( i18n ( "&Remove" ),               "edit-delete", ( sequenceOnDelete ? sequence : QKeySequence() ) ), 1 );
+		//TODO		menu.insertItem ( new IndentedMenuItem ( i18n ( "&Customize..." ),         "configure" ),  2 );
+		//TODO		menu.insertSeparator();
+		//TODO	menu.insertItem ( new IndentedMenuItem ( i18n ( "&Filter by this Tag" ),   "search-filter" ),     3 );
+		//TODO		menu.insertItem ( new IndentedMenuItem ( i18n ( "Filter by this &State" ), "search-filter" ),     4 );
 	}
 	if ( sequenceOnDelete )
-		menu.setAccel ( sequence, 1 );
+	  //TODO menu.setAccel ( sequence, 1 );
 
 	connect ( &menu, SIGNAL ( activated ( int ) ), this, SLOT ( toggledStateInMenu ( int ) ) );
 	connect ( &menu, SIGNAL ( aboutToHide() ),  this, SLOT ( unlockHovering() ) );
@@ -3758,7 +3759,7 @@ void Basket::popupTagsMenu ( Note *note )
 	m_tagPopupNote = note;
 
 	KMenu menu ( this );
-	menu.insertTitle ( i18n ( "Tags" ) );
+	menu.addTitle ( i18n ( "Tags" ) );
 // 	QList<Tag*>::iterator it;
 // 	Tag *currentTag;
 // 	State *currentState;
@@ -3876,27 +3877,39 @@ void Basket::updateEditorAppearance()
 	if ( isDuringEdit() && m_editor->widget() )
 	{
 		m_editor->widget()->setFont ( m_editor->note()->font() );
-		m_editor->widget()->setPaletteBackgroundColor ( m_editor->note()->backgroundColor() );
-		m_editor->widget()->setPaletteForegroundColor ( m_editor->note()->textColor() );
+
+
+
+		//		m_editor->widget()->setPaletteBackgroundColor ( m_editor->note()->backgroundColor() );
+		QPalette palette;
+		palette.setColor(m_editor->widget()->backgroundRole(), m_editor->note()->backgroundColor() );
+		m_editor->widget()->setPalette(palette);
+
+
+		//		m_editor->widget()->setPaletteForegroundColor ( m_editor->note()->textColor() );
+		palette.setColor(m_editor->widget()->foregroundRole(), m_editor->note()->textColor() );
+		m_editor->widget()->setPalette(palette);
 
 		// Uggly Hack arround Qt bugs: placeCursor() don't call any signal:
-		HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*> ( m_editor );
-		if ( htmlEditor )
-		{
-			int para, index;
-			m_editor->textEdit()->getCursorPosition ( &para, &index );
-			if ( para == 0 && index == 0 )
-			{
-				m_editor->textEdit()->moveCursor ( QTextEdit::MoveForward,  /*select=*/false );
-				m_editor->textEdit()->moveCursor ( QTextEdit::MoveBackward, /*select=*/false );
-			}
-			else
-			{
-				m_editor->textEdit()->moveCursor ( QTextEdit::MoveBackward, /*select=*/false );
-				m_editor->textEdit()->moveCursor ( QTextEdit::MoveForward,  /*select=*/false );
-			}
-			htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
-		}
+// 		HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*> ( m_editor );
+// 		if ( htmlEditor )
+// 		{
+// 			int para, index;
+// 			m_editor->textEdit()->getCursorPosition ( &para, &index );
+// 			if ( para == 0 && index == 0 )
+// 			{
+// 			  m_editor->textEdit()->moveCursor ( QTextEdit::MoveForward,  /*select=*/false );
+			  
+
+// 			  m_editor->textEdit()->moveCursor ( QTextEdit::MoveBackward, /*select=*/false );
+// 			}
+// 			else
+// 			{
+// 				m_editor->textEdit()->moveCursor ( QTextEdit::MoveBackward, /*select=*/false );
+// 				m_editor->textEdit()->moveCursor ( QTextEdit::MoveForward,  /*select=*/false );
+// 			}
+// 			htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
+// 		}
 	}
 }
 
@@ -3983,7 +3996,7 @@ bool Basket::hasSelectedTextInEditor()
 		// The following line does NOT work if one letter is selected and the user press Shift+Left or Shift+Right to unselect than letter:
 		// Qt misteriously tell us there is an invisible selection!!
 		//return m_editor->textEdit()->hasSelectedText();
-		return !m_editor->textEdit()->selectedText().isEmpty();
+	  return !m_editor->textEdit()->textCursor().selectedText().isEmpty();
 	}
 	else if ( m_editor->lineEdit() )
 		return m_editor->lineEdit()->hasSelectedText();
@@ -4047,7 +4060,7 @@ void Basket::placeEditor ( bool /*andEnsureVisible*/ /*= false*/ )
 	int frameWidth = ( editorQFrame ? editorQFrame->frameWidth() : 0 );
 	int x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
 	int y;
-	int maxHeight  = qMax ( height(), contentsHeight() );
+	int maxHeight  = qMax ( this->height(), contentsHeight() );
 	int height, width;
 
 	if ( textEdit )
@@ -4409,9 +4422,11 @@ void Basket::noteEdit ( Note *note, bool justAdded, const QPoint &clickedPoint )
 				QPoint pos ( clickedPoint.x() - note->x() - note->contentX() + m_editor->textEdit()->frameWidth() + 4   - m_editor->textEdit()->frameWidth(),
 				             clickedPoint.y() - note->y()   - m_editor->textEdit()->frameWidth() );
 				// Do it right before the kapp->processEvents() to not have the cursor to quickly flicker at end (and sometimes stay at end AND where clicked):
-				m_editor->textEdit()->moveCursor ( KTextEdit::MoveHome, false );
+
+				m_editor->textEdit()->moveCursor ( QTextCursor::StartOfLine,QTextCursor::MoveAnchor);
 				m_editor->textEdit()->ensureCursorVisible();
-				m_editor->textEdit()->placeCursor ( pos );
+
+				m_editor->textEdit()->cursorForPosition( pos );
 				updateEditorAppearance();
 			}
 		}
@@ -4443,9 +4458,9 @@ void Basket::noteDelete()
 	if ( redirectEditActions() )
 	{
 		if ( m_editor->textEdit() )
-			m_editor->textEdit()->del();
+			m_editor->textEdit()->cut();
 		else if ( m_editor->lineEdit() )
-			m_editor->lineEdit()->del();
+			m_editor->lineEdit()->cut();
 		return;
 	}
 
@@ -4643,6 +4658,8 @@ void Basket::noteOpen ( Note *note )
 /** Code from bool KRun::displayOpenWithDialog(const KUrl::List& lst, bool tempFiles)
   * It does not allow to set a text, so I ripped it to do that:
   */
+//BIG TODO
+
 bool KRun__displayOpenWithDialog ( const KUrl::List& lst, bool tempFiles, const QString &text )
 {
 	if ( kapp && !KAuthorized::authorizeKAction ( "openwith" ) )
@@ -4650,14 +4667,15 @@ bool KRun__displayOpenWithDialog ( const KUrl::List& lst, bool tempFiles, const 
 		KMessageBox::sorry ( 0L, i18n ( "You are not authorized to open this file." ) ); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
-	KOpenWithDlg l ( lst, text, QString::null, 0L );
+	KOpenWithDialog l ( lst, text, QString::null, 0L );
 	if ( l.exec() )
 	{
 		KService::Ptr service = l.service();
 		if ( !!service )
 			return KRun::run ( *service, lst, this,tempFiles );
 		//kDebug(250) << "No service set, running " << l.text() << endl;
-		return KRun::run ( l.text(), lst ); // TODO handle tempFiles
+		//		return KRun::run ( l.text(), lst ); // TODO handle tempFiles
+		
 	}
 	return false;
 }
@@ -4995,8 +5013,8 @@ void Basket::slotCopyingDone2 ( KIO::Job *job )
 		return;
 	}
 	KIO::FileCopyJob *fileCopyJob = ( KIO::FileCopyJob* ) job;
-	Note *note = noteForFullPath ( fileCopyJob->destURL().path() );
-	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destURL().path() + ( note ? "" : " --- NO CORRESPONDING NOTE" );
+	Note *note = noteForFullPath ( fileCopyJob->destUrl().path() );
+	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destUrl().path() + ( note ? "" : " --- NO CORRESPONDING NOTE" );
 	if ( note != 0L )
 	{
 		note->content()->loadFromFile ( /*lazyLoad=*/false );
@@ -5050,7 +5068,7 @@ QString Basket::saveGradientBackground ( const QColor &color, const QFont &font,
 
 	// Draw and save the gradient image:
 	int sampleTextHeight = QFontMetrics ( font )
-	                       .boundingRect ( 0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, "Test text" )
+	                       .boundingRect ( 0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, "Test text" )
 	                       .height();
 	QPixmap noteGradient ( 100, sampleTextHeight + Note::NOTE_MARGIN );
 	QPainter painter ( &noteGradient );
@@ -5412,7 +5430,8 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 		return;
 	}
 
-	if ( QInputEvent::modifiers() & Qt::ShiftModifier )
+	//	if ( QInputEvent::modifiers() & Qt::ShiftModifier )
+	if ( (event)->modifiers() & Qt::ShiftModifier )
 	{ // Shift+arrowKeys selection
 		if ( m_startOfShiftSelectionNote == 0L )
 			m_startOfShiftSelectionNote = toFocus;
@@ -5427,7 +5446,7 @@ void Basket::keyPressEvent ( QKeyEvent *event )
 		ensureNoteVisible ( toFocus ); // Important: this line should be before the other ones because else repaint would be done on the wrong part!
 		setFocusedNote ( toFocus );
 		m_startOfShiftSelectionNote = toFocus;
-		if ( ! ( (QInputEvent*)(event)->modifiers() & Qt::ControlModifier ) )     // ... select only current note if Control
+		if ( ! ((event)->modifiers() & Qt::ControlModifier ) )     // ... select only current note if Control
 			unselectAllBut ( m_focusedNote );
 		event->accept();
 		return;
@@ -5813,7 +5832,7 @@ bool Basket::saveToFile ( const QString& fullPath, const QByteArray& array, qulo
 		{
 			saveFile.write ( array, length );
 			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
-			closeSuccess = saveFile.close();
+			closeSuccess = saveFile.finalize();
 			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;
 		}
 		errorWhileWritting = ( !openSuccess || !closeSuccess || saveFile.error() != QFile::NoError );
@@ -5830,7 +5849,7 @@ bool Basket::saveToFile ( const QString& fullPath, const QByteArray& array, qulo
 				             ),
 				             ( openSuccess
 				               ? i18n ( "Please remove files on the disk <b>%1</b> to let the application safely save your changes." )
-				               .arg ( KIO::findPathMountPoint ( fullPath ) )
+					       .arg( KMountPoint::currentMountPoints().findByPath( fullPath ))
 				               : i18n ( "File permissions are bad for <b>%1</b>. Please check that you have write access to it and the parent folders." )
 				               .arg ( fullPath )
 				             ),
@@ -5870,23 +5889,30 @@ bool Basket::saveToFile ( const QString& fullPath, const QByteArray& array, qulo
 }
 
 DiskErrorDialog::DiskErrorDialog ( const QString &titleMessage, const QString &message, QWidget *parent )
-		: KDialog ( ( "Save Error" ),
-		            ( KDialog::ButtonCode ) 0, ( KDialog::ButtonCode ) 0, parent, /*name=*/"DiskError" )
+// 		: KDialog ( ( "Save Error" ),
+// 		            ( KDialog::ButtonCode ) 0, ( KDialog::ButtonCode ) 0, parent, /*name=*/"DiskError" )
+
+
+
 {
+KDialog dlg( parent );
+dlg.setCaption( i18n("Save error") );
+dlg.setButtons( Ok );
+dlg.setDefaultButton( Ok );
 
 	//enableButtonCancel(false);
 	//enableButtonClose(false);
 	//enableButton(Close, false);
 	//enableButtonOk(false);
 	setModal ( true );
-	QHBoxLayout *layout = new QHBoxLayout ( plainPage() );
+	QHBoxLayout *layout = new QHBoxLayout;// ( plainPage() );
 	                      layout->setMargin ( 0 );
 	layout->setSpacing ( spacingHint() );
-	QPixmap icon = KIconLoader::global()->loadIcon ( "hdd_unmount", K3Icon::NoGroup, 64, K3Icon::DefaultState,QStringList(), /*path_store=*/0L, /*canReturnNull=*/true );
-	QLabel *iconLabel  = new QLabel ( plainPage() );
+	QPixmap icon = KIconLoader::global()->loadIcon ( "hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState,QStringList(), /*path_store=*/0L, /*canReturnNull=*/true );
+	QLabel *iconLabel  = new QLabel;// ( plainPage() ); TODO not sure if the right way
 	iconLabel->setPixmap ( icon );
 	iconLabel->setFixedSize ( iconLabel->sizeHint() );
-	QLabel *label = new QLabel ( "<p><nobr><b><font size='+1'>" + titleMessage + "</font></b></nobr></p><p>" + message + "</p>", plainPage() );
+	QLabel *label = new QLabel ( "<p><nobr><b><font size='+1'>" + titleMessage + "</font></b></nobr></p><p>" + message + "</p>",0,0);//TOdo not sure, plainPage() );
 	if ( !icon.isNull() )
 		layout->addWidget ( iconLabel );
 	layout->addWidget ( label );
