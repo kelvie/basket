@@ -234,8 +234,12 @@ void LinkLabel::setLook(LinkLook *look) // FIXME: called externaly (so, without 
 	font.setBold(look->bold());
 	font.setUnderline(look->underlineOutside());
 	font.setItalic(look->italic());
+
 	m_title->setFont(font);
-	m_title->setPaletteForegroundColor( m_isSelected ? KApplication::palette().active().highlightedText() : look->effectiveColor() );
+	QPalette pal(m_title->palette());
+	pal.setColor( QPalette::WindowText, m_isSelected ? KApplication::palette().highlight().color() : look->effectiveColor() );
+	m_title->setPalette(pal);
+	m_title->setForegroundRole( QPalette::WindowText );
 
 	m_icon->setShown( m_icon->pixmap() && ! m_icon->pixmap()->isNull() );
 
@@ -252,7 +256,7 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 
 	// Define alignment flags :
 	//FIXME TODO: Use directly flags !
-	int hFlag, vFlag, wBreak;
+	Qt::Alignment hFlag, vFlag, wBreak;
 	switch (hAlign) {
 		default:
 		case 0: hFlag = Qt::AlignLeft;    break;
@@ -265,26 +269,30 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 		case 1: vFlag = Qt::AlignVCenter; break;
 		case 2: vFlag = Qt::AlignBottom;  break;
 	}
-	wBreak = Qt::WordBreak * (hAlign != 1);
+	if ( hAlign == 1 ) {
+		//TODO wBreak = Qt::TextWordWrap;
+	}
 
 	// Clear the widget :
-	m_layout->removeWidget(m_spacer1);
+	m_layout->removeItem( m_spacer1 );
 	m_layout->removeWidget(m_icon);
 	m_layout->removeWidget(m_title);
-	m_layout->removeWidget(m_spacer2);
+	m_layout->removeItem( m_spacer2 );
 
 	// Otherwise, minimumSize will be incoherent (last size ? )
-	m_layout->setResizeMode(QLayout::Minimum);
+	m_layout->setSizeConstraint( QLayout::SetMinimumSize );
 
 	// And re-populate the widget with the appropriates things and order
 	bool addSpacers = hAlign == 1;
 	m_layout->setDirection(QBoxLayout::LeftToRight);
 	//m_title->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum/*Expanding*/, 0, 0, false) );
-	m_icon->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred/*Expanding*/, 0, 0, false) );
+	//TODO m_icon->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred, 0, 0, false) );
+	m_icon->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Preferred/*Expanding*/ ) );
 	m_spacer1->changeSize( 0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred/*Expanding*/ );
 	m_spacer2->changeSize( 0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred/*Expanding*/ );
 
 	m_icon->setAlignment( hFlag | vFlag );
+	//TODO m_title->setAlignment( hFlag | vFlag | wBreak );
 	m_title->setAlignment( hFlag | vFlag | wBreak );
 	if ( addSpacers && (vAlign != 0) ||
 	   (m_title->text().isEmpty() && hAlign == 2) )
@@ -304,8 +312,12 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 void LinkLabel::enterEvent(QEvent*)
 {
 	m_isHovered = true;
-	if ( ! m_isSelected )
-		m_title->setPaletteForegroundColor(m_look->effectiveHoverColor());
+	if ( ! m_isSelected ) {
+		QPalette pal( m_title->palette() );
+		pal.setColor( QPalette::WindowText, m_look->effectiveHoverColor() );
+		m_title->setPalette(pal);
+		m_title->setForegroundRole( QPalette::WindowText );
+	}
 
 	QFont font = m_title->font();
 	font.setUnderline(m_look->underlineInside());
@@ -315,8 +327,12 @@ void LinkLabel::enterEvent(QEvent*)
 void LinkLabel::leaveEvent(QEvent*)
 {
 	m_isHovered = false;
-	if ( ! m_isSelected )
-		m_title->setPaletteForegroundColor(m_look->effectiveColor());
+	if ( ! m_isSelected ) {
+		QPalette pal( m_title->palette() );
+		pal.setColor( QPalette::WindowText, m_look->effectiveColor() );
+		m_title->setPalette(pal);
+		m_title->setForegroundRole( QPalette::WindowText );
+	}
 
 	QFont font = m_title->font();
 	font.setUnderline(m_look->underlineOutside());
@@ -326,18 +342,37 @@ void LinkLabel::leaveEvent(QEvent*)
 void LinkLabel::setSelected(bool selected)
 {
 	m_isSelected = selected;
-	if (selected)
-		m_title->setPaletteForegroundColor(KApplication::palette().color(QPalette::HighlightedText));
-	else if (m_isHovered)
-		m_title->setPaletteForegroundColor(m_look->effectiveHoverColor());
-	else
-		m_title->setPaletteForegroundColor(m_look->effectiveColor());
+	if (selected) {
+		QPalette pal( KApplication::palette() );
+		pal.setColor( QPalette::WindowText, QPalette::HighlightedText );
+		m_title->setPalette(pal);
+		m_title->setForegroundRole( QPalette::WindowText );
+	} else if (m_isHovered) {
+		QPalette pal( m_title->palette() );
+		pal.setColor( QPalette::WindowText, m_look->effectiveHoverColor() );
+		m_title->setPalette(pal);
+		m_title->setForegroundRole( QPalette::WindowText );
+	} else {
+		QPalette pal( m_title->palette() );
+		pal.setColor( QPalette::WindowText, m_look->effectiveColor() );
+		m_title->setPalette(pal);
+		m_title->setForegroundRole( QPalette::WindowText );
+	}
 }
 
 void LinkLabel::setPaletteBackgroundColor(const QColor &color)
 {
-	QFrame::setPaletteBackgroundColor(color);
-	m_title->setPaletteBackgroundColor(color);
+	QPalette pal( QFrame::palette() );
+	pal.setColor( QPalette::Window, color );
+	QFrame::setPalette(pal);
+	QFrame::setBackgroundRole( QPalette::Window );
+	QFrame::setAutoFillBackground(true);
+
+	QPalette pal2( m_title->palette() );
+	pal2.setColor( QPalette::Window, color );
+	m_title->setPalette(pal2);
+	m_title->setForegroundRole( QPalette::Window );
+	m_title->setAutoFillBackground(true);
 }
 
 int LinkLabel::heightForWidth(int w) const
@@ -368,9 +403,9 @@ QString LinkLabel::toHtml(const QString &imageName)
 	if (m_icon->pixmap()) {
 		QPixmap icon(*m_icon->pixmap());
 		begin.prepend("<img src=" + imageName + " style=\"vertical-align: middle\"> ");
-		QMimeSourceFactory::defaultFactory()->setPixmap(imageName, icon);
+		//TODO QMimeSourceFactory::defaultFactory()->setPixmap(imageName, icon);
 	} else
-		QMimeSourceFactory::defaultFactory()->setData(imageName, 0L);
+		//TODO QMimeSourceFactory::defaultFactory()->setData(imageName, 0L);
 	return begin + Tools::textToHTMLWithoutP(m_title->text()) + end;
 }
 
@@ -396,15 +431,15 @@ void LinkDisplay::setLink(const QString &title, const QString &icon, const QPixm
 	m_font    = font;
 
 	// "Constants":
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN   = BUTTON_MARGIN + 2;
 
 	// Recompute m_minWidth:
-	QRect textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
+	QRect textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_title);
 	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width() : 0));
 	m_minWidth = BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN + textRect.width();
 	// Recompute m_maxWidth:
-	textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/50000000, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
+	textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/50000000, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_title);
 	m_maxWidth = BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN + textRect.width();
 	// Adjust m_width:
 	if (m_width < m_minWidth)
@@ -434,7 +469,7 @@ void LinkDisplay::setWidth(int width)
 void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QPalette &colorGroup,
                         bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const
 {
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN   = BUTTON_MARGIN + 2;
 
 	QPixmap pixmap;
@@ -444,32 +479,36 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	// ... Or the icon (if no preview or if the "Open" icon should be shown):
 	else {
 		int           iconSize   = m_look->iconSize();
-		QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
-		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIcon::DefaultState);
-		pixmap = KIconLoader::global()->loadIcon(iconName, KIcon::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
+		//TODO QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
+		QString iconName = m_icon;
+		KIcon::State iconState  = (isIconButtonHovered ? KIcon::On : KIcon::Off);
+		pixmap = KIconLoader::global()->loadIcon( iconName, KIconLoader::Desktop, iconSize, iconState);
 	}
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
 	int pixmapY = (height - pixmap.height()) / 2;
 	// Draw the button (if any) and the icon:
-	if (isHovered)
-		kapp->style().drawPrimitive(QStyle::PE_ButtonCommand, painter, QRect(-1, -1, iconPreviewWidth + 2*BUTTON_MARGIN, height + 2),
-		                            colorGroup, QStyle::Style_Enabled | (isIconButtonHovered ? QStyle::Style_MouseOver : 0));
+	if (isHovered) {
+		//TODO QStyle::State_Enabled | (isIconButtonHovered ? QStyle::State_MouseOver : 0))
+		//kapp->style()->drawPrimitive(QStyle::PE_PanelButtonCommand, painter, QRect(-1, -1, iconPreviewWidth + 2*BUTTON_MARGIN, height + 2), colorGroup);
+		//kapp->style()->drawPrimitive(QStyle::PE_PanelButtonCommand, QStyleOption() );
+	}
 	painter->drawPixmap(x + BUTTON_MARGIN - 1 + pixmapX, y + pixmapY, pixmap);
 
 	// Figure out the text color:
-	if (isSelected)
-		painter->setPen(KGlobalSettings::highlightedTextColor());
+	if (isSelected) {
+		//TODO painter->setPen(KGlobalSettings::highlightedTextColor());
+	}
 	else if (isIconButtonHovered)
 		painter->setPen(m_look->effectiveHoverColor());
 	else if (!isDefaultColor || (!m_look->color().isValid() && !m_look->useLinkColor())) // If the color is FORCED or if the link color default to the text color:
-		painter->setPen(colorGroup.text());
+		painter->setPen(colorGroup.text().color());
 	else
 		painter->setPen(m_look->effectiveColor());
 	// Draw the text:
 	painter->setFont(labelFont(m_font, isIconButtonHovered));
 	painter->drawText(x + BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN, y, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, height,
-	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_title);
+	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_title);
 }
 
 QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &colorGroup, bool isDefaultColor)
@@ -477,7 +516,7 @@ QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &color
 	int theWidth  = qMin(width, maxWidth());
 	int theHeight = qMin(height, heightForWidth(theWidth));
 	QPixmap pixmap(theWidth, theHeight);
-	pixmap.fill(colorGroup.background());
+	pixmap.fill(colorGroup.background().color());
 	QPainter painter(&pixmap);
 	paint(&painter, 0, 0, theWidth, theHeight, colorGroup, isDefaultColor,
 	      /*isSelected=*/false, /*isHovered=*/false, /*isIconButtonHovered=*/false);
@@ -487,7 +526,7 @@ QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &color
 
 bool LinkDisplay::iconButtonAt(const QPoint &pos) const
 {
-	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
 	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
@@ -496,7 +535,7 @@ bool LinkDisplay::iconButtonAt(const QPoint &pos) const
 
 QRect LinkDisplay::iconButtonRect() const
 {
-	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
 	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
@@ -521,12 +560,12 @@ QFont LinkDisplay::labelFont(QFont font, bool isIconButtonHovered) const
 
 int LinkDisplay::heightForWidth(int width) const
 {
-	int BUTTON_MARGIN     = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN     = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN       = BUTTON_MARGIN + 2;
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int iconPreviewHeight = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
 
-	QRect textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
+	QRect textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_title);
 	return qMax(textRect.height(), iconPreviewHeight + 2*BUTTON_MARGIN - 2);
 }
 
