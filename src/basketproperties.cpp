@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <kicondialog.h>
+#include <kicondialog.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qbuttongroup.h>
@@ -33,8 +33,9 @@
 #include <kapplication.h>
 #include <kiconloader.h>
 #include <kglobalsettings.h>
-#include <kicondialog.h>
 #include <kkeysequencewidget.h>
+#include <qgroupbox.h>
+#include <kcolorscheme.h>
 
 #include "basketproperties.h"
 #include "basket.h"
@@ -61,29 +62,36 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	QHBoxLayout *nameLayout = new QHBoxLayout();
 
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Action);
+	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_icon, i18n("Icon"));
+	//TODO QToolTip::add(m_icon, i18n("Icon"));
 	m_name = new QLineEdit(m_basket->basketName(), page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
-	QToolTip::add(m_name, i18n("Name"));
+	//TODO QToolTip::add(m_name, i18n("Name"));
 	nameLayout->addWidget(m_icon);
 	nameLayout->addWidget(m_name);
 	topLayout->addLayout(nameLayout);
 
 	// Appearance:
-	QGroupBox *appearance = new QGroupBox(1, Qt::Horizontal, i18n("Appearance"), page);
-	QWidget *appearanceWidget = new QWidget(appearance);
-	QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+	//TODO QGroupBox *appearance = new QGroupBox(1, Qt::Horizontal, i18n("Appearance"), page);
+	QGroupBox *appearance = new QGroupBox( i18n("Appearance"), page );
+
+	QWidget *appearanceWidget = new QWidget( appearance );
+	//TODO QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *grid = new QGridLayout( appearanceWidget );
+
 	m_backgroundImage = new QComboBox(appearanceWidget);
-	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), KColorScheme(KColorScheme::View).background().color(), appearanceWidget);
-	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       KColorScheme(KColorScheme::View).foreground().color(), appearanceWidget);
-		QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &image:"), appearanceWidget);
-	QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background color:"), appearanceWidget);
-	QLabel *label3 = new QLabel(m_textColor,       i18n("&Text color:"),       appearanceWidget);
+	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), KColorScheme(QPalette::Normal, KColorScheme::View).background().color(), appearanceWidget);
+	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       KColorScheme(QPalette::Normal, KColorScheme::View).foreground().color(), appearanceWidget);
+	//TODO QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &image:"), appearanceWidget);
+	//TODO QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background color:"), appearanceWidget);
+	//TODO QLabel *label3 = new QLabel(m_textColor,       i18n("&Text color:"),       appearanceWidget);
+	QLabel *label1 = new QLabel( i18n("&Background color:"), appearanceWidget );
+	QLabel *label2 = new QLabel( i18n("&Background color:"), appearanceWidget );
+	QLabel *label3 = new QLabel( i18n("&Text color:"),       appearanceWidget );
 	grid->addWidget(label1,            0, 0, Qt::AlignVCenter);
 	grid->addWidget(label2,            1, 0, Qt::AlignVCenter);
 	grid->addWidget(label3,            2, 0, Qt::AlignVCenter);
@@ -92,7 +100,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	grid->addWidget(m_textColor,       2, 1, Qt::AlignVCenter);
 	topLayout->addWidget(appearance);
 
-	m_backgroundImage->insertItem(i18n("(None)"), 0);
+/*TODO
+	m_backgroundImage->insertItem( i18n("(None)"), 0 );
 	m_backgroundImagesMap.insert(0, "");
 	QStringList backgrounds = Global::backgroundManager->imageNames();
 	int index = 1;
@@ -105,40 +114,40 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 				m_backgroundImage->setCurrentItem(index);
 			index++;
 		}
-	}
+	}*/
 //	m_backgroundImage->insertItem(i18n("Other..."), -1);
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
-	m_backgroundImage->setSizeLimit(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
-	m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+	//TODO m_backgroundImage->setSizeLimit(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
+	//TODO m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);
 
-	// Disposition:
-	m_disposition = new QVButtonGroup(i18n("Disposition"), page);
-	QWidget *columnsWidget = new QWidget(m_disposition);
-	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
-	QRadioButton *radio = new QRadioButton(i18n("Col&umns:"), columnsWidget);
-	m_columnCount = new KIntNumInput(m_basket->columnsCount(), columnsWidget);
-	m_columnCount->setRange(1, 20, /*step=*/1, /*slider=*/false);
-	m_columnCount->setValue(m_basket->columnsCount());
-	connect( m_columnCount, SIGNAL(valueChanged(int)), this, SLOT(selectColumnsLayout()) );
-	dispoLayout->addWidget(radio);
-	dispoLayout->addWidget(m_columnCount);
-	m_disposition->insert(radio);
-	new QRadioButton(i18n("&Free-form"), m_disposition);
-	QRadioButton *mindMap = new QRadioButton(i18n("&Mind map"), m_disposition); // TODO: "Learn more..."
-	int height = qMax(mindMap->sizeHint().height(), m_columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
-	mindMap->setMinimumSize(mindMap->sizeHint().width(), height); // Because the m_columnCount can be heigher, and make radio1 and radio2 more spaced than radio2 and radio3.
-	m_disposition->setButton(m_basket->isFreeLayout() ? (m_basket->isMindMap() ? 2 : 1) : 0);
-	topLayout->addWidget(m_disposition);
+	//Disposition:
+//	m_disposition = new QButtonGroup(i18n("Disposition"), page);
+//	QWidget *columnsWidget = new QWidget(m_disposition);
+//	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
+//	QRadioButton *radio = new QRadioButton(i18n("Col&umns:"), columnsWidget);
+//	m_columnCount = new KIntNumInput(m_basket->columnsCount(), columnsWidget);
+//	m_columnCount->setRange(1, 20, /*step=*/1, /*slider=*/false);
+//	m_columnCount->setValue(m_basket->columnsCount());
+//	connect( m_columnCount, SIGNAL(valueChanged(int)), this, SLOT(selectColumnsLayout()) );
+//	dispoLayout->addWidget(radio);
+//	dispoLayout->addWidget(m_columnCount);
+//	m_disposition->insert(radio);
+//	new QRadioButton(i18n("&Free-form"), m_disposition);
+//	QRadioButton *mindMap = new QRadioButton(i18n("&Mind map"), m_disposition); // TODO: "Learn more..."
+//	int height = qMax(mindMap->sizeHint().height(), m_columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
+//	mindMap->setMinimumSize(mindMap->sizeHint().width(), height); // Because the m_columnCount can be heigher, and make radio1 and radio2 more spaced than radio2 and radio3.
+//	m_disposition->setButton(m_basket->isFreeLayout() ? (m_basket->isMindMap() ? 2 : 1) : 0);
+//	topLayout->addWidget(m_disposition);
 
-	mindMap->hide();
+//	mindMap->hide();
 
 	// Keyboard Shortcut:
-	m_shortcutRole = new QVButtonGroup(i18n("&Keyboard Shortcut"), page);
-	QWidget *shortcutWidget = new QWidget(m_shortcutRole);
-	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
-	m_shortcut = new KKeyButton(shortcutWidget);
-	m_shortcut->setShortcut(m_basket->shortcut(), /*bQtShortcut=*/true);
-	HelpLabel *helpLabel = new HelpLabel(i18n("Learn some tips..."), i18n(
+//	m_shortcutRole = new QVButtonGroup(i18n("&Keyboard Shortcut"), page);
+//	QWidget *shortcutWidget = new QWidget(m_shortcutRole);
+//	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
+//	m_shortcut = new KKeyButton(shortcutWidget);
+//	m_shortcut->setShortcut(m_basket->shortcut(), /*bQtShortcut=*/true);
+/*	HelpLabel *helpLabel = new HelpLabel(i18n("Learn some tips..."), i18n(
 		"<p><strong>Easily Remember your Shortcuts</strong>:<br>"
 		"With the first option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> will underline that letter in the basket tree.<br>"
 		"For instance, if you are assigning the shortcut <i>Alt+T</i> to a basket named <i>Tips</i>, the basket will be displayed as <i><u>T</u>ips</i> in the tree. "
@@ -149,19 +158,19 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 		"<p><strong>Show vs Switch</strong>:<br>"
 		"The last option makes this basket the current one without opening the main window. "
 		"It is useful in addition to the configurable global shortcuts, eg. to paste the clipboard or the selection into the current basket from anywhere.</p>"),
-		shortcutWidget);
-	shortcutLayout->addWidget(m_shortcut);
-	shortcutLayout->addStretch();
-	shortcutLayout->addWidget(helpLabel);
-	connect( m_shortcut, SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
-	new QRadioButton(i18n("S&how this basket"),                        m_shortcutRole);
-	new QRadioButton(i18n("Show this basket (&global shortcut)"),      m_shortcutRole);
-	new QRadioButton(i18n("S&witch to this basket (global shortcut)"), m_shortcutRole);
-	m_shortcutRole->setButton(m_basket->shortcutAction()/* + 1*/); // Id 0 is the KKeyButton!
-	topLayout->addWidget(m_shortcutRole);
+		shortcutWidget);*/
+//	shortcutLayout->addWidget(m_shortcut);
+//	shortcutLayout->addStretch();
+//	shortcutLayout->addWidget(helpLabel);
+//	connect( m_shortcut, SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
+//	new QRadioButton(i18n("S&how this basket"),                        m_shortcutRole);
+//	new QRadioButton(i18n("Show this basket (&global shortcut)"),      m_shortcutRole);
+//	new QRadioButton(i18n("S&witch to this basket (global shortcut)"), m_shortcutRole);
+//	m_shortcutRole->setButton(m_basket->shortcutAction()/* + 1*/); // Id 0 is the KKeyButton!
+//	topLayout->addWidget(m_shortcutRole);
 
-	topLayout->addSpacing(marginHint());
-	topLayout->addStretch(10);
+//	topLayout->addSpacing(marginHint());
+//	topLayout->addStretch(10);
 
 	setMainWidget(page);
 }
@@ -172,29 +181,31 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 
 void BasketPropertiesDialog::polish()
 {
-	KDialog::polish();
+	//KDialog::polish();
 	m_name->setFocus();
 }
 
 void BasketPropertiesDialog::applyChanges()
 {
-	m_basket->setDisposition(m_disposition->selectedId(), m_columnCount->value());
-	m_basket->setShortcut(m_shortcut->shortcut(), m_shortcutRole->selectedId());
+	//m_basket->setDisposition(m_disposition->selectedId(), m_columnCount->value());
+	//m_basket->setShortcut(m_shortcut->shortcut(), m_shortcutRole->selectedId());
 	// Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
-	m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentItem()], m_backgroundColor->color(), m_textColor->color());
+	//m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentItem()], m_backgroundColor->color(), m_textColor->color());
 	m_basket->save();
 }
 
 void BasketPropertiesDialog::slotApply()
 {
 	applyChanges();
-	KDialog::slotApply();
+	// slotApply
+	KDialog::applyClicked();
 }
 
 void BasketPropertiesDialog::slotOk()
 {
 	applyChanges();
-	KDialog::slotOk();
+	// slotOk
+	KDialog::okClicked();
 }
 
 void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)
@@ -205,7 +216,8 @@ void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)
 
 void BasketPropertiesDialog::selectColumnsLayout()
 {
-	m_disposition->setButton(0);
+	// TODO: addButton (QAbstractButton) - NULL is bad
+	//m_disposition->addButton(0);
 }
 
 #include "basketproperties.moc"
