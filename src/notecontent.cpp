@@ -22,7 +22,6 @@
 #include <qdir.h>
 #include <qdom.h>
 #include <qpainter.h>
-#include <qstylesheet.h>
 #include <qfontmetrics.h>
 #include <qwidget.h>
 #include <qcursor.h>
@@ -67,13 +66,13 @@
 #include "kcolorcombo2.h"
 #include "htmlexporter.h"
 
-#include "config.h"
-#ifndef WITHOUT_ARTS
+//#include "config.h"
+/*#ifndef WITHOUT_ARTS
 	#include <arts/kplayobject.h>
 	#include <arts/kplayobjectfactory.h>
 	#include <arts/kartsserver.h>
 	#include <arts/kartsdispatcher.h>
-#endif
+#endif*/
 
 /** class NoteContent:
  */
@@ -247,7 +246,7 @@ QString UnknownContent::toHtml(const QString &/*imageName*/, const QString &/*cu
 { return "";                                                                                  }
 
 QPixmap ImageContent::toPixmap()     { return pixmap();              }
-QPixmap AnimationContent::toPixmap() { return movie().framePixmap(); }
+QPixmap AnimationContent::toPixmap() { return movie()->currentPixmap(); }
 
 void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPath)
 {
@@ -309,16 +308,16 @@ QString LauncherContent::saveAsFilters()  { return "application/x-desktop"; }
 QString ColorContent::saveAsFilters()     { return "";                      }
 QString UnknownContent::saveAsFilters()   { return "";                      }
 
-bool TextContent::match(const FilterData &data)          { return (text().find(data.string, /*index=*/0, /*cs=*/false) != -1);         }
-bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.find(data.string, /*index=*/0, /*cs=*/false) != -1);     } //OPTIM_FILTER
+bool TextContent::match(const FilterData &data)          { return (text().indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1);         }
+bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1);     } //OPTIM_FILTER
 bool ImageContent::match(const FilterData &/*data*/)     { return false;                                                               }
 bool AnimationContent::match(const FilterData &/*data*/) { return false;                                                               }
-bool SoundContent::match(const FilterData &data)         { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
-bool FileContent::match(const FilterData &data)          { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
-bool LinkContent::match(const FilterData &data)          { return (title().find(data.string, 0, false) != -1 || url().prettyUrl().find(data.string, 0, false) != -1); }
-bool LauncherContent::match(const FilterData &data)      { return (exec().find(data.string, 0, false) != -1 || name().find(data.string, 0, false) != -1); }
-bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
-bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
+bool SoundContent::match(const FilterData &data)         { return (fileName().indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1);     }
+bool FileContent::match(const FilterData &data)          { return (fileName().indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1);     }
+bool LinkContent::match(const FilterData &data)          { return (title().indexOf(data.string, 0, Qt::CaseInsensitive) != -1 || url().prettyUrl().indexOf(data.string, 0, Qt::CaseInsensitive) != -1); }
+bool LauncherContent::match(const FilterData &data)      { return (exec().indexOf(data.string, 0, Qt::CaseInsensitive) != -1 || name().indexOf(data.string, 0, Qt::CaseInsensitive) != -1); }
+bool ColorContent::match(const FilterData &data)         { return (color().name().indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1); }
+bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().indexOf(data.string, /*index=*/0, /*cs=*/Qt::CaseInsensitive) != -1);    }
 
 QString TextContent::editToolTipText()      { return i18n("Edit this plain text");             }
 QString HtmlContent::editToolTipText()      { return i18n("Edit this text");                   }
@@ -363,31 +362,33 @@ void ColorContent::serialize(QDataStream &stream) { stream << color();  }
 
 QPixmap TextContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
 	QPixmap pixmap( qMin(width, textRect.width()), qMin(height, textRect.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
 	painter.setFont(note()->font());
-	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
 	painter.end();
 	return pixmap;
 }
 
 QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
-	QTextDocument richText(html(), note()->font());
-	richText.setWidth(width);
-	QPalette colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QPalette::Text,       note()->textColor());
-	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
-	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPainter painter(&pixmap);
-	painter.setPen(note()->textColor());
-	richText.draw(&painter, 0, 0, QRect(0, 0, pixmap.width(), pixmap.height()), colorGroup);
-	painter.end();
-	return pixmap;
+	return QPixmap();
+	//TODO QTextDocument richText(html(), note()->font());
+//	QTextDocument richText( html() );
+	//TODO richText.setWidth(width);
+//	QPalette colorGroup(basket()->colorGroup());
+//	colorGroup.setColor(QPalette::Text,       note()->textColor());
+//	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+//	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
+//	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
+//	QPainter painter(&pixmap);
+//	painter.setPen(note()->textColor());
+//	richText.draw(&painter, 0, 0, QRect(0, 0, pixmap.width(), pixmap.height()), colorGroup);
+//	painter.end();
+//	return pixmap;
 }
 
 QPixmap ImageContent::feedbackPixmap(int width, int height)
@@ -403,40 +404,42 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 		} else
 			return m_pixmap;
 	} else { // Scalled down
-		QImage imageToScale = m_pixmap.convertToImage();
-		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
-		if (pmScaled.hasAlpha()) {
-			QPixmap opaque(pmScaled.width(), pmScaled.height());
-			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
-			QPainter painter(&opaque);
-			painter.drawPixmap(0, 0, pmScaled);
-			painter.end();
-			return opaque;
-		} else
-			return pmScaled;
+		//TODO
+//		QImage imageToScale = m_pixmap.toImage();
+//		QPixmap pmScaled;
+//		pmScaled.fromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
+//		if (pmScaled.hasAlpha()) {
+//			QPixmap opaque(pmScaled.width(), pmScaled.height());
+//			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
+//			QPainter painter(&opaque);
+//			painter.drawPixmap(0, 0, pmScaled);
+//			painter.end();
+//			return opaque;
+//		} else
+//			return pmScaled;
 	}
 }
 
 QPixmap AnimationContent::feedbackPixmap(int width, int height)
 {
-	QPixmap pixmap = m_movie.framePixmap();
+	QPixmap pixmap = m_movie.currentPixmap();
 	if (width >= pixmap.width() && height >= pixmap.height()) // Full size
 		return pixmap;
 	else { // Scalled down
-		QImage imageToScale = pixmap.convertToImage();
+		QImage imageToScale = pixmap.toImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
+		//TODO pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
 		return pmScaled;
 	}
 }
 
 QPixmap LinkContent::feedbackPixmap(int width, int height)
 {
-	QPalette colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QPalette::Text,       note()->textColor());
-	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+	//QPalette colorGroup();
+	//TODO QPalette colorGroup(basket()->colorGroup());
+	//colorGroup.setColor(QPalette::Text,       note()->textColor());
+	//colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	//return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
 QPixmap ColorContent::feedbackPixmap(int width, int height)
@@ -446,7 +449,8 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 	int rectHeight = (textRect.height() + 2)*3/2;
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
-	QPalette colorGroup(basket()->colorGroup());
+	//TODO QPalette colorGroup(basket()->colorGroup());
+	QPalette colorGroup;
 	colorGroup.setColor(QPalette::Text,       note()->textColor());
 	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
@@ -460,7 +464,8 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 
 QPixmap FileContent::feedbackPixmap(int width, int height)
 {
-	QPalette colorGroup(basket()->colorGroup());
+	QPalette colorGroup;
+	//TODO QPalette colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QPalette::Text,       note()->textColor());
 	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
@@ -468,7 +473,8 @@ QPixmap FileContent::feedbackPixmap(int width, int height)
 
 QPixmap LauncherContent::feedbackPixmap(int width, int height)
 {
-	QPalette colorGroup(basket()->colorGroup());
+	QPalette colorGroup;
+	//TODO QPalette colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QPalette::Text,       note()->textColor());
 	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
@@ -476,9 +482,10 @@ QPixmap LauncherContent::feedbackPixmap(int width, int height)
 
 QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 
-	QPalette colorGroup(basket()->colorGroup());
+	QPalette colorGroup;
+	//TODO QPalette colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QPalette::Text,       note()->textColor());
 	colorGroup.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
@@ -514,23 +521,24 @@ int TextContent::setWidthAndGetHeight(int width)
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->setWidth(width);
-		return m_simpleRichText->height();
+		m_simpleRichText->setTextWidth(width);
+		return 10;
+		//TODO return m_simpleRichText->height();
 	} else
 		return 10; // Lazy loaded
 }
 
 void TextContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	if (m_simpleRichText) {
+	/*TODO if (m_simpleRichText) {
 		width -= 1;
 		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
-	}
+	}*/
 }
 
 bool TextContent::loadFromFile(bool lazyLoad)
 {
-	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
+	//TODO DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
 	QString content;
 	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
@@ -540,7 +548,7 @@ bool TextContent::loadFromFile(bool lazyLoad)
 	else {
 		QString debugStr;
 		QTextStream(&debugStr)<< "FAILED TO LOAD TextContent: " << fullPath();
-		qDebug()<<debugStr;
+		//qDebug()<<debugStr;
 		setText("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -550,14 +558,14 @@ bool TextContent::loadFromFile(bool lazyLoad)
 
 bool TextContent::finishLazyLoad()
 {
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+	int width = (m_simpleRichText ? m_simpleRichText->textWidth() : 1);
 	delete m_simpleRichText;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new QTextDocument(html, note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+	//TODO m_simpleRichText = new QTextDocument(html, note()->font());
+	/*m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
-	contentChanged(minWidth + 1);
+	contentChanged(minWidth + 1);*/
 
 	return true;
 }
@@ -569,9 +577,9 @@ bool TextContent::saveToFile()
 
 QString TextContent::linkAt(const QPoint &pos)
 {
-	if (m_simpleRichText)
+	/*TODO if (m_simpleRichText)
 		return m_simpleRichText->anchorAt(pos);
-	else
+	else*/
 		return ""; // Lazy loaded
 }
 
@@ -619,15 +627,16 @@ HtmlContent::HtmlContent(Note *parent, const QString &fileName, bool lazyLoad)
 HtmlContent::~HtmlContent()
 {
 	delete m_simpleRichText;
+	m_simpleRichText = 0;
 }
 
 int HtmlContent::setWidthAndGetHeight(int width)
 {
-	if (m_simpleRichText) {
+/*TODO	if (m_simpleRichText) {
 		width -= 1;
 		m_simpleRichText->setWidth(width);
 		return m_simpleRichText->height();
-	} else
+	} else*/
 		return 10; // Lazy loaded
 }
 
@@ -635,39 +644,40 @@ void HtmlContent::paint(QPainter *painter, int width, int height, const QPalette
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+		//TODO m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
 	}
 }
 
 bool HtmlContent::loadFromFile(bool lazyLoad)
 {
-	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
+	//TODO
+//	DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
-	QString content;
-	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+//	QString content;
+//	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
 
-	if (success)
-		setHtml(content, lazyLoad);
-	else {
-	QString debugStr;
-	QTextStream(&debugStr) << "FAILED TO LOAD HtmlContent: " << fullPath();
-	qDebug()<<debugStr;
-		setHtml("", lazyLoad);
-		if (!QFile::exists(fullPath()))
-			saveToFile(); // Reserve the fileName so no new note will have the same name!
-	}
-	return success;
+//	if (success)
+//		setHtml(content, lazyLoad);
+//	else {
+//	QString debugStr;
+//	QTextStream(&debugStr) << "FAILED TO LOAD HtmlContent: " << fullPath();
+//	qDebug()<<debugStr;
+//		setHtml("", lazyLoad);
+//		if (!QFile::exists(fullPath()))
+//			saveToFile(); // Reserve the fileName so no new note will have the same name!
+//	}
+//	return success;
 }
 
 bool HtmlContent::finishLazyLoad()
 {
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+/*TODO	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
 	m_simpleRichText = new QTextDocument(Tools::tagURLs(m_html), note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
-	contentChanged(minWidth + 1);
+	contentChanged(minWidth + 1);*/
 
 	return true;
 }
@@ -679,9 +689,10 @@ bool HtmlContent::saveToFile()
 
 QString HtmlContent::linkAt(const QPoint &pos)
 {
-	if (m_simpleRichText)
+	//TODO
+/*	if (m_simpleRichText)
 		return m_simpleRichText->anchorAt(pos);
-	else
+	else*/
 		return ""; // Lazy loaded
 }
 
@@ -765,43 +776,45 @@ bool ImageContent::loadFromFile(bool lazyLoad)
 
 bool ImageContent::finishLazyLoad()
 {
-	DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
+	//TODO
+//	DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
 
-	QByteArray content;
+//	QByteArray content;
 
-	if (basket()->loadFromFile(fullPath(), &content))
-	{
-		QBuffer buffer(content);
+//	if (basket()->loadFromFile(fullPath(), &content))
+//	{
+//		QBuffer buffer(content);
 
-		buffer.open(QIODevice::WriteOnly);
-		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
-		buffer.close();
-		if (m_format) {
-			m_pixmap.loadFromData(content);
-			setPixmap(m_pixmap);
-			return true;
-		}
-	}
-<< "FAILED TO LOAD ImageContent: " << fullPath();
-	qDebug()<<debugStr;
-	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
-	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
-	m_pixmap.fill();
-	m_pixmap.setMask(m_pixmap.createHeuristicMask());
-	setPixmap(m_pixmap);
-	if (!QFile::exists(fullPath()))
-		saveToFile(); // Reserve the fileName so no new note will have the same name!
-	return false;
+//		buffer.open(QIODevice::WriteOnly);
+//		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
+//		buffer.close();
+//		if (m_format) {
+//			m_pixmap.loadFromData(content);
+//			setPixmap(m_pixmap);
+//			return true;
+//		}
+//	}
+//<< "FAILED TO LOAD ImageContent: " << fullPath();
+//	qDebug()<<debugStr;
+//	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
+//	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
+//	m_pixmap.fill();
+//	m_pixmap.setMask(m_pixmap.createHeuristicMask());
+//	setPixmap(m_pixmap);
+//	if (!QFile::exists(fullPath()))
+//		saveToFile(); // Reserve the fileName so no new note will have the same name!
+//	return false;
 }
 
 bool ImageContent::saveToFile()
 {
-	QByteArray ba;
+	//TODO
+/*	QByteArray ba;
 	QBuffer buffer(ba);
 
 	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
-	return basket()->saveToFile(fullPath(), ba);
+	return basket()->saveToFile(fullPath(), ba);*/
 }
 
 
@@ -868,14 +881,14 @@ AnimationContent::AnimationContent(Note *parent, const QString &fileName, bool l
 int AnimationContent::setWidthAndGetHeight(int /*width*/)
 {
 	/*width -= 1*/;
-	return  m_movie.framePixmap().height()  ; // TODO!!!
+	return  m_movie.currentPixmap().height()  ; // TODO!!!
 }
 
 void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	/*width -= 1*/;
 //	DEBUG_WIN << "AnimationContent::paint()";
-	const QPixmap &frame = m_movie.framePixmap();
+	const QPixmap &frame = m_movie.currentPixmap();
 	if (width >= frame.width()) // Full size
 		painter->drawPixmap(0, 0, frame);
 	else // Scalled down
@@ -892,16 +905,17 @@ bool AnimationContent::loadFromFile(bool lazyLoad)
 
 bool AnimationContent::finishLazyLoad()
 {
-	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
-//	return setMovie(QMovie(fullPath()));
+	//TODO
+//	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
+////	return setMovie(QMovie(fullPath()));
 
-	bool success = false;
-	QByteArray content;
-	if (basket()->loadFromFile(fullPath(), &content))
-		success = setMovie(QMovie(content, content.size()));
-	if (!success)
-		setMovie(QMovie());
-	return success;
+//	bool success = false;
+//	QByteArray content;
+//	if (basket()->loadFromFile(fullPath(), &content))
+//		success = setMovie(QMovie(content, content.size()));
+//	if (!success)
+//		setMovie(QMovie());
+//	return success;
 }
 
 bool AnimationContent::saveToFile()
@@ -926,15 +940,16 @@ QString AnimationContent::messageWhenOpenning(OpenMessage where)
 
 bool AnimationContent::setMovie(const QMovie &movie)
 {
-	if (!m_movie.isNull()) {
-		// Disconnect?
-		return false;
-	}
-	m_movie = movie;
-	m_movie.connectUpdate( this, SLOT(movieUpdated(const QRect&)) );
-	m_movie.connectResize( this, SLOT(movieResized(const QSize&)) );
-	m_movie.connectStatus( this, SLOT(movieStatus(int))           );
-	contentChanged(  m_movie.framePixmap().width() + 1  ); // TODO
+	//TODO
+//	if (!m_movie.isNull()) {
+//		// Disconnect?
+//		return false;
+//	}
+//	m_movie = movie;
+//	m_movie.connectUpdate( this, SLOT(movieUpdated(const QRect&)) );
+//	m_movie.connectResize( this, SLOT(movieResized(const QSize&)) );
+//	m_movie.connectStatus( this, SLOT(movieStatus(int))           );
+//	contentChanged(  m_movie.framePixmap().width() + 1  ); // TODO
 	return true;
 }
 
@@ -959,37 +974,39 @@ void AnimationContent::movieResized(const QSize&)
   */
 void AnimationContent::movieStatus(int status)
 {
-	DEBUG_WIN << "movieStatus()";
+	//TODO
+//	DEBUG_WIN << "movieStatus()";
 
-	// At least two frames: it's an animation, everything is OK
-	if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfFrame) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-//		if (note()->isFocused())                 // When inserting a new note we ensure it visble
-//			basket()->ensureNoteVisible(note()); //  But after loading it has certainly grown and if it was
-	}
-	// Only one image: it's an image, change note's type
-	else if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfLoop) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-		note()->setContent(new ImageContent(note(), fileName()));
-		basket()->save();
-		//delete this; // CRASH, as always !!!!!!!!!
-		//QTimer::singleShot(0,   this, SLOT(loadContent()));    // Delayed to avoid crash!
-		//QTimer::singleShot(100, this, SLOT(saveProperties())); // We should save it's an image and not an animation
-//		if (note()->isFocused())
-//			QTimer::singleShot(25, note(), SLOT(delayedEnsureVisible()));
-	}
-	else
-		m_oldStatus = status;
+//	// At least two frames: it's an animation, everything is OK
+//	if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfFrame) {
+//		movie().disconnectStatus(this);
+//		m_oldStatus = INVALID_STATUS;
+////		if (note()->isFocused())                 // When inserting a new note we ensure it visble
+////			basket()->ensureNoteVisible(note()); //  But after loading it has certainly grown and if it was
+//	}
+//	// Only one image: it's an image, change note's type
+//	else if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfLoop) {
+//		movie().disconnectStatus(this);
+//		m_oldStatus = INVALID_STATUS;
+//		note()->setContent(new ImageContent(note(), fileName()));
+//		basket()->save();
+//		//delete this; // CRASH, as always !!!!!!!!!
+//		//QTimer::singleShot(0,   this, SLOT(loadContent()));    // Delayed to avoid crash!
+//		//QTimer::singleShot(100, this, SLOT(saveProperties())); // We should save it's an image and not an animation
+////		if (note()->isFocused())
+////			QTimer::singleShot(25, note(), SLOT(delayedEnsureVisible()));
+//	}
+//	else
+//		m_oldStatus = status;
 }
 
 void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
-	exporter->stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
-	                    .arg( exporter->dataFolderName + exporter->copyFile(fullPath(), /*createIt=*/true),
-	                          QString::number(movie().framePixmap().size().width()),
-	                          QString::number(movie().framePixmap().size().height()) );
+	//TODO
+//	exporter->stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
+//	                    .arg( exporter->dataFolderName + exporter->copyFile(fullPath(), /*createIt=*/true),
+//	                          QString::number(movie().framePixmap().size().width()),
+//25	                          QString::number(movie().framePixmap().size().height()) );
 }
 
 /** class FileContent:
@@ -1022,7 +1039,8 @@ bool FileContent::loadFromFile(bool /*lazyLoad*/)
 void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	// Get the size of the file:
-	uint size = QFileInfo(fullPath()).size();
+	//TODO
+/*	uint size = QFileInfo(fullPath()).size();
 	QString humanFileSize = KIO::convertSize((KIO::filesize_t)size);
 
 	keys->append(i18n("Size"));
@@ -1046,7 +1064,7 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 				++i;
 			}
 		}
-	}
+	}*/
 }
 
 int FileContent::zoneAt(const QPoint &pos)
@@ -1168,7 +1186,8 @@ QString SoundContent::zoneTip(int zone)
 
 void SoundContent::setHoveredZone(int oldZone, int newZone)
 {
-#ifdef WITHOUT_ARTS
+	//TODO
+/*#ifdef WITHOUT_ARTS
 	Q_UNUSED(oldZone);
 	if (newZone == Note::Custom0 || newZone == Note::Content)
 		std::cout << "Compiled without aRts: sound is not played." << std::endl;
@@ -1193,7 +1212,7 @@ void SoundContent::setHoveredZone(int oldZone, int newZone)
 			s_playObj = 0;
 		}
 	}
-#endif
+#endif*/
 }
 
 
@@ -1557,7 +1576,7 @@ void ColorContent::paint(QPainter *painter, int width, int height, const QPalett
 
 	// Draw the text:
 	painter->setFont(note()->font());
-	painter->setPen(colorGroup.text());
+	//TODO painter->setPen(colorGroup.text());
 	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignLeft | Qt::AlignVCenter, color().name());
 }
 
@@ -1571,12 +1590,12 @@ void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
 void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	int hue, saturation, value;
-	m_color.getHsv(hue, saturation, value);
+	//TODO m_color.getHsv(hue, saturation, value);
 
-	keys->append(i18n("RGB Colorspace: Red/Green/Blue", "RGB"));
+	//TODO keys->append(i18n("RGB Colorspace: Red/Green/Blue", "RGB"));
 	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,").arg(QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
 
-	keys->append(i18n("HSV Colorspace: Hue/Saturation/Value", "HSV"));
+	//TODO keys->append(i18n("HSV Colorspace: Hue/Saturation/Value", "HSV"));
 	values->append(i18n("<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,").arg(QString::number(hue), QString::number(saturation), QString::number(value)));
 
 	static QString cssColors[] = {
@@ -1763,7 +1782,7 @@ void ColorContent::setColor(const QColor &color)
 
 void ColorContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 {
-	dragObject->addDragObject( new QColorDrag(color()) );
+	//TODO dragObject->addDragObject( new QColorDrag(color()) );
 
 //	addDragObject(new K3ColorDrag( note->color(), 0 ));
 //	addDragObject(new QTextDrag( note->color().name(), 0 ));
@@ -1809,7 +1828,7 @@ UnknownContent::UnknownContent(Note *parent, const QString &fileName)
 int UnknownContent::setWidthAndGetHeight(int width)
 {
 	width -= 1;
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 	return DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN;
 }
 
@@ -1820,29 +1839,30 @@ extern void drawGradient( QPainter *p, const QColor &colorTop, const QColor & co
 
 void UnknownContent::paint(QPainter *painter, int width, int height, const QPalette &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	width -= 1;
-	painter->setPen(colorGroup.text());
+	//TODO
+//	width -= 1;
+//	painter->setPen(colorGroup.text());
+//
+//	// FIXME: Duplicate from ColorContent::paint() and CommonColorSelector::drawColorRect:
+//	// Fill with gradient:
+//	drawGradient(painter, colorGroup.background(), colorGroup.background().dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+//	// Stroke:
+//	QColor stroke = Tools::mixColor(colorGroup.background(), colorGroup.text());
+//	painter->setPen(stroke);
+//	painter->drawLine(1,         0,          width - 2, 0);
+//	painter->drawLine(0,         1,          0,         height - 2);
+//	painter->drawLine(1,         height - 1, width - 2, height - 1);
+//	painter->drawLine(width - 1, 1,          width - 1, height - 2);
+//	// Round corners:
+//	painter->setPen(Tools::mixColor(colorGroup.background(), stroke));
+//	painter->drawPoint(1,         1);
+//	painter->drawPoint(1,         height - 2);
+//	painter->drawPoint(width - 2, height - 2);
+//	painter->drawPoint(width - 2, 1);
 
-	// FIXME: Duplicate from ColorContent::paint() and CommonColorSelector::drawColorRect:
-	// Fill with gradient:
-	drawGradient(painter, colorGroup.background(), colorGroup.background().dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-	// Stroke:
-	QColor stroke = Tools::mixColor(colorGroup.background(), colorGroup.text());
-	painter->setPen(stroke);
-	painter->drawLine(1,         0,          width - 2, 0);
-	painter->drawLine(0,         1,          0,         height - 2);
-	painter->drawLine(1,         height - 1, width - 2, height - 1);
-	painter->drawLine(width - 1, 1,          width - 1, height - 2);
-	// Round corners:
-	painter->setPen(Tools::mixColor(colorGroup.background(), stroke));
-	painter->drawPoint(1,         1);
-	painter->drawPoint(1,         height - 2);
-	painter->drawPoint(width - 2, height - 2);
-	painter->drawPoint(width - 2, 1);
-
-	painter->setPen(colorGroup.text());
-	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
-	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
+//	painter->setPen(colorGroup.text());
+//	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
+//	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
 }
 
 bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
@@ -1868,44 +1888,45 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 		file.close();
 	}
 
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 	contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
 	return true;
 }
 
 void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 {
-	QFile file(fullPath());
-	if (file.open(QIODevice::WriteOnly)) {
-		QDataStream stream(&file);
-		// Get the MIME types names:
-		QList<QString> mimes;
-		QString line;
-		do {
-			if (!stream.atEnd()) {
-				stream >> line;
-				if (!line.isEmpty())
-					mimes.append(line);
-			}
-		} while (!line.isEmpty() && !stream.atEnd());
-		// Add the streams:
-		quint64     size; // TODO: It was quint32 in version 0.5.0 !
-		QByteArray  *array;
-		QStoredDrag *storedDrag;
-		for (uint i = 0; i < mimes.count(); ++i) {
-			// Get the size:
-			stream >> size;
-			// Allocate memory to retreive size bytes and store them:
-			array = new QByteArray(size);
-			stream.readRawBytes(array->data(), size);
-			// Creata and add the QDragObject:
-			storedDrag = new QStoredDrag(*(mimes.at(i)));
-			storedDrag->setEncodedData(*array);
-			dragObject->addDragObject(storedDrag);
-			delete array; // FIXME: Should we?
-		}
-		file.close();
-	}
+	//TODO
+//	QFile file(fullPath());
+//	if (file.open(QIODevice::WriteOnly)) {
+//		QDataStream stream(&file);
+//		// Get the MIME types names:
+//		QList<QString> mimes;
+//		QString line;
+//		do {
+//			if (!stream.atEnd()) {
+//				stream >> line;
+//				if (!line.isEmpty())
+//					mimes.append(line);
+//			}
+//		} while (!line.isEmpty() && !stream.atEnd());
+//		// Add the streams:
+//		quint64     size; // TODO: It was quint32 in version 0.5.0 !
+//		QByteArray  *array;
+//		QStoredDrag *storedDrag;
+//		for (uint i = 0; i < mimes.count(); ++i) {
+//			// Get the size:
+//			stream >> size;
+//			// Allocate memory to retreive size bytes and store them:
+//			array = new QByteArray(size);
+//			stream.readRawBytes(array->data(), size);
+//			// Creata and add the QDragObject:
+//			storedDrag = new QStoredDrag(*(mimes.at(i)));
+//			storedDrag->setEncodedData(*array);
+//			dragObject->addDragObject(storedDrag);
+//			delete array; // FIXME: Should we?
+//		}
+//		file.close();
+//	}
 }
 
 void UnknownContent::exportToHTML(HTMLExporter *exporter, int indent)
