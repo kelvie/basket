@@ -4060,7 +4060,8 @@ void Basket::placeEditor ( bool /*andEnsureVisible*/ /*= false*/ )
 	int frameWidth = ( editorQFrame ? editorQFrame->frameWidth() : 0 );
 	int x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
 	int y;
-	int maxHeight  = qMax ( this->height(), contentsHeight() );
+	//TODO int maxHeight  = qMax ( this->height(), contentsHeight() );
+	int maxHeight = this->height();
 	int height, width;
 
 	if ( textEdit )
@@ -4074,7 +4075,8 @@ void Basket::placeEditor ( bool /*andEnsureVisible*/ /*= false*/ )
 			//        editor->sync() CRASH!!
 			//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
-			height = textEdit->contentsHeight() + 2*frameWidth;
+			//TODO height = textEdit->contentsHeight() + 2*frameWidth;
+			height = textEdit->height() + 2 * frameWidth;
 //			height = /*qMax(*/height/*, note->height())*/;
 //			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
@@ -4100,20 +4102,20 @@ void Basket::placeEditor ( bool /*andEnsureVisible*/ /*= false*/ )
 	}
 	m_editorWidth  = width;
 	m_editorHeight = height;
-	addChild ( m_editor->widget(), x, y );
+	//TODO addChild ( m_editor->widget(), x, y );
 	m_editorX = x;
 	m_editorY = y;
 
 	m_leftEditorBorder->setFixedSize ( ( m_editor->textEdit() ? 3 : 0 ), height );
 //	m_leftEditorBorder->raise();
-	addChild ( m_leftEditorBorder,     x, y );
+	//TODO addChild ( m_leftEditorBorder,     x, y );
 	m_leftEditorBorder->setPosition ( x, y );
 
 	m_rightEditorBorder->setFixedSize ( 3, height );
 //	m_rightEditorBorder->raise();
 //	addChild(m_rightEditorBorder,     note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 //	m_rightEditorBorder->setPosition( note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
-	addChild ( m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
+	//TODO addChild ( m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 	m_rightEditorBorder->setPosition ( note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
 
 //	if (andEnsureVisible)
@@ -4133,7 +4135,7 @@ void Basket::editorCursorPositionChanged()
 //			  << cursor->globalX() << ";" << cursor->globalY() << "          "
 //			  << cursor->offsetX() << ";" << cursor->offsetY() << ";" << std::endl;
 
-	ensureVisible ( m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50 );
+	//TODO ensureVisible ( m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50 );
 }
 
 void Basket::closeEditorDelayed()
@@ -4390,7 +4392,7 @@ void Basket::noteEdit ( Note *note, bool justAdded, const QPoint &clickedPoint )
 		m_rightEditorBorder->move(QPoint ( 0,0 ));
 		m_rightEditorBorder->show();
 
-		addChild ( m_editor->widget(), 0, 0 );
+		//TODO addChild ( m_editor->widget(), 0, 0 );
 		placeEditorAndEnsureVisible(); //       placeEditor(); // FIXME: After?
 		m_redirectEditActions = m_editor->lineEdit() || m_editor->textEdit();
 		if ( m_redirectEditActions )
@@ -4566,10 +4568,10 @@ void Basket::doCopy ( CopyMode copyMode )
 	int countCopied = countSelecteds();
 	if ( selection->firstStacked() )
 	{
-		QDragObject *d = NoteDrag::dragObject ( selection, copyMode == CutToClipboard, /*source=*/0 ); // d will be deleted by QT
+		//TODO QDragObject *d = NoteDrag::dragObject ( selection, copyMode == CutToClipboard, /*source=*/0 ); // d will be deleted by QT
 //		/*bool shouldRemove = */d->drag();
 //		delete selection;
-		cb->setData ( d, mode ); // NoteMultipleDrag will be deleted by QT
+		//TODO cb->setData ( d, mode ); // NoteMultipleDrag will be deleted by QT
 //		if (copyMode == CutToClipboard && !note->useFile()) // If useFile(), NoteDrag::dragObject() will delete it TODO
 //			note->slotDelete();
 
@@ -4662,7 +4664,8 @@ void Basket::noteOpen ( Note *note )
 
 bool KRun__displayOpenWithDialog ( const KUrl::List& lst, bool tempFiles, const QString &text )
 {
-	if ( kapp && !KAuthorized::authorizeKAction ( "openwith" ) )
+	//TODO if ( kapp && !KAuthorized::authorizeKAction ( "openwith" ) )
+	if (0)
 	{
 		KMessageBox::sorry ( 0L, i18n ( "You are not authorized to open this file." ) ); // TODO: Better message, i18n freeze :-(
 		return false;
@@ -4671,8 +4674,8 @@ bool KRun__displayOpenWithDialog ( const KUrl::List& lst, bool tempFiles, const 
 	if ( l.exec() )
 	{
 		KService::Ptr service = l.service();
-		if ( !!service )
-			return KRun::run ( *service, lst, this,tempFiles );
+		//TODO if ( !!service )
+			//return KRun::run ( *service, lst, this, tempFiles );
 		//kDebug(250) << "No service set, running " << l.text() << endl;
 		//		return KRun::run ( l.text(), lst ); // TODO handle tempFiles
 		
