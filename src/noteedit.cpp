@@ -36,6 +36,7 @@
 #include <kdebug.h>
 #include <kstandardaction.h>
 #include <kglobalsettings.h>
+#include <kactioncollection.h>
 
 #include "noteedit.h"
 #include "notecontent.h"
