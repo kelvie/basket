@@ -36,7 +36,7 @@
 /** class FocusedTextEdit */
 
 FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent, const char *name)
- : KTextEdit(parent, name),
+ : KTextEdit(name, parent),
    m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
 //FIXME 1.5 dont exist any more	setWFlags(Qt::WNoAutoErase); // Does not work, we still need the disableUpdatesOnKeyPress hack!
@@ -54,6 +54,7 @@ FocusedTextEdit::~FocusedTextEdit()
   * Override the regular paste() methode, so that lines are
   * not separated by each other with an blank line.
   */
+/*TODO
 void FocusedTextEdit::paste()
 {
 	adaptClipboardText(QClipboard::Selection);
@@ -94,7 +95,7 @@ void FocusedTextEdit::paste()
 
 
 //	setAutoFormatting(oldAutoFormating);
-}
+}*/
 
 /**
   * Thanks to alex.theel@gmx.net, author of TuxCards
@@ -105,6 +106,7 @@ void FocusedTextEdit::paste()
   * specified 'mode' -, replaces all '\n' within that text and writes
   * it back to the clipboard.
   */
+/* TODO
 void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
 {
 	QClipboard *clipboard = QApplication::clipboard();
@@ -118,10 +120,9 @@ void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
 			clipboard->setText(text, mode);
 		}
 	}
-}
+}*/
 
-
-QTextCursor* FocusedTextEdit::textCursor() const
+QTextCursor FocusedTextEdit::textCursor() const
 {
 	return KTextEdit::textCursor();
 }
