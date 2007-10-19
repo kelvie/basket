@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qdragobject.h>
+//#include <qdragobject.h>
 #include <qdir.h>
 #include <qpainter.h>
 #include <qtextcodec.h>
 #include <qbuffer.h>
-#include <kurldrag.h>
+//#include <kurldrag.h>
 #include <kdeversion.h>
 #include <kapplication.h>
 #include <qdesktopwidget.h>
@@ -47,7 +47,7 @@ void NoteDrag::createAndEmptyCuttingTmpFolder()
 	dir.mkdir(Global::tempCutFolder());
 }
 
-QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *source)
+QMimeData* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *source)
 {
 	if (noteList->count() <= 0)
 		return 0;
@@ -76,9 +76,9 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 		serializeNotes(noteList, stream, cutting);
 		// Append the object:
 		buffer.close();
-		QStoredDrag *dragObject = new QStoredDrag(NOTE_MIME_STRING, source);
-		dragObject->setEncodedData(buffer.buffer());
-		multipleDrag->addDragObject(dragObject);
+//TODO		QStoredDrag *dragObject = new QStoredDrag(NOTE_MIME_STRING, source);
+//		dragObject->setEncodedData(buffer.buffer());
+//		multipleDrag->addDragObject(dragObject);
 	}
 
 	// The "Other Flavours" Serialization:
@@ -95,7 +95,7 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 	if (source)
 		setFeedbackPixmap(noteList, multipleDrag);
 
-	return multipleDrag;
+	//TODO return multipleDrag;
 }
 
 void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool cutting)
@@ -115,7 +115,7 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 				if (cutting) {
 					// Move file in a temporary place:
 					QString fullPath = Global::tempCutFolder() + Tools::fileNameForNewFile(content->fileName(), Global::tempCutFolder());
-					KIO::move(KUrl(content->fullPath()), KUrl(fullPath), /*showProgressInfo=*/false);
+					//TODO KIO::move(KUrl(content->fullPath()), KUrl(fullPath), /*showProgressInfo=*/false);
 					node->fullPath = fullPath;
 					stream << fullPath;
 				} else
@@ -142,8 +142,8 @@ void NoteDrag::serializeText(NoteSelection *noteList, K3MultipleDrag *multipleDr
 		if (!text.isEmpty())
 			textEquivalent += (!textEquivalent.isEmpty() ? "\n" : "") + text;
 	}
-	if (!textEquivalent.isEmpty())
-		multipleDrag->addDragObject( new QTextDrag(textEquivalent) );
+//TODO	if (!textEquivalent.isEmpty())
+//		multipleDrag->addDragObject( new QTextDrag(textEquivalent) );
 }
 
 void NoteDrag::serializeHtml(NoteSelection *noteList, K3MultipleDrag *multipleDrag)
@@ -157,14 +157,15 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, K3MultipleDrag *multipleDr
 	}
 	if (!htmlEquivalent.isEmpty()) {
 		// Add HTML flavour:
-		QTextDrag *htmlDrag = new QTextDrag(htmlEquivalent);
-		htmlDrag->setSubtype("html");
-		multipleDrag->addDragObject(htmlDrag);
-		// But also QTextEdit flavour, to be able to paste several notes to a text edit:
-		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).local8Bit();
-		QStoredDrag *richTextDrag = new QStoredDrag("application/x-qrichtext");
-		richTextDrag->setEncodedData(byteArray);
-		multipleDrag->addDragObject(richTextDrag);
+//TODO
+//		QTextDrag *htmlDrag = new QTextDrag(htmlEquivalent);
+//		htmlDrag->setSubtype("html");
+//		multipleDrag->addDragObject(htmlDrag);
+//		// But also QTextEdit flavour, to be able to paste several notes to a text edit:
+//		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).local8Bit();
+//		QStoredDrag *richTextDrag = new QStoredDrag("application/x-qrichtext");
+//		richTextDrag->setEncodedData(byteArray);
+//		multipleDrag->addDragObject(richTextDrag);
 	}
 }
 
@@ -191,17 +192,18 @@ void NoteDrag::serializeImage(NoteSelection *noteList, K3MultipleDrag *multipleD
 					width = (*it).width();
 			}
 			// Create the image by painting all image into one big image:
-			pixmapEquivalent.resize(width, height);
-			pixmapEquivalent.fill(Qt::white);
-			QPainter painter(&pixmapEquivalent);
-			height = 0;
-			for (QList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
-				painter.drawPixmap(0, height, *it);
-				height += (*it).height();
-			}
+//TODO
+//			pixmapEquivalent.resize(width, height);
+//			pixmapEquivalent.fill(Qt::white);
+//			QPainter painter(&pixmapEquivalent);
+//			height = 0;
+//			for (QList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
+//				painter.drawPixmap(0, height, *it);
+//				height += (*it).height();
+//			}
 		}
-		QImageDrag *imageDrag = new QImageDrag(pixmapEquivalent.convertToImage());
-		multipleDrag->addDragObject(imageDrag);
+//		QImageDrag *imageDrag = new QImageDrag(pixmapEquivalent.convertToImage());
+//		multipleDrag->addDragObject(imageDrag);
 	}
 }
 
@@ -243,7 +245,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 /*		Code for only one: ===============
 		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
-		QTextStream stream(baMozUrl, QIODevice::WriteOnly);
+/*TODO		QTextStream stream(baMozUrl, QIODevice::WriteOnly);
 		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
 		stream << xMozUrl;
 		QStoredDrag *xMozUrlDrag = new QStoredDrag("text/x-moz-url");
@@ -257,7 +259,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 			arrayCut[1] = 0;
 			storedDragCut->setEncodedData(arrayCut);
 			multipleDrag->addDragObject(storedDragCut);
-		}
+		}*/
 	}
 }
 
@@ -375,20 +377,20 @@ bool NoteDrag::canDecode(QMimeSource *source)
 
 Basket* NoteDrag::basketOf(QMimeSource *source)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+/*TODO	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
 	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		quint64 basketPointer;
 		stream >> (quint64&)basketPointer;
 		return (Basket*)basketPointer;
-	} else
+	} else*/
 		return 0;
 }
 
 QList<Note*> NoteDrag::notesOf(QMimeSource *source)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+/*TODO	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
 	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
@@ -404,13 +406,14 @@ QList<Note*> NoteDrag::notesOf(QMimeSource *source)
 		} while (notePointer);
 		// Done:
 		return notes;
-	} else
+	} else*/
 		return QList<Note*>();
 }
 
 Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+	//TODO
+	/*QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
 	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
@@ -431,7 +434,7 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 		basket->filterAgainDelayed(); // Delayed, because if a note is moved to the same basket, the note is not at its
 		basket->save();               //  new position yet, and the call to ensureNoteVisible would make the interface flicker!!
 		return hierarchy;
-	} else
+	} else*/
 		return 0;
 }
 
@@ -482,10 +485,10 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				if (note->basket() != parent) {
 					QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
 					note->content()->setFileName(newFileName);
-					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
-					parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
-					                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
+//TODO					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+//TODO				                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+//					parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
+//					                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
 				}
 				note->setGroupWidth(groupWidth);
 				note->setParentNote(0);
@@ -504,12 +507,12 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
 				note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
 				KIO::FileCopyJob *copyJob;
-				if (moveFiles)
-					copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
-				else
-					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+//TODO				if (moveFiles)
+//				copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+//					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+//				else
+//					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+//					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 				parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
 				                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
 				note->setGroupWidth(groupWidth);
@@ -550,10 +553,11 @@ bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str)
 	return decode(e, str, subtype);
 }
 
-bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QCString &subtype)
+bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QByteArray &subtype)
 {
+	//TODO
 	// Get the string:
-	bool ok = QTextDrag::decode(e, str, subtype);
+/*	bool ok = QTextDrag::decode(e, str, subtype);
 
 	// Test if it was a UTF-16 string (from eg. Mozilla):
 	if (str.length() >= 2) {
@@ -587,7 +591,7 @@ bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QCString &subt
 			return true;
 		}
 	}
-	return ok;
+	return ok;*/
 }
 
 #include "notedrag.moc"
