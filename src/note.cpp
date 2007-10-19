@@ -31,6 +31,7 @@
 #include <klocale.h>
 #include <kurifilter.h>
 #include <qfile.h>
+#include <qtextstream.h>
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
@@ -562,7 +563,8 @@ bool Note::hasResizer()
 
 int Note::resizerHeight()
 {
-	return ( isColumn() ? basket()->contentsHeight() : height() );
+	//TODO return ( isColumn() ? basket()->contentsHeight() : height() );
+	return ( isColumn() ? basket()->height() : height() );
 }
 
 void Note::setHoveredZone ( Zone zone ) // TODO: Remove setHovered(bool) and assume it is hovered if zone != None !!!!!!!
@@ -724,7 +726,8 @@ QRect Note::zoneRect ( Note::Zone zone, const QPoint &pos )
 			                                 height() - 2*INSERTION_HEIGHT );
 		case Note::Custom0:
 		case Note::Content:       rect = content()->zoneRect ( zone, pos - QPoint ( contentX(), NOTE_MARGIN ) );
-			rect.moveBy ( contentX(), NOTE_MARGIN );
+			rect.moveTo ( contentX(), NOTE_MARGIN );
+			//TODO rect.moveBy ( contentX(), NOTE_MARGIN );
 			return rect.intersect ( QRect ( contentX(), INSERTION_HEIGHT, width() - contentX(), height() - 2*INSERTION_HEIGHT ) ); // Only IN contentRect
 		case Note::GroupExpander: return QRect ( NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT );
 		case Note::Resizer:       right = rightLimit();
@@ -759,7 +762,7 @@ void Note::setCursor ( Zone zone )
 		case Note::TagsArrow:
 		case Note::GroupExpander: basket()->viewport()->setCursor ( Qt::PointingHandCursor ); break;
 
-		case Note::Content:       basket()->viewport()->setCursor ( Qt::IbeamCursor );        break;
+		case Note::Content:       basket()->viewport()->setCursor ( Qt::IBeamCursor );        break;
 
 		case Note::TopInsert:
 		case Note::TopGroup:
@@ -799,7 +802,8 @@ void Note::setFinalPosition ( int x, int y )
 
 void Note::initAnimationLoad()
 {
-	int x, y;
+	// TODO
+/*	int x, y;
 	switch ( rand() % 4 )
 	{
 		case 0: // Put it on top:
@@ -842,7 +846,7 @@ void Note::initAnimationLoad()
 			child = child->next();
 			first = false;
 		}
-	}
+	}*/
 }
 
 
@@ -1291,7 +1295,8 @@ int Note::groupWidth()
 int Note::rightLimit()
 {
 	if ( isColumn() && m_next == 0L ) // The last column
-		return qMax ( x() + minWidth(), basket()->visibleWidth() );
+		return x() + minWidth();
+		//TODO return qMax ( x() + minWidth(), basket()->visibleWidth() );
 	else if ( parentNote() )
 		return parentNote()->rightLimit();
 	else
@@ -1301,7 +1306,8 @@ int Note::rightLimit()
 int Note::finalRightLimit()
 {
 	if ( isColumn() && m_next == 0L ) // The last column
-		return qMax ( finalX() + minWidth(), basket()->visibleWidth() );
+		return finalX() + minWidth();
+		//TODO return qMax ( finalX() + minWidth(), basket()->visibleWidth() );
 	else if ( parentNote() )
 		return parentNote()->finalRightLimit();
 	else
@@ -1349,28 +1355,28 @@ void drawGradient ( QPainter *p, const QColor &colorTop, const QColor & colorBot
 		int h1, h2, s1, s2, v1, v2;
 		if ( !sunken )
 		{
-			topgrad.hsv ( &h1, &s1, &v1 );
-			botgrad.hsv ( &h2, &s2, &v2 );
+			//TODO topgrad.hsv ( &h1, &s1, &v1 );
+			//TODO botgrad.hsv ( &h2, &s2, &v2 );
 		}
 		else
 		{
-			botgrad.hsv ( &h1, &s1, &v1 );
-			topgrad.hsv ( &h2, &s2, &v2 );
+			//TODO botgrad.hsv ( &h1, &s1, &v1 );
+			//TODO topgrad.hsv ( &h2, &s2, &v2 );
 		}
 
 		if ( ng > 1 )
 		{
 			for ( int j =0; j < ng; j++ )
 			{
-				p->setPen ( QColor ( h1 + ( ( h2-h1 ) *j ) / ( ng-1 ),
+				/*TODO p->setPen ( QColor ( h1 + ( ( h2-h1 ) *j ) / ( ng-1 ),
 				                     s1 + ( ( s2-s1 ) *j ) / ( ng-1 ),
-				                     v1 + ( ( v2-v1 ) *j ) / ( ng-1 ),  QColor::Hsv ) );
+				                     v1 + ( ( v2-v1 ) *j ) / ( ng-1 ),  QColor::Hsv ) );*/
 				DRAWLINE;
 			}
 		}
 		else if ( ng == 1 )
 		{
-			p->setPen ( QColor ( ( h1+h2 ) /2, ( s1+s2 ) /2, ( v1+v2 ) /2, QColor::Hsv ) );
+			//TODO p->setPen ( QColor ( ( h1+h2 ) /2, ( s1+s2 ) /2, ( v1+v2 ) /2, QColor::Hsv ) );
 			DRAWLINE;
 		}
 	}
@@ -1378,6 +1384,8 @@ void drawGradient ( QPainter *p, const QColor &colorTop, const QColor & colorBot
 
 void Note::drawExpander ( QPainter *painter, int x, int y, const QColor &background, bool expand, Basket *basket )
 {
+	//TODO
+/*
 	// If the current style is a KStyle, use it to draw the expander (plus or minus):
 	if ( dynamic_cast<KStyle*> ( & ( kapp->style() ) ) != NULL )
 	{
@@ -1434,7 +1442,7 @@ void Note::drawExpander ( QPainter *painter, int x, int y, const QColor &backgro
 		painter->drawLine ( x + 2, y + height / 2, x + width - 3, y + height / 2 );
 		if ( expand )
 			painter->drawLine ( x + width / 2, y + 2, x + width / 2, y + height - 3 );
-	}
+	}*/
 }
 
 QColor expanderBackground ( int height, int y, const QColor &foreground )
@@ -1452,21 +1460,23 @@ QColor expanderBackground ( int height, int y, const QColor &foreground )
 	int ng;
 	if ( y <= ( height-2 ) /2 )
 	{
-		light.hsv ( &h1, &s1, &v1 );
-		dark.hsv ( &h2, &s2, &v2 );
+		//TODO light.hsv ( &h1, &s1, &v1 );
+		//TODO dark.hsv ( &h2, &s2, &v2 );
 		ng = ( height-2 ) /2;
 		y -= 1;
 	}
 	else
 	{
-		dark.hsv ( &h1, &s1, &v1 );
-		foreground.hsv ( &h2, &s2, &v2 );
+		//TODO dark.hsv ( &h1, &s1, &v1 );
+		//TODO foreground.hsv ( &h2, &s2, &v2 );
 		ng = ( height-2 )- ( height-2 ) /2;
 		y -= 1 + ( height-2 ) /2;
 	}
-	return QColor ( h1 + ( ( h2-h1 ) *y ) / ( ng-1 ),
+	/*TODO return QColor ( h1 + ( ( h2-h1 ) *y ) / ( ng-1 ),
 	                s1 + ( ( s2-s1 ) *y ) / ( ng-1 ),
 	                v1 + ( ( v2-v1 ) *y ) / ( ng-1 ), QColor::Hsv );
+					*/
+	return QColor();
 }
 
 void Note::drawHandle ( QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground )
@@ -1785,7 +1795,7 @@ void substractRectOnAreas ( const QRect &rectToSubstract, QList<QRect> &areas, b
 			}
 			// Remove the rectangle if it's entirely contained:
 			if ( andRemove && rectToSubstract.contains ( rect ) )
-				it = areas.remove ( it );
+				it = areas.erase ( it );
 			else
 				++it;
 		}
@@ -1906,7 +1916,8 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 			if ( m_hovered && m_hoveredZone == Resizer )
 			{
 				QColor baseColor ( basket()->backgroundColor() );
-				QColor highColor ( KGlobalSettings::highlightColor() );
+				//TODO QColor highColor ( KGlobalSettings::highlightColor() );
+				QRgb highColor;
 				drawResizer ( &painter2, 0, 0, RESIZER_WIDTH, resizerHeight(), baseColor, highColor, /*rounded=*/!isColumn() );
 				if ( !isColumn() )
 				{
@@ -1926,7 +1937,7 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 			if ( basket()->isSelecting() && resizerRect.intersects ( basket()->selectionRect() ) )
 			{
 				QRect selectionRect = basket()->selectionRect();
-				selectionRect.moveBy ( -right, -y() );
+				selectionRect.moveTo ( -right, -y() );
 				QRect selectionRectInside ( selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2 );
 				if ( selectionRectInside.width() > 0 && selectionRectInside.height() > 0 )
 				{
@@ -1942,12 +1953,12 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 					else
 						drawGradient ( &painter2, darkInsideColor, insideColor, 0, 0, RESIZER_WIDTH, resizerHeight(), /*sunken=*/false, /*horz=*/false, /*flat=*/false );
 					painter2.setClipping ( false );
-					selectionRectInside.moveBy ( right, y() );
+					selectionRectInside.moveTo ( right, y() );
 					basket()->blendBackground ( painter2, selectionRectInside, right, y(), false );
 				}
-				painter2.setPen ( KGlobalSettings::highlightColor().dark() );
+				//TODO painter2.setPen ( KGlobalSettings::highlightColor().dark() );
 				painter2.drawRect ( selectionRect );
-				painter2.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), basket()->backgroundColor() ) );
+				//TODO painter2.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), basket()->backgroundColor() ) );
 				painter2.drawPoint ( selectionRect.topLeft() );
 				painter2.drawPoint ( selectionRect.topRight() );
 				painter2.drawPoint ( selectionRect.bottomLeft() );
@@ -1986,13 +1997,15 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 	}
 
 	/** Initialise buffer painter: */
-	m_bufferedPixmap.resize ( width(), height() );
+	//TODO m_bufferedPixmap.resize ( width(), height() );
 	QPainter painter2 ( &m_bufferedPixmap );
 
 	/** Initialise colors: */
 	QColor baseColor ( basket()->backgroundColor() );
-	QColor highColor ( KGlobalSettings::highlightColor() );
-	QColor midColor = Tools::mixColor ( baseColor, highColor );
+	//TODO QColor highColor ( KGlobalSettings::highlightColor() );
+	QColor highColor;
+	//TODO QColor midColor = Tools::mixColor ( baseColor, highColor );
+	QColor midColor;
 
 	/** Initialise brushs and pens: */
 	QBrush baseBrush ( baseColor );
@@ -2048,10 +2061,11 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 	// What are the background colors:
 	QColor background = basket()->backgroundColor();
 	if ( isSelected() )
-		if ( m_computedState.backgroundColor().isValid() )
+		/*TODO if ( m_computedState.backgroundColor().isValid() )
 			background = Tools::mixColor ( Tools::mixColor ( m_computedState.backgroundColor(), KGlobalSettings::highlightColor() ), KGlobalSettings::highlightColor() );
 		else
-			background = KGlobalSettings::highlightColor();
+			background = KGlobalSettings::highlightColor();*/
+		;
 	else if ( m_computedState.backgroundColor().isValid() )
 		background = m_computedState.backgroundColor();
 	QColor bgColor;
@@ -2112,7 +2126,7 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 	if ( isFocused() )
 	{
 		QRect focusRect ( HANDLE_WIDTH, NOTE_MARGIN - 1, width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2 );
-		painter2.drawWinFocusRect ( focusRect );
+		//painter2.drawWinFocusRect ( focusRect );
 	}
 
 	// Draw the Emblems:
@@ -2122,18 +2136,20 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 	{
 		if ( ! ( *it )->emblem().isEmpty() )
 		{
-			QPixmap stateEmblem = KIconLoader::global()->loadIcon ( ( *it )->emblem(), K3Icon::NoGroup, 16, KIcon::DefaultState, 0L, false );
+			//TODO QPixmap stateEmblem = KIconLoader::global()->loadIcon ( ( *it )->emblem(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, false );
+			QPixmap stateEmblem = KIconLoader::global()->loadIcon( ( *it )->emblem(), KIconLoader::NoGroup );
 			painter2.drawPixmap ( xIcon, yIcon, stateEmblem );
 			xIcon += NOTE_MARGIN + EMBLEM_SIZE;
 		}
 	}
 
 	// Determine the colors (for the richText drawing) and the text color (for the tags arrow too):
-	QPalette cg ( basket()->colorGroup() );
+	//TODO QPalette cg ( basket()->colorGroup() );
+	QPalette cg;
 	cg.setColor ( QPalette::Text, ( m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor() ) );
 	cg.setColor ( QPalette::Background, bgColor );
 	if ( isSelected() )
-		cg.setColor ( QPalette::Text, KGlobalSettings::highlightedTextColor() );
+		;//TODO cg.setColor ( QPalette::Text, KGlobalSettings::highlightedTextColor() );
 
 	// Draw the Tags Arrow:
 	if ( hovered )
@@ -2192,32 +2208,32 @@ void Note::drawBufferOnScreen ( QPainter *painter, const QPixmap &contentPixmap 
 			if ( basket()->isSelecting() && rect.intersects ( basket()->selectionRect() ) )
 			{
 				QRect selectionRect = basket()->selectionRect();
-				selectionRect.moveBy ( -rect.x(), -rect.y() );
+				selectionRect.moveTo ( -rect.x(), -rect.y() );
 
 				QRect selectionRectInside ( selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2 );
 				if ( selectionRectInside.width() > 0 && selectionRectInside.height() > 0 )
 				{
 					bufferizeSelectionPixmap();
-					selectionRectInside.moveBy ( rect.x(), rect.y() );
+					selectionRectInside.moveTo ( rect.x(), rect.y() );
 					QRect rectToPaint = rect.intersect ( selectionRectInside );
-					rectToPaint.moveBy ( -x(), -y() );
+					rectToPaint.moveTo ( -x(), -y() );
 					painter3.drawPixmap ( rectToPaint.topLeft() + QPoint ( x(), y() ) - rect.topLeft(), m_bufferedSelectionPixmap, rectToPaint );
 					//blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, &m_selectedBackgroundPixmap);
 				}
 
-				painter3.setPen ( KGlobalSettings::highlightColor().dark() );
+				//TODO painter3.setPen ( KGlobalSettings::highlightColor().dark() );
 				painter3.drawRect ( selectionRect );
 				if ( isGroup() )
-					painter3.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), basket()->backgroundColor() ) );
+					; //TODO painter3.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), basket()->backgroundColor() ) );
 				else
 				{
 					// What are the background colors:
 					QColor bgColor = basket()->backgroundColor();
 					if ( isSelected() )
-						bgColor = ( m_computedState.backgroundColor().isValid() ? Tools::mixColor ( Tools::mixColor ( m_computedState.backgroundColor(), KGlobalSettings::highlightColor() ), KGlobalSettings::highlightColor() ) : KGlobalSettings::highlightColor() );
+						;//TODO bgColor = ( m_computedState.backgroundColor().isValid() ? Tools::mixColor ( Tools::mixColor ( m_computedState.backgroundColor(), KGlobalSettings::highlightColor() ), KGlobalSettings::highlightColor() ) : KGlobalSettings::highlightColor() );
 					else if ( m_computedState.backgroundColor().isValid() )
 						bgColor = m_computedState.backgroundColor();
-					painter3.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), bgColor ) );
+					//TODO painter3.setPen ( Tools::mixColor ( KGlobalSettings::highlightColor().dark(), bgColor ) );
 				}
 				painter3.drawPoint ( selectionRect.topLeft() );
 				painter3.drawPoint ( selectionRect.topRight() );
@@ -2287,7 +2303,8 @@ void Note::addState ( State *state, bool orReplace )
 
 QFont Note::font()
 {
-	return m_computedState.font ( basket()->QScrollView::font() );
+	//TODO return m_computedState.font ( basket()->QScrollView::font() );
+	return m_computedState.font( basket()->font() );
 }
 
 QColor Note::backgroundColor()
@@ -2554,9 +2571,9 @@ void Note::bufferizeSelectionPixmap()
 {
 	if ( m_bufferedSelectionPixmap.isNull() )
 	{
-		QColor insideColor = KGlobalSettings::highlightColor();
+		QColor insideColor; //TODO = KGlobalSettings::highlightColor();
 		QPixmap kpixmap ( m_bufferedPixmap );
-		m_bufferedSelectionPixmap = QPixmapEffect::fade ( kpixmap, 0.25, insideColor );
+		//TODO m_bufferedSelectionPixmap = QPixmapEffect::fade ( kpixmap, 0.25, insideColor );
 	}
 }
 
@@ -2769,7 +2786,7 @@ void Note::debug()
 			QTextStream(&debugStr) << ": Content[" << content()->lowerTypeName() << "]: " << toText ( "" );
 	}
 
-	qDebug() << debugStr;
+	//TODO qDebug() << debugStr;
 }
 
 Note* Note::firstSelected()
