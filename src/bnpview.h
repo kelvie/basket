@@ -29,7 +29,6 @@
 #include <qlistview.h>
 #include <qdbusinterface.h>
 #include "global.h"
-#include "basketdcopiface.h"
 #include <kaction.h>
 #include <QTreeWidgetItem>
  /// NEW:
@@ -56,7 +55,7 @@ class State;
 class Note;
 class BasketFactory;
 
-class BNPView : public QSplitter, virtual public BasketDcopInterface
+class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 {
 	Q_OBJECT
 	public:
