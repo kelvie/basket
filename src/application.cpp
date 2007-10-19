@@ -44,7 +44,8 @@ int Application::newInstance()
 	// Open the basket archive or template file supplied as argument:
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	if (args && args->count() >= 1) {
-		QString fileName = QFile::decodeName(args->arg(args->count() - 1));
+		// TODO make sure local8Bit works
+		QString fileName = QFile::decodeName( args->arg(args->count() - 1).toLocal8Bit() );
 		if (QFile::exists(fileName)) {
 			QFileInfo fileInfo(fileName);
 			if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
