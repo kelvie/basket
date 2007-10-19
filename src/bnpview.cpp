@@ -1141,7 +1141,7 @@ void BNPView::setCurrentBasket(Basket *basket)
 
 	BasketListViewItem *item = listViewItemForBasket(basket);
 /* FIXME 1.5	if (item) {
-/*		m_tree->setSelected(item, true);
+		m_tree->setSelected(item, true);
 		item->ensureVisible();
 		m_stack->raiseWidget(basket->decoration());
 		// If the window has changed size, only the current basket receive the event,
