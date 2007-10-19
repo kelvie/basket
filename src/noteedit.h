@@ -37,6 +37,9 @@ class KToggleAction;
 
 class FontSizeCombo;
 
+class KActionCollection;
+class KToolBar;
+
 class Note;
 class RunCommandRequester;
 class FocusedFontCombo;
