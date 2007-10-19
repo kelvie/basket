@@ -34,6 +34,7 @@
 #include <kiconloader.h>
 #include <kglobalsettings.h>
 #include <kicondialog.h>
+#include <kkeysequencewidget.h>
 
 #include "basketproperties.h"
 #include "basket.h"
@@ -60,7 +61,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	QHBoxLayout *nameLayout = new QHBoxLayout();
 
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(K3Icon::NoGroup, KIcon::Action);
+	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
@@ -199,7 +200,7 @@ void BasketPropertiesDialog::slotOk()
 void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)
 {
 	// TODO: Validate it!
-	m_shortcut->setShortcut(shortcut, /*bQtShortcut=*/true);
+	m_shortcut->grabShortcut( shortcut.primary() );
 }
 
 void BasketPropertiesDialog::selectColumnsLayout()
