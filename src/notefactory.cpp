@@ -23,9 +23,9 @@
 #include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
-#include <kcolordrag.h>
-#include <kurldrag.h>
-#include <qstylesheet.h>
+//#include <kcolordrag.h>
+//#include <kurldrag.h>
+//#include <qstylesheet.h>
 #include <qdir.h>
 #include <kmimetype.h>
 #include <kmessagebox.h>
@@ -37,7 +37,7 @@
 #include <kfilemetainfo.h>
 #include <kio/jobclasses.h>
 #include <qtextcodec.h>
-#include <kopenwith.h>
+//#include <kopenwith.h>
 #include <kfiledialog.h>
 #include <kicondialog.h>
 #include <kiconloader.h>
@@ -298,7 +298,7 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 		return createNoteLink(url, parent);
 }
 
-#include <qstrlist.h>
+//#include <qstrlist.h>
 #include <qimage.h>
 
 bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropEvent::Action action)
