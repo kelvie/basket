@@ -14,7 +14,7 @@
 //#include "amarokconfig.h"
 #include "crashhandler.h"
 //#include "debug.h"
-#include "config.h"
+//#include "config.h"
 
 #include <kapplication.h> //invokeMailer()
 #include <kaboutdata.h>
@@ -76,7 +76,8 @@
             // we are the child process (the result of the fork)
 //            debug() << "amaroK is crashing...\n";
 
-            QString subject = "CRASH: " VERSION " ";
+            //TODO QString subject = "CRASH: " VERSION " ";
+			QString subject = "CRASH: ";
             QString body = i18n(
                     "%1 has crashed! We're sorry about this.\n"
                     "\n"
@@ -90,7 +91,7 @@
 
 
             body += "======== DEBUG INFORMATION  =======\n"
-                    "Version:    " VERSION "\n"
+                    //TODO "Version:    " VERSION "\n"
                     "Build date: " __DATE__ "\n"
                     "CC version: " __VERSION__ "\n" //assuming we're using GCC
                     "KDElibs:    " KDE_VERSION_STRING "\n"
@@ -203,10 +204,11 @@
                         /*startup_id*/  "" );
             }
             else {
-				qDebug()<< i18n( "%1 has crashed! We're sorry about this.\n\n"
-                                          "But, all is not lost! Perhaps an upgrade is already available "
-                                          "which fixes the problem. Please check your distribution's software repository." )
-						.arg(KCmdLineArgs::aboutData( )->programName());
+//TODO
+//				qDebug()<< i18n( "%1 has crashed! We're sorry about this.\n\n"
+//                                          "But, all is not lost! Perhaps an upgrade is already available "
+//                                          "which fixes the problem. Please check your distribution's software repository." )
+//						.arg(KCmdLineArgs::aboutData( )->programName());
             }
 
             //_exit() exits immediately, otherwise this

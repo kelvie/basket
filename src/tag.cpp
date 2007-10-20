@@ -232,18 +232,18 @@ long Tag::getNextStateUid()
 
 Tag::Tag()
 {
-	static int tagNumber = 0;
-	++tagNumber;
-	QString sAction = "tag_shortcut_number_" + QString::number ( tagNumber );
-	m_action= new KAction(0);
-	m_action->setText ( i18n ( "FAKE TEXT" ) );
-	m_action->setIcon ( KIcon ( "FAKE ICON" ) );
-	m_action->setShortcut ( KShortcut() );
-	Global::bnpView->actionCollection()->addAction("name_of_the_action",m_action);
-	connect ( sAction, SIGNAL ( triggered() ), this, SLOT ( activatedTagShortcut() ) );
-	m_action->setShortcutConfigurable ( false ); // We do it in the tag properties dialog
-
-	m_inheritedBySiblings = false;
+//	static int tagNumber = 0;
+//	++tagNumber;
+//	QString sAction = "tag_shortcut_number_" + QString::number ( tagNumber );
+//	m_action= new KAction(0);
+//	m_action->setText ( i18n ( "FAKE TEXT" ) );
+//	m_action->setIcon ( KIcon ( "FAKE ICON" ) );
+//	m_action->setShortcut ( KShortcut() );
+//	Global::bnpView->actionCollection()->addAction("name_of_the_action",m_action);
+//	connect ( sAction, SIGNAL ( triggered() ), this, SLOT ( activatedTagShortcut() ) );
+//	m_action->setShortcutConfigurable ( false ); // We do it in the tag properties dialog
+//
+//	m_inheritedBySiblings = false;
 }
 
 Tag::~Tag()
@@ -458,58 +458,58 @@ void Tag::saveTags()
 
 void Tag::saveTagsTo ( QList<Tag*> &list, const QString &fullPath )
 {
-	// Create Document:
-	QDomDocument document ( /*doctype=*/"basketTags" );
-	QDomElement root = document.createElement ( "basketTags" );
-	root.setAttribute ( "nextStateUid", nextStateUid );
-	document.appendChild ( root );
-
-	// Save all tags:
-	for ( List::iterator it = list.begin(); it != list.end(); ++it )
-	{
-		Tag *tag = *it;
-		// Create tag node:
-		QDomElement tagNode = document.createElement ( "tag" );
-		root.appendChild ( tagNode );
-		// Save tag properties:
-		XMLWork::addElement ( document, tagNode, "name",      tag->name() );
-		XMLWork::addElement ( document, tagNode, "shortcut",  tag->shortcut().toStringInternal() );
-		XMLWork::addElement ( document, tagNode, "inherited", XMLWork::trueOrFalse ( tag->inheritedBySiblings() ) );
-		// Save all states:
-		for ( State::List::iterator it2 = ( *it )->states().begin(); it2 != ( *it )->states().end(); ++it2 )
-		{
-			State *state = *it2;
-			// Create state node:
-			QDomElement stateNode = document.createElement ( "state" );
-			tagNode.appendChild ( stateNode );
-			// Save state properties:
-			stateNode.setAttribute ( "id", state->id() );
-			XMLWork::addElement ( document, stateNode, "name",   state->name() );
-			XMLWork::addElement ( document, stateNode, "emblem", state->emblem() );
-			QDomElement textNode = document.createElement ( "text" );
-			stateNode.appendChild ( textNode );
-			QString textColor = ( state->textColor().isValid() ? state->textColor().name() : "" );
-			textNode.setAttribute ( "bold",      XMLWork::trueOrFalse ( state->bold() ) );
-			textNode.setAttribute ( "italic",    XMLWork::trueOrFalse ( state->italic() ) );
-			textNode.setAttribute ( "underline", XMLWork::trueOrFalse ( state->underline() ) );
-			textNode.setAttribute ( "strikeOut", XMLWork::trueOrFalse ( state->strikeOut() ) );
-			textNode.setAttribute ( "color",     textColor );
-			QDomElement fontNode = document.createElement ( "font" );
-			stateNode.appendChild ( fontNode );
-			fontNode.setAttribute ( "name", state->fontName() );
-			fontNode.setAttribute ( "size", state->fontSize() );
-			QString backgroundColor = ( state->backgroundColor().isValid() ? state->backgroundColor().name() : "" );
-			XMLWork::addElement ( document, stateNode, "backgroundColor", backgroundColor );
-			QDomElement textEquivalentNode = document.createElement ( "textEquivalent" );
-			stateNode.appendChild ( textEquivalentNode );
-			textEquivalentNode.setAttribute ( "string",         state->textEquivalent() );
-			textEquivalentNode.setAttribute ( "onAllTextLines", XMLWork::trueOrFalse ( state->onAllTextLines() ) );
-		}
-	}
-
-	// Write to Disk:
-	if ( !Basket::safelySaveToFile ( fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString() ) )
-		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
+//	// Create Document:
+//	QDomDocument document ( /*doctype=*/"basketTags" );
+//	QDomElement root = document.createElement ( "basketTags" );
+//	root.setAttribute ( "nextStateUid", nextStateUid );
+//	document.appendChild ( root );
+//
+//	// Save all tags:
+//	for ( List::iterator it = list.begin(); it != list.end(); ++it )
+//	{
+//		Tag *tag = *it;
+//		// Create tag node:
+//		QDomElement tagNode = document.createElement ( "tag" );
+//		root.appendChild ( tagNode );
+//		// Save tag properties:
+//		XMLWork::addElement ( document, tagNode, "name",      tag->name() );
+//		XMLWork::addElement ( document, tagNode, "shortcut",  tag->shortcut().toStringInternal() );
+//		XMLWork::addElement ( document, tagNode, "inherited", XMLWork::trueOrFalse ( tag->inheritedBySiblings() ) );
+//		// Save all states:
+//		for ( State::List::iterator it2 = ( *it )->states().begin(); it2 != ( *it )->states().end(); ++it2 )
+//		{
+//			State *state = *it2;
+//			// Create state node:
+//			QDomElement stateNode = document.createElement ( "state" );
+//			tagNode.appendChild ( stateNode );
+//			// Save state properties:
+//			stateNode.setAttribute ( "id", state->id() );
+//			XMLWork::addElement ( document, stateNode, "name",   state->name() );
+//			XMLWork::addElement ( document, stateNode, "emblem", state->emblem() );
+//			QDomElement textNode = document.createElement ( "text" );
+//			stateNode.appendChild ( textNode );
+//			QString textColor = ( state->textColor().isValid() ? state->textColor().name() : "" );
+//			textNode.setAttribute ( "bold",      XMLWork::trueOrFalse ( state->bold() ) );
+//			textNode.setAttribute ( "italic",    XMLWork::trueOrFalse ( state->italic() ) );
+//			textNode.setAttribute ( "underline", XMLWork::trueOrFalse ( state->underline() ) );
+//			textNode.setAttribute ( "strikeOut", XMLWork::trueOrFalse ( state->strikeOut() ) );
+//			textNode.setAttribute ( "color",     textColor );
+//			QDomElement fontNode = document.createElement ( "font" );
+//			stateNode.appendChild ( fontNode );
+//			fontNode.setAttribute ( "name", state->fontName() );
+//			fontNode.setAttribute ( "size", state->fontSize() );
+//			QString backgroundColor = ( state->backgroundColor().isValid() ? state->backgroundColor().name() : "" );
+//			XMLWork::addElement ( document, stateNode, "backgroundColor", backgroundColor );
+//			QDomElement textEquivalentNode = document.createElement ( "textEquivalent" );
+//			stateNode.appendChild ( textEquivalentNode );
+//			textEquivalentNode.setAttribute ( "string",         state->textEquivalent() );
+//			textEquivalentNode.setAttribute ( "onAllTextLines", XMLWork::trueOrFalse ( state->onAllTextLines() ) );
+//		}
+//	}
+//
+//	// Write to Disk:
+//	if ( !Basket::safelySaveToFile ( fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString() ) )
+//		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 
 void Tag::copyTo ( Tag *other )
@@ -521,7 +521,7 @@ void Tag::copyTo ( Tag *other )
 
 void Tag::createDefaultTagsSet ( const QString &fullPath )
 {
-	QString xml = QString (
+/*TODO	QString xml = QString (
 	                  "<!DOCTYPE basketTags>\n"
 	                  "<basketTags>\n"
 	                  "  <tag>\n"
@@ -720,20 +720,21 @@ void Tag::createDefaultTagsSet ( const QString &fullPath )
 	                  "  </tag>\n"
 	                  "</basketTags>\n"
 	                  "" )
-	              .arg ( i18n ( "Personal" ), i18nc ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3
+	              .arg ( i18n ( "Personal" ), i18nc ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3*/
 
 	// Write to Disk:
-	QFile file ( fullPath );
-	if ( file.open ( QIODevice::WriteOnly ) )
-	{
-		QTextStream stream ( &file );
-		stream.setEncoding ( QTextStream::UnicodeUTF8 );
-		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-		stream << xml;
-		file.close();
-	}
-	else
-		DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
+//TODO
+//	QFile file ( fullPath );
+//	if ( file.open ( QIODevice::WriteOnly ) )
+//	{
+//		QTextStream stream ( &file );
+//		stream.setEncoding ( QTextStream::UnicodeUTF8 );
+//		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+//		stream << xml;
+//		file.close();
+//	}
+//	else
+//		DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
 }
 
 #include <kapplication.h>
@@ -757,63 +758,62 @@ IndentedMenuItem::~IndentedMenuItem()
 
 void IndentedMenuItem::paint ( QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h )
 {
-	QPen  pen  = painter->pen();
-	QFont font = painter->font();
-
-	int iconSize   = KIcon::SizeSmall;
-	int iconMargin = StateMenuItem::iconMargin();
-
-	/* When an item is disabled, it often have a 3D sunken look.
-	 * This is done by calling this paint routine two times, with different pen color and offset.
-	 * A disabled item is first painted in the rect (x+1, y+1, w, h) and with pen of cg.light() color,
-	 * It is then drawn a second time in the rect (x, y, w, h).
-	 * But we don't want to draw the icon two times! So, we try to detect if we are in the "etched-text draw" state and then don't draw the icon.
-	 * This doesn't work for every styles but it's already better than nothing (styles when it doesn't work are seldomly used, if used).
-	 */
-	bool drawingEtchedText = !enabled && !active && painter->pen().color() != cg.mid() /*== cg.foreground()*/;
-	if ( drawingEtchedText )
-	{
-		QString styleName = kapp->style().name();
-		if ( styleName == "plastik" || styleName == "lipstik" )
-			painter->setPen ( cg.light() );
-		drawingEtchedText = !enabled && !active && painter->pen().color() != cg.foreground();
-	}
-	else
-		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
-	if ( !m_icon.isEmpty() && !drawingEtchedText )
-	{
-		QPixmap icon = KIconLoader::global()->loadIcon ( m_icon, KIcon::Small, iconSize,
-		               ( enabled ? ( active ? KIcon::ActiveState : KIcon::DefaultState ) : KIcon::DisabledState ),
-				               /*path_store=*/0L, /*canReturnNull=*/true );
-		painter->drawPixmap ( x, y + ( h-iconSize ) /2, icon );
-	}
-	/* Pen and font are already set to the good ones, so we can directly draw the text.
-	 * BUT, for the half of styles provided with KDE, the pen is not set for the Active state (when hovered by mouse of selected by keyboard).
-	 * So, I set the pen myself.
-	 * But it's certainly a bug in those styles because some other styles eg. just draw a 3D sunken rect when an item is selected
-	 * and keep the background to white, drawing a white text over it is... very bad. But I can't see what can be done.
-	 */
-	if ( active && enabled )
-		painter->setPen ( KGlobalSettings::highlightedTextColor() );
-	painter->drawText ( x + iconSize + iconMargin, y, w - iconSize - iconMargin, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_text/*painter->pen().color().name()*/ );
-
-	if ( !m_shortcut.isEmpty() )
-{
-		painter->setPen ( pen );
-		if ( active && enabled )
-			painter->setPen ( KGlobalSettings::highlightedTextColor() );
-		painter->setFont ( font );
-		painter->setClipping ( false );
-		painter->drawText ( x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut );
-	}
+//	QPen  pen  = painter->pen();
+//	QFont font = painter->font();
+//
+//	int iconSize   = KIcon::SizeSmall;
+//	int iconMargin = StateMenuItem::iconMargin();
+//
+//	/* When an item is disabled, it often have a 3D sunken look.
+//	 * This is done by calling this paint routine two times, with different pen color and offset.
+//	 * A disabled item is first painted in the rect (x+1, y+1, w, h) and with pen of cg.light() color,
+//	 * It is then drawn a second time in the rect (x, y, w, h).
+//	 * But we don't want to draw the icon two times! So, we try to detect if we are in the "etched-text draw" state and then don't draw the icon.
+//	 * This doesn't work for every styles but it's already better than nothing (styles when it doesn't work are seldomly used, if used).
+//	 */
+//	bool drawingEtchedText = !enabled && !active && painter->pen().color() != cg.mid() /*== cg.foreground()*/;
+//	if ( drawingEtchedText )
+//	{
+//		QString styleName = kapp->style().name();
+//		if ( styleName == "plastik" || styleName == "lipstik" )
+//			painter->setPen ( cg.light() );
+//		drawingEtchedText = !enabled && !active && painter->pen().color() != cg.foreground();
+//	}
+//	else
+//		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
+//	if ( !m_icon.isEmpty() && !drawingEtchedText )
+//	{
+//		QPixmap icon = KIconLoader::global()->loadIcon ( m_icon, KIcon::Small, iconSize,
+//		               ( enabled ? ( active ? KIcon::ActiveState : KIcon::DefaultState ) : KIcon::DisabledState ),
+//				               /*path_store=*/0L, /*canReturnNull=*/true );
+//		painter->drawPixmap ( x, y + ( h-iconSize ) /2, icon );
+//	}
+//	/* Pen and font are already set to the good ones, so we can directly draw the text.
+//	 * BUT, for the half of styles provided with KDE, the pen is not set for the Active state (when hovered by mouse of selected by keyboard).
+//	 * So, I set the pen myself.
+//	 * But it's certainly a bug in those styles because some other styles eg. just draw a 3D sunken rect when an item is selected
+//	 * and keep the background to white, drawing a white text over it is... very bad. But I can't see what can be done.
+//	 */
+//	if ( active && enabled )
+//		painter->setPen ( KGlobalSettings::highlightedTextColor() );
+//	painter->drawText ( x + iconSize + iconMargin, y, w - iconSize - iconMargin, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_text/*painter->pen().color().name()*/ );
+//
+//	if ( !m_shortcut.isEmpty() ) {
+//		painter->setPen ( pen );
+//		if ( active && enabled )
+//			painter->setPen ( KGlobalSettings::highlightedTextColor() );
+//		painter->setFont ( font );
+//		painter->setClipping ( false );
+//		painter->drawText ( x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut );
+//	}
 }
 
 QSize IndentedMenuItem::sizeHint()
 {
-	int iconSize   = KIcon::SizeSmall;
-	int iconMargin = StateMenuItem::iconMargin();
-	QSize textSize = QFontMetrics ( KGlobalSettings::menuFont() ).size ( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_text );
-	return QSize ( iconSize + iconMargin + textSize.width(), textSize.height() );
+//	int iconSize   = KIcon::SizeSmall;
+//	int iconMargin = StateMenuItem::iconMargin();
+//	QSize textSize = QFontMetrics ( KGlobalSettings::menuFont() ).size ( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_text );
+//	return QSize ( iconSize + iconMargin + textSize.width(), textSize.height() );
 }
 
 /** class StateMenuItem: */
@@ -821,7 +821,7 @@ QSize IndentedMenuItem::sizeHint()
 StateMenuItem::StateMenuItem ( State *state, const QString &shortcut, bool withTagName )
 		: m_state ( state ), m_shortcut ( shortcut )
 {
-	m_name = ( withTagName && m_state->parentTag() ? m_state->parentTag()->name() : m_state->name() );
+//TODO	m_name = ( withTagName && m_state->parentTag() ? m_state->parentTag()->name() : m_state->name() );
 }
 
 StateMenuItem::~StateMenuItem()
@@ -829,149 +829,148 @@ StateMenuItem::~StateMenuItem()
 
 void StateMenuItem::paint ( QPainter *painter, const QPalette &cg, bool active, bool enabled, int x, int y, int w, int h )
 {
-	QPen  pen  = painter->pen();
-	QFont font = painter->font();
-
-	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
-
-	if ( !active && m_state->backgroundColor().isValid() )
-		painter->fillRect ( x/*-1*/, y/*-1*/, w/*+2*/, h/*+2*/, m_state->backgroundColor() );
-	/* When an item is disabled, it often have a 3D sunken look.
-	 * This is done by calling this paint routine two times, with different pen color and offset.
-	 * A disabled item is first painted in the rect (x+1, y+1, w, h) and with pen of cg.light() color,
-	 * It is then drawn a second time in the rect (x, y, w, h).
-	 * But we don't want to draw the icon two times! So, we try to detect if we are in the "etched-text draw" state and then don't draw the icon.
-	 * This doesn't work for every styles but it's already better than nothing (styles when it doesn't work are seldomly used, if used).
-	 */
-	bool drawingEtchedText = !enabled && !active && painter->pen().color() != cg.mid() /*== cg.foreground()*/;
-	if ( drawingEtchedText )
-	{
-		QString styleName = kapp->style().name();
-		if ( styleName == "plastik" || styleName == "lipstik" )
-			painter->setPen ( cg.light() );
-		drawingEtchedText = !enabled && !active && painter->pen().color() != cg.foreground();
-	}
-	else
-		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
-	if ( !m_state->emblem().isEmpty() && !drawingEtchedText )
-	{
-		QPixmap icon = KIconLoader::global()->loadIcon ( m_state->emblem(), KIcon::Small, iconSize,
-		               ( enabled ? ( active ? KIcon::ActiveState : KIcon::DefaultState ) : KIcon::DisabledState ),
-				               /*path_store=*/0L, /*canReturnNull=*/true );
-		painter->drawPixmap ( x, y + ( h-iconSize ) /2, icon );
-	}
-	if ( enabled && !active && m_state->textColor().isValid() )
-		painter->setPen ( m_state->textColor() );
-	/* Pen and font are already set to the good ones, so we can directly draw the text.
-	 * BUT, for the half of styles provided with KDE, the pen is not set for the Active state (when hovered by mouse of selected by keyboard).
-	 * So, I set the pen myself.
-	 * But it's certainly a bug in those styles because some other styles eg. just draw a 3D sunken rect when an item is selected
-	 * and keep the background to white, drawing a white text over it is... very bad. But I can't see what can be done.
-	 */
-	if ( active && enabled )
-		painter->setPen ( KGlobalSettings::highlightedTextColor() );
-	painter->setFont ( m_state->font ( painter->font() ) );
-	painter->drawText ( x + iconSize + iconMargin(), y, w - iconSize - iconMargin(), h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_name );
-
-	if ( !m_shortcut.isEmpty() )
-{
-		painter->setPen ( pen );
-		if ( active && enabled )
-			painter->setPen ( KGlobalSettings::highlightedTextColor() );
-		painter->setFont ( font );
-		painter->setClipping ( false );
-		painter->drawText ( x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut );
-	}
+//	QPen  pen  = painter->pen();
+//	QFont font = painter->font();
+//
+//	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
+//
+//	if ( !active && m_state->backgroundColor().isValid() )
+//		painter->fillRect ( x/*-1*/, y/*-1*/, w/*+2*/, h/*+2*/, m_state->backgroundColor() );
+//	/* When an item is disabled, it often have a 3D sunken look.
+//	 * This is done by calling this paint routine two times, with different pen color and offset.
+//	 * A disabled item is first painted in the rect (x+1, y+1, w, h) and with pen of cg.light() color,
+//	 * It is then drawn a second time in the rect (x, y, w, h).
+//	 * But we don't want to draw the icon two times! So, we try to detect if we are in the "etched-text draw" state and then don't draw the icon.
+//	 * This doesn't work for every styles but it's already better than nothing (styles when it doesn't work are seldomly used, if used).
+//	 */
+//	bool drawingEtchedText = !enabled && !active && painter->pen().color() != cg.mid() /*== cg.foreground()*/;
+//	if ( drawingEtchedText )
+//	{
+//		QString styleName = kapp->style().name();
+//		if ( styleName == "plastik" || styleName == "lipstik" )
+//			painter->setPen ( cg.light() );
+//		drawingEtchedText = !enabled && !active && painter->pen().color() != cg.foreground();
+//	}
+//	else
+//		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
+//	if ( !m_state->emblem().isEmpty() && !drawingEtchedText )
+//	{
+//		QPixmap icon = KIconLoader::global()->loadIcon ( m_state->emblem(), KIcon::Small, iconSize,
+//		               ( enabled ? ( active ? KIcon::ActiveState : KIcon::DefaultState ) : KIcon::DisabledState ),
+//				               /*path_store=*/0L, /*canReturnNull=*/true );
+//		painter->drawPixmap ( x, y + ( h-iconSize ) /2, icon );
+//	}
+//	if ( enabled && !active && m_state->textColor().isValid() )
+//		painter->setPen ( m_state->textColor() );
+//	/* Pen and font are already set to the good ones, so we can directly draw the text.
+//	 * BUT, for the half of styles provided with KDE, the pen is not set for the Active state (when hovered by mouse of selected by keyboard).
+//	 * So, I set the pen myself.
+//	 * But it's certainly a bug in those styles because some other styles eg. just draw a 3D sunken rect when an item is selected
+//	 * and keep the background to white, drawing a white text over it is... very bad. But I can't see what can be done.
+//	 */
+//	if ( active && enabled )
+//		painter->setPen ( KGlobalSettings::highlightedTextColor() );
+//	painter->setFont ( m_state->font ( painter->font() ) );
+//	painter->drawText ( x + iconSize + iconMargin(), y, w - iconSize - iconMargin(), h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_name );
+//
+//	if ( !m_shortcut.isEmpty() ) {	
+//		painter->setPen ( pen );
+//		if ( active && enabled )
+//			painter->setPen ( KGlobalSettings::highlightedTextColor() );
+//		painter->setFont ( font );
+//		painter->setClipping ( false );
+//		painter->drawText ( x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut );
+//	}
 }
 
 QSize StateMenuItem::sizeHint()
 {
-	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
-	QFont theFont = m_state->font ( KGlobalSettings::menuFont() );
-	QSize textSize = QFontMetrics ( theFont ).size ( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_name );
-	return QSize ( iconSize + iconMargin() + textSize.width(), textSize.height() );
+//	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
+//	QFont theFont = m_state->font ( KGlobalSettings::menuFont() );
+//	QSize textSize = QFontMetrics ( theFont ).size ( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_name );
+//	return QSize ( iconSize + iconMargin() + textSize.width(), textSize.height() );
 }
 
 QIcon StateMenuItem::checkBoxIconSet ( bool checked, QPalette cg )
 {
-	int width  = kapp->style().pixelMetric ( QStyle::PM_IndicatorWidth,  0 );
-	int height = kapp->style().pixelMetric ( QStyle::PM_IndicatorHeight, 0 );
-	QRect rect ( 0, 0, width, height );
-
-	QColor menuBackgroundColor = ( dynamic_cast<KStyle*> ( & ( kapp->style() ) ) == NULL ? cg.background() : cg.background().light ( 103 ) );
-
-	// Enabled, Not hovering
-	QPixmap  pixmap ( width, height );
-	pixmap.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	QPainter painter ( &pixmap );
-	int style = QStyle::Style_Enabled | QStyle::Style_Active | ( checked ? QStyle::Style_On : QStyle::Style_Off );
-	QColor background = cg.color ( QPalette::Background );
-	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
-	painter.end();
-
-	// Enabled, Hovering
-	QPixmap  pixmapHover ( width, height );
-	pixmapHover.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	painter.begin ( &pixmapHover );
-	style |= QStyle::Style_MouseOver;
-	cg.setColor ( QPalette::Background, KGlobalSettings::highlightColor() );
-	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
-	painter.end();
-
-	// Disabled
-	QPixmap  pixmapDisabled ( width, height );
-	pixmapDisabled.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	painter.begin ( &pixmapDisabled );
-	style = /*QStyle::Style_Enabled | */QStyle::Style_Active | ( checked ? QStyle::Style_On : QStyle::Style_Off );
-	cg.setColor ( QPalette::Background, background );
-	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
-	painter.end();
-
-	QIcon iconSet ( pixmap );
-	iconSet.setPixmap ( pixmapHover,         QIcon::Automatic, QIcon::Active );
-	iconSet.setPixmap ( pixmapDisabled,      QIcon::Automatic, QIcon::Disabled );
-	return iconSet;
+//	int width  = kapp->style().pixelMetric ( QStyle::PM_IndicatorWidth,  0 );
+//	int height = kapp->style().pixelMetric ( QStyle::PM_IndicatorHeight, 0 );
+//	QRect rect ( 0, 0, width, height );
+//
+//	QColor menuBackgroundColor = ( dynamic_cast<KStyle*> ( & ( kapp->style() ) ) == NULL ? cg.background() : cg.background().light ( 103 ) );
+//
+//	// Enabled, Not hovering
+//	QPixmap  pixmap ( width, height );
+//	pixmap.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
+//	QPainter painter ( &pixmap );
+//	int style = QStyle::Style_Enabled | QStyle::Style_Active | ( checked ? QStyle::Style_On : QStyle::Style_Off );
+//	QColor background = cg.color ( QPalette::Background );
+//	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
+//	painter.end();
+//
+//	// Enabled, Hovering
+//	QPixmap  pixmapHover ( width, height );
+//	pixmapHover.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
+//	painter.begin ( &pixmapHover );
+//	style |= QStyle::Style_MouseOver;
+//	cg.setColor ( QPalette::Background, KGlobalSettings::highlightColor() );
+//	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
+//	painter.end();
+//
+//	// Disabled
+//	QPixmap  pixmapDisabled ( width, height );
+//	pixmapDisabled.fill ( menuBackgroundColor ); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
+//	painter.begin ( &pixmapDisabled );
+//	style = /*QStyle::Style_Enabled | */QStyle::Style_Active | ( checked ? QStyle::Style_On : QStyle::Style_Off );
+//	cg.setColor ( QPalette::Background, background );
+//	kapp->style().drawPrimitive ( QStyle::PE_Indicator, &painter, rect, cg, style );
+//	painter.end();
+//
+//	QIcon iconSet ( pixmap );
+//	iconSet.setPixmap ( pixmapHover,         QIcon::Automatic, QIcon::Active );
+//	iconSet.setPixmap ( pixmapDisabled,      QIcon::Automatic, QIcon::Disabled );
+//	return iconSet;
 }
 
 QIcon StateMenuItem::radioButtonIconSet ( bool checked, QPalette cg )
 {
-	int width  = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorWidth,  0 );
-	int height = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorHeight, 0 );
-	QRect rect ( 0, 0, width, height );
-
-	int style = QStyle::Style_Default | QStyle::Style_Enabled | ( checked ? QStyle::Style_On : QStyle::Style_Off );
-
-	QPixmap pixmap ( width, height );
-	pixmap.fill ( Qt::red );
-	QPainter painter ( &pixmap );
-	/* We can't use that line of code (like for checkboxes):
-	 * //kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
-	 * because Plastik (and derived styles) don't care of the QStyle::Style_On flag and will ALWAYS draw an unchecked radiobutton.
-	 * So, we use another method:
-	 */
-	QRadioButton rb ( 0 );
-	rb.setChecked ( checked );
-	kapp->style().drawControl ( QStyle::CE_RadioButton, &painter, &rb, rect, cg, style );
-	painter.end();
-	/* Some styles like Plastik (and derived ones) have QStyle::PE_ExclusiveIndicator drawing a radiobutton disc, as wanted,
-	 * and leave pixels ouside it untouched, BUT QStyle::PE_ExclusiveIndicatorMask is a fully black square.
-	 * So, we can't apply the mask to make the radiobutton circle transparent outside.
-	 * We're using an hack by filling the pixmap in Qt::red, drawing the radiobutton and then creating an heuristic mask.
-	 * The heuristic mask is created using the 4 edge pixels (that are red) and by making transparent every pixels that are of this color:
-	 */
-	pixmap.setMask ( pixmap.createHeuristicMask() );
-
-	QPixmap pixmapHover ( width, height );
-	pixmapHover.fill ( Qt::red );
-	painter.begin ( &pixmapHover );
-	//kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
-	style |= QStyle::Style_MouseOver;
-	cg.setColor ( QPalette::Background, KGlobalSettings::highlightColor() );
-	kapp->style().drawControl ( QStyle::CE_RadioButton, &painter, &rb, rect, cg, style );
-	painter.end();
-	pixmapHover.setMask ( pixmapHover.createHeuristicMask() );
-
-	QIcon iconSet ( pixmap );
-	iconSet.setPixmap ( pixmapHover, QIcon::Automatic, QIcon::Active );
-	return iconSet;
+//	int width  = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorWidth,  0 );
+//	int height = kapp->style().pixelMetric ( QStyle::PM_ExclusiveIndicatorHeight, 0 );
+//	QRect rect ( 0, 0, width, height );
+//
+//	int style = QStyle::Style_Default | QStyle::Style_Enabled | ( checked ? QStyle::Style_On : QStyle::Style_Off );
+//
+//	QPixmap pixmap ( width, height );
+//	pixmap.fill ( Qt::red );
+//	QPainter painter ( &pixmap );
+//	/* We can't use that line of code (like for checkboxes):
+//	 * //kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
+//	 * because Plastik (and derived styles) don't care of the QStyle::Style_On flag and will ALWAYS draw an unchecked radiobutton.
+//	 * So, we use another method:
+//	 */
+//	QRadioButton rb ( 0 );
+//	rb.setChecked ( checked );
+//	kapp->style().drawControl ( QStyle::CE_RadioButton, &painter, &rb, rect, cg, style );
+//	painter.end();
+//	/* Some styles like Plastik (and derived ones) have QStyle::PE_ExclusiveIndicator drawing a radiobutton disc, as wanted,
+//	 * and leave pixels ouside it untouched, BUT QStyle::PE_ExclusiveIndicatorMask is a fully black square.
+//	 * So, we can't apply the mask to make the radiobutton circle transparent outside.
+//	 * We're using an hack by filling the pixmap in Qt::red, drawing the radiobutton and then creating an heuristic mask.
+//	 * The heuristic mask is created using the 4 edge pixels (that are red) and by making transparent every pixels that are of this color:
+//	 */
+//	pixmap.setMask ( pixmap.createHeuristicMask() );
+//
+//	QPixmap pixmapHover ( width, height );
+//	pixmapHover.fill ( Qt::red );
+//	painter.begin ( &pixmapHover );
+//	//kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
+//	style |= QStyle::Style_MouseOver;
+//	cg.setColor ( QPalette::Background, KGlobalSettings::highlightColor() );
+//	kapp->style().drawControl ( QStyle::CE_RadioButton, &painter, &rb, rect, cg, style );
+//	painter.end();
+//	pixmapHover.setMask ( pixmapHover.createHeuristicMask() );
+//
+//	QIcon iconSet ( pixmap );
+//	iconSet.setPixmap ( pixmapHover, QIcon::Automatic, QIcon::Active );
+//	return iconSet;
 }

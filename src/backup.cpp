@@ -262,12 +262,13 @@ void BackupDialog::restore()
 	QFile file ( readmePath );
 	if ( file.open ( QIODevice::WriteOnly ) )
 	{
-		QTextStream stream ( &file );
-		stream << i18n ( "This is a safety copy of your baskets like they were before you started to restore the backup %1." ).arg ( KUrl ( path ).fileName() ) + "\n\n"
-		<< i18n ( "If the restoration was a success and you restored what you wanted to restore, you can remove this folder." ) + "\n\n"
-		<< i18n ( "If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost." ) + "\n\n"
-		<< i18n ( "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing Folder...\" and select that folder." ) + "\n";
-		file.close();
+//TODO
+//		QTextStream stream ( &file );
+//		stream << i18n ( "This is a safety copy of your baskets like they were before you started to restore the backup %1." ).arg ( KUrl ( path ).fileName() ) + "\n\n"
+//		<< i18n ( "If the restoration was a success and you restored what you wanted to restore, you can remove this folder." ) + "\n\n"
+//		<< i18n ( "If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost." ) + "\n\n"
+//		<< i18n ( "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing Folder...\" and select that folder." ) + "\n";
+//		file.close();
 	}
 
 	QString message =

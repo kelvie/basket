@@ -301,7 +301,7 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 //#include <qstrlist.h>
 #include <qimage.h>
 
-bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropAction::Action action)
+bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, Qt::DropAction action)
 {
 //	if (NoteDrag::canDecode(source))
 //		return action == QDropEvent::Move && NoteDrag::basketOf(source) == parent;
@@ -309,7 +309,7 @@ bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent
 		return false;
 }
 
-Note* NoteFactory::dropNote(QMimeData *source, Basket *parent, bool fromDrop, QDropAction::Action action, Note *noteSource)
+Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDrop, Qt::DropAction action, Note *noteSource)
 {
 //	Note *note = 0L;
 //
@@ -483,7 +483,7 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 //		return note;
 }
 
-Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action action, bool fromDrop)
+Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop)
 {
 //	int  shouldAsk    = 0; // shouldAsk==0: don't ask ; shouldAsk==1: ask for "file" ; shouldAsk>=2: ask for "files"
 //	bool shiftPressed = Keyboard::shiftPressed();

@@ -31,7 +31,7 @@ class QTextEdit;
 class QCheckBox;
 class QButtonGroup;
 class Kaction;
-class KSharedConfigPtr;
+//class KSharedConfigPtr;
 
 class LikeBackPrivate
 {

@@ -33,6 +33,7 @@ class Basket;
 class Note;
 
 enum NoteType::Id;
+enum Qt::DropAction;
 
 /** Factory class to create (new, drop, past) or load BasketIem, and eventuelly save them (?)
   * @author S�bastien Lao�t

@@ -20,7 +20,10 @@
 
 #include "aboutdata.h"
 #include <klocale.h>
-#include "config.h"
+//#include "config.h"
+
+//TODO
+#define VERSION "1.0"
 
 
 static const char description[] = I18N_NOOP(

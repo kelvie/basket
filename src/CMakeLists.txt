@@ -1,7 +1,6 @@
 ########### next target ###############
 
 SET(basketcommon_LIB_SRCS
-   main.cpp
    archive.cpp
    bnpview.cpp
    settings.cpp
@@ -33,8 +32,8 @@ SET(basketcommon_LIB_SRCS
    tools.cpp
    backgroundmanager.cpp
    regiongrabber.cpp
-   kicondialog.cpp
-   kiconcanvas.cpp
+   #kicondialog.cpp
+   #kiconcanvas.cpp
    kgpgme.cpp
    likeback.cpp
    crashhandler.cpp
@@ -58,15 +57,15 @@ SET(basketcommon_UI
 
 KDE4_ADD_UI_FILES(basketcommon_LIB_SRCS ${basketcommon_UI})
 
-SET( basketcommon_DCOP_SKEL_SRCS
-   basketdcopiface.h
-   )
+#SET( basketcommon_DCOP_SKEL_SRCS
+#   basketdcopiface.h
+#   )
 
 #KDE4_ADD_DCOP_SKELS(basketcommon_LIB_SRCS ${basketcommon_DCOP_SKEL_SRCS})
 
 KDE4_ADD_LIBRARY(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-TARGET_LINK_LIBRARIES(basketcommon  ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts DCOP kdefx  )
+TARGET_LINK_LIBRARIES(basketcommon  ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts kdefx  )
 
 SET_TARGET_PROPERTIES(basketcommon PROPERTIES VERSION 4.2.0 SOVERSION 4 )
 INSTALL(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})

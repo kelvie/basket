@@ -415,7 +415,7 @@ bool LikeBack::userWantsToShowBar()
 {
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
 	d->config->setGroup ( "LikeBack" );
-	return d->config->readBoolEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault );
+//TODO	return d->config->readBoolEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault );
 }
 
 void LikeBack::setUserWantsToShowBar ( bool showBar )
@@ -427,7 +427,7 @@ void LikeBack::setUserWantsToShowBar ( bool showBar )
 
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
 	d->config->setGroup ( "LikeBack" );
-	d->config->writeEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), showBar );
+//TODO	d->config->writeEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), showBar );
 	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
 
 	if ( showBar )
@@ -545,7 +545,7 @@ QString LikeBack::activeWindowPath()
 bool LikeBack::emailAddressAlreadyProvided()
 {
 	d->config->setGroup ( "LikeBack" );
-	return d->config->readBoolEntry ( "emailAlreadyAsked", false );
+//TODO	return d->config->readBoolEntry ( "emailAlreadyAsked", false );
 }
 
 QString LikeBack::emailAddress()
@@ -554,44 +554,46 @@ QString LikeBack::emailAddress()
 		askEmailAddress();
 
 	d->config->setGroup ( "LikeBack" );
-	return d->config->readEntry ( "emailAddress", "" );
+//TODO	return d->config->readEntry ( "emailAddress", "" );
 }
 
+//TODO
 void LikeBack::setEmailAddress ( const QString &address, bool userProvided )
 {
-	d->config->setGroup ( "LikeBack" );
-	d->config->writeEntry ( "emailAddress",      address );
-	d->config->writeEntry ( "emailAlreadyAsked", userProvided || emailAddressAlreadyProvided() );
-	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
+//	d->config->setGroup ( "LikeBack" );
+//	d->config->writeEntry ( "emailAddress",      address );
+//	d->config->writeEntry ( "emailAlreadyAsked", userProvided || emailAddressAlreadyProvided() );
+//	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
 }
 
+//TODO
 void LikeBack::askEmailAddress()
 {
-	d->config->setGroup ( "LikeBack" );
-
-	QString currentEmailAddress = d->config->readEntry ( "emailAddress", "" );
-	if ( !emailAddressAlreadyProvided() && !d->fetchedEmail.isEmpty() )
-		currentEmailAddress = d->fetchedEmail;
-
-	bool ok;
-
-	QString emailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
-	//QString namedEmailExpString = "[.]*[ \\t]+<" + emailExpString + '>';
-	//QRegExp emailExp("^(|" + emailExpString + '|' + namedEmailExpString + ")$");
-	QRegExp emailExp ( "^(|" + emailExpString + ")$" );
-	QRegExpValidator emailValidator ( emailExp, this );
-
-	disableBar();
-	QString email = KInputDialog::getText (
-	                    i18n ( "Email Address" ),
-	                    "<p><b>" + i18n ( "Please provide your email address." ) + "</b></p>" +
-	                    "<p>" + i18n ( "It will only be used to contact you back if more information is needed about your comments, ask you how to reproduce the bugs you report, send bug corrections for you to test, etc." ) + "</p>" +
-	                    "<p>" + i18n ( "The email address is optional. If you do not provide any, your comments will be sent anonymously." ) + "</p>",
-	                    currentEmailAddress, &ok, kapp->activeWindow(), &emailValidator );
-	enableBar();
-
-	if ( ok )
-		setEmailAddress ( email );
+//	d->config->setGroup ( "LikeBack" );
+//
+//	QString currentEmailAddress = d->config->readEntry ( "emailAddress", "" );
+//	if ( !emailAddressAlreadyProvided() && !d->fetchedEmail.isEmpty() )
+//		currentEmailAddress = d->fetchedEmail;
+//
+//	bool ok;
+//
+//	QString emailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
+//	//QString namedEmailExpString = "[.]*[ \\t]+<" + emailExpString + '>';
+//	//QRegExp emailExp("^(|" + emailExpString + '|' + namedEmailExpString + ")$");
+//	QRegExp emailExp ( "^(|" + emailExpString + ")$" );
+//	QRegExpValidator emailValidator ( emailExp, this );
+//
+//	disableBar();
+//	QString email = KInputDialog::getText (
+//	                    i18n ( "Email Address" ),
+//	                    "<p><b>" + i18n ( "Please provide your email address." ) + "</b></p>" +
+//	                    "<p>" + i18n ( "It will only be used to contact you back if more information is needed about your comments, ask you how to reproduce the bugs you report, send bug corrections for you to test, etc." ) + "</p>" +
+//	                    "<p>" + i18n ( "The email address is optional. If you do not provide any, your comments will be sent anonymously." ) + "</p>",
+//	                    currentEmailAddress, &ok, kapp->activeWindow(), &emailValidator );
+//	enableBar();
+//
+//	if ( ok )
+//		setEmailAddress ( email );
 }
 
 // FIXME: Should be moved to KAboutData? Cigogne will also need it.
@@ -626,34 +628,35 @@ bool LikeBack::isDevelopmentVersion ( const QString &version )
 /**
  * Code from KBugReport::slotSetFrom() in kdeui/kbugreport.cpp:
  */
+//TODO
 void LikeBack::fetchUserEmail()
 {
-//	delete m_process;
-//	m_process = 0;
-//	m_configureEmail->setEnabled(true);
-
-	// ### KDE4: why oh why is KEmailSettings in kio?
-	KConfig emailConf ( QString::fromLatin1 ( "emaildefaults" ) );
-
-	// find out the default profile
-	emailConf.setGroup ( QString::fromLatin1 ( "Defaults" ) );
-	QString profile = QString::fromLatin1 ( "PROFILE_" );
-	profile += emailConf.readEntry ( QString::fromLatin1 ( "Profile" ), QString::fromLatin1 ( "Default" ) );
-
-	emailConf.setGroup ( profile );
-	QString fromaddr = emailConf.readEntry ( QString::fromLatin1 ( "EmailAddress" ),QString() );
-	if ( fromaddr.isEmpty() )
-	{
-		struct passwd *p;
-		p = getpwuid ( getuid() );
-		d->fetchedEmail = QString::fromLatin1 ( p->pw_name );
-	}
-	else
-	{
-		QString name = emailConf.readEntry ( QString::fromLatin1 ( "FullName" ), QString() );
-		if ( !name.isEmpty() )
-			d->fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
-	}
+////	delete m_process;
+////	m_process = 0;
+////	m_configureEmail->setEnabled(true);
+//
+//	// ### KDE4: why oh why is KEmailSettings in kio?
+//	KConfig emailConf ( QString::fromLatin1 ( "emaildefaults" ) );
+//
+//	// find out the default profile
+//	emailConf.setGroup ( QString::fromLatin1 ( "Defaults" ) );
+//	QString profile = QString::fromLatin1 ( "PROFILE_" );
+//	profile += emailConf.readEntry ( QString::fromLatin1 ( "Profile" ), QString::fromLatin1 ( "Default" ) );
+//
+//	emailConf.setGroup ( profile );
+//	QString fromaddr = emailConf.readEntry ( QString::fromLatin1 ( "EmailAddress" ),QString() );
+//	if ( fromaddr.isEmpty() )
+//	{
+//		struct passwd *p;
+//		p = getpwuid ( getuid() );
+//		d->fetchedEmail = QString::fromLatin1 ( p->pw_name );
+//	}
+//	else
+//	{
+//		QString name = emailConf.readEntry ( QString::fromLatin1 ( "FullName" ), QString() );
+//		if ( !name.isEmpty() )
+//			d->fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
+//	}
 //	m_from->setText( fromaddr );
 }
 

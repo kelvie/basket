@@ -111,32 +111,33 @@ OpaqueBackgroundEntry* BackgroundManager::opaqueBackgroundEntryFor(const QString
 	return 0;
 }
 
+//TODO
 bool BackgroundManager::subscribe(const QString &image)
 {
-	BackgroundEntry *entry = backgroundEntryFor(image);
-	if (entry) {
-		// If it's the first time something subscribe to this image:
-		if (!entry->pixmap) {
-			// Try to load the pixmap:
-			entry->pixmap = new QPixmap(entry->location);
-			// Try to figure out if it's a tiled background image or not (default to NO):
-			KSimpleConfig config(entry->location + ".config", /*readOnly=*/true);
-			config.setGroup("BasKet Background Image Configuration");
-			entry->tiled = config.readBoolEntry("tiled", false);
-		}
-		// Return if the image loading has failed:
-		if (entry->pixmap->isNull()) {
-///			std::cout << "BackgroundManager: Failed to load " << entry->location << std::endl;
-			return false;
-		}
-		// Success: effectively subscribe:
-		++entry->customersCount;
-		return true;
-	} else {
-		// Don't exist: subscription failed:
-///		std::cout << "BackgroundManager: Requested unexisting image: " << image << std::endl;
-		return false;
-	}
+//	BackgroundEntry *entry = backgroundEntryFor(image);
+//	if (entry) {
+//		// If it's the first time something subscribe to this image:
+//		if (!entry->pixmap) {
+//			// Try to load the pixmap:
+//			entry->pixmap = new QPixmap(entry->location);
+//			// Try to figure out if it's a tiled background image or not (default to NO):
+//			KSimpleConfig config(entry->location + ".config", /*readOnly=*/true);
+//			config.setGroup("BasKet Background Image Configuration");
+//			entry->tiled = config.readBoolEntry("tiled", false);
+//		}
+//		// Return if the image loading has failed:
+//		if (entry->pixmap->isNull()) {
+/////			std::cout << "BackgroundManager: Failed to load " << entry->location << std::endl;
+//			return false;
+//		}
+//		// Success: effectively subscribe:
+//		++entry->customersCount;
+//		return true;
+//	} else {
+//		// Don't exist: subscription failed:
+/////		std::cout << "BackgroundManager: Requested unexisting image: " << image << std::endl;
+//		return false;
+//	}
 }
 
 bool BackgroundManager::subscribe(const QString &image, const QColor &color)
@@ -248,84 +249,85 @@ QStringList BackgroundManager::imageNames()
 	return list;
 }
 
+//TODO
 QPixmap* BackgroundManager::preview(const QString &image)
 {
-	static const int    MAX_WIDTH  = 100;
-	static const int    MAX_HEIGHT = 75;
-	static const QColor PREVIEW_BG = Qt::white;
-
-	BackgroundEntry *entry = backgroundEntryFor(image);
-
-	if (!entry) {
-///		std::cout << "BackgroundManager: Requested the preview of an unexisting image: " << image << std::endl;
-		return false;
-	}
-
-	// The easiest way: already computed:
-	if (entry->preview)
-		return entry->preview;
-
-	// Then, try to load the preview from file:
-	QString previewPath = KGlobal::dirs()->findResource("data", "basket/backgrounds/previews/" + entry->name);
-	QPixmap *previewPixmap = new QPixmap(previewPath);
-	// Success:
-	if (!previewPixmap->isNull()) {
-///		std::cout << "BackgroundManager: Loaded image preview for " << entry->location << " from file " << previewPath << std::endl;
-		entry->preview = previewPixmap;
-		return entry->preview;
-	}
-
-	// We failed? Then construct it:
-	// Note: if a preview is requested, it's because the user is currently choosing an image.
-	// Since we need that image to create the preview, we keep the image in memory.
-	// Then, it will already be loaded when user press [OK] in the background image chooser.
-	// BUT we also delay a garbage because we don't want EVERY images to be loaded if the user use only a few of them, of course:
-
-	// Already used? Good: we don't have to load it...
-	if (!entry->pixmap) {
-		// Note: it's a code duplication from BackgroundManager::subscribe(const QString &image),
-		// Because, as we are loading the pixmap we ALSO need to know if it's a tile or not, in case that image will soon be used (and not destroyed by the garbager):
-		entry->pixmap = new QPixmap(entry->location);
-		// Try to figure out if it's a tiled background image or not (default to NO):
-		KSimpleConfig config(entry->location + ".config", /*readOnly=*/true);
-		config.setGroup("BasKet Background Image Configuration");
-		entry->tiled = config.readBoolEntry("tiled", false);
-	}
-
-	// The image cannot be loaded, we failed:
-	if (entry->pixmap->isNull())
-		return 0;
-
-	// Good that we are still alive: entry->pixmap contains the pixmap to rescale down for the preview:
-	// Compute new size:
-	int width  = entry->pixmap->width();
-	int height = entry->pixmap->height();
-	if (width > MAX_WIDTH) {
-		height = height * MAX_WIDTH / width;
-		width  = MAX_WIDTH;
-	}
-	if (height > MAX_HEIGHT) {
-		width  = width * MAX_HEIGHT / height;
-		height = MAX_HEIGHT;
-	}
-	// And create the resulting pixmap:
-	QPixmap *result = new QPixmap(width, height);
-	result->fill(PREVIEW_BG);
-	QImage imageToScale = entry->pixmap->toImage();
-	QPixmap pmScaled;
-	pmScaled.convertFromImage(imageToScale.smoothScale(width, height));
-	QPainter painter(result);
-	painter.drawPixmap(0, 0, pmScaled);
-	painter.end();
-
-	// Saving it to file for later:
-	QString folder = KGlobal::dirs()->saveLocation("data", "basket/backgrounds/previews/");
-	result->save(folder + entry->name, "PNG");
-
-	// Ouf! That's done:
-	entry->preview = result;
-	requestDelayedGarbage();
-	return entry->preview;
+//	static const int    MAX_WIDTH  = 100;
+//	static const int    MAX_HEIGHT = 75;
+//	static const QColor PREVIEW_BG = Qt::white;
+//
+//	BackgroundEntry *entry = backgroundEntryFor(image);
+//
+//	if (!entry) {
+/////		std::cout << "BackgroundManager: Requested the preview of an unexisting image: " << image << std::endl;
+//		return false;
+//	}
+//
+//	// The easiest way: already computed:
+//	if (entry->preview)
+//		return entry->preview;
+//
+//	// Then, try to load the preview from file:
+//	QString previewPath = KGlobal::dirs()->findResource("data", "basket/backgrounds/previews/" + entry->name);
+//	QPixmap *previewPixmap = new QPixmap(previewPath);
+//	// Success:
+//	if (!previewPixmap->isNull()) {
+/////		std::cout << "BackgroundManager: Loaded image preview for " << entry->location << " from file " << previewPath << std::endl;
+//		entry->preview = previewPixmap;
+//		return entry->preview;
+//	}
+//
+//	// We failed? Then construct it:
+//	// Note: if a preview is requested, it's because the user is currently choosing an image.
+//	// Since we need that image to create the preview, we keep the image in memory.
+//	// Then, it will already be loaded when user press [OK] in the background image chooser.
+//	// BUT we also delay a garbage because we don't want EVERY images to be loaded if the user use only a few of them, of course:
+//
+//	// Already used? Good: we don't have to load it...
+//	if (!entry->pixmap) {
+//		// Note: it's a code duplication from BackgroundManager::subscribe(const QString &image),
+//		// Because, as we are loading the pixmap we ALSO need to know if it's a tile or not, in case that image will soon be used (and not destroyed by the garbager):
+//		entry->pixmap = new QPixmap(entry->location);
+//		// Try to figure out if it's a tiled background image or not (default to NO):
+//		KSimpleConfig config(entry->location + ".config", /*readOnly=*/true);
+//		config.setGroup("BasKet Background Image Configuration");
+//		entry->tiled = config.readBoolEntry("tiled", false);
+//	}
+//
+//	// The image cannot be loaded, we failed:
+//	if (entry->pixmap->isNull())
+//		return 0;
+//
+//	// Good that we are still alive: entry->pixmap contains the pixmap to rescale down for the preview:
+//	// Compute new size:
+//	int width  = entry->pixmap->width();
+//	int height = entry->pixmap->height();
+//	if (width > MAX_WIDTH) {
+//		height = height * MAX_WIDTH / width;
+//		width  = MAX_WIDTH;
+//	}
+//	if (height > MAX_HEIGHT) {
+//		width  = width * MAX_HEIGHT / height;
+//		height = MAX_HEIGHT;
+//	}
+//	// And create the resulting pixmap:
+//	QPixmap *result = new QPixmap(width, height);
+//	result->fill(PREVIEW_BG);
+//	QImage imageToScale = entry->pixmap->toImage();
+//	QPixmap pmScaled;
+//	pmScaled.convertFromImage(imageToScale.smoothScale(width, height));
+//	QPainter painter(result);
+//	painter.drawPixmap(0, 0, pmScaled);
+//	painter.end();
+//
+//	// Saving it to file for later:
+//	QString folder = KGlobal::dirs()->saveLocation("data", "basket/backgrounds/previews/");
+//	result->save(folder + entry->name, "PNG");
+//
+//	// Ouf! That's done:
+//	entry->preview = result;
+//	requestDelayedGarbage();
+//	return entry->preview;
 }
 
 QString BackgroundManager::pathForImageName(const QString &image)
@@ -356,8 +358,8 @@ void BackgroundManager::requestDelayedGarbage()
 {
 	static const int DELAY = 60/*seconds*/;
 
-	if (!m_garbageTimer.isActive())
-		m_garbageTimer.start(DELAY * 1000/*ms*/, /*singleShot=*/true);
+//TODO	if (!m_garbageTimer.isActive())
+//TODO		m_garbageTimer.start(DELAY * 1000/*ms*/, /*singleShot=*/true);
 }
 
 void BackgroundManager::doGarbage()

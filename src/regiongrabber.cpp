@@ -31,8 +31,8 @@
 #include <kglobalsettings.h>
 
 SizeTip::SizeTip( QWidget *parent, const char *name )
-    : QLabel( parent, name, WStyle_Customize | WX11BypassWM |
-      WStyle_StaysOnTop | WStyle_NoBorder | WStyle_Tool )
+//TODO    : QLabel( parent, name, WStyle_Customize | WX11BypassWM |
+//TODO      WStyle_StaysOnTop | WStyle_NoBorder | WStyle_Tool )
 {
   setMargin( 2 );
   setIndent( 0 );
@@ -86,95 +86,102 @@ RegionGrabber::~RegionGrabber()
   delete sizeTip;
 }
 
+//TODO
 void RegionGrabber::initGrabber()
 {
-  pixmap = QPixmap::grabWindow( qt_xrootwin() );
-  setPaletteBackgroundPixmap( pixmap );
-
-  QDesktopWidget desktopWidget;
-  QRect desktopSize;
-  if ( desktopWidget.isVirtualDesktop() )
-    desktopSize = desktopWidget.geometry();
-  else
-    desktopSize = desktopWidget.screenGeometry( qt_xrootwin() );
-
-  setGeometry( desktopSize );
-  showFullScreen();
-
-  QApplication::setOverrideCursor( crossCursor );
+//  pixmap = QPixmap::grabWindow( qt_xrootwin() );
+//  setPaletteBackgroundPixmap( pixmap );
+//
+//  QDesktopWidget desktopWidget;
+//  QRect desktopSize;
+//  if ( desktopWidget.isVirtualDesktop() )
+//    desktopSize = desktopWidget.geometry();
+//  else
+//    desktopSize = desktopWidget.screenGeometry( qt_xrootwin() );
+//
+//  setGeometry( desktopSize );
+//  showFullScreen();
+//
+//  QApplication::setOverrideCursor( crossCursor );
 }
 
+//TODO
 void RegionGrabber::mousePressEvent( QMouseEvent *e )
 {
-  if ( e->button() == LeftButton )
-  {
-    mouseDown = true;
-    grabRect = QRect( e->pos(), e->pos() );
-	drawRubber();
-  }
+//  if ( e->button() == LeftButton )
+//  {
+//    mouseDown = true;
+//    grabRect = QRect( e->pos(), e->pos() );
+//	drawRubber();
+//  }
 }
 
+//TODO
 void RegionGrabber::mouseMoveEvent( QMouseEvent *e )
 {
-  if ( mouseDown )
-  {
-    sizeTip->hide();
-    tipTimer->start( 250, true );
-
-    drawRubber();
-    grabRect.setBottomRight( e->pos() );
-    drawRubber();
-  }
+//  if ( mouseDown )
+//  {
+//    sizeTip->hide();
+//    tipTimer->start( 250, true );
+//
+//    drawRubber();
+//    grabRect.setBottomRight( e->pos() );
+//    drawRubber();
+//  }
 }
 
+//TODO
 void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
 {
-  mouseDown = false;
-  drawRubber();
-  sizeTip->hide();
-
-  grabRect.setBottomRight( e->pos() );
-  grabRect = grabRect.normalize();
-
-  QPixmap region = QPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
-      grabRect.width(), grabRect.height() );
-
-  QApplication::restoreOverrideCursor();
-
-  emit regionGrabbed( region );
+//  mouseDown = false;
+//  drawRubber();
+//  sizeTip->hide();
+//
+//  grabRect.setBottomRight( e->pos() );
+//  grabRect = grabRect.normalize();
+//
+//  QPixmap region = QPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
+//      grabRect.width(), grabRect.height() );
+//
+//  QApplication::restoreOverrideCursor();
+//
+//  emit regionGrabbed( region );
 }
 
+//TODO
 void RegionGrabber::keyPressEvent( QKeyEvent *e )
 {
-  if ( e->key() == Key_Escape )
-  {
-    QApplication::restoreOverrideCursor();
-    emit regionGrabbed( QPixmap() );
-  }
-  else
-    e->ignore();
+//  if ( e->key() == Key_Escape )
+//  {
+//    QApplication::restoreOverrideCursor();
+//    emit regionGrabbed( QPixmap() );
+//  }
+//  else
+//    e->ignore();
 }
 
+//TODO
 void RegionGrabber::updateSizeTip()
 {
-  QRect rect = grabRect.normalize();
-
-  sizeTip->setTip( rect );
-  sizeTip->show();
+//  QRect rect = grabRect.normalize();
+//
+//  sizeTip->setTip( rect );
+//  sizeTip->show();
 }
 
+//TODO
 void RegionGrabber::drawRubber()
 {
-  QPainter p;
-  p.begin( this );
-  p.setRasterOp( NotROP );
-  p.setPen( QPen( color0, 1 ) );
-  p.setBrush( NoBrush );
-
-  style().drawPrimitive( QStyle::PE_FocusRect, &p, grabRect, colorGroup(),
-      QStyle::Style_Default, QStyleOption( colorGroup().base() ) );
-
-  p.end();
+//  QPainter p;
+//  p.begin( this );
+//  p.setRasterOp( NotROP );
+//  p.setPen( QPen( color0, 1 ) );
+//  p.setBrush( NoBrush );
+//
+//  style().drawPrimitive( QStyle::PE_FocusRect, &p, grabRect, colorGroup(),
+//      QStyle::Style_Default, QStyleOption( colorGroup().base() ) );
+//
+//  p.end();
 }
 
 #include "regiongrabber.moc"

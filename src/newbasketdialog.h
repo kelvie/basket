@@ -29,6 +29,8 @@ class KIconButton;
 class QLineEdit;
 class QDragObject;
 class QTreeWidget;
+class QTreeWidgetItem;
+class QComboBox;
 
 class Basket;
 

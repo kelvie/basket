@@ -122,93 +122,93 @@ void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
 	}
 }*/
 
-QTextCursor FocusedTextEdit::textCursor() const
+QTextCursor* FocusedTextEdit::textCursor() const
 {
-	return KTextEdit::textCursor();
+	//TODO return KTextEdit::textCursor();
 }
 
 
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape) {
-		emit escapePressed();
-		return;
-	// In RichTextFormat mode, [Return] create a new paragraphe.
-	// To keep consistency with TextFormat mode (new line on [Return]),
-	// we redirect [Return] to simulate [Ctrl+Return] (create a new line in both modes).
-	// Create new paragraphes still possible in RichTextFormat mode with [Shift+Enter].
-	} else if (event->key() == Qt::Key_Return && event->state() == 0)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlModifier,
-		                      event->text(), event->isAutoRepeat(), event->count() );
-	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlModifier)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftModifier,
-		                      event->text(), event->isAutoRepeat(), event->count() );
-
-	if (m_disableUpdatesOnKeyPress)
-		setUpdatesEnabled(false);
-	KTextEdit::keyPressEvent(event);
-	// Workarround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
-	if (event->key() == Qt::Key_Home || event->key() == Qt::Key_End || event->key() == Qt::Key_PageUp || event->key() == Qt::Key_PageDown) {
-		int para;
-		int index;
-		getCursorPosition(&para, &index);
-		emit cursorPositionChanged(para, index);
-	}
-	if (m_disableUpdatesOnKeyPress) {
-		setUpdatesEnabled(true);
-		if (text().isEmpty())
-			;// emit textChanged(); // TODO: DOESN'T WORK: the editor is not resized down to only one line of text
-		else
-			ensureCursorVisible();
-		updateContents();
-	}
+//	if (event->key() == Qt::Key_Escape) {
+//		emit escapePressed();
+//		return;
+//	// In RichTextFormat mode, [Return] create a new paragraphe.
+//	// To keep consistency with TextFormat mode (new line on [Return]),
+//	// we redirect [Return] to simulate [Ctrl+Return] (create a new line in both modes).
+//	// Create new paragraphes still possible in RichTextFormat mode with [Shift+Enter].
+//	} else if (event->key() == Qt::Key_Return && event->state() == 0)
+//		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlModifier,
+//		                      event->text(), event->isAutoRepeat(), event->count() );
+//	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlModifier)
+//		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftModifier,
+//		                      event->text(), event->isAutoRepeat(), event->count() );
+//
+//	if (m_disableUpdatesOnKeyPress)
+//		setUpdatesEnabled(false);
+//	KTextEdit::keyPressEvent(event);
+//	// Workarround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
+//	if (event->key() == Qt::Key_Home || event->key() == Qt::Key_End || event->key() == Qt::Key_PageUp || event->key() == Qt::Key_PageDown) {
+//		int para;
+//		int index;
+//		getCursorPosition(&para, &index);
+//		emit cursorPositionChanged(para, index);
+//	}
+//	if (m_disableUpdatesOnKeyPress) {
+//		setUpdatesEnabled(true);
+//		if (text().isEmpty())
+//			;// emit textChanged(); // TODO: DOESN'T WORK: the editor is not resized down to only one line of text
+//		else
+//			ensureCursorVisible();
+//		updateContents();
+//	}
 }
 
 void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 {
-	if (event->delta() > 0 && contentsY() > 0) {
-		KTextEdit::wheelEvent(event);
-		return;
-	} else if (event->delta() < 0 && contentsY() + visibleHeight() < contentsHeight()) {
-		KTextEdit::wheelEvent(event);
-		return;
-	} else
-		Global::bnpView->currentBasket()->wheelEvent(event);
+//	if (event->delta() > 0 && contentsY() > 0) {
+//		KTextEdit::wheelEvent(event);
+//		return;
+//	} else if (event->delta() < 0 && contentsY() + visibleHeight() < contentsHeight()) {
+//		KTextEdit::wheelEvent(event);
+//		return;
+//	} else
+//		Global::bnpView->currentBasket()->wheelEvent(event);
 }
 
 void FocusedTextEdit::enterEvent(QEvent *event)
 {
-	emit mouseEntered();
-	KTextEdit::enterEvent(event);
+//	emit mouseEntered();
+//	KTextEdit::enterEvent(event);
 }
 
 QMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 {
-	QMenu *menu = KTextEdit::createPopupMenu(pos);
-
-	int index = 0;
-	int id = 0;
-	while (true) {
-		id = menu->idAt(index);
-		if (id == -1)
-			break;
-		// Disable Spell Check for rich text editors, because it doesn't work anyway:
-		if (textFormat() == Qt::RichText && (menu->text(id) == i18n("Auto Spell Check") || menu->text(id) == i18n("Check Spelling...")))
-			menu->setItemEnabled(id, false);
-		// Always enable tabulations!:
-		if (menu->text(id) == i18n("Allow Tabulations"))
-			menu->setItemEnabled(id, false);
-		index++;
-	}
-
-	// And return the menu:
-	return menu;
+//	QMenu *menu = KTextEdit::createPopupMenu(pos);
+//
+//	int index = 0;
+//	int id = 0;
+//	while (true) {
+//		id = menu->idAt(index);
+//		if (id == -1)
+//			break;
+//		// Disable Spell Check for rich text editors, because it doesn't work anyway:
+//		if (textFormat() == Qt::RichText && (menu->text(id) == i18n("Auto Spell Check") || menu->text(id) == i18n("Check Spelling...")))
+//			menu->setItemEnabled(id, false);
+//		// Always enable tabulations!:
+//		if (menu->text(id) == i18n("Allow Tabulations"))
+//			menu->setItemEnabled(id, false);
+//		index++;
+//	}
+//
+//	// And return the menu:
+//	return menu;
 }
 
 /** class FocusedColorCombo: */
 
 FocusedColorCombo::FocusedColorCombo(QWidget *parent, const char *name)
- : KColorCombo(parent, name)
+ //TODO : KColorCombo(parent, name)
 {
 }
 
@@ -218,18 +218,18 @@ FocusedColorCombo::~FocusedColorCombo()
 
 void FocusedColorCombo::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KColorCombo::keyPressEvent(event);
+//	if (event->key() == Qt::Key_Escape)
+//		emit escapePressed();
+//	else if (event->key() == Qt::Key_Return)
+//		emit returnPressed2();
+//	else
+//		KColorCombo::keyPressEvent(event);
 }
 
 /** class FocusedFontCombo: */
 
 FocusedFontCombo::FocusedFontCombo(QWidget *parent, const char *name)
- : QFontComboBox(parent, name)
+ //TODO : QFontComboBox(parent, name)
 {
 }
 
@@ -237,20 +237,21 @@ FocusedFontCombo::~FocusedFontCombo()
 {
 }
 
+//TODO
 void FocusedFontCombo::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KQFontComboBox::keyPressEvent(event);
+//	if (event->key() == Qt::Key_Escape)
+//		emit escapePressed();
+//	else if (event->key() == Qt::Key_Return)
+//		emit returnPressed2();
+//	else
+//		KQFontComboBox::keyPressEvent(event);
 }
 
 /** class FocusedComboBox: */
 
 FocusedComboBox::FocusedComboBox(QWidget *parent, const char *name)
- : KComboBox(parent, name)
+//TODO : KComboBox(parent, name)
 {
 }
 
@@ -260,18 +261,18 @@ FocusedComboBox::~FocusedComboBox()
 
 void FocusedComboBox::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KComboBox::keyPressEvent(event);
+//	if (event->key() == Qt::Key_Escape)
+//		emit escapePressed();
+//	else if (event->key() == Qt::Key_Return)
+//		emit returnPressed2();
+//	else
+//		KComboBox::keyPressEvent(event);
 }
 
 /** class FocusedLineEdit: */
 
 FocusedLineEdit::FocusedLineEdit(QWidget *parent, const char *name)
- : KLineEdit(parent, name)
+//TODO : KLineEdit(parent, name)
 {
 }
 
@@ -281,16 +282,16 @@ FocusedLineEdit::~FocusedLineEdit()
 
 void FocusedLineEdit::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else
-		KLineEdit::keyPressEvent(event);
+//	if (event->key() == Qt::Key_Escape)
+//		emit escapePressed();
+//	else
+//		KLineEdit::keyPressEvent(event);
 }
 
 void FocusedLineEdit::enterEvent(QEvent *event)
 {
-	emit mouseEntered();
-	KLineEdit::enterEvent(event);
+//	emit mouseEntered();
+//	KLineEdit::enterEvent(event);
 }
 
 #include "focusedwidgets.moc"
