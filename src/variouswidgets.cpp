@@ -29,6 +29,7 @@
 #include <klocale.h>
 #include <qwhatsthis.h>
 #include <k3iconview.h>
+
 #include <kiconloader.h>
 #include <QMimeData>
 #include <qfontdatabase.h>
@@ -186,52 +187,52 @@ void HelpLabel::keyPressEvent(QKeyEvent *event)
 class UndraggableKIconView : public K3IconView
 {
   public:
-	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
+	//TODO UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
 //FIXME 1.5	QMimeData* dragObject() { return 0; }
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
  : KDialog(parent){
-	setCaption( caption );
-   	setButtons( KDialog::Ok | KDialog::Cancel );
-	setModal(true);
-	showButtonSeparator(false);
-	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page);
-	topLayout->setMargin(0);
-	topLayout->setSpacing(spacingHint());
-
-	QLabel *label = new QLabel(message, page);
-	topLayout->addWidget(label);
-
-	K3IconView *iconView = new UndraggableKIconView(page);
-	iconView->setItemsMovable(false);
-	iconView->setSelectionMode(K3IconView::Single);
-	m_size16  = new K3IconViewItem(iconView, 0,        i18n("16 by 16 pixels"),   DesktopIcon(icon, 16));
-	m_size22  = new K3IconViewItem(iconView, m_size16, i18n("22 by 22 pixels"),   DesktopIcon(icon, 22));
-	m_size32  = new K3IconViewItem(iconView, m_size22, i18n("32 by 32 pixels"),   DesktopIcon(icon, 32));
-	m_size48  = new K3IconViewItem(iconView, m_size32, i18n("48 by 48 pixels"),   DesktopIcon(icon, 48));
-	m_size64  = new K3IconViewItem(iconView, m_size48, i18n("64 by 64 pixels"),   DesktopIcon(icon, 64));
-	m_size128 = new K3IconViewItem(iconView, m_size64, i18n("128 by 128 pixels"), DesktopIcon(icon, 128));
-	iconView->setMinimumWidth(m_size16->width() + m_size22->width() + m_size32->width() + m_size48->width() + m_size64->width() + m_size128->width() +
-	                          (6+2) * iconView->spacing() + 20);
-	iconView->setMinimumHeight(m_size128->height() + 2 * iconView->spacing() + 20);
-	topLayout->addWidget(iconView);
-	switch (iconSize) {
-		case 16:  iconView->setSelected(m_size16,  true); m_iconSize = 16;  break;
-		case 22:  iconView->setSelected(m_size22,  true); m_iconSize = 22;  break;
-		default:
-		case 32:  iconView->setSelected(m_size32,  true); m_iconSize = 32;  break;
-		case 48:  iconView->setSelected(m_size48,  true); m_iconSize = 48;  break;
-		case 64:  iconView->setSelected(m_size64,  true); m_iconSize = 64;  break;
-		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
-	}
-
-	connect( iconView, SIGNAL(executed(QTreeWidgetItem*)),      this, SLOT(choose(QTreeWidgetItem*)) );
-	connect( iconView, SIGNAL(returnPressed(QTreeWidgetItem*)), this, SLOT(choose(QTreeWidgetItem*)) );
-	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
-
-	setMainWidget(page);
+//	setCaption( caption );
+//   	setButtons( KDialog::Ok | KDialog::Cancel );
+//	setModal(true);
+//	showButtonSeparator(false);
+//	QWidget *page = new QWidget(this);
+//	QVBoxLayout *topLayout = new QVBoxLayout(page);
+//	topLayout->setMargin(0);
+//	topLayout->setSpacing(spacingHint());
+//
+//	QLabel *label = new QLabel(message, page);
+//	topLayout->addWidget(label);
+//
+//	K3IconView *iconView = new UndraggableKIconView(page);
+//	iconView->setItemsMovable(false);
+//	iconView->setSelectionMode(K3IconView::Single);
+//	m_size16  = new K3IconViewItem(iconView, 0,        i18n("16 by 16 pixels"),   DesktopIcon(icon, 16));
+//	m_size22  = new K3IconViewItem(iconView, m_size16, i18n("22 by 22 pixels"),   DesktopIcon(icon, 22));
+//	m_size32  = new K3IconViewItem(iconView, m_size22, i18n("32 by 32 pixels"),   DesktopIcon(icon, 32));
+//	m_size48  = new K3IconViewItem(iconView, m_size32, i18n("48 by 48 pixels"),   DesktopIcon(icon, 48));
+//	m_size64  = new K3IconViewItem(iconView, m_size48, i18n("64 by 64 pixels"),   DesktopIcon(icon, 64));
+//	m_size128 = new K3IconViewItem(iconView, m_size64, i18n("128 by 128 pixels"), DesktopIcon(icon, 128));
+//	iconView->setMinimumWidth(m_size16->width() + m_size22->width() + m_size32->width() + m_size48->width() + m_size64->width() + m_size128->width() +
+//	                          (6+2) * iconView->spacing() + 20);
+//	iconView->setMinimumHeight(m_size128->height() + 2 * iconView->spacing() + 20);
+//	topLayout->addWidget(iconView);
+//	switch (iconSize) {
+//		case 16:  iconView->setSelected(m_size16,  true); m_iconSize = 16;  break;
+//		case 22:  iconView->setSelected(m_size22,  true); m_iconSize = 22;  break;
+//		default:
+//		case 32:  iconView->setSelected(m_size32,  true); m_iconSize = 32;  break;
+//		case 48:  iconView->setSelected(m_size48,  true); m_iconSize = 48;  break;
+//		case 64:  iconView->setSelected(m_size64,  true); m_iconSize = 64;  break;
+//		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
+//	}
+//
+//	connect( iconView, SIGNAL(executed(QTreeWidgetItem*)),      this, SLOT(choose(QTreeWidgetItem*)) );
+//	connect( iconView, SIGNAL(returnPressed(QTreeWidgetItem*)), this, SLOT(choose(QTreeWidgetItem*)) );
+//	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
+//
+//	setMainWidget(page);
 }
 
 IconSizeDialog::~IconSizeDialog()

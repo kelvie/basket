@@ -88,7 +88,7 @@ class ExtendedTextDrag : public QMimeData
 
 // Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!
 
-class K3URLDrag2 : public K3URLDrag
+/*FIXME class K3URLDrag2 : public K3URLDrag
 {
   Q_OBJECT
   public:
@@ -97,6 +97,6 @@ class K3URLDrag2 : public K3URLDrag
 	{
 		return encodedData(mime);
 	}
-};
+};*/
 
 #endif // NOTEDRAG_H

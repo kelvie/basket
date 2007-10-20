@@ -52,7 +52,7 @@
 #include <kglobal.h>
 
 #include "likeback.h"
-#include "likeback_private.h"
+//#include "likeback_private.h"
 #include <QIcon>
 #include <kcmdlineargs.h>
 #include <QDesktopWidget>
@@ -117,7 +117,8 @@ LikeBackBar::LikeBackBar ( LikeBack *likeBack )
 }
 
 LikeBackBar::~LikeBackBar()
-{}
+{
+}
 
 void LikeBackBar::startTimer()
 {
@@ -665,10 +666,10 @@ void LikeBack::fetchUserEmail()
 /*******************************************/
 
 LikeBackDialog::LikeBackDialog ( LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack )
-		: KDialog ( kapp->activeWindow() )
-		, m_likeBack ( likeBack )
-		, m_windowPath ( windowPath )
-		, m_context ( context )
+//TODO		: KDialog ( kapp->activeWindow() )
+//TODO		, m_likeBack ( likeBack )
+//TODO		, m_windowPath ( windowPath )
+//TODO		, m_context ( context )
 {
 	setObjectName ( "_likeback_feedback_window_" );
 	setCaption ( i18n ( "Send a Comment to Developers" ) );
@@ -785,8 +786,8 @@ LikeBackDialog::LikeBackDialog ( LikeBack::Button reason, const QString &initial
 	setMainWidget ( page );
 }
 
-LikeBackDialog::~LikeBackDialog()
-{}
+/*FIXME LikeBackDialog::~LikeBackDialog()
+{}*/
 
 QString LikeBackDialog::introductionText()
 {

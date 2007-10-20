@@ -131,48 +131,48 @@ void BackupDialog::populateLastBackup()
 
 void BackupDialog::moveToAnotherFolder()
 {
-	KUrl selectedURL = KDirSelectDialog::selectDirectory (
-	                       /*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
-	                       /*caption=*/i18n ( "Choose a Folder Where to Move Baskets" ) );
-
-	if ( !selectedURL.isEmpty() )
-	{
-		QString folder = selectedURL.path();
-		QDir dir ( folder );
-		// The folder should not exists, or be empty (because KDirSelectDialog will likely create it anyway):
-		if ( dir.exists() )
-		{
-			// Get the content of the folder:
-			QStringList content = dir.entryList();
-			if ( content.count() > 2 )
-			{ // "." and ".."
-				int result = KMessageBox::questionYesNo (
-				                 0,
-				                 "<qt>" + i18n ( "The folder <b>%1</b> is not empty. Do you want to override it?" ).arg ( folder ),
-				                 i18n ( "Override Folder?" ),
-				                 KGuiItem ( i18n ( "&Override" ), "document-save" )
-				             );
-				if ( result == KMessageBox::No )
-					return;
-			}
-			Tools::deleteRecursively ( folder );
-		}
-		FormatImporter copier;
-		copier.moveFolder ( Global::savesFolder(), folder );
-		Backup::setFolderAndRestart ( folder, i18n ( "Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be restarted to take this change into account." ) );
-	}
+//	KUrl selectedURL = KDirSelectDialog::selectDirectory (
+//	                       /*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
+//	                       /*caption=*/i18n ( "Choose a Folder Where to Move Baskets" ) );
+//
+//	if ( !selectedURL.isEmpty() )
+//	{
+//		QString folder = selectedURL.path();
+//		QDir dir ( folder );
+//		// The folder should not exists, or be empty (because KDirSelectDialog will likely create it anyway):
+//		if ( dir.exists() )
+//		{
+//			// Get the content of the folder:
+//			QStringList content = dir.entryList();
+//			if ( content.count() > 2 )
+//			{ // "." and ".."
+//				int result = KMessageBox::questionYesNo (
+//				                 0,
+//				                 "<qt>" + i18n ( "The folder <b>%1</b> is not empty. Do you want to override it?" ).arg ( folder ),
+//				                 i18n ( "Override Folder?" ),
+//				                 KGuiItem ( i18n ( "&Override" ), "document-save" )
+//				             );
+//				if ( result == KMessageBox::No )
+//					return;
+//			}
+//			Tools::deleteRecursively ( folder );
+//		}
+//		FormatImporter copier;
+//		copier.moveFolder ( Global::savesFolder(), folder );
+//		Backup::setFolderAndRestart ( folder, i18n ( "Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be restarted to take this change into account." ) );
+//	}
 }
 
 void BackupDialog::useAnotherExistingFolder()
 {
-	KUrl selectedURL = KDirSelectDialog::selectDirectory (
-	                       /*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
-	                       /*caption=*/i18n ( "Choose an Existing Folder to Store Baskets" ) );
-
-	if ( !selectedURL.isEmpty() )
-	{
-		Backup::setFolderAndRestart ( selectedURL.path(), i18n ( "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is going to be restarted to take this change into account." ) );
-	}
+//	KUrl selectedURL = KDirSelectDialog::selectDirectory (
+//	                       /*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
+//	                       /*caption=*/i18n ( "Choose an Existing Folder to Store Baskets" ) );
+//
+//	if ( !selectedURL.isEmpty() )
+//	{
+//		Backup::setFolderAndRestart ( selectedURL.path(), i18n ( "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is going to be restarted to take this change into account." ) );
+//	}
 }
 
 void BackupDialog::backup()

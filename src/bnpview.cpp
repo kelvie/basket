@@ -89,7 +89,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	m_regionGrabber(0), m_passiveDroppedSelection(0), m_passivePopup(0), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
-QDBusConnection::sessionBus().registerObject("org.kde.basket", this,
+	QDBusConnection::sessionBus().registerObject("org.kde.basket", this,
                             QDBusConnection::ExportScriptableSlots);
 	/* Settings */
 	Settings::loadConfig();
@@ -97,8 +97,8 @@ QDBusConnection::sessionBus().registerObject("org.kde.basket", this,
 	Global::bnpView = this;
 
 	// Needed when loading the baskets:
-// TO DO add to KAction with  setGlobalShortcut()	Global::globalAccel       = new KGlobalAccel(this); // FIXME: might be null (KPart case)!
-// TO DO AS UPPER	Global::backgroundManager = new BackgroundManager();
+// TODO add to KAction with  setGlobalShortcut()	Global::globalAccel       = new KGlobalAccel(this); // FIXME: might be null (KPart case)!
+// TODO AS UPPER	Global::backgroundManager = new BackgroundManager();
 
 	setupGlobalShortcuts();
 	initialize();

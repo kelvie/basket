@@ -63,6 +63,8 @@
 #include <kcolordialog.h>
 #include <kaboutdata.h>
 
+#include <kactioncollection.h>
+
 #include <kdeversion.h>
 #include <qdesktopwidget.h>
 #include <kwindowsystem.h>
@@ -102,10 +104,15 @@
 /** Container */
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
-	: KMainWindow(parent, name != 0 ? name : "MainWindow"), m_settings(0), m_quit(false)
+	: //TODO KMainWindow(parent, name != 0 ? name : "MainWindow")
+	KXmlGuiWindow( parent )
+	, m_settings(0)
+	, m_quit(false)
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
-	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
+	//TODO m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
+	KActionCollection *x = new KActionCollection( dynamic_cast<KMainWindow*>(this) );
+	m_baskets = new BNPView(this, "BNPViewApp", dynamic_cast<KXMLGUIClient*>(this), x, bar );
 	setCentralWidget(m_baskets);
 
 	setupActions();
@@ -115,41 +122,45 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
 
 //	m_actShowToolbar->setChecked(   toolBar()->isVisible()   );
-	m_actShowStatusbar->setChecked( statusBar()->isVisible() );
+//TODO	m_actShowStatusbar->setChecked( statusBar()->isVisible() );
 	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
 
 //	InlineEditors::instance()->richTextToolBar();
-	setStandardToolBarMenuEnabled(true);
+//TODO	setStandardToolBarMenuEnabled(true);
 
 	createGUI("basketui.rc");
-	applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
+	//TODO applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
 }
 
 MainWindow::~MainWindow()
 {
-	saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
-	delete m_settings;
+//TODO	saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
+//TODO	delete m_settings;
 }
 
 void MainWindow::setupActions()
 {
-	actQuit         = KStandardAction::quit( this, SLOT(quit()), actionCollection() );
-	new KAction(i18n("Minimize"), "", 0,
-				this, SLOT(minimizeRestore()), actionCollection(), "minimizeRestore" );
+	//TODO
+	KActionCollection *x = new KActionCollection( dynamic_cast<KMainWindow*>(this) );
+	//actionCollection()
+
+	actQuit         = KStandardAction::quit( this, SLOT(quit()), x );
+	/*FIXME new KAction(i18n("Minimize"), "", 0,
+				this, SLOT(minimizeRestore()), x, "minimizeRestore" );*/
 	/** Settings : ************************************************************/
 //	m_actShowToolbar   = KStandardAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
-	m_actShowStatusbar = KStandardAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
+	m_actShowStatusbar = KStandardAction::showStatusbar( this, SLOT(toggleStatusBar()), x);
 
 //	m_actShowToolbar->setCheckedState( KGuiItem(i18n("Hide &Toolbar")) );
 
-	(void) KStandardAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), actionCollection() );
+	(void) KStandardAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), x );
 
-	(void) KStandardAction::configureToolbars(this, SLOT(configureToolbars()), actionCollection() );
+	(void) KStandardAction::configureToolbars(this, SLOT(configureToolbars()), x );
 
 	//KAction *actCfgNotifs = KStandardAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection() );
 	//actCfgNotifs->setEnabled(false); // Not yet implemented !
 
-	actAppConfig = KStandardAction::preferences( this, SLOT(showSettingsDialog()), actionCollection() );
+	actAppConfig = KStandardAction::preferences( this, SLOT(showSettingsDialog()), x );
 }
 
 /*void MainWindow::toggleToolBar()
@@ -169,16 +180,16 @@ void MainWindow::toggleStatusBar()
 	else
 		statusBar()->show();
 
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+	//TODO saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 }
 
 void MainWindow::configureToolbars()
 {
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+	//TODO saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 
-	KEditToolBar dlg(actionCollection());
-	connect( &dlg, SIGNAL(newToolbarConfig()), this, SLOT(slotNewToolbarConfig()) );
-	dlg.exec();
+	//TODO KEditToolBar dlg(actionCollection());
+	//TODO connect( &dlg, SIGNAL(newToolbarConfig()), this, SLOT(slotNewToolbarConfig()) );
+	//TODO dlg.exec();
 }
 
 void MainWindow::configureNotifications()
@@ -191,11 +202,11 @@ void MainWindow::configureNotifications()
 void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is clicked
 {
 	// ...if you use any action list, use plugActionList on each here...
-	createGUI("basketui.rc"); // TODO: Reconnect tags menu aboutToShow() ??
+//TODO	createGUI("basketui.rc"); // TODO: Reconnect tags menu aboutToShow() ??
 	if (!Global::bnpView->isPart())
 		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
-	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
-	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+//TODO	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
+//TODO	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 }
 
 void MainWindow::showSettingsDialog()
@@ -203,16 +214,16 @@ void MainWindow::showSettingsDialog()
 	if(m_settings == 0)
 		m_settings = new KSettings::Dialog(kapp->activeWindow());
 	if (Global::mainWindow()) {
-		m_settings->dialog()->showButton(KDialog::Help,    false); // Not implemented!
-		m_settings->dialog()->showButton(KDialog::Default, false); // Not implemented!
-		m_settings->dialog()->exec();
+//TODO		m_settings->dialog()->showButton(KDialog::Help,    false); // Not implemented!
+//TODO		m_settings->dialog()->showButton(KDialog::Default, false); // Not implemented!
+//TODO		m_settings->dialog()->exec();
 	} else
 		m_settings->show();
 }
 
 void MainWindow::showShortcutsSettingsDialog()
 {
-	KShortcutsDialog::configure(actionCollection(), "basketui.rc");
+//TODO	KShortcutsDialog::configure(actionCollection(), "basketui.rc");
 	//.setCaption(..)
 	//actionCollection()->writeSettings();
 }
@@ -239,7 +250,7 @@ void MainWindow::polish()
 		//resize(Settings::mainWindowSize());
 	}
 
-	KMainWindow::polish();
+//TODO	KMainWindow::polish();
 
 	if (shouldSave) {
 //		std::cout << "Main Window Position: Save size and position in show(x="
@@ -308,14 +319,16 @@ bool MainWindow::queryClose()
 
 bool MainWindow::askForQuit()
 {
-	QString message = i18n("<p>Do you really want to quit %1?</p>").arg(KCmdLineArgs::aboutData( )->programName());
+	//TODO QString message = i18n("<p>Do you really want to quit %1?</p>").arg(KCmdLineArgs::aboutData( )->programName());
+	QString message = i18n("<p>Do you really want to quit ?</p>");
 	if (Settings::useSystray())
 		message += i18n("<p>Notice that you do not have to quit the application before ending your KDE session. "
 				"If you end your session while the application is still running, the application will be reloaded the next time you log in.</p>");
 
+	/*int really = KMessageBox::warningContinueCancel( this, message, i18n("Quit Confirm"),
+			KStandardGuiItem::quit(), "confirmQuitAsking" );*/
 	int really = KMessageBox::warningContinueCancel( this, message, i18n("Quit Confirm"),
-			KStandardGuiItem::quit(), "confirmQuitAsking" );
-
+			KStandardGuiItem::quit() );
 	if (really == KMessageBox::Cancel)
 	{
 		m_quit = false;

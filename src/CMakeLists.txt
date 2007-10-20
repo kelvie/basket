@@ -65,7 +65,7 @@ KDE4_ADD_UI_FILES(basketcommon_LIB_SRCS ${basketcommon_UI})
 
 KDE4_ADD_LIBRARY(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-TARGET_LINK_LIBRARIES(basketcommon  ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts kdefx  )
+TARGET_LINK_LIBRARIES(basketcommon  ${QT_QT3SUPPORT_LIBRARY} ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts kdefx )
 
 SET_TARGET_PROPERTIES(basketcommon PROPERTIES VERSION 4.2.0 SOVERSION 4 )
 INSTALL(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
@@ -74,9 +74,9 @@ INSTALL(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
 ########### next target ###############
 
 SET(basket_SRCS
+	mainwindow.cpp
+	application.cpp
    main.cpp
-   mainwindow.cpp
-   application.cpp
    )
 
 #KDE4_AUTOMOC(${basket_SRCS})
@@ -90,39 +90,39 @@ INSTALL(TARGETS basket DESTINATION ${BIN_INSTALL_DIR})
 
 ########### next target ###############
 
-SET(kcm_basket_PART_SRCS
-   kcm_basket.cpp
-   )
+# SET(kcm_basket_PART_SRCS
+#   kcm_basket.cpp
+#   )
+#
+##KDE4_AUTOMOC(${kcm_basket_PART_SRCS})
 
-#KDE4_AUTOMOC(${kcm_basket_PART_SRCS})
+#KDE4_ADD_PLUGIN(kcm_basket ${kcm_basket_PART_SRCS})
 
-KDE4_ADD_PLUGIN(kcm_basket ${kcm_basket_PART_SRCS})
+#TARGET_LINK_LIBRARIES(kcm_basket  ${QT_AND_KDECORE_LIBS} basketcommon kdeui )
 
-TARGET_LINK_LIBRARIES(kcm_basket  ${QT_AND_KDECORE_LIBS} basketcommon kdeui )
-
-INSTALL(TARGETS kcm_basket DESTINATION ${LIB_INSTALL_DIR})
+#INSTALL(TARGETS kcm_basket DESTINATION ${LIB_INSTALL_DIR})
 
 
 ########### next target ###############
 
-SET(basketpart_PART_SRCS
-   basket_part.cpp
-   )
+#SET(basketpart_PART_SRCS
+#   basket_part.cpp
+#   )
 
-#KDE_AUTOMOC(${basketpart_PART_SRCS})
+##KDE_AUTOMOC(${basketpart_PART_SRCS})
 
-KDE4_ADD_PLUGIN(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
+#KDE4_ADD_PLUGIN(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 
-TARGET_LINK_LIBRARIES(basketpart  ${QT_AND_KDECORE_LIBS} basketcommon kparts kdeui DCOP )
+#TARGET_LINK_LIBRARIES(basketpart  ${QT_AND_KDECORE_LIBS} basketcommon kparts kdeui DCOP )
 
-INSTALL(TARGETS basketpart DESTINATION ${LIB_INSTALL_DIR})
+#INSTALL(TARGETS basketpart DESTINATION ${LIB_INSTALL_DIR})
 
 
 ########### install files ###############
 
-INSTALL(FILES  basket_part.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
-INSTALL(FILES  basket_part.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-INSTALL(FILES  basket.desktop DESTINATION /share/applnk/Utilities)
+#INSTALL(FILES  basket_part.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
+#INSTALL(FILES  basket_part.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+INSTALL(FILES  basket.desktop DESTINATION ${DATA_INSTALL_DIR}/share/applnk/Utilities)
 INSTALL(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	basket_config_features.desktop  	basket_config_notes.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 INSTALL(FILES basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
 

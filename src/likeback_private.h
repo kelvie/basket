@@ -24,7 +24,7 @@
 #include <kdialog.h>
 #include <qtimer.h>
 
-#include "likeback.h"
+//#include "likeback.h"
 
 class QToolButton;
 class QTextEdit;
@@ -32,28 +32,6 @@ class QCheckBox;
 class QButtonGroup;
 class Kaction;
 //class KSharedConfigPtr;
-
-class LikeBackPrivate
-{
-  public:
-	LikeBackPrivate();
-	~LikeBackPrivate();
-	LikeBackBar             *bar;
-	KConfig*        config;
-	const KAboutData        *aboutData;
-	LikeBack::Button         buttons;
-	QString                  hostName;
-	QString                  remotePath;
-	quint16                 hostPort;
-	QStringList              acceptedLocales;
-	QString                  acceptedLanguagesMessage;
-	LikeBack::WindowListing  windowListing;
-	bool                     showBarByDefault;
-	bool                     showBar;
-	int                      disabledCount;
-	QString                  fetchedEmail;
-	KAction                 *action;
-};
 
 class LikeBackBar : public QWidget
 {
@@ -79,12 +57,34 @@ class LikeBackBar : public QWidget
 	QToolButton *m_featureButton;
 };
 
+class LikeBackPrivate
+{
+  public:
+	LikeBackPrivate();
+	~LikeBackPrivate();
+	LikeBackBar             *bar;
+	KConfig*        config;
+	const KAboutData        *aboutData;
+	LikeBack::Button         buttons;
+	QString                  hostName;
+	QString                  remotePath;
+	quint16                 hostPort;
+	QStringList              acceptedLocales;
+	QString                  acceptedLanguagesMessage;
+	LikeBack::WindowListing  windowListing;
+	bool                     showBarByDefault;
+	bool                     showBar;
+	int                      disabledCount;
+	QString                  fetchedEmail;
+	KAction                 *action;
+};
+
 class LikeBackDialog : public KDialog
 {
   Q_OBJECT
   public:
 	LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack);
-	~LikeBackDialog();
+	//~LikeBackDialog();
   private:
 	LikeBack     *m_likeBack;
 	QString       m_windowPath;

@@ -27,6 +27,8 @@
 #include <qdir.h>
 #include <kdebug.h>
 #include <kconfig.h>
+#include <qobject.h>
+#include <ksharedconfig.h>
 
 #include "global.h"
 #include "bnpview.h"
@@ -93,7 +95,8 @@ KMainWindow* Global::mainWindow()
 
 KConfig* Global::config()
 {
-//FIXME 1.5	if(!Global::basketConfig)
-//		Global::basketConfig = qobject_cast<KConfig*>(KSharedConfig::openConfig("basketrc"));
+	if (!Global::basketConfig) {
+		Global::basketConfig = dynamic_cast<KConfig*>(KSharedConfig::openConfig("basketrc").data());
+	}
 	return Global::basketConfig;
 }

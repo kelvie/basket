@@ -21,7 +21,7 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include <kmainwindow.h>
+#include <kxmlguiwindow.h>
 #include <qtabbar.h>
 #include <qtabwidget.h>
 #include <qlabel.h>
@@ -54,11 +54,10 @@ class BNPView;
 class ClickableLabel;
 namespace KSettings { class Dialog; };
 
-
 /** The window that contain baskets, organized by tabs.
   * @author S�astien Laot
   */
-class MainWindow : public KMainWindow
+class MainWindow : public KXmlGuiWindow
 {
   Q_OBJECT
   public:

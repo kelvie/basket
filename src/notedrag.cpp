@@ -49,53 +49,53 @@ void NoteDrag::createAndEmptyCuttingTmpFolder()
 
 QMimeData* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *source)
 {
-	if (noteList->count() <= 0)
-		return 0;
-
-	// The MimeSource:
-	K3MultipleDrag *multipleDrag = new K3MultipleDrag(source);
-
-	// Make sure the temporary folder exists and is empty (we delete previously moved file(s) (if exists)
-	// since we override the content of the clipboard and previous file willn't be accessable anymore):
-	createAndEmptyCuttingTmpFolder();
-
-	// The "Native Format" Serialization:
-	QBuffer buffer;
-	if (buffer.open(QIODevice::WriteOnly)) {
-		QDataStream stream(&buffer);
-		// First append a pointer to the basket:
-		stream << (quint64)(noteList->firstStacked()->note->basket());
-		// Then a list of pointers to all notes, and parent groups:
-		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
-			stream << (quint64)(node->note);
-		QList<Note*> groups = noteList->parentGroups();
-		for (QList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
-			stream << (quint64)(*it);
-		stream << (quint64)0;
-		// And finally the notes themselves:
-		serializeNotes(noteList, stream, cutting);
-		// Append the object:
-		buffer.close();
-//TODO		QStoredDrag *dragObject = new QStoredDrag(NOTE_MIME_STRING, source);
-//		dragObject->setEncodedData(buffer.buffer());
-//		multipleDrag->addDragObject(dragObject);
-	}
-
-	// The "Other Flavours" Serialization:
-	serializeText(  noteList, multipleDrag          );
-	serializeHtml(  noteList, multipleDrag          );
-	serializeImage( noteList, multipleDrag          );
-	serializeLinks( noteList, multipleDrag, cutting );
-
-	// The Alternate Flavours:
-	if (noteList->count() == 1)
-		noteList->firstStacked()->note->content()->addAlternateDragObjects(multipleDrag);
-
-	// If it is a drag, and not a copy/cut, add the feedback pixmap:
-	if (source)
-		setFeedbackPixmap(noteList, multipleDrag);
-
-	//TODO return multipleDrag;
+//	if (noteList->count() <= 0)
+//		return 0;
+//
+//	// The MimeSource:
+//	K3MultipleDrag *multipleDrag = new K3MultipleDrag(source);
+//
+//	// Make sure the temporary folder exists and is empty (we delete previously moved file(s) (if exists)
+//	// since we override the content of the clipboard and previous file willn't be accessable anymore):
+//	createAndEmptyCuttingTmpFolder();
+//
+//	// The "Native Format" Serialization:
+//	QBuffer buffer;
+//	if (buffer.open(QIODevice::WriteOnly)) {
+//		QDataStream stream(&buffer);
+//		// First append a pointer to the basket:
+//		stream << (quint64)(noteList->firstStacked()->note->basket());
+//		// Then a list of pointers to all notes, and parent groups:
+//		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
+//			stream << (quint64)(node->note);
+//		QList<Note*> groups = noteList->parentGroups();
+//		for (QList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
+//			stream << (quint64)(*it);
+//		stream << (quint64)0;
+//		// And finally the notes themselves:
+//		serializeNotes(noteList, stream, cutting);
+//		// Append the object:
+//		buffer.close();
+////TODO		QStoredDrag *dragObject = new QStoredDrag(NOTE_MIME_STRING, source);
+////		dragObject->setEncodedData(buffer.buffer());
+////		multipleDrag->addDragObject(dragObject);
+//	}
+//
+//	// The "Other Flavours" Serialization:
+//	serializeText(  noteList, multipleDrag          );
+//	serializeHtml(  noteList, multipleDrag          );
+//	serializeImage( noteList, multipleDrag          );
+//	serializeLinks( noteList, multipleDrag, cutting );
+//
+//	// The Alternate Flavours:
+//	if (noteList->count() == 1)
+//		noteList->firstStacked()->note->content()->addAlternateDragObjects(multipleDrag);
+//
+//	// If it is a drag, and not a copy/cut, add the feedback pixmap:
+//	if (source)
+//		setFeedbackPixmap(noteList, multipleDrag);
+//
+//	//TODO return multipleDrag;
 }
 
 void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool cutting)
@@ -222,6 +222,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 	}
 	if (!urls.isEmpty()) {
 		// First, the standard text/uri-list MIME format:
+/* FIXME
 #if KDE_IS_VERSION( 3, 3, 90 )
 		K3URLDrag *urlsDrag = new K3URLDrag(urls);
 		// ONLY export as text/uri-list, and not as text/plain* as we wil do that better ourself
@@ -234,7 +235,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 		uriListDrag->setEncodedData(byteArray);
 		multipleDrag->addDragObject(uriListDrag);
 		delete urlsDrag;
-#endif
+#endif */
 		// Then, also provide it in the Mozilla proprietary format (that also allow to add titles to URLs):
 		// A version for Mozilla applications (convert to "theUrl\ntheTitle", into UTF-16):
 		// FIXME: Does Mozilla support the drag of several URLs at once?

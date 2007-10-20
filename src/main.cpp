@@ -74,6 +74,7 @@ int main ( int argc, char *argv[] )
 	const char *argv0 = ( argc >= 1 ? argv[0] : "" );
 
 	KCmdLineArgs::init ( argc, argv, Global::about() );
+
 	KCmdLineOptions basket_options;
 	basket_options.add ( "d", KLocalizedString(), 0 );
 	basket_options.add ( "debug", ki18n ( "Show the debug window" ), 0 );
@@ -86,9 +87,10 @@ int main ( int argc, char *argv[] )
 	basket_options.add ( "+[file]", ki18n ( "Open basket archive or template" ), 0 );
 	KCmdLineArgs::addCmdLineOptions ( basket_options );
 
-	KUniqueApplication::addCmdLineOptions();
+	//KUniqueApplication::addCmdLineOptions();
 	//KUniqueApplication app;
-	Application app;
+	KApplication app;
+	//Application app;
 
 	Backup::figureOutBinaryPath ( argv0, app );
 

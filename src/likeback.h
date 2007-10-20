@@ -22,15 +22,23 @@
 #define LIKEBACK_H
 
 #include <qobject.h>
+#include <kdialog.h>
+#include <qtimer.h>
 
 class KConfig;
 class KAboutData;
 class KAction;
 class KActionCollection;
 
+class QToolButton;
+class QTextEdit;
+class QCheckBox;
+class QButtonGroup;
+class Kaction;
+
 class LikeBackPrivate;
-class LikeBackBar;
-class LikeBackDialog;
+//class LikeBackBar;
+//class LikeBackDialog;
 
 /**
  * @short System to Get Quick Feedback from Beta-Testers
@@ -361,4 +369,75 @@ class LikeBack : public QObject
 	static bool isDevelopmentVersion(const QString &version);
 };
 
+class LikeBackBar : public QWidget
+{
+  Q_OBJECT
+  public:
+	LikeBackBar(LikeBack *likeBack);
+	~LikeBackBar();
+  public slots:
+	void startTimer();
+	void stopTimer();
+  private slots:
+	void autoMove();
+	void clickedLike();
+	void clickedDislike();
+	void clickedBug();
+	void clickedFeature();
+  private:
+	LikeBack    *m_likeBack;
+	QTimer       m_timer;
+	QToolButton *m_likeButton;
+	QToolButton *m_dislikeButton;
+	QToolButton *m_bugButton;
+	QToolButton *m_featureButton;
+};
+
+class LikeBackPrivate
+{
+  public:
+	LikeBackPrivate();
+	~LikeBackPrivate();
+	LikeBackBar             *bar;
+	KConfig*        config;
+	const KAboutData        *aboutData;
+	LikeBack::Button         buttons;
+	QString                  hostName;
+	QString                  remotePath;
+	quint16                 hostPort;
+	QStringList              acceptedLocales;
+	QString                  acceptedLanguagesMessage;
+	LikeBack::WindowListing  windowListing;
+	bool                     showBarByDefault;
+	bool                     showBar;
+	int                      disabledCount;
+	QString                  fetchedEmail;
+	KAction                 *action;
+};
+
+class LikeBackDialog : public KDialog
+{
+  Q_OBJECT
+  public:
+	LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack);
+	//~LikeBackDialog();
+  private:
+	LikeBack     *m_likeBack;
+	QString       m_windowPath;
+	QString       m_context;
+	QButtonGroup *m_group;
+	QTextEdit    *m_comment;
+	QCheckBox    *m_showButtons;
+	QString introductionText();
+  private slots:
+	void polish();
+	void slotDefault();
+	void slotOk();
+	void changeButtonBarVisible();
+	void commentChanged();
+	void send();
+	void requestFinished(int id, bool error);
+};
+
 #endif // LIKEBACK_H
+
