@@ -676,7 +676,8 @@ bool BasketListViewItem::isAbbreviated()
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView ( QWidget *parent, const char *name )
-		:  QTreeWidget ( parent ), m_autoOpenItem ( 0 )
+		:  QTreeWidget ( parent )
+		, m_autoOpenItem ( 0 )
 		, m_itemUnderDrag ( 0 )
 {
 	setObjectName ( name );

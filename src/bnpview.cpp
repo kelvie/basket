@@ -344,13 +344,23 @@ void BNPView::setupGlobalShortcuts()
 
 void BNPView::initialize()
 {
-	/// Configure the List View Columns:
+	// Configure the List View Columns:
 	m_tree  = new BasketTreeListView(this);
 	QStringList headers;
 	headers << i18n( "Baskets" );
 	m_tree->setHeaderLabels( headers );
 
-//FIXME	m_tree->addColumn( i18n("Baskets") );
+	kDebug() << "Column count : " << m_tree->columnCount() << endl;
+
+	m_tree->setColumnWidth(0, 10);
+
+	/*QList<QTreeWidgetItem *> items;
+	for (int i = 0; i < 10; ++i)
+		      items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item: %1").arg(i))));
+	m_tree->insertTopLevelItems(0, items);*/
+
+	kDebug() << m_tree->columnWidth(0) << endl;
+
 //FIXME 1.5	m_tree->addColumn(i18n("Baskets"));
 //FIXME	1.5	m_tree->setColumnWidthMode(0, QListView::maximum);
 //FIXME	1.5	m_tree->setFullWidth(true);
@@ -421,7 +431,7 @@ void BNPView::initialize()
 					"You can group baskets by subject by creating new baskets inside others. "
 					"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 */
-	setTreePlacement(Settings::treeOnLeft());
+//	setTreePlacement(Settings::treeOnLeft());
 }
 
 void BNPView::setupActions()
