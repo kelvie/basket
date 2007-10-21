@@ -21,12 +21,13 @@
 
 #include "xmlwork.h"
 
-
 #include <QDomDocument>
 #include <QDomElement>
 #include <qdom.h>
 #include <qstringlist.h>
 #include <qfile.h>
+
+#include <kdebug.h>
 
 QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 {

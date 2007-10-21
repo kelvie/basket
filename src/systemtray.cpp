@@ -216,6 +216,10 @@ SystemTray::SystemTray(QWidget *parent)
 //	FIXME: When main window is shown at start, the icon is loaded 1 pixel too high
 //	       and then reloaded instantly after at the right position.
 //	setPixmap(m_iconPixmap); // Load it the sooner as possible to avoid flicker
+
+//FIXME: setIcon in updateToolTip()
+	setIcon( KIcon("basket") );
+
 	QImage  lockedIconImage   = m_iconPixmap.toImage();
 	QPixmap lockOverlayPixmap = loadIcon("lockoverlay").pixmap(32);// FIXME 1.5
 	QImage  lockOverlayImage  = lockOverlayPixmap.toImage();

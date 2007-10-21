@@ -176,8 +176,9 @@ void BNPView::lateInit()
 			load();
 		}
 		if (!firstListViewItem()) {
-		// Create first basket:
-// FIXME 1.5			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", //backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);*/
+			//Create first basket:
+			//BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+// FIXME 1.5			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", //backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		}
 	}
 
@@ -342,7 +343,11 @@ void BNPView::initialize()
 {
 	/// Configure the List View Columns:
 	m_tree  = new BasketTreeListView(this);
-// FIXME 1.5	m_tree->addColumn(i18n("Baskets"));
+	QTreeWidgetItem *x = new QTreeWidgetItem( m_tree );
+	x->setText( 0, tr("Baskets") );
+
+//FIXME	m_tree->addColumn( i18n("Baskets") );
+//FIXME 1.5	m_tree->addColumn(i18n("Baskets"));
 //FIXME	1.5	m_tree->setColumnWidthMode(0, QListView::maximum);
 //FIXME	1.5	m_tree->setFullWidth(true);
 //FIXME	1.5	m_tree->setSorting(-1/*Disabled*/);
@@ -409,7 +414,7 @@ void BNPView::initialize()
 					"You can group baskets by subject by creating new baskets inside others. "
 					"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 */
-	setTreePlacement(Settings::treeOnLeft());
+	//FIXME setTreePlacement(Settings::treeOnLeft());
 }
 
 void BNPView::setupActions()
@@ -642,8 +647,9 @@ void BNPView::setupActions()
 
 QListView* BNPView::firstListViewItem()
 {
-//FIXME 1.5	return m_tree->firstChild();
-return new QListView();
+	//FIXME return m_tree->firstChild();
+	//return QListView();
+	return NULL;
 }
 
 void BNPView::slotShowProperties(QTreeWidgetItem *item, const QPoint&, int)
