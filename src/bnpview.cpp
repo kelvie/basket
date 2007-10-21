@@ -35,6 +35,9 @@
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kstringhandler.h>
+#include <kactioncollection.h>
+#include <kstandardshortcut.h>
+#include <kactionmenu.h>
 #include <kmessagebox.h>
 #include <kfiledialog.h>
 #include <QProgressBar>
@@ -343,15 +346,16 @@ void BNPView::initialize()
 {
 	/// Configure the List View Columns:
 	m_tree  = new BasketTreeListView(this);
-	QTreeWidgetItem *x = new QTreeWidgetItem( m_tree );
-	x->setText( 0, tr("Baskets") );
+	QStringList headers;
+	headers << i18n( "Baskets" );
+	m_tree->setHeaderLabels( headers );
 
 //FIXME	m_tree->addColumn( i18n("Baskets") );
 //FIXME 1.5	m_tree->addColumn(i18n("Baskets"));
 //FIXME	1.5	m_tree->setColumnWidthMode(0, QListView::maximum);
 //FIXME	1.5	m_tree->setFullWidth(true);
 //FIXME	1.5	m_tree->setSorting(-1/*Disabled*/);
-	m_tree->setRootIsDecorated(true);
+//FIXME	m_tree->setRootIsDecorated(true);
 //FIXME	1.5	m_tree->setTreeStepSize(16);
 //FIXME	1.5	m_tree->setLineWidth(1);
 //FIXME	1.5	m_tree->setMidLineWidth(0);
@@ -359,7 +363,7 @@ void BNPView::initialize()
 
 	/// Configure the List View Drag and Drop:
 //FIXME	1.5	m_tree->setDragEnabled(true);
-	m_tree->setAcceptDrops(true);
+//FIXME	m_tree->setAcceptDrops(true);
 //FIXME	1.5	m_tree->setItemsMovable(true);
 //FIXME	1.5	m_tree->setDragAutoScroll(true);
 //FIXME	1.5	m_tree->setDropVisualizer(true);
@@ -371,10 +375,13 @@ void BNPView::initialize()
 
 	setOpaqueResize(true);
 
-//FIXME 1.5	setCollapsible(m_tree,  true);
-//FIXME 1.5	setCollapsible(m_stack, false);
 //FIXME 1.5	setResizeMode(m_tree,  QSplitter::KeepSize);
 //FIXME 1.5	setResizeMode(m_stack, QSplitter::Stretch);
+
+//FIXME 1.5	setCollapsible(m_tree,  true);
+//FIXME 1.5	setCollapsible(m_stack, false);
+	setCollapsible( 0, true );
+	setCollapsible( 1, false );
 
 	/// Configure the List View Signals:
 	connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
@@ -414,28 +421,52 @@ void BNPView::initialize()
 					"You can group baskets by subject by creating new baskets inside others. "
 					"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 */
-	//FIXME setTreePlacement(Settings::treeOnLeft());
+	setTreePlacement(Settings::treeOnLeft());
 }
 
 void BNPView::setupActions()
 {
-/*FIXME 1.5	m_actSaveAsArchive = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
-	                                  this, SLOT(saveAsArchive()), actionCollection(), "basket_export_basket_archive" );
-	m_actOpenArchive   = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
-	                                  this, SLOT(openArchive()),   actionCollection(), "basket_import_basket_archive" );
+	m_actSaveAsArchive = new KAction( this );
+	m_actSaveAsArchive->setText( i18n("&Basket Archive...") );
+	actionCollection()->addAction( "basket_export_basket_archive", m_actSaveAsArchive );
+	connect( m_actSaveAsArchive, SIGNAL(triggered(bool)), this, SLOT(saveAsArchive()) );
 
-	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStandardShortcut::shortcut(KStandardShortcut::Close),
-								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
+	m_actOpenArchive = new KAction( this );
+	m_actOpenArchive->setText( i18n("&Basket Archive...") );
+	actionCollection()->addAction( "basket_import_basket_archive", m_actOpenArchive );
+	connect( m_actOpenArchive, SIGNAL(triggered(bool)), this, SLOT(openArchive()) );
+
+	m_actHideWindow = new KAction( this );
+	m_actHideWindow->setText( i18n("&Hide Window") );
+	actionCollection()->addAction( "window_hide", m_actHideWindow );
+	connect( m_actHideWindow, SIGNAL(triggered(bool)), this, SLOT(hideOnEscape()) );
 	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
 
-	m_actExportToHtml = new KAction( i18n("&HTML Web Page..."), "html", 0,
-	             this, SLOT(exportToHTML()),      actionCollection(), "basket_export_html" );
-	new KAction( i18n("K&Notes"), "knotes", 0,
-	             this, SLOT(importKNotes()),      actionCollection(), "basket_import_knotes" );
-	new KAction( i18n("K&Jots"), "kjots", 0,
-	             this, SLOT(importKJots()),       actionCollection(), "basket_import_kjots" );
-	new KAction( i18n("&KnowIt..."), "knowit", 0,
-	             this, SLOT(importKnowIt()),      actionCollection(), "basket_import_knowit" );
+	m_actExportToHtml = new KAction( this );
+	m_actExportToHtml->setText( i18n("&HTML Web Page...") );
+	actionCollection()->addAction( "basket_export_html", m_actExportToHtml );
+	connect( m_actExportToHtml, SIGNAL(triggered(bool)), this, SLOT(exportToHTML) );
+
+	KAction *temp;
+
+	temp = new KAction( this );
+	temp->setText( i18n("K&Notes") );
+	actionCollection()->addAction( "basket_import_knotes", temp );
+	connect( temp, SIGNAL(triggered(bool)), this, SLOT(importKNotes()) );
+
+	temp = new KAction( this );
+	temp->setText( i18n("K&Jots") );
+	actionCollection()->addAction( "basket_import_kjots", temp );
+	connect( temp, SIGNAL(triggered(bool)), this, SLOT(importKJots()) );
+
+	temp = new KAction( this );
+	temp->setText( i18n("&KnowIt...") );
+	actionCollection()->addAction( "basket_import_knowit", temp );
+	connect( temp, SIGNAL(triggered(bool)), this, SLOT(importKnowIt()) );
+	
+/*FIXME	new KAction( i18n("&Backup && Restore..."), "", 0,
+	             this, SLOT(backupRestore()), actionCollection(), "basket_backup_restore" );
+
 	new KAction( i18n("Tux&Cards..."), "tuxcards", 0,
 	             this, SLOT(importTuxCards()),    actionCollection(), "basket_import_tuxcards" );
 	new KAction( i18n("&Sticky Notes"), "gnome", 0,
@@ -444,9 +475,6 @@ void BNPView::setupActions()
 	             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
 	new KAction( i18n("Text &File..."), "txt", 0,
 	             this, SLOT(importTextFile()),    actionCollection(), "basket_import_text_file" );
-
-	new KAction( i18n("&Backup && Restore..."), "", 0,
-	             this, SLOT(backupRestore()), actionCollection(), "basket_backup_restore" );
 */
 	/** Note : ****************************************************************/
 
@@ -571,21 +599,40 @@ void BNPView::setupActions()
 		if (parentWidget->inherits("MainWindow"))
 			runInsideKontact = false;
 		parentWidget = (QWidget*) parentWidget->parent();
-	}
+	} */
 
-	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
-	actNewBasket        = new KAction( i18n("&New Basket..."), (runInsideKontact ? "basket" : "document-new"), KStandardShortcut::shortcut(KStandardShortcut::New),
-									   this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
-	actNewSubBasket     = new KAction( i18n("New &Sub-Basket..."), "", "Ctrl+Shift+N",
-									   this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
-	actNewSiblingBasket = new KAction( i18n("New Si&bling Basket..."), "", "",
-									   this, SLOT(askNewSiblingBasket()), actionCollection(), "basket_new_sibling" );
+	actNewBasket = new KAction( this );
+	actNewBasket->setText( i18n("&New Basket...") );
+	actNewBasket->setShortcut( KStandardShortcut::shortcut(KStandardShortcut::New) );
+	actionCollection()->addAction( "basket_new", actNewBasket );
+	connect( actNewBasket, SIGNAL(triggered(bool)), this, SLOT(askNewBasket()) );
 
-	KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), "document-new", actionCollection(), "basket_new_menu");
-	newBasketMenu->insert(actNewBasket);
+	actNewSubBasket = new KAction( this );
+	actNewSubBasket->setText( i18n("New &Sub-Basket...") );
+	actNewSubBasket->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_N );
+	actionCollection()->addAction( "basket_new", actNewSubBasket );
+	connect( actNewSubBasket, SIGNAL(triggered(bool)), this, SLOT(askNewSubBasket()) );
+
+	actNewSiblingBasket = new KAction( this );
+	actNewSiblingBasket->setText( i18n("New Si&bling Basket...") );
+	actionCollection()->addAction( "basket_new", actNewSiblingBasket );
+	connect( actNewSiblingBasket, SIGNAL(triggered(bool)), this, SLOT(askNewSiblingBasket()) );
+
+	//KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), "document-new", actionCollection(), "basket_new_menu");
+	KActionMenu *newBasketMenu = new KActionMenu( this );
+	newBasketMenu->setText( i18n("&New") );
+	newBasketMenu->addAction( actNewBasket );
+	newBasketMenu->addAction( actNewSubBasket );
+	newBasketMenu->addAction( actNewSiblingBasket );
+	actionCollection()->addAction( "basket_new_menu", newBasketMenu );
+	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
+
+	/*newBasketMenu->insert(actNewBasket);
 	newBasketMenu->insert(actNewSubBasket);
 	newBasketMenu->insert(actNewSiblingBasket);
-	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
+	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );*/
+
+/*	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
 
 	m_actPropBasket = new KAction( i18n("&Properties..."), "misc", "F2",
 								   this, SLOT(propBasket()), actionCollection(), "basket_properties" );
@@ -639,17 +686,17 @@ void BNPView::setupActions()
 	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
 */
 	/** Help : ****************************************************************/
-
-/*FIXME 1.5
-	new KAction( i18n("&Welcome Baskets"), "", "", this, SLOT(addWelcomeBaskets()), actionCollection(), "help_welcome_baskets" );
-*/
+	temp = new KAction( this );
+	temp->setText( i18n("&Welcome Baskets") );
+	actionCollection()->addAction( "help_welcome_baskets", temp );
+	connect( temp, SIGNAL(triggered(bool)), this, SLOT(addWelcomeBaskets()) );
 }
 
 QListView* BNPView::firstListViewItem()
 {
 	//FIXME return m_tree->firstChild();
 	//return QListView();
-	return NULL;
+	//return NULL;
 }
 
 void BNPView::slotShowProperties(QTreeWidgetItem *item, const QPoint&, int)
@@ -1204,7 +1251,7 @@ void BNPView::removeBasket(Basket *basket)
 
 void BNPView::setTreePlacement(bool onLeft)
 {
-/* FIXME 1.5	if (onLeft)
+/*FIXME	if (onLeft)
 		moveToFirst(m_tree);
 	else
 		moveToLast(m_tree);
