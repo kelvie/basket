@@ -110,23 +110,23 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	, m_quit(false)
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
-	//TODO m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
+//	//TODO m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
 	KActionCollection *x = new KActionCollection( dynamic_cast<KMainWindow*>(this) );
 	m_baskets = new BNPView(this, "BNPViewApp", dynamic_cast<KXMLGUIClient*>(this), x, bar );
 	setCentralWidget(m_baskets);
 
-	setupActions();
-	statusBar()->show();
-	statusBar()->setSizeGripEnabled(true);
-
-	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
-
-//	m_actShowToolbar->setChecked(   toolBar()->isVisible()   );
-//TODO	m_actShowStatusbar->setChecked( statusBar()->isVisible() );
-	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
-
-//	InlineEditors::instance()->richTextToolBar();
-//TODO	setStandardToolBarMenuEnabled(true);
+//	setupActions();
+//	statusBar()->show();
+//	statusBar()->setSizeGripEnabled(true);
+//
+//	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
+//
+////	m_actShowToolbar->setChecked(   toolBar()->isVisible()   );
+////TODO	m_actShowStatusbar->setChecked( statusBar()->isVisible() );
+//	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
+//
+////	InlineEditors::instance()->richTextToolBar();
+////TODO	setStandardToolBarMenuEnabled(true);
 
 	createGUI("basketui.rc");
 	//TODO applyMainWindowSettings(KGlobal::config(), autoSaveGroup());

@@ -89,8 +89,8 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	m_regionGrabber(0), m_passiveDroppedSelection(0), m_passivePopup(0), m_actionCollection(actionCollection),
 	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
 {
-	QDBusConnection::sessionBus().registerObject("org.kde.basket", this,
-                            QDBusConnection::ExportScriptableSlots);
+//TODO	QDBusConnection::sessionBus().registerObject("org.kde.basket", this,
+//                            QDBusConnection::ExportScriptableSlots);
 	/* Settings */
 	Settings::loadConfig();
 
@@ -362,6 +362,7 @@ void BNPView::initialize()
 
 	/// Configure the Splitter:
 //FIXME 1.5	m_stack = new (this);
+	m_stack = new QStackedWidget(this);
 
 	setOpaqueResize(true);
 
@@ -2154,22 +2155,22 @@ void BNPView::handleCommandLine()
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
 	/* Custom data folder */
-/*FIXME 1.5	QByteArray customDataFolder = args->getOption("data-folder");
-	if (customDataFolder != 0 && !customDataFolder.isEmpty())
-	{
+	QString customDataFolder = args->getOption("data-folder");
+	if (/*customDataFolder != 0 && */!customDataFolder.isEmpty()) {
 		Global::setCustomSavesFolder(customDataFolder);
-	}*/
-	/* Debug window */
-	if (args->isSet("debug")) {
-		new DebugWindow();
-		Global::debugWindow->show();
 	}
 
+	/* Debug window */
+/*FIXME	if (args->isSet("debug")) {
+		new DebugWindow();
+		Global::debugWindow->show();
+	}*/
+
 	/* Crash Handler to Mail Developers when Crashing: */
-#ifndef BASKET_USE_DRKONQI
+/*FIXME #ifndef BASKET_USE_DRKONQI
 	if (!args->isSet("use-drkonquy"))
 		KCrash::setCrashHandler(Crash::crashHandler);
-#endif
+#endif*/
 }
 
 /** Scenario of "Hide main window to system tray icon when mouse move out of the window" :

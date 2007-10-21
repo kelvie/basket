@@ -23,7 +23,7 @@
 //#include "config.h"
 
 //TODO
-#define VERSION "1.0"
+#define VERSION "1.5"
 
 
 static const char description[] = I18N_NOOP(

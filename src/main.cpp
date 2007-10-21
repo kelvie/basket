@@ -83,7 +83,7 @@ int main ( int argc, char *argv[] )
 	basket_options.add ( "h", KLocalizedString(), 0 );
 	basket_options.add ( "start-hidden", ki18n ( "Hide the main window in the system tray icon on startup" ), 0 );
 	basket_options.add ( "k", KLocalizedString(), 0 );
-	basket_options.add ( "use-drkonquy", ki18n ( "When crashing, use the standard KDE report dialog instead" "of sending an email" ), 0 );
+	//basket_options.add ( "use-drkonquy", ki18n ( "When crashing, use the standard KDE report dialog instead" "of sending an email" ), 0 );
 	basket_options.add ( "+[file]", ki18n ( "Open basket archive or template" ), 0 );
 	KCmdLineArgs::addCmdLineOptions ( basket_options );
 
@@ -91,8 +91,8 @@ int main ( int argc, char *argv[] )
 	//KUniqueApplication app;
 	KApplication app;
 	//Application app;
-
-	Backup::figureOutBinaryPath ( argv0, app );
+	
+	//Backup::figureOutBinaryPath ( argv0, app );
 
 	/* Main Window */
 	MainWindow* win = new MainWindow();
@@ -119,9 +119,9 @@ int main ( int argc, char *argv[] )
 		win->show();
 
 	// Self-test of the presence of basketui.rc (the only requiered file after basket executable)
-	if ( Global::bnpView->popupMenu ( "basket" ) == 0L )
+	//if ( Global::bnpView->popupMenu ( "basket" ) == 0L )
 		// An error message will be show by BNPView::popupMenu()
-		return 1;
+	//	return 1;
 
 	/* Go */
 	int result = app.exec();
