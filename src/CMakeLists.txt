@@ -51,7 +51,7 @@ SET(basketcommon_LIB_SRCS
 #kde4_automoc(${basketcommon_LIB_SRCS})
 
 SET(basketcommon_UI
-   kicondialogui.ui
+   #kicondialogui.ui
    passwordlayout.ui
    )
 
