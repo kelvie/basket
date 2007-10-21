@@ -1659,7 +1659,7 @@ void Note::drawInactiveResizer ( QPainter *painter, int x, int y, int height, co
 
 
 #include <qimage.h>
-#include <kimageeffect.h>
+//#include <kimageeffect.h>
 
 /* type: 1: topLeft
  *       2: bottomLeft
