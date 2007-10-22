@@ -37,30 +37,30 @@ class Basket;
 class KColorCombo2;
 
 /** The class K3IconView allow to drag items. We don't want to, so we disable it.
-  * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
-  * @author S�astien Lao�t
-  */
+ * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
+ * @author S�astien Lao�t
+ */
 class SingleSelectionKIconView : public KListWidget
 {
-  Q_OBJECT
-  public:
-	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
-	QMimeData* dragObject();
-	QTreeWidgetItem* selectedItem() { return m_lastSelected; }
-  private slots:
-	void slotSelectionChanged(QTreeWidgetItem *item);
-	void slotSelectionChanged();
-  private:
-	QTreeWidgetItem *m_lastSelected;
+	Q_OBJECT
+	public:
+		SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
+		QMimeData* dragObject();
+		QTreeWidgetItem* selectedItem() { return m_lastSelected; }
+	private slots:
+		void slotSelectionChanged(QTreeWidgetItem *item);
+		void slotSelectionChanged();
+	private:
+		QTreeWidgetItem *m_lastSelected;
 };
 
 /** Struct to store default properties of a new basket.
-  * When the dialog shows up, the @p icon is used, as well as the @p backgroundColor.
-  * A template is choosen depending on @p freeLayout and @p columnLayout.
-  * If @p columnLayout is too high, the template with the more columns will be chosen instead.
-  * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
-  * @author S�astien Lao�t
-  */
+ * When the dialog shows up, the @p icon is used, as well as the @p backgroundColor.
+ * A template is choosen depending on @p freeLayout and @p columnLayout.
+ * If @p columnLayout is too high, the template with the more columns will be chosen instead.
+ * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
+ * @author S�astien Lao�t
+ */
 struct NewBasketDefaultProperties
 {
 	QString icon;
@@ -74,29 +74,30 @@ struct NewBasketDefaultProperties
 };
 
 /** The dialog to create a new basket from a template.
-  * @author S�astien Lao�t
-  */
+ * @author S�astien Lao�t
+ */
 class NewBasketDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
-	~NewBasketDialog();
-	void polish();
-  protected slots:
-	void slotOk();
-	void returnPressed();
-	void manageTemplates();
-	void nameChanged(const QString &newName);
-  private:
-	int populateBasketsList(QTreeWidget *item, int indent, int index);
-	NewBasketDefaultProperties  m_defaultProperties;
-	KIconButton                *m_icon;
-	QLineEdit                  *m_name;
-	KColorCombo2               *m_backgroundColor;
-	KListWidget                  *m_templates;
-	QComboBox                  *m_createIn;
-	QMap<int, Basket*>          m_basketsMap;
+	Q_OBJECT
+	public:
+		NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
+		~NewBasketDialog();
+		void polish();
+	protected slots:
+		void accept();
+		//FIXME: PENDING FOR REMOVAL IN 1.5: void slotOk();
+		void returnPressed();
+		void manageTemplates();
+		void nameChanged(const QString &newName);
+	private:
+		int populateBasketsList(QTreeWidget *item, int indent, int index);
+		NewBasketDefaultProperties  m_defaultProperties;
+		KIconButton                *m_icon;
+		QLineEdit                  *m_name;
+		KColorCombo2               *m_backgroundColor;
+		KListWidget                  *m_templates;
+		QComboBox                  *m_createIn;
+		QMap<int, Basket*>          m_basketsMap;
 };
 
 #endif // NEWBASKETDIALOG_H

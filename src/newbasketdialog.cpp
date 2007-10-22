@@ -51,8 +51,8 @@
 SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, Qt::WFlags f)
 //TODO : KListWidget(parent, name, f), m_lastSelected(0)
 {
-	connect( this, SIGNAL(selectionChanged(QTreeWidgetItem*)), this, SLOT(slotSelectionChanged(QTreeWidgetItem*)) );
-	connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
+	//connect( this, SIGNAL(selectionChanged(QTreeWidgetItem*)), this, SLOT(slotSelectionChanged(QTreeWidgetItem*)) );
+	//connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
 }
 
 QMimeData* SingleSelectionKIconView::dragObject()
@@ -250,7 +250,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 //	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
 //	populateBasketsList(Global::bnpView->firstListViewItem(), /*indent=*/1, /*index=*/1);
 
-	connect( m_templates, SIGNAL(doubleClicked(QTreeWidgetItem*)), this, SLOT(slotOk())        );
+	connect( m_templates, SIGNAL(doubleClicked(QTreeWidgetItem*)), this, SLOT(accept())        );
 	connect( m_templates, SIGNAL(returnPressed(QTreeWidgetItem*)), this, SLOT(returnPressed()) );
 
 //	if (parentBasket) {
@@ -273,7 +273,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 void NewBasketDialog::returnPressed()
 {
-//	actionButton(KDialog::Ok)->animateClick();
+	//actionButton( KDialog::Ok )->animateClick();
 }
 
 int NewBasketDialog::populateBasketsList(QTreeWidget *item, int indent, int index)
@@ -316,10 +316,10 @@ void NewBasketDialog::nameChanged(const QString &newName)
 	enableButtonOk( !newName.isEmpty() );
 }
 
-void NewBasketDialog::slotOk()
+void NewBasketDialog::accept()
 {
 //	QTreeWidgetItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
-//	QString templateName;
+	QString templateName = "1column";
 //	if (item->text() == i18n("One column"))
 //		templateName = "1column";
 //	if (item->text() == i18n("Two columns"))
@@ -330,20 +330,26 @@ void NewBasketDialog::slotOk()
 //		templateName = "free";
 //	if (item->text() == i18n("Mind map"))
 //		templateName = "mindmap";
-//
-//	Global::bnpView->closeAllEditors();
-//
-//	QString backgroundImage;
-//	QColor  textColor;
-//	if (m_backgroundColor->color() == m_defaultProperties.backgroundColor) {
-//		backgroundImage = m_defaultProperties.backgroundImage;
-//		textColor       = m_defaultProperties.textColor;
-//	}
-//
-//	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
-//	if(Global::mainWindow()) Global::mainWindow()->show();
-//
-//	KDialog::slotOk();
+
+	Global::bnpView->closeAllEditors();
+
+	QString backgroundImage;
+	QColor  textColor;
+	if (m_backgroundColor->color() == m_defaultProperties.backgroundColor) {
+		backgroundImage = m_defaultProperties.backgroundImage;
+		textColor       = m_defaultProperties.textColor;
+	}
+
+	//{
+	//	using namespace BasketFactory;
+		//FIXME newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
+	//	newBasket( m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, 0 );
+	//}
+	BasketFactory::newBasket( m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, 0 );
+
+	if(Global::mainWindow()) Global::mainWindow()->show();
+
+	KDialog::accept();
 }
 
 void NewBasketDialog::manageTemplates()

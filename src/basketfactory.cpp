@@ -23,13 +23,15 @@
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <qtextstream.h>
+#include <kdebug.h>
+#include <QDomDocument>
 
 #include "basketfactory.h"
 #include "global.h"
 #include "basket.h"
 #include "xmlwork.h"
 #include "note.h" // For balanced column width computation
-//#include "bnpview.h"
+#include "bnpview.h"
 
 /** BasketFactory */
 
@@ -54,44 +56,53 @@ QString BasketFactory::newFolderName()
 
 QString BasketFactory::unpackTemplate(const QString &templateName)
 {
-//	// Find a name for a new folder and create it:
-//	QString folderName = newFolderName();
-//	QString fullPath   = Global::basketsFolder() + folderName;
-//	QDir dir;
-//	if (!dir.mkdir(fullPath)) {
-//		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the folder creation for this new basket has failed."), i18n("Basket Creation Failed"));
-//		return "";
-//	}
-//
-//	// Unpack the template file to that folder:
-//	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
-//	QFile file(fullPath + "/.basket");
-//	if (file.open(QIODevice::WriteOnly)) {
-//		QTextStream stream(&file);
-//		stream.setEncoding(QTextStream::UnicodeUTF8);
-//		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
-//		Basket *currentBasket = Global::bnpView->currentBasket();
-//		int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns-1)*Note::RESIZER_WIDTH) / nbColumns : 0);
-//		stream << QString( "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
-//		                   "<!DOCTYPE basket>\n"
-//		                   "<basket>\n"
-//		                   " <properties>\n"
-//		                   "  <disposition mindMap=\"%1\" columnCount=\"%2\" free=\"%3\" />\n"
-//		                   " </properties>\n"
-//		                   " <notes>\n" ).arg( (templateName == "mindmap" ? "true" : "false"),
-//		                                       QString::number(nbColumns),
-//		                                       (templateName == "free" || templateName == "mindmap" ? "true" : "false") );
-//		if (nbColumns > 0)
-//			for (int i = 0; i < nbColumns; ++i)
-//				stream << QString("  <group width=\"%1\"></group>\n").arg(columnWidth);
-//		stream << " </notes>\n"
-//		          "</basket>\n";
-//		file.close();
-//		return folderName;
-//	} else {
-//		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template copying for this new basket has failed."), i18n("Basket Creation Failed"));
-//		return "";
-//	}
+	// Find a name for a new folder and create it:
+	QString folderName = newFolderName();
+	QString fullPath   = Global::basketsFolder() + folderName;
+	kDebug() << fullPath << endl;
+	QDir dir;
+	if (!dir.mkdir(fullPath)) {
+		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the folder creation for this new basket has failed."), i18n("Basket Creation Failed"));
+		return "";
+	}
+	
+	kDebug() << "successfully create directory!" << endl;
+
+	// Unpack the template file to that folder:
+	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
+	QFile file(fullPath + ".basket");
+	//QFile file("/home/kde-devel/mybasket");
+	if (file.open(QIODevice::ReadOnly | QIODevice::WriteOnly | QIODevice::Text)) {
+		QTextStream stream(&file);
+		kDebug() << (file.permissions() & QFile::WriteOwner) << endl;
+		//FIXME 1.5 : REMOVAL stream.setEncoding(QTextStream::UnicodeUTF8);
+		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
+		Basket *currentBasket = Global::bnpView->currentBasket();
+		//FIXME int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns-1)*Note::RESIZER_WIDTH) / nbColumns : 0);
+		int columnWidth = 0;
+		/*stream << QString( "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+		                   "<!DOCTYPE basket>\n"
+		                   "<basket>\n"
+		                   " <properties>\n"
+		                   "  <disposition mindMap=\"%1\" columnCount=\"%2\" free=\"%3\" />\n"
+		                   " </properties>\n"
+		                   " <notes>\n" ).arg( (templateName == "mindmap" ? "true" : "false"),
+		                                       QString::number(nbColumns),
+		                                       (templateName == "free" || templateName == "mindmap" ? "true" : "false") );
+		if (nbColumns > 0)
+			for (int i = 0; i < nbColumns; ++i)
+				stream << QString("  <group width=\"%1\"></group>\n").arg(columnWidth);
+				*/
+		stream << " </notes>\n"
+		          "</basket>\n";
+		kDebug() << file.fileName() << endl;
+		file.close();
+		kDebug() << "-------" << endl;
+		return folderName;
+	} else {
+//FIXME		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template copying for this new basket has failed."), i18n("Basket Creation Failed"));
+		return "";
+	}
 }
 
 void BasketFactory::newBasket(const QString &icon,
@@ -102,33 +113,40 @@ void BasketFactory::newBasket(const QString &icon,
                               const QString &templateName,
                               Basket *parent)
 {
-//	// Unpack the templateName file to a new basket folder:
-//	QString folderName = unpackTemplate(templateName);
-//	if (folderName.isEmpty())
-//		return;
-//
-//	// Read the properties, change those that should be customized and save the result:
-//	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/.basket");
-//	if (!document) {
+	kDebug() << "create following basket :" << endl;
+	kDebug() << icon << endl;
+	kDebug() << name << endl;
+	kDebug() << backgroundImage << endl;
+	kDebug() << templateName << endl;
+	kDebug() << "----------------" << endl;
+
+	// Unpack the templateName file to a new basket folder:
+	QString folderName = unpackTemplate(templateName);
+	if (folderName.isEmpty())
+		return;
+
+	// Read the properties, change those that should be customized and save the result:
+	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/.basket");
+	if (!document) {
 //		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template customization for this new basket has failed."), i18n("Basket Creation Failed"));
-//		return;
-//	}
-//	QDomElement properties  = XMLWork::getElement(document->documentElement(), "properties");
-//
-//	if (!icon.isEmpty()) {
+		return;
+	}
+	QDomElement properties  = XMLWork::getElement(document->documentElement(), "properties");
+
+	if (!icon.isEmpty()) {
 //		QDomElement iconElement = XMLWork::getElement(properties, "icon");
 //		if (!iconElement.tagName().isEmpty()) // If there is already an icon, remove it since we will add our own value below
 //			iconElement.removeChild(iconElement.firstChild());
 //		XMLWork::addElement(*document, properties, "icon", icon);
-//	}
-//
-//	if (!name.isEmpty()) {
+	}
+
+	if (!name.isEmpty()) {
 //		QDomElement nameElement = XMLWork::getElement(properties, "name");
 //		if (!nameElement.tagName().isEmpty()) // If there is already a name, remove it since we will add our own value below
 //			nameElement.removeChild(nameElement.firstChild());
 //		XMLWork::addElement(*document, properties, "name", name);
-//	}
-//
+	}
+
 //	if (backgroundColor.isValid()) {
 //		QDomElement appearanceElement = XMLWork::getElement(properties, "appearance");
 //		if (appearanceElement.tagName().isEmpty()) { // If there is not already an appearance tag, add it since we will access it below
@@ -137,7 +155,7 @@ void BasketFactory::newBasket(const QString &icon,
 //		}
 //		appearanceElement.setAttribute("backgroundColor", backgroundColor.name());
 //	}
-//
+
 //	if (!backgroundImage.isEmpty()) {
 //		QDomElement appearanceElement = XMLWork::getElement(properties, "appearance");
 //		if (appearanceElement.tagName().isEmpty()) { // If there is not already an appearance tag, add it since we will access it below
@@ -146,7 +164,7 @@ void BasketFactory::newBasket(const QString &icon,
 //		}
 //		appearanceElement.setAttribute("backgroundImage", backgroundImage);
 //	}
-//
+
 //	if (textColor.isValid()) {
 //		QDomElement appearanceElement = XMLWork::getElement(properties, "appearance");
 //		if (appearanceElement.tagName().isEmpty()) { // If there is not already an appearance tag, add it since we will access it below
@@ -155,7 +173,7 @@ void BasketFactory::newBasket(const QString &icon,
 //		}
 //		appearanceElement.setAttribute("textColor", textColor.name());
 //	}
-//
-//	// Load it in the parent basket (it will save the tree and switch to this new basket):
-//	Global::bnpView->loadNewBasket(folderName, properties, parent);
+
+	// Load it in the parent basket (it will save the tree and switch to this new basket):
+	Global::bnpView->loadNewBasket(folderName, properties, parent);
 }

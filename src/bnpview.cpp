@@ -345,21 +345,18 @@ void BNPView::setupGlobalShortcuts()
 void BNPView::initialize()
 {
 	// Configure the List View Columns:
-	m_tree  = new BasketTreeListView(this);
+	m_tree  = new BasketTreeListView( this );
 	QStringList headers;
 	headers << i18n( "Baskets" );
 	m_tree->setHeaderLabels( headers );
 
-	kDebug() << "Column count : " << m_tree->columnCount() << endl;
-
-	m_tree->setColumnWidth(0, 10);
+//	m_tree->setColumnWidth(0, 10);
 
 	/*QList<QTreeWidgetItem *> items;
 	for (int i = 0; i < 10; ++i)
 		      items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item: %1").arg(i))));
 	m_tree->insertTopLevelItems(0, items);*/
 
-	kDebug() << m_tree->columnWidth(0) << endl;
 
 //FIXME 1.5	m_tree->addColumn(i18n("Baskets"));
 //FIXME	1.5	m_tree->setColumnWidthMode(0, QListView::maximum);
@@ -381,9 +378,13 @@ void BNPView::initialize()
 
 	/// Configure the Splitter:
 //FIXME 1.5	m_stack = new (this);
-	m_stack = new QStackedWidget(this);
+//FIXME
+	m_stack = new QStackedWidget( this );
 
-	setOpaqueResize(true);
+	//new QTextEdit( m_stack );
+	//new QTreeView( m_stack );
+
+	//setOpaqueResize(true);
 
 //FIXME 1.5	setResizeMode(m_tree,  QSplitter::KeepSize);
 //FIXME 1.5	setResizeMode(m_stack, QSplitter::Stretch);
@@ -394,21 +395,21 @@ void BNPView::initialize()
 	setCollapsible( 1, false );
 
 	/// Configure the List View Signals:
-	connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
-	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
-	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
-	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
-	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
+	//connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
+	//connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
+	//connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
+	//connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
+	//connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
+	//connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
+	//connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
+	//connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
 
-	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
-	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
-	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
+	//connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
+	//connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
+	//connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
 
-	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
-	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
+	//connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
+	//connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
 
 	/* LikeBack */
 	Global::likeBack = new LikeBack(LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about());
@@ -636,11 +637,6 @@ void BNPView::setupActions()
 	newBasketMenu->addAction( actNewSiblingBasket );
 	actionCollection()->addAction( "basket_new_menu", newBasketMenu );
 	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
-
-	/*newBasketMenu->insert(actNewBasket);
-	newBasketMenu->insert(actNewSubBasket);
-	newBasketMenu->insert(actNewSiblingBasket);
-	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );*/
 
 /*	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
 

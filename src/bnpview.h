@@ -53,7 +53,6 @@ class BasketStatusBar;
 class Tag;
 class State;
 class Note;
-class BasketFactory;
 
 class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 {
