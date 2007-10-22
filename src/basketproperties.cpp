@@ -44,6 +44,7 @@
 #include "global.h"
 #include "backgroundmanager.h"
 
+
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
  : //KDialog(KDialog::Swallow, i18n("Basket Properties"), KDialog::Ok | KDialog::Apply | KDialog::Cancel,
    //            KDialog::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),

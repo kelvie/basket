@@ -25,7 +25,6 @@
 #include <qmap.h>
 #include <qstring.h>
 
-class KIconButton;
 class QLineEdit;
 class QComboBox;
 class QButtonGroup;
@@ -35,7 +34,7 @@ class KShortcut;
 
 class Basket;
 class KColorCombo2;
-
+class KIconButton;
 /** The dialog that hold basket settings.
   * @author S�astien Lao�t
   */

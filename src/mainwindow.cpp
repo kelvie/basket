@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "settings.h"
 #include <qtabwidget.h>
 #include <qlayout.h>
 #include <qtooltip.h>
@@ -77,7 +78,6 @@
 #include "basketproperties.h"
 #include "note.h"
 #include "noteedit.h"
-#include "settings.h"
 #include "global.h"
 //#include "addbasketwizard.h"
 #include "newbasketdialog.h"
@@ -101,7 +101,6 @@
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
 #include <KShortcutsDialog>
-
 /** Container */
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
@@ -350,7 +349,7 @@ void MainWindow::changeActive()
 {
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
 	kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-	Global::systemTray->toggleActive();
+//	Global::systemTray->toggleActive();
 #else
 	setActive( ! isActiveWindow() );
 #endif

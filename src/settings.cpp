@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "settings.h"
 /*FIXME 1.5 #include <config.h>*/
 #include <qlayout.h>
 #include <qlineedit.h>
@@ -49,7 +50,6 @@
 
 #include "basket.h"
 #include "linklabel.h"
-#include "settings.h"
 #include "variouswidgets.h"
 #include "note.h"
 #include "kgenericfactory.h"
@@ -57,6 +57,10 @@
 /** Settings */
 
 // General:                                      // TODO: Use this grouping everywhere!
+QString Settings::s_dataFolder           = QString();
+QDate   Settings::s_lastBackup           = QDate();
+QPoint  Settings::s_mainWindowPosition   = QPoint();
+QSize	Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_useSystray           = true;
 bool    Settings::s_usePassivePopup      = true;
 bool    Settings::s_playAnimations       = true;
@@ -100,10 +104,6 @@ bool    Settings::s_blinkedFilter        = false;
 bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
 bool    Settings::s_welcomeBasketsAdded  = false;
-QString Settings::s_dataFolder           = "";
-QDate   Settings::s_lastBackup           = QDate();
-QPoint  Settings::s_mainWindowPosition   = QPoint();
-QSize   Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_showEmptyBasketInfo  = true;
 bool    Settings::s_spellCheckTextNotes  = true;
 

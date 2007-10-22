@@ -36,6 +36,7 @@
 #include <qsplitter.h>
 #include <QVBoxLayout>
 
+
 class QWidget;
 class QPoint;
 class KAction;
@@ -52,6 +53,7 @@ class RegionGrabber;
 class NoteSelection;
 class BNPView;
 class ClickableLabel;
+class Settings;
 namespace KSettings { class Dialog; };
 
 /** The window that contain baskets, organized by tabs.

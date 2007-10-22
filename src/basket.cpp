@@ -3639,10 +3639,10 @@ void Basket::popupEmblemMenu ( Note *note, int emblemNumber )
 	QKeySequence sequence = tag->shortcut().primary();
 	bool sequenceOnDelete = ( nextState == 0 && !tag->shortcut().isEmpty() );
 
+	QAction* tmpAction;
 	KMenu menu ( this );
 	if ( tag->countStates() == 1 )
 	{
-		QAction* tmpAction;
 		menu.addMenu ( /*SmallIcon(state->icon()), */tag->name() );
 		tmpAction = menu.addTitle( i18n ( "&Remove" ) );
 		tmpAction->setIcon(KIcon ("edit-delete" ));

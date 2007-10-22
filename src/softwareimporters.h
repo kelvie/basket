@@ -26,7 +26,7 @@
 #include <QRadioButton>
 
 class QString;
-class QVButtonGroup;
+class QGroupBox;
 class QDomElement;
 class KTextEdit;
 
@@ -44,7 +44,7 @@ class TreeImportDialog : public KDialog
 	~TreeImportDialog();
 	int choice();
   private:
-	QVButtonGroup *m_choices;
+	QGroupBox *m_choices;
 };
 
 /** The dialog to ask how to import text files.
@@ -60,7 +60,7 @@ class TextFileImportDialog : public KDialog
   protected slots:
 	void customSeparatorChanged();
   private:
-	QVButtonGroup *m_choices;
+	QGroupBox *m_choices;
 	QRadioButton  *m_anotherSeparator;
 	QTextEdit     *m_customSeparator;
 };

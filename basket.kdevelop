@@ -1,9 +1,9 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
-    <projectmanagement>KDevCustomProject</projectmanagement>
-    <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-    <absoluteprojectpath>true</absoluteprojectpath>
+  <projectmanagement>KDevCustomProject</projectmanagement>
+  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+  <absoluteprojectpath>true</absoluteprojectpath>
     <author>Sébastien Laoût</author>
     <email>slaout@linux62.org</email>
     <version>1.5.0</version>
@@ -21,13 +21,13 @@
     <secondaryLanguages/>
     <versioncontrol>kdevsubversion</versioncontrol>
     <projectname>basket</projectname>
-    <defaultencoding/>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevautoproject>
     <general>
-      <projectmanagement>KDevCustomProject</projectmanagement>
-      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-      <absoluteprojectpath>true</absoluteprojectpath>
+  <projectmanagement>KDevCustomProject</projectmanagement>
+  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+  <absoluteprojectpath>true</absoluteprojectpath>
       <activetarget>src/basket</activetarget>
       <useconfiguration>debug</useconfiguration>
     </general>
@@ -159,18 +159,19 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <projectmanagement>KDevCustomProject</projectmanagement>
-      <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
-      <absoluteprojectpath>true</absoluteprojectpath>
+  <projectmanagement>KDevCustomProject</projectmanagement>
+  <projectdirectory>/home/pat/basket_kde4port</projectdirectory>
+  <absoluteprojectpath>true</absoluteprojectpath>
       <dbgshell>libtool</dbgshell>
       <programargs>-d --nofork --use-drkonquy --data-folder ~/.kde/share/apps/basket-debug</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
+      <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
       <staticmembers>true</staticmembers>
@@ -204,7 +205,7 @@
       <includeTypes>true</includeTypes>
       <includeEnums>true</includeEnums>
       <includeTypedefs>true</includeTypedefs>
-      <automaticCodeCompletion>false</automaticCodeCompletion>
+      <automaticCodeCompletion>true</automaticCodeCompletion>
       <automaticArgumentsHint>true</automaticArgumentsHint>
       <automaticHeaderCompletion>true</automaticHeaderCompletion>
       <codeCompletionDelay>100</codeCompletionDelay>
@@ -229,7 +230,7 @@
       <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>value</parameterName>
@@ -260,9 +261,9 @@
   </cppsupportpart>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem/>
-      <docurl/>
-      <usermanualurl/>
+      <docsystem></docsystem>
+      <docurl></docurl>
+      <usermanualurl></usermanualurl>
     </projectdoc>
   </kdevdocumentation>
   <dist>
@@ -298,9 +299,9 @@
     <filelistdirectory>/home/pat/basket_kde4port</filelistdirectory>
     <run>
       <directoryradio>executable</directoryradio>
-      <mainprogram>/home/pat/basket_kde4port/</mainprogram>
-      <programargs/>
-      <globaldebugarguments/>
+      <mainprogram>/home/pat/basket_kde4port/src/basket</mainprogram>
+      <programargs></programargs>
+      <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/pat/basket_kde4port/</globalcwd>
       <useglobalprogram>false</useglobalprogram>
       <terminal>false</terminal>
@@ -341,9 +342,9 @@
     </build>
     <other>
       <prio>0</prio>
-      <otherbin/>
-      <defaulttarget/>
-      <otheroptions/>
+      <otherbin></otherbin>
+      <defaulttarget></defaulttarget>
+      <otheroptions></otheroptions>
       <selectedenvironment>default</selectedenvironment>
       <environments>
         <default/>
@@ -354,9 +355,9 @@
       <numberofjobs>1</numberofjobs>
       <prio>0</prio>
       <dontact>false</dontact>
-      <makebin/>
-      <defaulttarget/>
-      <makeoptions/>
+      <makebin></makebin>
+      <defaulttarget></defaulttarget>
+      <makeoptions></makeoptions>
       <selectedenvironment>default</selectedenvironment>
       <environments>
         <default/>

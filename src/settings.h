@@ -21,18 +21,18 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <qstring.h>
+#include <QString>
 #include <kdialog.h>
 #include <qcheckbox.h>
-#include <qcombobox.h>
+#include <QComboBox>
 #include <qtooltip.h>
-#include <qcolor.h>
-#include <qpoint.h>
-#include <qsize.h>
+#include <QColor>
+#include <QPoint>
+#include <QSize>
 #include <kcmodule.h>
 #include <kaction.h>
 #include <kmainwindow.h>
-#include <qdatetime.h>
+#include <QDateTime>
 
 #include "global.h"
 #include "bnpview.h"

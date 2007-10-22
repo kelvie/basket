@@ -3,7 +3,6 @@
 SET(basketcommon_LIB_SRCS
    archive.cpp
    bnpview.cpp
-   settings.cpp
    basket.cpp
    basketproperties.cpp
    linklabel.cpp
@@ -46,6 +45,7 @@ SET(basketcommon_LIB_SRCS
    basketstatusbar.cpp
    clickablelabel.cpp
    backup.cpp
+   settings.cpp
    )
 
 #kde4_automoc(${basketcommon_LIB_SRCS})
@@ -65,6 +65,7 @@ KDE4_ADD_UI_FILES(basketcommon_LIB_SRCS ${basketcommon_UI})
 
 KDE4_ADD_LIBRARY(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
+
 TARGET_LINK_LIBRARIES(basketcommon  ${QT_QT3SUPPORT_LIBRARY} ${QT_AND_KDECORE_LIBS} ${KDE4_KIO_LIBS} kdeui kparts kdefx )
 
 SET_TARGET_PROPERTIES(basketcommon PROPERTIES VERSION 4.2.0 SOVERSION 4 )
@@ -77,11 +78,12 @@ SET(basket_SRCS
 	mainwindow.cpp
 	application.cpp
    main.cpp
+${basketcommon_LIB_SRCS}
    )
 
 #KDE4_AUTOMOC(${basket_SRCS})
 
-KDE4_ADD_EXECUTABLE(basket ${basket_SRCS})
+KDE4_ADD_EXECUTABLE(basket ${basket_SRCS} )
 
 TARGET_LINK_LIBRARIES(basket  ${QT_AND_KDECORE_LIBS} kutils basketcommon )
 
