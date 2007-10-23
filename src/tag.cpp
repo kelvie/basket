@@ -27,6 +27,8 @@
 #include <qdir.h>
 #include <kglobalsettings.h>
 #include <klocale.h>
+#include <qtextstream.h>
+#include <kdebug.h>
 
 #include "tag.h"
 #include "xmlwork.h"
@@ -276,6 +278,7 @@ Tag* Tag::tagForKAction ( KAction *action )
 
 QMap<QString, QString> Tag::loadTags ( const QString &path/* = QString()*//*, bool merge = false*/ )
 {
+	kDebug() << "woohoo!!!" << endl;
 	QMap<QString, QString> mergedStates;
 
 	bool merge = !path.isEmpty();
@@ -283,11 +286,12 @@ QMap<QString, QString> Tag::loadTags ( const QString &path/* = QString()*//*, bo
 	QString doctype  = "basketTags";
 
 	QDir dir;
-	if ( !dir.exists ( fullPath ) )
+	//FIXME if ( !dir.exists ( fullPath ) )
 	{
 		if ( merge )
 			return mergedStates;
-		DEBUG_WIN << "Tags file does not exist: Creating it...";
+		kDebug() << "Tags file does not exist: Creating it...";
+		//FIXME DEBUG_WIN << "Tags file does not exist: Creating it...";
 		createDefaultTagsSet ( fullPath );
 	}
 
@@ -458,58 +462,58 @@ void Tag::saveTags()
 
 void Tag::saveTagsTo ( QList<Tag*> &list, const QString &fullPath )
 {
-//	// Create Document:
-//	QDomDocument document ( /*doctype=*/"basketTags" );
-//	QDomElement root = document.createElement ( "basketTags" );
-//	root.setAttribute ( "nextStateUid", nextStateUid );
-//	document.appendChild ( root );
-//
-//	// Save all tags:
-//	for ( List::iterator it = list.begin(); it != list.end(); ++it )
-//	{
-//		Tag *tag = *it;
-//		// Create tag node:
-//		QDomElement tagNode = document.createElement ( "tag" );
-//		root.appendChild ( tagNode );
-//		// Save tag properties:
-//		XMLWork::addElement ( document, tagNode, "name",      tag->name() );
-//		XMLWork::addElement ( document, tagNode, "shortcut",  tag->shortcut().toStringInternal() );
-//		XMLWork::addElement ( document, tagNode, "inherited", XMLWork::trueOrFalse ( tag->inheritedBySiblings() ) );
-//		// Save all states:
-//		for ( State::List::iterator it2 = ( *it )->states().begin(); it2 != ( *it )->states().end(); ++it2 )
-//		{
-//			State *state = *it2;
-//			// Create state node:
-//			QDomElement stateNode = document.createElement ( "state" );
-//			tagNode.appendChild ( stateNode );
-//			// Save state properties:
-//			stateNode.setAttribute ( "id", state->id() );
-//			XMLWork::addElement ( document, stateNode, "name",   state->name() );
-//			XMLWork::addElement ( document, stateNode, "emblem", state->emblem() );
-//			QDomElement textNode = document.createElement ( "text" );
-//			stateNode.appendChild ( textNode );
-//			QString textColor = ( state->textColor().isValid() ? state->textColor().name() : "" );
-//			textNode.setAttribute ( "bold",      XMLWork::trueOrFalse ( state->bold() ) );
-//			textNode.setAttribute ( "italic",    XMLWork::trueOrFalse ( state->italic() ) );
-//			textNode.setAttribute ( "underline", XMLWork::trueOrFalse ( state->underline() ) );
-//			textNode.setAttribute ( "strikeOut", XMLWork::trueOrFalse ( state->strikeOut() ) );
-//			textNode.setAttribute ( "color",     textColor );
-//			QDomElement fontNode = document.createElement ( "font" );
-//			stateNode.appendChild ( fontNode );
-//			fontNode.setAttribute ( "name", state->fontName() );
-//			fontNode.setAttribute ( "size", state->fontSize() );
-//			QString backgroundColor = ( state->backgroundColor().isValid() ? state->backgroundColor().name() : "" );
-//			XMLWork::addElement ( document, stateNode, "backgroundColor", backgroundColor );
-//			QDomElement textEquivalentNode = document.createElement ( "textEquivalent" );
-//			stateNode.appendChild ( textEquivalentNode );
-//			textEquivalentNode.setAttribute ( "string",         state->textEquivalent() );
-//			textEquivalentNode.setAttribute ( "onAllTextLines", XMLWork::trueOrFalse ( state->onAllTextLines() ) );
-//		}
-//	}
-//
-//	// Write to Disk:
-//	if ( !Basket::safelySaveToFile ( fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString() ) )
-//		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
+	// Create Document:
+	QDomDocument document ( /*doctype=*/"basketTags" );
+	QDomElement root = document.createElement ( "basketTags" );
+	root.setAttribute ( "nextStateUid", /*FIXME*/(int)nextStateUid );
+	document.appendChild ( root );
+
+	// Save all tags:
+	for ( List::iterator it = list.begin(); it != list.end(); ++it )
+	{
+		Tag *tag = *it;
+		// Create tag node:
+		QDomElement tagNode = document.createElement ( "tag" );
+		root.appendChild ( tagNode );
+		// Save tag properties:
+		XMLWork::addElement ( document, tagNode, "name",      tag->name() );
+		XMLWork::addElement ( document, tagNode, "shortcut",  tag->shortcut().toString() );
+		XMLWork::addElement ( document, tagNode, "inherited", XMLWork::trueOrFalse ( tag->inheritedBySiblings() ) );
+		// Save all states:
+		for ( State::List::iterator it2 = ( *it )->states().begin(); it2 != ( *it )->states().end(); ++it2 )
+		{
+			State *state = *it2;
+			// Create state node:
+			QDomElement stateNode = document.createElement ( "state" );
+			tagNode.appendChild ( stateNode );
+			// Save state properties:
+			stateNode.setAttribute ( "id", state->id() );
+			XMLWork::addElement ( document, stateNode, "name",   state->name() );
+			XMLWork::addElement ( document, stateNode, "emblem", state->emblem() );
+			QDomElement textNode = document.createElement ( "text" );
+			stateNode.appendChild ( textNode );
+			QString textColor = ( state->textColor().isValid() ? state->textColor().name() : "" );
+			textNode.setAttribute ( "bold",      XMLWork::trueOrFalse ( state->bold() ) );
+			textNode.setAttribute ( "italic",    XMLWork::trueOrFalse ( state->italic() ) );
+			textNode.setAttribute ( "underline", XMLWork::trueOrFalse ( state->underline() ) );
+			textNode.setAttribute ( "strikeOut", XMLWork::trueOrFalse ( state->strikeOut() ) );
+			textNode.setAttribute ( "color",     textColor );
+			QDomElement fontNode = document.createElement ( "font" );
+			stateNode.appendChild ( fontNode );
+			fontNode.setAttribute ( "name", state->fontName() );
+			fontNode.setAttribute ( "size", state->fontSize() );
+			QString backgroundColor = ( state->backgroundColor().isValid() ? state->backgroundColor().name() : "" );
+			XMLWork::addElement ( document, stateNode, "backgroundColor", backgroundColor );
+			QDomElement textEquivalentNode = document.createElement ( "textEquivalent" );
+			stateNode.appendChild ( textEquivalentNode );
+			textEquivalentNode.setAttribute ( "string",         state->textEquivalent() );
+			textEquivalentNode.setAttribute ( "onAllTextLines", XMLWork::trueOrFalse ( state->onAllTextLines() ) );
+		}
+	}
+
+	// Write to Disk:
+	if ( !Basket::safelySaveToFile ( fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString() ) )
+		DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 
 void Tag::copyTo ( Tag *other )
@@ -521,7 +525,8 @@ void Tag::copyTo ( Tag *other )
 
 void Tag::createDefaultTagsSet ( const QString &fullPath )
 {
-/*TODO	QString xml = QString (
+	kDebug() << "creating: " << fullPath << endl;
+	QString xml = QString (
 	                  "<!DOCTYPE basketTags>\n"
 	                  "<basketTags>\n"
 	                  "  <tag>\n"
@@ -720,21 +725,22 @@ void Tag::createDefaultTagsSet ( const QString &fullPath )
 	                  "  </tag>\n"
 	                  "</basketTags>\n"
 	                  "" )
-	              .arg ( i18n ( "Personal" ), i18nc ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3*/
+	              .arg ( i18n ( "Personal" ), i18nc ( "The initial of 'Personal'", "P." ), i18n ( "Funny" ) ); // %1 %2 %3
 
 	// Write to Disk:
-//TODO
-//	QFile file ( fullPath );
-//	if ( file.open ( QIODevice::WriteOnly ) )
-//	{
-//		QTextStream stream ( &file );
-//		stream.setEncoding ( QTextStream::UnicodeUTF8 );
-//		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-//		stream << xml;
-//		file.close();
-//	}
-//	else
-//		DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
+	QFile file( fullPath );
+	if ( file.open ( QIODevice::WriteOnly ) )
+	{
+		QTextStream stream ( &file );
+		//FIXME stream.setEncoding ( QTextStream::UnicodeUTF8 );
+		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+		stream << xml;
+		file.close();
+	}
+	else {
+		kDebug() << "FAILED to create the tags!" << endl;
+		//FIXME DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
+	}
 }
 
 #include <kapplication.h>

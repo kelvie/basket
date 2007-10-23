@@ -70,17 +70,17 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 
 	// Unpack the template file to that folder:
 	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
-	QFile file(fullPath + ".basket");
-	//QFile file("/home/kde-devel/mybasket");
-	if (file.open(QIODevice::ReadOnly | QIODevice::WriteOnly | QIODevice::Text)) {
+	// FIXME: replace with ".basket"
+	QFile file(fullPath + "basket");
+	if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream stream(&file);
-		kDebug() << (file.permissions() & QFile::WriteOwner) << endl;
+		kDebug() << (file.permissions() & QFile::WriteUser) << endl;
 		//FIXME 1.5 : REMOVAL stream.setEncoding(QTextStream::UnicodeUTF8);
 		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
 		Basket *currentBasket = Global::bnpView->currentBasket();
 		//FIXME int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns-1)*Note::RESIZER_WIDTH) / nbColumns : 0);
 		int columnWidth = 0;
-		/*stream << QString( "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+		stream << QString( "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 		                   "<!DOCTYPE basket>\n"
 		                   "<basket>\n"
 		                   " <properties>\n"
@@ -92,7 +92,6 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 		if (nbColumns > 0)
 			for (int i = 0; i < nbColumns; ++i)
 				stream << QString("  <group width=\"%1\"></group>\n").arg(columnWidth);
-				*/
 		stream << " </notes>\n"
 		          "</basket>\n";
 		kDebug() << file.fileName() << endl;
@@ -126,25 +125,25 @@ void BasketFactory::newBasket(const QString &icon,
 		return;
 
 	// Read the properties, change those that should be customized and save the result:
-	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/.basket");
+	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/basket");
 	if (!document) {
-//		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template customization for this new basket has failed."), i18n("Basket Creation Failed"));
+		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template customization for this new basket has failed."), i18n("Basket Creation Failed"));
 		return;
 	}
 	QDomElement properties  = XMLWork::getElement(document->documentElement(), "properties");
 
 	if (!icon.isEmpty()) {
-//		QDomElement iconElement = XMLWork::getElement(properties, "icon");
-//		if (!iconElement.tagName().isEmpty()) // If there is already an icon, remove it since we will add our own value below
-//			iconElement.removeChild(iconElement.firstChild());
-//		XMLWork::addElement(*document, properties, "icon", icon);
+		QDomElement iconElement = XMLWork::getElement(properties, "icon");
+		if (!iconElement.tagName().isEmpty()) // If there is already an icon, remove it since we will add our own value below
+			iconElement.removeChild(iconElement.firstChild());
+		XMLWork::addElement(*document, properties, "icon", icon);
 	}
 
 	if (!name.isEmpty()) {
-//		QDomElement nameElement = XMLWork::getElement(properties, "name");
-//		if (!nameElement.tagName().isEmpty()) // If there is already a name, remove it since we will add our own value below
-//			nameElement.removeChild(nameElement.firstChild());
-//		XMLWork::addElement(*document, properties, "name", name);
+		QDomElement nameElement = XMLWork::getElement(properties, "name");
+		if (!nameElement.tagName().isEmpty()) // If there is already a name, remove it since we will add our own value below
+			nameElement.removeChild(nameElement.firstChild());
+		XMLWork::addElement(*document, properties, "name", name);
 	}
 
 //	if (backgroundColor.isValid()) {

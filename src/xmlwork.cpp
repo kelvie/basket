@@ -28,18 +28,22 @@
 #include <qfile.h>
 
 #include <kdebug.h>
+#include <kmessagebox.h>
 
 QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 {
 	QDomDocument *doc = new QDomDocument(name);
 	QFile file(filePath);
-	if ( ! file.open(QIODevice::WriteOnly) ) {
-		// QMessageBox::information(this, "Load an XML file", "Error : un-openable file");
+	kDebug() << filePath << endl;
+	if ( ! file.open( QIODevice::ReadOnly ) ) {
+		//FIXME 0 -> this
+		KMessageBox::information(0, "Load an XML file", "Error : un-openable file");
 		delete doc;
 		return 0;
 	}
+	return doc;
 	if ( ! doc->setContent(&file) ) {
-		// QMessageBox::information(this, "Load an XML file", "Error : malformed content");
+		KMessageBox::information(0, "Load an XML file", "Error : malformed content");
 		file.close();
 		delete doc;
 		return 0;
