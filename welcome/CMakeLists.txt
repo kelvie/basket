@@ -3,7 +3,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${K
 
 ########### install files ###############
 
-INSTALL(FILES Welcome_de.baskets  	Welcome_en_US.baskets  	Welcome_fr.baskets  	Welcome_it.baskets  	Welcome_ja.baskets  	Welcome_nn.baskets  	Welcome_pt.baskets  	Welcome_ru.baskets DESTINATION ${DATA_INSTALL_DIR}/basket/welcome)
+INSTALL( FILES Welcome_de.baskets  Welcome_en_US.baskets  Welcome_fr.baskets  Welcome_it.baskets  Welcome_ja.baskets  	Welcome_nn.baskets  Welcome_pt.baskets  Welcome_ru.baskets DESTINATION ${DATA_INSTALL_DIR}/basket/welcome )
 
 
 

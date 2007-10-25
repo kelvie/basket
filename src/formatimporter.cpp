@@ -112,14 +112,14 @@ void FormatImporter::importBaskets()
 	// Then load the baskets that weren't loaded (import < 0.5.0 ones):
 	QDir dir(Global::savesFolder(), QString::null, QDir::Name | QDir::IgnoreCase, QDir::Dirs | QDir::NoSymLinks);
 	QStringList list = dir.entryList();
-	/*FIXME 1.5 if (list.count() > 2) // Pass "." and ".."
+	if (list.count() > 2) // Pass "." and ".."
 		for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) // For each folder
 			if (*it != "." && *it != ".." && dir.exists(Global::savesFolder() + *it + "/.basket")) // If it can be a basket folder
-				if ( baskets.indexOf(QRegExp((*it) + "/")) == baskets.indexOf(baskets.end()) &&
-				     baskets.indexOf(*it)         == baskets.indexOf(baskets.end())    ) // And if it is not already in the imported baskets list
-					baskets.append(*it);*/
+				if ( baskets.indexOf(QRegExp((*it) + "/")) == baskets.indexOf((*baskets.end())) &&
+				     baskets.indexOf(*it)         == baskets.indexOf((*baskets.end()))    ) // And if it is not already in the imported baskets list
+					baskets.append(*it);
 
-	//std::cout << "Import Baskets: Found " << baskets.count() << " baskets to import." << std::endl;
+	kDebug() << "Import Baskets: Found " << baskets.count() << " baskets to import." << endl;
 
 	// Import every baskets:
 	int i = 0;
