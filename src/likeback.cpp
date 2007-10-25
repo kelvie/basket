@@ -45,6 +45,7 @@
 #include <qvalidator.h>
 #include <qaction.h>
 #include <kdebug.h>
+#include <kconfig.h>
 
 #include <pwd.h>
 
@@ -415,7 +416,7 @@ KAction* LikeBack::sendACommentAction ( KActionCollection *parent )
 bool LikeBack::userWantsToShowBar()
 {
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
-	d->config->setGroup ( "LikeBack" );
+	//d->config->setGroup ( "LikeBack" );
 //TODO	return d->config->readBoolEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault );
 }
 
@@ -427,7 +428,7 @@ void LikeBack::setUserWantsToShowBar ( bool showBar )
 	d->showBar = showBar;
 
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
-	d->config->setGroup ( "LikeBack" );
+	//d->config->setGroup ( "LikeBack" );
 //TODO	d->config->writeEntry ( "userWantToShowBarForVersion_" + d->aboutData->version(), showBar );
 	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
 
@@ -545,7 +546,7 @@ QString LikeBack::activeWindowPath()
 
 bool LikeBack::emailAddressAlreadyProvided()
 {
-	d->config->setGroup ( "LikeBack" );
+	//d->config->setGroup ( "LikeBack" );
 //TODO	return d->config->readBoolEntry ( "emailAlreadyAsked", false );
 }
 
@@ -554,7 +555,7 @@ QString LikeBack::emailAddress()
 	if ( !emailAddressAlreadyProvided() )
 		askEmailAddress();
 
-	d->config->setGroup ( "LikeBack" );
+//	d->config->setGroup ( "LikeBack" );
 //TODO	return d->config->readEntry ( "emailAddress", "" );
 }
 

@@ -71,7 +71,7 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 	// Unpack the template file to that folder:
 	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
 	// FIXME: replace with ".basket"
-	QFile file(fullPath + "basket");
+	QFile file(fullPath + ".basket");
 	if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream stream(&file);
 		kDebug() << (file.permissions() & QFile::WriteUser) << endl;
@@ -117,6 +117,7 @@ void BasketFactory::newBasket(const QString &icon,
 	kDebug() << name << endl;
 	kDebug() << backgroundImage << endl;
 	kDebug() << templateName << endl;
+	kDebug() << (int)parent << endl;
 	kDebug() << "----------------" << endl;
 
 	// Unpack the templateName file to a new basket folder:
@@ -125,7 +126,7 @@ void BasketFactory::newBasket(const QString &icon,
 		return;
 
 	// Read the properties, change those that should be customized and save the result:
-	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/basket");
+	QDomDocument *document  = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/.basket");
 	if (!document) {
 		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template customization for this new basket has failed."), i18n("Basket Creation Failed"));
 		return;

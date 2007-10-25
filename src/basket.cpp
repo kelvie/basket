@@ -196,6 +196,10 @@ QList<Note*> NoteSelection::parentGroups()
 DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Qt::WFlags fl )
 		: QWidget ( parent, fl )
 {
+	kDebug() << (int)parent << endl;
+	kDebug() << folderName << endl;
+	kDebug() << "---------" << endl;
+
 	m_layout = new QVBoxLayout ( this );
 	m_filter = new FilterBar ( this );
 	m_basket = new Basket ( this, folderName );
@@ -1407,7 +1411,7 @@ void Basket::countsChangedTimeOut()
 
 Basket::Basket ( QWidget *parent, const QString &folderName )
 		: QScrollArea ( parent ),
-		/* FIXME 1.5 QToolTip ( widget() ),*/
+		/*QToolTip ( widget() ),*/
 		m_noActionOnMouseRelease ( false ), m_ignoreCloseEditorOnNextMouseRelease ( false ), m_pressPos ( -100, -100 ), m_canDrag ( false ),
 		m_firstNote ( 0 ), m_columnsCount ( 1 ), m_mindMap ( false ), m_resizingNote ( 0L ), m_pickedResizer ( 0 ), m_movingNote ( 0L ), m_pickedHandle ( 0, 0 ),
 		m_clickedToInsert ( 0 ), m_zoneToInsert ( 0 ), m_posToInsert ( -1, -1 ),
@@ -1432,10 +1436,10 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 	QString sAction = "local_basket_activate_" + folderName;
 	
 	m_action = new KAction ( this);
-m_action->setText(i18n("FAKE TEXT"));
-m_action->setIcon(KIcon("FAKE ICON"));
-m_action->setShortcut( KShortcut());
-Global::bnpView->actionCollection()->addAction(sAction,m_action);
+	m_action->setText(i18n("FAKE TEXT"));
+	m_action->setIcon(KIcon("FAKE ICON"));
+	m_action->setShortcut( KShortcut());
+	Global::bnpView->actionCollection()->addAction(sAction,m_action);
 	connect(m_action, SIGNAL(triggered(bool)), SLOT ( activatedShortcut() ));
 	m_action->setShortcutConfigurable ( false ); // We do it in the basket properties dialog (and keep it in sync with the global one)
 

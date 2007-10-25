@@ -41,7 +41,6 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 		delete doc;
 		return 0;
 	}
-	return doc;
 	if ( ! doc->setContent(&file) ) {
 		KMessageBox::information(0, "Load an XML file", "Error : malformed content");
 		file.close();

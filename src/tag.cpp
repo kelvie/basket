@@ -234,18 +234,18 @@ long Tag::getNextStateUid()
 
 Tag::Tag()
 {
-//	static int tagNumber = 0;
-//	++tagNumber;
-//	QString sAction = "tag_shortcut_number_" + QString::number ( tagNumber );
-//	m_action= new KAction(0);
-//	m_action->setText ( i18n ( "FAKE TEXT" ) );
-//	m_action->setIcon ( KIcon ( "FAKE ICON" ) );
-//	m_action->setShortcut ( KShortcut() );
-//	Global::bnpView->actionCollection()->addAction("name_of_the_action",m_action);
-//	connect ( sAction, SIGNAL ( triggered() ), this, SLOT ( activatedTagShortcut() ) );
-//	m_action->setShortcutConfigurable ( false ); // We do it in the tag properties dialog
-//
-//	m_inheritedBySiblings = false;
+	static int tagNumber = 0;
+	++tagNumber;
+	QString sAction = "tag_shortcut_number_" + QString::number ( tagNumber );
+	m_action= new KAction(0);
+	m_action->setText ( i18n ( "FAKE TEXT" ) );
+	m_action->setIcon ( KIcon ( "FAKE ICON" ) );
+	m_action->setShortcut ( KShortcut() );
+	Global::bnpView->actionCollection()->addAction("name_of_the_action",m_action);
+	//FIXME connect ( sAction, SIGNAL ( triggered() ), this, SLOT ( activatedTagShortcut() ) );
+	m_action->setShortcutConfigurable ( false ); // We do it in the tag properties dialog
+
+	m_inheritedBySiblings = false;
 }
 
 Tag::~Tag()

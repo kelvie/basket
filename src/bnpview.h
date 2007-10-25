@@ -21,7 +21,6 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <QTreeWidget>
 #include <kxmlguiclient.h>
 #include <qtimer.h>
 #include <qclipboard.h>
@@ -30,12 +29,13 @@
 #include <qdbusinterface.h>
 #include "global.h"
 #include <kaction.h>
-#include <QTreeWidgetItem>
  /// NEW:
 
 class QStackedWidget;
 class QDomDocument;
 class QDomElement;
+class QTreeWidget;
+class QTreeWidgetItem;
 class KToggleAction;
 class KPassivePopup;
 class QMenu;
@@ -76,7 +76,7 @@ class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 		void setCurrentBasket(Basket *basket);
 		void removeBasket(Basket *basket);
 	/// For NewBasketDialog (and later some other classes):
-		QListView* firstListViewItem();
+		QTreeWidgetItem* firstListViewItem();
 		///
 		BasketListViewItem* lastListViewItem();
 		int basketCount(QTreeWidgetItem *parent = 0);

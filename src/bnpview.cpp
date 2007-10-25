@@ -175,6 +175,7 @@ void BNPView::lateInit()
 	// If no basket has been found, try to import from an older version,
 	if ( !firstListViewItem() )
 	{
+		kDebug() << "Importing" << endl;
 		QDir dir;
 		dir.mkdir ( Global::basketsFolder() );
 		if ( FormatImporter::shouldImportBaskets() )
@@ -184,9 +185,9 @@ void BNPView::lateInit()
 		}
 		if ( !firstListViewItem() )
 		{
+			kDebug() << "Creating the first Basket" << endl;
 			//Create first basket:
-			//BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-// FIXME 1.5			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", //backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+			BasketFactory::newBasket(/*icon=*/"", /*name=*/i18n("General"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		}
 	}
 
@@ -356,16 +357,16 @@ void BNPView::initialize()
 	// Configure the List View Columns:
 	m_tree  = new BasketTreeListView ( this );
 	QStringList headers;
-	headers << i18n ( "Baskets" )<<i18n("Baskets");
+	headers << i18n ( "Baskets" );
 	m_tree->setHeaderLabels ( headers );
 
-	m_tree->setColumnWidth(0, 10);
+	//m_tree->setColumnWidth(0, 10);
 
 	/*QList<QTreeWidgetItem *> items;
 	for (int i = 0; i < 10; ++i)
 		      items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item: %1").arg(i))));
-	m_tree->insertTopLevelItems(0, items);
-	*/
+	m_tree->insertTopLevelItems(0, items);*/
+	
 
 //FIXME 1.5	m_tree->setColumnWidthMode(0, QTreeWidget::maximum);
 //FIXME	m_tree->setFullWidth(true);
@@ -438,7 +439,7 @@ void BNPView::initialize()
 						"You can group baskets by subject by creating new baskets inside others. "
 						"You can browse between them by clicking a basket to open it, or reorganize them using drag and drop."));
 	*/
-//	setTreePlacement(Settings::treeOnLeft());
+	setTreePlacement(Settings::treeOnLeft());
 }
 
 void BNPView::setupActions()
@@ -704,11 +705,10 @@ void BNPView::setupActions()
 	connect ( temp, SIGNAL ( triggered ( bool ) ), this, SLOT ( addWelcomeBaskets() ) );
 }
 
-QListView* BNPView::firstListViewItem()
+QTreeWidgetItem* BNPView::firstListViewItem()
 {
-	//FIXME return m_tree->firstChild();
-	//return QListView();
-	//return NULL;
+	return m_tree->topLevelItem(0);
+	//return m_tree->firstChild();
 }
 
 void BNPView::slotShowProperties ( QTreeWidgetItem *item, const QPoint&, int )
@@ -755,6 +755,7 @@ void BNPView::slotContextMenu ( QTreeWidget */*listView*/, QTreeWidgetItem *item
 
 void BNPView::save()
 {
+	kDebug() << "saving..." << endl;
 	DEBUG_WIN << "Basket Tree: Saving...";
 
 	// Create Document:
@@ -763,27 +764,28 @@ void BNPView::save()
 	document.appendChild ( root );
 
 	// Save Basket Tree:
-//FIXME 1.5	save(m_tree->firstChild(), document, root);
+	save(m_tree->topLevelItem(0), document, root);
 
 	// Write to Disk:
 	Basket::safelySaveToFile ( Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString() );
-// 	QFile file(Global::basketsFolder() + "baskets.xml");
-// 	if (file.open(QIODevice::WriteOnly)) {
-// 		QTextStream stream(&file);
-// 		stream.setEncoding(QTextStream::UnicodeUTF8);
-// 		QString xml = document.toString();
-// 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-// 		stream << xml;
-// 		file.close();
-// 	}
+ 	QFile file(Global::basketsFolder() + "baskets.xml");
+ 	if (file.open(QIODevice::WriteOnly)) {
+ 		QTextStream stream(&file);
+ 		//FIXME: should remove that stream.setEncoding(QTextStream::UnicodeUTF8);
+ 		QString xml = document.toString();
+ 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+ 		stream << xml;
+ 		file.close();
+ 	}
 }
 
 void BNPView::save ( QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement )
 {
+	kDebug() << "Enter" << endl;
 	QTreeWidgetItem *item = firstItem;
 	while ( item )
 	{
-//		Basket *basket = ((BasketListViewItem*)item)->basket();
+		Basket *basket = ((BasketListViewItem*)item)->basket();
 		QDomElement basketElement = this->basketElement ( item, document, parentElement );
 		/*
 				QDomElement basketElement = document.createElement("basket");
@@ -836,8 +838,8 @@ void BNPView::load()
 {
 	QDomDocument *doc = XMLWork::openFile ( "basketTree", Global::basketsFolder() + "baskets.xml" );
 	//BEGIN Compatibility with 0.6.0 Pre-Alpha versions:
-	if ( !doc )
-		doc = XMLWork::openFile ( "basketsTree", Global::basketsFolder() + "baskets.xml" );
+	//if ( !doc )
+	//	doc = XMLWork::openFile ( "basketsTree", Global::basketsFolder() + "baskets.xml" );
 	//END
 	if ( doc != 0 )
 	{
