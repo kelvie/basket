@@ -38,7 +38,7 @@ SET(basketcommon_LIB_SRCS
    crashhandler.cpp
    password.cpp
    colorpicker.cpp
-   basketlistview.cpp
+   baskettree.cpp
    debugwindow.cpp
    systemtray.cpp
    aboutdata.cpp

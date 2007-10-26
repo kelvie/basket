@@ -39,7 +39,7 @@
 #include "newbasketdialog.h"
 #include "basketfactory.h"
 #include "basket.h"
-#include "basketlistview.h"
+//#include "basketlistview.h"
 #include "variouswidgets.h"
 #include "kcolorcombo2.h"
 #include "tools.h"

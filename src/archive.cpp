@@ -38,7 +38,7 @@
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"
-#include "basketlistview.h"
+#include "baskettree.h"
 #include "basketfactory.h"
 #include "tag.h"
 #include "xmlwork.h"
@@ -225,7 +225,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	std::cout << (basket->basketName()).toAscii().data() << " finished" << std::endl;
 
 	// Recursively save child baskets:
-	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
+	BasketTreeItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive && item->childCount()) {
 		for (int i= 0; i<item->childCount(); i++) {
 // TODO	kde4.0		saveBasketToArchive(qobject_cast<Basket*>(item->item(i)), recursive, tar, backgrounds, tempFolder, progress);
@@ -236,7 +236,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
-	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
+	BasketTreeItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive && item->childCount()) {
 		for (int i= 0; i<item->childCount(); i++) {
 // TODO	kde4.0		listUsedTags(qobject_cast<Basket*>(item->item(i)), recursive, list);
@@ -620,7 +620,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
 				copier.moveFolder(extractionFolder + "baskets/" + folderName, Global::basketsFolder() + newFolderName);
 				// Append and load the basket in the tree:
 				Basket *basket = Global::bnpView->loadBasket(newFolderName);
-				BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
+				BasketTreeItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
 // TODO kde4.0				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
 				QDomElement properties = XMLWork::getElement(element, "properties");
 				importBasketIcon(properties, extractionFolder); // Rename the icon fileName if necessary

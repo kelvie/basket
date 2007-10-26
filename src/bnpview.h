@@ -47,7 +47,7 @@ class RegionGrabber;
 
 class Basket;
 class DecoratedBasket;
-class BasketListViewItem;
+class BasketTreeItem;
 class NoteSelection;
 class BasketStatusBar;
 class Tag;
@@ -70,7 +70,7 @@ class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 		void linkLookChanged();
 		void filterPlacementChanged(bool onTop);
 	/// MANAGE BASKETS:
-		BasketListViewItem* listViewItemForBasket(Basket *basket);
+		BasketTreeItem* listViewItemForBasket(Basket *basket);
 		Basket* currentBasket();
 		Basket* parentBasketOf(Basket *basket);
 		void setCurrentBasket(Basket *basket);
@@ -78,7 +78,7 @@ class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 	/// For NewBasketDialog (and later some other classes):
 		QTreeWidgetItem* firstListViewItem();
 		///
-		BasketListViewItem* lastListViewItem();
+		BasketTreeItem* lastListViewItem();
 		int basketCount(QTreeWidgetItem *parent = 0);
 		bool canFold();
 		bool canExpand();
@@ -278,7 +278,7 @@ class BNPView : public QSplitter/*, virtual public BasketDcopInterface*/
 
 	public:
 		Basket* loadBasket(const QString &folderName); // Public only for class Archive
-		BasketListViewItem* appendBasket(Basket *basket, BasketListViewItem *parentItem); // Public only for class Archive
+		BasketTreeItem* appendBasket(Basket *basket, BasketTreeItem *parentItem); // Public only for class Archive
 
 		Basket* basketForFolderName(const QString &folderName);
 		QMenu* popupMenu(const QString &menuName);
