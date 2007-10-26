@@ -74,7 +74,6 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 	QFile file(fullPath + ".basket");
 	if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream stream(&file);
-		kDebug() << (file.permissions() & QFile::WriteUser) << endl;
 		//FIXME 1.5 : REMOVAL stream.setEncoding(QTextStream::UnicodeUTF8);
 		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
 		Basket *currentBasket = Global::bnpView->currentBasket();
@@ -94,11 +93,10 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 				stream << QString("  <group width=\"%1\"></group>\n").arg(columnWidth);
 		stream << " </notes>\n"
 		          "</basket>\n";
-		kDebug() << file.fileName() << endl;
 		file.close();
-		kDebug() << "-------" << endl;
 		return folderName;
 	} else {
+		kDebug() << "Sorry, but the template copying for this new basket failed." << endl;
 //FIXME		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the template copying for this new basket has failed."), i18n("Basket Creation Failed"));
 		return "";
 	}
@@ -176,4 +174,6 @@ void BasketFactory::newBasket(const QString &icon,
 
 	// Load it in the parent basket (it will save the tree and switch to this new basket):
 	Global::bnpView->loadNewBasket(folderName, properties, parent);
+
+	kDebug() << "exiting..." << endl;
 }

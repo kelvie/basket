@@ -25,7 +25,7 @@
 #include <kstyle.h>
 #include <qcursor.h>
 #include <kiconloader.h>
-#include <kpixmapeffect.h>
+//#include <kpixmapeffect.h>
 #include <qpixmap.h>
 #include <kglobal.h>
 #include <klocale.h>

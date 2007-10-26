@@ -33,7 +33,7 @@
 #include <kmessagebox.h>
 #include <klocale.h>
 #include <kglobalsettings.h>
-#include <kpixmapeffect.h>
+//#include <kpixmapeffect.h>
 #include <qbitmap.h>
 #include <kurifilter.h>
 //#include <kstringhandler.h>

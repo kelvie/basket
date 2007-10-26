@@ -193,8 +193,8 @@ QList<Note*> NoteSelection::parentGroups()
 
 /** Class DecoratedBasket: */
 
-DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Qt::WFlags fl )
-		: QWidget ( parent, fl )
+DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Qt::WFlags flags )
+		: QWidget ( parent, flags )
 {
 	kDebug() << (int)parent << endl;
 	kDebug() << folderName << endl;
@@ -216,6 +216,8 @@ DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Q
 	connect ( m_basket, SIGNAL ( postMessage ( const QString& ) ),      Global::bnpView, SLOT ( postStatusbarMessage ( const QString& ) ) );
 	connect ( m_basket, SIGNAL ( setStatusBarText ( const QString& ) ), Global::bnpView, SLOT ( setStatusBarHint ( const QString& ) ) );
 	connect ( m_basket, SIGNAL ( resetStatusBarText() ),             Global::bnpView, SLOT ( updateStatusBarHint() ) );
+
+	kDebug() << "returning ..." << endl;
 }
 
 DecoratedBasket::~DecoratedBasket()
@@ -1411,7 +1413,7 @@ void Basket::countsChangedTimeOut()
 
 Basket::Basket ( QWidget *parent, const QString &folderName )
 		: QScrollArea ( parent ),
-		/*QToolTip ( widget() ),*/
+		//QToolTip ( widget() ),
 		m_noActionOnMouseRelease ( false ), m_ignoreCloseEditorOnNextMouseRelease ( false ), m_pressPos ( -100, -100 ), m_canDrag ( false ),
 		m_firstNote ( 0 ), m_columnsCount ( 1 ), m_mindMap ( false ), m_resizingNote ( 0L ), m_pickedResizer ( 0 ), m_movingNote ( 0L ), m_pickedHandle ( 0, 0 ),
 		m_clickedToInsert ( 0 ), m_zoneToInsert ( 0 ), m_posToInsert ( -1, -1 ),
@@ -1433,6 +1435,9 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 		m_focusedNote ( 0 ), m_startOfShiftSelectionNote ( 0 ),
 		m_finishLoadOnFirstShow ( false ), m_relayoutOnNextShow ( false )
 {
+	kDebug() << "Creating real basket" << endl;
+	this->setWidget( new QWidget() );
+
 	QString sAction = "local_basket_activate_" + folderName;
 	
 	m_action = new KAction ( this);
@@ -1451,8 +1456,8 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 
 	// By default, there is no corner widget: we set one for the corner area to be painted!
 	// If we don't set one and there are two scrollbars present, slowly resizing up the window show graphical glitches in that area!
-	m_cornerWidget = new QWidget ( this );
-	setCornerWidget ( m_cornerWidget );
+	//FIXME m_cornerWidget = new QWidget ( this );
+	//FIXME setCornerWidget ( m_cornerWidget );
 
 	widget()->setAcceptDrops ( true );
 	widget()->setMouseTracking ( true );
@@ -1474,6 +1479,8 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 	m_gpg = new KGpgMe();
 #endif
 	m_locked = isFileEncrypted();
+
+	kDebug() << "exiting" << endl;
 }
 
 void Basket::contentsMoved()

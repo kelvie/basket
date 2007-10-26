@@ -880,6 +880,7 @@ void BNPView::load ( QTreeWidget */*listView*/, QTreeWidgetItem *item, const QDo
 
 Basket* BNPView::loadBasket ( const QString &folderName )
 {
+	kDebug() << folderName << endl;
 	if ( folderName.isEmpty() )
 		return 0;
 
@@ -892,6 +893,7 @@ Basket* BNPView::loadBasket ( const QString &folderName )
 
 	connect ( basket->decoration()->filterBar(), SIGNAL ( newFilter ( const FilterData& ) ), this, SLOT ( newFilterFromFilterBar() ) );
 
+	kDebug() << "returning..." << endl;
 	return basket;
 }
 
@@ -921,6 +923,11 @@ bool BNPView::canExpand()
 
 BasketListViewItem* BNPView::appendBasket ( Basket *basket, BasketListViewItem *parentItem )
 {
+	kDebug() << "append basket to the tree" << endl;
+	//QList<QTreeWidgetItem *> items;
+	QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item 0")));
+	m_tree->addTopLevelItem(item);
+
 	BasketListViewItem *newBasketItem;
 	if ( parentItem )
 	{
@@ -935,23 +942,26 @@ BasketListViewItem* BNPView::appendBasket ( Basket *basket, BasketListViewItem *
 		QTreeWidgetItem *topLevel=0;
 		if ( m_tree->topLevelItemCount() )
 			topLevel= m_tree->topLevelItem ( m_tree->topLevelItemCount()-1 );
-		if ( topLevel->childCount() )
+		if ( topLevel != 0 && topLevel->childCount() )
 			lastChild=topLevel->child ( topLevel->childCount()-1 );
 		newBasketItem = new BasketListViewItem ( topLevel, lastChild, basket );
 	}
 
 	emit basketNumberChanged ( basketCount() );
 
+	kDebug() << "exiting..." << endl;
 	return newBasketItem;
 }
 
 void BNPView::loadNewBasket ( const QString &folderName, const QDomElement &properties, Basket *parent )
 {
+	kDebug() << folderName << " " << (int)parent << endl;
 	Basket *basket = loadBasket ( folderName );
 	appendBasket ( basket, ( basket ? listViewItemForBasket ( parent ) : 0 ) );
-	basket->loadProperties ( properties );
+	//basket->loadProperties ( properties );
 	setCurrentBasket ( basket );
-//	save();
+//FIXME: In order to remove, basked in previous version:	save();
+	kDebug() << "End" << endl;
 }
 
 BasketListViewItem* BNPView::lastListViewItem()
@@ -1185,13 +1195,13 @@ bool BNPView::isFilteringAllBaskets()
 
 BasketListViewItem* BNPView::listViewItemForBasket ( Basket *basket )
 {
-	/* FIXME 1.5	QTreeWidgetIterator it(m_tree);
-		while (it.current()) {
-			BasketListViewItem *item = ((BasketListViewItem*)it.current());
-			if (item->basket() == basket)
-				return item;
-			++it;
-		}*/
+	QTreeWidgetItemIterator it(m_tree);
+	while (*it) {
+		BasketListViewItem *item = ((BasketListViewItem*)*it);
+		if (item->basket() == basket)
+			return item;
+		++it;
+	}
 	return 0L;
 }
 
@@ -1343,8 +1353,8 @@ void BNPView::filterPlacementChanged ( bool onTop )
 	QTreeWidgetItemIterator it ( m_tree );
 	while ( *it )
 	{
-		BasketListViewItem *item        = static_cast<BasketListViewItem*> ( *it );
-		DecoratedBasket    *decoration  = static_cast<DecoratedBasket*> ( item->basket()->parent() );
+		BasketListViewItem *item        = dynamic_cast<BasketListViewItem*> ( *it );
+		DecoratedBasket    *decoration  = dynamic_cast<DecoratedBasket*> ( item->basket()->parent() );
 		decoration->setFilterBarPosition ( onTop );
 		++it;
 	}
