@@ -168,7 +168,7 @@ void BNPView::lateInit()
 		Global::systemTray->show();
 
 	// Load baskets
-	DEBUG_WIN << "Baskets are loaded from " + Global::basketsFolder();
+	kDebug() << "Baskets are loaded from " + Global::basketsFolder();
 
 	NoteDrag::createAndEmptyCuttingTmpFolder(); // If last exec hasn't done it: clean the temporary folder we will use
 	Tag::loadTags(); // Tags should be ready before loading baskets, but tags need the mainContainer to be ready to create KActions!
@@ -381,7 +381,7 @@ void BNPView::initialize()
 
 	/// Configure the List View Drag and Drop:
 //FIXME	1.5	m_tree->setDragEnabled(true);
-//FIXME	m_tree->setAcceptDrops(true);
+	m_tree->setAcceptDrops(true);
 //FIXME	1.5	m_tree->setItemsMovable(true);
 //FIXME	1.5	m_tree->setDragAutoScroll(true);
 //FIXME	1.5	m_tree->setDropVisualizer(true);
@@ -403,22 +403,22 @@ void BNPView::initialize()
 	setCollapsible ( 0, true );
 	setCollapsible ( 1, false );
 
-	/// Configure the List View Signals:
-	//connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
-	//connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
-	//connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
-	//connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
-	//connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
-	//connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
-	//connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
-	//connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
+	/// Configure the BasketTree Signals:
+	connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
+	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
+	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
+	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
+	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
+	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
+	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
 
-	//connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
-	//connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
-	//connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
+	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
 
-	//connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
-	//connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
+	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
+	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
 
 	/* LikeBack */
 	Global::likeBack = new LikeBack ( LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about() );
@@ -924,27 +924,25 @@ bool BNPView::canExpand()
 BasketTreeItem* BNPView::appendBasket ( Basket *basket, BasketTreeItem *parentItem )
 {
 	kDebug() << "append basket to the tree" << endl;
-	//QList<QTreeWidgetItem *> items;
-	QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("item 0")));
-	m_tree->addTopLevelItem(item);
+	kDebug() << (int)basket << " " << (int)parentItem << endl;
 
 	BasketTreeItem *newBasketItem;
-	if ( parentItem )
-	{
+	if ( parentItem ) {
 		QTreeWidgetItem *lastChild = 0;
 		if ( parentItem->childCount() )
 			lastChild= parentItem->child ( parentItem->childCount()-1 );
 		newBasketItem = new BasketTreeItem ( parentItem, lastChild, basket );
-	}
-	else
-	{
-		QTreeWidgetItem *lastChild = 0;
+	} else {
+		/*FIXME, REMOVE, NEW IMPLEMENTATION IN 1.5: QTreeWidgetItem *lastChild = 0;
 		QTreeWidgetItem *topLevel=0;
 		if ( m_tree->topLevelItemCount() )
 			topLevel= m_tree->topLevelItem ( m_tree->topLevelItemCount()-1 );
 		if ( topLevel != 0 && topLevel->childCount() )
 			lastChild=topLevel->child ( topLevel->childCount()-1 );
-		newBasketItem = new BasketTreeItem ( topLevel, lastChild, basket );
+		newBasketItem = new BasketTreeItem ( topLevel, lastChild, basket );*/
+
+		newBasketItem = new BasketTreeItem( (QTreeWidgetItem*)0, basket );
+		m_tree->addTopLevelItem( newBasketItem );
 	}
 
 	emit basketNumberChanged ( basketCount() );
@@ -960,7 +958,7 @@ void BNPView::loadNewBasket ( const QString &folderName, const QDomElement &prop
 	appendBasket ( basket, ( basket ? listViewItemForBasket ( parent ) : 0 ) );
 	//basket->loadProperties ( properties );
 	setCurrentBasket ( basket );
-//FIXME: In order to remove, basked in previous version:	save();
+//FIXME: In order to remove, masked in previous version:	save();
 	kDebug() << "End" << endl;
 }
 

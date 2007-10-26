@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASKETLISTVIEW_H
-#define BASKETLISTVIEW_H
+#ifndef BASKETTREE_H
+#define BASKETTREE_H
 
 #include <QTreeWidgetItem>
 #include <QTreeWidget>
@@ -27,28 +27,27 @@
 #include <QMimeData>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+
 class Basket;
 
-class BasketListViewItem : public QTreeWidgetItem
+class BasketTreeItem : public QTreeWidgetItem
 {
 	public:
-	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QTreeWidgetItem     *parent, Basket *basket);
-//		BasketListViewItem(QTreeWidgetItem *parent, Basket *basket);
-		BasketListViewItem(QTreeWidgetItem     *parent, QTreeWidgetItem *after, Basket *basket);
-//		BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket);
-		~BasketListViewItem();
-		///
+	//  CONSTRUCTOR AND DESTRUCTOR:
+		BasketTreeItem(QTreeWidgetItem     *parent, Basket *basket);
+		BasketTreeItem(QTreeWidgetItem     *parent, QTreeWidgetItem *after, Basket *basket);
+		~BasketTreeItem();
+
 		bool acceptDrop(const QMimeData *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
 		int width(const QFontMetrics &fontMetrics, const QTreeWidgetItem *listView, int column) const;
-		BasketListViewItem* firstChild(){return (BasketListViewItem*) child(0);}
-		BasketListViewItem* lastChild();
-		BasketListViewItem* prevSibling();
-		BasketListViewItem* shownItemAbove();
-		BasketListViewItem* shownItemBelow();
+		BasketTreeItem* firstChild(){return (BasketTreeItem*) child(0);}
+		BasketTreeItem* lastChild();
+		BasketTreeItem* prevSibling();
+		BasketTreeItem* shownItemAbove();
+		BasketTreeItem* shownItemBelow();
 		QStringList childNamesTree(int deep = 0);
 		void moveChildsBaskets();
 		void ensureVisible();
@@ -78,11 +77,11 @@ class BasketListViewItem : public QTreeWidgetItem
 		bool m_isAbbreviated;
 };
 
-class BasketTreeListView : public QTreeWidget
+class BasketTree : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		BasketTreeListView(QWidget *parent = 0, const char *name = 0);
+		BasketTree(QWidget *parent = 0, const char *name = 0);
 		void contentsDragEnterEvent(QDragEnterEvent *event);
 		void removeExpands();
 		void contentsDragLeaveEvent(QDragLeaveEvent *event);
@@ -90,7 +89,7 @@ class BasketTreeListView : public QTreeWidget
 		void contentsDropEvent(QDropEvent *event);
 		void resizeEvent(QResizeEvent *event);
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
-		BasketListViewItem* firstChild(){return (BasketListViewItem*) topLevelItem(0);}
+		BasketTreeItem* firstChild(){return (BasketTreeItem*) topLevelItem(0);}
 	protected:
 		void focusInEvent(QFocusEvent*);
 	private:
@@ -99,9 +98,9 @@ class BasketTreeListView : public QTreeWidget
 	private slots:
 		void autoOpen();
 	private:
-		void setItemUnderDrag(BasketListViewItem* item);
-		BasketListViewItem* m_itemUnderDrag;
+		void setItemUnderDrag(BasketTreeItem* item);
+		BasketTreeItem* m_itemUnderDrag;
 
 };
 
-#endif // BASKETLISTVIEW_H
+#endif // BASKETTREE_H

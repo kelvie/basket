@@ -37,12 +37,14 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 	kDebug() << filePath << endl;
 	if ( ! file.open( QIODevice::ReadOnly ) ) {
 		//FIXME 0 -> this
-		KMessageBox::information(0, "Load an XML file", "Error : un-openable file");
+		//KMessageBox::information(0, "Load an XML file", "Error : un-openable file");
+		kDebug() << "Error!!!, Load an XML file" << endl;
 		delete doc;
 		return 0;
 	}
 	if ( ! doc->setContent(&file) ) {
-		KMessageBox::information(0, "Load an XML file", "Error : malformed content");
+		//KMessageBox::information(0, "Load an XML file", "Error : malformed content");
+		kDebug() << "Error!!!, Bad content of XML file" << endl;
 		file.close();
 		delete doc;
 		return 0;

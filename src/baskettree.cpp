@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by S�astien Laot                                   *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "basketlistview.h"
 #include <qregexp.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
@@ -39,10 +38,11 @@
 #include <kcolorscheme.h>
 #include <QDropEvent>
 
+#include "baskettree.h"
 
-/** class BasketListViewItem: */
+/** class BasketTreeItem: */
 
-BasketListViewItem::BasketListViewItem ( QTreeWidgetItem *parent, Basket *basket )
+BasketTreeItem::BasketTreeItem ( QTreeWidgetItem *parent, Basket *basket )
 		: QTreeWidgetItem ( parent ), m_basket ( basket )
 		, m_isUnderDrag ( false )
 		, m_isAbbreviated ( false )
@@ -51,7 +51,7 @@ BasketListViewItem::BasketListViewItem ( QTreeWidgetItem *parent, Basket *basket
 }
 
 /* TO REMOVE
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, Basket *basket)
+BasketTreeItem::BasketTreeItem(QTreeWidgetItem *parent, Basket *basket)
 	: QListView(parent), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
@@ -60,7 +60,7 @@ BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, Basket *basket)
 }
 */
 
-BasketListViewItem::BasketListViewItem ( QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket )
+BasketTreeItem::BasketTreeItem ( QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket )
 		: QTreeWidgetItem ( parent, after ), m_basket ( basket )
 		, m_isUnderDrag ( false )
 		, m_isAbbreviated ( false )
@@ -69,7 +69,7 @@ BasketListViewItem::BasketListViewItem ( QTreeWidgetItem *parent, QTreeWidgetIte
 }
 
 /* TO REMOVE
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidget *after, Basket *basket)
+BasketTreeItem::BasketTreeItem(QTreeWidgetItem *parent, QTreeWidget *after, Basket *basket)
 	: QListView(parent, after), m_basket(basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
@@ -78,23 +78,23 @@ BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidget *aft
 }
 */
 
-BasketListViewItem::~BasketListViewItem()
+BasketTreeItem::~BasketTreeItem()
 {}
 
-bool BasketListViewItem::acceptDrop ( const QMimeData * ) const
+bool BasketTreeItem::acceptDrop ( const QMimeData * ) const
 {
 	std::cout << "accept" << std::endl;
 	return true;
 }
 
-void BasketListViewItem::dropped ( QDropEvent *event )
+void BasketTreeItem::dropped ( QDropEvent *event )
 {
 	qDebug() << "Dropping into basket " << m_basket->objectName();
 	m_basket->contentsDropEvent ( event );
 	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
-int BasketListViewItem::width ( const QFontMetrics &/* fontMetrics */, const QTreeWidgetItem */*listView*/, int /* column */ ) const
+int BasketTreeItem::width ( const QFontMetrics &/* fontMetrics */, const QTreeWidgetItem */*listView*/, int /* column */ ) const
 {
 	return treeWidget ()->visualItemRect ( this ).width() + 100;
 	/*
@@ -107,7 +107,7 @@ int BasketListViewItem::width ( const QFontMetrics &/* fontMetrics */, const QTr
 	*/
 }
 
-QString BasketListViewItem::escapedName ( const QString &string )
+QString BasketTreeItem::escapedName ( const QString &string )
 {
 	// Underlining the Alt+Letter shortcut (and escape all other '&' characters), if any:
 	QString basketName = string;
@@ -130,7 +130,7 @@ QString BasketListViewItem::escapedName ( const QString &string )
 	return basketName;
 }
 
-void BasketListViewItem::setup()
+void BasketTreeItem::setup()
 {
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
@@ -146,17 +146,17 @@ void BasketListViewItem::setup()
 	setIcon ( 0,KIcon ( m_basket->icon() ) );
 }
 
-BasketListViewItem* BasketListViewItem::lastChild()
+BasketTreeItem* BasketTreeItem::lastChild()
 {
 	if ( childCount() !=0 )
-		return ( BasketListViewItem* ) child ( childCount ()-1 ) ;
+		return ( BasketTreeItem* ) child ( childCount ()-1 ) ;
 	else
 		return 0;
 }
 
-BasketListViewItem* BasketListViewItem::prevSibling()
+BasketTreeItem* BasketTreeItem::prevSibling()
 {
-	BasketListViewItem *item = this;
+	BasketTreeItem *item = this;
 	int itemIndex=0;
 	/* check if it's a topLevelItem
 	   if not, get item index from parent
@@ -167,46 +167,46 @@ BasketListViewItem* BasketListViewItem::prevSibling()
 	{
 		 itemIndex=item->parent()->indexOfChild ( this );
 		 if(itemIndex)
-		 return (BasketListViewItem*) ( item->parent()->child(itemIndex-1));
+		 return (BasketTreeItem*) ( item->parent()->child(itemIndex-1));
 	}
         else{
 		 itemIndex=item->treeWidget()->indexOfTopLevelItem ( this );
 		 if(itemIndex)
-		 return ( BasketListViewItem* ) ( item->treeWidget()->topLevelItem(itemIndex-1));
+		 return ( BasketTreeItem* ) ( item->treeWidget()->topLevelItem(itemIndex-1));
 	}
 	return 0;
 }
 
-BasketListViewItem* BasketListViewItem::shownItemAbove()
+BasketTreeItem* BasketTreeItem::shownItemAbove()
 {
-	BasketListViewItem *item = ( BasketListViewItem* ) this->treeWidget()->itemAbove(this);
+	BasketTreeItem *item = ( BasketTreeItem* ) this->treeWidget()->itemAbove(this);
 	while ( item )
 	{
 		if ( item->isVisible() )
 			return item;
-		item = ( BasketListViewItem* ) ( item->treeWidget()->itemAbove(item) );
+		item = ( BasketTreeItem* ) ( item->treeWidget()->itemAbove(item) );
 	}
 	return 0;
 }
 
-BasketListViewItem* BasketListViewItem::shownItemBelow()
+BasketTreeItem* BasketTreeItem::shownItemBelow()
 {
-	BasketListViewItem *item = ( BasketListViewItem* ) this->treeWidget()->itemBelow(this);
+	BasketTreeItem *item = ( BasketTreeItem* ) this->treeWidget()->itemBelow(this);
 	while ( item )
 	{
 		if ( item->isVisible() )
 			return item;
-		item = ( BasketListViewItem* ) ( item->treeWidget()->itemBelow(item) );
+		item = ( BasketTreeItem* ) ( item->treeWidget()->itemBelow(item) );
 	}
 	return 0;
 }
 
-QStringList BasketListViewItem::childNamesTree ( int deep )
+QStringList BasketTreeItem::childNamesTree ( int deep )
 {
 	QStringList result;
 	for ( QTreeWidgetItem *child = this->child(0); child; child = this->child(this->indexOfChild(child)+1) )
 	{
-		BasketListViewItem *item = ( BasketListViewItem* ) child;
+		BasketTreeItem *item = ( BasketTreeItem* ) child;
 		// Compute indentation spaces:
 		QString spaces;
 		for ( int i = 0; i < deep; ++i )
@@ -224,7 +224,7 @@ QStringList BasketListViewItem::childNamesTree ( int deep )
 	return result;
 }
 
-void BasketListViewItem::moveChildsBaskets()
+void BasketTreeItem::moveChildsBaskets()
 {
 	QTreeWidgetItem *insertAfterThis = this;
 	QTreeWidgetItem *nextOne;
@@ -243,17 +243,17 @@ void BasketListViewItem::moveChildsBaskets()
 	}
 }
 
-void BasketListViewItem::ensureVisible()
+void BasketTreeItem::ensureVisible()
 {
-	BasketListViewItem *item = this;
+	BasketTreeItem *item = this;
 	while ( item->parent() )
 	{
-		item = ( BasketListViewItem* ) ( item->parent() );
+		item = ( BasketTreeItem* ) ( item->parent() );
 		item->setExpanded ( true );
 	}
 }
 
-bool BasketListViewItem::isVisible()
+bool BasketTreeItem::isVisible()
 {
 	QTreeWidgetItem *item = parent();
 	while ( item )
@@ -265,7 +265,7 @@ bool BasketListViewItem::isVisible()
 	return true;
 }
 
-bool BasketListViewItem::isCurrentBasket()
+bool BasketTreeItem::isCurrentBasket()
 {
 	return basket() == Global::bnpView->currentBasket();
 }
@@ -275,7 +275,7 @@ extern void drawGradient ( QPainter *p, const QColor &colorTop, const QColor & c
 	                           int x, int y, int w, int h,
 	                           bool sunken, bool horz, bool flat ); /*const*/
 
-QPixmap BasketListViewItem::circledTextPixmap ( const QString &text, int height, const QFont &font, const QColor &color )
+QPixmap BasketTreeItem::circledTextPixmap ( const QString &text, int height, const QFont &font, const QColor &color )
 {
 	QString key = QString ( "BLI-%1.%2.%3.%4" )
 	              .arg ( text ).arg ( height ).arg ( font.toString() ).arg ( color.rgb() );
@@ -343,7 +343,7 @@ QPixmap BasketListViewItem::circledTextPixmap ( const QString &text, int height,
 	return pmScaled;
 }
 
-QPixmap BasketListViewItem::foundCountPixmap ( bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height )
+QPixmap BasketTreeItem::foundCountPixmap ( bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height )
 {
 	if ( isLoading )
 		return QPixmap();
@@ -372,12 +372,12 @@ QPixmap BasketListViewItem::foundCountPixmap ( bool isLoading, int countFound, b
 	return circledTextPixmap ( text, height, boldFont, KColorScheme ( QPalette::Active, KColorScheme::Selection ).foreground().color() );
 }
 
-bool BasketListViewItem::haveChildsLoading()
+bool BasketTreeItem::haveChildsLoading()
 {
 	QTreeWidgetItem *child = this->child(0);
 	while ( child )
 	{
-		BasketListViewItem *childItem = ( BasketListViewItem* ) child;
+		BasketTreeItem *childItem = ( BasketTreeItem* ) child;
 		if ( !childItem->basket()->isLoaded() && !childItem->basket()->isLocked() )
 			return true;
 		if ( childItem->haveChildsLoading() )
@@ -387,19 +387,19 @@ bool BasketListViewItem::haveChildsLoading()
 	return false;
 }
 
-bool BasketListViewItem::haveHiddenChildsLoading()
+bool BasketTreeItem::haveHiddenChildsLoading()
 {
 	if ( isExpanded() )
 		return false;
 	return haveChildsLoading();
 }
 
-bool BasketListViewItem::haveChildsLocked()
+bool BasketTreeItem::haveChildsLocked()
 {
 	QTreeWidgetItem *child = this->child(0);
 	while ( child )
 	{
-		BasketListViewItem *childItem = ( BasketListViewItem* ) child;
+		BasketTreeItem *childItem = ( BasketTreeItem* ) child;
 		if ( /*!*/childItem->basket()->isLocked() )
 			return true;
 		if ( childItem->haveChildsLocked() )
@@ -409,20 +409,20 @@ bool BasketListViewItem::haveChildsLocked()
 	return false;
 }
 
-bool BasketListViewItem::haveHiddenChildsLocked()
+bool BasketTreeItem::haveHiddenChildsLocked()
 {
 	if ( isExpanded() )
 		return false;
 	return haveChildsLocked();
 }
 
-int BasketListViewItem::countChildsFound()
+int BasketTreeItem::countChildsFound()
 {
 	int count = 0;
 	QTreeWidgetItem *child = this->child(0);
 	while ( child )
 	{
-		BasketListViewItem *childItem = ( BasketListViewItem* ) child;
+		BasketTreeItem *childItem = ( BasketTreeItem* ) child;
 		count += childItem->basket()->countFounds();
 		count += childItem->countChildsFound();
 		child = this->child(this->indexOfChild(child)+1);
@@ -430,14 +430,14 @@ int BasketListViewItem::countChildsFound()
 	return count;
 }
 
-int BasketListViewItem::countHiddenChildsFound()
+int BasketTreeItem::countHiddenChildsFound()
 {
 	if ( isExpanded() )
 		return 0;
 	return countChildsFound();
 }
 
-void BasketListViewItem::paintCell ( QPainter *painter, const QPalette &/*colorGroup*/, int /*column*/, int width, int /*align*/ )
+void BasketTreeItem::paintCell ( QPainter *painter, const QPalette &/*colorGroup*/, int /*column*/, int width, int /*align*/ )
 {
 	// Workaround a Qt bug:
 	// When the splitter is moved to hide the tree view and then the application is restarted,
@@ -473,8 +473,8 @@ void BasketListViewItem::paintCell ( QPainter *painter, const QPalette &/*colorG
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
 	QColor textColor = ( drawRoundRect ? m_basket->textColor() : ( isCurrentBasket() ? KColorScheme ( QPalette::Active, KColorScheme::Selection ).foreground().color() : KColorScheme ( QPalette::Active, KColorScheme::View ).foreground().color() ) );
 
-	BasketListViewItem *shownAbove = shownItemAbove();
-	BasketListViewItem *shownBelow = shownItemBelow();
+	BasketTreeItem *shownAbove = shownItemAbove();
+	BasketTreeItem *shownBelow = shownItemBelow();
 
 	// Don't forget to update the key computation if parameters
 	// affecting the rendering logic change
@@ -566,7 +566,7 @@ void BasketListViewItem::paintCell ( QPainter *painter, const QPalette &/*colorG
 		thePainter.drawPoint ( 0, treeWidget()->visualItemRect ( this).height() - 3 );
 	}
 	// Draw the bottom-right selection roundings:
-	//BasketListViewItem *shownBelow = shownItemBelow();
+	//BasketTreeItem *shownBelow = shownItemBelow();
 	if ( shownBelow && shownBelow->isCurrentBasket() )
 	{
 		thePainter.setPen ( selColor );
@@ -578,7 +578,7 @@ void BasketListViewItem::paintCell ( QPainter *painter, const QPalette &/*colorG
 		thePainter.drawPoint ( width - 1, treeWidget()->visualItemRect ( this).height() - 3 );
 	}
 	// Draw the top-right selection roundings:
-	//	BasketListViewItem *shownAbove = shownItemAbove();
+	//	BasketTreeItem *shownAbove = shownItemAbove();
 	if ( shownAbove && shownAbove->isCurrentBasket() )
 	{
 		thePainter.setPen ( selColor );
@@ -640,12 +640,12 @@ void BasketListViewItem::paintCell ( QPainter *painter, const QPalette &/*colorG
 	painter->drawPixmap ( 0, 0, theBuffer );
 }
 
-void BasketListViewItem::setUnderDrag ( bool underDrag )
+void BasketTreeItem::setUnderDrag ( bool underDrag )
 {
 	m_isUnderDrag = underDrag;
 }
 
-bool BasketListViewItem::isAbbreviated()
+bool BasketTreeItem::isAbbreviated()
 {
 	return m_isAbbreviated;
 }
@@ -663,7 +663,7 @@ bool BasketListViewItem::isAbbreviated()
 // 		void maybeTip ( const QPoint& pos )
 // 		{
 // 			QTreeWidgetItem *item = m_basketView->itemAt (  pos  );
-// 			BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*> ( item );
+// 			BasketTreeItem* bitem = dynamic_cast<BasketTreeItem*> ( item );
 // 			if ( bitem && bitem->isAbbreviated() )
 // 			{
 // 				tip ( m_basketView->visualItemRect ( bitem ), bitem->basket()->basketName() );
@@ -675,7 +675,7 @@ bool BasketListViewItem::isAbbreviated()
 
 /** class BasketTreeListView: */
 
-BasketTreeListView::BasketTreeListView ( QWidget *parent, const char *name )
+BasketTree::BasketTree ( QWidget *parent, const char *name )
 		:  QTreeWidget ( parent )
 		, m_autoOpenItem ( 0 )
 		, m_itemUnderDrag ( 0 )
@@ -689,7 +689,7 @@ BasketTreeListView::BasketTreeListView ( QWidget *parent, const char *name )
 //	new BasketTreeListView_ToolTip ( this );
 }
 
-void BasketTreeListView::contentsDragEnterEvent ( QDragEnterEvent *event )
+void BasketTree::contentsDragEnterEvent ( QDragEnterEvent *event )
 {
 /* FIXME 1.5 
 */
@@ -711,7 +711,7 @@ void BasketTreeListView::contentsDragEnterEvent ( QDragEnterEvent *event )
 	QTreeWidget::dragEnterEvent ( event );
 }
 
-void BasketTreeListView::removeExpands()
+void BasketTree::removeExpands()
 {
 // TODO
 	/*	QListViewIterator it(this);
@@ -725,7 +725,7 @@ void BasketTreeListView::removeExpands()
 	*/
 }
 
-void BasketTreeListView::contentsDragLeaveEvent ( QDragLeaveEvent *event )
+void BasketTree::contentsDragLeaveEvent ( QDragLeaveEvent *event )
 {
 	std::cout << "BasketTreeListView::contentsDragLeaveEvent" << std::endl;
 	m_autoOpenItem = 0;
@@ -735,7 +735,7 @@ void BasketTreeListView::contentsDragLeaveEvent ( QDragLeaveEvent *event )
 	QTreeWidget::dragLeaveEvent ( event );
 }
 
-void BasketTreeListView::contentsDropEvent ( QDropEvent *event )
+void BasketTree::contentsDropEvent ( QDropEvent *event )
 {
 	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
 	if ( event->provides ( "application/x-qlistviewitem" ) )
@@ -746,7 +746,7 @@ void BasketTreeListView::contentsDropEvent ( QDropEvent *event )
 	{
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
 		QTreeWidgetItem *item = itemAt ( event->pos() );
-		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*> ( item );
+		BasketTreeItem* bitem = dynamic_cast<BasketTreeItem*> ( item );
 		if ( bitem )
 		{
 			bitem->basket()->blindDrop ( event );
@@ -765,15 +765,16 @@ void BasketTreeListView::contentsDropEvent ( QDropEvent *event )
 	Global::bnpView->save(); // TODO: Don't save if it was not a basket drop...
 }
 
-void BasketTreeListView::contentsDragMoveEvent ( QDragMoveEvent *event )
+void BasketTree::contentsDragMoveEvent ( QDragMoveEvent *event )
 {
-	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
+	kDebug() << "Enter : " << (int)event << endl;
+
 	if ( event->provides ( "application/x-qlistviewitem" ) )
 		QTreeWidget::dragMoveEvent ( event );
 	else
 	{
 		QTreeWidgetItem *item = itemAt ( event->pos() );
-		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*> ( item );
+		BasketTreeItem* bitem = dynamic_cast<BasketTreeItem*> ( item );
 		if ( m_autoOpenItem != item )
 		{
 			m_autoOpenItem = item;
@@ -791,7 +792,7 @@ void BasketTreeListView::contentsDragMoveEvent ( QDragMoveEvent *event )
 	}
 }
 
-void BasketTreeListView::setItemUnderDrag ( BasketListViewItem* item )
+void BasketTree::setItemUnderDrag ( BasketTreeItem* item )
 {
 	if ( m_itemUnderDrag != item )
 	{
@@ -813,23 +814,23 @@ void BasketTreeListView::setItemUnderDrag ( BasketListViewItem* item )
 	}
 }
 
-void BasketTreeListView::autoOpen()
+void BasketTree::autoOpen()
 {
-	BasketListViewItem *item = ( BasketListViewItem* ) m_autoOpenItem;
+	BasketTreeItem *item = ( BasketTreeItem* ) m_autoOpenItem;
 	if ( item )
 		Global::bnpView->setCurrentBasket ( item->basket() );
 }
 
-void BasketTreeListView::resizeEvent ( QResizeEvent *event )
+void BasketTree::resizeEvent ( QResizeEvent *event )
 {
 	QTreeWidget::resizeEvent ( event );
 }
 
-void BasketTreeListView::paintEmptyArea ( QPainter *painter, const QRect &rect )
+void BasketTree::paintEmptyArea ( QPainter *painter, const QRect &rect )
 {
-//FIXME 1.5	QTreeWidgetItem::paintEmptyArea ( painter, rect );
+	//FIXME 1.5 QTreeWidgetItem::paintEmptyArea ( painter, rect );
 
-	BasketListViewItem *last = Global::bnpView->lastListViewItem();
+	BasketTreeItem *last = Global::bnpView->lastListViewItem();
 	if ( last && !last->isVisible() )
 		last = last->shownItemAbove();
 	if ( last && last->isCurrentBasket() )
@@ -852,7 +853,7 @@ void BasketTreeListView::paintEmptyArea ( QPainter *painter, const QRect &rect )
  * but QTreeWidget can programatically give us the focus.
  * So we give it to the basket.
  */
-void BasketTreeListView::focusInEvent ( QFocusEvent* )
+void BasketTree::focusInEvent ( QFocusEvent* )
 {
 	//QTreeWidget::focusInEvent(event);
 	Basket *basket = Global::bnpView->currentBasket();
@@ -860,4 +861,4 @@ void BasketTreeListView::focusInEvent ( QFocusEvent* )
 		basket->setFocus();
 }
 
-#include "basketlistview.moc"
+#include "baskettree.moc"

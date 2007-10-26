@@ -873,7 +873,7 @@ void Basket::loadProperties ( const QDomElement &properties )
 
 	QDomElement shortcut = XMLWork::getElement ( properties, "shortcut" );
 	QString actionStrings[] = { "show", "globalShow", "globalSwitch" };
-	KShortcut combination  = KShortcut ( shortcut.attribute ( "combination", m_action->shortcut().toString() ) );
+	//FIXME 1.5 KShortcut combination  = KShortcut ( shortcut.attribute ( "combination", m_action->shortcut().toString() ) );
 	QString   actionString =            shortcut.attribute ( "action" );
 	int action = shortcutAction();
 	if ( actionString == actionStrings[0] ) action = 0;
@@ -886,7 +886,7 @@ void Basket::loadProperties ( const QDomElement &properties )
 
 	// Apply the Properties:
 	setDisposition ( ( free ? ( mindMap ? 2 : 1 ) : 0 ), columnCount );
-	setShortcut ( combination, action );
+	//FIXME 1.5 setShortcut ( combination, action );
 	setAppearance ( icon, name, backgroundImage, backgroundColor, textColor ); // Will emit propertiesChanged(this)
 }
 
