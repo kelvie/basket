@@ -203,8 +203,9 @@ DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Q
 	m_layout = new QVBoxLayout ( this );
 	m_filter = new FilterBar ( this );
 	m_basket = new Basket ( this, folderName );
-	m_layout->addWidget ( m_basket );
-	setFilterBarPosition ( Settings::filterOnTop() );
+	m_layout->addWidget( m_filter );
+	m_layout->addWidget( m_basket );
+	setFilterBarPosition( Settings::filterOnTop() );
 
 	m_filter->setShown ( true );
 	m_basket->setFocus(); // To avoid the filter bar have focus on load
@@ -948,7 +949,10 @@ void Basket::unsubscribeBackgroundImages()
 
 void Basket::setAppearance ( const QString &icon, const QString &name, const QString &backgroundImage, const QColor &backgroundColor, const QColor &textColor )
 {
-	unsubscribeBackgroundImages();
+	kDebug() << icon << endl;
+	kDebug() << name << endl;
+
+//FIXME 1.5	unsubscribeBackgroundImages();
 
 	m_icon                   = icon;
 	m_basketName             = name;
@@ -956,7 +960,7 @@ void Basket::setAppearance ( const QString &icon, const QString &name, const QSt
 	m_backgroundColorSetting = backgroundColor;
 	m_textColorSetting       = textColor;
 
-	m_action->setText ( "BASKET SHORTCUT: " + name );
+//FIXME 1.5	m_action->setText ( "BASKET SHORTCUT: " + name );
 
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
 	QPixmap iconTest = KIconLoader::global()->loadIcon ( m_icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState, QStringList(), 0L, /*canReturnNull=*/true );
@@ -967,21 +971,21 @@ void Basket::setAppearance ( const QString &icon, const QString &name, const QSt
 	// When the basket is loading (because requested by the user: he/she want to access it)
 	// it load the properties, subscribe to (and then load) the images, update the "Loading..." message with the image,
 	// load all the notes and it's done!
-	if ( m_loadingLaunched )
-		subscribeBackgroundImages();
+//FIXME 1.5	if ( m_loadingLaunched )
+//		subscribeBackgroundImages();
 
-	recomputeAllStyles(); // If a note have a tag with the same background color as the basket one, then display a "..."
-	recomputeBlankRects(); // See the drawing of blank areas in Basket::drawContents()
-	unbufferizeAll();
+//FIXME 1.5	recomputeAllStyles(); // If a note have a tag with the same background color as the basket one, then display a "..."
+//FIXME 1.5	recomputeBlankRects(); // See the drawing of blank areas in Basket::drawContents()
+//FIXME 1.5	unbufferizeAll();
 //FIXME 1.5	updateContents();
 
-	if ( isDuringEdit() && m_editor->widget() )
+/*	FIXME 1.5 if ( isDuringEdit() && m_editor->widget() )
 	{
 		QPalette palette;
 		palette.setColor ( m_editor->widget()->backgroundRole(), m_editor->note()->backgroundColor() );
 		palette.setColor ( m_editor->widget()->foregroundRole(), m_editor->note()->textColor() );
 		m_editor->widget()->setPalette ( palette );
-	}
+	}*/
 
 	emit propertiesChanged ( this );
 }
@@ -1414,7 +1418,8 @@ void Basket::countsChangedTimeOut()
 Basket::Basket ( QWidget *parent, const QString &folderName )
 		: QScrollArea ( parent ),
 		//QToolTip ( widget() ),
-		m_noActionOnMouseRelease ( false ), m_ignoreCloseEditorOnNextMouseRelease ( false ), m_pressPos ( -100, -100 ), m_canDrag ( false ),
+		m_noActionOnMouseRelease ( false ), 
+		m_ignoreCloseEditorOnNextMouseRelease ( false ), m_pressPos ( -100, -100 ), m_canDrag ( false ),
 		m_firstNote ( 0 ), m_columnsCount ( 1 ), m_mindMap ( false ), m_resizingNote ( 0L ), m_pickedResizer ( 0 ), m_movingNote ( 0L ), m_pickedHandle ( 0, 0 ),
 		m_clickedToInsert ( 0 ), m_zoneToInsert ( 0 ), m_posToInsert ( -1, -1 ),
 		m_isInsertPopupMenu ( false ),

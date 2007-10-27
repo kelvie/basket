@@ -272,8 +272,10 @@ void FocusedComboBox::keyPressEvent(QKeyEvent *event)
 /** class FocusedLineEdit: */
 
 FocusedLineEdit::FocusedLineEdit(QWidget *parent, const char *name)
-//TODO : KLineEdit(parent, name)
+	: KLineEdit( parent )
+//FIXME 1.5 : KLineEdit(parent, name)
 {
+
 }
 
 FocusedLineEdit::~FocusedLineEdit()
@@ -282,16 +284,16 @@ FocusedLineEdit::~FocusedLineEdit()
 
 void FocusedLineEdit::keyPressEvent(QKeyEvent *event)
 {
-//	if (event->key() == Qt::Key_Escape)
-//		emit escapePressed();
-//	else
-//		KLineEdit::keyPressEvent(event);
+	if (event->key() == Qt::Key_Escape)
+		emit escapePressed();
+	else
+		KLineEdit::keyPressEvent(event);
 }
 
 void FocusedLineEdit::enterEvent(QEvent *event)
 {
-//	emit mouseEntered();
-//	KLineEdit::enterEvent(event);
+	emit mouseEntered();
+	KLineEdit::enterEvent(event);
 }
 
 #include "focusedwidgets.moc"

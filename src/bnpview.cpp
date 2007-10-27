@@ -404,21 +404,22 @@ void BNPView::initialize()
 	setCollapsible ( 1, false );
 
 	/// Configure the BasketTree Signals:
+//FIXME 1.5 Uncomment all needed
 	connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
-	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
-	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
-	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
-	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
-	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
-
-	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
-	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
-	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
-
-	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
-	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
+//	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
+//	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
+//	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
+//	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
+//	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
+//	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
+//	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
+//
+//	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
+//	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
+//	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
+//
+//	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
+//	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
 
 	/* LikeBack */
 	Global::likeBack = new LikeBack ( LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about() );
@@ -956,7 +957,7 @@ void BNPView::loadNewBasket ( const QString &folderName, const QDomElement &prop
 	kDebug() << folderName << " " << (int)parent << endl;
 	Basket *basket = loadBasket ( folderName );
 	appendBasket ( basket, ( basket ? listViewItemForBasket ( parent ) : 0 ) );
-	//basket->loadProperties ( properties );
+	basket->loadProperties ( properties );
 	setCurrentBasket ( basket );
 //FIXME: In order to remove, masked in previous version:	save();
 	kDebug() << "End" << endl;
@@ -1088,7 +1089,7 @@ void BNPView::toggleFilterAllBaskets ( bool doFilter )
 	m_actFilterAllBaskets->setChecked ( doFilter );
 	currentBasket()->decoration()->filterBar()->setFilterAll ( doFilter );
 
-//	Basket *current = currentBasket();
+	Basket *current = currentBasket();
 	QTreeWidgetItemIterator it ( m_tree );
 	while ( *it )
 	{
@@ -1360,6 +1361,7 @@ void BNPView::filterPlacementChanged ( bool onTop )
 
 void BNPView::updateBasketListViewItem ( Basket *basket )
 {
+	kDebug() << "update BasketTree : " << (int)basket << endl;
 	BasketTreeItem *item = listViewItemForBasket ( basket );
 	if ( item )
 		item->setup();
@@ -1367,13 +1369,14 @@ void BNPView::updateBasketListViewItem ( Basket *basket )
 	if ( basket == currentBasket() )
 	{
 		setCaption ( basket->basketName() );
-		if ( Global::systemTray )
-			Global::systemTray->updateToolTip();
+		//FIXME 1.5 if ( Global::systemTray ) 
+		//	Global::systemTray->updateToolTip();
 	}
 
 	// Don't save if we are loading!
-	if ( !m_loading )
-		save();
+//FIXME 1.5	if ( !m_loading )
+//		save();
+	kDebug() << "exiting..." << endl;
 }
 
 void BNPView::needSave ( QTreeWidgetItem* )

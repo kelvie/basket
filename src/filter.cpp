@@ -19,24 +19,22 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-//
+#include <qpixmap.h>
+#include <qimage.h>
+#include <qpainter.h>
+#include <qbitmap.h>
 #include <qtoolbutton.h>
 #include <qlabel.h>
-//#include <qcombobox.h>
-//#include <klineedit.h>
+
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kglobalsettings.h>
 #include <kapplication.h>
 #include <kiconloader.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qpainter.h>
-#include <qbitmap.h>
+#include <kdebug.h>
 #include <kdialog.h>
 
 #include "filter.h"
-//#include "settings.h"
 #include "global.h"
 #include "bnpview.h"
 #include "tools.h"
@@ -46,69 +44,73 @@
 /** FilterBar */
 
 FilterBar::FilterBar(QWidget *parent, const char *name)
- : //TODO QWidget(parent, name)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
-	 QWidget(parent)
+	: //QWidget(parent, name),/*, m_blinkTimer(this), m_blinkedTimes(0)*/
+	QWidget(parent)
 {
-//	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
-//
-//	// Create every widgets:
-//	QIcon resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-//	QIcon inAllIconSet = KIconLoader::global()->loadIconSet("edit-find",              KIcon::Toolbar);
-//
-//
-//	m_resetButton        = new QToolButton(this);
-//	m_resetButton->setIconSet(resetIconSet);
-//	m_resetButton->setTextLabel(i18n("Reset Filter"));//, /*groupText=*/"", this, SLOT(reset()), 0);
-//	m_resetButton->setAutoRaise(true);
-//			//new KToolBarButton("locationbar_erase", /*id=*/1230, this, /*name=*/0, i18n("Reset Filter"));
-//	m_lineEdit           = new FocusedLineEdit(this);
-//	QLabel *label        = new QLabel(m_lineEdit, i18n("&Filter: "), this);
-//	m_tagsBox            = new FocusedComboBox(this);
-//	QLabel *label2       = new QLabel(m_tagsBox, i18n("T&ag: "), this);
-//	m_inAllBasketsButton = new QToolButton(this);
-//	m_inAllBasketsButton->setIconSet(inAllIconSet);
-//	m_inAllBasketsButton->setTextLabel(i18n("Filter all Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
-//	m_inAllBasketsButton->setAutoRaise(true);
-//
-//	// Configure the Reset button:
-//	m_resetButton->setEnabled(false);
-//
-//	// Configure the Tags combobox:
+	kDebug() << "Creating FilterBar" << endl;
+	QHBoxLayout *hBox  = new QHBoxLayout( this );
+
+	// Create every widgets on the Filter Bar:
+
+	QIcon resetIconSet = KIconLoader::global()->loadIconSet( "edit-clear-locationbar", KIconLoader::Toolbar );
+	QIcon inAllIconSet = KIconLoader::global()->loadIconSet( "edit-find",              KIconLoader::Toolbar );
+
+	m_resetButton = new QToolButton(this);
+	m_resetButton->setIcon( resetIconSet );
+	m_resetButton->setToolTip( i18n("Reset Filter") );
+	m_resetButton->setAutoRaise( true );
+
+	m_lineEdit           = new FocusedLineEdit(this);
+//	m_lineEdit->setMaximumWidth(150);
+
+//FIXME 1.5 QLabel *label        = new QLabel(m_lineEdit, i18n("&Filter: "), this);
+	//FIXME 1.5 Add & before F: ALT+F to get to the line_edit
+	QLabel *label = new QLabel( i18n("Filter: "), this );
+
+	QLabel *label2       = new QLabel( i18n("T&ag: "), this);
+
+	m_inAllBasketsButton = new QToolButton( this );
+	m_inAllBasketsButton->setIcon( inAllIconSet );
+	m_inAllBasketsButton->setToolTip( i18n("Filter all Baskets") );
+	m_inAllBasketsButton->setAutoRaise( true );
+	m_inAllBasketsButton->setCheckable( true );
+	//FIXME Global::bnpView->toggleFilterAllBaskets(true);
+
+	// Configure the Reset button:
+	m_resetButton->setEnabled(false);
+
+	// Configure the Tags combobox:
+	m_tagsBox            = new FocusedComboBox( this );
 //	repopulateTagsComnbo();
-//
-//	// Configure the Serach in all Baskets button:
-//	m_inAllBasketsButton->setToggleButton(true);
-////	m_inAllBasketsButton->setOn(true);
-////	Global::bnpView->toggleFilterAllBaskets(true);
-//
-////	m_lineEdit->setMaximumWidth(150);
-//
-//	// Layout all those widgets:
-////	hBox->addStretch();
-//	hBox->addWidget(m_resetButton);
-//	hBox->addSpacing(KDialog::spacingHint());
-//	hBox->addWidget(label);
-//	hBox->addWidget(m_lineEdit);
-//	hBox->addSpacing(KDialog::spacingHint());
-//	hBox->addWidget(label2);
-//	hBox->addWidget(m_tagsBox);
-//	hBox->addSpacing(KDialog::spacingHint());
-//	hBox->addWidget(m_inAllBasketsButton);
-//
-//	m_data = new FilterData(); // TODO: Not a pointer! and return a const &  !!
-//
-////	connect( &m_blinkTimer,         SIGNAL(timeout()),                   this, SLOT(blinkBar())                  );
-//	connect(  m_resetButton,        SIGNAL(clicked()),                   this, SLOT(reset())                     );
-//	connect(  m_lineEdit,           SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)) );
-//	connect(  m_tagsBox,            SIGNAL(activated(int)),              this, SLOT(tagChanged(int))             );
-//
-////	connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
-//	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)) );
-//
-//	connect( m_lineEdit, SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
-//	connect( m_lineEdit, SIGNAL(returnPressed()),  this, SIGNAL(returnPressed()) );
-//	connect( m_tagsBox,  SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
-//	connect( m_tagsBox,  SIGNAL(returnPressed2()), this, SIGNAL(returnPressed()) );
+
+	// Layout all those widgets:
+	hBox->addStretch();
+	hBox->addWidget(m_resetButton);
+	hBox->addSpacing(KDialog::spacingHint());
+	hBox->addWidget(label);
+	hBox->addWidget(m_lineEdit);
+	hBox->addSpacing(KDialog::spacingHint());
+	hBox->addWidget(label2);
+	hBox->addWidget(m_tagsBox);
+	hBox->addSpacing(KDialog::spacingHint());
+	hBox->addWidget(m_inAllBasketsButton);
+
+	m_data = new FilterData(); // TODO: Not a pointer! and return a const &  !!
+
+//	connect( &m_blinkTimer,         SIGNAL(timeout()),                   this, SLOT(blinkBar())                  );
+	connect(  m_resetButton,        SIGNAL(clicked()),                   this, SLOT(reset())                     );
+	connect(  m_lineEdit,           SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)) );
+	connect(  m_tagsBox,            SIGNAL(activated(int)),              this, SLOT(tagChanged(int))             );
+
+//	connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
+	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)) );
+
+	connect( m_lineEdit, SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
+	connect( m_lineEdit, SIGNAL(returnPressed()),  this, SIGNAL(returnPressed()) );
+	connect( m_tagsBox,  SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
+	connect( m_tagsBox,  SIGNAL(returnPressed2()), this, SIGNAL(returnPressed()) );
+
+	kDebug() << "exiting..." << endl;
 }
 
 FilterBar::~FilterBar()
@@ -246,25 +248,25 @@ void FilterBar::inAllBaskets()
 
 void FilterBar::setEditFocus()
 {
-//	m_lineEdit->setFocus();
+	m_lineEdit->setFocus();
 }
 
 bool FilterBar::hasEditFocus()
 {
-//	return m_lineEdit->hasFocus();
+	return m_lineEdit->hasFocus();
 }
 
 const FilterData& FilterBar::filterData()
 {
-//	return *m_data;
+	return *m_data;
 }
 
 void FilterBar::textChanged(const QString &text)
 {
-//	m_data->string = text;
-//	m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
-//	m_resetButton->setEnabled(m_data->isFiltering);
-//	emit newFilter(*m_data);
+	m_data->string = text;
+	m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
+	m_resetButton->setEnabled(m_data->isFiltering);
+	emit newFilter(*m_data);
 }
 
 void FilterBar::tagChanged(int index)
