@@ -406,20 +406,20 @@ void BNPView::initialize()
 	/// Configure the BasketTree Signals:
 //FIXME 1.5 Uncomment all needed
 	connect( m_tree, SIGNAL(returnPressed(QTreeWidget*)),    this, SLOT(slotPressed(QTreeWidget*)) );
-//	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
-//	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
-//	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
-//	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
-//	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
-//	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
-//	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
-//
-//	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
-//	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
-//	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
-//
-//	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
-//	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
+	connect( m_tree, SIGNAL(selectionChanged(QTreeWidget*)), this, SLOT(slotPressed(QTreeWidget*)) );
+	connect( m_tree, SIGNAL(pressed(QTreeWidget*)),          this, SLOT(slotPressed(QTreeWidget*)) );
+	connect( m_tree, SIGNAL(expanded(QTreeWidget*)),         this, SLOT(needSave(QTreeWidget*))    );
+	connect( m_tree, SIGNAL(collapsed(QTreeWidget*)),        this, SLOT(needSave(QTreeWidget*))    );
+	connect( m_tree, SIGNAL(contextMenu(QTreeWidget*, QTreeWidget*, const QPoint&)),      this, SLOT(slotContextMenu(QTreeWidget*, QTreeWidgetItem*, const QPoint&))      );
+	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidget*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(doubleClicked(QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*, const QPoint&, int)) );
+
+	connect( m_tree, SIGNAL(expanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(collapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()) );
+	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
+
+	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
+	connect( this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged())          );
 
 	/* LikeBack */
 	Global::likeBack = new LikeBack ( LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about() );
@@ -485,19 +485,38 @@ void BNPView::setupActions()
 	actionCollection()->addAction ( "basket_import_knowit", temp );
 	connect ( temp, SIGNAL ( triggered ( bool ) ), this, SLOT ( importKnowIt() ) );
 
-	/*FIXME	new KAction( i18n("&Backup && Restore..."), "", 0,
-		             this, SLOT(backupRestore()), actionCollection(), "basket_backup_restore" );
+	temp = new KAction ( this );
+	temp->setText ( i18n ( "&Backup && Restore..." ) );
+	actionCollection()->addAction ( "basket_backup_restore", temp );
+	connect ( temp, SIGNAL( triggered ( bool ) ), this, SLOT ( backupRestore() ) );
 
-		new KAction( i18n("Tux&Cards..."), "tuxcards", 0,
-		             this, SLOT(importTuxCards()),    actionCollection(), "basket_import_tuxcards" );
-		new KAction( i18n("&Sticky Notes"), "gnome", 0,
-		             this, SLOT(importStickyNotes()), actionCollection(), "basket_import_sticky_notes" );
-		new KAction( i18n("&Tomboy"), "tintin", 0,
-		             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
-		new KAction( i18n("Text &File..."), "txt", 0,
-		             this, SLOT(importTextFile()),    actionCollection(), "basket_import_text_file" );
-	*/
+	temp = new KAction ( this );
+	temp->setText ( i18n ( "Tux&Cards...") );
+	actionCollection()->addAction ( "basket_import_tuxcards", temp );
+	connect( temp, SIGNAL( triggered ( bool ) ), this, SLOT ( importTuxCards() ) );
+
+	temp = new KAction ( this );
+	temp->setText ( i18n ( "&Sticky Notes") );
+	actionCollection()->addAction ( "basket_import_sticky_notes", temp );
+	connect( temp, SIGNAL( triggered ( bool ) ), this, SLOT ( importStickyNotes() ) );
+
+	temp = new KAction ( this );
+	temp->setText ( i18n ( "&Tomboy") );
+	actionCollection()->addAction ( "basket_import_tomboy", temp );
+	connect( temp, SIGNAL( triggered ( bool ) ), this, SLOT ( importTomboy() ) );
+
+	temp = new KAction ( this );
+	temp->setText ( i18n ( "Text &file...") );
+	actionCollection()->addAction ( "basket_import_text_file", temp );
+	connect( temp, SIGNAL( triggered ( bool ) ), this, SLOT ( importTextFile() ) );
+
 	/** Note : ****************************************************************/
+
+	m_actDelNote = new KAction( this );
+	m_actDelNote->setText ( i18n( "D&elete" ) );
+	//FIXME m_actDelNote->setIcon ( "edit-delete" );
+	actionCollection()->addAction ( "edit_delete" );
+	connect( m_actDelNote, SIGNAL( triggered ( bool ) ), this, SLOT ( delNote() ) );
 
 	/*FIXME 1.5	m_actDelNote  = new KAction( i18n("D&elete"), "edit-delete", "Delete",
 									 this, SLOT(delNote()), actionCollection(), "edit_delete" );
@@ -701,6 +720,7 @@ void BNPView::setupActions()
 				actionCollection(), "options_configure_global_keybinding");
 		actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
 	*/
+
 	/** Help : ****************************************************************/
 	temp = new KAction ( this );
 	temp->setText ( i18n ( "&Welcome Baskets" ) );
@@ -2054,15 +2074,19 @@ void BNPView::activatedTagShortcut()
 
 void BNPView::slotBasketNumberChanged ( int number )
 {
-	m_actPreviousBasket->setEnabled ( number > 1 );
-	m_actNextBasket    ->setEnabled ( number > 1 );
+	kDebug() << "entering:" << endl;
+	//FIXME 1.5 m_actPreviousBasket->setEnabled ( number > 1 );
+	//FIXME 1.5 m_actNextBasket    ->setEnabled ( number > 1 );
+	kDebug() << "exiting" << endl;
 }
 
 void BNPView::slotBasketChanged()
 {
-	m_actFoldBasket->setEnabled ( canFold() );
-	m_actExpandBasket->setEnabled ( canExpand() );
+	kDebug() << "received" << endl;
+	//FIXME 1.5 m_actFoldBasket->setEnabled ( canFold() );
+	//FIXME 1.5 m_actExpandBasket->setEnabled ( canExpand() );
 	setFiltering ( currentBasket() && currentBasket()->decoration()->filterData().isFiltering );
+	kDebug() << "exiting..." << endl;
 }
 
 void BNPView::currentBasketChanged()

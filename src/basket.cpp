@@ -1414,6 +1414,22 @@ void Basket::countsChangedTimeOut()
 	emit countsChanged ( this );
 }
 
+BasketDrawingWidget::BasketDrawingWidget( Basket *basket ) :
+	QWidget( 0 ),
+	m_basket( basket )
+{
+}
+
+void BasketDrawingWidget::mousePressEvent( QMouseEvent *event ) {
+	kDebug() << "woohoo" << endl;
+	m_basket->mousePressEvent( event );
+	kDebug() << "exiting..." << endl;
+}
+
+void BasketDrawingWidget::mouseMoveEvent( QMouseEvent *event ) {
+	//kDebug() << "moved mouse " << endl;
+	m_basket->contentsMouseMoveEvent( event );
+}
 
 Basket::Basket ( QWidget *parent, const QString &folderName )
 		: QScrollArea ( parent ),
@@ -1441,7 +1457,9 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 		m_finishLoadOnFirstShow ( false ), m_relayoutOnNextShow ( false )
 {
 	kDebug() << "Creating real basket" << endl;
-	this->setWidget( new QWidget() );
+	this->setWidget( new BasketDrawingWidget( this ) );
+
+	this->setWidgetResizable( true );
 
 	QString sAction = "local_basket_activate_" + folderName;
 	
@@ -1457,7 +1475,7 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 		m_folderName += "/";
 
 	setFocusPolicy ( Qt::StrongFocus );
-//FIXME 1.5	setDragAutoScroll ( true );
+	//FIXME 1.5 setDragAutoScroll ( true );
 
 	// By default, there is no corner widget: we set one for the corner area to be painted!
 	// If we don't set one and there are two scrollbars present, slowly resizing up the window show graphical glitches in that area!
@@ -1490,8 +1508,10 @@ Basket::Basket ( QWidget *parent, const QString &folderName )
 
 void Basket::contentsMoved()
 {
+	kDebug() << "contents has moved... oops" << endl;
 	// This slot is called BEFORE the content move, so we delay the hover effects:
 	QTimer::singleShot ( 0, this, SLOT ( doHoverEffects() ) );
+	kDebug() << "exiting..." << endl;
 }
 
 void Basket::enterEvent ( QEvent * )
@@ -1520,15 +1540,17 @@ void Basket::leaveEvent ( QEvent * )
 
 void Basket::setFocusIfNotInPopupMenu()
 {
-	if ( !kapp->activePopupWidget() )
+	if ( !kapp->activePopupWidget() ) {
 		if ( isDuringEdit() )
 			m_editor->widget()->setFocus();
 		else
 			setFocus();
+	}
 }
 
-void Basket::contentsMousePressEvent ( QMouseEvent *event )
+void Basket::mousePressEvent ( QMouseEvent *event )
 {
+	kDebug() << "clicked" << endl;
 	// If user click the basket, focus it!
 	// The focus is delayed because if the click results in showing a popup menu,
 	// the interface flicker by showing the focused rectangle (as the basket gets focus)
@@ -1544,6 +1566,7 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 	// For instance when a popup menu has been closed with click, we should not do action:
 	if ( event->button() == Qt::LeftButton && ( kapp->activePopupWidget() || m_lastDisableClick.msecsTo ( QTime::currentTime() ) <= 80 ) )
 	{
+		kDebug() << "disabled clicked" << endl;
 		doHoverEffects();
 		m_noActionOnMouseRelease = true;
 		// But we allow to select:
@@ -1557,6 +1580,8 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 		return;
 	}
 
+	kDebug() << "try to find the clicked note" << endl;
+
 	// Figure out what is the clicked note and zone:
 	Note *clicked = noteAt ( event->pos().x(), event->pos().y() );
 	Note::Zone zone = ( clicked ? clicked->zoneAt ( event->pos() - QPoint ( clicked->x(), clicked->y() ) ) : Note::None );
@@ -1564,6 +1589,7 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 	// Popup Tags menu:
 	if ( zone == Note::TagsArrow && !controlPressed && !shiftPressed && event->button() != Qt::MidButton )
 	{
+		kDebug() << "popup tags menu" << endl;
 		if ( !clicked->isSelected() )
 			unselectAllBut ( clicked );
 		setFocusedNote ( clicked ); /// /// ///
@@ -1575,6 +1601,7 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 
 	if ( event->button() == Qt::LeftButton )
 	{
+		kDebug() << "prepare to allow drag and drop" << endl;
 		// Prepare to allow drag and drop when moving mouse further:
 		if ( ( zone == Note::Handle || zone == Note::Group ) ||
 		        ( clicked && clicked->isSelected() &&
@@ -1691,9 +1718,9 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 		m_posToInsert     = event->pos();
 		KMenu* menu = ( KMenu* ) ( Global::bnpView->popupMenu ( "insert_popup" ) );
 		foreach(QAction* a, menu->actions()){
-		if(a->text()==i18nc ( "The verb (Group New Note)", "Group" ) || a->text()==i18nc ( "The verb (Insert New Note)", "Insert" )){
-}
-			 // If we already added a title, remove it because it would be kept and then added several times:
+			if(a->text()==i18nc ( "The verb (Group New Note)", "Group" ) || a->text()==i18nc ( "The verb (Insert New Note)", "Insert" )){
+			}
+			// If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeAction ( a );
 			delete a;
 		}
@@ -1791,6 +1818,7 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 		return;
 	}
 
+	kDebug() << "finally no actions" << endl;
 	// Finally, no action has been done durint pressEvent, so an action can be done on releaseEvent:
 	m_noActionOnMouseRelease = false;
 
@@ -1808,6 +1836,7 @@ void Basket::contentsMousePressEvent ( QMouseEvent *event )
 		// Since the Shift key has no specific usage, we allow to invert selection ALSO with Shift for Gimp people
 		m_selectionInvert = controlPressed || shiftPressed;
 	}
+	kDebug() << "exiting..." << endl;
 }
 
 void Basket::delayedCancelInsertPopupMenu()
@@ -2133,7 +2162,8 @@ void Basket::contentsDropEvent ( QDropEvent *event )
 	if ( m_editor && m_editor->textEdit() )
 	{
 		QTextEdit *editor = m_editor->textEdit();
-//FIXME 1.5		editor->setCursorPosition ( m_editParagraph, m_editIndex );
+		kDebug() << "Want to setCursor position " << endl;
+		//FIXME 1.5 editor->setCursorPosition ( m_editParagraph, m_editIndex );
 	}
 }
 
@@ -2595,7 +2625,7 @@ void Basket::contentsMouseDoubleClickEvent ( QMouseEvent *event )
 		m_noActionOnMouseRelease = true;
 	}
 	else
-		contentsMousePressEvent ( event );
+		mousePressEvent ( event );
 }
 
 void Basket::contentsMouseMoveEvent ( QMouseEvent *event )
@@ -2839,11 +2869,14 @@ void Basket::selectNotesIn ( const QRect &rect, bool invertSelection, bool unsel
 
 void Basket::doHoverEffects()
 {
+	kDebug() << "enter" << endl;
 	doHoverEffects ( widget()->mapFromGlobal ( QCursor::pos()  ) );
+	kDebug() << "exiting" << endl;
 }
 
 void Basket::doHoverEffects ( Note *note, Note::Zone zone, const QPoint &pos )
 {
+	kDebug() << "enter" << endl;
 	// Inform the old and new hovered note (if any):
 	Note *oldHoveredNote = m_hoveredNote;
 	if ( note != m_hoveredNote )
@@ -2891,12 +2924,13 @@ void Basket::doHoverEffects ( Note *note, Note::Zone zone, const QPoint &pos )
 		removeInserter();
 		emit resetStatusBarText();
 	}
+	kDebug() << "exiting" << endl;
 }
 
 void Basket::doHoverEffects ( const QPoint &pos )
 {
-//	if (isDuringEdit())
-//		viewport()->unsetCursor();
+	if (isDuringEdit())
+		widget()->unsetCursor();
 
 	// Do we have the right to do hover effects?
 	if ( ! m_loaded || m_lockedHovering )
@@ -3169,6 +3203,7 @@ void Basket::deleteNotes()
 
 Note* Basket::noteAt ( int x, int y )
 {
+	kDebug() << "find note : " << x << " " << y << endl;
 //NO:
 // 	// Do NOT check the bottom&right borders.
 // 	// Because imagine someone drag&drop a big note from the top to the bottom of a big basket (with big vertical scrollbars),
@@ -3295,6 +3330,7 @@ void Basket::inactivityAutoLockTimeout()
 
 void Basket::drawContents ( QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight )
 {
+
 	// Start the load the first time the basket is shown:
 	if ( !m_loadingLaunched )
 	{

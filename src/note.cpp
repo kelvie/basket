@@ -32,6 +32,7 @@
 #include <kurifilter.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <kdebug.h>
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
@@ -80,7 +81,9 @@ Note::Note ( Basket *parent )
 		m_hovered ( false ), m_hoveredZone ( Note::None ), m_focused ( false ), m_selected ( false ), m_wasInLastSelectionRect ( false ),
 		m_computedState(), m_emblemsCount ( 0 ), m_haveInvisibleTags ( false ),
 		m_matching ( true )
-{}
+{
+	kDebug() << "Create Note" << endl;
+}
 
 Note::~Note()
 {
@@ -802,6 +805,7 @@ void Note::setFinalPosition ( int x, int y )
 
 void Note::initAnimationLoad()
 {
+	kDebug() << "animation load" << endl;
 	// TODO
 /*	int x, y;
 	switch ( rand() % 4 )
@@ -1384,6 +1388,7 @@ void drawGradient ( QPainter *p, const QColor &colorTop, const QColor & colorBot
 
 void Note::drawExpander ( QPainter *painter, int x, int y, const QColor &background, bool expand, Basket *basket )
 {
+	kDebug() << "enter" << endl;
 	//TODO
 /*
 	// If the current style is a KStyle, use it to draw the expander (plus or minus):
@@ -1884,6 +1889,7 @@ void Note::getGradientColors ( const QColor &originalBackground, QColor *colorTo
  */
 void Note::draw ( QPainter *painter, const QRect &clipRect )
 {
+	kDebug() << "enter" << endl;
 	if ( !matching() )
 		return;
 
@@ -2188,6 +2194,7 @@ void Note::draw ( QPainter *painter, const QRect &clipRect )
 
 void Note::drawBufferOnScreen ( QPainter *painter, const QPixmap &contentPixmap )
 {
+	kDebug() << "enter" << endl;
 	for ( QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it )
 	{
 		QRect &rect = *it;
@@ -2786,7 +2793,7 @@ void Note::debug()
 			QTextStream(&debugStr) << ": Content[" << content()->lowerTypeName() << "]: " << toText ( "" );
 	}
 
-	//TODO qDebug() << debugStr;
+	kDebug() << debugStr;
 }
 
 Note* Note::firstSelected()

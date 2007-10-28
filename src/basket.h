@@ -188,7 +188,8 @@ class Basket : public QScrollArea
 	void enterEvent(QEvent *);
 	void leaveEvent(QEvent *);
 	void contentsMouseMoveEvent(QMouseEvent *event);
-	void contentsMousePressEvent(QMouseEvent *event);
+	//FIXME 1.5 : should remove : void contentsMousePressEvent(QMouseEvent *event);
+	void mousePressEvent( QMouseEvent *event );
 	void contentsMouseReleaseEvent(QMouseEvent *event);
 	void contentsMouseDoubleClickEvent(QMouseEvent *event);
 	void contentsContextMenuEvent(QContextMenuEvent *event);
@@ -675,7 +676,21 @@ public slots:
 };
 
 
-
+/*
+ *	New class for qt4
+ *	Do all drawing methods in basket
+ *	It lays on the QScrollArea of *basket
+ */
+class BasketDrawingWidget : public QWidget {
+	Q_OBJECT
+public:
+	BasketDrawingWidget( Basket* );
+protected:
+	void mousePressEvent( QMouseEvent* );
+	void mouseMoveEvent( QMouseEvent* );
+private:
+	Basket* m_basket;
+};
 
 
 

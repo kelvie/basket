@@ -23,7 +23,6 @@
 
 #include <qstring.h>
 #include <qpixmap.h>
-#include <qpixmap.h>
 #include <qdatetime.h>
 
 #include "notecontent.h"

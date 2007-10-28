@@ -55,12 +55,14 @@
 
 NoteEditor::NoteEditor(NoteContent *noteContent)
 {
+	kDebug() << "Creating NoteEditor" << endl;
 	m_isEmpty  = false;
 	m_canceled = false;
 	m_widget   = 0;
 	m_textEdit = 0;
 	m_lineEdit = 0;
 	m_noteContent = noteContent;
+	kDebug() << "exiting..." << endl;
 }
 
 Note* NoteEditor::note()
