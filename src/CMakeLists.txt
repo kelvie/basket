@@ -4,6 +4,7 @@ set( basket_SRCS
 	basketmainwindow.cpp
 	basketsystemtray.cpp
 	baskettreeview.cpp
+	basketviewcontainer.cpp
 	main.cpp 
 )
 

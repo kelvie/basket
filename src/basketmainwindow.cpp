@@ -14,6 +14,7 @@
 
 #include "basketmainwindow.h"
 #include "baskettreeview.h"
+#include "basketviewcontainer.h"
 
 BasketMainWindow::BasketMainWindow( QWidget *parent ) : KXmlGuiWindow( parent ) {
 	QDockWidget *treeViewDock = new QDockWidget( "Baskets Tree" );
@@ -26,7 +27,7 @@ BasketMainWindow::BasketMainWindow( QWidget *parent ) : KXmlGuiWindow( parent ) 
 
 	connect( treeView, SIGNAL(clicked( const QModelIndex& )), this, SLOT(update0(const QModelIndex&)) );
 
-	QGraphicsView *view = new QGraphicsView();
+	BasketViewContainer *view = new BasketViewContainer();
 	
 	setCentralWidget( view );
 
