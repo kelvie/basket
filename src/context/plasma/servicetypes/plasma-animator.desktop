@@ -1,0 +1,37 @@
+[Desktop Entry]
+Type=ServiceType
+X-KDE-ServiceType=Plasma/Animator
+
+Comment=Plasma Animation Engine
+Comment[ca]=Motor d'animació del Plasma
+Comment[csb]=Mòtór animacëji plazmë
+Comment[de]=Plasma Animations-Treiber
+Comment[el]=Μηχανή κίνησης του Plasma
+Comment[es]=Motor de animaciones de Plasma
+Comment[et]=Plasma animatsiooni mootor
+Comment[fa]=موتور پویانمایی پلاسما
+Comment[ga]=Inneall Beochana Plasma
+Comment[he]=מנוע האנימציה של Plasma
+Comment[it]=Motire di animazione per Plasma
+Comment[ja]=Plasma アニメーションエンジン
+Comment[kk]=Plasma анимация тетігі
+Comment[km]=ម៉ាស៊ីន​ចលនា​ប្លាស្មា
+Comment[ko]=Plasma 애니메이션 엔진
+Comment[lv]=Plasma animācijas dzinējs
+Comment[nb]=Plasma animasjonsmotor
+Comment[nds]=Plasma-Animeerkarn
+Comment[ne]=प्लाज्मा एनिमेशन इन्जिन
+Comment[nl]=Plasma animatie-engine
+Comment[nn]=Plasma animasjonsmotor
+Comment[pa]=ਪਲਾਜ਼ਮਾ ਐਨੀਮੇਸ਼ਨ ਇੰਜਣ
+Comment[pt]=Motor de Animação do Plasma
+Comment[pt_BR]=Mecanismo de Animação do Plasma
+Comment[sr]=Плазмин мотор за анимације
+Comment[sr@latin]=Plasmin motor za animacije
+Comment[sv]=Animeringsgränssnitt i Plasma
+Comment[uk]=Рушій анімації Плазми
+Comment[vi]=Cơ chế hoạt ảnh Plasma
+Comment[x-test]=xxPlasma Animation Enginexx
+Comment[zh_CN]=Plasma 动画引擎
+Comment[zh_TW]=Plasma 動畫引擎
+

@@ -9,6 +9,7 @@ class BasketViewContainer : public QStackedWidget {
 public:
 	BasketViewContainer();
 	~BasketViewContainer();
+
 private:
 
 };

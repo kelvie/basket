@@ -28,7 +28,7 @@ BasketMainWindow::BasketMainWindow( QWidget *parent ) : KXmlGuiWindow( parent ) 
 	connect( treeView, SIGNAL(clicked( const QModelIndex& )), this, SLOT(update0(const QModelIndex&)) );
 
 	BasketViewContainer *view = new BasketViewContainer();
-	
+
 	setCentralWidget( view );
 
 	setupGUI();

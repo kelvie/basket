@@ -1,0 +1,199 @@
+find_package(OpenGL)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${KDEBASE_WORKSPACE_SOURCE_DIR}/libs ${OPENGL_INCLUDE_DIR})
+
+add_subdirectory(widgets)
+add_subdirectory(tests)
+
+########### next target ###############
+
+set(plasmagik_SRCS
+    packagemetadata.cpp
+    packagestructure.cpp
+    package.cpp
+    )
+
+set(plasma_LIB_SRCS
+    ${plasmagik_SRCS}
+    abstractrunner.cpp
+    animator.cpp
+    applet.cpp
+    appletbrowser.cpp
+    appletbrowser/kcategorizeditemsview.cpp
+    appletbrowser/kcategorizeditemsviewdelegate.cpp
+    appletbrowser/kcategorizeditemsviewmodels.cpp
+    appletbrowser/plasmaappletitemmodel.cpp
+    appletbrowser/customdragtreeview.cpp
+    applethandle.cpp
+    configxml.cpp
+    containment.cpp
+    corona.cpp
+    datacontainer.cpp
+    dataengine.cpp
+    dataenginemanager.cpp
+    layouts/boxlayout.cpp
+    layouts/borderlayout.cpp
+    layouts/freelayout.cpp
+    layouts/nodelayout.cpp
+    layouts/flowlayout.cpp
+    layouts/layout.cpp
+    layouts/layoutanimator.cpp
+    layouts/layoutitem.cpp
+    packages.cpp
+    phase.cpp
+    plasma.cpp
+    plasma_export.h
+    scriptengine.cpp
+    searchaction.cpp
+    searchcontext.cpp
+    shadowitem.cpp
+    svg.cpp
+    theme.cpp
+    toolbox.cpp
+    uiloader.cpp
+    view.cpp
+    widgets/checkbox.cpp
+    widgets/flash.cpp
+    widgets/icon.cpp
+    widgets/label.cpp
+    widgets/lineedit.cpp
+    widgets/progressbar.cpp
+    widgets/pushbutton.cpp
+    widgets/radiobutton.cpp
+#    widgets/rectangle.cpp
+    widgets/widget.cpp
+    widgets/signalplotter.cpp
+    widgets/meter.cpp
+)
+
+kde4_add_ui_files (
+    plasma_LIB_SRCS
+    appletbrowser/kcategorizeditemsviewbase.ui
+)
+
+if(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+MESSAGE(STATUS "Adding support for OpenGL applets to libplasma")
+set(plasma_LIB_SRCS
+    ${plasma_LIB_SRCS}
+    glapplet.cpp)
+endif(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+
+kde4_add_library(plasma SHARED ${plasma_LIB_SRCS})
+
+target_link_libraries(plasma ${KDE4_KIO_LIBS} ${QT_QTUITOOLS_LIBRARY})
+
+if(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+target_link_libraries(plasma ${QT_QTOPENGL_LIBRARY} ${OPENGL_gl_LIBRARY})
+endif(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+
+set_target_properties(plasma PROPERTIES VERSION 1.0.0 SOVERSION 1)
+install(TARGETS plasma DESTINATION ${LIB_INSTALL_DIR})
+
+
+########### install files ###############
+
+#set(plasmagik_HEADERS
+#    packagemetadata.h
+#    packagestructure.h
+#    package.h
+#    )
+#
+#install(FILES ${plasmagik_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/plasma/)
+#
+#set(plasma_LIB_INCLUDES
+#    abstractrunner.h
+#    animator.h
+#    applet.h
+#    appletbrowser.h
+#    configxml.h
+#    containment.h
+#    corona.h
+#    datacontainer.h
+#    dataengine.h
+#    dataenginemanager.h
+#    phase.h
+#    plasma.h
+#    plasma_export.h
+#    scriptengine.h
+#    searchaction.h
+#    searchcontext.h
+#    shadowitem_p.h
+#    svg.h
+#    theme.h
+#    uiloader.h
+#    view.h)
+#
+#if(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+#set(plasma_LIB_INCLUDES
+#    ${plasma_LIB_INCLUDES}
+#    glapplet.h)
+#endif(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+#
+#install(FILES
+#        ${plasma_LIB_INCLUDES}
+#        DESTINATION ${INCLUDE_INSTALL_DIR}/plasma)
+#
+#install(FILES
+#    widgets/flash.h
+#    widgets/icon.h
+#    widgets/label.h
+#    widgets/lineedit.h
+#    widgets/progressbar.h
+#    widgets/pushbutton.h
+#    widgets/checkbox.h
+#    widgets/radiobutton.h
+##    widgets/rectangle.h
+#    widgets/widget.h
+#    widgets/signalplotter.h
+#    widgets/meter.h
+#    DESTINATION ${INCLUDE_INSTALL_DIR}/plasma/widgets)
+#
+#install(FILES
+#    layouts/boxlayout.h
+#    layouts/vboxlayout.h
+#    layouts/hboxlayout.h
+#    layouts/borderlayout.h
+#    layouts/freelayout.h
+#    layouts/nodelayout.h
+#    layouts/flowlayout.h
+#    layouts/layout.h
+#    layouts/layoutanimator.h
+#    layouts/layoutitem.h
+#    DESTINATION ${INCLUDE_INSTALL_DIR}/plasma/layouts)
+#
+#install(FILES
+#    includes/AbstractRunner
+#    includes/Applet
+#    includes/AppletBrowser
+#    includes/ConfigXml
+#    includes/Containment
+#    includes/Phase
+#    includes/Plasma
+#    includes/Package
+#    includes/PackageStructure
+#    includes/Theme
+#    includes/DataContainer
+#    includes/DataEngine
+#    includes/DataEngineManager
+#    includes/ScriptEngine
+#    includes/Svg
+#    includes/UiLoader
+#    includes/PackageMetadata
+#    includes/View
+#    DESTINATION ${INCLUDE_INSTALL_DIR}/KDE/Plasma)
+#
+#if(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+#install(FILES
+#    includes/GLApplet
+#    DESTINATION ${INCLUDE_INSTALL_DIR}/KDE/Plasma)
+#endif(QT_QTOPENGL_FOUND AND OPENGL_FOUND)
+#
+#
+#install(FILES
+#    servicetypes/plasma-animator.desktop
+#    servicetypes/plasma-applet.desktop
+#    servicetypes/plasma-dataengine.desktop
+#    servicetypes/plasma-runner.desktop
+#    servicetypes/plasma-scriptengine.desktop
+#    DESTINATION ${SERVICETYPES_INSTALL_DIR})
+
