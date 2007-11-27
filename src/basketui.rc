@@ -2,4 +2,9 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 
 <gui name="basket" version="1" >
+	<MenuBar>
+		<Menu name="view">
+			<Action name="tree_view" />
+		</Menu>
+	</MenuBar>
 </gui>

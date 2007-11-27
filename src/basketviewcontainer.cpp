@@ -10,8 +10,10 @@
 BasketViewContainer::BasketViewContainer() : QStackedWidget() {
 	QGraphicsView *view = new QGraphicsView();
 	this->addWidget( view );
-	
-	view->setScene( new QGraphicsScene );
+	QGraphicsScene* scene = new QGraphicsScene();
+	QFont font( "Helvetica", 16, QFont::Bold );
+	scene->addText( "It could be the place for your advertisment!", font );
+	view->setScene( scene );
 }
 
 BasketViewContainer::~BasketViewContainer() {

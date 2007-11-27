@@ -17,21 +17,21 @@
 #include "basketviewcontainer.h"
 
 BasketMainWindow::BasketMainWindow( QWidget *parent ) : KXmlGuiWindow( parent ) {
-	QDockWidget *treeViewDock = new QDockWidget( "Baskets Tree" );
+	QDockWidget *treeViewDock = new QDockWidget( i18n( "Tree" ) );
 	treeViewDock->setObjectName( "treeViewDock" );
 	treeViewDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
 	BasketTreeView *treeView = new BasketTreeView();
 	treeViewDock->setWidget( treeView );
-
 	addDockWidget( Qt::LeftDockWidgetArea, treeViewDock );
-
 	connect( treeView, SIGNAL(clicked( const QModelIndex& )), this, SLOT(update0(const QModelIndex&)) );
+	treeViewDock->toggleViewAction()->setText( i18n( "Tree" ) );
+	treeViewDock->toggleViewAction()->setShortcut( Qt::Key_F9 );
+	actionCollection()->addAction( "tree_view", treeViewDock->toggleViewAction() );
 
 	BasketViewContainer *view = new BasketViewContainer();
-
 	setCentralWidget( view );
-
 	setupGUI();
+
 }
 
 BasketMainWindow::~BasketMainWindow() {

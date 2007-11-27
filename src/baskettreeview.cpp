@@ -11,9 +11,9 @@ BasketTreeView::BasketTreeView( QWidget *parent ) : QTreeWidget( parent ) {
 	setAcceptDrops( true );
 	setUniformRowHeights( true );
 	setSelectionMode( QAbstractItemView::SingleSelection );
-	setEditTriggers( QAbstractItemView::NoEditTriggers );
-	setDropIndicatorShown( false );
-	setDragDropMode( QAbstractItemView::DragDrop );
+	//setEditTriggers( QAbstractItemView::NoEditTriggers );
+	//setDropIndicatorShown( false );
+	//setDragDropMode( QAbstractItemView::DragDrop );
 
 	/*viewport()->setAttribute( Qt::WA_Hover );
 
