@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 
-<gui name="basket" version="1" >
+<gui name="basket" version="3" >
 	<MenuBar>
+		<Menu name="basket">
+			<text>&amp;Basket</text>
+			<Action name="basket_new" />
+			<Separator />
+			<Action name="basket_quit" />
+		</Menu>
 		<Menu name="view">
+			<text>&amp;View</text>
 			<Action name="tree_view" />
 		</Menu>
 	</MenuBar>
+	<ToolBar noMerge="1" name="mainToolBar">
+		<Action name="basket_new" />
+	</ToolBar>
 </gui>
