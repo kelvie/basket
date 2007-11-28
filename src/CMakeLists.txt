@@ -5,7 +5,9 @@ set( basket_SRCS
 	basketsystemtray.cpp
 	baskettreeview.cpp
 	basketviewcontainer.cpp
+	basketcontent.cpp
 	newbasketdialog.cpp
+	notewidget.cpp
 	main.cpp 
 )
 

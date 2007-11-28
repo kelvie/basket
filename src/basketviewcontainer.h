@@ -11,7 +11,6 @@ public:
 	~BasketViewContainer();
 
 private:
-
 };
 
 #endif //BASKETVIEWCONTAINER_H
