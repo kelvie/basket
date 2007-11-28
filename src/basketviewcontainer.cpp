@@ -7,7 +7,7 @@
 
 #include "basketviewcontainer.h"
 
-BasketViewContainer::BasketViewContainer() : QStackedWidget() {
+BasketViewContainer::BasketViewContainer( QWidget* parent ) : QStackedWidget( parent ) {
 	QGraphicsView *view = new QGraphicsView();
 	this->addWidget( view );
 	QGraphicsScene* scene = new QGraphicsScene();

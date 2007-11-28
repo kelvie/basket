@@ -26,8 +26,8 @@ BasketTreeView::BasketTreeView( QWidget *parent ) : QTreeWidget( parent ) {
 		items.append( new QTreeWidgetItem( (QTreeWidget*)0, QStringList( QString("item: %1").arg(i) ) ) );
 	}
 	insertTopLevelItems(0, items);
+	setHeaderItem(0);
 	setHeaderLabel( "General" );
-
 }
 
 BasketTreeView::~BasketTreeView() {

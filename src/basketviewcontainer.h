@@ -7,7 +7,7 @@ class BasketViewContainer : public QStackedWidget {
 	Q_OBJECT
 
 public:
-	BasketViewContainer();
+	BasketViewContainer( QWidget* parent = 0 );
 	~BasketViewContainer();
 
 private:

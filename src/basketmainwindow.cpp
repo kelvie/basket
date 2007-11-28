@@ -28,8 +28,8 @@ BasketMainWindow::~BasketMainWindow() {
 }
 
 void BasketMainWindow::init() {
-	BasketViewContainer *view = new BasketViewContainer();
-	setCentralWidget( view );
+	m_viewContainer = new BasketViewContainer( this );
+	setCentralWidget( m_viewContainer );
 
 	setupActions();
 	setupDockWidgets();
@@ -40,11 +40,6 @@ void BasketMainWindow::init() {
 void BasketMainWindow::createNewBasket() {
 	NewBasketDialog dlg;
 	dlg.exec();
-	if ( dlg.isOk() ) {
-		kDebug() << "create new basket : " << dlg.name() << endl;
-	} else {
-		kDebug() << "cancelled" << endl;
-	}
 }
 
 void BasketMainWindow::setupActions() {
@@ -66,13 +61,13 @@ void BasketMainWindow::setupDockWidgets() {
 	treeViewDock->setObjectName( "treeViewDock" );
 	treeViewDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
 
-	BasketTreeView *treeView = new BasketTreeView();
+	m_treeView = new BasketTreeView();
 
-	treeViewDock->setWidget( treeView );
+	treeViewDock->setWidget( m_treeView );
 
 	addDockWidget( Qt::LeftDockWidgetArea, treeViewDock );
 
-	connect( treeView, SIGNAL(clicked( const QModelIndex& )), this, SLOT(update0(const QModelIndex&)) );
+	connect( m_treeView, SIGNAL(clicked( const QModelIndex& )), this, SLOT(update0(const QModelIndex&)) );
 
 	treeViewDock->toggleViewAction()->setText( i18n( "Tree view" ) );
 	treeViewDock->toggleViewAction()->setShortcut( Qt::Key_F9 );
@@ -81,5 +76,9 @@ void BasketMainWindow::setupDockWidgets() {
 
 void BasketMainWindow::update0( const QModelIndex& index ) {
 	kDebug() << "clicked: " << index.row() << " : " << index.column() << endl;
+}
+
+void BasketMainWindow::setCurrentBasket( int basketId ) {
+	kDebug() << "set basket : " << basketId << endl;
 }
 
