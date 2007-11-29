@@ -3,6 +3,7 @@
 #include <QTreeView>
 #include <QModelIndex>
 #include <QVBoxLayout>
+#include <QAction>
 
 #include <KAction>
 #include <KStandardAction>
@@ -43,13 +44,13 @@ void BasketMainWindow::createNewBasket() {
 }
 
 void BasketMainWindow::setupActions() {
-	KAction *newBasket = actionCollection()->addAction( "basket_new" );
+	QAction *newBasket = actionCollection()->addAction( "basket_new" );
 	newBasket->setIcon( KIcon( "document-new" ) );
 	newBasket->setText( i18n( "New Basket" ) );
 	newBasket->setShortcut( Qt::CTRL | Qt::Key_N );
 	connect( newBasket, SIGNAL( triggered( bool ) ), this, SLOT( createNewBasket() ) );
 
-	KAction *quitBasket = actionCollection()->addAction( "basket_quit" );
+	QAction *quitBasket = actionCollection()->addAction( "basket_quit" );
 	quitBasket->setIcon( KIcon( "application-exit" ) );
 	quitBasket->setText( i18n( "Quit" ) );
 	quitBasket->setShortcut( Qt::CTRL | Qt::Key_Q );
