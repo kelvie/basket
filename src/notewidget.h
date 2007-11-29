@@ -10,10 +10,15 @@ class NoteWidget : public QGraphicsTextItem {
 		NoteWidget( QGraphicsItem* parent = 0 );
 		~NoteWidget();
 
+		QRectF boundingRect() const;
+
 	public slots:
 		void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0 );
+		void hoverEnterEvent( QGraphicsSceneHoverEvent* event );
+		void hoverLeaveEvent( QGraphicsSceneHoverEvent* event );
 
 	private:
+		bool m_isHovered;
 
 };
 

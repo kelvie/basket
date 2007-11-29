@@ -17,6 +17,9 @@ BasketContent::BasketContent( QObject* parent ) : QGraphicsScene( parent ) {
 	//setBackgroundBrush( QColor( 200, 200, 200 ) );
 	NoteWidget* note = new NoteWidget();
 	addItem( note );
+	note->setPos( 0, 100 );
+
+	addItem( new NoteWidget() );
 }
 
 BasketContent::~BasketContent() {

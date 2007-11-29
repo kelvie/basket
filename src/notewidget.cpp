@@ -2,10 +2,15 @@
 #include <QStyle>
 #include <QStyleOptionGraphicsItem>
 
+#include <KDebug>
+
 #include "notewidget.h"
 
 NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
+	m_isHovered = false;
+
 	setAcceptDrops( true );
+	setAcceptsHoverEvents( true );
 
 	QFont font( "Helvetica", 20 );
 	setFont( font );
@@ -33,5 +38,28 @@ void NoteWidget::paint( QPainter* painter, const QStyleOptionGraphicsItem* optio
 	style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
 
 	QGraphicsTextItem::paint( painter, style, widget );
+}
+
+QRectF NoteWidget::boundingRect() const {
+	QRectF rect = QGraphicsTextItem::boundingRect();
+	if ( m_isHovered ) {
+		return QRectF( rect.x() - 10, rect.y() - 10, rect.width() + 20, rect.height() + 20  );
+	}
+	return rect;
+
+}
+
+void NoteWidget::hoverEnterEvent( QGraphicsSceneHoverEvent* event ) {
+	kDebug() << "hovered" << endl;
+	prepareGeometryChange();
+	m_isHovered = true;
+	update();
+}
+
+void NoteWidget::hoverLeaveEvent( QGraphicsSceneHoverEvent* event ) {
+	kDebug() << "unhovered" << endl;
+	prepareGeometryChange();
+	m_isHovered = false;
+	update();
 }
 
