@@ -9,7 +9,7 @@ NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
 	setFont( font );
 	setTextInteractionFlags( Qt::TextEditorInteraction );
 	setHtml( "Hello, world!" );
-	setTextWidth( 100 );
+	//setTextWidth( 100 );
 }
 
 NoteWidget::~NoteWidget() {
@@ -19,7 +19,7 @@ void NoteWidget::paint( QPainter* painter, const QStyleOptionGraphicsItem* optio
 	painter->setOpacity( 0.5 );
 
 	painter->setBrush( Qt::green );
-	painter->drawRoundRect( boundingRect(), 35, 35 );
+	painter->drawRoundRect( boundingRect() );
 
 	//painter->setPen( Qt::NoPen );
 	
