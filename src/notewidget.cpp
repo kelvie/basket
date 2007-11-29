@@ -1,4 +1,6 @@
 #include <QPainter>
+#include <QStyle>
+#include <QStyleOptionGraphicsItem>
 
 #include "notewidget.h"
 
@@ -20,7 +22,10 @@ void NoteWidget::paint( QPainter* painter, const QStyleOptionGraphicsItem* optio
 	painter->drawRoundRect( boundingRect(), 35, 35 );
 
 	//painter->setPen( Qt::NoPen );
+	
+	QStyleOptionGraphicsItem* style = const_cast<QStyleOptionGraphicsItem*>( option );
+	style->state &= ~( QStyle::State_Selected | QStyle::State_HasFocus );
 
-	QGraphicsTextItem::paint( painter, option, widget );
+	QGraphicsTextItem::paint( painter, style, widget );
 }
 
