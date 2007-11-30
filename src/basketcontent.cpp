@@ -20,6 +20,13 @@ BasketContent::BasketContent( QObject* parent ) : QGraphicsScene( parent ) {
 	note->setPos( 0, 100 );
 
 	addItem( new NoteWidget() );
+	/*for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			NoteWidget* note = new NoteWidget();
+			addItem( note );
+			note->setPos( i * 250, j * 100 );
+		}
+	}*/
 }
 
 BasketContent::~BasketContent() {
