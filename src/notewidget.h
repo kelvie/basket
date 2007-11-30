@@ -11,6 +11,7 @@ class NoteWidget : public QGraphicsTextItem {
 		~NoteWidget();
 
 		QRectF boundingRect() const;
+		QPainterPath shape() const;
 
 	public slots:
 		void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0 );

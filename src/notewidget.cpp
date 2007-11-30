@@ -46,7 +46,6 @@ QRectF NoteWidget::boundingRect() const {
 		return QRectF( rect.x() - 10, rect.y() - 10, rect.width() + 20, rect.height() + 20  );
 	}
 	return rect;
-
 }
 
 void NoteWidget::hoverEnterEvent( QGraphicsSceneHoverEvent* event ) {
@@ -63,3 +62,8 @@ void NoteWidget::hoverLeaveEvent( QGraphicsSceneHoverEvent* event ) {
 	update();
 }
 
+QPainterPath NoteWidget::shape() const {
+	QPainterPath path;
+	path.addRect( boundingRect() );
+	return path;
+}
