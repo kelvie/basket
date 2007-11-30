@@ -77,6 +77,8 @@ QPainterPath NoteWidget::shape() const {
 }
 
 void NoteWidget::mousePressEvent( QGraphicsSceneMouseEvent* event ) {
+	setZValue( 1 );
+	update();
 	kDebug() << event->pos() << endl;
 	if ( event->pos().y() <= 3 && event->button() == Qt::LeftButton ) {
 		event->accept();
@@ -89,6 +91,8 @@ void NoteWidget::mousePressEvent( QGraphicsSceneMouseEvent* event ) {
 }
 
 void NoteWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent* event ) {
+	setZValue( 0 );
+	update();
 	if ( m_isDragged ) {
 		QGraphicsTextItem::mouseReleaseEvent( event );
 		update();
