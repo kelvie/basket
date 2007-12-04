@@ -1,0 +1,17 @@
+[Desktop Entry]
+Encoding=UTF-8
+X-KDE-Library=bnp_persistence
+X-KDE-PluginInfo-Author=Patrice Broustal aka perihelion
+X-KDE-PluginInfo-Email=perihelion.devel@free.fr
+X-KDE-PluginInfo-Name=bnppersistence
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Website=http://basket.kde.org/
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnableByDefault=true
+X-KDE-ParentApp=basket
+ServiceTypes=BasketNotePads/Plugin
+Type=Service
+Name=Data Persistence service for BasketNotePads
+
+
+
