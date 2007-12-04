@@ -16,4 +16,5 @@ target_link_libraries( basket ${KDE_CORE_LIBS} ${KDE4_KDEUI_LIBS} )
 install( TARGETS basket DESTINATION ${BIN_INSTALL_DIR} )
 
 install( FILES basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket )
+add_subdirectory( storage )
 
