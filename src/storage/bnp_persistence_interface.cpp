@@ -7,11 +7,8 @@
 /*
  * sql include part 
  */
-#include <QApplication>
-#include <QDebug>
-#include <QSqlError>
-#include <QSqlQuery>
-#include <QStringList>
+#include <KAboutData>
+#include <KStandardDirs>
 
 class BNPPersistenceInterface;
 // This macro defines a KPluginFactory subclass named BNPPersistenceInterfaceFactory. The second
@@ -21,7 +18,9 @@ class BNPPersistenceInterface;
 // here. The registerPlugin function takes an optional QString parameter which is a
 // keyword to uniquely identify the plugin then (it maps to X-KDE-PluginKeyword in the
 // .desktop file).
-K_PLUGIN_FACTORY(BNPPersistenceInterfaceFactory, registerPlugin<BNPPersistenceInterface>();)
+K_PLUGIN_FACTORY(BNPPersistenceInterfaceFactory, 
+ registerPlugin<BNPPersistenceInterface>();
+)
 
 // With the next macro call, the library exports version information about the
 // Qt and KDE libraries being used and (most important) the entry symbol to get at
@@ -37,7 +36,7 @@ K_PLUGIN_FACTORY(BNPPersistenceInterfaceFactory, registerPlugin<BNPPersistenceIn
      KAboutData aboutData("BNPPersistenceInterface", "BNPPersistenceInterface", ki18n("BNPPersistenceInterface"), "0.1",
              ki18n("a description of the plugin"), KAboutData::License_LGPL,
              ki18n("Copyright (C) 2007 PAtrice Broustal aka Perihelion"));
-     aboutData.addAuthor(ki18n("Your Name"), ...);
+     aboutData.addAuthor(ki18n("Your Name"));
      return aboutData;
  }
  K_EXPORT_PLUGIN(BNPPersistenceInterfaceFactory(createAboutData()))
@@ -53,11 +52,12 @@ BNPPersistenceInterface::BNPPersistenceInterface(QObject *parent, const QVariant
         metaDataConnect();
 }
 
-// Destructor
-BNPPersistenceInterface::~BNPPersistenceInterface()
-{}
 
 // Destructor
+BNPPersistenceInterface::~BNPPersistenceInterface()
+{
+}
+
 void BNPPersistenceInterface::metaDataConnect()
 {
     QString myDB = KStandardDirs::locate("data", "basket/basketnotepads.db3");
@@ -71,18 +71,18 @@ void BNPPersistenceInterface::metaDataConnect()
 QSqlQueryModel* BNPPersistenceInterface::getBasketList(void){
     QSqlQueryModel *model = new QSqlQueryModel(this);
     model->setQuery("SELECT * FROM basketnote");
-    while (queryModel->canFetchMore())
-                queryModel->fetchMore();
+    while (model->canFetchMore())
+                model->fetchMore();
     return  model;	
 }
 
 QStringList BNPPersistenceInterface::newBasketNote(QString name, bool crypted){
-	
+return QStringList();	
 }
 
-/*
-#include "bnp_persistence_interface.moc"
 
+#include "bnp_persistence_interface.moc"
+/*
 #include <KPluginFactory>
 #include <KPluginLoader>
 #include <plugininterface.h>

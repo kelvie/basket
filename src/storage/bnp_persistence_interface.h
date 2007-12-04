@@ -4,6 +4,13 @@
 
 #include <QtCore/QObject>
 #include <QVariantList>
+#include <QDebug>
+#include <QtSql>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QStringList>
+#include <QSqlDatabase>
+
 #include <QSqlQueryModel>
 /**
   * This is the plugin class. There will be only one instance of this class.
@@ -15,7 +22,7 @@ class BNPPersistenceInterface
 public:
         // Constructor
         explicit BNPPersistenceInterface ( QObject *parent,
-                                           const QVariantList &args );
+                                           const QVariantList &args);
         // Destructor
         virtual ~BNPPersistenceInterface();
         /*return  a list of basketnote */
