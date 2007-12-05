@@ -7,7 +7,7 @@ else(SQLITE_FOUND)
   message("You need to install a package containing the module with support for sqlite3.")
   message("")
 endif(QT_QTSQL_FOUND)
-kde4_add_plugin(bnp_persistence bnp_persistence_interface.cpp)
+kde4_add_plugin(bnp_persistence bnp_persistence_interface.cpp bnp_treemodel.cpp bnp_treeitem.cpp)
 
 #
 target_link_libraries(bnp_persistence ${QT_QTSQL_LIBRARY} ${KDE4_KDECORE_LIBS} )
