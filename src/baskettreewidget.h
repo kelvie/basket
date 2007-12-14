@@ -1,5 +1,5 @@
-#ifndef BASKETTREEVIEW_H
-#define BASKETTREEVIEW_H
+#ifndef BASKETTREEWIDGET_H
+#define BASKETTREEWIDGET_H
 
 #include <QWidget>
 
@@ -11,13 +11,12 @@ namespace Akonadi {
 	class CollectionView;
 }
 
-//TODO inherits from Akonadi::CollectionView and reimplement contextMenuEvent()
-class BasketTreeView : public Akonadi::CollectionView {
+class BasketTreeWidget : public QWidget {
 	Q_OBJECT
 
 	public:
-		BasketTreeView( QWidget *parent = 0 );
-		~BasketTreeView();
+		BasketTreeWidget( QWidget *parent = 0 );
+		~BasketTreeWidget();
 
 	private slots:
 		void collectionActivated( const QModelIndex& index );
@@ -26,8 +25,6 @@ class BasketTreeView : public Akonadi::CollectionView {
 		Akonadi::CollectionModel *mCollectionModel;
 		Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
 		Akonadi::CollectionView *mCollectionTree;
-
-		int mCurrentCollectionId;
 };
 
-#endif //BASKETTREEVIEW_H
+#endif //BASKETTREEWIDGET_H

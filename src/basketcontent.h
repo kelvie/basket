@@ -11,6 +11,9 @@ class BasketContent : public QGraphicsScene {
 		~BasketContent();
 	private:
 		QHash<int, int> mapIdToNote;
+
+		int m_basketId;
+
 };
 
 #endif

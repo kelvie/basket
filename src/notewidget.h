@@ -25,6 +25,8 @@ class NoteWidget : public QGraphicsTextItem {
 		bool m_isHovered;
 		bool m_isDragged;
 
+		int m_noteId;
+
 };
 
 #endif

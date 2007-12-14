@@ -19,6 +19,8 @@ NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
 	setFont( font );
 	setTextInteractionFlags( Qt::TextEditorInteraction );
 	setHtml( "Hello, world!" );
+
+	setToolTip( "This is a tooltip :)\n<tooltip>" );
 	//setTextWidth( 100 );
 }
 
@@ -57,14 +59,14 @@ QRectF NoteWidget::boundingRect() const {
 }
 
 void NoteWidget::hoverEnterEvent( QGraphicsSceneHoverEvent* event ) {
-	kDebug() << "hovered" << endl;
+	//kDebug() << "hovered: " << event->pos() << endl;
 	//prepareGeometryChange();
 	m_isHovered = true;
 	update();
 }
 
 void NoteWidget::hoverLeaveEvent( QGraphicsSceneHoverEvent* event ) {
-	kDebug() << "unhovered" << endl;
+	//kDebug() << "unhovered" << event->pos() << endl;
 	//prepareGeometryChange();
 	m_isHovered = false;
 	update();
@@ -81,6 +83,7 @@ void NoteWidget::mousePressEvent( QGraphicsSceneMouseEvent* event ) {
 	update();
 	kDebug() << event->pos() << endl;
 	if ( event->pos().y() <= 3 && event->button() == Qt::LeftButton ) {
+		setCursor( Qt::ClosedHandCursor );
 		event->accept();
 		update();
 		m_isDragged = true;
@@ -95,6 +98,7 @@ void NoteWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent* event ) {
 	update();
 	if ( m_isDragged ) {
 		QGraphicsTextItem::mouseReleaseEvent( event );
+		setCursor( Qt::ArrowCursor );
 		update();
 		m_isDragged = false;
 		return;
@@ -103,7 +107,12 @@ void NoteWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent* event ) {
 }
 
 void NoteWidget::mouseMoveEvent( QGraphicsSceneMouseEvent* event ) {
+	if ( event->pos().y() <= 3 ) {
+		setCursor( Qt::OpenHandCursor );
+		//update();
+	}
 	if ( m_isDragged ) {
+		setCursor( Qt::ClosedHandCursor );
 		QPointF delta = event->pos() - event->lastPos();
 		setPos( pos() + delta );
 		update();

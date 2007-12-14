@@ -2,17 +2,22 @@
 #include "basketmainwindow.h"
 #include "basketsystemtray.h"
 
+#include <libakonadi/control.h>
+
 BasketApplication::BasketApplication() : KUniqueApplication() {
-	m_mainWindow = new BasketMainWindow();
-	m_mainWindow->show();
+	// Start akonadi server if it wasn't running yet
+	Akonadi::Control::start();
+
+	// Create main window
+	mMainWindow = new BasketMainWindow();
+	mMainWindow->show();
 	
-	m_tray = new BasketSystemTray( mainWindow() );
-	m_tray->setVisible( true );
+	// Create system tray icon
+	mTray = new BasketSystemTray( mainWindow() );
+	mTray->setVisible( true );
 }
 
 BasketApplication::~BasketApplication() {
-	//delete m_mainWindow;
-	//m_mainWindow = 0;
 }
 
 

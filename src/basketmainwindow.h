@@ -4,24 +4,20 @@
 #include <KXmlGuiWindow>
 
 class BasketViewContainer;
-class BasketTreeView;
+class BasketTreeWidget;
 class QModelIndex;
-class QVBoxLayout;
-class QMenuBar;
-class KMenu;
 
+/*
+ *	Basket main window class
+ */
 class BasketMainWindow : public KXmlGuiWindow {
 	Q_OBJECT
+
 	public:
 		BasketMainWindow( QWidget* parent = 0 );
 		~BasketMainWindow();
 
-	public slots:
-		void setCurrentBasket( int basketId );
-
 	private slots:
-		void update0( const QModelIndex& index );
-
 		void createNewBasket();
 
 	private:
@@ -31,8 +27,8 @@ class BasketMainWindow : public KXmlGuiWindow {
 		void setupActions();
 		void setupDockWidgets();
 
-		BasketViewContainer* m_viewContainer;
-		BasketTreeView* m_treeView;
+		BasketViewContainer* mViewContainer;
+		BasketTreeWidget* mTreeWidget;
 };
 
 #endif // BASKETMAINWINDOW_H

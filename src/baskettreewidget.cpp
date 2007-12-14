@@ -1,5 +1,5 @@
-#include "baskettreeview.h"
-#include "baskettreemodel.h"
+#include "baskettreewidget.h"
+//#include "baskettreemodel.h"
 
 #include <QStringList>
 #include <QPalette>
@@ -8,7 +8,6 @@
 #include <KDebug>
 #include <KIcon>
 
-#include <libakonadi/control.h>
 #include <libakonadi/collection.h>
 #include <libakonadi/collectionview.h>
 #include <libakonadi/collectionfilterproxymodel.h>
@@ -19,9 +18,7 @@
 
 using namespace Akonadi;
 
-BasketTreeView::BasketTreeView( QWidget *parent ) : QWidget( parent ) {
-	Akonadi::Control::start();
-
+BasketTreeWidget::BasketTreeWidget( QWidget *parent ) : QWidget( parent ) {
 	mCollectionTree = new Akonadi::CollectionView( this );
 	connect( mCollectionTree, SIGNAL( clicked( QModelIndex ) ), SLOT( collectionActivated( QModelIndex ) ) );
 
@@ -42,11 +39,11 @@ BasketTreeView::BasketTreeView( QWidget *parent ) : QWidget( parent ) {
 	//connect( job, SIGNAL(), this, SLOT() );
 }
 
-BasketTreeView::~BasketTreeView() {
+BasketTreeWidget::~BasketTreeWidget() {
 }
 
-void BasketTreeView::collectionActivated( const QModelIndex& index ) {
-	kDebug() << "activated" << endl;
+void BasketTreeWidget::collectionActivated( const QModelIndex& index ) {
+	//kDebug() << "activated" << endl;
 	/*QModelIndex root = mCollectionModel->index( 0, 0 );
 	QModelIndex index0 = mCollectionModel->index( 0, 0, root );
 	kDebug() << root.data( CollectionModel::CollectionIdRole ).toInt() << endl;

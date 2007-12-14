@@ -7,15 +7,17 @@ class BasketMainWindow;
 class BasketSystemTray;
 
 class BasketApplication : public KUniqueApplication {
+	Q_OBJECT
+
 	public:
 		BasketApplication();
 		virtual ~BasketApplication();
 
-		inline BasketMainWindow *mainWindow() const { return m_mainWindow; }
+		inline BasketMainWindow* mainWindow() const { return mMainWindow; }
 
 	private:
-		BasketMainWindow *m_mainWindow;
-		BasketSystemTray *m_tray;
+		BasketMainWindow* mMainWindow;
+		BasketSystemTray* mTray;
 };
 
 #endif	//BASKETAPPLICATION_H
