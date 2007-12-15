@@ -1,5 +1,5 @@
 #include "baskettreewidget.h"
-//#include "baskettreemodel.h"
+#include "baskettreemodel.h"
 
 #include <QStringList>
 #include <QPalette>
@@ -22,7 +22,8 @@ BasketTreeWidget::BasketTreeWidget( QWidget *parent ) : QWidget( parent ) {
 	mCollectionTree = new Akonadi::CollectionView( this );
 	connect( mCollectionTree, SIGNAL( clicked( QModelIndex ) ), SLOT( collectionActivated( QModelIndex ) ) );
 
-	mCollectionModel = new Akonadi::CollectionModel( this );
+	//mCollectionModel = new Akonadi::CollectionModel( this );
+	mCollectionModel = new BasketTreeModel( this );
 	mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
 	mCollectionProxyModel->setSourceModel( mCollectionModel );
 	//mCollectionProxyModel->addMimeType( QString( "basket/basket" ) );

@@ -1,16 +1,28 @@
 #include "baskettreemodel.h"
 
-BasketTreeModel::BasketTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
+#include <QPixmap>
+
+#include <KIconLoader>
+
+#include <libakonadi/collectionmodel.h>
+
+BasketTreeModel::BasketTreeModel( QObject* parent ) : Akonadi::CollectionModel( parent ) {
 }
 
 BasketTreeModel::~BasketTreeModel() {
 }
 
-QVariant BasketTreeModel::data( const QModelIndex &index, int rolte = Qt::DisplayRole ) const {
+QVariant BasketTreeModel::data( const QModelIndex &index, int role ) const {
+	if ( !index.isValid() )
+		return QVariant();
 
+	if ( role == Qt::DecorationRole ) {
+		if ( index.column() == 0 ) {
+			return SmallIcon( QLatin1String( "basket" ) );
+		}
+	}
+
+	return Akonadi::CollectionModel::data( index, role );
 }
 
-int BasketTreeModel::columnCount( const QModelIndex &parent = QModelIndex() ) const {
-	return 1;
-}
 

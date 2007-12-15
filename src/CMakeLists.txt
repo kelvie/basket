@@ -1,10 +1,9 @@
 
-add_subdirectory( akonadi )
-
 set( basket_SRCS 
 	basketapplication.cpp
 	basketmainwindow.cpp
 	basketsystemtray.cpp
+	baskettreemodel.cpp
 	#baskettreeview.cpp
 	baskettreewidget.cpp
 	basketviewcontainer.cpp
@@ -19,6 +18,4 @@ target_link_libraries( basket akonadicomponents kdepim ${KDE_CORE_LIBS} ${KDE4_K
 install( TARGETS basket DESTINATION ${BIN_INSTALL_DIR} )
 
 install( FILES basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket )
-
-#add_subdirectory( storage )
 
