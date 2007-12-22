@@ -1,0 +1,8 @@
+[Misc]
+Name=Note serializer
+Comment=An Akonadi serializer plugin
+
+[Plugin]
+Type=basket/note
+X-KDE-Library=akonadi_serializer_note
+
