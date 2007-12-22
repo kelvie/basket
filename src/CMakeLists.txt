@@ -1,4 +1,8 @@
 
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+
+add_subdirectory( plugins )
+
 set( basket_SRCS 
 	basketapplication.cpp
 	basketmainwindow.cpp
@@ -10,6 +14,7 @@ set( basket_SRCS
 	basketcontent.cpp
 	newbasketdialog.cpp
 	notewidget.cpp
+	note.cpp
 	main.cpp 
 )
 

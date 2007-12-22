@@ -4,16 +4,32 @@
 #include <QGraphicsScene>
 #include <QHash>
 
+class KJob;
+class NoteWidget;
+
+namespace Akonadi {
+	class Item;
+}
+
 class BasketContent : public QGraphicsScene {
 	Q_OBJECT
+
 	public:
-		BasketContent( QObject* parent = 0 );
+		BasketContent( int basketId, QObject* parent = 0 );
 		~BasketContent();
+
+	public slots:
+		void itemAdded( const Akonadi::Item& item );
+
+	private slots:
+		void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
+		void addItemDone( KJob* job );
+		void itemListFetched( KJob* job	);
+
 	private:
-		QHash<int, int> mapIdToNote;
+		QHash<int, NoteWidget*> mNoteIdToNoteWidget;
 
-		int m_basketId;
-
+		int mBasketId;
 };
 
 #endif

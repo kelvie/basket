@@ -1,11 +1,25 @@
 #include <QLinearGradient>
+#include <QGraphicsSceneMouseEvent>
 
 #include <KDebug>
 
 #include "basketcontent.h"
 #include "notewidget.h"
+#include "note.h"
 
-BasketContent::BasketContent( QObject* parent ) : QGraphicsScene( parent ) {
+#include <libakonadi/collection.h>
+#include <libakonadi/itemappendjob.h>
+#include <libakonadi/item.h>
+#include <libakonadi/itemfetchjob.h>
+
+#include <boost/shared_ptr.hpp>
+
+using namespace Akonadi;
+
+BasketContent::BasketContent( int basketId, QObject* parent ) : QGraphicsScene( parent ), mBasketId( basketId ) {
+	ItemFetchJob* job = new ItemFetchJob( Collection(basketId), this );
+	job->fetchAllParts();
+	connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemListFetched( KJob* ) ) );
 	//QFont font( "Helvetica", 16, QFont::Bold );
 	//addText( "It could be the place for your advertisment!", font );
 	
@@ -15,9 +29,9 @@ BasketContent::BasketContent( QObject* parent ) : QGraphicsScene( parent ) {
 	setBackgroundBrush( QBrush( gradient ) );*/
 
 	//setBackgroundBrush( QColor( 200, 200, 200 ) );
-	NoteWidget* note = new NoteWidget();
-	addItem( note );
-	note->setPos( 0, 100 );
+	//NoteWidget* note = new NoteWidget();
+	//addItem( note );
+	//note->setPos( 0, 100 );
 
 	//addItem( new NoteWidget() );
 	/*for (int i = 0; i < 100; i++) {
@@ -30,5 +44,51 @@ BasketContent::BasketContent( QObject* parent ) : QGraphicsScene( parent ) {
 }
 
 BasketContent::~BasketContent() {
+}
+
+void BasketContent::addItemDone( KJob* job ) {
+	if ( job->error() ) return;
+}
+
+void BasketContent::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent ) {
+	if ( mouseEvent->button() == Qt::LeftButton ) {
+		kDebug() << mouseEvent->scenePos() << endl;
+		Item* item = new Item( "basket/note" );
+		item->setPayload<NotePtr>( NotePtr( new Note( mouseEvent->scenePos(), "<default text>" ) ) );
+		ItemAppendJob* job = new ItemAppendJob( *item, Collection( mBasketId ) );
+		connect( job, SIGNAL( result( KJob* ) ), this, SLOT( addItemDone( KJob* ) ) );
+	}
+	QGraphicsScene::mousePressEvent( mouseEvent );
+}
+
+void BasketContent::itemAdded( const Akonadi::Item& item ) {
+	//TODO remove it, because it's not necessary if everything else works ok
+	kDebug() << "item added: " << item.reference().id() << endl;
+	QHash<int, NoteWidget*>::const_iterator i = mNoteIdToNoteWidget.find( item.reference().id() );
+	if ( i != mNoteIdToNoteWidget.constEnd() ) {
+		kDebug() << "2 identical notes in the same basket!" << endl;
+		return;
+	}
+	if ( !item.hasPayload() ) {
+		ItemFetchJob* job = new ItemFetchJob( item.reference(), this );
+		job->fetchAllParts();
+		connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemListFetched( KJob* ) ) );
+		kDebug() << "BUG" << endl;
+		return;
+	}
+	int id = item.reference().id();
+	NotePtr note = item.payload<NotePtr>();
+	NoteWidget* noteWidget = new NoteWidget();
+	noteWidget->setPos( note->pos() );
+	noteWidget->setPlainText( note->text() );
+	addItem( noteWidget );
+	mNoteIdToNoteWidget[ id ] = noteWidget;
+}
+
+void BasketContent::itemListFetched( KJob* job ) {
+	if ( job->error() ) return;
+	Item::List items = static_cast<ItemFetchJob*>( job )->items();
+	foreach( const Item item, items )
+		itemAdded( item );
 }
 

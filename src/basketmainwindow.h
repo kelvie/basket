@@ -17,6 +17,8 @@ class BasketMainWindow : public KXmlGuiWindow {
 		BasketMainWindow( QWidget* parent = 0 );
 		~BasketMainWindow();
 
+		void setCurrentBasket( int newBasketId );
+
 	private slots:
 		void createNewBasket();
 

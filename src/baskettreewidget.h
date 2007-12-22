@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QModelIndex;
+class BasketMainWindow;
 
 namespace Akonadi {
 	class CollectionModel;
@@ -11,11 +12,14 @@ namespace Akonadi {
 	class CollectionView;
 }
 
+/*
+ *	Class represents widget for tree of baskets
+ */
 class BasketTreeWidget : public QWidget {
 	Q_OBJECT
 
 	public:
-		BasketTreeWidget( QWidget *parent = 0 );
+		BasketTreeWidget( BasketMainWindow* mainWindow, QWidget *parent = 0 );
 		~BasketTreeWidget();
 
 	private slots:
@@ -25,6 +29,8 @@ class BasketTreeWidget : public QWidget {
 		Akonadi::CollectionModel *mCollectionModel;
 		Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
 		Akonadi::CollectionView *mCollectionTree;
+
+		BasketMainWindow* mMainWindow;
 };
 
 #endif //BASKETTREEWIDGET_H

@@ -62,7 +62,7 @@ void BasketMainWindow::setupDockWidgets() {
 	treeViewDock->setObjectName( "treeViewDock" );
 	treeViewDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
 
-	mTreeWidget = new BasketTreeWidget();
+	mTreeWidget = new BasketTreeWidget( this, treeViewDock );
 
 	treeViewDock->setWidget( mTreeWidget );
 
@@ -75,4 +75,7 @@ void BasketMainWindow::setupDockWidgets() {
 	actionCollection()->addAction( "tree_view", treeViewDock->toggleViewAction() );
 }
 
+void BasketMainWindow::setCurrentBasket( int newBasketId ) {
+	mViewContainer->setCurrentBasket( newBasketId );
+}
 

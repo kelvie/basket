@@ -18,9 +18,9 @@ NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
 	QFont font( "Helvetica", 20 );
 	setFont( font );
 	setTextInteractionFlags( Qt::TextEditorInteraction );
-	setHtml( "Hello, world!" );
+	//setHtml( "Hello, world!" );
 
-	setToolTip( "This is a tooltip :)\n<tooltip>" );
+	//setToolTip( "This is a tooltip :)\n<tooltip>" );
 	//setTextWidth( 100 );
 }
 
