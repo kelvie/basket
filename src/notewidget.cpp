@@ -8,7 +8,12 @@
 
 #include "notewidget.h"
 
-NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
+#include <libakonadi/item.h>
+#include <libakonadi/itemstorejob.h>
+
+using namespace Akonadi;
+
+NoteWidget::NoteWidget( const Item& item, QGraphicsItem* parent ) : QGraphicsTextItem( parent ), mItem( item ) {
 	m_isHovered = false;
 	m_isDragged = false;
 
@@ -22,6 +27,14 @@ NoteWidget::NoteWidget( QGraphicsItem* parent ) : QGraphicsTextItem( parent ) {
 
 	//setToolTip( "This is a tooltip :)\n<tooltip>" );
 	//setTextWidth( 100 );
+	//connect( this, SIGNAL( textChanged( const QString& ) ), this, SLOT( storeItem() ) );
+	if ( !mItem.hasPayload() ) {
+
+	} else {
+		mNote = mItem.payload<NotePtr>();
+		setPos( mNote->pos() );
+		setHtml( mNote->text() );
+	}
 }
 
 NoteWidget::~NoteWidget() {
@@ -83,7 +96,7 @@ void NoteWidget::mousePressEvent( QGraphicsSceneMouseEvent* event ) {
 	update();
 	kDebug() << event->pos() << endl;
 	if ( event->pos().y() <= 3 && event->button() == Qt::LeftButton ) {
-		setCursor( Qt::ClosedHandCursor );
+		//TODO setCursor( Qt::ClosedHandCursor );
 		event->accept();
 		update();
 		m_isDragged = true;
@@ -98,7 +111,7 @@ void NoteWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent* event ) {
 	update();
 	if ( m_isDragged ) {
 		QGraphicsTextItem::mouseReleaseEvent( event );
-		setCursor( Qt::ArrowCursor );
+		//TODO setCursor( Qt::ArrowCursor );
 		update();
 		m_isDragged = false;
 		return;
@@ -108,16 +121,41 @@ void NoteWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent* event ) {
 
 void NoteWidget::mouseMoveEvent( QGraphicsSceneMouseEvent* event ) {
 	if ( event->pos().y() <= 3 ) {
-		setCursor( Qt::OpenHandCursor );
+		//TODO setCursor( Qt::OpenHandCursor );
 		//update();
 	}
 	if ( m_isDragged ) {
-		setCursor( Qt::ClosedHandCursor );
+		//TODO setCursor( Qt::ClosedHandCursor );
 		QPointF delta = event->pos() - event->lastPos();
 		setPos( pos() + delta );
 		update();
 		return;
 	}
 	QGraphicsTextItem::mouseReleaseEvent( event );
+}
+
+void NoteWidget::keyPressEvent( QKeyEvent* event ) {
+	QGraphicsTextItem::keyPressEvent( event );
+	if ( mNote->text() != toHtml() ) {
+		mNote->setText( toHtml() );
+		storeItem();
+		//emit textChanged( toHtml() );
+	}
+}
+
+void NoteWidget::storeItem() {
+	kDebug() << "store item: " << mItem.reference().id() << endl;
+	ItemStoreJob* job = new ItemStoreJob( mItem );
+	job->storePayload();
+	connect( job, SIGNAL( result( KJob* ) ), this, SLOT( storeDone( KJob* ) ) );
+}
+
+void NoteWidget::storeDone( KJob* job ) {
+	if ( job->error() ) {
+		kDebug() << "Error" << endl;
+	}
+}
+
+void NoteWidget::fetchDone( KJob* job ) {
 }
 

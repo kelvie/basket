@@ -51,14 +51,14 @@ void BasketContent::addItemDone( KJob* job ) {
 }
 
 void BasketContent::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent ) {
-	if ( mouseEvent->button() == Qt::LeftButton ) {
+	QGraphicsScene::mousePressEvent( mouseEvent );
+	if ( mouseEvent->button() == Qt::RightButton && itemAt( mouseEvent->scenePos() ) == 0 ) {
 		kDebug() << mouseEvent->scenePos() << endl;
-		Item* item = new Item( "basket/note" );
+		/*Item* item = new Item( "basket/note" );
 		item->setPayload<NotePtr>( NotePtr( new Note( mouseEvent->scenePos(), "<default text>" ) ) );
 		ItemAppendJob* job = new ItemAppendJob( *item, Collection( mBasketId ) );
-		connect( job, SIGNAL( result( KJob* ) ), this, SLOT( addItemDone( KJob* ) ) );
+		connect( job, SIGNAL( result( KJob* ) ), this, SLOT( addItemDone( KJob* ) ) );*/
 	}
-	QGraphicsScene::mousePressEvent( mouseEvent );
 }
 
 void BasketContent::itemAdded( const Akonadi::Item& item ) {
@@ -66,21 +66,22 @@ void BasketContent::itemAdded( const Akonadi::Item& item ) {
 	kDebug() << "item added: " << item.reference().id() << endl;
 	QHash<int, NoteWidget*>::const_iterator i = mNoteIdToNoteWidget.find( item.reference().id() );
 	if ( i != mNoteIdToNoteWidget.constEnd() ) {
-		kDebug() << "2 identical notes in the same basket!" << endl;
+		kDebug() << "2 identical notes in the same basket! ID: " << item.reference().id() << endl;
 		return;
 	}
-	if ( !item.hasPayload() ) {
+	/*if ( !item.hasPayload() ) {
 		ItemFetchJob* job = new ItemFetchJob( item.reference(), this );
 		job->fetchAllParts();
 		connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemListFetched( KJob* ) ) );
-		kDebug() << "BUG" << endl;
+		kDebug() << "BUG: " << item.reference().id() << endl;
 		return;
-	}
+	}*/
+
 	int id = item.reference().id();
-	NotePtr note = item.payload<NotePtr>();
-	NoteWidget* noteWidget = new NoteWidget();
-	noteWidget->setPos( note->pos() );
-	noteWidget->setPlainText( note->text() );
+	//NotePtr note = item.payload<NotePtr>();
+	NoteWidget* noteWidget = new NoteWidget( item );
+	//noteWidget->setPos( note->pos() );
+	//noteWidget->setPlainText( note->text() );
 	addItem( noteWidget );
 	mNoteIdToNoteWidget[ id ] = noteWidget;
 }

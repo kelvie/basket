@@ -3,11 +3,15 @@
 
 #include <QGraphicsTextItem>
 
+#include <libakonadi/item.h>
+
+#include "note.h"
+
 class NoteWidget : public QGraphicsTextItem {
 	Q_OBJECT
 
 	public:
-		NoteWidget( QGraphicsItem* parent = 0 );
+		NoteWidget( const Akonadi::Item& item, QGraphicsItem* parent = 0 );
 		~NoteWidget();
 
 		QRectF boundingRect() const;
@@ -21,12 +25,22 @@ class NoteWidget : public QGraphicsTextItem {
 		void mouseReleaseEvent( QGraphicsSceneMouseEvent* event );
 		void mouseMoveEvent( QGraphicsSceneMouseEvent* event );
 
+		void keyPressEvent( QKeyEvent* event );
+
+		void storeItem();
+		void storeDone( KJob* job );
+
+		void fetchDone( KJob* job );
+
+	signals:
+		void textChanged( const QString& text );
+
 	private:
 		bool m_isHovered;
 		bool m_isDragged;
 
-		int m_noteId;
-
+		NotePtr mNote;
+		Akonadi::Item mItem;
 };
 
 #endif

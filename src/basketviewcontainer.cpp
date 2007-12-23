@@ -13,7 +13,7 @@
 #include <libakonadi/monitor.h>
 #include <libakonadi/collection.h>
 #include <libakonadi/item.h>
-//#include <libakonadi/datareference.h>
+#include <libakonadi/session.h>
 
 using namespace Akonadi;
 
@@ -21,10 +21,15 @@ BasketViewContainer::BasketViewContainer( QWidget* parent ) : QWidget( parent ) 
 
 	mStackedWidget = new QStackedWidget( this );
 
-	// Monitor will be needed in the future
+	// Monitor all changes on the server (Akonadi)
 	mMonitor = new Monitor( this );
+	// Need to ignore, because we don't want to get notifications about local changes
+	// we can handle them locally
+	mMonitor->ignoreSession( Akonadi::Session::defaultSession() );
+	// monitor for all notes
 	mMonitor->monitorMimeType( "basket/note" );
 	connect( mMonitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ), this, SLOT( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ));
+	//TODO add monitoring for collections, etc
 
 	/*QGraphicsView *view = new QGraphicsView();
 	this->addWidget( view );
