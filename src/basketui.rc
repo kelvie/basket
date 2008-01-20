@@ -7,8 +7,13 @@
 			<text>&amp;View</text>
 			<Action name="tree_view" />
 		</Menu>
+		<Menu name="settings">
+			<text>&amp;Settings</text>
+			<Action name="settings_prefs" />
+		</Menu>
 	</MenuBar>
 	<ToolBar noMerge="1" name="mainToolBar">
+		<text>Main ToolBar</text>
 		<Action name="file_new" />
 		<Action name="edit_cut" />
 		<Action name="edit_copy" />
@@ -17,6 +22,7 @@
 		<Action name="edit_redo" />
 	</ToolBar>
 	<ToolBar>
+		<text>Font toolbar</text>
 		<Action name="font_select" />
 		<Action name="fontsize_select" />
 		<Action name="format_text_bold" />

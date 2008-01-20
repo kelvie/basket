@@ -23,6 +23,7 @@
 #include "baskettreewidget.h"
 #include "basketviewcontainer.h"
 #include "newbasketdialog.h"
+#include "basketsettingsdialog.h"
 
 BasketMainWindow::BasketMainWindow( QWidget *parent ) : KXmlGuiWindow( parent ) {
 	init();
@@ -86,6 +87,18 @@ void BasketMainWindow::setupActions() {
 	KToggleAction* fillAction = new KToggleAction( this );
 	fillAction->setIcon( KIcon( "format-justify-fill" ) );
 	actionCollection()->addAction( "format_justify_fill", fillAction );
+
+	QActionGroup* justifyGroup = new QActionGroup( this );
+	justifyGroup->addAction( leftAction );
+	justifyGroup->addAction( rightAction );
+	justifyGroup->addAction( centerAction );
+	justifyGroup->addAction( fillAction );
+
+	KAction* basketSettings = new KAction( this );
+	basketSettings->setIcon( KIcon( "configure" ) );
+	basketSettings->setText( i18n( "Configure Basket" ) );
+	actionCollection()->addAction( "settings_prefs", basketSettings );
+	connect( basketSettings, SIGNAL( triggered() ) , this, SLOT( showSettingsDialog() ) );
 }
 
 void BasketMainWindow::setupDockWidgets() {
@@ -121,3 +134,9 @@ void BasketMainWindow::redo() {
 void BasketMainWindow::paste() {
 	kDebug() << "paste clicked" << endl;
 }
+
+void BasketMainWindow::showSettingsDialog() {
+	BasketSettingsDialog dlg( this );
+	dlg.exec();
+}
+

@@ -24,6 +24,7 @@ class BasketMainWindow : public KXmlGuiWindow {
 		void undo();
 		void redo();
 		void paste();
+		void showSettingsDialog();
 
 	private:
 		void init();

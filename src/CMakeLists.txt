@@ -14,6 +14,7 @@ set( basket_SRCS
 	basketcontent.cpp
 	newbasketdialog.cpp
 	notewidget.cpp
+	basketsettingsdialog.cpp
 	note.cpp
 	main.cpp 
 )
