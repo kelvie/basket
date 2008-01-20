@@ -21,6 +21,9 @@ class BasketMainWindow : public KXmlGuiWindow {
 
 	private slots:
 		void createNewBasket();
+		void undo();
+		void redo();
+		void paste();
 
 	private:
 		void init();

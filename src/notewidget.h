@@ -6,6 +6,7 @@
 #include <libakonadi/item.h>
 
 #include "note.h"
+#include "basketcontent.h"
 
 class NoteWidget : public QGraphicsTextItem {
 	Q_OBJECT
@@ -16,6 +17,8 @@ class NoteWidget : public QGraphicsTextItem {
 
 		QRectF boundingRect() const;
 		QPainterPath shape() const;
+
+		inline BasketContent* basket() const { return static_cast<BasketContent*>( scene() ); }
 
 	public slots:
 		void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0 );
@@ -32,8 +35,10 @@ class NoteWidget : public QGraphicsTextItem {
 
 		void fetchDone( KJob* job );
 
+		void contentsChanged();
+
 	signals:
-		void textChanged( const QString& text );
+		//void textChanged( const QString& text );
 
 	private:
 		bool m_isHovered;

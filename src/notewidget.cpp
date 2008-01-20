@@ -3,6 +3,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <QFlags>
 #include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
+#include <QTextDocument>
 
 #include <KDebug>
 
@@ -20,7 +22,7 @@ NoteWidget::NoteWidget( const Item& item, QGraphicsItem* parent ) : QGraphicsTex
 	setAcceptDrops( true );
 	setAcceptsHoverEvents( true );
 
-	QFont font( "Helvetica", 20 );
+	QFont font( "Helvetica", 16 );
 	setFont( font );
 	setTextInteractionFlags( Qt::TextEditorInteraction );
 	//setHtml( "Hello, world!" );
@@ -35,6 +37,9 @@ NoteWidget::NoteWidget( const Item& item, QGraphicsItem* parent ) : QGraphicsTex
 		setPos( mNote->pos() );
 		setHtml( mNote->text() );
 	}
+
+	QTextDocument *doc = this->document();
+	connect( doc, SIGNAL( contentsChanged() ), this, SLOT( contentsChanged() ) );
 }
 
 NoteWidget::~NoteWidget() {
@@ -135,12 +140,28 @@ void NoteWidget::mouseMoveEvent( QGraphicsSceneMouseEvent* event ) {
 }
 
 void NoteWidget::keyPressEvent( QKeyEvent* event ) {
+	if ( event->matches( QKeySequence::Undo ) ) {
+		kDebug() << "undo pressed" << endl;
+		//event->accept();
+		return;
+	}
+	if ( event->matches( QKeySequence::Redo ) ) {
+		kDebug() << "redo pressed" << endl;
+		//event->accept();
+		return;
+	}
+
+	/*if ( !event->text().isEmpty() ) {
+		kDebug() << event->text() << endl;
+		event->accept();
+		return;
+	}*/
 	QGraphicsTextItem::keyPressEvent( event );
-	if ( mNote->text() != toHtml() ) {
+	/*if ( mNote->text() != toHtml() ) {
 		mNote->setText( toHtml() );
 		storeItem();
 		//emit textChanged( toHtml() );
-	}
+	}*/
 }
 
 void NoteWidget::storeItem() {
@@ -157,5 +178,9 @@ void NoteWidget::storeDone( KJob* job ) {
 }
 
 void NoteWidget::fetchDone( KJob* job ) {
+}
+
+void NoteWidget::contentsChanged() {
+	kDebug() << "text changed!!! need to set redo/undo operation" << endl;
 }
 

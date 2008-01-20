@@ -15,6 +15,9 @@
 #include <KStandardShortcut>
 #include <KMenu>
 #include <KMenuBar>
+#include <KFontAction>
+#include <KFontSizeAction>
+#include <KToggleAction>
 
 #include "basketmainwindow.h"
 #include "baskettreewidget.h"
@@ -44,17 +47,45 @@ void BasketMainWindow::createNewBasket() {
 }
 
 void BasketMainWindow::setupActions() {
-	QAction *newBasket = actionCollection()->addAction( "basket_new" );
-	newBasket->setIcon( KIcon( "document-new" ) );
-	newBasket->setText( i18n( "New Basket" ) );
-	newBasket->setShortcut( Qt::CTRL | Qt::Key_N );
-	connect( newBasket, SIGNAL( triggered( bool ) ), this, SLOT( createNewBasket() ) );
+	KStandardAction::openNew( this, SLOT( createNewBasket() ), actionCollection() );
+	KStandardAction::quit( kapp, SLOT( quit() ), actionCollection() );
+	KStandardAction::undo( this, SLOT( undo() ), actionCollection() );
+	KStandardAction::redo( this, SLOT( redo() ), actionCollection() );
+	KStandardAction::paste( this, SLOT( paste() ), actionCollection() );
+	//KStandardAction::cut( this, SLOT(), actionCollection() );
+	//KStandardAction::copy( this, SLOT(), actionCollection() );
+	//KStandardAction::fullScreen( this, SLOT(), actionCollection() );
+	
+	actionCollection()->addAction( "font_select", new KFontAction( this ) );
+	actionCollection()->addAction( "fontsize_select", new KFontSizeAction( this ) );
 
-	QAction *quitBasket = actionCollection()->addAction( "basket_quit" );
-	quitBasket->setIcon( KIcon( "application-exit" ) );
-	quitBasket->setText( i18n( "Quit" ) );
-	quitBasket->setShortcut( Qt::CTRL | Qt::Key_Q );
-	connect( quitBasket, SIGNAL( triggered( bool ) ), kapp, SLOT( quit() ) );
+	KToggleAction* boldAction = new KToggleAction( this );
+	boldAction->setIcon( KIcon( "format-text-bold" ) );
+	actionCollection()->addAction( "format_text_bold", boldAction );
+
+	KToggleAction* italicAction = new KToggleAction( this );
+	italicAction->setIcon( KIcon( "format-text-italic" ) );
+	actionCollection()->addAction( "format_text_italic", italicAction );
+
+	KToggleAction* underlineAction = new KToggleAction( this );
+	underlineAction->setIcon( KIcon( "format-text-underline" ) );
+	actionCollection()->addAction( "format_text_underline", underlineAction );
+
+	KToggleAction* leftAction = new KToggleAction( this );
+	leftAction->setIcon( KIcon( "format-justify-left" ) );
+	actionCollection()->addAction( "format_justify_left", leftAction );
+
+	KToggleAction* rightAction = new KToggleAction( this );
+	rightAction->setIcon( KIcon( "format-justify-right" ) );
+	actionCollection()->addAction( "format_justify_right", rightAction );
+
+	KToggleAction* centerAction = new KToggleAction( this );
+	centerAction->setIcon( KIcon( "format-justify-center" ) );
+	actionCollection()->addAction( "format_justify_center", centerAction );
+
+	KToggleAction* fillAction = new KToggleAction( this );
+	fillAction->setIcon( KIcon( "format-justify-fill" ) );
+	actionCollection()->addAction( "format_justify_fill", fillAction );
 }
 
 void BasketMainWindow::setupDockWidgets() {
@@ -79,3 +110,14 @@ void BasketMainWindow::setCurrentBasket( int newBasketId ) {
 	mViewContainer->setCurrentBasket( newBasketId );
 }
 
+void BasketMainWindow::undo() {
+	kDebug() << "undo clicked" << endl;
+}
+
+void BasketMainWindow::redo() {
+	kDebug() << "redo clicked" << endl;
+}
+
+void BasketMainWindow::paste() {
+	kDebug() << "paste clicked" << endl;
+}

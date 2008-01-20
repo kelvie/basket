@@ -22,7 +22,13 @@ class Note {
 		Note( qreal x = 0, qreal y = 0, const QString& text = QString() );
 		~Note();
 
+		/*
+		 *	Read and set all data from string
+		 */
 		bool parseString( const QString& data );
+		/*
+		 *	Return all data in string form
+		 */
 		QString toString();
 
 		void setPos( QPointF pos );

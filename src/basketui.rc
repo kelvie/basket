@@ -3,18 +3,28 @@
 
 <gui name="basket" version="3" >
 	<MenuBar>
-		<Menu name="basket">
-			<text>&amp;Basket</text>
-			<Action name="basket_new" />
-			<Separator />
-			<Action name="basket_quit" />
-		</Menu>
 		<Menu name="view">
 			<text>&amp;View</text>
 			<Action name="tree_view" />
 		</Menu>
 	</MenuBar>
 	<ToolBar noMerge="1" name="mainToolBar">
-		<Action name="basket_new" />
+		<Action name="file_new" />
+		<Action name="edit_cut" />
+		<Action name="edit_copy" />
+		<Action name="edit_paste" />
+		<Action name="edit_undo" />
+		<Action name="edit_redo" />
+	</ToolBar>
+	<ToolBar>
+		<Action name="font_select" />
+		<Action name="fontsize_select" />
+		<Action name="format_text_bold" />
+		<Action name="format_text_italic" />
+		<Action name="format_text_underline" />
+		<Action name="format_justify_left" />
+		<Action name="format_justify_right" />
+		<Action name="format_justify_center" />
+		<Action name="format_justify_fill" />
 	</ToolBar>
 </gui>
