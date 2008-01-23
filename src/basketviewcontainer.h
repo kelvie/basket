@@ -27,6 +27,9 @@ public:
 public slots:
 	void setCurrentBasket( int basketId );
 	void itemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection );
+	void fontChanged( const QString& text );
+
+	void toggleFormatTextBold();
 
 private:
 	//QHash<int, BasketContent*> mBasketIdToBasketContent;

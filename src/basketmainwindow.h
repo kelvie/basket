@@ -6,6 +6,7 @@
 class BasketViewContainer;
 class BasketTreeWidget;
 class QModelIndex;
+class QString;
 
 /*
  *	Basket main window class
@@ -25,7 +26,9 @@ class BasketMainWindow : public KXmlGuiWindow {
 		void redo();
 		void paste();
 		void showSettingsDialog();
-
+		
+		void newFontSelected( const QString& text );
+		
 	private:
 		void init();
 

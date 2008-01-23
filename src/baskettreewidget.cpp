@@ -24,6 +24,8 @@ BasketTreeWidget::BasketTreeWidget( BasketMainWindow* mainWindow, QWidget *paren
 	mCollectionTree = new Akonadi::CollectionView( this );
 	connect( mCollectionTree, SIGNAL( clicked( QModelIndex ) ), SLOT( collectionActivated( QModelIndex ) ) );
 
+	mCollectionTree->setFrameStyle( QFrame::NoFrame );
+
 	//mCollectionModel = new Akonadi::CollectionModel( this );
 	mCollectionModel = new BasketTreeModel( this );
 	mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );

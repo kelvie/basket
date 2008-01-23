@@ -8,6 +8,8 @@
 #include "note.h"
 #include "basketcontent.h"
 
+class QTextCursor;
+
 class NoteWidget : public QGraphicsTextItem {
 	Q_OBJECT
 
@@ -36,6 +38,10 @@ class NoteWidget : public QGraphicsTextItem {
 		void fetchDone( KJob* job );
 
 		void contentsChanged();
+
+		void cursorPositionChanged( const QTextCursor& cursor );
+
+		void toggleFormatTextBold();
 
 	signals:
 		//void textChanged( const QString& text );

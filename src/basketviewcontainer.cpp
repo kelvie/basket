@@ -51,7 +51,12 @@ void BasketViewContainer::setCurrentBasket( int basketId ) {
 	QHash<int, QGraphicsView*>::const_iterator i = mBasketIdToViewWidget.find( basketId );
 	if ( i == mBasketIdToViewWidget.constEnd() ) {
 		QGraphicsView* view = new QGraphicsView( this );
+		//view->setFrameShape( QFrame::NoFrame );
 		view->setScene( new BasketContent( basketId, this ) );
+		view->setInteractive( true );
+		view->setAcceptDrops( true );
+		view->setDragMode( QGraphicsView::RubberBandDrag );
+
 		mBasketIdToViewWidget[basketId] = view;
 		mStackedWidget->addWidget( view );
 		mStackedWidget->setCurrentWidget( view );
@@ -73,4 +78,16 @@ void BasketViewContainer::itemAdded( const Akonadi::Item& item, const Akonadi::C
 	basket->itemAdded( item );
 }
 
+void BasketViewContainer::fontChanged( const QString& text ) {
+}
+
+void BasketViewContainer::toggleFormatTextBold() {
+	if ( !mStackedWidget->currentWidget() ) {
+		kDebug() << "bug: button toggle while there are no baskets" << endl;
+		return;
+	}
+	QGraphicsView *view = qobject_cast<QGraphicsView*>( mStackedWidget->currentWidget() );
+	BasketContent *content = qobject_cast<BasketContent*>( view->scene() );
+	content->toggleFormatTextBold();
+}
 

@@ -57,12 +57,16 @@ void BasketMainWindow::setupActions() {
 	//KStandardAction::copy( this, SLOT(), actionCollection() );
 	//KStandardAction::fullScreen( this, SLOT(), actionCollection() );
 	
-	actionCollection()->addAction( "font_select", new KFontAction( this ) );
+	KFontAction* fontSelectAction = qobject_cast<KFontAction*>( actionCollection()->addAction( "font_select", new KFontAction( this ) ) );
+	connect( fontSelectAction, SIGNAL( triggered( const QString& ) ), this, SLOT( newFontSelected( const QString& ) ) );
+
 	actionCollection()->addAction( "fontsize_select", new KFontSizeAction( this ) );
 
 	KToggleAction* boldAction = new KToggleAction( this );
 	boldAction->setIcon( KIcon( "format-text-bold" ) );
 	actionCollection()->addAction( "format_text_bold", boldAction );
+	connect( boldAction, SIGNAL( triggered() ), mViewContainer, SLOT( toggleFormatTextBold() ) );
+
 
 	KToggleAction* italicAction = new KToggleAction( this );
 	italicAction->setIcon( KIcon( "format-text-italic" ) );
@@ -139,4 +143,9 @@ void BasketMainWindow::showSettingsDialog() {
 	BasketSettingsDialog dlg( this );
 	dlg.exec();
 }
+
+void BasketMainWindow::newFontSelected( const QString& text ) {
+	kDebug() << text << endl;
+}
+
 

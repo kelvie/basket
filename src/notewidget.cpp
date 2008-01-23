@@ -5,6 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QTextDocument>
+#include <QTextCursor>
 
 #include <KDebug>
 
@@ -21,6 +22,7 @@ NoteWidget::NoteWidget( const Item& item, QGraphicsItem* parent ) : QGraphicsTex
 
 	setAcceptDrops( true );
 	setAcceptsHoverEvents( true );
+	setFlag( QGraphicsItem::ItemIsSelectable );
 
 	QFont font( "Helvetica", 16 );
 	setFont( font );
@@ -40,6 +42,7 @@ NoteWidget::NoteWidget( const Item& item, QGraphicsItem* parent ) : QGraphicsTex
 
 	QTextDocument *doc = this->document();
 	connect( doc, SIGNAL( contentsChanged() ), this, SLOT( contentsChanged() ) );
+	connect( doc, SIGNAL( cursorPositionChanged( const QTextCursor& ) ), this, SLOT( cursorPositionChanged( const QTextCursor& ) ) );
 }
 
 NoteWidget::~NoteWidget() {
@@ -181,6 +184,34 @@ void NoteWidget::fetchDone( KJob* job ) {
 }
 
 void NoteWidget::contentsChanged() {
-	kDebug() << "text changed!!! need to set redo/undo operation" << endl;
+	kDebug() << "text changed!!!" << endl;
+	mNote->setText( toHtml() );
+	storeItem();
+}
+
+void NoteWidget::cursorPositionChanged( const QTextCursor& cursor ) {
+	kDebug() << cursor.charFormat().font().family() << endl;
+}
+
+void NoteWidget::toggleFormatTextBold() {
+	kDebug() << "toggle text" << endl;
+	QTextCursor cursor = textCursor();
+	if ( cursor.hasSelection() ) {
+		QTextCharFormat format = cursor.charFormat();
+		QFont font = format.font();
+		font.setBold( !font.bold() );
+		format.setFont( font );
+		cursor.setCharFormat( format );
+		setTextCursor( cursor );
+	} else {
+		cursor.select( QTextCursor::WordUnderCursor );
+		QTextCharFormat format = cursor.charFormat();
+		QFont font = format.font();
+		font.setBold( !font.bold() );
+		format.setFont( font );
+		cursor.setCharFormat( format );
+		cursor.clearSelection();
+		setTextCursor( cursor );
+	}
 }
 

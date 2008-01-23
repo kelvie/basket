@@ -20,6 +20,7 @@ BasketContent::BasketContent( int basketId, QObject* parent ) : QGraphicsScene( 
 	ItemFetchJob* job = new ItemFetchJob( Collection(basketId), this );
 	job->fetchAllParts();
 	connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemListFetched( KJob* ) ) );
+
 	//QFont font( "Helvetica", 16, QFont::Bold );
 	//addText( "It could be the place for your advertisment!", font );
 	
@@ -91,5 +92,19 @@ void BasketContent::itemListFetched( KJob* job ) {
 	Item::List items = static_cast<ItemFetchJob*>( job )->items();
 	foreach( const Item item, items )
 		itemAdded( item );
+}
+
+void BasketContent::toggleFormatTextBold() {
+	QList< QGraphicsItem* > items = this->selectedItems();
+	if ( !items.isEmpty() ) {
+		kDebug() << "there are selected items!!!" << endl;
+		//FIXME return;
+	}
+	NoteWidget* note = dynamic_cast<NoteWidget*>( this->focusItem() );
+	if ( !note ) {
+		kDebug() << "no focused items" << endl;
+		return;
+	}
+	note->toggleFormatTextBold();
 }
 

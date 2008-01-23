@@ -21,6 +21,8 @@ class BasketContent : public QGraphicsScene {
 	public slots:
 		void itemAdded( const Akonadi::Item& item );
 
+		void toggleFormatTextBold();
+
 	private slots:
 		void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
 		void addItemDone( KJob* job );
