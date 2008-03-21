@@ -47,7 +47,7 @@ BasketPart::BasketPart( QWidget *parentWidget, const char *,
 	m_view = new BNPView(parentWidget, "BNPViewPart", this, actionCollection(), bar);
 	connect(m_view, SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
 	connect(m_view, SIGNAL(showPart()), this, SIGNAL(showPart()));
-	m_view->setFocusPolicy(QWidget::ClickFocus);
+	m_view->setFocusPolicy(Qt::ClickFocus);
 
   // notify the part that this is our internal widget
 	setWidget(m_view);

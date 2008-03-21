@@ -269,7 +269,7 @@ void DecoratedBasket::resetFilter()
 TransparentWidget::TransparentWidget(Basket *basket)
  : QWidget(basket->viewport(), "", Qt::WNoAutoErase), m_basket(basket)
 {
-	setFocusPolicy(QWidget::NoFocus);
+	setFocusPolicy(Qt::NoFocus);
 	setWFlags(Qt::WNoAutoErase);
 	setMouseTracking(true); // To receive mouseMoveEvents
 
@@ -1088,7 +1088,7 @@ void Basket::equalizeColumnSizes()
 void Basket::enableActions()
 {
 	Global::bnpView->enableActions();
-	setFocusPolicy(isLocked() ? QWidget::NoFocus : Qt::StrongFocus);
+	setFocusPolicy(isLocked() ? Qt::NoFocus : Qt::StrongFocus);
 	if (isLocked())
 		viewport()->setCursor(Qt::ArrowCursor); // When locking, the cursor stays the last form it was
 }
