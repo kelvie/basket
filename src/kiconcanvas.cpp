@@ -61,7 +61,7 @@ class KIconCanvasItem : public Q3IconViewItem
 
     int compare(Q3IconViewItem *rhs) const
     {
-        return QString::localeAwareCompare(text().lower(), rhs->text().lower());
+        return QString::localeAwareCompare(text().toLower(), rhs->text().toLower());
     }
 };
 
@@ -119,7 +119,7 @@ void KIconCanvas::loadIcon(const QString &name)
     QImage img;
     QString path = mpLoader->iconPath(name,-d->mSize);
     // Use the extension as the format. Works for XPM and PNG, but not for SVG
-    QString ext = path.right(3).upper();
+    QString ext = path.right(3).toUpper();
     int maxSize = std::min(d->mSize, 60);
 
     if (ext != "SVG" && ext != "VGZ")

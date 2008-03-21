@@ -901,7 +901,7 @@ int Note::minRight()
 		bool first = true;
 		while (child) {
 			if ((showSubNotes() || first) && child->matching())
-				right = QMAX(right, child->minRight());
+				right = qMax(right, child->minRight());
 			child = child->next();
 			first = false;
 		}
@@ -1205,7 +1205,7 @@ int Note::groupWidth()
 int Note::rightLimit()
 {
 	if (isColumn() && m_next == 0L) // The last column
-		return QMAX(x() + minWidth(), basket()->visibleWidth());
+		return qMax(x() + minWidth(), basket()->visibleWidth());
 	else if (parentNote())
 		return parentNote()->rightLimit();
 	else
@@ -1215,7 +1215,7 @@ int Note::rightLimit()
 int Note::finalRightLimit()
 {
 	if (isColumn() && m_next == 0L) // The last column
-		return QMAX(finalX() + minWidth(), basket()->visibleWidth());
+		return qMax(finalX() + minWidth(), basket()->visibleWidth());
 	else if (parentNote())
 		return parentNote()->finalRightLimit();
 	else
@@ -2570,7 +2570,7 @@ bool Note::isShown()
 
 void Note::debug()
 {
-	std::cout << "Note@" << (Q_UINT64)this;
+	std::cout << "Note@" << (quint64)this;
 	if (!this) {
 		std::cout << std::endl;
 		return;

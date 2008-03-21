@@ -50,7 +50,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	// Compute a default file name & path:
 	KConfig *config = KGlobal::config();
 	config->setGroup("Export to HTML");
-	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
 	QString url = folder + QString(basket->basketName()).replace("/", "_") + ".html";
 
 	// Ask a file name & path to the user:
@@ -175,7 +175,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	QDir dir;
 	dir.mkdir(dataFolderPath);
 
-	backgroundColorName = basket->backgroundColor().name().lower().mid(1);
+	backgroundColorName = basket->backgroundColor().name().toLower().mid(1);
 
 	// Generate basket icons:
 	QString basketIcon16 = iconsFolderName + copyIcon(basket->icon(), 16);

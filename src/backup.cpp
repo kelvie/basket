@@ -170,7 +170,7 @@ void BackupDialog::backup()
 	// Compute a default file name & path (eg. "Baskets_2007-01-31.tar.gz"):
 	KConfig *config = KGlobal::config();
 	config->setGroup("Backups");
-	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
 	QString fileName = i18n("Backup filename (without extension), %1 is the date", "Baskets_%1")
 		.arg(QDate::currentDate().toString(Qt::ISODate));
 	QString url = folder + fileName;
@@ -228,7 +228,7 @@ void BackupDialog::restore()
 	// Get last backup folder:
 	KConfig *config = KGlobal::config();
 	config->setGroup("Backups");
-	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
 
 	// Ask a file name to the user:
 	QString filter = "*.tar.gz|" + i18n("Tar Archives Compressed by Gzip") + "\n*|" + i18n("All Files");
@@ -350,12 +350,12 @@ QString Backup::newSafetyFolder()
 	QDir dir;
 	QString fullPath;
 
-	fullPath = QDir::homeDirPath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
+	fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
 	if (!dir.exists(fullPath))
 		return fullPath;
 
 	for (int i = 2; ; ++i) {
-		fullPath = QDir::homeDirPath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
+		fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
 		if (!dir.exists(fullPath))
 			return fullPath;
 	}

@@ -404,11 +404,11 @@ void LinkDisplay::setLink(const QString &title, const QString &icon, const QPixm
 	int LINK_MARGIN   = BUTTON_MARGIN + 2;
 
 	// Recompute m_minWidth:
-	QRect textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_title);
-	int iconPreviewWidth = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width() : 0));
+	QRect textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
+	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width() : 0));
 	m_minWidth = BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN + textRect.width();
 	// Recompute m_maxWidth:
-	textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/50000000, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_title);
+	textRect = QFontMetrics(labelFont(font, false)).boundingRect(0, 0, /*width=*/50000000, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
 	m_maxWidth = BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN + textRect.width();
 	// Adjust m_width:
 	if (m_width < m_minWidth)
@@ -452,7 +452,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIcon::DefaultState);
 		pixmap = kapp->iconLoader()->loadIcon(iconName, KIcon::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
 	}
-	int iconPreviewWidth  = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
 	int pixmapY = (height - pixmap.height()) / 2;
 	// Draw the button (if any) and the icon:
@@ -473,13 +473,13 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	// Draw the text:
 	painter->setFont(labelFont(m_font, isIconButtonHovered));
 	painter->drawText(x + BUTTON_MARGIN - 1 + iconPreviewWidth + LINK_MARGIN, y, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, height,
-	                  Qt::AlignAuto | Qt::AlignVCenter | Qt::WordBreak, m_title);
+	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_title);
 }
 
 QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QColorGroup &colorGroup, bool isDefaultColor)
 {
-	int theWidth  = QMIN(width, maxWidth());
-	int theHeight = QMIN(height, heightForWidth(theWidth));
+	int theWidth  = qMin(width, maxWidth());
+	int theHeight = qMin(height, heightForWidth(theWidth));
 	QPixmap pixmap(theWidth, theHeight);
 	pixmap.fill(colorGroup.background());
 	QPainter painter(&pixmap);
@@ -493,7 +493,7 @@ bool LinkDisplay::iconButtonAt(const QPoint &pos) const
 {
 	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
-	int iconPreviewWidth = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
 	return pos.x() <= BUTTON_MARGIN - 1 + iconPreviewWidth + BUTTON_MARGIN;
 }
@@ -502,7 +502,7 @@ QRect LinkDisplay::iconButtonRect() const
 {
 	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
-	int iconPreviewWidth = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
 	return QRect(0, 0, BUTTON_MARGIN - 1 + iconPreviewWidth + BUTTON_MARGIN, m_height);
 }
@@ -527,11 +527,11 @@ int LinkDisplay::heightForWidth(int width) const
 {
 	int BUTTON_MARGIN     = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN       = BUTTON_MARGIN + 2;
-	int iconPreviewWidth  = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
-	int iconPreviewHeight = QMAX(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
+	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+	int iconPreviewHeight = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
 
-	QRect textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_title);
-	return QMAX(textRect.height(), iconPreviewHeight + 2*BUTTON_MARGIN - 2);
+	QRect textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_title);
+	return qMax(textRect.height(), iconPreviewHeight + 2*BUTTON_MARGIN - 2);
 }
 
 QString LinkDisplay::toHtml(const QString &/*imageName*/) const

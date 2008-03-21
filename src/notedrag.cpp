@@ -69,14 +69,14 @@ Q3DragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidge
 	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// First append a pointer to the basket:
-		stream << (Q_UINT64)(noteList->firstStacked()->note->basket());
+		stream << (quint64)(noteList->firstStacked()->note->basket());
 		// Then a list of pointers to all notes, and parent groups:
 		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
-			stream << (Q_UINT64)(node->note);
+			stream << (quint64)(node->note);
 		Q3ValueList<Note*> groups = noteList->parentGroups();
 		for (Q3ValueList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
-			stream << (Q_UINT64)(*it);
-		stream << (Q_UINT64)0;
+			stream << (quint64)(*it);
+		stream << (quint64)0;
 		// And finally the notes themselves:
 		serializeNotes(noteList, stream, cutting);
 		// Append the object:
@@ -106,13 +106,13 @@ Q3DragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidge
 void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool cutting)
 {
 	for (NoteSelection *node = noteList; node; node = node->next) {
-		stream << (Q_UINT64)(node->note);
+		stream << (quint64)(node->note);
 		if (node->firstChild) {
-			stream << (Q_UINT64)(NoteType::Group) << (Q_UINT64)(node->note->groupWidth()) << (Q_UINT64)(node->note->isFolded());
+			stream << (quint64)(NoteType::Group) << (quint64)(node->note->groupWidth()) << (quint64)(node->note->isFolded());
 			serializeNotes(node->firstChild, stream, cutting);
 		} else {
 			NoteContent *content = node->note->content();
-			stream << (Q_UINT64)(content->type()) << (Q_UINT64)(node->note->groupWidth());
+			stream << (quint64)(content->type()) << (quint64)(node->note->groupWidth());
 			// Serialize file name, and move the file to a temporary place if the note is to be cuttted.
 			// If note does not have file name, we append empty string to be able to easily decode the notes later:
 			stream << content->fileName();
@@ -131,11 +131,11 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 			content->serialize(stream);
 			State::List states = node->note->states();
 			for (State::List::Iterator it = states.begin(); it != states.end(); ++it)
-				stream << (Q_UINT64)(*it);
-			stream << (Q_UINT64)0;
+				stream << (quint64)(*it);
+			stream << (quint64)0;
 		}
 	}
-	stream << (Q_UINT64)0; // Mark the end of the notes in this group/hierarchy.
+	stream << (quint64)0; // Mark the end of the notes in this group/hierarchy.
 }
 
 void NoteDrag::serializeText(NoteSelection *noteList, KMultipleDrag *multipleDrag)
@@ -384,8 +384,8 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		return (Basket*)basketPointer;
 	} else
 		return 0;
@@ -397,10 +397,10 @@ Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		// Get the note list:
-		Q_UINT64          notePointer;
+		quint64          notePointer;
 		Q3ValueList<Note*> notes;
 		do {
 			stream >> notePointer;
@@ -419,11 +419,11 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
-		Q_UINT64 basketPointer;
-		stream >> (Q_UINT64&)basketPointer;
+		quint64 basketPointer;
+		stream >> (quint64&)basketPointer;
 		Basket *basket = (Basket*)basketPointer;
 		// Get the note list:
-		Q_UINT64          notePointer;
+		quint64          notePointer;
 		Q3ValueList<Note*> notes;
 		do {
 			stream >> notePointer;
@@ -442,8 +442,8 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 
 Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket)
 {
-	Q_UINT64  notePointer;
-	Q_UINT64  type;
+	quint64  notePointer;
+	quint64  type;
 	QString   fileName;
 	QString   fullPath;
 	QDateTime addedDate;
@@ -459,12 +459,12 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 		Note *oldNote = (Note*)notePointer;
 
 		Note *note = 0;
-		Q_UINT64 groupWidth;
+		quint64 groupWidth;
 		stream >> type >> groupWidth;
 		if (type == NoteType::Group) {
 			note = new Note(parent);
 			note->setGroupWidth(groupWidth);
-			Q_UINT64 isFolded;
+			quint64 isFolded;
 			stream >> isFolded;
 			if (isFolded)
 				note->toggleFolded(/*animate=*/false);
@@ -524,7 +524,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 		}
 		// Retreive the states (tags) and assign them to the note:
 		if (note && note->content()) {
-			Q_UINT64 statePointer;
+			quint64 statePointer;
 			do {
 				stream >> statePointer;
 				if (statePointer)

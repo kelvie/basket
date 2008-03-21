@@ -304,7 +304,7 @@ QString LikeBack::acceptedLanguagesMessage()
 	return d->acceptedLanguagesMessage;
 }
 
-void LikeBack::setServer(const QString &hostName, const QString &remotePath, Q_UINT16 hostPort)
+void LikeBack::setServer(const QString &hostName, const QString &remotePath, quint16 hostPort)
 {
 	d->hostName   = hostName;
 	d->remotePath = remotePath;
@@ -321,7 +321,7 @@ QString LikeBack::remotePath()
 	return d->remotePath;
 }
 
-Q_UINT16 LikeBack::hostPort()
+quint16 LikeBack::hostPort()
 {
 	return d->hostPort;
 }

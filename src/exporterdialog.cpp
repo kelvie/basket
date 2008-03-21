@@ -93,7 +93,7 @@ void ExporterDialog::load()
 	KConfig *config = KGlobal::config();
 	config->setGroup("HTML Export");
 
-	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
 	QString url = folder + QString(m_basket->basketName()).replace("/", "_") + ".html";
 	m_url->setURL(url);
 

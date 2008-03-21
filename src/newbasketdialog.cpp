@@ -102,7 +102,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
-	int size = QMAX(m_icon->sizeHint().width(), m_icon->sizeHint().height());
+	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_icon, i18n("Icon"));
 	m_name = new QLineEdit(/*i18n("Basket"), */page);

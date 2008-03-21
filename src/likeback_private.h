@@ -43,7 +43,7 @@ class LikeBackPrivate
 	LikeBack::Button         buttons;
 	QString                  hostName;
 	QString                  remotePath;
-	Q_UINT16                 hostPort;
+	quint16                 hostPort;
 	QStringList              acceptedLocales;
 	QString                  acceptedLanguagesMessage;
 	LikeBack::WindowListing  windowListing;

@@ -1468,8 +1468,8 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		QTimer::singleShot(0, this, SLOT(setFocusIfNotInPopupMenu()));
 
 	// Convenient variables:
-	bool controlPressed = event->stateAfter() & Qt::ControlButton;
-	bool shiftPressed   = event->stateAfter() & Qt::ShiftButton;
+	bool controlPressed = event->stateAfter() & Qt::ControlModifier;
+	bool shiftPressed   = event->stateAfter() & Qt::ShiftModifier;
 
 	// Do nothing if we disabled the click some milliseconds sooner.
 	// For instance when a popup menu has been closed with click, we should not do action:
@@ -1642,7 +1642,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 
 	// Paste selection under cursor (but not "create new primary note under cursor" because this is on moveRelease):
 	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
-		if ((Settings::middleAction() != 0) && (event->state() == Qt::ShiftButton)) {
+		if ((Settings::middleAction() != 0) && (event->state() == Qt::ShiftModifier)) {
 			m_clickedToInsert = clicked;
 			m_zoneToInsert    = zone;
 			m_posToInsert     = event->pos();
@@ -2251,7 +2251,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 
 
 	if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
-		if ((Settings::middleAction() != 0) && (event->stateAfter() == Qt::ShiftButton)) {
+		if ((Settings::middleAction() != 0) && (event->stateAfter() == Qt::ShiftModifier)) {
 			m_clickedToInsert = clicked;
 			m_zoneToInsert    = zone;
 			m_posToInsert     = event->pos();
@@ -2295,8 +2295,8 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 //	Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
 
 	// Convenient variables:
-	bool controlPressed = event->stateAfter() & Qt::ControlButton;
-	bool shiftPressed   = event->stateAfter() & Qt::ShiftButton;
+	bool controlPressed = event->stateAfter() & Qt::ControlModifier;
+	bool shiftPressed   = event->stateAfter() & Qt::ShiftModifier;
 
 	if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
 		if (controlPressed && shiftPressed)
@@ -2359,7 +2359,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 			// But the user can want to drag select_s_ notes, so it the note is selected, we only select it alone on mouseRelease:
 			if (event->stateAfter() == 0) {
 				std::cout << "EXEC" << std::endl;
-				if ( !(event->stateAfter() & Qt::ControlButton) && clicked->allSelected())
+				if ( !(event->stateAfter() & Qt::ControlModifier) && clicked->allSelected())
 					unselectAllBut(clicked);
 				if (zone == Note::Handle && isDuringEdit() && editedNote() == clicked) {
 					closeEditor();
@@ -3317,7 +3317,7 @@ void Basket::relayoutNotes(bool animate)
 	else
 		tmpHeight += 15;
 
-	resizeContents( QMAX(tmpWidth, visibleWidth()), QMAX(tmpHeight, visibleHeight()) );
+	resizeContents( qMax(tmpWidth, visibleWidth()), qMax(tmpHeight, visibleHeight()) );
 	recomputeBlankRects();
 	placeEditor();
 	doHoverEffects();
@@ -3783,7 +3783,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	int frameWidth = (editorQFrame ? editorQFrame->frameWidth() : 0);
 	int x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
 	int y;
-	int maxHeight  = QMAX(visibleHeight(), contentsHeight());
+	int maxHeight  = qMax(visibleHeight(), contentsHeight());
 	int height, width;
 
 	if (textEdit) {
@@ -3796,10 +3796,10 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
 			height = textEdit->contentsHeight() + 2*frameWidth;
-//			height = /*QMAX(*/height/*, note->height())*/;
-//			height = QMIN(height, visibleHeight());
+//			height = /*qMax(*/height/*, note->height())*/;
+//			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
-//width=QMAX(width,textEdit->contentsWidth()+2*frameWidth);
+//width=qMax(width,textEdit->contentsWidth()+2*frameWidth);
 			if (y + height > maxHeight)
 				y = maxHeight - height;
 			textEdit->setFixedSize(width, height);
@@ -4679,7 +4679,7 @@ Q3ValueList<State*> Basket::usedStates()
 QString Basket::saveGradientBackground(const QColor &color, const QFont &font, const QString &folder)
 {
 	// Construct file name and return if the file already exists:
-	QString fileName = "note_background_" + color.name().lower().mid(1) + ".png";
+	QString fileName = "note_background_" + color.name().toLower().mid(1) + ".png";
 	QString fullPath = folder + fileName;
 	if (QFile::exists(fullPath))
 		return fileName;
@@ -4691,7 +4691,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 
 	// Draw and save the gradient image:
 	int sampleTextHeight = QFontMetrics(font)
-	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, "Test text")
+	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, "Test text")
 	                       .height();
 	QPixmap noteGradient(100, sampleTextHeight + Note::NOTE_MARGIN);
 	QPainter painter(&noteGradient);
@@ -5023,7 +5023,7 @@ void Basket::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 
-	if (event->state() & Qt::ShiftButton) { // Shift+arrowKeys selection
+	if (event->state() & Qt::ShiftModifier) { // Shift+arrowKeys selection
 		if (m_startOfShiftSelectionNote == 0L)
 			m_startOfShiftSelectionNote = toFocus;
 		ensureNoteVisible(toFocus); // Important: this line should be before the other ones because else repaint would be done on the wrong part!
@@ -5035,7 +5035,7 @@ void Basket::keyPressEvent(QKeyEvent *event)
 		ensureNoteVisible(toFocus); // Important: this line should be before the other ones because else repaint would be done on the wrong part!
 		setFocusedNote(toFocus);
 		m_startOfShiftSelectionNote = toFocus;
-		if ( ! (event->state() & Qt::ControlButton) )       // ... select only current note if Control
+		if ( ! (event->state() & Qt::ControlModifier) )       // ... select only current note if Control
 			unselectAllBut(m_focusedNote);
 		event->accept();
 		return;
@@ -5135,8 +5135,8 @@ void Basket::ensureNoteVisible(Note *note)
 	if (note == editedNote()) // HACK: When filtering while editing big notes, etc... cause unwanted scrolls
 		return;
 
-	int finalBottom = note->finalY() + QMIN(note->finalHeight(),                                             visibleHeight());
-	int finalRight  = note->finalX() + QMIN(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
+	int finalBottom = note->finalY() + qMin(note->finalHeight(),                                             visibleHeight());
+	int finalRight  = note->finalX() + qMin(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
 	ensureVisible( finalRight,     finalBottom,    0,0 );
 	ensureVisible( note->finalX(), note->finalY(), 0,0 );
 }
@@ -5366,7 +5366,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		tmp = array;
 #endif
 	/*if (success && (success = file.open(IO_WriteOnly))){
-		success = (file.writeBlock(tmp) == (Q_LONG)tmp.size());
+		success = (file.write(tmp) == (Q_LONG)tmp.size());
 		file.close();
 	}*/
 
@@ -5402,7 +5402,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		//std::cout << "==>>" << std::endl << "SAVE FILE CREATED: " << strerror(saveFile.status()) << std::endl;
 		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
 		if (openSuccess) {
-			saveFile.file()->writeBlock(array, length);
+			saveFile.file()->write(array, length);
 			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
 			closeSuccess = saveFile.close();
 			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;

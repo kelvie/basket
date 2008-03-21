@@ -1837,7 +1837,7 @@ void BNPView::saveAsArchive()
 
 	KConfig *config = KGlobal::config();
 	config->setGroup("Basket Archive");
-	QString folder = config->readEntry("lastFolder", QDir::homeDirPath()) + "/";
+	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
 	QString url = folder + QString(basket->basketName()).replace("/", "_") + ".baskets";
 
 	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");

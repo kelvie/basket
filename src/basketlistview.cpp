@@ -103,7 +103,7 @@ int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const Q3Lis
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
 
-	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(column));
+	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(column));
 
 	return MARGIN + BASKET_ICON_SIZE + MARGIN + textRect.width() +   BASKET_ICON_SIZE/2   + MARGIN;
 */
@@ -139,9 +139,9 @@ void BasketListViewItem::setup()
 	setText(/*column=*/0, escapedName(m_basket->basketName()));
 
 	widthChanged();
-	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
 
-	int height = MARGIN + QMAX(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
+	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
 	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
@@ -274,7 +274,7 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 	}
 
 	// Compute the sizes of the image components:
-	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignAuto | Qt::AlignTop, text);
+	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
 	int xMargin = height / 6;
 	int width   = xMargin + textRect.width() + xMargin;
 
@@ -495,11 +495,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Draw the rounded rectangle:
 	if (drawRoundRect) {
-		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
 		int xRound = MARGIN;
 		int yRound = MARGIN;
 		int hRound = height() - 2 * MARGIN;
-		int wRound = QMIN(BASKET_ICON_SIZE + MARGIN + textRect.width() + hRound/2,  effectiveWidth - MARGIN - MARGIN);
+		int wRound = qMin(BASKET_ICON_SIZE + MARGIN + textRect.width() + hRound/2,  effectiveWidth - MARGIN - MARGIN);
 		if (wRound > 0) { // Do not crash if there is no space anymore to draw the rounded rectangle:
 			QPixmap buffer(wRound * 2, hRound * 2);
 			buffer.fill(background);
@@ -578,7 +578,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 			m_isAbbreviated = false;
 		}
 		theText = escapedName(theText);
-		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignAuto | Qt::AlignVCenter | Qt::ShowPrefix, theText);
+		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::ShowPrefix, theText);
 	}
 
 	// If we are filtering all baskets, and are effectively filtering on something:

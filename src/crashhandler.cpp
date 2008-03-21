@@ -137,7 +137,7 @@
 
             Q3CString gdb;
             gdb  = "gdb --nw -n --batch -x ";
-            gdb += temp.name().latin1();
+            gdb += temp.name().toLatin1();
             gdb += " basket ";
             gdb += Q3CString().setNum( ::getppid() );
 
@@ -147,7 +147,7 @@
             bt.remove( "(no debugging symbols found)..." );
             bt.remove( "(no debugging symbols found)\n" );
             bt.replace( QRegExp("\n{2,}"), "\n" ); //clean up multiple \n characters
-            bt.stripWhiteSpace();
+            bt.trimmed();
 
             /// analyze usefulness
             bool useful = true;

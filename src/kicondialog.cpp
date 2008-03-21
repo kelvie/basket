@@ -367,7 +367,7 @@ void KIconDialog::slotBrowse()
     {
         d->custom = file;
         if ( mType == 1 )
-            setCustomLocation(QFileInfo( file ).dirPath( true ));
+            setCustomLocation(QFileInfo( file ).absolutePath());
         slotOk();
     }
 }

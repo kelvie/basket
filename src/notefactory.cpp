@@ -137,14 +137,14 @@ QStringList NoteFactory::textToURLList(const QString &text)
 	QStringList::iterator it;
 	for (it = texts.begin(); it != texts.end(); ++it) {
 		// Strip white spaces:
-		(*it) = (*it).stripWhiteSpace();
+		(*it) = (*it).trimmed();
 
 		// Don't care of empty entries:
 		if ((*it).isEmpty())
 			continue;
 
 		// Compute lower case equivalent:
-		QString ltext = (*it).lower();
+		QString ltext = (*it).toLower();
 
 		/* Search for mail address ("*@*.*" ; "*" can contain '_', '-', or '.') and add protocol to it */
 		QString mailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
@@ -236,7 +236,7 @@ Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
 		return firstNote; // It don't return ALL inserted notes !
 	}
 
-	//QString newText = text.stripWhiteSpace(); // The text for a new note, without useless spaces
+	//QString newText = text.trimmed(); // The text for a new note, without useless spaces
 	/* Else, it's a text or an HTML note, so, create it */
 	if (Q3StyleSheet::mightBeRichText(/*newT*/text))
 		return createNoteHtml(/*newT*/text, parent);
@@ -477,7 +477,7 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 	for (int i = 0; source->format(i); ++i)
 		if ( *(source->format(i)) ) {
 		QByteArray data = source->encodedData(source->format(i));
-		stream << (Q_UINT32)data.count();
+		stream << (quint32)data.count();
 		stream.writeRawBytes(data.data(), data.count());
 		}
 		file.close();
@@ -583,7 +583,7 @@ void NoteFactory::consumeContent(QDataStream &stream, NoteType::Id type)
 	if (type == NoteType::Link) {
 		KURL url;
 		QString title, icon;
-		Q_UINT64 autoTitle64, autoIcon64;
+		quint64 autoTitle64, autoIcon64;
 		stream >> url >> title >> icon >> autoTitle64 >> autoIcon64;
 	} else if (type == NoteType::Color) {
 		QColor color;
@@ -609,7 +609,7 @@ Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, Basket 
 	if (type == NoteType::Link) {
 		KURL url;
 		QString title, icon;
-		Q_UINT64 autoTitle64, autoIcon64;
+		quint64 autoTitle64, autoIcon64;
 		bool autoTitle, autoIcon;
 		stream >> url >> title >> icon >> autoTitle64 >> autoIcon64;
 		autoTitle = (bool)autoTitle64;
@@ -629,13 +629,13 @@ Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, Basket 
 
 bool NoteFactory::maybeText(const KURL &url)
 {
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	return path.endsWith(".txt");
 }
 
 bool NoteFactory::maybeHtml(const KURL &url)
 {
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	return path.endsWith(".html") || path.endsWith(".htm");
 }
 
@@ -651,9 +651,9 @@ bool NoteFactory::maybeImageOrAnimation(const KURL &url)
 	Q3StrList list = QImageIO::inputFormats();
 	list.prepend("jpg"); // Since QImageDrag return only "JPEG" and extensions can be "JPG"; preprend for heuristic optim.
 	char *s;
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	for (s = list.first(); s; s = list.next())
-		if (path.endsWith(QString(".") + QString(s).lower()))
+		if (path.endsWith(QString(".") + QString(s).toLower()))
 			return true;
 	// TODO: Search real MIME type for local files?
 	return false;
@@ -661,19 +661,19 @@ bool NoteFactory::maybeImageOrAnimation(const KURL &url)
 
 bool NoteFactory::maybeAnimation(const KURL &url)
 {
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	return path.endsWith(".mng") || path.endsWith(".gif");
 }
 
 bool NoteFactory::maybeSound(const KURL &url)
 {
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	return path.endsWith(".mp3") || path.endsWith(".ogg");
 }
 
 bool NoteFactory::maybeLauncher(const KURL &url)
 {
-	QString path = url.url().lower();
+	QString path = url.url().toLower();
 	return path.endsWith(".desktop");
 }
 
@@ -823,7 +823,7 @@ QString NoteFactory::createFileForNewNote(Basket *parent, const QString &extensi
 	if (wantedName.isEmpty()) { // TODO: fileNameForNewNote(parent, "note1."+extension);
 		QDir dir;
 		for (/*int nb = 1*/; ; ++nb) { // TODO: FIXME: If overflow ???
-			fileName = "note" + QString::number(nb)/*.rightJustify(5, '0')*/ + "." + extension;
+			fileName = "note" + QString::number(nb)/*.rightJustified(5, '0')*/ + "." + extension;
 			fullName = parent->fullPath() + fileName;
 			dir = QDir(fullName);
 			if ( ! dir.exists(fullName) )
@@ -864,7 +864,7 @@ KURL NoteFactory::filteredURL(const KURL &url)
 QString NoteFactory::titleForURL(const KURL &url)
 {
 	QString title = url.prettyURL();
-	QString home  = "file:" + QDir::homeDirPath() + "/";
+	QString home  = "file:" + QDir::homePath() + "/";
 
 	if (title.startsWith("mailto:"))
 		return title.remove(0, 7);

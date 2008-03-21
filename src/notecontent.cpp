@@ -362,18 +362,18 @@ QString ImageContent::customOpenCommand()     { return (Settings::isImageUseProg
 QString AnimationContent::customOpenCommand() { return (Settings::isAnimationUseProg() && ! Settings::animationProg().isEmpty() ? Settings::animationProg() : QString()); }
 QString SoundContent::customOpenCommand()     { return (Settings::isSoundUseProg()     && ! Settings::soundProg().isEmpty()     ? Settings::soundProg()     : QString()); }
 
-void LinkContent::serialize(QDataStream &stream)  { stream << url() << title() << icon() << (Q_UINT64)autoTitle() << (Q_UINT64)autoIcon(); }
+void LinkContent::serialize(QDataStream &stream)  { stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon(); }
 void ColorContent::serialize(QDataStream &stream) { stream << color();  }
 
 QPixmap TextContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, text());
-	QPixmap pixmap( QMIN(width, textRect.width()), QMIN(height, textRect.height()) );
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	QPixmap pixmap( qMin(width, textRect.width()), qMin(height, textRect.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
 	painter.setFont(note()->font());
-	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, text());
+	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
 	painter.end();
 	return pixmap;
 }
@@ -385,7 +385,7 @@ QPixmap HtmlContent::feedbackPixmap(int width, int height)
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPixmap pixmap( QMIN(width, richText.widthUsed()), QMIN(height, richText.height()) );
+	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
@@ -454,7 +454,7 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-	QPixmap pixmap( QMIN(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), QMIN(height, rectHeight) );
+	QPixmap pixmap( qMin(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), qMin(height, rectHeight) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	paint(&painter, pixmap.width(), pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
@@ -480,13 +480,13 @@ QPixmap LauncherContent::feedbackPixmap(int width, int height)
 
 QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
 	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-	QPixmap pixmap( QMIN(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), QMIN(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
+	QPixmap pixmap( qMin(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), qMin(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
 	QPainter painter(&pixmap);
 	paint(&painter, pixmap.width() + 1, pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
 	painter.setPen(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -1355,7 +1355,7 @@ void LinkContent::httpReadyRead(const Q3HttpResponseHeader& )
 	
 	char* buf = new char[bytesAvailable+1];
 	
-	Q_LONG bytes_read = m_http->readBlock(buf, bytesAvailable);
+	Q_LONG bytes_read = m_http->read(buf, bytesAvailable);
 	if(bytes_read > 0) {
 	
 		// m_httpBuff will keep data if title is not found in initial read
@@ -1642,7 +1642,7 @@ void ColorContent::paint(QPainter *painter, int width, int height, const QColorG
 	// Draw the text:
 	painter->setFont(note()->font());
 	painter->setPen(colorGroup.text());
-	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignAuto | Qt::AlignVCenter, color().name());
+	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignLeft | Qt::AlignVCenter, color().name());
 }
 
 void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -1866,7 +1866,7 @@ void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 	int rectHeight = (textRect.height() + 2)*3/2;
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
-	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().lower().mid(1))/*, exportData.iconsFolderPath)*/;
+	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().toLower().mid(1))/*, exportData.iconsFolderPath)*/;
 	QString fullPath = exporter->iconsFolderPath + fileName;
 	QPixmap colorIcon = KColorCombo2::colorRectPixmap(color(), /*isDefault=*/false, rectWidth, rectHeight);
 	colorIcon.save(fullPath, "PNG");
@@ -1893,7 +1893,7 @@ UnknownContent::UnknownContent(Note *parent, const QString &fileName)
 int UnknownContent::setWidthAndGetHeight(int width)
 {
 	width -= 1;
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 	return DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN;
 }
 
@@ -1926,7 +1926,7 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QColo
 
 	painter->setPen(colorGroup.text());
 	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
-	                  Qt::AlignAuto | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
+	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
 }
 
 bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
@@ -1952,7 +1952,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 		file.close();
 	}
 
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
 	contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
 	return true;
 }
@@ -1973,7 +1973,7 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 			}
 		} while (!line.isEmpty() && !stream.atEnd());
 		// Add the streams:
-		Q_UINT64     size; // TODO: It was Q_UINT32 in version 0.5.0 !
+		quint64     size; // TODO: It was quint32 in version 0.5.0 !
 		QByteArray  *array;
 		Q3StoredDrag *storedDrag;
 		for (uint i = 0; i < mimes.count(); ++i) {
