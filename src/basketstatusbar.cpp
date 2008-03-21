@@ -23,7 +23,7 @@
 #include <klocale.h>
 #include <kdebug.h>
 #include <qlabel.h>
-#include <qobjectlist.h>
+#include <qobject.h>
 #include "basketstatusbar.h"
 #include "clickablelabel.h"
 #include "global.h"

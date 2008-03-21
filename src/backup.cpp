@@ -26,16 +26,19 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3HBoxLayout>
 #include <klocale.h>
 #include <qdir.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <kdirselectdialog.h>
 #include <krun.h>
 #include <kconfig.h>
@@ -57,16 +60,16 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
  : KDialogBase(parent, name, /*modal=*/true, i18n("Backup & Restore"),
                KDialogBase::Close, KDialogBase::Close, /*separator=*/false)
 {
-	QVBox *page  = makeVBoxMainWidget();
+	Q3VBox *page  = makeVBoxMainWidget();
 //	page->setSpacing(spacingHint());
 
 	QString savesFolder = Global::savesFolder();
 	savesFolder = savesFolder.left(savesFolder.length() - 1); // savesFolder ends with "/"
 
-	QGroupBox *folderGroup = new QGroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
+	Q3GroupBox *folderGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
 	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>").arg(savesFolder), folderGroup);
 	QWidget *folderWidget = new QWidget(folderGroup);
-	QHBoxLayout *folderLayout = new QHBoxLayout(folderWidget, 0, spacingHint());
+	Q3HBoxLayout *folderLayout = new Q3HBoxLayout(folderWidget, 0, spacingHint());
 	QPushButton *moveFolder = new QPushButton(i18n("&Move to Another Folder..."),      folderWidget);
 	QPushButton *useFolder  = new QPushButton(i18n("&Use Another Existing Folder..."), folderWidget);
 	HelpLabel *helpLabel = new HelpLabel(i18n("Why to do that?"), i18n(
@@ -87,9 +90,9 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	connect( moveFolder, SIGNAL(clicked()), this, SLOT(moveToAnotherFolder())      );
 	connect( useFolder,  SIGNAL(clicked()), this, SLOT(useAnotherExistingFolder()) );
 
-	QGroupBox *backupGroup = new QGroupBox(1, Qt::Horizontal, i18n("Backups"), page);
+	Q3GroupBox *backupGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Backups"), page);
 	QWidget *backupWidget = new QWidget(backupGroup);
-	QHBoxLayout *backupLayout = new QHBoxLayout(backupWidget, 0, spacingHint());
+	Q3HBoxLayout *backupLayout = new Q3HBoxLayout(backupWidget, 0, spacingHint());
 	QPushButton *backupButton  = new QPushButton(i18n("&Backup..."),           backupWidget);
 	QPushButton *restoreButton = new QPushButton(i18n("&Restore a Backup..."), backupWidget);
 	m_lastBackup = new QLabel("", backupWidget);
@@ -242,8 +245,8 @@ void BackupDialog::restore()
 	// Add the README file for user to cancel a bad restoration:
 	QString readmePath = safetyPath + i18n("README.txt");
 	QFile file(readmePath);
-	if (file.open(IO_WriteOnly)) {
-		QTextStream stream(&file);
+	if (file.open(QIODevice::WriteOnly)) {
+		Q3TextStream stream(&file);
 		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KURL(path).fileName()) + "\n\n"
 		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
 		       << i18n("If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n\n"
@@ -370,7 +373,7 @@ BackupThread::BackupThread(const QString &tarFile, const QString &folderToBackup
 void BackupThread::run()
 {
 	KTar tar(m_tarFile, "application/x-gzip");
-	tar.open(IO_WriteOnly);
+	tar.open(QIODevice::WriteOnly);
 	tar.addLocalDirectory(m_folderToBackup, backupMagicFolder);
 	// KArchive does not add hidden files. Basket description files (".basket") are hidden, we add them manually:
 	QDir dir(m_folderToBackup + "baskets/");
@@ -396,7 +399,7 @@ void RestoreThread::run()
 {
 	m_success = false;
 	KTar tar(m_tarFile, "application/x-gzip");
-	tar.open(IO_ReadOnly);
+	tar.open(QIODevice::ReadOnly);
 	if (tar.isOpened()) {
 		const KArchiveDirectory *directory = tar.directory();
 		if (directory->entries().contains(backupMagicFolder)) {

@@ -21,9 +21,18 @@
 /** KSystemTray2 */
 
 // To draw the systray screenshot image:
-#include <qdockwindow.h>
+#include <q3dockwindow.h>
 #include <qmovie.h>
 #include <qvariant.h>
+//Added by qt3to4:
+#include <QDragMoveEvent>
+#include <Q3CString>
+#include <QDropEvent>
+#include <QDragLeaveEvent>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QEvent>
+#include <QDragEnterEvent>
 #include "linklabel.h"
 #include "note.h"
 
@@ -94,9 +103,9 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	//  we should not show that screenshot but only a text!
 
 	// 1. Determine if the user use a system tray area or not:
-	QCString screenstr;
+	Q3CString screenstr;
 	screenstr.setNum(qt_xscreen());
-	QCString trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
+	Q3CString trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
 	bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
 
 	// 2. And then if the icon is visible too (eg. this->show() has been called):
@@ -180,11 +189,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		painter.end();
 
 		// Associate source to image and show the dialog:
-		QMimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
+		Q3MimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
 		KMessageBox::information(kapp->activeWindow(),
 			message + "<p><center><img source=\"systray_shot\"></center></p>",
 			i18n("Docking in System Tray"), "hideOnCloseInfo");
-		QMimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
+		Q3MimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
 	} else {
 		KMessageBox::information(kapp->activeWindow(),
 			message,

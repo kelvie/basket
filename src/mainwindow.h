@@ -25,8 +25,13 @@
 #include <qtabbar.h>
 #include <qtabwidget.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3PopupMenu>
+#include <Q3VBoxLayout>
+#include <QMoveEvent>
 #include <ksystemtray.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qpoint.h>
 #include <qclipboard.h>
 #include <kaction.h>
@@ -39,7 +44,7 @@ class QWidget;
 class QPoint;
 class KAction;
 class KToggleAction;
-class QPopupMenu;
+class Q3PopupMenu;
 class QSignalMapper;
 class QStringList;
 class QToolTipGroup;
@@ -94,10 +99,10 @@ class MainWindow : public KMainWindow
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;
-	QPtrList<KAction> actBasketsList;
+	Q3PtrList<KAction> actBasketsList;
 
   private:
-	QVBoxLayout        *m_layout;
+	Q3VBoxLayout        *m_layout;
 	BNPView            *m_baskets;
 	bool                m_startDocked;
 	KSettings::Dialog  *m_settings;

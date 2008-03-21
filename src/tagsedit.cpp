@@ -21,6 +21,14 @@
 #include <qtooltip.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <QKeyEvent>
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QEvent>
+#include <Q3VBoxLayout>
 #include <kfontcombo.h>
 #include <qlayout.h>
 #include <kkeybutton.h>
@@ -29,9 +37,9 @@
 #include <kglobalsettings.h>
 #include <qcheckbox.h>
 #include <kpushbutton.h>
-#include <qgroupbox.h>
-#include <qheader.h>
-#include <qvaluelist.h>
+#include <q3groupbox.h>
+#include <q3header.h>
+#include <q3valuelist.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kseparator.h>
@@ -100,52 +108,52 @@ bool TagCopy::isMultiState()
 
 /** class TagListViewItem: */
 
-TagListViewItem::TagListViewItem(QListView *parent, TagCopy *tagCopy)
- : QListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(Q3ListView *parent, TagCopy *tagCopy)
+ : Q3ListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, TagCopy *tagCopy)
- : QListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(Q3ListViewItem *parent, TagCopy *tagCopy)
+ : Q3ListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListView *parent, QListViewItem *after, TagCopy *tagCopy)
- : QListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(Q3ListView *parent, Q3ListViewItem *after, TagCopy *tagCopy)
+ : Q3ListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, TagCopy *tagCopy)
- : QListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, TagCopy *tagCopy)
+ : Q3ListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
 /* */
 
-TagListViewItem::TagListViewItem(QListView *parent, StateCopy *stateCopy)
- : QListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(Q3ListView *parent, StateCopy *stateCopy)
+ : Q3ListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, StateCopy *stateCopy)
- : QListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(Q3ListViewItem *parent, StateCopy *stateCopy)
+ : Q3ListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListView *parent, QListViewItem *after, StateCopy *stateCopy)
- : QListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(Q3ListView *parent, Q3ListViewItem *after, StateCopy *stateCopy)
+ : Q3ListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(QListViewItem *parent, QListViewItem *after, StateCopy *stateCopy)
- : QListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, StateCopy *stateCopy)
+ : Q3ListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
@@ -186,14 +194,14 @@ TagListViewItem* TagListViewItem::prevSibling()
 
 TagListViewItem* TagListViewItem::parent() const
 {
-	return (TagListViewItem*) QListViewItem::parent();
+	return (TagListViewItem*) Q3ListViewItem::parent();
 }
 
 // TODO: TagListViewItem::
 int TAG_ICON_SIZE = 16;
 int TAG_MARGIN = 1;
 
-int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QListView */*listView*/, int /* column */) const
+int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const Q3ListView */*listView*/, int /* column */) const
 {
 	return listView()->visibleWidth();
 }
@@ -264,7 +272,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 /** class TagListView: */
 
 TagListView::TagListView(QWidget *parent, const char *name, WFlags flags)
- : QListView(parent, name, flags)
+ : Q3ListView(parent, name, flags)
 {
 }
 
@@ -278,7 +286,7 @@ void TagListView::keyPressEvent(QKeyEvent *event)
 		emit deletePressed();
 	else if (event->key() != Qt::Key_Left || (selectedItem() && selectedItem()->parent()))
 		// Do not allow to open/close first-level items
-		QListView::keyPressEvent(event);
+		Q3ListView::keyPressEvent(event);
 }
 
 void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
@@ -294,29 +302,29 @@ void TagListView::contentsMousePressEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
-		QListView::contentsMousePressEvent(event);
+		Q3ListView::contentsMousePressEvent(event);
 }
 
 void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
 	if (itemAt(contentsToViewport(event->pos())) != 0)
-		QListView::contentsMouseReleaseEvent(event);
+		Q3ListView::contentsMouseReleaseEvent(event);
 }
 
 TagListViewItem* TagListView::currentItem() const
 {
-	return (TagListViewItem*) QListView::currentItem();
+	return (TagListViewItem*) Q3ListView::currentItem();
 }
 
 TagListViewItem* TagListView::firstChild() const
 {
-	return (TagListViewItem*) QListView::firstChild();
+	return (TagListViewItem*) Q3ListView::firstChild();
 }
 
 TagListViewItem* TagListView::lastItem() const
 {
-	return (TagListViewItem*) QListView::lastItem();
+	return (TagListViewItem*) Q3ListView::lastItem();
 }
 
 /** class TagsEditDialog: */
@@ -326,7 +334,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
                KDialogBase::Ok, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
    m_loading(false)
 {
-	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(plainPage(), /*margin=*/0, spacingHint());
 
 	/* Left part: */
 
@@ -341,7 +349,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags->setRootIsDecorated(false);
 	m_tags->addColumn("");
 	m_tags->setSorting(-1); // Sort column -1, so disabled sorting
-	m_tags->setResizeMode(QListView::LastColumn);
+	m_tags->setResizeMode(Q3ListView::LastColumn);
 
 	m_moveUp    = new KPushButton( KGuiItem("", "1uparrow"),   plainPage() );
 	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), plainPage() );
@@ -355,12 +363,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_moveDown,  SIGNAL(clicked()), this, SLOT(moveDown())  );
 	connect( m_deleteTag, SIGNAL(clicked()), this, SLOT(deleteTag()) );
 
-	QHBoxLayout *topLeftLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *topLeftLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
 	topLeftLayout->addWidget(m_moveUp);
 	topLeftLayout->addWidget(m_moveDown);
 	topLeftLayout->addWidget(m_deleteTag);
 
-	QVBoxLayout *leftLayout = new QVBoxLayout(0, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *leftLayout = new Q3VBoxLayout(0, /*margin=*/0, spacingHint());
 	leftLayout->addWidget(newTag);
 	leftLayout->addWidget(newState);
 	leftLayout->addWidget(m_tags);
@@ -372,7 +380,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *rightWidget = new QWidget(plainPage());
 
-	m_tagBox             = new QGroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
+	m_tagBox             = new Q3GroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
 	QWidget   *tagWidget = new QWidget(m_tagBox);
 
 	m_tagName = new QLineEdit(tagWidget);
@@ -386,7 +394,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	m_inherit = new QCheckBox(i18n("&Inherited by new sibling notes"), tagWidget);
 
-	QGridLayout *tagGrid = new QGridLayout(tagWidget, /*rows=*/3, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	Q3GridLayout *tagGrid = new Q3GridLayout(tagWidget, /*rows=*/3, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
 	tagGrid->addWidget(tagNameLabel,     0, 0);
 	tagGrid->addMultiCellWidget(m_tagName, /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/3);
 	tagGrid->addWidget(shortcutLabel,    1, 0);
@@ -395,7 +403,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	tagGrid->addMultiCellWidget(m_inherit, /*fromRow=*/2, /*toRow=*/2, /*fromCol=*/0, /*toCol=*/3);
 	tagGrid->setColStretch(/*col=*/3, /*stretch=*/255);
 
-	m_stateBox           = new QGroupBox(1, Qt::Horizontal, i18n("State"), rightWidget);
+	m_stateBox           = new Q3GroupBox(1, Qt::Horizontal, i18n("State"), rightWidget);
 	QWidget *stateWidget = new QWidget(m_stateBox);
 
 	m_stateName = new QLineEdit(stateWidget);
@@ -417,7 +425,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_removeEmblem->setFixedHeight(height);
 	m_emblem->resetIcon();
 
-	QHBoxLayout *emblemLayout = new QHBoxLayout(emblemWidget, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *emblemLayout = new Q3HBoxLayout(emblemWidget, /*margin=*/0, spacingHint());
 	emblemLayout->addWidget(m_emblem);
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
@@ -425,30 +433,30 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), stateWidget);
 	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
 
-	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *backgroundColorLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIconSet boldIconSet = kapp->iconLoader()->loadIconSet("text_bold", KIcon::Small);
+	QIcon boldIconSet = kapp->iconLoader()->loadIconSet("text_bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = QMAX(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIconSet underlineIconSet = kapp->iconLoader()->loadIconSet("text_under", KIcon::Small);
+	QIcon underlineIconSet = kapp->iconLoader()->loadIconSet("text_under", KIcon::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIconSet italicIconSet = kapp->iconLoader()->loadIconSet("text_italic", KIcon::Small);
+	QIcon italicIconSet = kapp->iconLoader()->loadIconSet("text_italic", KIcon::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIconSet strikeIconSet = kapp->iconLoader()->loadIconSet("text_strike", KIcon::Small);
+	QIcon strikeIconSet = kapp->iconLoader()->loadIconSet("text_strike", KIcon::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -456,7 +464,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QLabel *textLabel = new QLabel(m_bold, i18n("&Text:"), stateWidget);
 
-	QHBoxLayout *textLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *textLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
 	textLayout->addWidget(m_bold);
 	textLayout->addWidget(m_underline);
 	textLayout->addWidget(m_italic);
@@ -480,7 +488,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_textEquivalent->setFont(font);
 
 	QPixmap textEquivalentPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", textEquivalentPixmap);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", textEquivalentPixmap);
 	HelpLabel *textEquivalentHelp = new HelpLabel(
 		i18n("When does this apply?"),
 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
@@ -489,25 +497,25 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		     "representing an empty checkbox and a checked box.") + "</p>" +
 		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
 		stateWidget);
-	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	Q3HBoxLayout *textEquivalentHelpLayout = new Q3HBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
 	textEquivalentHelpLayout->addWidget(textEquivalentHelp);
 	textEquivalentHelpLayout->addStretch(255);
 
 	m_onEveryLines = new QCheckBox(i18n("On ever&y line"), stateWidget);
 
 	QPixmap onEveryLinesPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_on_every_lines_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export_on_every_lines.png", onEveryLinesPixmap);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export_on_every_lines.png", onEveryLinesPixmap);
 	HelpLabel *onEveryLinesHelp = new HelpLabel(
 		i18n("What does it mean?"),
 		"<p>" + i18n("When a note has several lines, you can choose to export the tag or the state on the first line or on every line of the note.") + "</p>" +
 		"<p align='center'><img src=\"__resource_help_tag_export_on_every_lines.png\"></p>" +
 		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every line of the note."),
 		stateWidget);
-	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	Q3HBoxLayout *onEveryLinesHelpLayout = new Q3HBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
 	onEveryLinesHelpLayout->addWidget(onEveryLinesHelp);
 	onEveryLinesHelpLayout->addStretch(255);
 
-	QGridLayout *textEquivalentGrid = new QGridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	Q3GridLayout *textEquivalentGrid = new Q3GridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
 	textEquivalentGrid->addWidget(textEquivalentLabel,      0, 0);
 	textEquivalentGrid->addWidget(m_textEquivalent,         0, 1);
 	textEquivalentGrid->addLayout(textEquivalentHelpLayout, 0, 2);
@@ -517,7 +525,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	KSeparator *separator = new KSeparator(Qt::Horizontal, stateWidget);
 
-	QGridLayout *stateGrid = new QGridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
+	Q3GridLayout *stateGrid = new Q3GridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
 	stateGrid->addWidget(m_stateNameLabel,     0, 0);
 	stateGrid->addMultiCellWidget(m_stateName,            /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/6);
 	stateGrid->addWidget(emblemLabel,          1, 0);
@@ -535,7 +543,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	stateGrid->addMultiCellWidget(separator,              /*fromRow=*/4, /*toRow=*/4, /*fromCol=*/0, /*toCol=*/6);
 	stateGrid->addMultiCellLayout(textEquivalentGrid,     /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/0, /*toCol=*/6);
 
-	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *rightLayout = new Q3VBoxLayout(rightWidget, /*margin=*/0, spacingHint());
 	rightLayout->addWidget(m_tagBox);
 	rightLayout->addWidget(m_stateBox);
 	rightLayout->addStretch();
@@ -604,11 +612,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
-	connect( m_tags,            SIGNAL(currentChanged(QListViewItem*)),     this, SLOT(currentItemChanged(QListViewItem*)) );
+	connect( m_tags,            SIGNAL(currentChanged(Q3ListViewItem*)),     this, SLOT(currentItemChanged(Q3ListViewItem*)) );
 	connect( m_tags,            SIGNAL(deletePressed()),                    this, SLOT(deleteTag())                        );
 	connect( m_tags,            SIGNAL(doubleClickedItem()),                this, SLOT(renameIt())                         );
 
-	QListViewItem *firstItem = m_tags->firstChild();
+	Q3ListViewItem *firstItem = m_tags->firstChild();
 	if (stateToEdit != 0) {
 		TagListViewItem *item = itemForState(stateToEdit);
 		if (item)
@@ -687,9 +695,9 @@ void TagsEditDialog::resetTreeSizeHint()
 TagListViewItem* TagsEditDialog::itemForState(State *state)
 {
 	// Browse all tags:
-	QListViewItemIterator it(m_tags);
+	Q3ListViewItemIterator it(m_tags);
 	while (it.current()) {
-		QListViewItem *item = it.current();
+		Q3ListViewItem *item = it.current();
 
 		// Return if we found the tag item:
 		TagListViewItem *tagItem = (TagListViewItem*)item;
@@ -697,9 +705,9 @@ TagListViewItem* TagsEditDialog::itemForState(State *state)
 			return tagItem;
 
 		// Browser all sub-states:
-		QListViewItemIterator it2(item);
+		Q3ListViewItemIterator it2(item);
 		while (it2.current()) {
-			QListViewItem *subItem = it2.current();
+			Q3ListViewItem *subItem = it2.current();
 
 			// Return if we found the state item:
 			TagListViewItem *stateItem = (TagListViewItem*)subItem;
@@ -1010,7 +1018,7 @@ void TagsEditDialog::modified()
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
-void TagsEditDialog::currentItemChanged(QListViewItem *item)
+void TagsEditDialog::currentItemChanged(Q3ListViewItem *item)
 {
 	if (item == 0)
 		return;

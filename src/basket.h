@@ -21,13 +21,31 @@
 #ifndef BASKET_H
 #define BASKET_H
 
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qtooltip.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 #include <qtimer.h>
 #include <qimage.h>
 #include <qdatetime.h>
 #include <qclipboard.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QContextMenuEvent>
+#include <QWheelEvent>
+#include <QPixmap>
+#include <QFocusEvent>
+#include <QDragLeaveEvent>
+#include <QMouseEvent>
+#include <QCloseEvent>
+#include <QShowEvent>
+#include <QDragEnterEvent>
+#include <QKeyEvent>
+#include <QEvent>
+#include <Q3VBoxLayout>
+#include <Q3Frame>
+#include <QDropEvent>
+#include <QDragMoveEvent>
+#include <QPaintEvent>
 #include <kshortcut.h>
 #include <kdirwatch.h>
 #include <kaction.h>
@@ -38,7 +56,7 @@
 #include "note.h" // For Note::Zone
 #include "config.h"
 
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QDomDocument;
 class QDomElement;
 
@@ -100,7 +118,7 @@ class NoteSelection
 	void append(NoteSelection *node);
 	int count();
 
-	QValueList<Note*> parentGroups();
+	Q3ValueList<Note*> parentGroups();
 };
 
 /** This store all needed information when exporting to HTML
@@ -136,7 +154,7 @@ class DecoratedBasket : public QWidget
 	FilterBar* filterBar()         { return m_filter;               }
 	Basket*    basket()            { return m_basket;               }
   private:
-	QVBoxLayout *m_layout;
+	Q3VBoxLayout *m_layout;
 	FilterBar   *m_filter;
 	Basket      *m_basket;
 };
@@ -161,7 +179,7 @@ class TransparentWidget : public QWidget
 /**
   * @author S�astien Laot
   */
-class Basket : public QScrollView, public QToolTip
+class Basket : public Q3ScrollView, public QToolTip
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
   Q_OBJECT
@@ -276,7 +294,7 @@ class Basket : public QScrollView, public QToolTip
 
 /// ANIMATIONS:
   private:
-	QValueList<Note*> m_animatedNotes;
+	Q3ValueList<Note*> m_animatedNotes;
 	QTimer            m_animationTimer;
 	int               m_deltaY;
 	QTime             m_lastFrameTime;
@@ -294,7 +312,7 @@ class Basket : public QScrollView, public QToolTip
 	bool m_loadingLaunched;
 	bool m_locked;
 	bool m_shouldConvertPlainTextNotes;
-	QFrame* m_decryptBox;
+	Q3Frame* m_decryptBox;
 	QPushButton* m_button;
 	int m_encryptionType;
 	QString m_encryptionKey;
@@ -411,7 +429,7 @@ public slots:
   public slots:
 	void activatedTagShortcut(Tag *tag);
 	void recomputeAllStyles();
-	void removedStates(const QValueList<State*> &deletedStates);
+	void removedStates(const Q3ValueList<State*> &deletedStates);
   private slots:
 	void toggledTagInMenu(int id);
 	void toggledStateInMenu(int id);
@@ -452,7 +470,7 @@ public slots:
 
 /// BLANK SPACES DRAWING:
   private:
-	QValueList<QRect> m_blankAreas;
+	Q3ValueList<QRect> m_blankAreas;
 	void recomputeBlankRects();
 	QWidget *m_cornerWidget;
 
@@ -574,13 +592,13 @@ public slots:
 /// DRAG AND DROP:
   private:
 	bool m_isDuringDrag;
-	QValueList<Note*> m_draggedNotes;
+	Q3ValueList<Note*> m_draggedNotes;
   public:
 	static void acceptDropEvent(QDropEvent *event, bool preCond = true);
 	void contentsDropEvent(QDropEvent *event);
 	void blindDrop(QDropEvent* event);
 	bool isDuringDrag() { return m_isDuringDrag; }
-	QValueList<Note*> draggedNotes() { return m_draggedNotes; }
+	Q3ValueList<Note*> draggedNotes() { return m_draggedNotes; }
   protected:
 	void contentsDragEnterEvent(QDragEnterEvent*);
 	void contentsDragMoveEvent(QDragMoveEvent *event);
@@ -592,11 +610,11 @@ public slots:
 
 /// EXPORTATION:
   public:
-	QValueList<State*> usedStates();
+	Q3ValueList<State*> usedStates();
 	static QString saveGradientBackground(const QColor &color, const QFont &font, const QString &folder);
 
   public:
-	void listUsedTags(QValueList<Tag*> &list);
+	void listUsedTags(Q3ValueList<Tag*> &list);
 
 /// MANAGE FOCUS:
   private:
@@ -645,7 +663,7 @@ public slots:
   private:
 	KDirWatch           *m_watcher;
 	QTimer               m_watcherTimer;
-	QValueList<QString>  m_modifiedFiles;
+	Q3ValueList<QString>  m_modifiedFiles;
   public:
 	void addWatchedFile(const QString &fullPath);
 	void removeWatchedFile(const QString &fullPath);
@@ -686,17 +704,17 @@ public slots:
 #if 0
 
 #include <qwidget.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qclipboard.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qtimer.h>
 #include <kio/job.h>
 #include <qcolor.h>
 
 #include "filter.h"
 
-class QFrame;
-class QVBoxLayout;
+class Q3Frame;
+class Q3VBoxLayout;
 class QCheckBox;
 class QString;
 class QColor;
@@ -734,7 +752,7 @@ class FileEvent
 /** Basket that contain some Notes.
   * @author S�astien Laot
   */
-clas   s Bas    ket : public QScrollView
+clas   s Bas    ket : public Q3ScrollView
 {
   Q_OBJECT
   public:
@@ -815,7 +833,7 @@ clas   s Bas    ket : public QScrollView
 	void selectionChanged();
   private:
 	QTimer              m_updateTimer;
-	QPtrList<FileEvent> m_updateQueue;
+	Q3PtrList<FileEvent> m_updateQueue;
 	QStringList         m_dontCare;
 	static const int    c_updateTime;
   private:

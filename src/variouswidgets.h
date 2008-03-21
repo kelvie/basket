@@ -22,6 +22,9 @@
 #define VARIOUSWIDGETS_H
 
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QKeyEvent>
 #include <kcombobox.h>
 #include <qdialog.h>
 #include <kurllabel.h>
@@ -30,7 +33,7 @@
 
 class QLineEdit;
 class KIconViewItem;
-class QIconViewItem;
+class Q3IconViewItem;
 
 class Basket;
 
@@ -114,7 +117,7 @@ class IconSizeDialog : public KDialogBase
   protected slots:
 	void slotCancel();
 	void slotSelectionChanged();
-	void choose(QIconViewItem*);
+	void choose(Q3IconViewItem*);
   private:
 	KIconViewItem *m_size16;
 	KIconViewItem *m_size22;

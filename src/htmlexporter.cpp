@@ -36,6 +36,10 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3ValueList>
+#include <QPixmap>
 #include <kglobalsettings.h>
 #include <kprogress.h>
 
@@ -195,17 +199,17 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	// Open the file to write:
 	QFile file(basketFilePath);
-	if (!file.open(IO_WriteOnly))
+	if (!file.open(QIODevice::WriteOnly))
 		return;
 	stream.setDevice(&file);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	stream.setEncoding(Q3TextStream::UnicodeUTF8);
 
 	// Compute the colors to draw dragient for notes:
 	QColor topBgColor;
 	QColor bottomBgColor;
 	Note::getGradientColors(basket->backgroundColor(), &topBgColor, &bottomBgColor);
 	// Compute the gradient image for notes:
-	QString gradientImageFileName = Basket::saveGradientBackground(basket->backgroundColor(), basket->QScrollView::font(), imagesFolderPath);
+	QString gradientImageFileName = Basket::saveGradientBackground(basket->backgroundColor(), basket->Q3ScrollView::font(), imagesFolderPath);
 
 	// Output the header:
 	QString borderColor = Tools::mixColor(basket->backgroundColor(), basket->textColor()).name();
@@ -238,7 +242,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	}
 	stream <<
 		"   .basket { background-color: " << basket->backgroundColor().name() << "; border: solid " << borderColor << " 1px; "
-		             "font: " << Tools::cssFontDefinition(basket->QScrollView::font()) << "; color: " << basket->textColor().name() << "; padding: 1px; width: 100%; }\n"
+		             "font: " << Tools::cssFontDefinition(basket->Q3ScrollView::font()) << "; color: " << basket->textColor().name() << "; padding: 1px; width: 100%; }\n"
 		"   table.basket { border-collapse: collapse; }\n"
 		"   .basket * { padding: 0; margin: 0; }\n"
 		"   .basket table { width: 100%; border-spacing: 0; _border-collapse: collapse; }\n"
@@ -259,10 +263,10 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		<< LinkLook::launcherLook->toCSS("launcher", basket->textColor())
 		<<
 		"   .unknown { margin: 1px 2px; border: 1px solid " << borderColor << "; -moz-border-radius: 4px; }\n";
-	QValueList<State*> states = basket->usedStates();
+	Q3ValueList<State*> states = basket->usedStates();
 	QString statesCss;
 	for (State::List::Iterator it = states.begin(); it != states.end(); ++it)
-		statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->QScrollView::font());
+		statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->Q3ScrollView::font());
 	stream <<
 		statesCss <<
 		"   .credits { text-align: right; margin: 3px 0 0 0; _margin-top: -17px; font-size: 80%; color: " << borderColor << "; }\n"
@@ -323,7 +327,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";
 	QFile transGIF(imagesFolderPath + gifFileName);
-	if (!transGIF.exists() && transGIF.open(IO_WriteOnly)) {
+	if (!transGIF.exists() && transGIF.open(QIODevice::WriteOnly)) {
 		QDataStream streamGIF(&transGIF);
 		// This is a 1px*1px transparent GIF image:
 		const uchar blankGIF[] = {
@@ -547,7 +551,7 @@ QString HTMLExporter::copyFile(const QString &srcPath, bool createIt)
 	if (createIt) {
 		// We create the file to be sure another very near call to copyFile() willn't choose the same name:
 		QFile file(KURL(fullPath).path());
-		if (file.open(IO_WriteOnly))
+		if (file.open(QIODevice::WriteOnly))
 			file.close();
 		// And then we copy the file AND overwriting the file we juste created:
 		new KIO::FileCopyJob(

@@ -19,6 +19,10 @@
  ***************************************************************************/
 
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include <kiconview.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -49,16 +53,16 @@
 SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, WFlags f)
  : KIconView(parent, name, f), m_lastSelected(0)
 {
-	connect( this, SIGNAL(selectionChanged(QIconViewItem*)), this, SLOT(slotSelectionChanged(QIconViewItem*)) );
+	connect( this, SIGNAL(selectionChanged(Q3IconViewItem*)), this, SLOT(slotSelectionChanged(Q3IconViewItem*)) );
 	connect( this, SIGNAL(selectionChanged()),               this, SLOT(slotSelectionChanged())               );
 }
 
-QDragObject* SingleSelectionKIconView::dragObject()
+Q3DragObject* SingleSelectionKIconView::dragObject()
 {
 	return 0;
 }
 
-void SingleSelectionKIconView::slotSelectionChanged(QIconViewItem *item)
+void SingleSelectionKIconView::slotSelectionChanged(Q3IconViewItem *item)
 {
 	if (item)
 		m_lastSelected = item;
@@ -90,10 +94,10 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
  , m_defaultProperties(defaultProperties)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
 	// Icon, Name and Background Color:
-	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
+	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
@@ -116,7 +120,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	nameLayout->addWidget(m_backgroundColor);
 	topLayout->addLayout(nameLayout);
 
-	QHBoxLayout *layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	KPushButton *button = new KPushButton( KGuiItem(i18n("&Manage Templates..."), "configure"), page );
 	connect( button, SIGNAL(clicked()), this, SLOT(manageTemplates()) );
 	button->hide();
@@ -209,7 +213,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	topLayout->addLayout(layout);
 	topLayout->addWidget(m_templates);
 
-	layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	layout = new Q3HBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	m_createIn = new QComboBox(page);
 	m_createIn->insertItem(i18n("(Baskets)"));
 	label = new QLabel(m_createIn, i18n("C&reate in:"), page);
@@ -229,8 +233,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
 	populateBasketsList(Global::bnpView->firstListViewItem(), /*indent=*/1, /*index=*/1);
 
-	connect( m_templates, SIGNAL(doubleClicked(QIconViewItem*)), this, SLOT(slotOk())        );
-	connect( m_templates, SIGNAL(returnPressed(QIconViewItem*)), this, SLOT(returnPressed()) );
+	connect( m_templates, SIGNAL(doubleClicked(Q3IconViewItem*)), this, SLOT(slotOk())        );
+	connect( m_templates, SIGNAL(returnPressed(Q3IconViewItem*)), this, SLOT(returnPressed()) );
 
 	if (parentBasket) {
 		int index = 0;
@@ -255,7 +259,7 @@ void NewBasketDialog::returnPressed()
 	actionButton(KDialogBase::Ok)->animateClick();
 }
 
-int NewBasketDialog::populateBasketsList(QListViewItem *item, int indent, int index)
+int NewBasketDialog::populateBasketsList(Q3ListViewItem *item, int indent, int index)
 {
 	static const int ICON_SIZE = 16;
 
@@ -297,7 +301,7 @@ void NewBasketDialog::nameChanged(const QString &newName)
 
 void NewBasketDialog::slotOk()
 {
-	QIconViewItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
+	Q3IconViewItem *item = ((SingleSelectionKIconView*)m_templates)->selectedItem();
 	QString templateName;
 	if (item->text() == i18n("One column"))
 		templateName = "1column";

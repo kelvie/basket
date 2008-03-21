@@ -25,6 +25,10 @@
 #include <qfont.h>
 #include <qdom.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3ValueList>
+#include <QPixmap>
 #include <kglobalsettings.h>
 #include <klocale.h>
 
@@ -422,7 +426,7 @@ void Tag::saveTags()
 	saveTagsTo(all, Global::savesFolder() + "tags.xml");
 }
 
-void Tag::saveTagsTo(QValueList<Tag*> &list, const QString &fullPath)
+void Tag::saveTagsTo(Q3ValueList<Tag*> &list, const QString &fullPath)
 {
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");
@@ -688,9 +692,9 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 
 	// Write to Disk:
 	QFile file(fullPath);
-	if (file.open(IO_WriteOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+	if (file.open(QIODevice::WriteOnly)) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::UnicodeUTF8);
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
 		file.close();
@@ -849,7 +853,7 @@ QSize StateMenuItem::sizeHint()
 	return QSize(iconSize + iconMargin() + textSize.width(), textSize.height());
 }
 
-QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
+QIcon StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 {
 	int width  = kapp->style().pixelMetric(QStyle::PM_IndicatorWidth,  0);
 	int height = kapp->style().pixelMetric(QStyle::PM_IndicatorHeight, 0);
@@ -884,13 +888,13 @@ QIconSet StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
 
-	QIconSet iconSet(pixmap);
-	iconSet.setPixmap(pixmapHover,         QIconSet::Automatic, QIconSet::Active);
-	iconSet.setPixmap(pixmapDisabled,      QIconSet::Automatic, QIconSet::Disabled);
+	QIcon iconSet(pixmap);
+	iconSet.setPixmap(pixmapHover,         QIcon::Automatic, QIcon::Active);
+	iconSet.setPixmap(pixmapDisabled,      QIcon::Automatic, QIcon::Disabled);
 	return iconSet;
 }
 
-QIconSet StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
+QIcon StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
 {
 	int width  = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorWidth,  0);
 	int height = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorHeight, 0);
@@ -928,7 +932,7 @@ QIconSet StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
 	painter.end();
 	pixmapHover.setMask(pixmapHover.createHeuristicMask());
 
-	QIconSet iconSet(pixmap);
-	iconSet.setPixmap(pixmapHover, QIconSet::Automatic, QIconSet::Active);
+	QIcon iconSet(pixmap);
+	iconSet.setPixmap(pixmapHover, QIcon::Automatic, QIcon::Active);
 	return iconSet;
 }

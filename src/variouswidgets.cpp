@@ -25,12 +25,18 @@
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qsizepolicy.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <QResizeEvent>
+#include <Q3ValueList>
+#include <QKeyEvent>
+#include <Q3VBoxLayout>
 #include <kopenwith.h>
 #include <klocale.h>
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 #include <kiconview.h>
 #include <kiconloader.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qfontdatabase.h>
 
 #include "variouswidgets.h"
@@ -42,7 +48,7 @@ RunCommandRequester::RunCommandRequester(const QString &runCommand, const QStrin
 {
 	m_message = message;
 
-	QHBoxLayout *layout = new QHBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 	m_runCommand        = new QLineEdit(runCommand, this);
 	QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
@@ -163,7 +169,7 @@ HelpLabel::~HelpLabel()
 
 void HelpLabel::showMessage()
 {
-	QWhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
+	Q3WhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
 }
 
 void HelpLabel::keyPressEvent(QKeyEvent *event)
@@ -180,7 +186,7 @@ class UndraggableKIconView : public KIconView
 {
   public:
 	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, WFlags f = 0) : KIconView(parent, name, f) {}
-	QDragObject* dragObject() { return 0; }
+	Q3DragObject* dragObject() { return 0; }
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
@@ -188,7 +194,7 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
                KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
 	QLabel *label = new QLabel(message, page);
 	topLayout->addWidget(label);
@@ -216,8 +222,8 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
 	}
 
-	connect( iconView, SIGNAL(executed(QIconViewItem*)),      this, SLOT(choose(QIconViewItem*)) );
-	connect( iconView, SIGNAL(returnPressed(QIconViewItem*)), this, SLOT(choose(QIconViewItem*)) );
+	connect( iconView, SIGNAL(executed(Q3IconViewItem*)),      this, SLOT(choose(Q3IconViewItem*)) );
+	connect( iconView, SIGNAL(returnPressed(Q3IconViewItem*)), this, SLOT(choose(Q3IconViewItem*)) );
 	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
 
 	setMainWidget(page);
@@ -249,7 +255,7 @@ void IconSizeDialog::slotSelectionChanged()
 	}
 }
 
-void IconSizeDialog::choose(QIconViewItem*)
+void IconSizeDialog::choose(Q3IconViewItem*)
 {
 	actionButton(KDialogBase::Ok)->animateClick();
 }
@@ -269,8 +275,8 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const c
 		insertItem(i18n("(Default)"));
 
 	QFontDatabase fontDB;
-	QValueList<int> sizes = fontDB.standardSizes();
-	for (QValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
+	Q3ValueList<int> sizes = fontDB.standardSizes();
+	for (Q3ValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
 		insertItem(QString::number(*it));
 
 //	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );

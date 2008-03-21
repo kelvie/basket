@@ -23,10 +23,14 @@
 
 #include <kdialogbase.h>
 #include <kcombobox.h>
-#include <qlistview.h>
-#include <qvaluelist.h>
+#include <q3listview.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
-class QGroupBox;
+class Q3GroupBox;
 class QLineEdit;
 class QCheckBox;
 class KPushButton;
@@ -46,7 +50,7 @@ class State;
 class StateCopy
 {
   public:
-	typedef QValueList<StateCopy*> List;
+	typedef Q3ValueList<StateCopy*> List;
 	StateCopy(State *old = 0);
 	~StateCopy();
 	State *oldState;
@@ -57,7 +61,7 @@ class StateCopy
 class TagCopy
 {
   public:
-	typedef QValueList<TagCopy*> List;
+	typedef Q3ValueList<TagCopy*> List;
 	TagCopy(Tag *old = 0);
 	~TagCopy();
 	Tag *oldTag;
@@ -67,17 +71,17 @@ class TagCopy
 	bool isMultiState();
 };
 
-class TagListViewItem : public QListViewItem
+class TagListViewItem : public Q3ListViewItem
 {
   public:
-	TagListViewItem(QListView     *parent, TagCopy *tagCopy);
-	TagListViewItem(QListViewItem *parent, TagCopy *tagCopy);
-	TagListViewItem(QListView     *parent, QListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(QListViewItem *parent, QListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(QListView     *parent, StateCopy *stateCopy);
-	TagListViewItem(QListViewItem *parent, StateCopy *stateCopy);
-	TagListViewItem(QListView     *parent, QListViewItem *after, StateCopy *stateCopy);
-	TagListViewItem(QListViewItem *parent, QListViewItem *after, StateCopy *stateCopy);
+	TagListViewItem(Q3ListView     *parent, TagCopy *tagCopy);
+	TagListViewItem(Q3ListViewItem *parent, TagCopy *tagCopy);
+	TagListViewItem(Q3ListView     *parent, Q3ListViewItem *after, TagCopy *tagCopy);
+	TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, TagCopy *tagCopy);
+	TagListViewItem(Q3ListView     *parent, StateCopy *stateCopy);
+	TagListViewItem(Q3ListViewItem *parent, StateCopy *stateCopy);
+	TagListViewItem(Q3ListView     *parent, Q3ListViewItem *after, StateCopy *stateCopy);
+	TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, StateCopy *stateCopy);
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
@@ -85,7 +89,7 @@ class TagListViewItem : public QListViewItem
 	TagListViewItem* lastChild();
 	TagListViewItem* prevSibling();
 	TagListViewItem* parent() const; // Reimplemented to cast the return value
-	int width(const QFontMetrics &fontMetrics, const QListView *listView, int column) const;
+	int width(const QFontMetrics &fontMetrics, const Q3ListView *listView, int column) const;
 	void setup();
 	void paintCell(QPainter *painter, const QColorGroup &colorGroup, int column, int width, int align);
 
@@ -94,7 +98,7 @@ class TagListViewItem : public QListViewItem
 	StateCopy *m_stateCopy;
 };
 
-class TagListView : public QListView
+class TagListView : public Q3ListView
 {
   Q_OBJECT
   public:
@@ -135,7 +139,7 @@ class TagsEditDialog : public KDialogBase
 	void removeShortcut();
 	void removeEmblem();
 	void modified();
-	void currentItemChanged(QListViewItem *item);
+	void currentItemChanged(Q3ListViewItem *item);
 	void slotCancel();
 	void slotOk();
 	void selectUp();
@@ -158,8 +162,8 @@ class TagsEditDialog : public KDialogBase
 	KKeyButton    *m_shortcut;
 	QPushButton   *m_removeShortcut;
 	QCheckBox     *m_inherit;
-	QGroupBox     *m_tagBox;
-	QGroupBox     *m_stateBox;
+	Q3GroupBox     *m_tagBox;
+	Q3GroupBox     *m_stateBox;
 	QLabel        *m_stateNameLabel;
 	QLineEdit     *m_stateName;
 	KIconButton   *m_emblem;

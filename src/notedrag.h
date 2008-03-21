@@ -22,10 +22,12 @@
 #define NOTEDRAG_H
 
 #include <qstring.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qdatastream.h>
 #include <qpixmap.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <Q3CString>
 #include <kmultipledrag.h>
 
 class QDataStream;
@@ -63,11 +65,11 @@ class NoteDrag
 	static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
   public:
 	static QPixmap feedbackPixmap(NoteSelection *noteList);
-	static QDragObject* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
+	static Q3DragObject* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
 	static bool canDecode(QMimeSource *source);
 	static Note* decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes);
 	static Basket* basketOf(QMimeSource *source);
-	static QValueList<Note*> notesOf(QMimeSource *source);
+	static Q3ValueList<Note*> notesOf(QMimeSource *source);
 	static void createAndEmptyCuttingTmpFolder();
 
 	static const char *NOTE_MIME_STRING;
@@ -78,12 +80,12 @@ class NoteDrag
   * with local encoding!
   * @author Sébastien Laoût
   */
-class ExtendedTextDrag : public QTextDrag
+class ExtendedTextDrag : public Q3TextDrag
 {
   Q_OBJECT
   public:
 	static bool decode(const QMimeSource *e, QString &str);
-	static bool decode(const QMimeSource *e, QString &str, QCString &subtype);
+	static bool decode(const QMimeSource *e, QString &str, Q3CString &subtype);
 };
 
 // Support KDE 3.3 and older PROTECTED KURLDrag::encodedData()!

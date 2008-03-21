@@ -20,13 +20,22 @@
 
  /// NEW:
 
-#include <qwidgetstack.h>
+#include <q3widgetstack.h>
 #include <qregexp.h>
 #include <qpixmap.h>
 #include <qpainter.h>
 #include <qimage.h>
 #include <qbitmap.h>
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QShowEvent>
+#include <Q3ValueList>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QHideEvent>
+#include <Q3CString>
+#include <Q3PopupMenu>
 #include <kpopupmenu.h>
 #include <qsignalmapper.h>
 #include <qdir.h>
@@ -258,7 +267,7 @@ void BNPView::onFirstShow()
     int treeWidth = Settings::basketTreeWidth();
     if (treeWidth < 0)
       treeWidth = m_tree->fontMetrics().maxWidth() * 11;
-    QValueList<int> splitterSizes;
+    Q3ValueList<int> splitterSizes;
     splitterSizes.append(treeWidth);
     setSizes(splitterSizes);
 }
@@ -340,7 +349,7 @@ void BNPView::initialize()
 	/// Configure the List View Columns:
 	m_tree  = new BasketTreeListView(this);
 	m_tree->addColumn(i18n("Baskets"));
-	m_tree->setColumnWidthMode(0, QListView::Maximum);
+	m_tree->setColumnWidthMode(0, Q3ListView::Maximum);
 	m_tree->setFullWidth(true);
 	m_tree->setSorting(-1/*Disabled*/);
 	m_tree->setRootIsDecorated(true);
@@ -358,7 +367,7 @@ void BNPView::initialize()
 	m_tree->setDropHighlighter(true);
 
 	/// Configure the Splitter:
-	m_stack = new QWidgetStack(this);
+	m_stack = new Q3WidgetStack(this);
 
 	setOpaqueResize(true);
 
@@ -368,17 +377,17 @@ void BNPView::initialize()
 	setResizeMode(m_stack, QSplitter::Stretch);
 
 	/// Configure the List View Signals:
-	connect( m_tree, SIGNAL(returnPressed(QListViewItem*)),    this, SLOT(slotPressed(QListViewItem*)) );
-	connect( m_tree, SIGNAL(selectionChanged(QListViewItem*)), this, SLOT(slotPressed(QListViewItem*)) );
-	connect( m_tree, SIGNAL(pressed(QListViewItem*)),          this, SLOT(slotPressed(QListViewItem*)) );
-	connect( m_tree, SIGNAL(expanded(QListViewItem*)),         this, SLOT(needSave(QListViewItem*))    );
-	connect( m_tree, SIGNAL(collapsed(QListViewItem*)),        this, SLOT(needSave(QListViewItem*))    );
-	connect( m_tree, SIGNAL(contextMenu(KListView*, QListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(KListView*, QListViewItem*, const QPoint&))      );
-	connect( m_tree, SIGNAL(mouseButtonPressed(int, QListViewItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QListViewItem*, const QPoint&, int)) );
-	connect( m_tree, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), this, SLOT(slotShowProperties(QListViewItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(returnPressed(Q3ListViewItem*)),    this, SLOT(slotPressed(Q3ListViewItem*)) );
+	connect( m_tree, SIGNAL(selectionChanged(Q3ListViewItem*)), this, SLOT(slotPressed(Q3ListViewItem*)) );
+	connect( m_tree, SIGNAL(pressed(Q3ListViewItem*)),          this, SLOT(slotPressed(Q3ListViewItem*)) );
+	connect( m_tree, SIGNAL(expanded(Q3ListViewItem*)),         this, SLOT(needSave(Q3ListViewItem*))    );
+	connect( m_tree, SIGNAL(collapsed(Q3ListViewItem*)),        this, SLOT(needSave(Q3ListViewItem*))    );
+	connect( m_tree, SIGNAL(contextMenu(KListView*, Q3ListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(KListView*, Q3ListViewItem*, const QPoint&))      );
+	connect( m_tree, SIGNAL(mouseButtonPressed(int, Q3ListViewItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, Q3ListViewItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)), this, SLOT(slotShowProperties(Q3ListViewItem*, const QPoint&, int)) );
 
-	connect( m_tree, SIGNAL(expanded(QListViewItem*)),  this, SIGNAL(basketChanged()) );
-	connect( m_tree, SIGNAL(collapsed(QListViewItem*)), this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(expanded(Q3ListViewItem*)),  this, SIGNAL(basketChanged()) );
+	connect( m_tree, SIGNAL(collapsed(Q3ListViewItem*)), this, SIGNAL(basketChanged()) );
 	connect( this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()) );
 
 	connect( this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)) );
@@ -398,7 +407,7 @@ void BNPView::initialize()
 	setupActions();
 
 	/// What's This Help for the tree:
-	QWhatsThis::add(m_tree, i18n(
+	Q3WhatsThis::add(m_tree, i18n(
 			"<h2>Basket Tree</h2>"
 					"Here is the list of your baskets. "
 					"You can organize your data by putting them in different baskets. "
@@ -630,25 +639,25 @@ void BNPView::setupActions()
 	new KAction( i18n("&Welcome Baskets"), "", "", this, SLOT(addWelcomeBaskets()), actionCollection(), "help_welcome_baskets" );
 }
 
-QListViewItem* BNPView::firstListViewItem()
+Q3ListViewItem* BNPView::firstListViewItem()
 {
 	return m_tree->firstChild();
 }
 
-void BNPView::slotShowProperties(QListViewItem *item, const QPoint&, int)
+void BNPView::slotShowProperties(Q3ListViewItem *item, const QPoint&, int)
 {
 	if (item)
 		propBasket();
 }
 
-void BNPView::slotMouseButtonPressed(int button, QListViewItem *item, const QPoint &/*pos*/, int /*column*/)
+void BNPView::slotMouseButtonPressed(int button, Q3ListViewItem *item, const QPoint &/*pos*/, int /*column*/)
 {
 	if (item && (button & Qt::MidButton)) {
 		// TODO: Paste into ((BasketListViewItem*)listViewItem)->basket()
 	}
 }
 
-void BNPView::slotContextMenu(KListView */*listView*/, QListViewItem *item, const QPoint &pos)
+void BNPView::slotContextMenu(KListView */*listView*/, Q3ListViewItem *item, const QPoint &pos)
 {
 	QString menuName;
 	if (item) {
@@ -668,7 +677,7 @@ void BNPView::slotContextMenu(KListView */*listView*/, QListViewItem *item, cons
 		setNewBasketPopup();
 	}
 
-	QPopupMenu *menu = popupMenu(menuName);
+	Q3PopupMenu *menu = popupMenu(menuName);
 	connect( menu, SIGNAL(aboutToHide()),  this, SLOT(aboutToHideNewBasketPopup()) );
 	menu->exec(pos);
 }
@@ -698,9 +707,9 @@ void BNPView::save()
 // 	}
 }
 
-void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement)
+void BNPView::save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement)
 {
-	QListViewItem *item = firstItem;
+	Q3ListViewItem *item = firstItem;
 	while (item) {
 //		Basket *basket = ((BasketListViewItem*)item)->basket();
 		QDomElement basketElement = this->basketElement(item, document, parentElement);
@@ -726,7 +735,7 @@ void BNPView::save(QListViewItem *firstItem, QDomDocument &document, QDomElement
 	}
 }
 
-QDomElement BNPView::basketElement(QListViewItem *item, QDomDocument &document, QDomElement &parentElement)
+QDomElement BNPView::basketElement(Q3ListViewItem *item, QDomDocument &document, QDomElement &parentElement)
 {
 	Basket *basket = ((BasketListViewItem*)item)->basket();
 	QDomElement basketElement = document.createElement("basket");
@@ -744,7 +753,7 @@ QDomElement BNPView::basketElement(QListViewItem *item, QDomDocument &document, 
 	return basketElement;
 }
 
-void BNPView::saveSubHierarchy(QListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive)
+void BNPView::saveSubHierarchy(Q3ListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive)
 {
 	QDomElement element = basketElement(item, document, parentElement);
 	if (recursive && item->firstChild())
@@ -765,7 +774,7 @@ void BNPView::load()
 	m_loading = false;
 }
 
-void BNPView::load(KListView */*listView*/, QListViewItem *item, const QDomElement &baskets)
+void BNPView::load(KListView */*listView*/, Q3ListViewItem *item, const QDomElement &baskets)
 {
 	QDomNode n = baskets.firstChild();
 	while ( ! n.isNull() ) {
@@ -804,11 +813,11 @@ Basket* BNPView::loadBasket(const QString &folderName)
 	return basket;
 }
 
-int BNPView::basketCount(QListViewItem *parent)
+int BNPView::basketCount(Q3ListViewItem *parent)
 {
 	int count = 0;
 
-	QListViewItem *item = (parent ? parent->firstChild() : m_tree->firstChild());
+	Q3ListViewItem *item = (parent ? parent->firstChild() : m_tree->firstChild());
 	while (item) {
 		count += 1 + basketCount(item);
 		item = item->nextSibling();
@@ -833,14 +842,14 @@ bool BNPView::canExpand()
 	return item->firstChild();
 }
 
-BasketListViewItem* BNPView::appendBasket(Basket *basket, QListViewItem *parentItem)
+BasketListViewItem* BNPView::appendBasket(Basket *basket, Q3ListViewItem *parentItem)
 {
 	BasketListViewItem *newBasketItem;
 	if (parentItem)
 		newBasketItem = new BasketListViewItem(parentItem, ((BasketListViewItem*)parentItem)->lastChild(), basket);
 	else {
-		QListViewItem *child     = m_tree->firstChild();
-		QListViewItem *lastChild = 0;
+		Q3ListViewItem *child     = m_tree->firstChild();
+		Q3ListViewItem *lastChild = 0;
 		while (child) {
 			lastChild = child;
 			child = child->nextSibling();
@@ -864,8 +873,8 @@ void BNPView::loadNewBasket(const QString &folderName, const QDomElement &proper
 
 BasketListViewItem* BNPView::lastListViewItem()
 {
-	QListViewItem *child     = m_tree->firstChild();
-	QListViewItem *lastChild = 0;
+	Q3ListViewItem *child     = m_tree->firstChild();
+	Q3ListViewItem *lastChild = 0;
 	// Set lastChild to the last primary child of the list view:
 	while (child) {
 		lastChild = child;
@@ -937,7 +946,7 @@ void BNPView::expandBasket()
 
 void BNPView::closeAllEditors()
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = (BasketListViewItem*)(it.current());
 		item->basket()->closeEditor();
@@ -957,7 +966,7 @@ bool BNPView::convertTexts()
 	dialog.progressBar()->setTotalSteps(basketCount());
 	dialog.show(); //setMinimumDuration(50/*ms*/);
 
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = (BasketListViewItem*)(it.current());
 		if (item->basket()->convertTexts())
@@ -988,7 +997,7 @@ void BNPView::toggleFilterAllBaskets(bool doFilter)
 	//currentBasket()->decoration()->filterBar()->setFilterAll(doFilter);
 
 //	Basket *current = currentBasket();
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		item->basket()->decoration()->filterBar()->setFilterAll(doFilter);
@@ -1027,7 +1036,7 @@ void BNPView::newFilter()
 	const FilterData &filterData = current->decoration()->filterBar()->filterData();
 
 	// Set the filter data for every other baskets, or reset the filter for every other baskets if we just disabled the filterInAllBaskets:
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		if (item->basket() != current)
@@ -1046,7 +1055,7 @@ void BNPView::newFilter()
 	// Load every baskets for filtering, if they are not already loaded, and if necessary:
 	if (filterData.isFiltering) {
 		Basket *current = currentBasket();
-		QListViewItemIterator it(m_tree);
+		Q3ListViewItemIterator it(m_tree);
 		while (it.current()) {
 			BasketListViewItem *item = ((BasketListViewItem*)it.current());
 			if (item->basket() != current) {
@@ -1088,7 +1097,7 @@ bool BNPView::isFilteringAllBaskets()
 
 BasketListViewItem* BNPView::listViewItemForBasket(Basket *basket)
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		if (item->basket() == basket)
@@ -1195,7 +1204,7 @@ void BNPView::setTreePlacement(bool onLeft)
 
 void BNPView::relayoutAllBaskets()
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		//item->basket()->unbufferizeAll();
@@ -1207,7 +1216,7 @@ void BNPView::relayoutAllBaskets()
 
 void BNPView::recomputeAllStyles()
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		item->basket()->recomputeAllStyles();
@@ -1217,9 +1226,9 @@ void BNPView::recomputeAllStyles()
 	}
 }
 
-void BNPView::removedStates(const QValueList<State*> &deletedStates)
+void BNPView::removedStates(const Q3ValueList<State*> &deletedStates)
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		item->basket()->removedStates(deletedStates);
@@ -1229,7 +1238,7 @@ void BNPView::removedStates(const QValueList<State*> &deletedStates)
 
 void BNPView::linkLookChanged()
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		item->basket()->linkLookChanged();
@@ -1239,7 +1248,7 @@ void BNPView::linkLookChanged()
 
 void BNPView::filterPlacementChanged(bool onTop)
 {
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item        = static_cast<BasketListViewItem*>(it.current());
 		DecoratedBasket    *decoration  = static_cast<DecoratedBasket*>(item->basket()->parent());
@@ -1265,14 +1274,14 @@ void BNPView::updateBasketListViewItem(Basket *basket)
 		save();
 }
 
-void BNPView::needSave(QListViewItem*)
+void BNPView::needSave(Q3ListViewItem*)
 {
 	if (!m_loading)
 		// A basket has been collapsed/expanded or a new one is select: this is not urgent:
 		QTimer::singleShot(500/*ms*/, this, SLOT(save()));
 }
 
-void BNPView::slotPressed(QListViewItem *item, const QPoint &/*pos*/, int /*column*/)
+void BNPView::slotPressed(Q3ListViewItem *item, const QPoint &/*pos*/, int /*column*/)
 {
 	Basket *basket = currentBasket();
 	if (basket == 0)
@@ -1514,9 +1523,9 @@ void BNPView::slotConvertTexts()
 		KMessageBox::information(this, i18n("There are no plain text notes to convert."), i18n("Conversion Finished"));
 }
 
-QPopupMenu* BNPView::popupMenu(const QString &menuName)
+Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
 {
-	QPopupMenu *menu = 0;
+	Q3PopupMenu *menu = 0;
 	bool hack = false; // TODO fix this
 	// When running in kontact and likeback Information message is shown
 	// factory is 0. Don't show error then and don't crash either :-)
@@ -1526,7 +1535,7 @@ QPopupMenu* BNPView::popupMenu(const QString &menuName)
 		KXMLGUIFactory* factory = m_guiClient->factory();
 		if(factory)
 		{
-			menu = (QPopupMenu *)factory->container(menuName, m_guiClient);
+			menu = (Q3PopupMenu *)factory->container(menuName, m_guiClient);
 		}
 		else
 			hack = isPart();
@@ -1657,7 +1666,7 @@ Basket* BNPView::basketForFolderName(const QString &folderName)
 	if (!name.endsWith("/"))
 		name += "/";
 
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		if (item->basket()->folderName() == name)
@@ -1778,9 +1787,9 @@ void BNPView::doBasketDeletion(Basket *basket)
 {
 	basket->closeEditor();
 
-	QListViewItem *basketItem = listViewItemForBasket(basket);
-	QListViewItem *nextOne;
-	for (QListViewItem *child = basketItem->firstChild(); child; child = nextOne) {
+	Q3ListViewItem *basketItem = listViewItemForBasket(basket);
+	Q3ListViewItem *nextOne;
+	for (Q3ListViewItem *child = basketItem->firstChild(); child; child = nextOne) {
 		nextOne = child->nextSibling();
 		// First delete the child baskets:
 		doBasketDeletion(((BasketListViewItem*)child)->basket());
@@ -1986,7 +1995,7 @@ void BNPView::showPassiveDroppedDelayed()
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
 	QPixmap contentsPixmap = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
-	QMimeSourceFactory::defaultFactory()->setPixmap("_passivepopup_image_", contentsPixmap);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("_passivepopup_image_", contentsPixmap);
 	m_passivePopup->setView(
 			title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
 	(contentsPixmap.isNull() ? "" : "<img src=\"_passivepopup_image_\">"),
@@ -2214,7 +2223,7 @@ QStringList BNPView::listBaskets()
 {
 	QStringList basketList;
 
-	QListViewItemIterator it(m_tree);
+	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
 		basketList.append(item->basket()->basketName());
@@ -2229,7 +2238,7 @@ void BNPView::handleCommandLine()
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
 	/* Custom data folder */
-	QCString customDataFolder = args->getOption("data-folder");
+	Q3CString customDataFolder = args->getOption("data-folder");
 	if (customDataFolder != 0 && !customDataFolder.isEmpty())
 	{
 		Global::setCustomSavesFolder(customDataFolder);
@@ -2379,7 +2388,7 @@ void BNPView::populateTagsMenu(KPopupMenu &menu, Note *referenceNote)
 	currentBasket()->m_tagPopupNote = referenceNote;
 	bool enable = currentBasket()->countSelecteds() > 0;
 
-	QValueList<Tag*>::iterator it;
+	Q3ValueList<Tag*>::iterator it;
 	Tag *currentTag;
 	State *currentState;
 	int i = 10;

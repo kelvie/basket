@@ -21,6 +21,10 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <QKeyEvent>
+#include <Q3GridLayout>
 #include <klineedit.h>
 #include <kurlrequester.h>
 #include <kcolordialog.h>
@@ -138,7 +142,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());
-	textEdit->setHScrollBarMode(QScrollView::AlwaysOff);
+	textEdit->setHScrollBarMode(Q3ScrollView::AlwaysOff);
 	if (Settings::spellCheckTextNotes())
 		textEdit->setCheckSpellingEnabled(true);
 	textEdit->setText(m_textContent->text());
@@ -206,11 +210,11 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
 	textEdit->setTextFormat(Qt::RichText);
-	textEdit->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
+	textEdit->setAutoFormatting(Settings::autoBullet() ? Q3TextEdit::AutoAll : Q3TextEdit::AutoNone);
 	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());
-	textEdit->setHScrollBarMode(QScrollView::AlwaysOff);
+	textEdit->setHScrollBarMode(Q3ScrollView::AlwaysOff);
 	textEdit->setText(m_htmlContent->html());
 	textEdit->moveCursor(KTextEdit::MoveEnd, false);
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
@@ -535,12 +539,12 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();
-	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
 	m_url = new KURLRequester(m_noteContent->url().url(), page);
 
 	QWidget *wid1 = new QWidget(page);
-	QHBoxLayout *titleLay = new QHBoxLayout(wid1, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *titleLay = new Q3HBoxLayout(wid1, /*margin=*/0, spacingHint());
 	m_title = new DebuggedLineEdit(m_noteContent->title(), wid1);
 	m_autoTitle = new QPushButton(i18n("Auto"), wid1);
 	m_autoTitle->setToggleButton(true);
@@ -549,7 +553,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	titleLay->addWidget(m_autoTitle);
 
 	QWidget *wid = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
 	KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KURL(m_url->lineEdit()->text()));
@@ -694,7 +698,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
    m_noteContent(contentNote)
 {
 	QWidget     *page   = plainPage();
-	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
 	KService service(contentNote->fullPath());
 
@@ -702,7 +706,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	m_name    = new QLineEdit(service.name(), page);
 
 	QWidget *wid = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
 	m_icon->setIconType(KIcon::NoGroup, KIcon::Application);

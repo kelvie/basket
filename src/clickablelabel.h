@@ -22,6 +22,8 @@
 #define CLICKABLELABEL_H
 
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 /** This class is a QLabel that can emit a clicked() signal when clicked !
   * @author S�astien Laot

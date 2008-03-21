@@ -22,6 +22,8 @@
 //#include <ktoolbarbutton.h>
 #include <qtoolbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 //#include <qcombobox.h>
 //#include <klineedit.h>
 #include <kiconloader.h>
@@ -48,11 +50,11 @@
 FilterBar::FilterBar(QWidget *parent, const char *name)
  : QWidget(parent, name)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
 {
-	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
+	Q3HBoxLayout *hBox  = new Q3HBoxLayout(this, /*margin*/0, /*spacing*/0);
 
 	// Create every widgets:
-	QIconSet resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-	QIconSet inAllIconSet = kapp->iconLoader()->loadIconSet("find",              KIcon::Toolbar);
+	QIcon resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
+	QIcon inAllIconSet = kapp->iconLoader()->loadIconSet("find",              KIcon::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);

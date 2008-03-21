@@ -24,8 +24,10 @@
 
 #include <qlayout.h>
 #include <qtoolbutton.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
@@ -37,7 +39,7 @@ PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
 	:KDialogBase(Plain, i18n("Password Protection"), Ok|Cancel, Ok,
 				 parent, name, /*modal=*/true, /*separator=*/true), w(0)
 {
-	QHBoxLayout* toplayout = new QHBoxLayout(plainPage(), 0, 0);
+	Q3HBoxLayout* toplayout = new Q3HBoxLayout(plainPage(), 0, 0);
 	w = new Password(plainPage());
 	toplayout->addWidget(w, 1);
 }

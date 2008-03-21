@@ -31,6 +31,10 @@
 #include <qcheckbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include <klocale.h>
 #include <locale.h>
 #include <errno.h>
@@ -50,7 +54,7 @@ class KGpgSelKey : public KDialogBase
 			const KGpgMe& gpg):
 		KDialogBase( parent, name, true,i18n("Private Key List"),Ok | Cancel) {
 			QString keyname;
-			QVBoxLayout* vbox;
+			Q3VBoxLayout* vbox;
 			QWidget* page = new QWidget(this);
 			QLabel* labeltxt;
 			KIconLoader* loader = KGlobal::iconLoader();
@@ -67,7 +71,7 @@ class KGpgSelKey : public KDialogBase
 			keysListpr->setAllColumnsShowFocus(true);
 
 			labeltxt = new QLabel(i18n("Choose a secret key:"),page);
-			vbox = new QVBoxLayout(page);
+			vbox = new Q3VBoxLayout(page);
 
 			KGpgKeyList list = gpg.keys(true);
 
@@ -91,7 +95,7 @@ class KGpgSelKey : public KDialogBase
 		};
 
 		QString key() {
-			QListViewItem* item = keysListpr->selectedItem();
+			Q3ListViewItem* item = keysListpr->selectedItem();
 
 			if(item)
 				return item->text(2);
@@ -420,7 +424,7 @@ gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
 		s += gpg_hint;
 
 	if(m_cache.isEmpty()){
-		QCString password;
+		Q3CString password;
 
 		if(m_saving)
 			result = KPasswordDialog::getNewPassword(password, s);

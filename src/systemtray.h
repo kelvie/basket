@@ -22,6 +22,15 @@
 #define SYSTEMTRAY_H
 
 #include <ksystemtray.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QEvent>
+#include <QDragMoveEvent>
+#include <QDragLeaveEvent>
+#include <QWheelEvent>
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <QPixmap>
 
 class MainWindow;
 

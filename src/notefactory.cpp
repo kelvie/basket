@@ -19,13 +19,18 @@
  ***************************************************************************/
 
 #include <qstring.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3CString>
+#include <QDropEvent>
+#include <Q3MemArray>
 #include <kurl.h>
 #include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
 #include <kcolordrag.h>
 #include <kurldrag.h>
-#include <qstylesheet.h>
+#include <q3stylesheet.h>
 #include <qdir.h>
 #include <kmimetype.h>
 #include <kmessagebox.h>
@@ -233,7 +238,7 @@ Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
 
 	//QString newText = text.stripWhiteSpace(); // The text for a new note, without useless spaces
 	/* Else, it's a text or an HTML note, so, create it */
-	if (QStyleSheet::mightBeRichText(/*newT*/text))
+	if (Q3StyleSheet::mightBeRichText(/*newT*/text))
 		return createNoteHtml(/*newT*/text, parent);
 	else
 		return createNoteText(/*newT*/text, parent);
@@ -269,9 +274,9 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 	QString fullPath = parent->fullPathForFileName(fileName);
 //	parent->dontCareOfCreation(fullPath);
 	QFile file(fullPath);
-	if ( file.open(IO_WriteOnly) ) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+	if ( file.open(QIODevice::WriteOnly) ) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::UnicodeUTF8);
 		stream << content;
 		file.close();
 		return fileName;
@@ -297,7 +302,7 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KURL &url, Basket *parent)
 		return createNoteLink(url, parent);
 }
 
-#include <qstrlist.h>
+#include <q3strlist.h>
 #include <qimage.h>
 
 bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropEvent::Action action)
@@ -346,7 +351,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	/* Else : Drop object to note */
 
 	QPixmap pixmap;
-	if ( QImageDrag::decode(source, pixmap) )
+	if ( Q3ImageDrag::decode(source, pixmap) )
 		return createNoteImage(pixmap, parent);
 
 	// KColorDrag::decode() is buggy and can trheat strings like "#include <foo.h>" as a black color
@@ -359,7 +364,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	// And then the hack (if provide color MIME type or a text that contains color), using createNote Color RegExp:
 	QString hack;
 	QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");
-	if (source->provides("application/x-color") || (QTextDrag::decode(source, hack) && (exp.search(hack) != -1)) ) {
+	if (source->provides("application/x-color") || (Q3TextDrag::decode(source, hack) && (exp.search(hack) != -1)) ) {
 		QColor color;
 		if (KColorDrag::decode(source, color))
 			return createNoteColor(color, parent);
@@ -400,7 +405,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	if (source->provides("text/x-moz-url")) { // FOR MOZILLA
 		// Get the array and create a QChar array of 1/2 of the size
 		QByteArray mozilla = source->encodedData("text/x-moz-url");
-		QMemArray<QChar> chars( mozilla.count() / 2 );
+		Q3MemArray<QChar> chars( mozilla.count() / 2 );
 		// A small debug work to know the value of each bytes
 		if (Global::debugWindow)
 			for (uint i = 0; i < mozilla.count(); i++)
@@ -429,7 +434,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 
 	if (source->provides("text/html")) {
 		QString html;
-		QCString subtype("html");
+		Q3CString subtype("html");
 		// If the text/html comes from Mozilla or GNOME it can be UTF-16 encoded: we need ExtendedTextDrag to check that
 		ExtendedTextDrag::decode(source, html, subtype);
 		return createNoteHtml(html, parent);
@@ -456,7 +461,7 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 	// Save the MimeSource in a file: create and open the file:
 	QString fileName = createFileForNewNote(parent, "unknown");
 	QFile file(parent->fullPath() + fileName);
-	if ( ! file.open(IO_WriteOnly) )
+	if ( ! file.open(QIODevice::WriteOnly) )
 		return 0L;
 	QDataStream stream(&file);
 
@@ -643,7 +648,7 @@ bool NoteFactory::maybeImageOrAnimation(const KURL &url)
 	{"BMP", "GIF", "JPEG", "MNG", "PBM", "PGM", "PNG", "PPM", "XBM", "XPM"}
 		QImageDecoder::inputFormats():
 	{"GIF", "MNG", "PNG"} */
-	QStrList list = QImageIO::inputFormats();
+	Q3StrList list = QImageIO::inputFormats();
 	list.prepend("jpg"); // Since QImageDrag return only "JPEG" and extensions can be "JPG"; preprend for heuristic optim.
 	char *s;
 	QString path = url.url().lower();
@@ -832,7 +837,7 @@ QString NoteFactory::createFileForNewNote(Basket *parent, const QString &extensi
 	// Create the file
 //	parent->dontCareOfCreation(fullName);
 	QFile file(fullName);
-	file.open(IO_WriteOnly);
+	file.open(QIODevice::WriteOnly);
 	file.close();
 
 	return fileName;

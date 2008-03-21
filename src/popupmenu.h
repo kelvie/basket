@@ -1,3 +1,5 @@
+//Added by qt3to4:
+#include <Q3PopupMenu>
 /***************************************************************************
  *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
@@ -21,7 +23,7 @@
 #ifndef POPUPMENU_H
 #define POPUPMENU_H
 
-class QPopupMenu;
+class Q3PopupMenu;
 class QRect;
 
 /** QPopupMenu/KPopupMenu doesn't provide metod to exec a menu
@@ -33,7 +35,7 @@ namespace PopupMenu
 {
 	/** Show the popup menu centered into rect.
 	  */
-	void execAtRectCenter(QPopupMenu &menu, const QRect &rect);
+	void execAtRectCenter(Q3PopupMenu &menu, const QRect &rect);
 
 	/** Show the popup menu at left-bottom of rect, or at right-bottom
 	  * if not possible (not enought place).
@@ -42,7 +44,7 @@ namespace PopupMenu
 	  * If center is true, it will try to horizontaly center the popup with
 	  * rect, so it will try two positions : bottom center and then top center.
 	  */
-	void execAtRectBottom(QPopupMenu &menu, const QRect &rect, bool centered = false);
+	void execAtRectBottom(Q3PopupMenu &menu, const QRect &rect, bool centered = false);
 
 	/** Idem execAtRectBottom but on the right or left sides,
 	  * prior aligned with the top of the rect, and at the bottom
@@ -50,7 +52,7 @@ namespace PopupMenu
 	  * If center is true, it will try to vertically center the popup with
 	  * rect, so it will try two positions : right center and then left center.
 	  */
-	void execAtRectRight(QPopupMenu &menu, const QRect &rect, bool centered = false);
+	void execAtRectRight(Q3PopupMenu &menu, const QRect &rect, bool centered = false);
 }
 
 /** Test window of PopupMenu methods.

@@ -23,10 +23,12 @@
 #include <kfiledialog.h>
 #include <qcheckbox.h>
 #include <qdir.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 #include <klocale.h>
 #include <kconfig.h>
 
@@ -38,10 +40,10 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
                KDialogBase::Ok | KDialogBase::Cancel, KDialogBase::Ok, /*separator=*/true),
    m_basket(basket)
 {
-	QVBox *page  = makeVBoxMainWidget();
+	Q3VBox *page  = makeVBoxMainWidget();
 
 	QWidget     *wid  = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, KDialogBase::spacingHint());
 	m_url = new KURLRequester("", wid);
 	m_url->setCaption(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");

@@ -23,6 +23,8 @@
 
 #include <qstring.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 #include <kpixmap.h>
 #include <qdatetime.h>
 
@@ -36,7 +38,7 @@ class HtmlExportData;
 class NoteSelection;
 
 class QPainter;
-class QSimpleRichText;
+class Q3SimpleRichText;
 
 /** Handle basket notes and groups!\n
   * After creation, the note is a group. You should create a NoteContent with this Note
@@ -174,12 +176,12 @@ class Note
 	void bufferizeSelectionPixmap();
 	inline void unbufferize()  { m_bufferedPixmap.resize(0, 0); m_bufferedSelectionPixmap.resize(0, 0); }
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
-	void recomputeBlankRects(QValueList<QRect> &blankAreas);
+	void recomputeBlankRects(Q3ValueList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
 
 /// VISIBLE AREAS COMPUTATION:
   private:
-	QValueList<QRect> m_areas;
+	Q3ValueList<QRect> m_areas;
 	bool              m_computedAreas;
 	bool              m_onTop;
 	void recomputeAreas();
@@ -280,7 +282,7 @@ class Note
 	bool stateForTagFromSelectedNotes(Tag *tag, State **state);
 	void   recomputeStyle();
 	void   recomputeAllStyles();
-	bool   removedStates(const QValueList<State*> &deletedStates);
+	bool   removedStates(const Q3ValueList<State*> &deletedStates);
 	QFont  font(); // Computed!
 	QColor backgroundColor(); // Computed!
 	QColor textColor(); // Computed!
@@ -305,9 +307,9 @@ class Note
 	void update();
 	void linkLookChanged();
 
-	void usedStates(QValueList<State*> &states);
+	void usedStates(Q3ValueList<State*> &states);
 
-	void listUsedTags(QValueList<Tag*> &list);
+	void listUsedTags(Q3ValueList<Tag*> &list);
 
 
 	Note* nextInStack();

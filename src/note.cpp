@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3ValueList>
 #include <kglobalsettings.h>
 #include <qstyle.h>
 #include <kapplication.h>
@@ -284,7 +287,7 @@ void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers
 	// Only intersects with visible areas.
 	// If the note is not visible, the user don't think it will be selected while selecting the note(s) that hide this, so act like the user think:
 	bool intersects = false;
-	for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+	for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 		QRect &r = *it;
 		if (r.intersects(rect)) {
 			intersects = true;
@@ -1029,7 +1032,7 @@ Note* Note::noteAt(int x, int y)
 		if ((x >= right) && (x < right + RESIZER_WIDTH) && (y >= m_y) && (y < m_y + resizerHeight())) {
 			if ( ! m_computedAreas )
 				recomputeAreas();
-			for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				if (rect.contains(x, y))
 					return this;
@@ -1041,7 +1044,7 @@ Note* Note::noteAt(int x, int y)
 		if ((x >= m_x) && (x < m_x + width()) && (y >= m_y) && (y < m_y + m_height)) {
 			if ( ! m_computedAreas )
 				recomputeAreas();
-			for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				if (rect.contains(x, y))
 					return this;
@@ -1063,7 +1066,7 @@ Note* Note::noteAt(int x, int y)
 	} else if (matching() && y >= m_y && y < m_y + m_height && x >= m_x && x < m_x + m_width) {
 		if ( ! m_computedAreas )
 			recomputeAreas();
-		for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+		for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 			QRect &rect = *it;
 			if (rect.contains(x, y))
 				return this;
@@ -1640,9 +1643,9 @@ void Note::setOnTop(bool onTop)
 	}
 }
 
-void substractRectOnAreas(const QRect &rectToSubstract, QValueList<QRect> &areas, bool andRemove)
+void substractRectOnAreas(const QRect &rectToSubstract, Q3ValueList<QRect> &areas, bool andRemove)
 {
-	for (QValueList<QRect>::iterator it = areas.begin(); it != areas.end(); ) {
+	for (Q3ValueList<QRect>::iterator it = areas.begin(); it != areas.end(); ) {
 		QRect &rect = *it;
 		// Split the rectangle if it intersects with rectToSubstract:
 		if (rect.intersects(rectToSubstract)) {
@@ -1823,7 +1826,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 				recomputeAreas();
 			if (m_areas.isEmpty())
 				return;
-			for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				painter->drawPixmap(rect.x(), rect.y(), pixmap, rect.x() - right, rect.y() - y(), rect.width(), rect.height());
 			}
@@ -2018,7 +2021,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
 void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 {
-	for (QValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+	for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 		QRect &rect = *it;
 		if (rect.x() >= x() + width()) // It's a rect of the resizer, don't draw it!
 			continue;
@@ -2121,7 +2124,7 @@ void Note::addState(State *state, bool orReplace)
 
 QFont Note::font()
 {
-	return m_computedState.font( basket()->QScrollView::font() );
+	return m_computedState.font( basket()->Q3ScrollView::font() );
 }
 
 QColor Note::backgroundColor()
@@ -2159,12 +2162,12 @@ void Note::recomputeAllStyles()
 			child->recomputeAllStyles();
 }
 
-bool Note::removedStates(const QValueList<State*> &deletedStates)
+bool Note::removedStates(const Q3ValueList<State*> &deletedStates)
 {
 	bool modifiedBasket = false;
 
 	if (!states().isEmpty()) {
-		for (QValueList<State*>::const_iterator it = deletedStates.begin(); it != deletedStates.end(); ++it)
+		for (Q3ValueList<State*>::const_iterator it = deletedStates.begin(); it != deletedStates.end(); ++it)
 			if (hasState(*it)) {
 				removeState(*it);
 				modifiedBasket = true;
@@ -2382,7 +2385,7 @@ void Note::bufferizeSelectionPixmap()
 
 QRect Note::visibleRect()
 {
-	QValueList<QRect> areas;
+	Q3ValueList<QRect> areas;
 	areas.append(rect());
 
 	// When we are folding a parent group, if this note is bigger than the first real note of the group, cut the top of this:
@@ -2399,7 +2402,7 @@ QRect Note::visibleRect()
 		return QRect();
 }
 
-void Note::recomputeBlankRects(QValueList<QRect> &blankAreas)
+void Note::recomputeBlankRects(Q3ValueList<QRect> &blankAreas)
 {
 	if (!matching())
 		return;
@@ -2450,7 +2453,7 @@ Note* Note::noteForFullPath(const QString &path)
 	return 0;
 }
 
-void Note::listUsedTags(QValueList<Tag*> &list)
+void Note::listUsedTags(Q3ValueList<Tag*> &list)
 {
 	for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
 		Tag *tag = (*it)->parentTag();
@@ -2463,7 +2466,7 @@ void Note::listUsedTags(QValueList<Tag*> &list)
 }
 
 
-void Note::usedStates(QValueList<State*> &states)
+void Note::usedStates(Q3ValueList<State*> &states)
 {
 	if (content())
 		for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it)
@@ -2826,7 +2829,7 @@ QString Note::toHtml(const QString &imageName)
 			{
 				if ( (m_type == Image     && pixmap() == 0L) ||
 				     (m_type == Animation && movie()  == 0L)    ) {
-					QMimeSourceFactory::defaultFactory()->setData(imageName, 0L);
+					Q3MimeSourceFactory::defaultFactory()->setData(imageName, 0L);
 					return i18n("(Image)"); // Image or animation not yet loaded!!
 				}
 
@@ -2837,7 +2840,7 @@ QString Note::toHtml(const QString &imageName)
 					image = movie()->framePixmap().convertToImage();
 				image = image.smoothScale(200, 150, QImage::ScaleMin);
 				QPixmap pixmap = QPixmap(image);
-				QMimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
+				Q3MimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
 				return "<img src=" + imageName + ">"; ///
 
 /*				// FIXME: movie isn't loaded yet: CRASH!

@@ -28,7 +28,7 @@
 class KIconButton;
 class QLineEdit;
 class QComboBox;
-class QVButtonGroup;
+class Q3VButtonGroup;
 class KIntNumInput;
 class KKeyButton;
 class KShortcut;
@@ -59,10 +59,10 @@ class BasketPropertiesDialog : public KDialogBase
 	QComboBox     *m_backgroundImage;
 	KColorCombo2  *m_backgroundColor;
 	KColorCombo2  *m_textColor;
-	QVButtonGroup *m_disposition;
+	Q3VButtonGroup *m_disposition;
 	KIntNumInput  *m_columnCount;
 	KKeyButton    *m_shortcut;
-	QVButtonGroup *m_shortcutRole;
+	Q3VButtonGroup *m_shortcutRole;
 	QMap<int, QString> m_backgroundImagesMap;
 };
 

@@ -21,20 +21,25 @@
 #include <config.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qtabwidget.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include <knuminput.h>
 #include <kcolorcombo.h>
 #include <kiconloader.h>
 #include <kconfig.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <qwhatsthis.h>
-#include <qbuttongroup.h>
+#include <q3whatsthis.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <qvbuttongroup.h>
 #include <kapplication.h>
@@ -357,12 +362,12 @@ void Settings::setAutoBullet(bool yes)
 GeneralPage::GeneralPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
-	QHBoxLayout *hLay;
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLay;
 	QLabel      *label;
 	HelpLabel   *hLabel;
 
-	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
+	Q3GridLayout *gl = new Q3GridLayout(layout, /*nRows=*/3, /*nCols=*/3);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
 	// Basket Tree Position:
@@ -384,7 +389,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	connect( m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	// Use Baloons to Report Results of Global Actions:
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	hLay = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
 	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	hLabel = new HelpLabel(
@@ -402,9 +407,9 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addLayout(hLay);
 
 	// System Tray Icon:
-	QGroupBox *gbSys = new QGroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
+	Q3GroupBox *gbSys = new Q3GroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
 	layout->addWidget(gbSys);
-	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialogBase::spacingHint());
+	Q3VBoxLayout *sysLay = new Q3VBoxLayout(gbSys, /*margin=*/0, KDialogBase::spacingHint());
 
 	// Dock in System Tray:
 	m_useSystray = new QCheckBox(i18n("&Dock in system tray"), gbSys);
@@ -412,7 +417,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_systray = new QWidget(gbSys);
-	QVBoxLayout *subSysLay = new QVBoxLayout(m_systray, /*margin=*/0, KDialogBase::spacingHint());
+	Q3VBoxLayout *subSysLay = new Q3VBoxLayout(m_systray, /*margin=*/0, KDialogBase::spacingHint());
 	sysLay->addWidget(m_systray);
 
 	// Show Current Basket Icon in System Tray Icon:
@@ -420,7 +425,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	subSysLay->addWidget(m_showIconInSystray);
 	connect(m_showIconInSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
-	QGridLayout *gs = new QGridLayout(0, /*nRows=*/2, /*nCols=*/3);
+	Q3GridLayout *gs = new Q3GridLayout(0, /*nRows=*/2, /*nCols=*/3);
 	subSysLay->addLayout(gs);
 	gs->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
@@ -502,13 +507,13 @@ void GeneralPage::defaults()
 BasketsPage::BasketsPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
-	QHBoxLayout *hLay;
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLay;
 	HelpLabel   *hLabel;
 
 	// Appearance:
 
-	QGroupBox *appearanceBox = new QGroupBox(3, Qt::Vertical, i18n("Appearance"), this);
+	Q3GroupBox *appearanceBox = new Q3GroupBox(3, Qt::Vertical, i18n("Appearance"), this);
 	layout->addWidget(appearanceBox);
 
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
@@ -522,7 +527,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Behavior:
 
-	QGroupBox *behaviorBox = new QGroupBox(5, Qt::Vertical, i18n("Behavior"), this);
+	Q3GroupBox *behaviorBox = new Q3GroupBox(5, Qt::Vertical, i18n("Behavior"), this);
 	layout->addWidget(behaviorBox);
 
 	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
@@ -532,12 +537,12 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QWidget *widget = new QWidget(behaviorBox);
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
+	hLay = new Q3HBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	hLabel = new HelpLabel(
 		i18n("When does this apply?"),
 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
@@ -551,10 +556,10 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 
 	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
-	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLayV = new Q3HBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialogBase::spacingHint());
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
 	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
-	QMimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
 	HelpLabel *helpV = new HelpLabel(
 		i18n("How to group a new note?"),
 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
@@ -570,7 +575,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	connect(m_groupOnInsertionLine, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
 	widget = new QWidget(behaviorBox);
-	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialogBase::spacingHint());
+	Q3GridLayout *ga = new Q3GridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialogBase::spacingHint());
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
 	m_middleAction = new QComboBox(widget);
@@ -593,12 +598,12 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Protection:
 
-	QGroupBox *protectionBox = new QGroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
+	Q3GroupBox *protectionBox = new Q3GroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
 	layout->addWidget(protectionBox);
 	widget = new QWidget(protectionBox);
 
 	// Re-Lock timeout configuration
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
+	hLay = new Q3HBoxLayout(widget, /*margin=*/0, KDialogBase::spacingHint());
 	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("A&utomatically lock protected baskets when closed for"), widget);
 	hLay->addWidget(m_enableReLockTimeoutMinutes);
 	m_reLockTimeoutMinutes = new KIntNumInput(widget);
@@ -682,13 +687,13 @@ void BasketsPage::defaults()
 NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
-	QHBoxLayout *hLay;
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLay;
 	QLabel      *label;
 
 	// Place of New Notes:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	hLay = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_newNotesPlace = new QComboBox(this);
 	label = new QLabel(m_newNotesPlace, i18n("&Place of new notes:"), this);
 	m_newNotesPlace->insertItem(i18n("On top"));
@@ -704,7 +709,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// New Images Size:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	hLay = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	m_imgSizeX = new KIntNumInput(this);
 	m_imgSizeX->setMinValue(1);
 	m_imgSizeX->setMaxValue(4096);
@@ -731,7 +736,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// View File Content:
 
-	QVButtonGroup *buttonGroup = new QVButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
+	Q3VButtonGroup *buttonGroup = new Q3VButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
 	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
@@ -790,7 +795,7 @@ void NewNotesPage::visualize()
 NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 	QTabWidget *tabs = new QTabWidget(this);
 	layout->addWidget(tabs);
 
@@ -838,11 +843,11 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
  : KCModule(parent, name)
 {
 	/* Applications page */
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
 
 	m_htmlUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
 	m_htmlProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
-	QHBoxLayout *hLayH = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLayH = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	hLayH->insertSpacing(-1, 20);
 	hLayH->addWidget(m_htmlProg);
 	connect(m_htmlUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -850,7 +855,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_imageUseProg = new QCheckBox(i18n("Open &image notes with a custom application:"), this);
 	m_imageProg    = new RunCommandRequester("", i18n("Open image notes with:"), this);
-	QHBoxLayout *hLayI = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLayI = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	hLayI->insertSpacing(-1, 20);
 	hLayI->addWidget(m_imageProg);
 	connect(m_imageUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -858,7 +863,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_animationUseProg = new QCheckBox(i18n("Open a&nimation notes with a custom application:"), this);
 	m_animationProg    = new RunCommandRequester("", i18n("Open animation notes with:"), this);
-	QHBoxLayout *hLayA = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLayA = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	hLayA->insertSpacing(-1, 20);
 	hLayA->addWidget(m_animationProg);
 	connect(m_animationUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -866,7 +871,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_soundUseProg = new QCheckBox(i18n("Open so&und notes with a custom application:"), this);
 	m_soundProg    = new RunCommandRequester("", i18n("Open sound notes with:"), this);
-	QHBoxLayout *hLayS = new QHBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLayS = new Q3HBoxLayout(0L, /*margin=*/0, KDialogBase::spacingHint());
 	hLayS->insertSpacing(-1, 20);
 	hLayS->addWidget(m_soundProg);
 	connect(m_soundUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -876,19 +881,19 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 		"<p>If checked, the application defined below will be used when opening that type of note.</p>"
 		"<p>Otherwise, the application you've configured in Konqueror will be used.</p>");
 
-	QWhatsThis::add(m_htmlUseProg,      whatsthis);
-	QWhatsThis::add(m_imageUseProg,     whatsthis);
-	QWhatsThis::add(m_animationUseProg, whatsthis);
-	QWhatsThis::add(m_soundUseProg,     whatsthis);
+	Q3WhatsThis::add(m_htmlUseProg,      whatsthis);
+	Q3WhatsThis::add(m_imageUseProg,     whatsthis);
+	Q3WhatsThis::add(m_animationUseProg, whatsthis);
+	Q3WhatsThis::add(m_soundUseProg,     whatsthis);
 
 	whatsthis = i18n(
 		"<p>Define the application to use for opening that type of note instead of the "
 		"application configured in Konqueror.</p>");
 
-	QWhatsThis::add(m_htmlProg,      whatsthis);
-	QWhatsThis::add(m_imageProg,     whatsthis);
-	QWhatsThis::add(m_animationProg, whatsthis);
-	QWhatsThis::add(m_soundProg,     whatsthis);
+	Q3WhatsThis::add(m_htmlProg,      whatsthis);
+	Q3WhatsThis::add(m_imageProg,     whatsthis);
+	Q3WhatsThis::add(m_animationProg, whatsthis);
+	Q3WhatsThis::add(m_soundProg,     whatsthis);
 
 	layout->addWidget(m_htmlUseProg);
 	layout->addItem(hLayH);
@@ -901,7 +906,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	layout->addSpacing(KDialogBase::spacingHint());
 
-	QHBoxLayout *hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	Q3HBoxLayout *hLay = new Q3HBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
 	HelpLabel *hl1 = new HelpLabel(
 		i18n("How to change the application used to open Web links?"),
 		i18n("<p>When opening Web links, they are opened in different applications, depending on the content of the link "
@@ -920,7 +925,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	hLay = new Q3HBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
 	HelpLabel *hl2 = new HelpLabel(
 		i18n("How to change the applications used to open files and links?"),
 		i18n("<p>Here is how to set the application to be used for each type of file. "

@@ -27,6 +27,12 @@
 #include <qstyle.h>
 #include <qtimer.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
+#include <QMouseEvent>
+#include <Q3Frame>
+#include <QKeyEvent>
 
 #include <kglobalsettings.h>
 
@@ -36,7 +42,7 @@ SizeTip::SizeTip( QWidget *parent, const char *name )
 {
   setMargin( 2 );
   setIndent( 0 );
-  setFrameStyle( QFrame::Plain | QFrame::Box );
+  setFrameStyle( Q3Frame::Plain | Q3Frame::Box );
 
   setPalette( QToolTip::palette() );
 }

@@ -22,6 +22,9 @@
 #define NOTEFACTORY_H
 
 #include <qevent.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QDropEvent>
 #include <kurl.h>
 #include <qstringlist.h>
 

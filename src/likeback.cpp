@@ -29,18 +29,23 @@
 #include <kmessagebox.h>
 #include <qlayout.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include <kpushbutton.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
-#include <qbuttongroup.h>
-#include <qvgroupbox.h>
+#include <q3buttongroup.h>
+#include <q3vgroupbox.h>
 #include <kguiitem.h>
-#include <qpopupmenu.h>
-#include <qtextedit.h>
+#include <q3popupmenu.h>
+#include <q3textedit.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <kdialogbase.h>
-#include <qhttp.h>
+#include <q3http.h>
 #include <kurl.h>
 #include <kinputdialog.h>
 #include <qvalidator.h>
@@ -62,12 +67,12 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
  : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
  , m_likeBack(likeBack)
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	Q3HBoxLayout *layout = new Q3HBoxLayout(this);
 
-	QIconSet likeIconSet    = kapp->iconLoader()->loadIconSet("likeback_like",    KIcon::Small);
-	QIconSet dislikeIconSet = kapp->iconLoader()->loadIconSet("likeback_dislike", KIcon::Small);
-	QIconSet bugIconSet     = kapp->iconLoader()->loadIconSet("likeback_bug",     KIcon::Small);
-	QIconSet featureIconSet = kapp->iconLoader()->loadIconSet("likeback_feature", KIcon::Small);
+	QIcon likeIconSet    = kapp->iconLoader()->loadIconSet("likeback_like",    KIcon::Small);
+	QIcon dislikeIconSet = kapp->iconLoader()->loadIconSet("likeback_dislike", KIcon::Small);
+	QIcon bugIconSet     = kapp->iconLoader()->loadIconSet("likeback_bug",     KIcon::Small);
+	QIcon featureIconSet = kapp->iconLoader()->loadIconSet("likeback_feature", KIcon::Small);
 
 	m_likeButton = new QToolButton(this, "likeback_like");
 	m_likeButton->setIconSet(likeIconSet);
@@ -415,10 +420,10 @@ void LikeBack::showInformationMessage()
 	QPixmap dislikeIcon = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::Small);
 	QPixmap bugIcon     = kapp->iconLoader()->loadIcon("likeback_bug",     KIcon::Small);
 	QPixmap featureIcon = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::Small);
-	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
-	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
-	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
-	QMimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
+	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
 
 	// Show a message reflecting the allowed types of comment:
 	Button buttons = d->buttons;
@@ -480,10 +485,10 @@ void LikeBack::showInformationMessage()
 		i18n("Help Improve the Application"));
 
 	// Reset the images from the factory:
-	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_like",    0L);
-	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_dislike", 0L);
-	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_bug",     0L);
-	QMimeSourceFactory::defaultFactory()->setData("likeback_icon_feature", 0L);
+	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_like",    0L);
+	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_dislike", 0L);
+	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_bug",     0L);
+	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_feature", 0L);
 }
 
 QString LikeBack::activeWindowPath()
@@ -652,20 +657,20 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_windowPath = LikeBack::activeWindowPath();
 
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *pageLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *pageLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
 	// The introduction message:
 	QLabel *introduction = new QLabel(introductionText(), page);
 	pageLayout->addWidget(introduction);
 
 	// The comment group:
-	m_group = new QButtonGroup(0);//i18n("Send Application Developers a Comment About:"), page);
-	QVGroupBox *box = new QVGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	m_group = new Q3ButtonGroup(0);//i18n("Send Application Developers a Comment About:"), page);
+	Q3VGroupBox *box = new Q3VGroupBox(i18n("Send Application Developers a Comment About:"), page);
 	pageLayout->addWidget(box);
 
 	// The radio buttons:
 	QWidget *buttons = new QWidget(box);
-	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
+	Q3GridLayout *buttonsGrid = new Q3GridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = kapp->iconLoader()->loadIcon("likeback_like", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
 		QLabel *likeIcon = new QLabel(buttons);
@@ -709,9 +714,9 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	m_group->setButton(reason);
 
 	// The comment text box:
-	m_comment = new QTextEdit(box);
+	m_comment = new Q3TextEdit(box);
 	m_comment->setTabChangesFocus(true);
-	m_comment->setTextFormat(QTextEdit::PlainText);
+	m_comment->setTextFormat(Q3TextEdit::PlainText);
 	m_comment->setText(initialComment);
 
 	m_showButtons = new QCheckBox(i18n("Show comment buttons below &window titlebars"), page);
@@ -815,13 +820,13 @@ void LikeBackDialog::send()
 		"context="  + KURL::encode_string(m_context)                          + '&' +
 		"comment="  + KURL::encode_string(m_comment->text())                  + '&' +
 		"email="    + KURL::encode_string(emailAddress);
-	QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
+	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	std::cout << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath() << std::endl;
 	std::cout << data << std::endl;
 	connect( http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)) );
 
-	QHttpRequestHeader header("POST", m_likeBack->remotePath());
+	Q3HttpRequestHeader header("POST", m_likeBack->remotePath());
 	header.setValue("Host", m_likeBack->hostName());
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
 	http->setHost(m_likeBack->hostName());

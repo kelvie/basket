@@ -21,6 +21,9 @@
 #define KGPGME_H
 
 #include <config.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <Q3ValueList>
 
 #ifdef HAVE_LIBGPGME
 
@@ -39,7 +42,7 @@ class KGpgKey
 		QString email;
 };
 
-typedef QValueList< KGpgKey > KGpgKeyList;
+typedef Q3ValueList< KGpgKey > KGpgKeyList;
 
 class KGpgMe
 {
@@ -67,7 +70,7 @@ class KGpgMe
 		QString m_text;
 		bool m_saving;
 		bool m_useGnuPGAgent;
-		QCString m_cache;
+		Q3CString m_cache;
 
 		void init(gpgme_protocol_t proto);
 		gpgme_error_t readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const;

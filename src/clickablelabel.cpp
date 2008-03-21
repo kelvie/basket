@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "clickablelabel.h"
+//Added by qt3to4:
+#include <QMouseEvent>
 
 void ClickableLabel::mousePressEvent(QMouseEvent *event)
 {

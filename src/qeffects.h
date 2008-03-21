@@ -1,3 +1,7 @@
+//Added by qt3to4:
+#include <QEvent>
+#include <QCloseEvent>
+#include <QPaintEvent>
 #if 0
 
 // Note: this file has been copied from the Qt source.
@@ -86,7 +90,7 @@ extern void Q_EXPORT qFadeEffect( QWidget*, int time = -1 );
 
 /******************* MOVED FROM qeffect.cpp: */
 
-#include "qguardedptr.h"
+#include "qpointer.h"
 #include "qdatetime.h"
 #include "qtimer.h"
 #include "qpixmap.h"
@@ -135,7 +139,7 @@ class QAlphaWidget: public QWidget, private QEffects
 		QImage back;
 		QImage front;
 		QImage mixed;
-		QGuardedPtr<QAccessWidget> widget;
+		QPointer<QAccessWidget> widget;
 		int duration;
 		int elapsed;
 		bool showWidget;
@@ -167,7 +171,7 @@ class QRollEffect : public QWidget, private QEffects
 		void scroll();
 
 	private:
-		QGuardedPtr<QAccessWidget> widget;
+		QPointer<QAccessWidget> widget;
 
 		int currentHeight;
 		int currentWidth;

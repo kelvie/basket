@@ -36,19 +36,19 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qsortedlist.h>
+#include <q3sortedlist.h>
 #include <qimage.h>
 #include <qpixmap.h>
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qtimer.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <qfileinfo.h>
 #include <qtoolbutton.h>
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 #include <qhbuttongroup.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 
 /* NOTE: Must be in the same order as listbox */
 enum ExtendedContext
@@ -122,8 +122,8 @@ void KIconDialog::init()
 
     connect(d->ui->browseButton, SIGNAL(clicked()), SLOT(slotBrowse()));
     connect(d->ui->listBox, SIGNAL(highlighted(int)), SLOT(slotContext(int)));
-    connect(d->ui->iconCanvas, SIGNAL(executed(QIconViewItem *)), SLOT(slotOk()));
-    connect(d->ui->iconCanvas, SIGNAL(returnPressed(QIconViewItem *)), SLOT(slotOk()));
+    connect(d->ui->iconCanvas, SIGNAL(executed(Q3IconViewItem *)), SLOT(slotOk()));
+    connect(d->ui->iconCanvas, SIGNAL(returnPressed(Q3IconViewItem *)), SLOT(slotOk()));
     connect(d->ui->iconCanvas, SIGNAL(startLoading(int)), SLOT(slotStartLoading(int)));
     connect(d->ui->iconCanvas, SIGNAL(progress(int)), SLOT(slotProgress(int)));
     connect(d->ui->iconCanvas, SIGNAL(finished()), SLOT(slotFinished()));
@@ -523,7 +523,7 @@ void KIconButton::setCustomLocation(const QString &custom)
 void KIconButton::resetIcon()
 {
     mIcon = QString::null;
-    setIconSet(QIconSet());
+    setIconSet(QIcon());
 }
 
 void KIconButton::slotChangeIcon()
@@ -543,7 +543,7 @@ void KIconButton::newIconName(const QString& name)
     if (name.isEmpty())
         return;
 
-    QIconSet iconset = mpLoader->loadIconSet(name, mGroup, d->iconSize);
+    QIcon iconset = mpLoader->loadIconSet(name, mGroup, d->iconSize);
     setIconSet(iconset);
     mIcon = name;
 

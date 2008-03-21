@@ -21,13 +21,18 @@
 #ifndef LINKLABEL_H
 #define LINKLABEL_H
 
-#include <qframe.h>
+#include <q3frame.h>
+//Added by qt3to4:
+#include <Q3BoxLayout>
+#include <QPixmap>
+#include <QLabel>
+#include <QEvent>
 
 class QString;
 class KURL;
 class QColor;
 class QLabel;
-class QBoxLayout;
+class Q3BoxLayout;
 class QSpacerItem;
 class QPushButton;
 class QCheckBox;
@@ -97,7 +102,7 @@ class LinkLook
   * Note : This label will appear blank while LinkLook willn't be set
   * @author S�astien Laot
   */
-class LinkLabel : public QFrame
+class LinkLabel : public Q3Frame
 {
   Q_OBJECT
   public:
@@ -118,7 +123,7 @@ class LinkLabel : public QFrame
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
   private:
-	QBoxLayout  *m_layout;
+	Q3BoxLayout  *m_layout;
 	QLabel      *m_icon;
 	QLabel      *m_title;
 	QSpacerItem *m_spacer1;

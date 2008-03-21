@@ -18,15 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qdom.h>
 #include <qpainter.h>
 #include <qstyle.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <QWheelEvent>
+#include <QContextMenuEvent>
+#include <QFocusEvent>
+#include <QPaintEvent>
+#include <QDragMoveEvent>
+#include <Q3VBoxLayout>
+#include <QDragLeaveEvent>
+#include <QKeyEvent>
+#include <Q3Frame>
+#include <QResizeEvent>
+#include <QLabel>
+#include <QDropEvent>
+#include <Q3PopupMenu>
+#include <QDragEnterEvent>
+#include <Q3HBoxLayout>
+#include <Q3ValueList>
+#include <QMouseEvent>
+#include <QCloseEvent>
+#include <Q3GridLayout>
 #include <kstyle.h>
 #include <qtooltip.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcursor.h>
-#include <qsimplerichtext.h>
+#include <q3simplerichtext.h>
 #include <qpushbutton.h>
 #include <ktextedit.h>
 #include <qpoint.h>
@@ -45,7 +66,7 @@
 #include <klineedit.h>
 #include <ksavefile.h>
 #include <kdebug.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 
 #include <unistd.h> // For sleep()
 
@@ -53,7 +74,7 @@
 #include <kiconloader.h>
 #include <krun.h>
 
-#include <qtoolbar.h>
+#include <q3toolbar.h>
 #include <qclipboard.h>
 
 #include <kmessagebox.h>
@@ -164,9 +185,9 @@ int NoteSelection::count()
 	return count;
 }
 
-QValueList<Note*> NoteSelection::parentGroups()
+Q3ValueList<Note*> NoteSelection::parentGroups()
 {
-	QValueList<Note*> groups;
+	Q3ValueList<Note*> groups;
 
 	// For each note:
 	for (NoteSelection *node = firstStacked(); node; node = node->nextStacked())
@@ -184,7 +205,7 @@ QValueList<Note*> NoteSelection::parentGroups()
 DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, const char *name, WFlags fl)
  : QWidget(parent, name, fl)
 {
-	m_layout = new QVBoxLayout(this);
+	m_layout = new Q3VBoxLayout(this);
 	m_filter = new FilterBar(this);
 	m_basket = new Basket(this, folderName);
 	m_layout->addWidget(m_basket);
@@ -311,7 +332,7 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 /*
  * Defined in note.cpp:
  */
-extern void substractRectOnAreas(const QRect &rectToSubstract, QValueList<QRect> &areas, bool andRemove = true);
+extern void substractRectOnAreas(const QRect &rectToSubstract, Q3ValueList<QRect> &areas, bool andRemove = true);
 
 void debugZone(int zone)
 {
@@ -1337,7 +1358,7 @@ void Basket::countsChangedTimeOut()
 
 
 Basket::Basket(QWidget *parent, const QString &folderName)
- : QScrollView(parent),
+ : Q3ScrollView(parent),
    QToolTip(viewport()),
    m_noActionOnMouseRelease(false), m_ignoreCloseEditorOnNextMouseRelease(false), m_pressPos(-100, -100), m_canDrag(false),
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
@@ -1490,7 +1511,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				m_canDrag  = true;
 				// Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
 				if (m_editor && m_editor->textEdit()) {
-					QTextEdit *editor = m_editor->textEdit();
+					Q3TextEdit *editor = m_editor->textEdit();
 					editor->getCursorPosition(&m_editParagraph, &m_editIndex);
 				}
 			}
@@ -1609,7 +1630,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			clicked->setSelected(true);
 		}
 		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
-		QPopupMenu* menu = Global::bnpView->popupMenu("note_popup");
+		Q3PopupMenu* menu = Global::bnpView->popupMenu("note_popup");
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 		doHoverEffects(clicked, zone); // In the case where another popup menu was open, we should do that manually!
@@ -1699,7 +1720,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 	if (event->reason() == QContextMenuEvent::Keyboard) {
 		if (countFounds/*countShown*/() == 0) { // TODO: Count shown!!
 			QRect basketRect( mapToGlobal(QPoint(0,0)), size() );
-			QPopupMenu *menu = Global::bnpView->popupMenu("insert_popup");
+			Q3PopupMenu *menu = Global::bnpView->popupMenu("insert_popup");
 			setInsertPopupMenu();
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
@@ -1713,7 +1734,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 			setFocusedNote(m_focusedNote); /// /// ///
 			m_startOfShiftSelectionNote = (m_focusedNote->isGroup() ? m_focusedNote->firstRealChild() : m_focusedNote);
 			// Popup at bottom (or top) of the focused note, if visible :
-			QPopupMenu *menu = Global::bnpView->popupMenu("note_popup");
+			Q3PopupMenu *menu = Global::bnpView->popupMenu("note_popup");
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 			doHoverEffects(m_focusedNote, Note::Content); // In the case where another popup menu was open, we should do that manually!
@@ -1766,7 +1787,7 @@ void Basket::recomputeAllStyles()
 		note->recomputeAllStyles();
 }
 
-void Basket::removedStates(const QValueList<State*> &deletedStates)
+void Basket::removedStates(const Q3ValueList<State*> &deletedStates)
 {
 	bool modifiedBasket = false;
 
@@ -1985,7 +2006,7 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// This is because during a drag, the mouse can fly over the text edit and move the cursor position, and even HIDE the cursor.
 	// So we re-show the cursor, and re-position it at the right place:
 	if (m_editor && m_editor->textEdit()) {
-		QTextEdit *editor = m_editor->textEdit();
+		Q3TextEdit *editor = m_editor->textEdit();
 		editor->setCursorPosition(m_editParagraph, m_editIndex);
 	}
 }
@@ -2364,7 +2385,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 					// TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
 					Global::bnpView->doBasketDeletion(this);
 				} else if (link == "basket-internal-import") {
-					QPopupMenu *menu = Global::bnpView->popupMenu("fileimport");
+					Q3PopupMenu *menu = Global::bnpView->popupMenu("fileimport");
 					menu->exec(event->globalPos());
 				} else {
 					KRun *run = new KRun(link); //  open the URL.
@@ -2417,7 +2438,7 @@ void Basket::contentsMouseMoveEvent(QMouseEvent *event)
 		m_selectionStarted = false;
 		NoteSelection *selection = selectedNotes();
 		if (selection->firstStacked()) {
-			QDragObject *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/this); // d will be deleted by QT
+			Q3DragObject *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/this); // d will be deleted by QT
 		/*bool shouldRemove = */d->drag();
 //		delete selection;
 
@@ -2809,7 +2830,7 @@ void Basket::maybeTip(const QPoint &pos)
 	if (!note && isFreeLayout()) {
 		message = i18n("Insert note here\nRight click for more options");
 		QRect itRect;
-		for (QValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+		for (Q3ValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 			itRect = QRect(0, 0, visibleWidth(), visibleHeight()).intersect(*it);
 			if (itRect.contains(contentPos)) {
 				rect = itRect;
@@ -2999,7 +3020,7 @@ void Basket::viewportResizeEvent(QResizeEvent *event)
 	}
 //	if (isDuringEdit())
 //		ensureNoteVisible(editedNote());
-	QScrollView::viewportResizeEvent(event);
+	Q3ScrollView::viewportResizeEvent(event);
 }
 
 void Basket::animateLoad()
@@ -3069,12 +3090,12 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	{
 		if(!m_decryptBox)
 		{
-			m_decryptBox = new QFrame( this, "m_decryptBox" );
-			m_decryptBox->setFrameShape( QFrame::StyledPanel );
-			m_decryptBox->setFrameShadow( QFrame::Plain );
+			m_decryptBox = new Q3Frame( this, "m_decryptBox" );
+			m_decryptBox->setFrameShape( Q3Frame::StyledPanel );
+			m_decryptBox->setFrameShadow( Q3Frame::Plain );
 			m_decryptBox->setLineWidth( 1 );
 
-			QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
+			Q3GridLayout* layout = new Q3GridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
 
 #ifdef HAVE_LIBGPGME
 			m_button = new QPushButton( m_decryptBox, "button" );
@@ -3136,7 +3157,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	if (!m_loaded) {
 		QPixmap pixmap(visibleWidth(), visibleHeight()); // TODO: Clip it to asked size only!
 		QPainter painter2(&pixmap);
-		QSimpleRichText rt(QString("<center>%1</center>").arg(i18n("Loading...")), QScrollView::font());
+		Q3SimpleRichText rt(QString("<center>%1</center>").arg(i18n("Loading...")), Q3ScrollView::font());
 		rt.setWidth(visibleWidth());
 		int hrt = rt.height();
 		painter2.fillRect(0, 0, visibleWidth(), visibleHeight(), brush);
@@ -3160,7 +3181,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	QPixmap  pixmap;
 	QPainter painter2;
 	QRect    rect;
-	for (QValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+	for (Q3ValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 		rect = clipRect.intersect(*it);
 		if (rect.width() > 0 && rect.height() > 0) {
 			// If there is an inserter to draw, draw the image off screen,
@@ -3312,7 +3333,7 @@ void Basket::updateNote(Note *note)
 
 void Basket::animateObjects()
 {
-	QValueList<Note*>::iterator it;
+	Q3ValueList<Note*>::iterator it;
 	for (it = m_animatedNotes.begin(); it != m_animatedNotes.end(); )
 //		if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
 //			updateNote(*it);
@@ -3387,7 +3408,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		menu.insertItem( SmallIconSet("filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
 		menu.insertTitle(tag->name());
-		QValueList<State*>::iterator it;
+		Q3ValueList<State*>::iterator it;
 		State *currentState;
 
 		int i = 10;
@@ -3608,11 +3629,11 @@ void Basket::updateEditorAppearance()
 			int para, index;
 			m_editor->textEdit()->getCursorPosition(&para, &index);
 			if (para == 0 && index == 0) {
-				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward,  /*select=*/false);
-				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward, /*select=*/false);
+				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
+				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
 			} else {
-				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward, /*select=*/false);
-				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward,  /*select=*/false);
+				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
+				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
 			}
 			htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
 		}
@@ -3622,7 +3643,7 @@ void Basket::updateEditorAppearance()
 void Basket::editorPropertiesChanged()
 {
 	if (isDuringEdit() && m_editor->note()->content()->type() == NoteType::Html) {
-		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
+		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? Q3TextEdit::AutoAll : Q3TextEdit::AutoNone);
 	}
 }
 
@@ -3754,7 +3775,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	if (!isDuringEdit())
 		return;
 
-	QFrame    *editorQFrame = dynamic_cast<QFrame*>(m_editor->widget());
+	Q3Frame    *editorQFrame = dynamic_cast<Q3Frame*>(m_editor->widget());
 	KTextEdit *textEdit     = m_editor->textEdit();
 //	QLineEdit *lineEdit     = m_editor->lineEdit();
 	Note      *note         = m_editor->note();
@@ -4206,7 +4227,7 @@ void Basket::doCopy(CopyMode copyMode)
 	NoteSelection *selection = selectedNotes();
 	int countCopied = countSelecteds();
 	if (selection->firstStacked()) {
-		QDragObject *d = NoteDrag::dragObject(selection, copyMode == CutToClipboard, /*source=*/0); // d will be deleted by QT
+		Q3DragObject *d = NoteDrag::dragObject(selection, copyMode == CutToClipboard, /*source=*/0); // d will be deleted by QT
 //		/*bool shouldRemove = */d->drag();
 //		delete selection;
 		cb->setData(d, mode); // NoteMultipleDrag will be deleted by QT
@@ -4597,7 +4618,7 @@ void Basket::noteMoveNoteDown()
 
 void Basket::wheelEvent(QWheelEvent *event)
 {
-	QScrollView::wheelEvent(event);
+	Q3ScrollView::wheelEvent(event);
 }
 
 void Basket::linkLookChanged()
@@ -4647,9 +4668,9 @@ void Basket::deleteFiles()
 	Tools::deleteRecursively(fullPath());
 }
 
-QValueList<State*> Basket::usedStates()
+Q3ValueList<State*> Basket::usedStates()
 {
-	QValueList<State*> states;
+	Q3ValueList<State*> states;
 	FOR_EACH_NOTE (note)
 		note->usedStates(states);
 	return states;
@@ -4682,7 +4703,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 	return fileName;
 }
 
-void Basket::listUsedTags(QValueList<Tag*> &list)
+void Basket::listUsedTags(Q3ValueList<Tag*> &list)
 {
 	if (!isLoaded()) {
 		load();
@@ -5160,7 +5181,7 @@ void Basket::watchedFileDeleted(const QString &fullPath)
 
 void Basket::updateModifiedNotes()
 {
-	for (QValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
+	for (Q3ValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
 		Note *note = noteForFullPath(*it);
 		if (note)
 			note->content()->loadFromFile(/*lazyLoad=*/false);
@@ -5246,7 +5267,7 @@ bool Basket::isFileEncrypted()
 {
 	QFile file(fullPath() + ".basket");
 
-	if (file.open(IO_ReadOnly)){
+	if (file.open(QIODevice::ReadOnly)){
 		QString line;
 
 		file.readLine(line, 32);
@@ -5261,7 +5282,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 	QFile file(fullPath);
 	bool encrypted = false;
 
-	if (file.open(IO_ReadOnly)){
+	if (file.open(QIODevice::ReadOnly)){
 		*array = file.readAll();
 		const char* magic = "-----BEGIN PGP MESSAGE-----";
 		uint i = 0;
@@ -5302,7 +5323,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 
 bool Basket::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	Q3CString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
 	return saveToFile(fullPath, bytes, bytes.length());
 }
 
@@ -5425,7 +5446,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 
 /*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	QCString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	Q3CString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
 	return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
 }
 
@@ -5443,7 +5464,7 @@ DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &mes
 	//enableButton(Close, false);
 	//enableButtonOK(false);
 	setModal(true);
-	QHBoxLayout *layout = new QHBoxLayout(plainPage(), /*margin=*/0, spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(plainPage(), /*margin=*/0, spacingHint());
 	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIcon::NoGroup, 64, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 	QLabel *iconLabel  = new QLabel(plainPage());
 	iconLabel->setPixmap(icon);
@@ -5485,7 +5506,7 @@ void Basket::lock()
 #if 0
 
 #include <qlayout.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qcolor.h>
@@ -5502,7 +5523,7 @@ void Basket::lock()
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <qinputdialog.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <kurldrag.h>
 #include <kiconloader.h>
 #include <klocale.h>

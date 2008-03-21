@@ -22,12 +22,15 @@
 #include <qdir.h>
 #include <qdom.h>
 #include <qpainter.h>
-#include <qstylesheet.h>
+#include <q3stylesheet.h>
 #include <qfontmetrics.h>
 #include <qwidget.h>
 #include <qcursor.h>
 #include <qstringlist.h>
 #include <qbuffer.h>
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <QPixmap>
 #include <ktextedit.h>
 #include <kservice.h>
 #include <kcolordialog.h>
@@ -377,7 +380,7 @@ QPixmap TextContent::feedbackPixmap(int width, int height)
 
 QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
-	QSimpleRichText richText(html(), note()->font());
+	Q3SimpleRichText richText(html(), note()->font());
 	richText.setWidth(width);
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
@@ -552,7 +555,7 @@ bool TextContent::finishLazyLoad()
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new QSimpleRichText(html, note()->font());
+	m_simpleRichText = new Q3SimpleRichText(html, note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
@@ -660,7 +663,7 @@ bool HtmlContent::finishLazyLoad()
 {
 	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
 	delete m_simpleRichText;
-	m_simpleRichText = new QSimpleRichText(Tools::tagURLs(m_html), note()->font());
+	m_simpleRichText = new Q3SimpleRichText(Tools::tagURLs(m_html), note()->font());
 	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
 	int minWidth = m_simpleRichText->widthUsed();
 	m_simpleRichText->setWidth(width);
@@ -770,7 +773,7 @@ bool ImageContent::finishLazyLoad()
 	{
 		QBuffer buffer(content);
 
-		buffer.open(IO_ReadOnly);
+		buffer.open(QIODevice::ReadOnly);
 		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
 		buffer.close();
 		if (m_format) {
@@ -796,7 +799,7 @@ bool ImageContent::saveToFile()
 	QByteArray ba;
 	QBuffer buffer(ba);
 
-	buffer.open(IO_WriteOnly);
+	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
 	return basket()->saveToFile(fullPath(), ba);
 }
@@ -1344,7 +1347,7 @@ void LinkContent::removePreview(const KFileItem*)
 }
 
 // QHttp slots for getting link title
-void LinkContent::httpReadyRead(const QHttpResponseHeader& )
+void LinkContent::httpReadyRead(const Q3HttpResponseHeader& )
 {
 	Q_ULONG bytesAvailable = m_http->bytesAvailable();
 	if(bytesAvailable <= 0)
@@ -1406,10 +1409,10 @@ void LinkContent::startFetchingLinkTitle()
 			m_http = 0;
 		}
 		if(m_http == 0) {
-			m_http = new QHttp(this);
+			m_http = new Q3Http(this);
 			connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
-			connect(m_http, SIGNAL(readyRead(const QHttpResponseHeader&)), this,
-					SLOT(httpReadyRead(const QHttpResponseHeader&)));
+			connect(m_http, SIGNAL(readyRead(const Q3HttpResponseHeader&)), this,
+					SLOT(httpReadyRead(const Q3HttpResponseHeader&)));
 		}
 		m_http->setHost(this->url().host(), this->url().port() == 0 ? 80: this->url().port());
 		QString path = this->url().encodedPathAndQuery(1);
@@ -1844,7 +1847,7 @@ void ColorContent::setColor(const QColor &color)
 
 void ColorContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 {
-	dragObject->addDragObject( new QColorDrag(color()) );
+	dragObject->addDragObject( new Q3ColorDrag(color()) );
 
 //	addDragObject(new KColorDrag( note->color(), 0 ));
 //	addDragObject(new QTextDrag( note->color().name(), 0 ));
@@ -1930,7 +1933,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 {
 	DEBUG_WIN << "Loading UnknownContent From " + basket()->folderName() + fileName();
 	QFile file(fullPath());
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&file);
 		QString line;
 		m_mimeTypes = "";
@@ -1957,10 +1960,10 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 {
 	QFile file(fullPath());
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&file);
 		// Get the MIME types names:
-		QValueList<QString> mimes;
+		Q3ValueList<QString> mimes;
 		QString line;
 		do {
 			if (!stream.atEnd()) {
@@ -1972,7 +1975,7 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 		// Add the streams:
 		Q_UINT64     size; // TODO: It was Q_UINT32 in version 0.5.0 !
 		QByteArray  *array;
-		QStoredDrag *storedDrag;
+		Q3StoredDrag *storedDrag;
 		for (uint i = 0; i < mimes.count(); ++i) {
 			// Get the size:
 			stream >> size;
@@ -1980,7 +1983,7 @@ void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
 			array = new QByteArray(size);
 			stream.readRawBytes(array->data(), size);
 			// Creata and add the QDragObject:
-			storedDrag = new QStoredDrag(*(mimes.at(i)));
+			storedDrag = new Q3StoredDrag(*(mimes.at(i)));
 			storedDrag->setEncodedData(*array);
 			dragObject->addDragObject(storedDrag);
 			delete array; // FIXME: Should we?

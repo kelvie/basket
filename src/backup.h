@@ -24,6 +24,8 @@
 #include <kdialogbase.h>
 #include <qapplication.h>
 #include <qthread.h>
+//Added by qt3to4:
+#include <QLabel>
 
 /**
  * @author Sébastien Laoût

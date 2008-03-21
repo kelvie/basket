@@ -22,9 +22,12 @@
 #define DEBUGWINDOW_H
 
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <Q3VBoxLayout>
 
-class QVBoxLayout;
-class QTextBrowser;
+class Q3VBoxLayout;
+class Q3TextBrowser;
 class QString;
 class QCloseEvent;
 
@@ -45,8 +48,8 @@ class DebugWindow : public QWidget  {
   protected:
 	virtual void closeEvent(QCloseEvent *event);
   private:
-	QVBoxLayout  *layout;
-	QTextBrowser *textBrowser;
+	Q3VBoxLayout  *layout;
+	Q3TextBrowser *textBrowser;
 };
 
 #define DEBUG_WIN if (Global::debugWindow) *Global::debugWindow

@@ -20,7 +20,7 @@
 
 #include <kapplication.h>
 #include <qdesktopwidget.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qrect.h>
 
 #include "popupmenu.h"
@@ -40,7 +40,7 @@
   * => Have those methods directly in Qt (or KDE) would be a great benefits !
   */
 
-void PopupMenu::execAtRectCenter(QPopupMenu &menu, const QRect &rect)
+void PopupMenu::execAtRectCenter(Q3PopupMenu &menu, const QRect &rect)
 {
 	// Compute point where to popup the menu that should be centered :
 	QSize menuSize = menu.sizeHint();
@@ -64,7 +64,7 @@ void PopupMenu::execAtRectCenter(QPopupMenu &menu, const QRect &rect)
 //#include <qpainter.h>
 //#include <qpen.h>
 
-void PopupMenu::execAtRectBottom(QPopupMenu &menu, const QRect &rect, bool centered)
+void PopupMenu::execAtRectBottom(Q3PopupMenu &menu, const QRect &rect, bool centered)
 {
 	QSize menuSize = menu.sizeHint() - QSize(1, 1); // A size is [1..n] => We want two lengths that are [0..(n-1)]
 	int desktopWidth  = kapp->desktop()->width();   //  to be compared/added/substracted with QRects/QPoints...
@@ -106,7 +106,7 @@ void PopupMenu::execAtRectBottom(QPopupMenu &menu, const QRect &rect, bool cente
 	menu.exec( point + QPoint(0, MENU_Y_OFFSET) ); // Stupid offset (Qt bug ?) : we should show the menus 2 pixels more bottom !
 }
 
-void PopupMenu::execAtRectRight(QPopupMenu &menu, const QRect &rect, bool centered)
+void PopupMenu::execAtRectRight(Q3PopupMenu &menu, const QRect &rect, bool centered)
 {
 	QSize menuSize = menu.sizeHint() - QSize(1, 1); // A size is [1..n] => We want two lengths that are [0..(n-1)]
 	int desktopWidth  = kapp->desktop()->width();   //  to be compared/added/substracted with QRects/QPoints...

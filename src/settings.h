@@ -22,6 +22,8 @@
 #define SETTINGS_H
 
 #include <qstring.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <kdialogbase.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
@@ -38,8 +40,8 @@
 #include "bnpview.h"
 #include "systemtray.h"
 
-class QGroupBox;
-class QButtonGroup;
+class Q3GroupBox;
+class Q3ButtonGroup;
 class KColorCombo;
 class KIntNumInput;
 class KGlobalAccel;

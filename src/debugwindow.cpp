@@ -19,9 +19,12 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-#include <qtextbrowser.h>
+#include <q3textbrowser.h>
 #include <qstring.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <Q3VBoxLayout>
 #include <klocale.h>
 
 #include "global.h"
@@ -33,10 +36,10 @@ DebugWindow::DebugWindow(QWidget *parent, const char *name )
 	Global::debugWindow = this;
 	setCaption(i18n("Debug Window"));
 
-	layout      = new QVBoxLayout(this);
-	textBrowser = new QTextBrowser(this);
+	layout      = new Q3VBoxLayout(this);
+	textBrowser = new Q3TextBrowser(this);
 
-	textBrowser->setWordWrap(QTextBrowser::NoWrap);
+	textBrowser->setWordWrap(Q3TextBrowser::NoWrap);
 
 	layout->addWidget(textBrowser);
 	textBrowser->show();

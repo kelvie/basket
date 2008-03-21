@@ -23,24 +23,32 @@
 
 #include <klistview.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QDragMoveEvent>
+#include <QFocusEvent>
+#include <QDragLeaveEvent>
 
 class Basket;
 
-class BasketListViewItem : public QListViewItem
+class BasketListViewItem : public Q3ListViewItem
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QListView     *parent, Basket *basket);
-		BasketListViewItem(QListViewItem *parent, Basket *basket);
-		BasketListViewItem(QListView     *parent, QListViewItem *after, Basket *basket);
-		BasketListViewItem(QListViewItem *parent, QListViewItem *after, Basket *basket);
+		BasketListViewItem(Q3ListView     *parent, Basket *basket);
+		BasketListViewItem(Q3ListViewItem *parent, Basket *basket);
+		BasketListViewItem(Q3ListView     *parent, Q3ListViewItem *after, Basket *basket);
+		BasketListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, Basket *basket);
 		~BasketListViewItem();
 		///
 		bool acceptDrop(const QMimeSource *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
-		int width(const QFontMetrics &fontMetrics, const QListView *listView, int column) const;
+		int width(const QFontMetrics &fontMetrics, const Q3ListView *listView, int column) const;
 		BasketListViewItem* lastChild();
 		BasketListViewItem* prevSibling();
 		BasketListViewItem* shownItemAbove();
@@ -91,7 +99,7 @@ class BasketTreeListView : public KListView
 		void viewportResizeEvent(QResizeEvent *event);
 	private:
 		QTimer         m_autoOpenTimer;
-		QListViewItem *m_autoOpenItem;
+		Q3ListViewItem *m_autoOpenItem;
 	private slots:
 		void autoOpen();
 	private:

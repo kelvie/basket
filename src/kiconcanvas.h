@@ -22,7 +22,7 @@
 
 class QTimer;
 class KIconLoader;
-class QDragObject;
+class Q3DragObject;
 class QIconLoader;
 
 /**
@@ -69,7 +69,7 @@ signals:
 
 private slots:
     void slotLoadFiles();
-    void slotCurrentChanged(QIconViewItem *item);
+    void slotCurrentChanged(Q3IconViewItem *item);
 
 private:
     QStringList mFiles;
@@ -78,7 +78,7 @@ private:
 
 protected:
     virtual void virtual_hook( int id, void* data );
-    virtual QDragObject *dragObject();
+    virtual Q3DragObject *dragObject();
     void loadIcon(const QString &path);
 
 private:

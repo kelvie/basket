@@ -1,3 +1,6 @@
+//Added by qt3to4:
+#include <Q3MemArray>
+#include <QPixmap>
 /***************************************************************************
  *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
@@ -31,9 +34,9 @@ class StopWatch
 	static void start(uint id);
 	static void check(uint id);
   private:
-	static QMemArray<QTime>  starts;
-	static QMemArray<double> totals;
-	static QMemArray<uint>   counts;
+	static Q3MemArray<QTime>  starts;
+	static Q3MemArray<double> totals;
+	static Q3MemArray<uint>   counts;
 };
 
 /** Some useful functions for that application.

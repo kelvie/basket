@@ -22,7 +22,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <ktempdir.h>
 
 #include "basketthumbcreator.h"
@@ -38,9 +38,9 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 	const Q_ULONG BUFFER_SIZE = 1024;
 
 	QFile file(path);
-	if (file.open(IO_ReadOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+	if (file.open(QIODevice::ReadOnly)) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::Latin1);
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive" && line != "BasKetNP:template") {
 			file.close();
@@ -68,7 +68,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				}
 				// Get the preview file:
 				QFile previewFile(tempFolder + "preview.png");
-				if (previewFile.open(IO_WriteOnly)) {
+				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
 					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {

@@ -47,6 +47,11 @@
 **********************************************************************/
 
 #include "qapplication.h"
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QKeyEvent>
+#include <QEvent>
 #ifndef QT_NO_EFFECTS
 #include "qwidget.h"
 #include "qeffects.h"
@@ -54,8 +59,8 @@
 #include "qimage.h"
 #include "qtimer.h"
 #include "qdatetime.h"
-#include "qguardedptr.h"
-#include "qscrollview.h"
+#include "qpointer.h"
+#include "q3scrollview.h"
 
 /* REMOVED CLASS DEFINITION HERE (MOVED TO qeffects.h) */
 
@@ -151,7 +156,7 @@ bool QAlphaWidget::eventFilter( QObject* o, QEvent* e )
 				break;
 		case QEvent::MouseButtonPress:
 #ifndef QT_NO_SCROLLVIEW
-	if ( ::qt_cast<QScrollView*>(o) )
+	if ( ::qt_cast<Q3ScrollView*>(o) )
 	    break;
 #endif
 		case QEvent::MouseButtonDblClick:
@@ -362,7 +367,7 @@ bool QRollEffect::eventFilter( QObject* o, QEvent* e )
 			break;
 		case QEvent::MouseButtonPress:
 #ifndef QT_NO_SCROLLVIEW
-	if ( ::qt_cast<QScrollView*>(o) )
+	if ( ::qt_cast<Q3ScrollView*>(o) )
 	    break;
 #endif
 		case QEvent::MouseButtonDblClick:

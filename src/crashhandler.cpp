@@ -24,7 +24,9 @@
 
 #include <qfile.h>
 #include <qregexp.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include <cstdio>         //popen, fread
 #include <iostream>
@@ -49,7 +51,7 @@
     #endif
 
     static QString
-    runCommand( const QCString &command )
+    runCommand( const Q3CString &command )
     {
         static const uint SIZE = 40960; //40 KiB
         static char stdoutBuf[ SIZE ];
@@ -118,7 +120,7 @@
 //                     "bt\n" "echo \\n\n"
 //                     "thread apply all bt\n";
 
-            const QCString gdb_batch =
+            const Q3CString gdb_batch =
                     "bt\n"
                     "echo \\n\\n\n"
                     "bt full\n"
@@ -133,11 +135,11 @@
             ::dup2( fileno( stdout ), fileno( stderr ) );
 
 
-            QCString gdb;
+            Q3CString gdb;
             gdb  = "gdb --nw -n --batch -x ";
             gdb += temp.name().latin1();
             gdb += " basket ";
-            gdb += QCString().setNum( ::getppid() );
+            gdb += Q3CString().setNum( ::getppid() );
 
             QString bt = runCommand( gdb );
 

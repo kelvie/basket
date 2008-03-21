@@ -18,11 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qdir.h>
 #include <qpainter.h>
 #include <qtextcodec.h>
 #include <qbuffer.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3CString>
+#include <Q3ValueList>
+#include <QPixmap>
 #include <kurldrag.h>
 #include <kdeversion.h>
 #include <kapplication.h>
@@ -47,7 +52,7 @@ void NoteDrag::createAndEmptyCuttingTmpFolder()
 	dir.mkdir(Global::tempCutFolder());
 }
 
-QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *source)
+Q3DragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *source)
 {
 	if (noteList->count() <= 0)
 		return 0;
@@ -61,22 +66,22 @@ QDragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget
 
 	// The "Native Format" Serialization:
 	QBuffer buffer;
-	if (buffer.open(IO_WriteOnly)) {
+	if (buffer.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&buffer);
 		// First append a pointer to the basket:
 		stream << (Q_UINT64)(noteList->firstStacked()->note->basket());
 		// Then a list of pointers to all notes, and parent groups:
 		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
 			stream << (Q_UINT64)(node->note);
-		QValueList<Note*> groups = noteList->parentGroups();
-		for (QValueList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
+		Q3ValueList<Note*> groups = noteList->parentGroups();
+		for (Q3ValueList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
 			stream << (Q_UINT64)(*it);
 		stream << (Q_UINT64)0;
 		// And finally the notes themselves:
 		serializeNotes(noteList, stream, cutting);
 		// Append the object:
 		buffer.close();
-		QStoredDrag *dragObject = new QStoredDrag(NOTE_MIME_STRING, source);
+		Q3StoredDrag *dragObject = new Q3StoredDrag(NOTE_MIME_STRING, source);
 		dragObject->setEncodedData(buffer.buffer());
 		multipleDrag->addDragObject(dragObject);
 	}
@@ -143,7 +148,7 @@ void NoteDrag::serializeText(NoteSelection *noteList, KMultipleDrag *multipleDra
 			textEquivalent += (!textEquivalent.isEmpty() ? "\n" : "") + text;
 	}
 	if (!textEquivalent.isEmpty())
-		multipleDrag->addDragObject( new QTextDrag(textEquivalent) );
+		multipleDrag->addDragObject( new Q3TextDrag(textEquivalent) );
 }
 
 void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDrag)
@@ -157,12 +162,12 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDra
 	}
 	if (!htmlEquivalent.isEmpty()) {
 		// Add HTML flavour:
-		QTextDrag *htmlDrag = new QTextDrag(htmlEquivalent);
+		Q3TextDrag *htmlDrag = new Q3TextDrag(htmlEquivalent);
 		htmlDrag->setSubtype("html");
 		multipleDrag->addDragObject(htmlDrag);
 		// But also QTextEdit flavour, to be able to paste several notes to a text edit:
 		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).local8Bit();
-		QStoredDrag *richTextDrag = new QStoredDrag("application/x-qrichtext");
+		Q3StoredDrag *richTextDrag = new Q3StoredDrag("application/x-qrichtext");
 		richTextDrag->setEncodedData(byteArray);
 		multipleDrag->addDragObject(richTextDrag);
 	}
@@ -170,7 +175,7 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDra
 
 void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDrag)
 {
-	QValueList<QPixmap> pixmaps;
+	Q3ValueList<QPixmap> pixmaps;
 	QPixmap pixmap;
 	for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked()) {
 		pixmap = node->note->content()->toPixmap();
@@ -185,7 +190,7 @@ void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDr
 			// Search the total size:
 			int height = 0;
 			int width  = 0;
-			for (QValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
+			for (Q3ValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
 				height += (*it).height();
 				if ((*it).width() > width)
 					width = (*it).width();
@@ -195,12 +200,12 @@ void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDr
 			pixmapEquivalent.fill(Qt::white);
 			QPainter painter(&pixmapEquivalent);
 			height = 0;
-			for (QValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
+			for (Q3ValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
 				painter.drawPixmap(0, height, *it);
 				height += (*it).height();
 			}
 		}
-		QImageDrag *imageDrag = new QImageDrag(pixmapEquivalent.convertToImage());
+		Q3ImageDrag *imageDrag = new Q3ImageDrag(pixmapEquivalent.convertToImage());
 		multipleDrag->addDragObject(imageDrag);
 	}
 }
@@ -228,7 +233,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 #else
 		KURLDrag2 *urlsDrag = new KURLDrag2(urls);
 		QByteArray byteArray = urlsDrag->encodedData2("text/uri-list");
-		QStoredDrag *uriListDrag = new QStoredDrag("text/uri-list");
+		Q3StoredDrag *uriListDrag = new Q3StoredDrag("text/uri-list");
 		uriListDrag->setEncodedData(byteArray);
 		multipleDrag->addDragObject(uriListDrag);
 		delete urlsDrag;
@@ -243,16 +248,16 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 /*		Code for only one: ===============
 		xMozUrl = note->title() + "\n" + note->url().prettyURL();*/
 		QByteArray baMozUrl;
-		QTextStream stream(baMozUrl, IO_WriteOnly);
-		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
+		Q3TextStream stream(baMozUrl, QIODevice::WriteOnly);
+		stream.setEncoding(Q3TextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
 		stream << xMozUrl;
-		QStoredDrag *xMozUrlDrag = new QStoredDrag("text/x-moz-url");
+		Q3StoredDrag *xMozUrlDrag = new Q3StoredDrag("text/x-moz-url");
 		xMozUrlDrag->setEncodedData(baMozUrl);
 		multipleDrag->addDragObject(xMozUrlDrag);
 
 		if (cutting) {
 			QByteArray  arrayCut(2);
-			QStoredDrag *storedDragCut = new QStoredDrag("application/x-kde-cutselection");
+			Q3StoredDrag *storedDragCut = new Q3StoredDrag("application/x-kde-cutselection");
 			arrayCut[0] = '1';
 			arrayCut[1] = 0;
 			storedDragCut->setEncodedData(arrayCut);
@@ -279,9 +284,9 @@ QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 	QColor textColor       = noteList->firstStacked()->note->basket()->textColor();
 	QColor backgroundColor = noteList->firstStacked()->note->basket()->backgroundColor().dark(NoteContent::FEEDBACK_DARKING);
 
-	QValueList<QPixmap> pixmaps;
-	QValueList<QColor>  backgrounds;
-	QValueList<bool>    spaces;
+	Q3ValueList<QPixmap> pixmaps;
+	Q3ValueList<QColor>  backgrounds;
+	Q3ValueList<bool>    spaces;
 	QPixmap pixmap;
 	int height = 0;
 	int width  = 0;
@@ -324,9 +329,9 @@ QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 		QPainter painter(&result);
 		// Draw all the images:
 		height = MARGIN;
-		QValueList<QPixmap>::iterator it;
-		QValueList<QColor>::iterator  it2;
-		QValueList<bool>::iterator    it3;
+		Q3ValueList<QPixmap>::iterator it;
+		Q3ValueList<QColor>::iterator  it2;
+		Q3ValueList<bool>::iterator    it3;
 		int i = 0;
 		for (it = pixmaps.begin(), it2 = backgrounds.begin(), it3 = spaces.begin(); it != pixmaps.end(); ++it, ++it2, ++it3, ++i) {
 			if (i != 0 && (*it3)) {
@@ -376,7 +381,7 @@ bool NoteDrag::canDecode(QMimeSource *source)
 Basket* NoteDrag::basketOf(QMimeSource *source)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		Q_UINT64 basketPointer;
@@ -386,17 +391,17 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 		return 0;
 }
 
-QValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
+Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		Q_UINT64 basketPointer;
 		stream >> (Q_UINT64&)basketPointer;
 		// Get the note list:
 		Q_UINT64          notePointer;
-		QValueList<Note*> notes;
+		Q3ValueList<Note*> notes;
 		do {
 			stream >> notePointer;
 			if (notePointer != 0)
@@ -405,13 +410,13 @@ QValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 		// Done:
 		return notes;
 	} else
-		return QValueList<Note*>();
+		return Q3ValueList<Note*>();
 }
 
 Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes)
 {
 	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
-	if (buffer.open(IO_ReadOnly)) {
+	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
 		Q_UINT64 basketPointer;
@@ -419,7 +424,7 @@ Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool
 		Basket *basket = (Basket*)basketPointer;
 		// Get the note list:
 		Q_UINT64          notePointer;
-		QValueList<Note*> notes;
+		Q3ValueList<Note*> notes;
 		do {
 			stream >> notePointer;
 			if (notePointer != 0)
@@ -546,14 +551,14 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 
 bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str)
 {
-	QCString subtype("plain");
+	Q3CString subtype("plain");
 	return decode(e, str, subtype);
 }
 
-bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QCString &subtype)
+bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, Q3CString &subtype)
 {
 	// Get the string:
-	bool ok = QTextDrag::decode(e, str, subtype);
+	bool ok = Q3TextDrag::decode(e, str, subtype);
 
 	// Test if it was a UTF-16 string (from eg. Mozilla):
 	if (str.length() >= 2) {

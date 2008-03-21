@@ -22,10 +22,13 @@
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qcursor.h>
-#include <qwhatsthis.h>
-#include <qvaluelist.h>
+#include <q3whatsthis.h>
+#include <q3valuelist.h>
 #include <qregexp.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QMoveEvent>
+#include <QResizeEvent>
 #include <kstringhandler.h>
 
 #include <ksqueezedtextlabel.h>
@@ -35,7 +38,7 @@
 #include <kpopupmenu.h>
 #include <kiconloader.h>
 #include <kiconeffect.h>
-#include <qiconset.h>
+#include <qicon.h>
 #include <kaction.h>
 #include <kapp.h>
 #include <klocale.h>

@@ -23,12 +23,12 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qsimplerichtext.h>
+#include <q3simplerichtext.h>
 #include <qpixmap.h>
 #include <qmovie.h>
 #include <qcolor.h>
 #include <kurl.h>
-#include <qhttp.h>
+#include <q3http.h>
 
 #include "linklabel.h"
 
@@ -181,7 +181,7 @@ class TextContent : public NoteContent
 	QString text() { return m_text; }     /// << @return the text note-content.
   protected:
 	QString          m_text;
-	QSimpleRichText *m_simpleRichText;
+	Q3SimpleRichText *m_simpleRichText;
 };
 
 /** Real implementation of rich text (HTML) notes:
@@ -225,7 +225,7 @@ class HtmlContent : public NoteContent
   protected:
 	QString          m_html;
 	QString          m_textEquivalent; //OPTIM_FILTER
-	QSimpleRichText *m_simpleRichText;
+	Q3SimpleRichText *m_simpleRichText;
 };
 
 /** Real implementation of image notes:
@@ -461,12 +461,12 @@ class LinkContent : public QObject, public NoteContent
 	bool        m_autoTitle;
 	bool        m_autoIcon;
 	LinkDisplay m_linkDisplay;
-	QHttp*      m_http;
+	Q3Http*      m_http;
 	QString*    m_httpBuff;
 	// File Preview Management:
   protected slots:
 	void httpDone(bool err);
-	void httpReadyRead(const QHttpResponseHeader& resp);
+	void httpReadyRead(const Q3HttpResponseHeader& resp);
 	void newPreview(const KFileItem*, const QPixmap &preview);
 	void removePreview(const KFileItem*);
 	void startFetchingUrlPreview();

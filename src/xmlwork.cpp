@@ -29,7 +29,7 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 {
 	QDomDocument *doc = new QDomDocument(name);
 	QFile file(filePath);
-	if ( ! file.open(IO_ReadOnly) ) {
+	if ( ! file.open(QIODevice::ReadOnly) ) {
 		// QMessageBox::information(this, "Load an XML file", "Error : un-openable file");
 		delete doc;
 		return 0;

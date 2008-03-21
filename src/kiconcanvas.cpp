@@ -30,12 +30,12 @@
 #include <kurldrag.h>
 #include <kmultipledrag.h>
 
-#include <qsortedlist.h>
+#include <q3sortedlist.h>
 #include <qimage.h>
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <qfileinfo.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <cmath>
 #include <math.h>
 #include <algorithm>
@@ -45,11 +45,11 @@
 #include <svgicons/ksvgiconpainter.h>
 #endif
 
-class KIconCanvasItem : public QIconViewItem
+class KIconCanvasItem : public Q3IconViewItem
 {
   public:
-    KIconCanvasItem ( QIconView * parent, const QString & key, const QPixmap & pixmap )
-        : QIconViewItem(parent)
+    KIconCanvasItem ( Q3IconView * parent, const QString & key, const QPixmap & pixmap )
+        : Q3IconViewItem(parent)
     {
         setText(QFileInfo(key).baseName());
         setKey(key);
@@ -59,7 +59,7 @@ class KIconCanvasItem : public QIconViewItem
 
     }
 
-    int compare(QIconViewItem *rhs) const
+    int compare(Q3IconViewItem *rhs) const
     {
         return QString::localeAwareCompare(text().lower(), rhs->text().lower());
     }
@@ -96,8 +96,8 @@ KIconCanvas::KIconCanvas(QWidget *parent, const char *name)
     mpLoader = KGlobal::iconLoader();
     mpTimer = new QTimer(this);
     connect(mpTimer, SIGNAL(timeout()), SLOT(slotLoadFiles()));
-    connect(this, SIGNAL(currentChanged(QIconViewItem *)),
-	    SLOT(slotCurrentChanged(QIconViewItem *)));
+    connect(this, SIGNAL(currentChanged(Q3IconViewItem *)),
+	    SLOT(slotCurrentChanged(Q3IconViewItem *)));
     setAcceptDrops(false);
     setShowToolTips(true);
     setStrictIconSize(false);
@@ -210,7 +210,7 @@ void KIconCanvas::stopLoading()
     d->m_bLoading = false;
 }
 
-void KIconCanvas::slotCurrentChanged(QIconViewItem *item)
+void KIconCanvas::slotCurrentChanged(Q3IconViewItem *item)
 {
     emit nameChanged((item != 0L) ? item->text() : QString::null);
 }
@@ -227,7 +227,7 @@ void KIconCanvas::setStrictIconSize( bool strictIconSize )
     d->mStrictIconSize = strictIconSize;
 }
 
-QDragObject *KIconCanvas::dragObject()
+Q3DragObject *KIconCanvas::dragObject()
 {
     // We use QImageDrag rather than KURLDrag so that the user can't drag an icon out of the theme!
     // TODO: support SVG?
@@ -236,7 +236,7 @@ QDragObject *KIconCanvas::dragObject()
     QPoint hot;
     hot.setX(pos.x() - currentItem()->pos().x() - (currentItem()->width() - pixmap->width()) / 2);
     hot.setY(pos.y() - currentItem()->pos().y() - (currentItem()->height() - pixmap->height()) / 2);
-    QImageDrag *drag = new QImageDrag( pixmap->convertToImage(), this );
+    Q3ImageDrag *drag = new Q3ImageDrag( pixmap->convertToImage(), this );
     drag->setPixmap(*pixmap, hot);
     return drag;
 }

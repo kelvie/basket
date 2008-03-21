@@ -20,15 +20,19 @@
 
 #include <qstring.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
 #include <kstandarddirs.h>
 #include <klocale.h>
 #include <kfiledialog.h>
-#include <qptrstack.h>
+#include <q3ptrstack.h>
 #include <qlayout.h>
 #include <qvbuttongroup.h>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 #include "softwareimporters.h"
 #include "basket.h"
@@ -46,9 +50,9 @@ TreeImportDialog::TreeImportDialog(QWidget *parent)
                KDialogBase::Ok, parent, /*name=*/"ImportHierarchy", /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
-	m_choices = new QVButtonGroup(i18n("How to Import the Notes?"), page);
+	m_choices = new Q3VButtonGroup(i18n("How to Import the Notes?"), page);
 	new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
 	new QRadioButton(i18n("&First level notes in separate baskets"),                   m_choices);
 	new QRadioButton(i18n("&All notes in one basket"),                                 m_choices);
@@ -75,9 +79,9 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
                KDialogBase::Ok, parent, /*name=*/"ImportTextFile", /*modal=*/true, /*separator=*/false)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
-	m_choices = new QVButtonGroup(i18n("Format of the Text File"), page);
+	m_choices = new Q3VButtonGroup(i18n("Format of the Text File"), page);
 	new QRadioButton(i18n("Notes separated by an &empty line"), m_choices);
 	new QRadioButton(i18n("One &note per line"),                m_choices);
 	new QRadioButton(i18n("Notes begin with a &dash (-)"),      m_choices);
@@ -85,9 +89,9 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 	m_anotherSeparator = new QRadioButton(i18n("&Use another separator:"),           m_choices);
 
 	QWidget *indentedTextEdit = new QWidget(m_choices);
-	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
+	Q3HBoxLayout *hLayout = new Q3HBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
 	hLayout->addSpacing(20);
-	m_customSeparator = new QTextEdit(indentedTextEdit);
+	m_customSeparator = new Q3TextEdit(indentedTextEdit);
 	m_customSeparator->setTextFormat(Qt::PlainText);
 	hLayout->addWidget(m_customSeparator);
 	m_choices->insertChild(indentedTextEdit);
@@ -239,9 +243,9 @@ void SoftwareImporters::importKJots()
 
 	for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) { // For each file
 		QFile file(dirPath + *it);
-		if (file.open(IO_ReadOnly)) {
-			QTextStream stream(&file);
-			stream.setEncoding(QTextStream::Locale);
+		if (file.open(QIODevice::ReadOnly)) {
+			Q3TextStream stream(&file);
+			stream.setEncoding(Q3TextStream::Locale);
 			QString buf = stream.readLine();
 
 			// IT IS A NOTEBOOK FILE, AT THE VERION 0.6.x and older:
@@ -317,9 +321,9 @@ void SoftwareImporters::importKNotes()
 		if ( ! (*it).endsWith(".ics") ) // Don't process *.ics~ and otehr files
 			continue;
 		QFile file(dirPath + *it);
-		if (file.open(IO_ReadOnly)) {
-			QTextStream stream(&file);
-			stream.setEncoding(QTextStream::UnicodeUTF8);
+		if (file.open(QIODevice::ReadOnly)) {
+			Q3TextStream stream(&file);
+			stream.setEncoding(Q3TextStream::UnicodeUTF8);
 
 			// First create a basket for it:
 			BasketFactory::newBasket(/*icon=*/"knotes", /*name=*/i18n("From KNotes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
@@ -414,9 +418,9 @@ void SoftwareImporters::importStickyNotes()
 QString loadUtf8FileToString(const QString &fileName)
 {
 	QFile file(fileName);
-	if (file.open(IO_ReadOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+	if (file.open(QIODevice::ReadOnly)) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::UnicodeUTF8);
 		QString text;
 		text = stream.read();
 		file.close();
@@ -481,9 +485,9 @@ void SoftwareImporters::importTextFile()
 	QString separator = dialog.separator();
 
 	QFile file(fileName);
-	if (file.open(IO_ReadOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Locale);
+	if (file.open(QIODevice::ReadOnly)) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::Locale);
 		QString content = stream.read();
 		QStringList list = (separator.isEmpty()
 			? QStringList(content)
@@ -518,7 +522,7 @@ void SoftwareImporters::importKnowIt()
 		QFile file(url.path());
 		QFileInfo info(url.path());
 		Basket* basket = 0;
-		QPtrStack<Basket> baskets;
+		Q3PtrStack<Basket> baskets;
 		QString text;
 		int hierarchy = 0;
 
@@ -539,16 +543,16 @@ void SoftwareImporters::importKnowIt()
 		basket->load();
 		baskets.push(basket);
 
-		if(file.open(IO_ReadOnly))
+		if(file.open(QIODevice::ReadOnly))
 		{
-			QTextStream stream(&file);
+			Q3TextStream stream(&file);
 			uint level = 0;
 			QString name;
 			QString line;
 			QStringList links;
 			QStringList descriptions;
 
-			stream.setEncoding(QTextStream::UnicodeUTF8);
+			stream.setEncoding(Q3TextStream::UnicodeUTF8);
 			while(1)
 			{
 				line = stream.readLine();

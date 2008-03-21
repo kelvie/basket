@@ -24,6 +24,13 @@
 #include <qcombobox.h>
 #include <qcolor.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QPaintEvent>
 
 class KColorPopup;
 

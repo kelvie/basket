@@ -22,21 +22,24 @@
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qimage.h>
-#include <qstylesheet.h>
+#include <q3stylesheet.h>
 #include <qregexp.h>
-#include <qvaluestack.h>
+#include <q3valuestack.h>
 #include <qfileinfo.h>
 #include <qdir.h>
 #include <qmime.h>
 #include <qfont.h>
 #include <qfontinfo.h>
-#include <qobjectlist.h>
+#include <qobject.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <Q3MemArray>
 
 #include "tools.h"
 
-QMemArray<QTime>  StopWatch::starts;
-QMemArray<double> StopWatch::totals;
-QMemArray<uint>   StopWatch::counts;
+Q3MemArray<QTime>  StopWatch::starts;
+Q3MemArray<double> StopWatch::totals;
+Q3MemArray<uint>   StopWatch::counts;
 
 void StopWatch::start(uint id)
 {
@@ -70,7 +73,7 @@ QString Tools::textToHTML(const QString &text)
 		return "<p>&nbsp;</p>";
 
 	// convertFromPlainText() replace "\n\n" by "</p>\n<p>": we don't want that
-	QString htmlString = QStyleSheet::convertFromPlainText(text, QStyleSheetItem::WhiteSpaceNormal);
+	QString htmlString = Q3StyleSheet::convertFromPlainText(text, Q3StyleSheetItem::WhiteSpaceNormal);
 	return htmlString.replace("</p>\n", "<br>\n<br>\n").replace("\n<p>", "\n"); // Don't replace first and last tags
 }
 
@@ -162,8 +165,8 @@ QString Tools::htmlToText(const QString &html)
 	QString tag, tag3;
 	// To manage lists:
 	int deep = 0;            // The deep of the current line in imbriqued lists
-	QValueStack<bool> ul;    // true if current list is a <ul> one, false if it's an <ol> one
-	QValueStack<int>  lines; // The line number if it is an <ol> list
+	Q3ValueStack<bool> ul;    // true if current list is a <ul> one, false if it's an <ol> one
+	Q3ValueStack<int>  lines; // The line number if it is an <ol> list
 	// We're removing every other tags, or replace them in the case of li:
 	while ( (pos = text.find("<"), pos) != -1 ) {
 		// What is the current tag?
@@ -428,7 +431,7 @@ bool Tools::isAFileCut(QMimeSource *source)
 {
 	if (source->provides("application/x-kde-cutselection")) {
 		QByteArray array = source->encodedData("application/x-kde-cutselection");
-		return !array.isEmpty() && QCString(array.data(), array.size() + 1).at(0) == '1';
+		return !array.isEmpty() && Q3CString(array.data(), array.size() + 1).at(0) == '1';
 	} else
 		return false;
 }

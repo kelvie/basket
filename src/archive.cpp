@@ -20,9 +20,11 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 #include <qmap.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3TextStream>
 #include <ktar.h>
 #include <qdom.h>
 #include <kmessagebox.h>
@@ -67,7 +69,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	// Create the temporar archive file:
 	QString tempDestination = tempFolder + "temp-archive.tar.gz";
 	KTar tar(tempDestination, "application/x-gzip");
-	tar.open(IO_WriteOnly);
+	tar.open(QIODevice::WriteOnly);
 	tar.writeDir("baskets", "", "");
 
 	progress->advance(1); // Preparation finished
@@ -87,7 +89,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.remove(tempFolder + "baskets.xml");
 
 	// Save a Small tags.xml Document:
-	QValueList<Tag*> tags;
+	Q3ValueList<Tag*> tags;
 	listUsedTags(basket, withSubBaskets, tags);
 	Tag::saveTagsTo(tags, tempFolder + "tags.xml");
 	tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
@@ -137,11 +139,11 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 
 	// Finaly Save to the Real Destination file:
 	QFile file(destination);
-	if (file.open(IO_WriteOnly)) {
+	if (file.open(QIODevice::WriteOnly)) {
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::Latin1);
 		stream << "BasKetNP:archive\n"
 		       << "version:0.6.1\n"
 //		       << "read-compatible:0.6.1\n"
@@ -152,14 +154,14 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		char *buffer = new char[BUFFER_SIZE];
 		Q_LONG sizeRead;
 		QFile previewFile(tempFolder + "preview.png");
-		if (previewFile.open(IO_ReadOnly)) {
+		if (previewFile.open(QIODevice::ReadOnly)) {
 			while ((sizeRead = previewFile.readBlock(buffer, BUFFER_SIZE)) > 0)
 				file.writeBlock(buffer, sizeRead);
 		}
 		stream << "archive*:" << archiveSize << "\n";
 		// Copy the Archive File:
 		QFile archiveFile(tempDestination);
-		if (archiveFile.open(IO_ReadOnly)) {
+		if (archiveFile.open(QIODevice::ReadOnly)) {
 			while ((sizeRead = archiveFile.readBlock(buffer, BUFFER_SIZE)) > 0)
 				file.writeBlock(buffer, sizeRead);
 		}
@@ -231,7 +233,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	}
 }
 
-void Archive::listUsedTags(Basket *basket, bool recursive, QValueList<Tag*> &list)
+void Archive::listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -251,9 +253,9 @@ void Archive::open(const QString &path)
 	const Q_ULONG BUFFER_SIZE = 1024;
 
 	QFile file(path);
-	if (file.open(IO_ReadOnly)) {
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+	if (file.open(QIODevice::ReadOnly)) {
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::Latin1);
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive") {
 			KMessageBox::error(0, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));
@@ -343,7 +345,7 @@ void Archive::open(const QString &path)
 				// Get the archive file:
 				QString tempArchive = tempFolder + "temp-archive.tar.gz";
 				QFile archiveFile(tempArchive);
-				if (archiveFile.open(IO_WriteOnly)) {
+				if (archiveFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
 					while ((sizeRead = file.readBlock(buffer, QMIN(BUFFER_SIZE, size))) > 0) {
@@ -358,7 +360,7 @@ void Archive::open(const QString &path)
 					QDir dir;
 					dir.mkdir(extractionFolder);
 					KTar tar(tempArchive, "application/x-gzip");
-					tar.open(IO_ReadOnly);
+					tar.open(QIODevice::ReadOnly);
 					tar.directory()->copyTo(extractionFolder);
 					tar.close();
 
