@@ -11,11 +11,29 @@ include(MacroLibrary)
 
 include(ConvenienceLibs.cmake)
 
-include(ManualStuff.cmake)
+#include(ManualStuff.cmake)
 
-include(ConfigureChecks.cmake)
+FIND_LIBRARY(GPGME gpgme)
+IF(NOT GPGME-NOTFOUND)
+  SET(HAVE_LIBGPGME 1)
+  SET(GPGME_LIB gpgme)
+  ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64)
+ELSE(NOT GPGME-NOTFOUND)
+  MESSAGE("GPG not found, configuring without")
+ENDIF(NOT GPGME-NOTFOUND)
+
+#TODO: find meinproc
+
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+
+#include(ConfigureChecks.cmake)
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
+
+add_subdirectory(doc)
+add_subdirectory(src)
 
 message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}: skipped subdir $(TOPSUBDIRS)")
 
