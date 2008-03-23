@@ -728,7 +728,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool acti
 	QPen  pen  = painter->pen();
 	QFont font = painter->font();
 
-	int iconSize   = KIcon::SizeSmall;
+	int iconSize   = KIconLoader::SizeSmall;
 	int iconMargin = StateMenuItem::iconMargin();
 
 	/* When an item is disabled, it often have a 3D sunken look.
@@ -748,7 +748,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool acti
 		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
 	if (!m_icon.isEmpty() && !drawingEtchedText) {
 		QPixmap icon = kapp->iconLoader()->loadIcon(m_icon, KIcon::Small, iconSize,
-		                                            (enabled ? (active ? KIcon::ActiveState : KIcon::DefaultState) : KIcon::DisabledState),
+		                                            (enabled ? (active ? KIcon::ActiveState : KIconLoader::DefaultState) : KIcon::DisabledState),
 		                                            /*path_store=*/0L, /*canReturnNull=*/true);
 		painter->drawPixmap(x, y + (h-iconSize)/2, icon);
 	}
@@ -774,7 +774,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool acti
 
 QSize IndentedMenuItem::sizeHint()
 {
-	int iconSize   = KIcon::SizeSmall;
+	int iconSize   = KIconLoader::SizeSmall;
 	int iconMargin = StateMenuItem::iconMargin();
 	QSize textSize = QFontMetrics(KGlobalSettings::menuFont()).size( Qt::AlignLeft | Qt::AlignVCenter | ShowPrefix | DontClip,  m_text );
 	return QSize(iconSize + iconMargin + textSize.width(), textSize.height());
@@ -797,7 +797,7 @@ void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active,
 	QPen  pen  = painter->pen();
 	QFont font = painter->font();
 
-	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
+	int iconSize   = 16; // We use 16 instead of KIconLoader::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
 
 	if (!active && m_state->backgroundColor().isValid())
 		painter->fillRect(x/*-1*/, y/*-1*/, w/*+2*/, h/*+2*/, m_state->backgroundColor());
@@ -818,7 +818,7 @@ void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active,
 		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
 	if (!m_state->emblem().isEmpty() && !drawingEtchedText) {
 		QPixmap icon = kapp->iconLoader()->loadIcon(m_state->emblem(), KIcon::Small, iconSize,
-		                                            (enabled ? (active ? KIcon::ActiveState : KIcon::DefaultState) : KIcon::DisabledState),
+		                                            (enabled ? (active ? KIcon::ActiveState : KIconLoader::DefaultState) : KIcon::DisabledState),
 		                                            /*path_store=*/0L, /*canReturnNull=*/true);
 		painter->drawPixmap(x, y + (h-iconSize)/2, icon);
 	}
@@ -847,7 +847,7 @@ void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active,
 
 QSize StateMenuItem::sizeHint()
 {
-	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
+	int iconSize   = 16; // We use 16 instead of KIconLoader::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
 	QFont theFont = m_state->font(KGlobalSettings::menuFont());
 	QSize textSize = QFontMetrics(theFont).size( Qt::AlignLeft | Qt::AlignVCenter | ShowPrefix | DontClip,  m_name );
 	return QSize(iconSize + iconMargin() + textSize.width(), textSize.height());

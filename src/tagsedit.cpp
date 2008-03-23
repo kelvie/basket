@@ -239,7 +239,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	QFontMetrics fontMetrics(font);
 	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
-	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
+	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
 
 	QColor backgroundColor = (isSelected() ? KGlobalSettings::highlightColor()
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
@@ -411,7 +411,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *emblemWidget = new QWidget(stateWidget);
 	m_emblem = new KIconButton(emblemWidget);
-	m_emblem->setIconType(KIcon::NoGroup, KIcon::Action);
+	m_emblem->setIconType(KIconLoader::NoGroup, KIcon::Action);
 	m_emblem->setIconSize(16);
 	m_emblem->setIcon("editdelete");
 	m_removeEmblem = new QPushButton(i18n("Remove tag emblem", "Remo&ve"), emblemWidget);

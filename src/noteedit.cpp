@@ -37,7 +37,7 @@
 #include <kaction.h>
 #include <kurifilter.h>
 #include <kdebug.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <kglobalsettings.h>
 
 #include "kicondialog.h"
@@ -388,8 +388,8 @@ ImageEditor::ImageEditor(ImageContent *imageContent, QWidget *parent)
 		"Images can not be edited here at the moment (the next version of BasKet Note Pads will include an image editor).\n"
 		"Do you want to open it with an application that understand it?"),
 		i18n("Edit Image Note"),
-		KStdGuiItem::open(),
-		KStdGuiItem::cancel());
+		KStandardGuiItem::open(),
+		KStandardGuiItem::cancel());
 
 	if (choice == KMessageBox::Yes)
 		note()->basket()->noteOpen(note());
@@ -404,8 +404,8 @@ AnimationEditor::AnimationEditor(AnimationContent *animationContent, QWidget *pa
 		"This animated image can not be edited here.\n"
 		"Do you want to open it with an application that understands it?"),
 		i18n("Edit Animation Note"),
-		KStdGuiItem::open(),
-		KStdGuiItem::cancel());
+		KStandardGuiItem::open(),
+		KStandardGuiItem::cancel());
 
 	if (choice == KMessageBox::Yes)
 		note()->basket()->noteOpen(note());
@@ -541,7 +541,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	QWidget     *page   = plainPage();
 	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
-	m_url = new KURLRequester(m_noteContent->url().url(), page);
+	m_url = new KUrlRequester(m_noteContent->url().url(), page);
 
 	QWidget *wid1 = new QWidget(page);
 	Q3HBoxLayout *titleLay = new Q3HBoxLayout(wid1, /*margin=*/0, spacingHint());
@@ -556,8 +556,8 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
-	KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KURL(m_url->lineEdit()->text()));
-	m_icon->setIconType(KIcon::NoGroup, KIcon::MimeType);
+	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
+	m_icon->setIconType(KIconLoader::NoGroup, KIcon::MimeType);
 	m_icon->setIconSize(LinkLook::lookForURL(filteredURL)->iconSize());
 	m_autoIcon = new QPushButton(i18n("Auto"), wid); // Create before to know size here:
 	/* Icon button: */
@@ -629,7 +629,7 @@ void LinkEditDialog::urlChanged(const QString&)
 //	guessTitle();
 //	guessIcon();
 	// Optimization (filter only once):
-	KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->url()));//KURIFilter::self()->filteredURI(KURL(m_url->url()));
+	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 	if (m_autoIcon->isOn())
 		m_icon->setIcon(NoteFactory::iconForURL(filteredURL));
 	if (m_autoTitle->isOn()) {
@@ -654,7 +654,7 @@ void LinkEditDialog::doNotAutoIcon(QString)
 void LinkEditDialog::guessIcon()
 {
 	if (m_autoIcon->isOn()) {
-		KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->url()));//KURIFilter::self()->filteredURI(KURL(m_url->url()));
+		KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 		m_icon->setIcon(NoteFactory::iconForURL(filteredURL));
 	}
 }
@@ -662,7 +662,7 @@ void LinkEditDialog::guessIcon()
 void LinkEditDialog::guessTitle()
 {
 	if (m_autoTitle->isOn()) {
-		KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->url()));//KURIFilter::self()->filteredURI(KURL(m_url->url()));
+		KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 		m_title->setText(NoteFactory::titleForURL(filteredURL));
 		m_autoTitle->setOn(true); // Because the setText() will disable it!
 	}
@@ -670,7 +670,7 @@ void LinkEditDialog::guessTitle()
 
 void LinkEditDialog::slotOk()
 {
-	KURL filteredURL = NoteFactory::filteredURL(KURL(m_url->url()));//KURIFilter::self()->filteredURI(KURL(m_url->url()));
+	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 	m_noteContent->setLink(filteredURL, m_title->text(), m_icon->icon(), m_autoTitle->isOn(), m_autoIcon->isOn());
 	m_noteContent->setEdited();
 
@@ -709,7 +709,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
-	m_icon->setIconType(KIcon::NoGroup, KIcon::Application);
+	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Application);
 	m_icon->setIconSize(LinkLook::launcherLook->iconSize());
 	QPushButton *guessButton = new QPushButton(i18n("&Guess"), wid);
 	/* Icon button: */
@@ -810,18 +810,18 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 	richTextFont = new FocusedFontCombo(Global::mainWindow());
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
 	richTextFont->setCurrentFont(defaultFont.family());
-	KWidgetAction *action = new KWidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
+	K3WidgetAction *action = new K3WidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
 	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font");
 
 	richTextFontSize = new FontSizeCombo(/*rw=*/true, Global::mainWindow());
 	richTextFontSize->setFontSize(defaultFont.pointSize());
-	action = new KWidgetAction(richTextFontSize, i18n("Font Size"), Qt::Key_F7,
+	action = new K3WidgetAction(richTextFontSize, i18n("Font Size"), Qt::Key_F7,
 	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font_size");
 
 	richTextColor = new FocusedColorCombo(Global::mainWindow());
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	richTextColor->setColor(textColor);
-	action = new KWidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
+	action = new K3WidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
 
 	richTextBold      = new KToggleAction( i18n("Bold"),        "text_bold",   "Ctrl+B", actionCollection, "richtext_bold"      );
 	richTextItalic    = new KToggleAction( i18n("Italic"),      "text_italic", "Ctrl+I", actionCollection, "richtext_italic"    );

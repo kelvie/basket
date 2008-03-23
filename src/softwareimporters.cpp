@@ -231,7 +231,7 @@ void SoftwareImporters::finishImport(Basket *basket)
 
 void SoftwareImporters::importKJots()
 {
-	QString dirPath = locateLocal("appdata","") + "/../kjots/"; // I think the assumption is good
+	QString dirPath = KStandardDirs::locateLocal("appdata","") + "/../kjots/"; // I think the assumption is good
 	QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
 	QStringList list = dir.entryList();
@@ -252,7 +252,7 @@ void SoftwareImporters::importKJots()
 			if ( !buf.isNull() && buf.left(9) == "\\NewEntry") {
 
 				// First create a basket for it:
-				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KURL(file.name()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
+				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.name()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
 				Basket *basket = Global::bnpView->currentBasket();
 				basket->load();
 
@@ -313,7 +313,7 @@ void SoftwareImporters::importKJots()
 
 void SoftwareImporters::importKNotes()
 {
-	QString dirPath = locateLocal("appdata","") + "/../knotes/"; // I thing the assumption is good
+	QString dirPath = KStandardDirs::locateLocal("appdata","") + "/../knotes/"; // I thing the assumption is good
 	QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
 	QStringList list = dir.entryList();
@@ -495,7 +495,7 @@ void SoftwareImporters::importTextFile()
 		);
 
 		// First create a basket for it:
-		QString title = i18n("From TextFile.txt", "From %1").arg(KURL(fileName).fileName());
+		QString title = i18n("From TextFile.txt", "From %1").arg(KUrl(fileName).fileName());
 		BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		Basket *basket = Global::bnpView->currentBasket();
 		basket->load();
@@ -515,7 +515,7 @@ void SoftwareImporters::importTextFile()
   */
 void SoftwareImporters::importKnowIt()
 {
-	KURL url = KFileDialog::getOpenURL(":ImportKnowIt",
+	KUrl url = KFileDialog::getOpenUrl(":ImportKnowIt",
 	                                   "*.kno|KnowIt files\n*|All files");
 	if (!url.isEmpty())
 	{

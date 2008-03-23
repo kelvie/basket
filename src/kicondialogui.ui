@@ -37,7 +37,7 @@
         <property name="margin">
             <number>0</number>
         </property>
-        <widget class="KListBox" row="0" column="0">
+        <widget class="K3ListBox" row="0" column="0">
             <property name="name">
                 <cstring>listBox</cstring>
             </property>
@@ -234,7 +234,7 @@
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
-    <includehint>klistbox.h</includehint>
+    <includehint>k3listbox.h</includehint>
     <includehint>kiconcanvas.h</includehint>
     <includehint>kiconviewsearchline.h</includehint>
     <includehint>kprogress.h</includehint>

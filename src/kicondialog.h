@@ -24,7 +24,7 @@
 
 #include <kicontheme.h>
 #include <kdialogbase.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 
 #include "kiconcanvas.h" // FIXME: BCI KDE 3 expects KIconCanvas to be defined in kicondialog.h
 
@@ -102,7 +102,7 @@ public:
     /**
      * @deprecated in KDE 3.0, use the static method getIcon instead.
      */
-    QString selectIcon(KIcon::Group group=KIcon::Desktop, KIcon::Context
+    QString selectIcon(KIcon::Group group=KIconLoader::Desktop, KIcon::Context
 	    context=KIcon::Application, bool user=false);
 #endif
 
@@ -163,7 +163,7 @@ public:
      * @return The name of the icon, suitable for loading with KIconLoader.
      * @version New in 3.0
      */
-    static QString getIcon(KIcon::Group group=KIcon::Desktop,
+    static QString getIcon(KIcon::Group group=KIconLoader::Desktop,
                            KIcon::Context context=KIcon::Application,
                            bool strictIconSize=false, int iconSize = 0,
                            bool user=false, QWidget *parent=0,
@@ -252,7 +252,7 @@ public:
     bool strictIconSize() const;
 
     /**
-     * Sets the icon group and context. Use KIcon::NoGroup if you want to
+     * Sets the icon group and context. Use KIconLoader::NoGroup if you want to
      * allow icons for any group in the given context.
      */
     void setIconType(KIcon::Group group, KIcon::Context context, bool user=false);

@@ -36,7 +36,7 @@
 #include <QHideEvent>
 #include <Q3CString>
 #include <Q3PopupMenu>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <qsignalmapper.h>
 #include <qdir.h>
 #include <kicontheme.h>
@@ -45,10 +45,10 @@
 #include <kstringhandler.h>
 #include <kmessagebox.h>
 #include <kfiledialog.h>
-#include <kprogress.h>
+#include <kprogressdialog.h>
 #include <kstandarddirs.h>
 #include <kaboutdata.h>
-#include <kwin.h>
+#include <kwindowsystem.h>
 #include <kaccel.h>
 #include <kpassivepopup.h>
 #include <kxmlguifactory.h>
@@ -59,6 +59,7 @@
 #include <dcopclient.h>
 #include <kdebug.h>
 #include <iostream>
+#include <KShortcutsDialog>
 #include "bnpview.h"
 #include "basket.h"
 #include "tools.h"
@@ -149,7 +150,7 @@ void BNPView::lateInit()
 	{
 		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
 			if(Global::mainWindow()) Global::mainWindow()->hide();
-		else if (Settings::useSystray() && kapp->isRestored())
+		else if (Settings::useSystray() && kapp->isSessionRestored())
 			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
 		else
 			showMainWindow();
@@ -382,7 +383,7 @@ void BNPView::initialize()
 	connect( m_tree, SIGNAL(pressed(Q3ListViewItem*)),          this, SLOT(slotPressed(Q3ListViewItem*)) );
 	connect( m_tree, SIGNAL(expanded(Q3ListViewItem*)),         this, SLOT(needSave(Q3ListViewItem*))    );
 	connect( m_tree, SIGNAL(collapsed(Q3ListViewItem*)),        this, SLOT(needSave(Q3ListViewItem*))    );
-	connect( m_tree, SIGNAL(contextMenu(KListView*, Q3ListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(KListView*, Q3ListViewItem*, const QPoint&))      );
+	connect( m_tree, SIGNAL(contextMenu(K3ListView*, Q3ListViewItem*, const QPoint&)),      this, SLOT(slotContextMenu(K3ListView*, Q3ListViewItem*, const QPoint&))      );
 	connect( m_tree, SIGNAL(mouseButtonPressed(int, Q3ListViewItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, Q3ListViewItem*, const QPoint&, int)) );
 	connect( m_tree, SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)), this, SLOT(slotShowProperties(Q3ListViewItem*, const QPoint&, int)) );
 
@@ -424,7 +425,7 @@ void BNPView::setupActions()
 	m_actOpenArchive   = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
 	                                  this, SLOT(openArchive()),   actionCollection(), "basket_import_basket_archive" );
 
-	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStdAccel::shortcut(KStdAccel::Close),
+	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStandardShortcut::shortcut(KStandardShortcut::Close),
 								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
 	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
 
@@ -452,10 +453,10 @@ void BNPView::setupActions()
 
 	m_actDelNote  = new KAction( i18n("D&elete"), "editdelete", "Delete",
 								 this, SLOT(delNote()), actionCollection(), "edit_delete" );
-	m_actCutNote  = KStdAction::cut(   this, SLOT(cutNote()),               actionCollection() );
-	m_actCopyNote = KStdAction::copy(  this, SLOT(copyNote()),              actionCollection() );
+	m_actCutNote  = KStandardAction::cut(   this, SLOT(cutNote()),               actionCollection() );
+	m_actCopyNote = KStandardAction::copy(  this, SLOT(copyNote()),              actionCollection() );
 
-	m_actSelectAll = KStdAction::selectAll( this, SLOT( slotSelectAll() ), actionCollection() );
+	m_actSelectAll = KStandardAction::selectAll( this, SLOT( slotSelectAll() ), actionCollection() );
 	m_actSelectAll->setStatusText( i18n( "Selects all notes" ) );
 	m_actUnselectAll = new KAction( i18n( "U&nselect All" ), "", this, SLOT( slotUnselectAll() ),
 									actionCollection(), "edit_unselect_all" );
@@ -468,14 +469,14 @@ void BNPView::setupActions()
 	m_actEditNote         = new KAction( i18n("Verb; not Menu", "&Edit..."), "edit",   "Return",
 										 this, SLOT(editNote()), actionCollection(), "note_edit" );
 
-	m_actOpenNote         = KStdAction::open( this, SLOT(openNote()), actionCollection(), "note_open" );
+	m_actOpenNote         = KStandardAction::open( this, SLOT(openNote()), actionCollection(), "note_open" );
 	m_actOpenNote->setIcon("window_new");
 	m_actOpenNote->setText(i18n("&Open"));
 	m_actOpenNote->setShortcut("F9");
 
 	m_actOpenNoteWith     = new KAction( i18n("Open &With..."), "", "Shift+F9",
 										 this, SLOT(openNoteWith()), actionCollection(), "note_open_with" );
-	m_actSaveNoteAs       = KStdAction::saveAs( this, SLOT(saveNoteAs()), actionCollection(), "note_save_to_file" );
+	m_actSaveNoteAs       = KStandardAction::saveAs( this, SLOT(saveNoteAs()), actionCollection(), "note_save_to_file" );
 	m_actSaveNoteAs->setIcon("");
 	m_actSaveNoteAs->setText(i18n("&Save to File..."));
 	m_actSaveNoteAs->setShortcut("F10");
@@ -494,9 +495,9 @@ void BNPView::setupActions()
 	m_actMoveOnBottom = new KAction( i18n("Move on &Bottom"), "2downarrow", "Ctrl+Shift+End",
 									 this, SLOT(moveOnBottom()), actionCollection(), "note_move_bottom" );
 #if KDE_IS_VERSION( 3, 1, 90 ) // KDE 3.2.x
-	m_actPaste = KStdAction::pasteText( this, SLOT(pasteInCurrentBasket()), actionCollection() );
+	m_actPaste = KStandardAction::pasteText( this, SLOT(pasteInCurrentBasket()), actionCollection() );
 #else
-	m_actPaste = KStdAction::paste(     this, SLOT(pasteInCurrentBasket()), actionCollection() );
+	m_actPaste = KStandardAction::paste(     this, SLOT(pasteInCurrentBasket()), actionCollection() );
 #endif
 
 	/** Insert : **************************************************************/
@@ -573,7 +574,7 @@ void BNPView::setupActions()
 	}
 
 	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
-	actNewBasket        = new KAction( i18n("&New Basket..."), (runInsideKontact ? "basket" : "filenew"), KStdAccel::shortcut(KStdAccel::New),
+	actNewBasket        = new KAction( i18n("&New Basket..."), (runInsideKontact ? "basket" : "filenew"), KStandardShortcut::shortcut(KStandardShortcut::New),
 									   this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
 	actNewSubBasket     = new KAction( i18n("New &Sub-Basket..."), "", "Ctrl+Shift+N",
 									   this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
@@ -598,12 +599,12 @@ void BNPView::setupActions()
 #endif
 	/** Edit : ****************************************************************/
 
-	//m_actUndo     = KStdAction::undo(  this, SLOT(undo()),                 actionCollection() );
+	//m_actUndo     = KStandardAction::undo(  this, SLOT(undo()),                 actionCollection() );
 	//m_actUndo->setEnabled(false); // Not yet implemented !
-	//m_actRedo     = KStdAction::redo(  this, SLOT(redo()),                 actionCollection() );
+	//m_actRedo     = KStandardAction::redo(  this, SLOT(redo()),                 actionCollection() );
 	//m_actRedo->setEnabled(false); // Not yet implemented !
 
-	m_actShowFilter  = new KToggleAction( i18n("&Filter"), "filter", KStdAccel::shortcut(KStdAccel::Find),
+	m_actShowFilter  = new KToggleAction( i18n("&Filter"), "filter", KStandardShortcut::shortcut(KStandardShortcut::Find),
 										  actionCollection(), "edit_filter" );
 	connect( m_actShowFilter, SIGNAL(toggled(bool)), this, SLOT(showHideFilterBar(bool)) );
 
@@ -630,7 +631,7 @@ void BNPView::setupActions()
 
 	InlineEditors::instance()->initToolBars(actionCollection());
 
-	actConfigGlobalShortcuts = KStdAction::keyBindings(this, SLOT(showGlobalShortcutsSettingsDialog()),
+	actConfigGlobalShortcuts = KStandardAction::keyBindings(this, SLOT(showGlobalShortcutsSettingsDialog()),
 			actionCollection(), "options_configure_global_keybinding");
 	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
 
@@ -657,7 +658,7 @@ void BNPView::slotMouseButtonPressed(int button, Q3ListViewItem *item, const QPo
 	}
 }
 
-void BNPView::slotContextMenu(KListView */*listView*/, Q3ListViewItem *item, const QPoint &pos)
+void BNPView::slotContextMenu(K3ListView */*listView*/, Q3ListViewItem *item, const QPoint &pos)
 {
 	QString menuName;
 	if (item) {
@@ -774,7 +775,7 @@ void BNPView::load()
 	m_loading = false;
 }
 
-void BNPView::load(KListView */*listView*/, Q3ListViewItem *item, const QDomElement &baskets)
+void BNPView::load(K3ListView */*listView*/, Q3ListViewItem *item, const QDomElement &baskets)
 {
 	QDomNode n = baskets.firstChild();
 	while ( ! n.isNull() ) {
@@ -1430,11 +1431,11 @@ void BNPView::updateNotesActions()
 	m_type == Link ? i18n("&Save target as...")   : i18n("&Save a copy as...")
 		// If useFile() theire is always a file to open / open with / save, but :
 	if (m_type == Link) {
-			if (url().prettyURL().isEmpty() && runCommand().isEmpty())     // no URL nor runCommand :
+			if (url().prettyUrl().isEmpty() && runCommand().isEmpty())     // no URL nor runCommand :
 	popupMenu->setItemEnabled(7, false);                       //  no possible Open !
-			if (url().prettyURL().isEmpty())                               // no URL :
+			if (url().prettyUrl().isEmpty())                               // no URL :
 	popupMenu->setItemEnabled(8, false);                       //  no possible Open with !
-			if (url().prettyURL().isEmpty() || url().path().endsWith("/")) // no URL or target a folder :
+			if (url().prettyUrl().isEmpty() || url().path().endsWith("/")) // no URL or target a folder :
 	popupMenu->setItemEnabled(9, false);                       //  not possible to save target file
 }
 } else if (m_type != Color) {
@@ -1561,7 +1562,7 @@ Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
 		if(!isPart())
 			exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
 		else
-			menu = new KPopupMenu; // When running in kpart we cannot exit
+			menu = new KMenu; // When running in kpart we cannot exit
 	}
 	return menu;
 }
@@ -1599,7 +1600,7 @@ void BNPView::insertWizard(int type)
 void BNPView::grabScreenshot(bool global)
 {
 	if (m_regionGrabber) {
-		KWin::activateWindow(m_regionGrabber->winId());
+		KWindowSystem::activateWindow(m_regionGrabber->winId());
 		return;
 	}
 
@@ -1752,7 +1753,7 @@ void BNPView::delBasket()
 													 .arg(Tools::textToHTMLWithoutP(basket->basketName())),
 											 i18n("Remove Basket")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
-													 , KGuiItem(i18n("&Remove Basket"), "editdelete"), KStdGuiItem::cancel());
+													 , KGuiItem(i18n("&Remove Basket"), "editdelete"), KStandardGuiItem::cancel());
 #else
 		                    );
 #endif
@@ -1850,7 +1851,7 @@ void BNPView::saveAsArchive()
 			int result = KMessageBox::questionYesNoCancel(
 				this,
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KURL(destination).fileName()),
+					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "filesave")
 			);
@@ -1863,7 +1864,7 @@ void BNPView::saveAsArchive()
 	}
 	bool withSubBaskets = true;//KMessageBox::questionYesNo(this, i18n("Do you want to export sub-baskets too?"), i18n("Save as Basket Archive")) == KMessageBox::Yes;
 
-	config->writeEntry("lastFolder", KURL(destination).directory());
+	config->writeEntry("lastFolder", KUrl(destination).directory());
 	config->sync();
 
 	Archive::save(basket, withSubBaskets, destination);
@@ -1999,7 +2000,7 @@ void BNPView::showPassiveDroppedDelayed()
 	m_passivePopup->setView(
 			title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
 	(contentsPixmap.isNull() ? "" : "<img src=\"_passivepopup_image_\">"),
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
+	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2012,7 +2013,7 @@ void BNPView::showPassiveImpossible(const QString &message)
 			.arg(i18n("Basket <i>%1</i> is locked"))
 			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
 	message,
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
+	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2032,12 +2033,12 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
 	m_passivePopup->setView(
-			"<qt>" + kapp->makeStdCaption( currentBasket()->isLocked()
+			"<qt>" + KInstance::makeStandardCaption( currentBasket()->isLocked()
 			? QString("%1 <font color=gray30>%2</font>")
 			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName()), i18n("(Locked)"))
 	: Tools::textToHTMLWithoutP(currentBasket()->basketName()) ),
 	message,
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
+	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2051,7 +2052,7 @@ void BNPView::showPassiveLoading(Basket *basket)
 	m_passivePopup->setView(
 			Tools::textToHTMLWithoutP(basket->basketName()),
 	i18n("Loading..."),
-	kapp->iconLoader()->loadIcon(basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true));
+	kapp->iconLoader()->loadIcon(basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2129,16 +2130,16 @@ void BNPView::setActive(bool active)
 	if (active) {
 		win->show();
 		//raise() and show() should normaly deIconify the window. but it doesn't do here due
-		// to a bug in Qt or in KDE  (qt3.1.x or KDE 3.1.x) then, i have to call KWin's method
+		// to a bug in Qt or in KDE  (qt3.1.x or KDE 3.1.x) then, i have to call KWindowSystem's method
 		if (win->isMinimized())
-			KWin::deIconifyWindow(winId());
+			KWindowSystem::deIconifyWindow(winId());
 
-		if ( ! KWin::windowInfo(winId(), NET::WMDesktop).onAllDesktops() )
-			KWin::setOnDesktop(winId(), KWin::currentDesktop());
+		if ( ! KWindowSystem::windowInfo(winId(), NET::WMDesktop).onAllDesktops() )
+			KWindowSystem::setOnDesktop(winId(), KWindowSystem::currentDesktop());
 		win->raise();
 		// Code from me: expected and correct behavviour:
 		kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-		KWin::activateWindow(win->winId());
+		KWindowSystem::activateWindow(win->winId());
 	} else
 		win->hide();
 #else                            // KDE 3.1.x and lower
@@ -2209,7 +2210,7 @@ bool BNPView::createNoteFromFile(const QString url, const QString basket)
 	Basket* b = basketForFolderName(basket);
 	if (!b)
 		return false;
-	KURL kurl(url);
+	KUrl kurl(url);
 	if ( url.isEmpty() )
 		return false;
 	Note* n = NoteFactory::copyFileAndLoad(kurl, b);
@@ -2363,7 +2364,7 @@ void BNPView::showMainWindow()
 
 void BNPView::populateTagsMenu()
 {
-	KPopupMenu *menu = (KPopupMenu*)(popupMenu("tags"));
+	KMenu *menu = (KMenu*)(popupMenu("tags"));
 	if (menu == 0 || currentBasket() == 0) // TODO: Display a messagebox. [menu is 0, surely because on first launch, the XMLGUI does not work!]
 		return;
 	menu->clear();
@@ -2380,7 +2381,7 @@ void BNPView::populateTagsMenu()
 //	connect( menu, SIGNAL(aboutToHide()), this, SLOT(disconnectTagsMenu()) );
 }
 
-void BNPView::populateTagsMenu(KPopupMenu &menu, Note *referenceNote)
+void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 {
 	if (currentBasket() == 0)
 		return;
@@ -2484,7 +2485,7 @@ void BNPView::disconnectTagsMenuDelayed()
 
 void BNPView::showGlobalShortcutsSettingsDialog()
 {
-	KKeyDialog::configure(Global::globalAccel);
+	KShortcutsDialog::configure(Global::globalAccel);
 	//.setCaption(..)
 	Global::globalAccel->writeSettings();
 }

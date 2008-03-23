@@ -34,7 +34,7 @@
 #include <kopenwith.h>
 #include <klocale.h>
 #include <q3whatsthis.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 #include <kiconloader.h>
 #include <q3dragobject.h>
 #include <qfontdatabase.h>
@@ -66,7 +66,7 @@ RunCommandRequester::~RunCommandRequester()
 
 void RunCommandRequester::slotSelCommand()
 {
-	KOpenWithDlg *dlg =  new KOpenWithDlg(KURL::List(), m_message, m_runCommand->text(), this);
+	KOpenWithDlg *dlg =  new KOpenWithDlg(KUrl::List(), m_message, m_runCommand->text(), this);
 	dlg->exec();
 	if ( ! dlg->text().isEmpty() )
 		m_runCommand->setText(dlg->text());
@@ -157,10 +157,10 @@ void ViewSizeDialog::resizeEvent(QResizeEvent *)
 /** class HelpLabel: */
 
 HelpLabel::HelpLabel(const QString &text, const QString &message, QWidget *parent)
- : KURLLabel(parent), m_message(message)
+ : KUrlLabel(parent), m_message(message)
 {
 	setText(text);
-	connect( this, SIGNAL(leftClickedURL()), this, SLOT(showMessage()) );
+	connect( this, SIGNAL(leftClickedUrl()), this, SLOT(showMessage()) );
 }
 
 HelpLabel::~HelpLabel()
@@ -177,15 +177,15 @@ void HelpLabel::keyPressEvent(QKeyEvent *event)
 	if (event->key() == Qt::Key_Space)
 		showMessage();
 	else
-		KURLLabel::keyPressEvent(event);
+		KUrlLabel::keyPressEvent(event);
 }
 
 /** class IconSizeDialog: */
 
-class UndraggableKIconView : public KIconView
+class UndraggableKIconView : public K3IconView
 {
   public:
-	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : KIconView(parent, name, f) {}
+	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
 	Q3DragObject* dragObject() { return 0; }
 };
 
@@ -199,15 +199,15 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 	QLabel *label = new QLabel(message, page);
 	topLayout->addWidget(label);
 
-	KIconView *iconView = new UndraggableKIconView(page);
+	K3IconView *iconView = new UndraggableKIconView(page);
 	iconView->setItemsMovable(false);
-	iconView->setSelectionMode(KIconView::Single);
-	m_size16  = new KIconViewItem(iconView, 0,        i18n("16 by 16 pixels"),   DesktopIcon(icon, 16));
-	m_size22  = new KIconViewItem(iconView, m_size16, i18n("22 by 22 pixels"),   DesktopIcon(icon, 22));
-	m_size32  = new KIconViewItem(iconView, m_size22, i18n("32 by 32 pixels"),   DesktopIcon(icon, 32));
-	m_size48  = new KIconViewItem(iconView, m_size32, i18n("48 by 48 pixels"),   DesktopIcon(icon, 48));
-	m_size64  = new KIconViewItem(iconView, m_size48, i18n("64 by 64 pixels"),   DesktopIcon(icon, 64));
-	m_size128 = new KIconViewItem(iconView, m_size64, i18n("128 by 128 pixels"), DesktopIcon(icon, 128));
+	iconView->setSelectionMode(K3IconView::Single);
+	m_size16  = new K3IconViewItem(iconView, 0,        i18n("16 by 16 pixels"),   DesktopIcon(icon, 16));
+	m_size22  = new K3IconViewItem(iconView, m_size16, i18n("22 by 22 pixels"),   DesktopIcon(icon, 22));
+	m_size32  = new K3IconViewItem(iconView, m_size22, i18n("32 by 32 pixels"),   DesktopIcon(icon, 32));
+	m_size48  = new K3IconViewItem(iconView, m_size32, i18n("48 by 48 pixels"),   DesktopIcon(icon, 48));
+	m_size64  = new K3IconViewItem(iconView, m_size48, i18n("64 by 64 pixels"),   DesktopIcon(icon, 64));
+	m_size128 = new K3IconViewItem(iconView, m_size64, i18n("128 by 128 pixels"), DesktopIcon(icon, 128));
 	iconView->setMinimumWidth(m_size16->width() + m_size22->width() + m_size32->width() + m_size48->width() + m_size64->width() + m_size128->width() +
 	                          (6+2) * iconView->spacing() + 20);
 	iconView->setMinimumHeight(m_size128->height() + 2 * iconView->spacing() + 20);

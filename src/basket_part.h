@@ -26,7 +26,7 @@
 
 class QWidget;
 class QPainter;
-class KURL;
+class KUrl;
 class Q3MultiLineEdit;
 class BNPView;
 

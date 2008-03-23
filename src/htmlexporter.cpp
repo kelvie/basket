@@ -41,7 +41,7 @@
 #include <Q3ValueList>
 #include <QPixmap>
 #include <kglobalsettings.h>
-#include <kprogress.h>
+#include <kprogressdialog.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {
@@ -67,7 +67,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 			int result = KMessageBox::questionYesNoCancel(
 				0,
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KURL(destination).fileName()),
+					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "filesave")
 			);
@@ -87,7 +87,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	progress = dialog.progressBar();
 
 	// Remember the last folder used for HTML exporation:
-	config->writeEntry("lastFolder", KURL(destination).directory());
+	config->writeEntry("lastFolder", KUrl(destination).directory());
 	config->sync();
 
 	prepareExport(basket, destination);
@@ -108,7 +108,7 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 
 	// Remember the file path choosen by the user:
 	filePath = fullPath;
-	fileName = KURL(fullPath).fileName();
+	fileName = KUrl(fullPath).fileName();
 	exportedBasket = basket;
 
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -149,7 +149,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		basketsFolderName = "";
 	} else {
 		basketFilePath    = filePath;
-		filesFolderName   = i18n("HTML export folder (files)", "%1_files").arg(KURL(filePath).fileName()) + "/";
+		filesFolderName   = i18n("HTML export folder (files)", "%1_files").arg(KUrl(filePath).fileName()) + "/";
 		dataFolderName    = filesFolderName + i18n("HTML export folder (data)",    "data")  + "/";
 		dataFolderPath    = filesFolderPath + i18n("HTML export folder (data)",    "data")  + "/";
 		basketsFolderName = filesFolderName + i18n("HTML export folder (baskets)", "baskets")  + "/";
@@ -545,20 +545,20 @@ QString HTMLExporter::copyIcon(const QString &iconName, int size)
   */
 QString HTMLExporter::copyFile(const QString &srcPath, bool createIt)
 {
-	QString fileName = Tools::fileNameForNewFile(KURL(srcPath).fileName(), dataFolderPath);
+	QString fileName = Tools::fileNameForNewFile(KUrl(srcPath).fileName(), dataFolderPath);
 	QString fullPath = dataFolderPath + fileName;
 
 	if (createIt) {
 		// We create the file to be sure another very near call to copyFile() willn't choose the same name:
-		QFile file(KURL(fullPath).path());
+		QFile file(KUrl(fullPath).path());
 		if (file.open(QIODevice::WriteOnly))
 			file.close();
 		// And then we copy the file AND overwriting the file we juste created:
 		new KIO::FileCopyJob(
-			KURL(srcPath), KURL(fullPath), 0666, /*move=*/false,
+			KUrl(srcPath), KUrl(fullPath), 0666, /*move=*/false,
 			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/false );
 	} else
-		/*KIO::CopyJob *copyJob = */KIO::copy(KURL(srcPath), KURL(fullPath)); // Do it as before
+		/*KIO::CopyJob *copyJob = */KIO::copy(KUrl(srcPath), KUrl(fullPath)); // Do it as before
 
 	return fileName;
 }

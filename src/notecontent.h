@@ -75,7 +75,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
 	virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
 	virtual QPixmap toPixmap()                      { return QPixmap(); } /// << @return an image equivalent of the content.
-	virtual void    toLink(KURL *url, QString *title, const QString &cuttedFullPath); /// << Set the link to the content. By default, it set them to fullPath() if useFile().
+	virtual void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath); /// << Set the link to the content. By default, it set them to fullPath() if useFile().
 	virtual bool    useFile()                                        = 0; /// << @return true if it use a file to store the content.
 	virtual bool    canBeSavedAs()                                   = 0; /// << @return true if the content can be saved as a file by the user.
 	virtual QString saveAsFilters()                                  = 0; /// << @return the filters for the user to choose a file destination to save the note as.
@@ -110,7 +110,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	// Content Edition:
 	virtual int      xEditorIndent()                        { return 0; } /// << If the editor should be indented (eg. to not cover an icon), return the number of pixels.
 	// Open Content or File:
-	virtual KURL urlToOpen(bool /*with*/); /// << @return the URL to open the note, or an invalid KURL if it's not openable. If @p with if false, it's a normal "Open". If it's true, it's for an "Open with..." action. The default implementation return the fullPath() if the note useFile() and nothing if not.
+	virtual KUrl urlToOpen(bool /*with*/); /// << @return the URL to open the note, or an invalid KUrl if it's not openable. If @p with if false, it's a normal "Open". If it's true, it's for an "Open with..." action. The default implementation return the fullPath() if the note useFile() and nothing if not.
 	enum OpenMessage {
 		OpenOne,              /// << Message to send to the statusbar when opening this note.
 		OpenSeveral,          /// << Message to send to the statusbar when opening several notes of this type.
@@ -411,7 +411,7 @@ class LinkContent : public QObject, public NoteContent
   Q_OBJECT
   public:
 	// Constructor and destructor:
-	LinkContent(Note *parent, const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon);
+	LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon);
 	~LinkContent();
 	// Simple Generic Methods:
 	NoteType::Id type();
@@ -419,7 +419,7 @@ class LinkContent : public QObject, public NoteContent
 	QString lowerTypeName();
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	void    toLink(KURL *url, QString *title, const QString &cuttedFullPath);
+	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
 	bool    useFile();
 	bool    canBeSavedAs();
 	QString saveAsFilters();
@@ -444,18 +444,18 @@ class LinkContent : public QObject, public NoteContent
 	void    setCursor(QWidget *widget, int zone);
 	QString statusBarMessage(int zone);
 	// Open Content or File:
-	KURL urlToOpen(bool /*with*/);
+	KUrl urlToOpen(bool /*with*/);
 	QString messageWhenOpenning(OpenMessage where);
 	// Content-Specific Methods:
-	void    setLink(const KURL &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon); /// << Change the link and relayout the note.
-	KURL    url()       { return m_url;       } /// << @return the URL of the link note-content.
+	void    setLink(const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon); /// << Change the link and relayout the note.
+	KUrl    url()       { return m_url;       } /// << @return the URL of the link note-content.
 	QString title()     { return m_title;     } /// << @return the displayed title of the link note-content.
 	QString icon()      { return m_icon;      } /// << @return the displayed icon of the link note-content.
 	bool    autoTitle() { return m_autoTitle; } /// << @return if the title is auto-computed from the URL.
 	bool    autoIcon()  { return m_autoIcon;  } /// << @return if the icon is auto-computed from the URL.
 	void startFetchingLinkTitle();
   protected:
-	KURL        m_url;
+	KUrl        m_url;
 	QString     m_title;
 	QString     m_icon;
 	bool        m_autoTitle;
@@ -487,7 +487,7 @@ class LauncherContent : public NoteContent
 	QString typeName();
 	QString lowerTypeName();
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	void    toLink(KURL *url, QString *title, const QString &cuttedFullPath);
+	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
 	bool    useFile();
 	bool    canBeSavedAs();
 	QString saveAsFilters();
@@ -509,7 +509,7 @@ class LauncherContent : public NoteContent
 	QString zoneTip(int zone);
 	void    setCursor(QWidget *widget, int zone);
 	// Open Content or File:
-	KURL urlToOpen(bool with);
+	KUrl urlToOpen(bool with);
 	QString messageWhenOpenning(OpenMessage where);
 	// Content-Specific Methods:
 	void    setLauncher(const QString &name, const QString &icon, const QString &exec); /// << Change the launcher note-content and relayout the note. Normally called by loadFromFile (no save done).
@@ -578,7 +578,7 @@ class UnknownContent : public NoteContent
 	QString lowerTypeName();
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	void    toLink(KURL *url, QString *title, const QString &cuttedFullPath);
+	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
 	bool    useFile();
 	bool    canBeSavedAs();
 	QString saveAsFilters();
@@ -597,7 +597,7 @@ class UnknownContent : public NoteContent
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Open Content or File:
-	KURL urlToOpen(bool /*with*/) { return KURL(); }
+	KUrl urlToOpen(bool /*with*/) { return KUrl(); }
 	// Content-Specific Methods:
 	QString mimeTypes() { return m_mimeTypes; } /// << @return the list of MIME types this note-content contains.
   protected:

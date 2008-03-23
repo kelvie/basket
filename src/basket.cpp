@@ -70,7 +70,7 @@
 
 #include <unistd.h> // For sleep()
 
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kiconloader.h>
 #include <krun.h>
 
@@ -926,7 +926,7 @@ void Basket::setAppearance(const QString &icon, const QString &name, const QStri
 	m_action->setText("BASKET SHORTCUT: " + name);
 
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
-	QPixmap iconTest = kapp->iconLoader()->loadIcon(m_icon, KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+	QPixmap iconTest = kapp->iconLoader()->loadIcon(m_icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true);
 	if (iconTest.isNull())
 		m_icon = "basket";
 
@@ -1604,7 +1604,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		m_clickedToInsert = clicked;
 		m_zoneToInsert    = zone;
 		m_posToInsert     = event->pos();
-		KPopupMenu* menu = (KPopupMenu*)(Global::bnpView->popupMenu("insert_popup"));
+		KMenu* menu = (KMenu*)(Global::bnpView->popupMenu("insert_popup"));
 		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeItem(/*id=*/120);
 		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18n("The verb (Group New Note)", "Group") : i18n("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
@@ -3113,7 +3113,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			label->setAlignment( int( Qt::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );
 			QLabel* pixmap = new QLabel( m_decryptBox, "pixmap" );
-			pixmap->setPixmap( KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeHuge) );
+			pixmap->setPixmap( KIconLoader::global()->loadIcon("encrypted", KIconLoader::NoGroup, KIconLoader::SizeHuge) );
 			layout->addMultiCellWidget( pixmap, 0, 1, 0, 0 );
 
 			QSpacerItem* spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -3399,7 +3399,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	QKeySequence sequence = tag->shortcut().operator QKeySequence();
 	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isNull());
 
-	KPopupMenu menu(this);
+	KMenu menu(this);
 	if (tag->countStates() == 1) {
 		menu.insertTitle(/*SmallIcon(state->icon()), */tag->name());
 		menu.insertItem( SmallIconSet("editdelete"), i18n("&Remove"),             1 );
@@ -3506,7 +3506,7 @@ void Basket::popupTagsMenu(Note *note)
 {
 	m_tagPopupNote = note;
 
-	KPopupMenu menu(this);
+	KMenu menu(this);
 	menu.insertTitle(i18n("Tags"));
 // 	QValueList<Tag*>::iterator it;
 // 	Tag *currentTag;
@@ -4143,7 +4143,7 @@ void Basket::noteDelete()
 			     countSelecteds()),
 			i18n("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
-			, KStdGuiItem::del(), KStdGuiItem::cancel());
+			, KStandardGuiItem::del(), KStandardGuiItem::cancel());
 #else
 		);
 #endif
@@ -4283,7 +4283,7 @@ void Basket::noteOpen(Note *note)
 	if (!note)
 		return;
 
-	KURL    url     = note->content()->urlToOpen(/*with=*/false);
+	KUrl    url     = note->content()->urlToOpen(/*with=*/false);
 	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
 	if (url.isEmpty()) {
 		if (message.isEmpty())
@@ -4305,12 +4305,12 @@ void Basket::noteOpen(Note *note)
 	}
 }
 
-/** Code from bool KRun::displayOpenWithDialog(const KURL::List& lst, bool tempFiles)
+/** Code from bool KRun::displayOpenWithDialog(const KUrl::List& lst, bool tempFiles)
   * It does not allow to set a text, so I ripped it to do that:
   */
-bool KRun__displayOpenWithDialog(const KURL::List& lst, bool tempFiles, const QString &text)
+bool KRun__displayOpenWithDialog(const KUrl::List& lst, bool tempFiles, const QString &text)
 {
-	if (kapp && !kapp->authorizeKAction("openwith")) {
+	if (kapp && !KAuthorized::authorizeKAction("openwith")) {
 		KMessageBox::sorry(0L, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
@@ -4319,7 +4319,7 @@ bool KRun__displayOpenWithDialog(const KURL::List& lst, bool tempFiles, const QS
 		KService::Ptr service = l.service();
 		if (!!service)
 			return KRun::run(*service, lst, tempFiles);
-		//kdDebug(250) << "No service set, running " << l.text() << endl;
+		//kDebug(250) << "No service set, running " << l.text() << endl;
 		return KRun::run(l.text(), lst); // TODO handle tempFiles
 	}
 	return false;
@@ -4332,7 +4332,7 @@ void Basket::noteOpenWith(Note *note)
 	if (!note)
 		return;
 
-	KURL    url     = note->content()->urlToOpen(/*with=*/true);
+	KUrl    url     = note->content()->urlToOpen(/*with=*/true);
 	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
 	QString text    = note->content()->messageWhenOpenning(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
 	if (url.isEmpty())
@@ -4349,7 +4349,7 @@ void Basket::noteSaveAs()
 	if (!note)
 		return;
 
-	KURL url = note->content()->urlToOpen(/*with=*/false);
+	KUrl url = note->content()->urlToOpen(/*with=*/false);
 	if (url.isEmpty())
 		return;
 
@@ -4359,7 +4359,7 @@ void Basket::noteSaveAs()
 		return;
 
 	// TODO: Convert format, etc. (use NoteContent::saveAs(fileName))
-	KIO::copy(url, KURL(fileName));
+	KIO::copy(url, KUrl(fileName));
 }
 
 Note* Basket::selectedGroup()
@@ -5462,10 +5462,10 @@ DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &mes
 	//enableButtonCancel(false);
 	//enableButtonClose(false);
 	//enableButton(Close, false);
-	//enableButtonOK(false);
+	//enableButtonOk(false);
 	setModal(true);
 	Q3HBoxLayout *layout = new Q3HBoxLayout(plainPage(), /*margin=*/0, spacingHint());
-	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIcon::NoGroup, 64, KIcon::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
 	QLabel *iconLabel  = new QLabel(plainPage());
 	iconLabel->setPixmap(icon);
 	iconLabel->setFixedSize(iconLabel->sizeHint());
@@ -5510,7 +5510,7 @@ void Basket::lock()
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qcolor.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kurllabel.h>
 #include <qcheckbox.h>
 #include <qpalette.h>
@@ -5547,6 +5547,7 @@ void Basket::lock()
 
 #include <config.h>
 #include <qtextcodec.h>
+#include <kauthorized.h>
 
 #include "basket.h"
 #include "note.h"

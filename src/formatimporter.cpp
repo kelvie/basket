@@ -60,7 +60,7 @@ bool FormatImporter::shouldImportBaskets()
 void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 {
 	copyFinished = false;
-	KIO::CopyJob *copyJob = KIO::copyAs(KURL(folder), KURL(newFolder), /*showProgressInfo=*/false);
+	KIO::CopyJob *copyJob = KIO::copyAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
 	connect( copyJob,  SIGNAL(result(KIO::Job*)), this, SLOT(slotCopyingDone(KIO::Job*)) );
 	while (!copyFinished)
 		kapp->processEvents();
@@ -69,7 +69,7 @@ void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 void FormatImporter::moveFolder(const QString &folder, const QString &newFolder)
 {
 	copyFinished = false;
-	KIO::CopyJob *copyJob = KIO::moveAs(KURL(folder), KURL(newFolder), /*showProgressInfo=*/false);
+	KIO::CopyJob *copyJob = KIO::moveAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
 	connect( copyJob,  SIGNAL(result(KIO::Job*)), this, SLOT(slotCopyingDone(KIO::Job*)) );
 	while (!copyFinished)
 		kapp->processEvents();

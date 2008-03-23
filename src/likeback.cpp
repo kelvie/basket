@@ -55,6 +55,7 @@
 #include <pwd.h>
 
 #include <iostream>
+#include <kglobal.h>
 
 #include "likeback.h"
 #include "likeback_private.h"
@@ -224,7 +225,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 
 	// Use default KApplication config and aboutData if not provided:
 	if (d->config == 0)
-		d->config = kapp->config();
+		d->config = KGlobal::config();
 	if (d->aboutData == 0)
 		d->aboutData = kapp->aboutData();
 
@@ -587,11 +588,11 @@ bool LikeBack::isDevelopmentVersion(const QString &version)
 {
 	if (m_process)
 		return;
-	m_process = new KProcess();
+	m_process = new K3Process();
 	*m_process << QString::fromLatin1("kcmshell") << QString::fromLatin1("kcm_useraccount");
-	connect( m_process, SIGNAL(processExited(KProcess*)), SLOT(fetchUserEmail()) );
+	connect( m_process, SIGNAL(processExited(K3Process*)), SLOT(fetchUserEmail()) );
 	if (!m_process->start()) {
-		kdDebug() << "Couldn't start kcmshell.." << endl;
+		kDebug() << "Couldn't start kcmshell.." << endl;
 		delete m_process;
 		m_process = 0;
 		return;
@@ -672,7 +673,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	QWidget *buttons = new QWidget(box);
 	Q3GridLayout *buttonsGrid = new Q3GridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
-		QPixmap likePixmap = kapp->iconLoader()->loadIcon("likeback_like", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap likePixmap = kapp->iconLoader()->loadIcon("likeback_like", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true);
 		QLabel *likeIcon = new QLabel(buttons);
 		likeIcon->setPixmap(likePixmap);
 		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -682,7 +683,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(likeButton, LikeBack::Like);
 	}
 	if (m_likeBack->buttons() & LikeBack::Dislike) {
-		QPixmap dislikePixmap = kapp->iconLoader()->loadIcon("likeback_dislike", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap dislikePixmap = kapp->iconLoader()->loadIcon("likeback_dislike", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true);
 		QLabel *dislikeIcon = new QLabel(buttons);
 		dislikeIcon->setPixmap(dislikePixmap);
 		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -692,7 +693,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(dislikeButton, LikeBack::Dislike);
 	}
 	if (m_likeBack->buttons() & LikeBack::Bug) {
-		QPixmap bugPixmap = kapp->iconLoader()->loadIcon("likeback_bug", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap bugPixmap = kapp->iconLoader()->loadIcon("likeback_bug", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true);
 		QLabel *bugIcon = new QLabel(buttons);
 		bugIcon->setPixmap(bugPixmap);
 		bugIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -702,7 +703,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_group->insert(bugButton, LikeBack::Bug);
 	}
 	if (m_likeBack->buttons() & LikeBack::Feature) {
-		QPixmap featurePixmap = kapp->iconLoader()->loadIcon("likeback_feature", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, true);
+		QPixmap featurePixmap = kapp->iconLoader()->loadIcon("likeback_feature", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true);
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
 		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -725,7 +726,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	connect( m_showButtons, SIGNAL(stateChanged(int)), this, SLOT(changeButtonBarVisible()) );
 
 	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail_send"));
-	enableButtonOK(false);
+	enableButtonOk(false);
 	connect( m_comment, SIGNAL(textChanged()), this, SLOT(commentChanged()) );
 
 	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail_generic"));
@@ -812,14 +813,14 @@ void LikeBackDialog::send()
 	int reason = m_group->selectedId();
 	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
 	QString data =
-		"protocol=" + KURL::encode_string("1.0")                              + '&' +
-		"type="     + KURL::encode_string(type)                               + '&' +
-		"version="  + KURL::encode_string(m_likeBack->aboutData()->version()) + '&' +
-		"locale="   + KURL::encode_string(KGlobal::locale()->language())      + '&' +
-		"window="   + KURL::encode_string(m_windowPath)                       + '&' +
-		"context="  + KURL::encode_string(m_context)                          + '&' +
-		"comment="  + KURL::encode_string(m_comment->text())                  + '&' +
-		"email="    + KURL::encode_string(emailAddress);
+		"protocol=" + KUrl::encode_string("1.0")                              + '&' +
+		"type="     + KUrl::encode_string(type)                               + '&' +
+		"version="  + KUrl::encode_string(m_likeBack->aboutData()->version()) + '&' +
+		"locale="   + KUrl::encode_string(KGlobal::locale()->language())      + '&' +
+		"window="   + KUrl::encode_string(m_windowPath)                       + '&' +
+		"context="  + KUrl::encode_string(m_context)                          + '&' +
+		"comment="  + KUrl::encode_string(m_comment->text())                  + '&' +
+		"email="    + KUrl::encode_string(emailAddress);
 	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	std::cout << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath() << std::endl;

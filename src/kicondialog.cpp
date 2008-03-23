@@ -27,8 +27,8 @@
 #include <kglobal.h>
 #include <kstandarddirs.h>
 #include <kiconloader.h>
-#include <kprogress.h>
-#include <kiconview.h>
+#include <kprogressdialog.h>
+#include <k3iconview.h>
 #include <kfiledialog.h>
 #include <kimagefilepreview.h>
 #include <kpushbutton.h>
@@ -84,7 +84,7 @@ KIconDialog::KIconDialog(QWidget *parent, const char*)
     : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
 {
     d = new KIconDialogPrivate;
-    mpLoader = KGlobal::iconLoader();
+    mpLoader = KIconLoader::global();
     init();
     resize(minimumSize());
 }
@@ -100,7 +100,7 @@ KIconDialog::KIconDialog(KIconLoader *loader, QWidget *parent,
 
 void KIconDialog::init()
 {
-    mGroupOrSize = KIcon::Desktop;
+    mGroupOrSize = KIconLoader::Desktop;
     d->extendedContext = ALL;
     mType = 0;
     setCustomLocation(QString::null); // Initialize mFileList
@@ -109,7 +109,7 @@ void KIconDialog::init()
     KConfig *config = KGlobal::config();
     KConfigGroupSaver saver(config, "KIconDialog");
     d->recentMax = config->readNumEntry("RecentMax", 10);
-    d->recentList = config->readPathListEntry("RecentIcons");
+    d->recentList = config->readPathEntry("RecentIcons", QStringList());
 
     d->ui = new KIconDialogUI( this );
     setMainWidget(d->ui);
@@ -220,7 +220,7 @@ void KIconDialog::setIconSize( int size )
 {
     // see KIconLoader, if you think this is weird
     if ( size == 0 )
-        mGroupOrSize = KIcon::Desktop; // default Group
+        mGroupOrSize = KIconLoader::Desktop; // default Group
     else
         mGroupOrSize = -size; // yes, KIconLoader::queryIconsByContext is weird
 }
@@ -352,7 +352,7 @@ void KIconDialog::slotBrowse()
 {
     // Create a file dialog to select a PNG, XPM or SVG file,
     // with the image previewer shown.
-    // KFileDialog::getImageOpenURL doesn't allow svg.
+    // KFileDialog::getImageOpenUrl doesn't allow svg.
     KFileDialog dlg(QString::null, i18n("*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"),
                     this, "filedialog", true);
     dlg.setOperationMode( KFileDialog::Opening );
@@ -426,7 +426,7 @@ class KIconButton::KIconButtonPrivate
 KIconButton::KIconButton(QWidget *parent, const char *name)
     : QPushButton(parent, name)
 {
-    init( KGlobal::iconLoader() );
+    init( KIconLoader::global() );
 }
 
 KIconButton::KIconButton(KIconLoader *loader,
@@ -439,7 +439,7 @@ KIconButton::KIconButton(KIconLoader *loader,
 void KIconButton::init( KIconLoader *loader )
 {
     d = new KIconButtonPrivate;
-    mGroup = KIcon::Desktop;
+    mGroup = KIconLoader::Desktop;
     mContext = KIcon::Application;
     mbUser = false;
 
@@ -551,7 +551,7 @@ void KIconButton::newIconName(const QString& name)
 }
 
 void KIconCanvas::virtual_hook( int id, void* data )
-{ KIconView::virtual_hook( id, data ); }
+{ K3IconView::virtual_hook( id, data ); }
 
 void KIconDialog::virtual_hook( int id, void* data )
 { KDialogBase::virtual_hook( id, data ); }

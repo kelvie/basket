@@ -28,7 +28,7 @@
 #include <kstyle.h>
 #include <qcursor.h>
 #include <kiconloader.h>
-#include <kpixmapeffect.h>
+
 #include <kpixmap.h>
 #include <kglobal.h>
 #include <klocale.h>
@@ -657,7 +657,7 @@ QString Note::linkAt(const QPoint &pos)
 	if (link.isEmpty())
 		return link;
 	else
-		return NoteFactory::filteredURL(KURL(link)).prettyURL();//KURIFilter::self()->filteredURI(link);
+		return NoteFactory::filteredURL(KUrl(link)).prettyUrl();//KURIFilter::self()->filteredURI(link);
 }
 
 int Note::contentX()
@@ -1975,7 +1975,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	int xIcon = HANDLE_WIDTH + NOTE_MARGIN;
 	for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
 		if (!(*it)->emblem().isEmpty()) {
-			QPixmap stateEmblem = kapp->iconLoader()->loadIcon((*it)->emblem(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, false);
+			QPixmap stateEmblem = kapp->iconLoader()->loadIcon((*it)->emblem(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, false);
 			painter2.drawPixmap(xIcon, yIcon, stateEmblem);
 			xIcon += NOTE_MARGIN + EMBLEM_SIZE;
 		}
@@ -2872,8 +2872,8 @@ QString Note::toHtml(const QString &imageName)
 		case Link:
 			{
 				QString link = m_linkLabel->toHtml(imageName);
-				if (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyURL()))
-					link += "<br><i>" + url().prettyURL() + "</i>"; ///
+				if (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyUrl()))
+					link += "<br><i>" + url().prettyUrl() + "</i>"; ///
 				return link;
 			}
 		case Launcher:

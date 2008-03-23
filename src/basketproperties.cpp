@@ -58,7 +58,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	// Icon and Name:
 	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(KIcon::NoGroup, KIcon::Action);
+	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());

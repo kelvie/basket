@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-//#include <ktoolbarbutton.h>
+//
 #include <qtoolbutton.h>
 #include <qlabel.h>
 //Added by qt3to4:
@@ -53,8 +53,8 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	Q3HBoxLayout *hBox  = new Q3HBoxLayout(this, /*margin*/0, /*spacing*/0);
 
 	// Create every widgets:
-	QIcon resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-	QIcon inAllIconSet = kapp->iconLoader()->loadIconSet("find",              KIcon::Toolbar);
+	QIcon resetIconSet = kapp->iconLoader()->loadIconSet("locationbar_erase", KIconLoader::Toolbar);
+	QIcon inAllIconSet = kapp->iconLoader()->loadIconSet("find",              KIconLoader::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);
@@ -170,7 +170,7 @@ void FilterBar::repopulateTagsComnbo()
 			text = state->name();
 			icon = state->emblem();
 		}
-		emblem = kapp->iconLoader()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+		emblem = kapp->iconLoader()->loadIcon(icon, KIconLoader::Desktop, ICON_SIZE, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true);
 		m_tagsBox->insertItem(emblem, text, index);
 		// Update the mapping:
 		m_tagsMap.insert(index, tag);
@@ -182,7 +182,7 @@ void FilterBar::repopulateTagsComnbo()
 				// Insert the state:
 				text = state->name();
 				icon = state->emblem();
-				emblem = kapp->iconLoader()->loadIcon(icon, KIcon::Desktop, ICON_SIZE, KIcon::DefaultState, 0L, /*canReturnNull=*/true);
+				emblem = kapp->iconLoader()->loadIcon(icon, KIconLoader::Desktop, ICON_SIZE, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true);
 				// Indent the emblem to show the hierarchy relation:
 				if (!emblem.isNull())
 					emblem = Tools::indentPixmap(emblem, /*depth=*/1, /*deltaX=*/2 * ICON_SIZE / 3);

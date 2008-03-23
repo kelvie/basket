@@ -88,14 +88,14 @@ class ExtendedTextDrag : public Q3TextDrag
 	static bool decode(const QMimeSource *e, QString &str, Q3CString &subtype);
 };
 
-// Support KDE 3.3 and older PROTECTED KURLDrag::encodedData()!
+// Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!
 
 #include <kurldrag.h>
-class KURLDrag2 : public KURLDrag
+class K3URLDrag2 : public K3URLDrag
 {
   Q_OBJECT
   public:
-	KURLDrag2(const KURL::List &urls) : KURLDrag(urls) {}
+	K3URLDrag2(const KUrl::List &urls) : K3URLDrag(urls) {}
 	QByteArray encodedData2(const char *mime) const
 	{
 		return encodedData(mime);

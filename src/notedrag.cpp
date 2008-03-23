@@ -120,7 +120,7 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 				if (cutting) {
 					// Move file in a temporary place:
 					QString fullPath = Global::tempCutFolder() + Tools::fileNameForNewFile(content->fileName(), Global::tempCutFolder());
-					KIO::move(KURL(content->fullPath()), KURL(fullPath), /*showProgressInfo=*/false);
+					KIO::move(KUrl(content->fullPath()), KUrl(fullPath), /*showProgressInfo=*/false);
 					node->fullPath = fullPath;
 					stream << fullPath;
 				} else
@@ -212,9 +212,9 @@ void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDr
 
 void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDrag, bool cutting)
 {
-	KURL::List  urls;
+	KUrl::List  urls;
 	QStringList titles;
-	KURL    url;
+	KUrl    url;
 	QString title;
 	for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked()) {
 		node->note->content()->toLink(&url, &title, node->fullPath);
@@ -226,12 +226,12 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 	if (!urls.isEmpty()) {
 		// First, the standard text/uri-list MIME format:
 #if KDE_IS_VERSION( 3, 3, 90 )
-		KURLDrag *urlsDrag = new KURLDrag(urls);
+		K3URLDrag *urlsDrag = new K3URLDrag(urls);
 		// ONLY export as text/uri-list, and not as text/plain* as we wil do that better ourself
 		urlsDrag->setExportAsText(false);
 		multipleDrag->addDragObject(urlsDrag);
 #else
-		KURLDrag2 *urlsDrag = new KURLDrag2(urls);
+		K3URLDrag2 *urlsDrag = new K3URLDrag2(urls);
 		QByteArray byteArray = urlsDrag->encodedData2("text/uri-list");
 		Q3StoredDrag *uriListDrag = new Q3StoredDrag("text/uri-list");
 		uriListDrag->setEncodedData(byteArray);
@@ -244,9 +244,9 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 		// FIXME: If no, only provide that if theire is only ONE URL.
 		QString xMozUrl;
 		for (uint i = 0; i < urls.count(); ++i)
-			xMozUrl += (xMozUrl.isEmpty() ? "" : "\n") + urls[i].prettyURL() + "\n" + titles[i];
+			xMozUrl += (xMozUrl.isEmpty() ? "" : "\n") + urls[i].prettyUrl() + "\n" + titles[i];
 /*		Code for only one: ===============
-		xMozUrl = note->title() + "\n" + note->url().prettyURL();*/
+		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
 		Q3TextStream stream(baMozUrl, QIODevice::WriteOnly);
 		stream.setEncoding(Q3TextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
@@ -487,7 +487,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				if (note->basket() != parent) {
 					QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
 					note->content()->setFileName(newFileName);
-					KIO::FileCopyJob *copyJob = KIO::file_move(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 					parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
 					                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
@@ -510,10 +510,10 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
 				KIO::FileCopyJob *copyJob;
 				if (moveFiles)
-					copyJob = KIO::file_move(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 				else
-					copyJob = KIO::file_copy(KURL(fullPath), KURL(parent->fullPath() + newFileName),
+					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
 				parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
 				                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );

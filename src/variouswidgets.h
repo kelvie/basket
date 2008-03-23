@@ -32,7 +32,7 @@
 #include <kdialogbase.h>
 
 class QLineEdit;
-class KIconViewItem;
+class K3IconViewItem;
 class Q3IconViewItem;
 
 class Basket;
@@ -88,7 +88,7 @@ class ViewSizeDialog : public QDialog
 /** A label displaying a link that, once clicked, offer a What's This messageBox to help users.
   * @author Sébastien Laoût
   */
-class HelpLabel : public KURLLabel
+class HelpLabel : public KUrlLabel
 {
   Q_OBJECT
   public:
@@ -119,12 +119,12 @@ class IconSizeDialog : public KDialogBase
 	void slotSelectionChanged();
 	void choose(Q3IconViewItem*);
   private:
-	KIconViewItem *m_size16;
-	KIconViewItem *m_size22;
-	KIconViewItem *m_size32;
-	KIconViewItem *m_size48;
-	KIconViewItem *m_size64;
-	KIconViewItem *m_size128;
+	K3IconViewItem *m_size16;
+	K3IconViewItem *m_size22;
+	K3IconViewItem *m_size32;
+	K3IconViewItem *m_size48;
+	K3IconViewItem *m_size64;
+	K3IconViewItem *m_size128;
 	int m_iconSize;
 };
 

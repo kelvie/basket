@@ -22,7 +22,7 @@
 #define NEWBASKETDIALOG_H
 
 #include <kdialogbase.h>
-#include <kiconview.h>
+#include <k3iconview.h>
 #include <qmap.h>
 
 class KIconButton;
@@ -34,11 +34,11 @@ class Basket;
 
 class KColorCombo2;
 
-/** The class KIconView allow to drag items. We don't want to, so we disable it.
+/** The class K3IconView allow to drag items. We don't want to, so we disable it.
   * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
   * @author Sébastien Laoût
   */
-class SingleSelectionKIconView : public KIconView
+class SingleSelectionKIconView : public K3IconView
 {
   Q_OBJECT
   public:
@@ -92,7 +92,7 @@ class NewBasketDialog : public KDialogBase
 	KIconButton                *m_icon;
 	QLineEdit                  *m_name;
 	KColorCombo2               *m_backgroundColor;
-	KIconView                  *m_templates;
+	K3IconView                  *m_templates;
 	QComboBox                  *m_createIn;
 	QMap<int, Basket*>          m_basketsMap;
 };

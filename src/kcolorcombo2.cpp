@@ -724,7 +724,7 @@ void KColorCombo2::mouseMoveEvent(QMouseEvent *event)
 	if( (event->state() & Qt::LeftButton) &&
 	    (event->pos() - m_dragStartPos).manhattanLength() > KGlobalSettings::dndEventDelay() ) {
 		// Drag color object:
-		KColorDrag *colorDrag = new KColorDrag(effectiveColor(), this);
+		K3ColorDrag *colorDrag = new K3ColorDrag(effectiveColor(), this);
 		// Replace the drag pixmap with our own rounded one, at the same position and dimetions:
 		QPixmap pixmap = colorDrag->pixmap();
 		pixmap = colorRectPixmap(effectiveColor(), /*isDefault=*/false, pixmap.width(), pixmap.height());
@@ -736,13 +736,13 @@ void KColorCombo2::mouseMoveEvent(QMouseEvent *event)
 
 void KColorCombo2::dragEnterEvent(QDragEnterEvent *event)
 {
-	event->accept(isEnabled() && KColorDrag::canDecode(event));
+	event->accept(isEnabled() && K3ColorDrag::canDecode(event));
 }
 
 void KColorCombo2::dropEvent(QDropEvent *event)
 {
 	QColor color;
-	if (KColorDrag::decode(event, color))
+	if (K3ColorDrag::decode(event, color))
 		setColor(color);
 }
 
@@ -750,12 +750,12 @@ void KColorCombo2::keyPressEvent(QKeyEvent *event)
 {
 	KKey key(event);
 
-	if (KStdAccel::copy().contains(key)) {
-		QMimeSource *mime = new KColorDrag(effectiveColor());
+	if (KStandardShortcut::copy().contains(key)) {
+		QMimeSource *mime = new K3ColorDrag(effectiveColor());
 		QApplication::clipboard()->setData(mime, QClipboard::Clipboard);
-	} else if (KStdAccel::paste().contains(key)) {
+	} else if (KStandardShortcut::paste().contains(key)) {
 		QColor color;
-		KColorDrag::decode(QApplication::clipboard()->data(QClipboard::Clipboard), color);
+		K3ColorDrag::decode(QApplication::clipboard()->data(QClipboard::Clipboard), color);
 		setColor(color);
 	} else
 		QComboBox::keyPressEvent(event);

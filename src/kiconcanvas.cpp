@@ -90,10 +90,10 @@ class KIconCanvas::KIconCanvasPrivate
  */
 
 KIconCanvas::KIconCanvas(QWidget *parent, const char *name)
-    : KIconView(parent, name)
+    : K3IconView(parent, name)
 {
     d = new KIconCanvasPrivate;
-    mpLoader = KGlobal::iconLoader();
+    mpLoader = KIconLoader::global();
     mpTimer = new QTimer(this);
     connect(mpTimer, SIGNAL(timeout()), SLOT(slotLoadFiles()));
     connect(this, SIGNAL(currentChanged(Q3IconViewItem *)),
@@ -229,7 +229,7 @@ void KIconCanvas::setStrictIconSize( bool strictIconSize )
 
 Q3DragObject *KIconCanvas::dragObject()
 {
-    // We use QImageDrag rather than KURLDrag so that the user can't drag an icon out of the theme!
+    // We use QImageDrag rather than K3URLDrag so that the user can't drag an icon out of the theme!
     // TODO: support SVG?
     QPixmap *pixmap = currentItem()->pixmap();
     QPoint pos = viewportToContents( viewport()->mapFromGlobal( QCursor::pos() ) );

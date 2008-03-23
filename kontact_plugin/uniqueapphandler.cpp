@@ -24,7 +24,7 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kontact/core.h>
-#include <kwin.h>
+#include <kwindowsystem.h>
 #include <dcopclient.h>
 #include <kdebug.h>
 
@@ -73,7 +73,7 @@ int UniqueAppHandler::newInstance()
   // This bit is duplicated from KUniqueApplication::newInstance()
   if ( kapp->mainWidget() ) {
     kapp->mainWidget()->show();
-    KWin::forceActiveWindow( kapp->mainWidget()->winId() );
+    KWindowSystem::forceActiveWindow( kapp->mainWidget()->winId() );
     KStartupInfo::appStarted();
   }
 
@@ -161,7 +161,7 @@ void UniqueAppWatcher::unregisteredFromDCOP( const QCString& appId )
   if ( appId == mPlugin->name() && mRunningStandalone ) {
     disconnect( kapp->dcopClient(), SIGNAL( applicationRemoved( const QCString& ) ),
                 this, SLOT( unregisteredFromDCOP( const QCString& ) ) );
-    kdDebug(5601) << k_funcinfo << appId << endl;
+    kDebug(5601) << k_funcinfo << appId << endl;
     mFactory->createHandler( mPlugin );
     kapp->dcopClient()->setNotifications( false );
     mRunningStandalone = false;

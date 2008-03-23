@@ -40,11 +40,11 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
                KDialogBase::Ok | KDialogBase::Cancel, KDialogBase::Ok, /*separator=*/true),
    m_basket(basket)
 {
-	Q3VBox *page  = makeVBoxMainWidget();
+	KVBox *page  = makeVBoxMainWidget();
 
 	QWidget     *wid  = new QWidget(page);
 	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, KDialogBase::spacingHint());
-	m_url = new KURLRequester("", wid);
+	m_url = new KUrlRequester("", wid);
 	m_url->setCaption(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");
 	m_url->fileDialog()->setOperationMode(KFileDialog::Saving);
@@ -108,7 +108,7 @@ void ExporterDialog::save()
 	KConfig *config = KGlobal::config();
 	config->setGroup("HTML Export");
 
-	QString folder = KURL(m_url->url()).directory();
+	QString folder = KUrl(m_url->url()).directory();
 	config->writeEntry( "lastFolder",          folder                             );
 	config->writeEntry( "embedLinkedFiles",    m_embedLinkedFiles->isChecked()    );
 	config->writeEntry( "embedLinkedFolders",  m_embedLinkedFolders->isChecked()  );

@@ -144,7 +144,7 @@ void BasketListViewItem::setup()
 	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
-	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
 
 	setPixmap(/*column=*/0, icon);
 
@@ -588,12 +588,12 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		effectiveWidth += countPixmap.width() + MARGIN;
 	}
 	if (showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("find", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = kapp->iconLoader()->loadIcon("find", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
 	}
 	if (showEncryptedIcon && !showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIcon::NoGroup, 16, KIcon::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
 
@@ -641,7 +641,7 @@ private:
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
-	: KListView(parent, name), m_autoOpenItem(0)
+	: K3ListView(parent, name), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
 	setWFlags(Qt::WStaticContents | WNoAutoErase);
@@ -654,7 +654,7 @@ BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 
 void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
 {
-	KListView::viewportResizeEvent(event);
+	K3ListView::viewportResizeEvent(event);
 	triggerUpdate();
 }
 
@@ -673,7 +673,7 @@ void BasketTreeListView::contentsDragEnterEvent(QDragEnterEvent *event)
 		update();
 	}
 
-	KListView::contentsDragEnterEvent(event);
+	K3ListView::contentsDragEnterEvent(event);
 }
 
 void BasketTreeListView::removeExpands()
@@ -695,7 +695,7 @@ void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 	m_autoOpenTimer.stop();
 	setItemUnderDrag(0);
 	removeExpands();
-	KListView::contentsDragLeaveEvent(event);
+	K3ListView::contentsDragLeaveEvent(event);
 }
 
 void BasketTreeListView::contentsDropEvent(QDropEvent *event)
@@ -703,7 +703,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
 	{
-		KListView::contentsDropEvent(event);
+		K3ListView::contentsDropEvent(event);
 	}
 	else {
 		std::cout << "Forwarding dropped data to the basket" << std::endl;
@@ -729,7 +729,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 {
 	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
 	if (event->provides("application/x-qlistviewitem"))
-		KListView::contentsDragMoveEvent(event);
+		K3ListView::contentsDragMoveEvent(event);
 	else {
 		Q3ListViewItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
@@ -743,7 +743,7 @@ void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 		}
 		setItemUnderDrag(bitem);
 
-		KListView::contentsDragMoveEvent(event); // FIXME: ADDED
+		K3ListView::contentsDragMoveEvent(event); // FIXME: ADDED
 	}
 }
 
@@ -775,7 +775,7 @@ void BasketTreeListView::autoOpen()
 
 void BasketTreeListView::resizeEvent(QResizeEvent *event)
 {
-	KListView::resizeEvent(event);
+	K3ListView::resizeEvent(event);
 }
 
 void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
@@ -801,12 +801,12 @@ void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 }
 
 /** We should NEVER get focus (because of QWidget::NoFocus focusPolicy())
- * but KListView can programatically give us the focus.
+ * but K3ListView can programatically give us the focus.
  * So we give it to the basket.
  */
 void BasketTreeListView::focusInEvent(QFocusEvent*)
 {
-	//KListView::focusInEvent(event);
+	//K3ListView::focusInEvent(event);
 	Basket *basket = Global::bnpView->currentBasket();
 	if (basket)
 		basket->setFocus();

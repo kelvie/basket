@@ -35,12 +35,12 @@
 #include <qpoint.h>
 #include <qpixmap.h>
 #include <qinputdialog.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kiconloader.h>
 #include <kiconeffect.h>
 #include <qicon.h>
 #include <kaction.h>
-#include <kapp.h>
+#include <kapplication.h>
 #include <klocale.h>
 #include <kmenubar.h>
 #include <kedittoolbar.h>
@@ -68,9 +68,9 @@
 
 #include <kdeversion.h>
 #include <qdesktopwidget.h>
-#include <kwin.h>
+#include <kwindowsystem.h>
 
-#include <kprogress.h>
+#include <kprogressdialog.h>
 
 #include "mainwindow.h"
 #include "basket.h"
@@ -100,6 +100,7 @@
 #include <iostream>
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
+#include <KShortcutsDialog>
 
 /** Container */
 
@@ -135,23 +136,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupActions()
 {
-	actQuit         = KStdAction::quit( this, SLOT(quit()), actionCollection() );
+	actQuit         = KStandardAction::quit( this, SLOT(quit()), actionCollection() );
 	new KAction(i18n("Minimize"), "", 0,
 				this, SLOT(minimizeRestore()), actionCollection(), "minimizeRestore" );
 	/** Settings : ************************************************************/
-//	m_actShowToolbar   = KStdAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
-	m_actShowStatusbar = KStdAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
+//	m_actShowToolbar   = KStandardAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
+	m_actShowStatusbar = KStandardAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
 
 //	m_actShowToolbar->setCheckedState( KGuiItem(i18n("Hide &Toolbar")) );
 
-	(void) KStdAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), actionCollection() );
+	(void) KStandardAction::keyBindings( this, SLOT(showShortcutsSettingsDialog()), actionCollection() );
 
-	(void) KStdAction::configureToolbars(this, SLOT(configureToolbars()), actionCollection() );
+	(void) KStandardAction::configureToolbars(this, SLOT(configureToolbars()), actionCollection() );
 
-	//KAction *actCfgNotifs = KStdAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection() );
+	//KAction *actCfgNotifs = KStandardAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection() );
 	//actCfgNotifs->setEnabled(false); // Not yet implemented !
 
-	actAppConfig = KStdAction::preferences( this, SLOT(showSettingsDialog()), actionCollection() );
+	actAppConfig = KStandardAction::preferences( this, SLOT(showSettingsDialog()), actionCollection() );
 }
 
 /*void MainWindow::toggleToolBar()
@@ -178,7 +179,7 @@ void MainWindow::configureToolbars()
 {
 	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 
-	KEditToolbar dlg(actionCollection());
+	KEditToolBar dlg(actionCollection());
 	connect( &dlg, SIGNAL(newToolbarConfig()), this, SLOT(slotNewToolbarConfig()) );
 	dlg.exec();
 }
@@ -214,7 +215,7 @@ void MainWindow::showSettingsDialog()
 
 void MainWindow::showShortcutsSettingsDialog()
 {
-	KKeyDialog::configure(actionCollection(), "basketui.rc");
+	KShortcutsDialog::configure(actionCollection(), "basketui.rc");
 	//.setCaption(..)
 	//actionCollection()->writeSettings();
 }
@@ -316,7 +317,7 @@ bool MainWindow::askForQuit()
 				"If you end your session while the application is still running, the application will be reloaded the next time you log in.</p>");
 
 	int really = KMessageBox::warningContinueCancel( this, message, i18n("Quit Confirm"),
-			KStdGuiItem::quit(), "confirmQuitAsking" );
+			KStandardGuiItem::quit(), "confirmQuitAsking" );
 
 	if (really == KMessageBox::Cancel)
 	{

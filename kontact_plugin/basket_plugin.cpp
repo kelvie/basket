@@ -64,7 +64,7 @@ void BasketPlugin::newBasket()
 	(void) part(); // ensure part is loaded
 	Q_ASSERT(m_stub);
 	if (m_stub) {
-		kdDebug() << k_funcinfo << endl;
+		kDebug() << k_funcinfo << endl;
 		m_stub->newBasket();
 	}
 }
@@ -77,7 +77,7 @@ void BasketPlugin::showPart()
 #if 0
 bool BasketPlugin::createDCOPInterface( const QString& serviceType )
 {
-	kdDebug() << k_funcinfo << serviceType << endl;
+	kDebug() << k_funcinfo << serviceType << endl;
 	return false;
 }
 #endif

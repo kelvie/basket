@@ -44,7 +44,7 @@
 #include <kconfig.h>
 #include <ktar.h>
 #include <kfiledialog.h>
-#include <kprogress.h>
+#include <kprogressdialog.h>
 #include <kmessagebox.h>
 #include <unistd.h> // usleep()
 
@@ -60,7 +60,7 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
  : KDialogBase(parent, name, /*modal=*/true, i18n("Backup & Restore"),
                KDialogBase::Close, KDialogBase::Close, /*separator=*/false)
 {
-	Q3VBox *page  = makeVBoxMainWidget();
+	KVBox *page  = makeVBoxMainWidget();
 //	page->setSpacing(spacingHint());
 
 	QString savesFolder = Global::savesFolder();
@@ -123,7 +123,7 @@ void BackupDialog::populateLastBackup()
 
 void BackupDialog::moveToAnotherFolder()
 {
-	KURL selectedURL = KDirSelectDialog::selectDirectory(
+	KUrl selectedURL = KDirSelectDialog::selectDirectory(
 		/*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
 		/*caption=*/i18n("Choose a Folder Where to Move Baskets"));
 
@@ -154,7 +154,7 @@ void BackupDialog::moveToAnotherFolder()
 
 void BackupDialog::useAnotherExistingFolder()
 {
-	KURL selectedURL = KDirSelectDialog::selectDirectory(
+	KUrl selectedURL = KDirSelectDialog::selectDirectory(
 		/*startDir=*/Global::savesFolder(), /*localOnly=*/true, /*parent=*/0,
 		/*caption=*/i18n("Choose an Existing Folder to Store Baskets"));
 
@@ -189,7 +189,7 @@ void BackupDialog::backup()
 			int result = KMessageBox::questionYesNoCancel(
 				0,
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KURL(destination).fileName()),
+					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "filesave")
 			);
@@ -247,7 +247,7 @@ void BackupDialog::restore()
 	QFile file(readmePath);
 	if (file.open(QIODevice::WriteOnly)) {
 		Q3TextStream stream(&file);
-		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KURL(path).fileName()) + "\n\n"
+		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KUrl(path).fileName()) + "\n\n"
 		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
 		       << i18n("If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n\n"
 		       << i18n("Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing Folder...\" and select that folder.") + "\n";
@@ -255,7 +255,7 @@ void BackupDialog::restore()
 	}
 
 	QString message =
-		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...").arg(KURL(path).fileName()) + "</nobr></p><p>" +
+		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...").arg(KUrl(path).fileName()) + "</nobr></p><p>" +
 		i18n("If something goes wrong during the restoration process, read the file <b>%1</b>.").arg(readmePath);
 
 	KProgressDialog *dialog = new KProgressDialog(0, 0, i18n("Restore Baskets"), message, /*modal=*/true);
@@ -304,6 +304,7 @@ void BackupDialog::restore()
 QString Backup::binaryPath = "";
 
 #include <iostream>
+#include <kiconloader.h>
 
 void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)
 {

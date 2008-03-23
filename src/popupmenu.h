@@ -26,7 +26,7 @@
 class Q3PopupMenu;
 class QRect;
 
-/** QPopupMenu/KPopupMenu doesn't provide metod to exec a menu
+/** QPopupMenu/KMenu doesn't provide metod to exec a menu
   * at a given rectangle !
   * eg, popup at bottom of a rectangle, and at top if not possible...
   * @author Sébastien Laoût

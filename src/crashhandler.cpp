@@ -20,7 +20,7 @@
 #include <kaboutdata.h>
 #include <kdeversion.h>
 #include <klocale.h>
-#include <ktempfile.h>
+#include <ktemporaryfile.h>
 
 #include <qfile.h>
 #include <qregexp.h>
@@ -34,6 +34,7 @@
 #include <sys/wait.h>     //waitpid
 //#include <taglib/taglib.h>
 #include <unistd.h>       //write, getpid
+#include <ktoolinvocation.h>
 
 
 
@@ -109,7 +110,7 @@
 
             /// obtain the backtrace with gdb
 
-            KTempFile temp;
+            KTemporaryFile temp;
             temp.setAutoDelete( true );
 
             const int handle = temp.handle();
@@ -190,11 +191,11 @@
                 body += fileCommandOutput + "\n";
                 body += "==== (gdb) bt =====================\n";
 				body += bt;//+ "\n\n";
-//                body += "==== kdBacktrace() ================\n";
-//                body += kdBacktrace();
+//                body += "==== kBacktrace() ================\n";
+//                body += kBacktrace();
 
                 //TODO startup notification
-                kapp->invokeMailer(
+                KToolInvocation::invokeMailer(
                         /*to*/          "slaout@linux62.org",
                         /*cc*/          QString(),
                         /*bcc*/         QString(),

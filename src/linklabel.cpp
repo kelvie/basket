@@ -132,7 +132,7 @@ QColor LinkLook::defaultHoverColor() const
 	return Qt::red;
 }
 
-LinkLook* LinkLook::lookForURL(const KURL &url)
+LinkLook* LinkLook::lookForURL(const KUrl &url)
 {
 	return url.isLocalFile() ? localLinkLook : networkLinkLook;
 }
@@ -449,8 +449,8 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	else {
 		int           iconSize   = m_look->iconSize();
 		QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
-		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIcon::DefaultState);
-		pixmap = kapp->iconLoader()->loadIcon(iconName, KIcon::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
+		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIconLoader::DefaultState);
+		pixmap = kapp->iconLoader()->loadIcon(iconName, KIconLoader::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
 	}
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
@@ -540,7 +540,7 @@ QString LinkDisplay::toHtml(const QString &/*imageName*/) const
 	return "";
 }
 
-QString LinkDisplay::toHtml(HTMLExporter *exporter, const KURL &url, const QString &title)
+QString LinkDisplay::toHtml(HTMLExporter *exporter, const KUrl &url, const QString &title)
 {
 	QString linkIcon;
 	if (m_look->previewEnabled() && !m_preview.isNull()) {
@@ -557,7 +557,7 @@ QString LinkDisplay::toHtml(HTMLExporter *exporter, const KURL &url, const QStri
 
 	QString linkTitle = Tools::textToHTMLWithoutP(title.isEmpty() ? m_title : title);
 
-	return QString("<a href=\"%1\">%2 %3</a>").arg(url.prettyURL(), linkIcon, linkTitle);
+	return QString("<a href=\"%1\">%2 %3</a>").arg(url.prettyUrl(), linkIcon, linkTitle);
 }
 
 /** LinkLookEditWidget **/
