@@ -44,7 +44,7 @@
 //#include <kstringhandler.h>
 #include <kfilemetainfo.h>
 #include <qdatetime.h>
-#include <kmultipledrag.h>
+#include <k3multipledrag.h>
 
 #include <qfileinfo.h>
 //#include <kio/kfileitem.h>
@@ -1845,7 +1845,7 @@ void ColorContent::setColor(const QColor &color)
 	contentChanged(rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN); // The second RECT_MARGIN is because textRect.width() is too short. I done a bug? Can't figure out.
 }
 
-void ColorContent::addAlternateDragObjects(KMultipleDrag *dragObject)
+void ColorContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 {
 	dragObject->addDragObject( new Q3ColorDrag(color()) );
 
@@ -1957,7 +1957,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 	return true;
 }
 
-void UnknownContent::addAlternateDragObjects(KMultipleDrag *dragObject)
+void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 {
 	QFile file(fullPath());
 	if (file.open(QIODevice::ReadOnly)) {

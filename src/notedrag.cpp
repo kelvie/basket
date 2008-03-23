@@ -58,7 +58,7 @@ Q3DragObject* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidge
 		return 0;
 
 	// The MimeSource:
-	KMultipleDrag *multipleDrag = new KMultipleDrag(source);
+	K3MultipleDrag *multipleDrag = new K3MultipleDrag(source);
 
 	// Make sure the temporary folder exists and is empty (we delete previously moved file(s) (if exists)
 	// since we override the content of the clipboard and previous file willn't be accessable anymore):
@@ -138,7 +138,7 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
 	stream << (quint64)0; // Mark the end of the notes in this group/hierarchy.
 }
 
-void NoteDrag::serializeText(NoteSelection *noteList, KMultipleDrag *multipleDrag)
+void NoteDrag::serializeText(NoteSelection *noteList, K3MultipleDrag *multipleDrag)
 {
 	QString textEquivalent;
 	QString text;
@@ -151,7 +151,7 @@ void NoteDrag::serializeText(NoteSelection *noteList, KMultipleDrag *multipleDra
 		multipleDrag->addDragObject( new Q3TextDrag(textEquivalent) );
 }
 
-void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDrag)
+void NoteDrag::serializeHtml(NoteSelection *noteList, K3MultipleDrag *multipleDrag)
 {
 	QString htmlEquivalent;
 	QString html;
@@ -173,7 +173,7 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, KMultipleDrag *multipleDra
 	}
 }
 
-void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDrag)
+void NoteDrag::serializeImage(NoteSelection *noteList, K3MultipleDrag *multipleDrag)
 {
 	Q3ValueList<QPixmap> pixmaps;
 	QPixmap pixmap;
@@ -210,7 +210,7 @@ void NoteDrag::serializeImage(NoteSelection *noteList, KMultipleDrag *multipleDr
 	}
 }
 
-void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDrag, bool cutting)
+void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleDrag, bool cutting)
 {
 	KUrl::List  urls;
 	QStringList titles;
@@ -266,7 +266,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, KMultipleDrag *multipleDr
 	}
 }
 
-void NoteDrag::setFeedbackPixmap(NoteSelection *noteList, KMultipleDrag *multipleDrag)
+void NoteDrag::setFeedbackPixmap(NoteSelection *noteList, K3MultipleDrag *multipleDrag)
 {
 	QPixmap pixmap = feedbackPixmap(noteList);
 	if (!pixmap.isNull())
