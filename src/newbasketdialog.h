@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
 #ifndef NEWBASKETDIALOG_H
 #define NEWBASKETDIALOG_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <k3iconview.h>
 #include <qmap.h>
 
@@ -36,7 +36,7 @@ class KColorCombo2;
 
 /** The class K3IconView allow to drag items. We don't want to, so we disable it.
   * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 class SingleSelectionKIconView : public K3IconView
 {
@@ -57,7 +57,7 @@ class SingleSelectionKIconView : public K3IconView
   * A template is choosen depending on @p freeLayout and @p columnLayout.
   * If @p columnLayout is too high, the template with the more columns will be chosen instead.
   * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
 struct NewBasketDefaultProperties
 {
@@ -72,9 +72,9 @@ struct NewBasketDefaultProperties
 };
 
 /** The dialog to create a new basket from a template.
-  * @author Sébastien Laoût
+  * @author Sï¿½bastien Laoï¿½t
   */
-class NewBasketDialog : public KDialogBase
+class NewBasketDialog : public KDialog
 {
   Q_OBJECT
   public:

@@ -41,7 +41,7 @@
 #include <qstyle.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
-#include <kdialogbase.h>
+#include <KDialog>
 #include <kcmodule.h>
 #include <kdebug.h>
 
@@ -567,7 +567,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
  : QWidget(parent, name, fl)
 {
 	QLabel      *label;
-	Q3VBoxLayout *layout = new Q3VBoxLayout(this, KDialogBase::marginHint(), KDialogBase::spacingHint());
+	Q3VBoxLayout *layout = new Q3VBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
@@ -597,7 +597,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
 
-	Q3HBoxLayout *icoLay = new Q3HBoxLayout(/*parent=*/0L, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *icoLay = new Q3HBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
 	icoLay->addWidget(m_iconSize);
 	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);

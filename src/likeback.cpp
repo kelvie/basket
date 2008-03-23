@@ -44,7 +44,7 @@
 #include <q3textedit.h>
 #include <qlayout.h>
 #include <qlabel.h>
-#include <kdialogbase.h>
+#include <KDialog>
 #include <q3http.h>
 #include <kurl.h>
 #include <kinputdialog.h>
@@ -636,12 +636,22 @@ void LikeBack::fetchUserEmail()
 /*******************************************/
 
 LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack)
- : KDialogBase(KDialogBase::Swallow, i18n("Send a Comment to Developers"), KDialogBase::Ok | KDialogBase::Cancel | KDialogBase::Default,
-               KDialogBase::Ok, kapp->activeWindow(), /*name=*/"_likeback_feedback_window_", /*modal=*/true, /*separator=*/true)
+ : KDialog(kapp->activeWindow())
  , m_likeBack(likeBack)
  , m_windowPath(windowPath)
  , m_context(context)
 {
+	// KDialog Options
+	setCaption(i18n("Send a Comment to Developers"));
+	setButtons(Ok | Cancel | Default);
+	setDefaultButton(Ok);
+	setParent(kapp->activeWindow());
+	setObjectName("_likeback_feedback_window_"0);
+	setModal(true);
+	showButtonSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+	connect(this, SIGNAL(defaultClicked())), SLOT(slotDefault());
+
 	// If no specific "reason" is provided, choose the first one:
 	if (reason == LikeBack::AllButtons) {
 		LikeBack::Button buttons = m_likeBack->buttons();
@@ -781,7 +791,7 @@ QString LikeBackDialog::introductionText()
 
 void LikeBackDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	m_comment->setFocus();
 }
 
@@ -853,8 +863,5 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
 	}
 	m_likeBack->enableBar();
 
-	KDialogBase::slotOk();
+	KDialog::accept();
 }
-
-#include "likeback_private.moc.cpp"
-#include "likeback.moc"

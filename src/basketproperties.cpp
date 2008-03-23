@@ -48,10 +48,17 @@
 #include "backgroundmanager.h"
 
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Basket Properties"), KDialogBase::Ok | KDialogBase::Apply | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
-   m_basket(basket)
+     : KDialog(parent)
+     , m_basket(basket)
 {
+	// Set up dialog options
+	setCaption(i18n("Basket Properties"));
+	setButtons(Ok | Apply | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("BasketProperties");
+	setModal(true);
+	showButtonSeparator(false);
+
 	QWidget *page = new QWidget(this);
 	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
@@ -160,6 +167,10 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	topLayout->addSpacing(marginHint());
 	topLayout->addStretch(10);
 
+	// Connect the Ok and Apply buttons to actually apply the changes
+	connect(this, SIGNAL(okClicked()), SLOT(applyChanges()));
+	connect(this, SIGNAL(applyClicked()), SLOT(applyChanges()));
+
 	setMainWidget(page);
 }
 
@@ -169,7 +180,7 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 
 void BasketPropertiesDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	m_name->setFocus();
 }
 
@@ -180,18 +191,6 @@ void BasketPropertiesDialog::applyChanges()
 	// Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
 	m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentItem()], m_backgroundColor->color(), m_textColor->color());
 	m_basket->save();
-}
-
-void BasketPropertiesDialog::slotApply()
-{
-	applyChanges();
-	KDialogBase::slotApply();
-}
-
-void BasketPropertiesDialog::slotOk()
-{
-	applyChanges();
-	KDialogBase::slotOk();
 }
 
 void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)

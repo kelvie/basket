@@ -36,11 +36,20 @@
 #include "kgpgme.h"
 
 PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
-	:KDialogBase(Plain, i18n("Password Protection"), Ok|Cancel, Ok,
-				 parent, name, /*modal=*/true, /*separator=*/true), w(0)
+     : KDialog(parent)
+     , w(0)
 {
-	Q3HBoxLayout* toplayout = new Q3HBoxLayout(plainPage(), 0, 0);
-	w = new Password(plainPage());
+	// KDialog options
+	setCaption(i18n("Password Protection"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName(name);
+	setModal(true);
+	showButtonSeparator(true);
+
+	setMainWidget(new QWidget(this));
+	Q3HBoxLayout* toplayout = new Q3HBoxLayout(mainWidget(), 0, 0);
+	w = new Password(mainWidget());
 	toplayout->addWidget(w, 1);
 }
 
@@ -49,13 +58,13 @@ PasswordDlg::~PasswordDlg()
 	delete w;
 }
 
-void PasswordDlg::slotOk()
+void PasswordDlg::accept()
 {
 	int n = type();
 	if(n == Basket::PrivateKeyEncryption && key().isEmpty())
 		KMessageBox::error(w, i18n("No private key selected."));
 	else
-		KDialogBase::slotOk();
+		KDialog::accept();
 }
 
 QString PasswordDlg::key() const

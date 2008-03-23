@@ -21,7 +21,7 @@
 #ifndef BASKETPROPERTIES_H
 #define BASKETPROPERTIES_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <qmap.h>
 #include <qstring.h>
 
@@ -39,17 +39,18 @@ class KColorCombo2;
 /** The dialog that hold basket settings.
   * @author Sébastien Laoût
   */
-class BasketPropertiesDialog : public KDialogBase
+class BasketPropertiesDialog : public KDialog
 {
   Q_OBJECT
   public:
 	BasketPropertiesDialog(Basket *basket, QWidget *parent = 0);
 	~BasketPropertiesDialog();
 	void polish();
+
+  public slots:
 	void applyChanges();
+
   protected slots:
-	void slotApply();
-	void slotOk();
 	void capturedShortcut(const KShortcut &shortcut);
 	void selectColumnsLayout();
   private:

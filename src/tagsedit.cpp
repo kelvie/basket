@@ -330,30 +330,41 @@ TagListViewItem* TagListView::lastItem() const
 /** class TagsEditDialog: */
 
 TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewTag)
- : KDialogBase(KDialogBase::Plain, i18n("Customize Tags"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"CustomizeTags", /*modal=*/true, /*separator=*/true),
-   m_loading(false)
+ : KDialog(parent)
+ ,  m_loading(false)
 {
-	Q3HBoxLayout *layout = new Q3HBoxLayout(plainPage(), /*margin=*/0, spacingHint());
+	// KDialog options
+	setCaption(i18n("Customize Tags"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("CustomizeTags");
+	setModal(true);
+	showButtonSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+	connect(this, SIGNAL(cancelClicked()), SLOT(slotCancel()));
+
+	setMainWidget(new QWidget(this));
+
+	Q3HBoxLayout *layout = new Q3HBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
 
 	/* Left part: */
 
-	QPushButton *newTag     = new QPushButton(i18n("Ne&w Tag"),   plainPage());
-	QPushButton *newState   = new QPushButton(i18n("New St&ate"), plainPage());
+	QPushButton *newTag     = new QPushButton(i18n("Ne&w Tag"),   mainWidget());
+	QPushButton *newState   = new QPushButton(i18n("New St&ate"), mainWidget());
 
 	connect( newTag,   SIGNAL(clicked()), this, SLOT(newTag())   );
 	connect( newState, SIGNAL(clicked()), this, SLOT(newState()) );
 
-	m_tags = new TagListView(plainPage());
+	m_tags = new TagListView(mainWidget());
 	m_tags->header()->hide();
 	m_tags->setRootIsDecorated(false);
 	m_tags->addColumn("");
 	m_tags->setSorting(-1); // Sort column -1, so disabled sorting
 	m_tags->setResizeMode(Q3ListView::LastColumn);
 
-	m_moveUp    = new KPushButton( KGuiItem("", "1uparrow"),   plainPage() );
-	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), plainPage() );
-	m_deleteTag = new KPushButton( KGuiItem("", "editdelete"), plainPage() );
+	m_moveUp    = new KPushButton( KGuiItem("", "1uparrow"),   mainWidget() );
+	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), mainWidget() );
+	m_deleteTag = new KPushButton( KGuiItem("", "editdelete"), mainWidget() );
 
 	QToolTip::add( m_moveUp,    i18n("Move Up (Ctrl+Shift+Up)")     );
 	QToolTip::add( m_moveDown,  i18n("Move Down (Ctrl+Shift+Down)") );
@@ -378,7 +389,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	/* Right part: */
 
-	QWidget *rightWidget = new QWidget(plainPage());
+	QWidget *rightWidget = new QWidget(mainWidget());
 
 	m_tagBox             = new Q3GroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
 	QWidget   *tagWidget = new QWidget(m_tagBox);
@@ -1168,8 +1179,6 @@ void TagsEditDialog::slotCancel()
 	for (TagCopy::List::iterator tagCopyIt = m_tagCopies.begin(); tagCopyIt != m_tagCopies.end(); ++tagCopyIt) {
 		delete (*tagCopyIt)->newTag;
 	}
-
-	KDialogBase::slotCancel();
 }
 
 void TagsEditDialog::slotOk()
@@ -1207,8 +1216,6 @@ void TagsEditDialog::slotOk()
 	// Update every note (change colors, size because of font change or added/removed emblems...):
 	Global::bnpView->relayoutAllBaskets();
 	Global::bnpView->recomputeAllStyles();
-
-	KDialogBase::slotOk();
 }
 
 #include "tagsedit.moc"

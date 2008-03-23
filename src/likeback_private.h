@@ -21,7 +21,7 @@
 #ifndef LIKEBACK_PRIVATE_H
 #define LIKEBACK_PRIVATE_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <qtimer.h>
 
 #include "likeback.h"
@@ -78,7 +78,7 @@ class LikeBackBar : public QWidget
 	QToolButton *m_featureButton;
 };
 
-class LikeBackDialog : public KDialogBase
+class LikeBackDialog : public KDialog
 {
   Q_OBJECT
   public:

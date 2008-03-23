@@ -1731,24 +1731,6 @@ void BNPView::delBasket()
 //	DecoratedBasket *decoBasket    = currentDecoratedBasket();
 	Basket          *basket        = currentBasket();
 
-#if 0
-	KDialogBase *dialog = new KDialogBase(this, /*name=*/0, /*modal=*/true, /*caption=*/i18n("Delete Basket"),
-										  KDialogBase::User1 | KDialogBase::User2 | KDialogBase::No, KDialogBase::User1,
-										 /*separator=*/false,
-										 /*user1=*/KGuiItem(i18n("Delete Only that Basket")/*, icon=""*/),
-										 /*user2=*/KGuiItem(i18n("Delete Note & Children")/*, icon=""*/) );
-	QStringList basketsList;
-	basketsList.append("Basket 1");
-	basketsList.append("  Basket 2");
-	basketsList.append("    Basket 3");
-	basketsList.append("  Basket 4");
-	KMessageBox::createKMessageBox(
-			dialog, QMessageBox::Information,
-			i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>")
-				.arg(Tools::textToHTMLWithoutP(basket->basketName())),
-			basketsList, /*ask=*/"", /*checkboxReturn=*/0, /*options=*/KMessageBox::Notify/*, const QString &details=QString::null*/);
-#endif
-
 	int really = KMessageBox::questionYesNo( this,
 											 i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>")
 													 .arg(Tools::textToHTMLWithoutP(basket->basketName())),

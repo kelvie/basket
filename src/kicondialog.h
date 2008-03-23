@@ -23,7 +23,7 @@
 #include <QKeyEvent>
 
 #include <kicontheme.h>
-#include <kdialogbase.h>
+#include <KDialog>
 #include <k3iconview.h>
 
 #include "kiconcanvas.h" // FIXME: BCI KDE 3 expects KIconCanvas to be defined in kicondialog.h
@@ -43,7 +43,7 @@ class KIconLoader;
  *
  * @short An icon selection dialog.
  */
-class KIO_EXPORT KIconDialog: public KDialogBase
+class KIO_EXPORT KIconDialog: public KDialog
 {
     Q_OBJECT
 

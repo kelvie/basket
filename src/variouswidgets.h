@@ -29,7 +29,7 @@
 #include <qdialog.h>
 #include <kurllabel.h>
 #include <qstring.h>
-#include <kdialogbase.h>
+#include <KDialog>
 
 class QLineEdit;
 class K3IconViewItem;
@@ -107,7 +107,7 @@ class HelpLabel : public KUrlLabel
 /** A dialog to choose the size of an icon.
   * @author Sébastien Laoût
   */
-class IconSizeDialog : public KDialogBase
+class IconSizeDialog : public KDialog
 {
   Q_OBJECT
   public:

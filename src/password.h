@@ -25,7 +25,7 @@
 #ifdef HAVE_LIBGPGME
 
 #include "passwordlayout.h"
-#include <kdialogbase.h>
+#include <KDialog>
 
 /**
 	@author Petri Damsten <damu@iki.fi>
@@ -38,7 +38,7 @@ class Password : public PasswordLayout
 		~Password();
 };
 
-class PasswordDlg : public KDialogBase
+class PasswordDlg : public KDialog
 {
 	Q_OBJECT
 	public:
@@ -50,8 +50,9 @@ class PasswordDlg : public KDialogBase
 		void setKey(const QString& key);
 		void setType(int type);
 
-	protected slots:
-		virtual void slotOk();
+		/** Reimplemented from {K,Q}Dialog
+		 */
+		void accept();
 
 	private:
 		Password* w;

@@ -5456,20 +5456,22 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 }
 
 DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent)
- : KDialogBase(KDialogBase::Plain, i18n("Save Error"),
-               (KDialogBase::ButtonCode)0, (KDialogBase::ButtonCode)0, parent, /*name=*/"DiskError")
+     : KDialog(parent)
 {
+	setObjectName("DiskError");
+	setCaption(i18n("Save Error"));
+	setMainWidget(new QWidget(this));
 	//enableButtonCancel(false);
 	//enableButtonClose(false);
 	//enableButton(Close, false);
 	//enableButtonOk(false);
 	setModal(true);
-	Q3HBoxLayout *layout = new Q3HBoxLayout(plainPage(), /*margin=*/0, spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
 	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
-	QLabel *iconLabel  = new QLabel(plainPage());
+	QLabel *iconLabel  = new QLabel(mainWidget());
 	iconLabel->setPixmap(icon);
 	iconLabel->setFixedSize(iconLabel->sizeHint());
-	QLabel *label = new QLabel("<p><nobr><b><font size='+1'>" + titleMessage + "</font></b></nobr></p><p>" + message + "</p>", plainPage());
+	QLabel *label = new QLabel("<p><nobr><b><font size='+1'>" + titleMessage + "</font></b></nobr></p><p>" + message + "</p>", mainWidget());
 	if (!icon.isNull())
 		layout->addWidget(iconLabel);
 	layout->addWidget(label);

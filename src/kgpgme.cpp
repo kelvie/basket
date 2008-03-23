@@ -43,7 +43,7 @@
 
 // KGpgSelKey class based on class in KGpg with the same name
 
-class KGpgSelKey : public KDialogBase
+class KGpgSelKey : public KDialog
 {
 	private:
 		K3ListView* keysListpr;
@@ -52,7 +52,14 @@ class KGpgSelKey : public KDialogBase
 
 		KGpgSelKey(QWidget *parent, const char *name, QString preselected,
 			const KGpgMe& gpg):
-		KDialogBase( parent, name, true,i18n("Private Key List"),Ok | Cancel) {
+		     KDialog(parent) {
+
+			// Dialog options
+			setObjectName(name);
+			setModal(true);
+			setCaption(i18n("Private Key List"));
+			setButtons(Ok | Cancel);
+
 			QString keyname;
 			Q3VBoxLayout* vbox;
 			QWidget* page = new QWidget(this);

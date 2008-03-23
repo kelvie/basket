@@ -21,7 +21,7 @@
 #ifndef TAGEDIT_H
 #define TAGEDIT_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <kcombobox.h>
 #include <q3listview.h>
 #include <q3valuelist.h>
@@ -119,7 +119,7 @@ class TagListView : public Q3ListView
 /**
   * @author S�astien Laot
   */
-class TagsEditDialog : public KDialogBase
+class TagsEditDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -128,6 +128,7 @@ class TagsEditDialog : public KDialogBase
 	State::List deletedStates() { return m_deletedStates; }
 	State::List addedStates()   { return m_addedStates;   }
 	TagListViewItem* itemForState(State *state);
+
   private slots:
 	void newTag();
 	void newState();

@@ -21,7 +21,7 @@
 #ifndef NOTEEDIT_H
 #define NOTEEDIT_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <q3textedit.h>
 #include <qlineedit.h>
 //Added by qt3to4:
@@ -208,13 +208,14 @@ class DebuggedLineEdit : public QLineEdit
 /** The dialog to edit Link Note content.
   * @author S�astien Laot
   */
-class LinkEditDialog : public KDialogBase
+class LinkEditDialog : public KDialog
 {
   Q_OBJECT
   public:
 	LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
 	~LinkEditDialog();
 	void polish();
+
   protected slots:
 	void slotOk();
 	void urlChanged(const QString&);
@@ -236,7 +237,7 @@ class LinkEditDialog : public KDialogBase
 /** The dialog to edit Launcher Note content.
   * @author S�astien Laot
   */
-class LauncherEditDialog : public KDialogBase
+class LauncherEditDialog : public KDialog
 {
   Q_OBJECT
   public:

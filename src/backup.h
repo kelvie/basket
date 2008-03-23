@@ -21,7 +21,7 @@
 #ifndef BACKUP_H
 #define BACKUP_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 #include <qapplication.h>
 #include <qthread.h>
 //Added by qt3to4:
@@ -30,7 +30,7 @@
 /**
  * @author Sébastien Laoût
  */
-class BackupDialog : public KDialogBase
+class BackupDialog : public KDialog
 {
   Q_OBJECT
   public:

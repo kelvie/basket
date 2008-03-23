@@ -89,10 +89,18 @@ NewBasketDefaultProperties::NewBasketDefaultProperties()
 /** class NewBasketDialog: */
 
 NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("New Basket"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"NewBasket", /*modal=*/true, /*separator=*/true)
+ : KDialog(parent)
  , m_defaultProperties(defaultProperties)
 {
+	// KDialog options
+	setCaption(i18n("New Basket"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("NewBasket");
+	setModal(true);
+	setSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+
 	QWidget *page = new QWidget(this);
 	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
@@ -256,7 +264,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 void NewBasketDialog::returnPressed()
 {
-	actionButton(KDialogBase::Ok)->animateClick();
+	actionButton(Ok)->animateClick();
 }
 
 int NewBasketDialog::populateBasketsList(Q3ListViewItem *item, int indent, int index)
@@ -290,7 +298,7 @@ NewBasketDialog::~NewBasketDialog()
 
 void NewBasketDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	m_name->setFocus();
 }
 
@@ -326,7 +334,6 @@ void NewBasketDialog::slotOk()
 	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
 	if(Global::mainWindow()) Global::mainWindow()->show();
 
-	KDialogBase::slotOk();
 }
 
 void NewBasketDialog::manageTemplates()

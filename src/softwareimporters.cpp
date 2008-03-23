@@ -46,11 +46,18 @@
 /** class TreeImportDialog: */
 
 TreeImportDialog::TreeImportDialog(QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Import Hierarchy"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"ImportHierarchy", /*modal=*/true, /*separator=*/false)
+     : KDialog(parent)
 {
 	QWidget *page = new QWidget(this);
 	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+
+	// KDialog options
+	setCaption(i18n("Import Hierarchy"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("ImportHeirachy");
+	setModal(true);
+	showButtonSeparator(false);
 
 	m_choices = new Q3VButtonGroup(i18n("How to Import the Notes?"), page);
 	new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
@@ -74,12 +81,19 @@ int TreeImportDialog::choice()
 
 /** class TextFileImportDialog: */
 
-TextFileImportDialog::TextFileImportDialog(QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, i18n("Import Text File"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"ImportTextFile", /*modal=*/true, /*separator=*/false)
+TextFileImportDialog::TextFileImportDialog(QWidget *parent),
+     : KDialog(parent)
 {
 	QWidget *page = new QWidget(this);
 	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+
+	// KDialog options
+	setCaption(i18n("Import Text File"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("ImportTextFile");
+	setModal(true);
+	showButtonSeparator(false);
 
 	m_choices = new Q3VButtonGroup(i18n("Format of the Text File"), page);
 	new QRadioButton(i18n("Notes separated by an &empty line"), m_choices);

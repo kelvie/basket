@@ -48,6 +48,8 @@
 #include <kmessagebox.h>
 #include <unistd.h> // usleep()
 
+#include <KVBox>
+
 /**
  * Backups are wrapped in a .tar.gz, inside that folder name.
  * An archive is not a backup or is corrupted if data are not in that folder!
@@ -57,10 +59,18 @@ const QString backupMagicFolder = "BasKet-Note-Pads_Backup";
 /** class BackupDialog: */
 
 BackupDialog::BackupDialog(QWidget *parent, const char *name)
- : KDialogBase(parent, name, /*modal=*/true, i18n("Backup & Restore"),
-               KDialogBase::Close, KDialogBase::Close, /*separator=*/false)
+     : KDialog(parent)
 {
-	KVBox *page  = makeVBoxMainWidget();
+	setObjectName(name);
+	setModal(true);
+	setCaption(i18n("Backup & Restore"));
+	setButtons(KDialog::Close);
+	setDefaultButton(KDialog::Close);
+	showButtonSeparator(false);
+
+	KVBox *page  = new KVBox(this);
+	setMainWidget(page);
+
 //	page->setSpacing(spacingHint());
 
 	QString savesFolder = Global::savesFolder();

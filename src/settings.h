@@ -24,7 +24,7 @@
 #include <qstring.h>
 //Added by qt3to4:
 #include <QLabel>
-#include <kdialogbase.h>
+#include <KDialog>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qtooltip.h>

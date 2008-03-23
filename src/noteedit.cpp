@@ -534,14 +534,23 @@ void DebuggedLineEdit::keyPressEvent(QKeyEvent *event)
 /** class LinkEditDialog: */
 
 LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
- : KDialogBase(KDialogBase::Plain, i18n("Edit Link Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"EditLink", /*modal=*/true, /*separator=*/true),
-   m_noteContent(contentNote)
+     : KDialog(parent)
+     , m_noteContent(contentNote)
 {
-	QWidget     *page   = plainPage();
+	// KDialog options
+	setCaption(i18n("Edit Link Note"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("EditLink");
+	setModal(true);
+	showButtonSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+
+	QWidget     *page   = new QWidget(this);
+	setMainWidget(page);
 	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
-	m_url = new KUrlRequester(m_noteContent->url().url(), page);
+
 
 	QWidget *wid1 = new QWidget(page);
 	Q3HBoxLayout *titleLay = new Q3HBoxLayout(wid1, /*margin=*/0, spacingHint());
@@ -612,7 +621,7 @@ LinkEditDialog::~LinkEditDialog()
 
 void LinkEditDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	if (m_url->lineEdit()->text().isEmpty()) {
 		m_url->setFocus();
 		m_url->lineEdit()->end(false);
@@ -686,18 +695,26 @@ void LinkEditDialog::slotOk()
 		m_icon->setFixedSize(minSize, minSize);
 	else
 		m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
-
-	KDialogBase::slotOk();
 }
 
 /** class LauncherEditDialog: */
 
 LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *parent)
- : KDialogBase(KDialogBase::Plain, i18n("Edit Launcher Note"), KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/"EditLauncher", /*modal=*/true, /*separator=*/true),
-   m_noteContent(contentNote)
+     : KDialog(parent)
+     , m_noteContent(contentNote)
 {
-	QWidget     *page   = plainPage();
+	// KDialog options
+	setCaption(i18n("Edit Launcher Note"));
+	setbuttons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setObjectName("EditLauncher");
+	setModal(true);
+	showButtonSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+
+	QWidget     *page   = new QWidget(this);
+	setMainWidget(page);
+
 	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
 	KService service(contentNote->fullPath());
@@ -749,7 +766,7 @@ LauncherEditDialog::~LauncherEditDialog()
 
 void LauncherEditDialog::polish()
 {
-	KDialogBase::polish();
+	KDialog::polish();
 	if (m_command->runCommand().isEmpty()) {
 		m_command->lineEdit()->setFocus();
 		m_command->lineEdit()->end(false);
@@ -772,8 +789,6 @@ void LauncherEditDialog::slotOk()
 	// Just for faster feedback: conf object will save to disk (and then m_note->loadContent() called)
 	m_noteContent->setLauncher(m_name->text(), m_icon->icon(), m_command->runCommand());
 	m_noteContent->setEdited();
-
-	KDialogBase::slotOk();
 }
 
 void LauncherEditDialog::guessIcon()

@@ -50,7 +50,7 @@
 #include <kdirwatch.h>
 #include <kaction.h>
 #include <kio/job.h>
-#include <kdialogbase.h>
+#include <KDialog>
 
 #include "filter.h"
 #include "note.h" // For Note::Zone
@@ -72,7 +72,7 @@ class KGpgMe;
   * This dialog is modal and is shown until the user has made space on the disk.
   * @author S�astien Laot
   */
-class DiskErrorDialog : public KDialogBase
+class DiskErrorDialog : public KDialog
 {
   Q_OBJECT
   public:

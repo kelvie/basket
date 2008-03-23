@@ -21,7 +21,7 @@
 #ifndef EXPORTERDIALOG_H
 #define EXPORTERDIALOG_H
 
-#include <kdialogbase.h>
+#include <KDialog>
 
 class KUrlRequester;
 class QCheckBox;
@@ -32,7 +32,7 @@ class Basket;
 /**
   * @author Sébastien Laoût
   */
-class ExporterDialog : public KDialogBase
+class ExporterDialog : public KDialog
 {
   Q_OBJECT
   public:
@@ -44,8 +44,8 @@ class ExporterDialog : public KDialogBase
 	bool    erasePreviousFiles();
 	bool    formatForImpression();
 	void show();
+
   protected slots:
-	void slotOk();
 	void load();
 	void save();
   private:

@@ -48,7 +48,7 @@ RunCommandRequester::RunCommandRequester(const QString &runCommand, const QStrin
 {
 	m_message = message;
 
-	Q3HBoxLayout *layout = new Q3HBoxLayout(this, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *layout = new Q3HBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
 	m_runCommand        = new QLineEdit(runCommand, this);
 	QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
@@ -190,9 +190,16 @@ class UndraggableKIconView : public K3IconView
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
- : KDialogBase(KDialogBase::Swallow, caption, KDialogBase::Ok | KDialogBase::Cancel,
-               KDialogBase::Ok, parent, /*name=*/0, /*modal=*/true, /*separator=*/false)
+     : KDialog(parent);
 {
+	// KDialog options
+	setCaption(caption);
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	setModal(true);
+	showButtonSeparator(false);
+	connect(this, SIGNAL(cancelClicked()), SLOT(slotCancel()));
+
 	QWidget *page = new QWidget(this);
 	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
 
@@ -257,13 +264,12 @@ void IconSizeDialog::slotSelectionChanged()
 
 void IconSizeDialog::choose(Q3IconViewItem*)
 {
-	actionButton(KDialogBase::Ok)->animateClick();
+	actionButton(Ok)->animateClick();
 }
 
 void IconSizeDialog::slotCancel()
 {
 	m_iconSize = -1;
-	KDialogBase::slotCancel();
 }
 
 /** class FontSizeCombo: */

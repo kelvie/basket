@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by Sï¿½bastien Laoï¿½t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,18 +32,29 @@
 #include <klocale.h>
 #include <kconfig.h>
 
+#include <KVBox>
+
 #include "exporterdialog.h"
 #include "basket.h"
 
 ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name)
- : KDialogBase(parent, name, /*modal=*/true, i18n("Export Basket to HTML"),
-               KDialogBase::Ok | KDialogBase::Cancel, KDialogBase::Ok, /*separator=*/true),
-   m_basket(basket)
+     : KDialog(parent)
+     , m_basket(basket)
 {
-	KVBox *page  = makeVBoxMainWidget();
+	// Dialog options
+	setObjectName(name);
+	setModal(true);
+	setCaption(i18n("Export Basket to HTML"));
+	setButtons(Ok | Cancel);
+	setDefaultButton(Ok);
+	showButtonSeparator(true);
+	connect(this, SIGNAL(okClicked()), SLOT(save()));
+
+	KVBox *page  = new KVBox(this);
+	setMainWidget(mainWidget);
 
 	QWidget     *wid  = new QWidget(page);
-	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, KDialogBase::spacingHint());
+	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_url = new KUrlRequester("", wid);
 	m_url->setCaption(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");
@@ -81,7 +92,7 @@ ExporterDialog::~ExporterDialog()
 
 void ExporterDialog::show()
 {
-	KDialogBase::show();
+	KDialog::show();
 
 	QString lineEditText = m_url->lineEdit()->text();
 	int selectionStart = lineEditText.findRev("/") + 1;
@@ -119,7 +130,6 @@ void ExporterDialog::save()
 void ExporterDialog::slotOk()
 {
 	save();
-	KDialogBase::slotOk();
 }
 
 QString ExporterDialog::filePath()

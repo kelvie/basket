@@ -81,8 +81,15 @@ class KIconDialog::KIconDialogPrivate
  */
 
 KIconDialog::KIconDialog(QWidget *parent, const char*)
-    : KDialogBase(parent, "IconDialog", true, i18n("Select Icon"), Ok|Cancel, Ok)
+    : KDialog(parent)
 {
+    // Dialog init
+    setObjectName("IconDialog");
+    setModal(true);
+    setCaption(i18n("Select Icon"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+
     d = new KIconDialogPrivate;
     mpLoader = KIconLoader::global();
     init();
@@ -91,8 +98,15 @@ KIconDialog::KIconDialog(QWidget *parent, const char*)
 
 KIconDialog::KIconDialog(KIconLoader *loader, QWidget *parent,
 	const char *name)
-    : KDialogBase(parent, name, true, i18n("Select Icon"), Ok|Cancel, Ok)
+    : KDialog(parent)
 {
+    // Dialog init
+    setObjectName(name);
+    setModal(true);
+    setCaption(i18n("Select Icon"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+
     d = new KIconDialogPrivate;
     mpLoader = loader;
     init();
@@ -128,6 +142,7 @@ void KIconDialog::init()
     connect(d->ui->iconCanvas, SIGNAL(progress(int)), SLOT(slotProgress(int)));
     connect(d->ui->iconCanvas, SIGNAL(finished()), SLOT(slotFinished()));
     connect(this, SIGNAL(hidden()), d->ui->iconCanvas, SLOT(stopLoading()));
+    connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
 
     // NOTE: this must be consistent with the IconType enum (see above)
     d->ui->listBox->insertItem(i18n("(All Icons)"));
@@ -333,7 +348,6 @@ void KIconDialog::slotOk()
     }
 
     emit newIconName(key);
-    KDialogBase::slotOk();
 }
 
 QString KIconDialog::getIcon(KIcon::Group group, KIcon::Context context,
@@ -554,6 +568,4 @@ void KIconCanvas::virtual_hook( int id, void* data )
 { K3IconView::virtual_hook( id, data ); }
 
 void KIconDialog::virtual_hook( int id, void* data )
-{ KDialogBase::virtual_hook( id, data ); }
-
-#include "kicondialog.moc"
+{ KDialog::virtual_hook( id, data ); }
