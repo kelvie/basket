@@ -28,7 +28,7 @@
 #include <Q3CString>
 #include <Q3ValueList>
 #include <QPixmap>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 #include <kdeversion.h>
 #include <kapplication.h>
 #include <qdesktopwidget.h>

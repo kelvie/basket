@@ -441,8 +441,8 @@ void SystemTray::updateToolTipDelayed()
 {
 	Basket *basket = Global::bnpView->currentBasket();
 
-	QString tip = "<p><nobr>" + ( basket->isLocked() ? KInstance::makeStandardCaption(i18n("%1 (Locked)"))
-	                                                 : KInstance::makeStandardCaption(     "%1")          )
+	QString tip = "<p><nobr>" + ( basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
+	                                                 : KDialog::makeStandardCaption(     "%1")          )
 	                            .arg(Tools::textToHTMLWithoutP(basket->basketName()));
 
 	QToolTip::add(this, tip);

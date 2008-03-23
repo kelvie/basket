@@ -1596,6 +1596,7 @@ void BNPView::insertWizard(int type)
 }
 
 // BEGIN Screen Grabbing: // FIXME
+// FIXME: don't use KWindowSystem calls
 
 void BNPView::grabScreenshot(bool global)
 {
@@ -2033,7 +2034,7 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
 	m_passivePopup->setView(
-			"<qt>" + KInstance::makeStandardCaption( currentBasket()->isLocked()
+			"<qt>" + KDialog::makeStandardCaption( currentBasket()->isLocked()
 			? QString("%1 <font color=gray30>%2</font>")
 			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName()), i18n("(Locked)"))
 	: Tools::textToHTMLWithoutP(currentBasket()->basketName()) ),

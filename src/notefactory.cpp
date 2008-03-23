@@ -29,7 +29,7 @@
 #include <qcolor.h>
 #include <qregexp.h>
 #include <kcolordrag.h>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 #include <q3stylesheet.h>
 #include <qdir.h>
 #include <kmimetype.h>

@@ -5524,7 +5524,7 @@ void Basket::lock()
 #include <kaboutdata.h>
 #include <qinputdialog.h>
 #include <q3dragobject.h>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kmimetype.h>

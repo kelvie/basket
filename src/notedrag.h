@@ -90,7 +90,7 @@ class ExtendedTextDrag : public Q3TextDrag
 
 // Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!
 
-#include <kurldrag.h>
+#include <k3urldrag.h>
 class K3URLDrag2 : public K3URLDrag
 {
   Q_OBJECT

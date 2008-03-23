@@ -27,7 +27,7 @@
 #include <kstandarddirs.h>
 #include <kiconloader.h>
 #include <kimagefilepreview.h>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 #include <kmultipledrag.h>
 
 #include <q3sortedlist.h>
