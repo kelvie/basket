@@ -716,7 +716,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	// The comment text box:
 	m_comment = new Q3TextEdit(box);
 	m_comment->setTabChangesFocus(true);
-	m_comment->setTextFormat(Q3TextEdit::PlainText);
+	m_comment->setTextFormat(Qt::PlainText);
 	m_comment->setText(initialComment);
 
 	m_showButtons = new QCheckBox(i18n("Show comment buttons below &window titlebars"), page);

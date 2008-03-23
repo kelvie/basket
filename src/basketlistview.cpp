@@ -103,7 +103,7 @@ int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const Q3Lis
 	int BASKET_ICON_SIZE = 16;
 	int MARGIN = 1;
 
-	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(column));
+	QRect textRect = fontMetrics.boundingRect(0, 0, / *width=* /1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextShowMnemonic, text(column));
 
 	return MARGIN + BASKET_ICON_SIZE + MARGIN + textRect.width() +   BASKET_ICON_SIZE/2   + MARGIN;
 */
@@ -139,7 +139,7 @@ void BasketListViewItem::setup()
 	setText(/*column=*/0, escapedName(m_basket->basketName()));
 
 	widthChanged();
-	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+	QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextShowMnemonic, text(/*column=*/0));
 
 	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
@@ -495,7 +495,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 	// Draw the rounded rectangle:
 	if (drawRoundRect) {
-		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::ShowPrefix, text(/*column=*/0));
+		QRect textRect = listView()->fontMetrics().boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextShowMnemonic, text(/*column=*/0));
 		int xRound = MARGIN;
 		int yRound = MARGIN;
 		int hRound = height() - 2 * MARGIN;
@@ -578,7 +578,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 			m_isAbbreviated = false;
 		}
 		theText = escapedName(theText);
-		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::ShowPrefix, theText);
+		thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::TextShowMnemonic, theText);
 	}
 
 	// If we are filtering all baskets, and are effectively filtering on something:

@@ -367,13 +367,13 @@ void ColorContent::serialize(QDataStream &stream) { stream << color();  }
 
 QPixmap TextContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
 	QPixmap pixmap( qMin(width, textRect.width()), qMin(height, textRect.height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
 	painter.setFont(note()->font());
-	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, text());
+	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
 	painter.end();
 	return pixmap;
 }
@@ -409,7 +409,7 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 	} else { // Scalled down
 		QImage imageToScale = m_pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
+		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
 		if (pmScaled.hasAlpha()) {
 			QPixmap opaque(pmScaled.width(), pmScaled.height());
 			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -430,7 +430,7 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
 	else { // Scalled down
 		QImage imageToScale = pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, QImage::ScaleMin));
+		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
 		return pmScaled;
 	}
 }
@@ -480,7 +480,7 @@ QPixmap LauncherContent::feedbackPixmap(int width, int height)
 
 QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 
 	QColorGroup colorGroup(basket()->colorGroup());
 	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
@@ -1893,7 +1893,7 @@ UnknownContent::UnknownContent(Note *parent, const QString &fileName)
 int UnknownContent::setWidthAndGetHeight(int width)
 {
 	width -= 1;
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 	return DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN;
 }
 
@@ -1926,7 +1926,7 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QColo
 
 	painter->setPen(colorGroup.text());
 	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
-	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::WordBreak, m_mimeTypes);
+	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_mimeTypes);
 }
 
 bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
@@ -1952,7 +1952,7 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 		file.close();
 	}
 
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, m_mimeTypes);
+	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 	contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
 	return true;
 }

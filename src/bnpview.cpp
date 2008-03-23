@@ -460,7 +460,7 @@ void BNPView::setupActions()
 	m_actUnselectAll = new KAction( i18n( "U&nselect All" ), "", this, SLOT( slotUnselectAll() ),
 									actionCollection(), "edit_unselect_all" );
 	m_actUnselectAll->setStatusText( i18n( "Unselects all selected notes" ) );
-	m_actInvertSelection = new KAction( i18n( "&Invert Selection" ), CTRL+Key_Asterisk,
+	m_actInvertSelection = new KAction( i18n( "&Invert Selection" ), Qt::CTRL+Qt::Key_Asterisk,
 										this, SLOT( slotInvertSelection() ),
 										actionCollection(), "edit_invert_selection" );
 	m_actInvertSelection->setStatusText( i18n( "Inverts the current selection of notes" ) );
@@ -697,7 +697,7 @@ void BNPView::save()
 	// Write to Disk:
 	Basket::safelySaveToFile(Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
 // 	QFile file(Global::basketsFolder() + "baskets.xml");
-// 	if (file.open(IO_WriteOnly)) {
+// 	if (file.open(QIODevice::WriteOnly)) {
 // 		QTextStream stream(&file);
 // 		stream.setEncoding(QTextStream::UnicodeUTF8);
 // 		QString xml = document.toString();

@@ -42,7 +42,7 @@ class SingleSelectionKIconView : public KIconView
 {
   Q_OBJECT
   public:
-	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, WFlags f = 0);
+	SingleSelectionKIconView(QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
 	Q3DragObject* dragObject();
 	Q3IconViewItem* selectedItem() { return m_lastSelected; }
   private slots:

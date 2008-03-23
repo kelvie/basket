@@ -69,7 +69,7 @@ static QAlphaWidget* q_blend = 0;
 /*
   Constructs a QAlphaWidget.
 */
-QAlphaWidget::QAlphaWidget( QWidget* w, WFlags f )
+QAlphaWidget::QAlphaWidget( QWidget* w, Qt::WFlags f )
 	: QWidget( QApplication::desktop()->screen(QApplication::desktop()->screenNumber(w)),
 			   "qt internal alpha effect widget", f )
 {
@@ -167,7 +167,7 @@ bool QAlphaWidget::eventFilter( QObject* o, QEvent* e )
 		case QEvent::KeyPress:
 		{
 			QKeyEvent *ke = (QKeyEvent*)e;
-			if ( ke->key() == Key_Escape )
+			if ( ke->key() == Qt::Key_Escape )
 				showWidget = FALSE;
 			else
 				duration = 0;
@@ -300,7 +300,7 @@ static QRollEffect* q_roll = 0;
 /*
   Construct a QRollEffect widget.
 */
-QRollEffect::QRollEffect( QWidget* w, WFlags f, DirFlags orient )
+QRollEffect::QRollEffect( QWidget* w, Qt::WFlags f, DirFlags orient )
 	: QWidget( QApplication::desktop()->screen(QApplication::desktop()->screenNumber(w)),
 			   "qt internal roll effect widget", f ), orientation(orient)
 {
@@ -389,7 +389,7 @@ bool QRollEffect::eventFilter( QObject* o, QEvent* e )
 			/*************************************                                                           */
 
 
-			if ( ke->key() == Key_Escape )
+			if ( ke->key() == Qt::Key_Escape )
 				showWidget = FALSE;
 			done = TRUE;
 			scroll();

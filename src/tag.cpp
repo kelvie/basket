@@ -760,7 +760,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool acti
 	 */
 	if (active && enabled)
 		painter->setPen(KGlobalSettings::highlightedTextColor());
-	painter->drawText(x + iconSize + iconMargin, y, w - iconSize - iconMargin, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_text/*painter->pen().color().name()*/);
+	painter->drawText(x + iconSize + iconMargin, y, w - iconSize - iconMargin, h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_text/*painter->pen().color().name()*/);
 
 	if (!m_shortcut.isEmpty()) {
 		painter->setPen(pen);
@@ -768,7 +768,7 @@ void IndentedMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool acti
 			painter->setPen(KGlobalSettings::highlightedTextColor());
 		painter->setFont(font);
 		painter->setClipping(false);
-		painter->drawText(x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut);
+		painter->drawText(x + 5 + w, y, 3000, h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_shortcut);
 	}
 }
 
@@ -776,7 +776,7 @@ QSize IndentedMenuItem::sizeHint()
 {
 	int iconSize   = KIcon::SizeSmall;
 	int iconMargin = StateMenuItem::iconMargin();
-	QSize textSize = QFontMetrics(KGlobalSettings::menuFont()).size( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_text );
+	QSize textSize = QFontMetrics(KGlobalSettings::menuFont()).size( Qt::AlignLeft | Qt::AlignVCenter | ShowPrefix | DontClip,  m_text );
 	return QSize(iconSize + iconMargin + textSize.width(), textSize.height());
 }
 
@@ -833,7 +833,7 @@ void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active,
 	if (active && enabled)
 		painter->setPen(KGlobalSettings::highlightedTextColor());
 	painter->setFont( m_state->font(painter->font()) );
-	painter->drawText(x + iconSize + iconMargin(), y, w - iconSize - iconMargin(), h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_name);
+	painter->drawText(x + iconSize + iconMargin(), y, w - iconSize - iconMargin(), h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_name);
 
 	if (!m_shortcut.isEmpty()) {
 		painter->setPen(pen);
@@ -841,7 +841,7 @@ void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active,
 			painter->setPen(KGlobalSettings::highlightedTextColor());
 		painter->setFont(font);
 		painter->setClipping(false);
-		painter->drawText(x + 5 + w, y, 3000, h, AlignLeft | AlignVCenter | DontClip | ShowPrefix, m_shortcut);
+		painter->drawText(x + 5 + w, y, 3000, h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_shortcut);
 	}
 }
 
@@ -849,7 +849,7 @@ QSize StateMenuItem::sizeHint()
 {
 	int iconSize   = 16; // We use 16 instead of KIcon::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
 	QFont theFont = m_state->font(KGlobalSettings::menuFont());
-	QSize textSize = QFontMetrics(theFont).size( AlignLeft | AlignVCenter | ShowPrefix | DontClip,  m_name );
+	QSize textSize = QFontMetrics(theFont).size( Qt::AlignLeft | Qt::AlignVCenter | ShowPrefix | DontClip,  m_name );
 	return QSize(iconSize + iconMargin() + textSize.width(), textSize.height());
 }
 
@@ -865,7 +865,7 @@ QIcon StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	QPixmap  pixmap(width, height);
 	pixmap.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	QPainter painter(&pixmap);
-	int style = QStyle::Style_Enabled | QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
+	int style = QStyle::State_Enabled | QStyle::Style_Active | (checked ? QStyle::State_On : QStyle::State_Off);
 	QColor background = cg.color(QColorGroup::Background);
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
@@ -883,7 +883,7 @@ QIcon StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
 	QPixmap  pixmapDisabled(width, height);
 	pixmapDisabled.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
 	painter.begin(&pixmapDisabled);
-	style = /*QStyle::Style_Enabled | */QStyle::Style_Active | (checked ? QStyle::Style_On : QStyle::Style_Off);
+	style = /*QStyle::State_Enabled | */QStyle::Style_Active | (checked ? QStyle::State_On : QStyle::State_Off);
 	cg.setColor(QColorGroup::Background, background);
 	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
 	painter.end();
@@ -900,14 +900,14 @@ QIcon StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
 	int height = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorHeight, 0);
 	QRect rect(0, 0, width, height);
 
-	int style = QStyle::Style_Default | QStyle::Style_Enabled | (checked ? QStyle::Style_On : QStyle::Style_Off);
+	int style = QStyle::Style_Default | QStyle::State_Enabled | (checked ? QStyle::State_On : QStyle::State_Off);
 
 	QPixmap pixmap(width, height);
 	pixmap.fill(Qt::red);
 	QPainter painter(&pixmap);
 	/* We can't use that line of code (like for checkboxes):
 	 * //kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
-	 * because Plastik (and derived styles) don't care of the QStyle::Style_On flag and will ALWAYS draw an unchecked radiobutton.
+	 * because Plastik (and derived styles) don't care of the QStyle::State_On flag and will ALWAYS draw an unchecked radiobutton.
 	 * So, we use another method:
 	 */
 	QRadioButton rb(0);

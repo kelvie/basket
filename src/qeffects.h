@@ -105,7 +105,7 @@ class QAccessWidget : public QWidget
 	friend class QAlphaWidget;
 	friend class QRollEffect;
 	public:
-		QAccessWidget( QWidget* parent=0, const char* name=0, WFlags f = 0 )
+		QAccessWidget( QWidget* parent=0, const char* name=0, Qt::WFlags f = 0 )
 	: QWidget( parent, name, f ) {}
 };
 
@@ -120,7 +120,7 @@ class QAlphaWidget: public QWidget, private QEffects
 {
 	Q_OBJECT
 	public:
-		QAlphaWidget( QWidget* w, WFlags f = 0 );
+		QAlphaWidget( QWidget* w, Qt::WFlags f = 0 );
 
 		void run( int time );
 
@@ -158,7 +158,7 @@ class QRollEffect : public QWidget, private QEffects
 {
 	Q_OBJECT
 	public:
-		QRollEffect( QWidget* w, WFlags f, DirFlags orient );
+		QRollEffect( QWidget* w, Qt::WFlags f, DirFlags orient );
 
 		void run( int time );
 

@@ -162,7 +162,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		if (y + h > desktopHeight) y = desktopHeight - h;
 
 		// Grab the desktop and draw a circle arround the icon:
-		QPixmap shot = QPixmap::grabWindow(qt_xrootwin(), x, y, w, h);
+		QPixmap shot = QPixmap::grabWindow(QX11Info::appRootWindow(), x, y, w, h);
 		QPainter painter(&shot);
 		const int CIRCLE_MARGINS = 6;
 		const int CIRCLE_WIDTH   = 3;
@@ -336,6 +336,7 @@ void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
 }
 
 #include <iostream>
+#include <QX11Info>
 
 void SystemTray::dropEvent(QDropEvent *event)
 {

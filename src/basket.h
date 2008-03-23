@@ -144,7 +144,7 @@ class DecoratedBasket : public QWidget
 {
   Q_OBJECT
   public:
-	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, WFlags fl = 0);
+	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, Qt::WFlags fl = 0);
 	~DecoratedBasket();
 	void setFilterBarPosition(bool onTop);
 	void resetFilter();
@@ -165,7 +165,7 @@ class TransparentWidget : public QWidget
   public:
 	TransparentWidget(Basket *basket);
 	void setPosition(int x, int y);
-	//void reparent(QWidget *parent, WFlags f, const QPoint &p, bool showIt = FALSE);
+	//void reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt = FALSE);
   protected:
 	void paintEvent(QPaintEvent*);
 	void mouseMoveEvent(QMouseEvent *event);
@@ -757,7 +757,7 @@ clas   s Bas    ket : public Q3ScrollView
   Q_OBJECT
   public:
 	/** Construtor and destructor */
-	Bask      et(QWidget *parent, const QString &folderName, const char *name = "", WFlags fl = 0);
+	Bask      et(QWidget *parent, const QString &folderName, const char *name = "", Qt::WFlags fl = 0);
   public:
   protected:
 	virtual void contentsContextMenuEvent(QContextMenuEvent *event);

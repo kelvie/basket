@@ -28,6 +28,7 @@
 // ShiftMask, ControlMask and Mod1Mask are defined in <X11/X.h>
 #if defined Q_WS_X11 && ! defined K_WS_QTONLY
 #include <X11/Xlib.h> // schroder
+#include <QX11Info>
 #endif
 
 void Keyboard::pressedKeys(bool &shiftPressed, bool &controlPressed)
@@ -37,7 +38,7 @@ void Keyboard::pressedKeys(bool &shiftPressed, bool &controlPressed)
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	shiftPressed   = keybstate & ShiftMask;
@@ -54,7 +55,7 @@ bool Keyboard::shiftPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & ShiftMask) != 0;
@@ -72,7 +73,7 @@ bool Keyboard::controlPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & ControlMask) != 0;
@@ -90,7 +91,7 @@ bool Keyboard::altPressed()
 	Window child;
 	int root_x, root_y, win_x, win_y;
 	uint keybstate;
-	XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
 	               &root_x, &root_y, &win_x, &win_y, &keybstate );
 
 	return (keybstate & Mod1Mask) != 0;
@@ -120,7 +121,7 @@ uint KApplication::keyboardModifiers()
     Window child;
     int root_x, root_y, win_x, win_y;
     uint keybstate;
-    XQueryPointer( qt_xdisplay(), qt_xrootwin(), &root, &child,
+    XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
                    &root_x, &root_y, &win_x, &win_y, &keybstate );
     return keybstate & 0x00ff;
 }

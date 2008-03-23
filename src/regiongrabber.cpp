@@ -35,10 +35,11 @@
 #include <QKeyEvent>
 
 #include <kglobalsettings.h>
+#include <QX11Info>
 
 SizeTip::SizeTip( QWidget *parent, const char *name )
-    : QLabel( parent, name, WStyle_Customize | WX11BypassWM |
-      WStyle_StaysOnTop | WStyle_NoBorder | WStyle_Tool )
+    : QLabel( parent, name, Qt::WStyle_Customize | WX11BypassWM |
+      Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WStyle_Tool )
 {
   setMargin( 2 );
   setIndent( 0 );
@@ -94,7 +95,7 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::initGrabber()
 {
-  pixmap = QPixmap::grabWindow( qt_xrootwin() );
+  pixmap = QPixmap::grabWindow( QX11Info::appRootWindow() );
   setPaletteBackgroundPixmap( pixmap );
 
   QDesktopWidget desktopWidget;
@@ -102,7 +103,7 @@ void RegionGrabber::initGrabber()
   if ( desktopWidget.isVirtualDesktop() )
     desktopSize = desktopWidget.geometry();
   else
-    desktopSize = desktopWidget.screenGeometry( qt_xrootwin() );
+    desktopSize = desktopWidget.screenGeometry( QX11Info::appRootWindow() );
 
   setGeometry( desktopSize );
   showFullScreen();
@@ -112,7 +113,7 @@ void RegionGrabber::initGrabber()
 
 void RegionGrabber::mousePressEvent( QMouseEvent *e )
 {
-  if ( e->button() == LeftButton )
+  if ( e->button() == Qt::LeftButton )
   {
     mouseDown = true;
     grabRect = QRect( e->pos(), e->pos() );
@@ -152,7 +153,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
 
 void RegionGrabber::keyPressEvent( QKeyEvent *e )
 {
-  if ( e->key() == Key_Escape )
+  if ( e->key() == Qt::Key_Escape )
   {
     QApplication::restoreOverrideCursor();
     emit regionGrabbed( QPixmap() );

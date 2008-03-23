@@ -134,7 +134,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	painter.end();
 	QImage previewImage = previewPixmap.convertToImage();
 	const int PREVIEW_SIZE = 256;
-	previewImage = previewImage.scale(PREVIEW_SIZE, PREVIEW_SIZE, QImage::ScaleMin);
+	previewImage = previewImage.scale(PREVIEW_SIZE, PREVIEW_SIZE, Qt::ScaleMin);
 	previewImage.save(tempFolder + "preview.png", "PNG");
 
 	// Finaly Save to the Real Destination file:
@@ -297,7 +297,7 @@ void Archive::open(const QString &path)
 				// Get the preview file:
 //FIXME: We do not need the preview for now
 //				QFile previewFile(tempFolder + "preview.png");
-//				if (previewFile.open(IO_WriteOnly)) {
+//				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
 					Q_LONG sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {

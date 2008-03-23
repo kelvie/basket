@@ -202,7 +202,7 @@ Q3ValueList<Note*> NoteSelection::parentGroups()
 
 /** Class DecoratedBasket: */
 
-DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, const char *name, WFlags fl)
+DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, const char *name, Qt::WFlags fl)
  : QWidget(parent, name, fl)
 {
 	m_layout = new Q3VBoxLayout(this);
@@ -276,7 +276,7 @@ TransparentWidget::TransparentWidget(Basket *basket)
 	basket->viewport()->installEventFilter(this);
 }
 
-/*void TransparentWidget::reparent(QWidget *parent, WFlags f, const QPoint &p, bool showIt)
+/*void TransparentWidget::reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt)
 {
 	QWidget::reparent(parent, Qt::WNoAutoErase, p, showIt);
 }*/
@@ -1088,7 +1088,7 @@ void Basket::equalizeColumnSizes()
 void Basket::enableActions()
 {
 	Global::bnpView->enableActions();
-	setFocusPolicy(isLocked() ? QWidget::NoFocus : QWidget::StrongFocus);
+	setFocusPolicy(isLocked() ? QWidget::NoFocus : Qt::StrongFocus);
 	if (isLocked())
 		viewport()->setCursor(Qt::ArrowCursor); // When locking, the cursor stays the last form it was
 }
@@ -1388,7 +1388,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 	if (!m_folderName.endsWith("/"))
 		m_folderName += "/";
 
-	setFocusPolicy(QWidget::StrongFocus);
+	setFocusPolicy(Qt::StrongFocus);
 	setWFlags(Qt::WNoAutoErase);
 	setDragAutoScroll(true);
 
@@ -3110,7 +3110,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 #else
 			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(kapp->aboutData()->programName()) );
 #endif
-			label->setAlignment( int( QLabel::AlignTop ) );
+			label->setAlignment( int( Qt::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );
 			QLabel* pixmap = new QLabel( m_decryptBox, "pixmap" );
 			pixmap->setPixmap( KGlobal::iconLoader()->loadIcon("encrypted", KIcon::NoGroup, KIcon::SizeHuge) );
@@ -3124,7 +3124,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 				     "locking duration in the application settings.") + "</small>",
 				m_decryptBox);
 			//label->setFixedWidth(label->sizeHint().width() / 2);
-			label->setAlignment( int( QLabel::AlignTop ) );
+			label->setAlignment( int( Qt::AlignTop ) );
 			layout->addMultiCellWidget( label, 2,2,0,2 );
 
 			m_decryptBox->resize(layout->sizeHint());
@@ -4691,7 +4691,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 
 	// Draw and save the gradient image:
 	int sampleTextHeight = QFontMetrics(font)
-	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak, "Test text")
+	                       .boundingRect(0, 0, /*width=*/10000, /*height=*/0, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, "Test text")
 	                       .height();
 	QPixmap noteGradient(100, sampleTextHeight + Note::NOTE_MARGIN);
 	QPainter painter(&noteGradient);
@@ -5365,7 +5365,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 	if(success)
 		tmp = array;
 #endif
-	/*if (success && (success = file.open(IO_WriteOnly))){
+	/*if (success && (success = file.open(QIODevice::WriteOnly))){
 		success = (file.write(tmp) == (Q_LONG)tmp.size());
 		file.close();
 	}*/

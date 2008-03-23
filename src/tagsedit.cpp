@@ -262,7 +262,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	int textWidth = width - xText;
 	if (thePainter.fontMetrics().width(text) > textWidth)
 		text = KStringHandler::rPixelSqueeze(text, fontMetrics, textWidth);
-	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::ShowPrefix, text);
+	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::TextShowMnemonic, text);
 
 	// Apply the buffer:
 	thePainter.end();
@@ -271,7 +271,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 
 /** class TagListView: */
 
-TagListView::TagListView(QWidget *parent, const char *name, WFlags flags)
+TagListView::TagListView(QWidget *parent, const char *name, Qt::WFlags flags)
  : Q3ListView(parent, name, flags)
 {
 }

@@ -60,7 +60,7 @@ const int KColorPopup::FRAME_WIDTH = 1;
 
 
 KColorPopup::KColorPopup(KColorCombo2 *parent)
- : QWidget(/*parent=*/0, /*name=*/0, WType_Popup | WNoAutoErase),
+ : QWidget(/*parent=*/0, /*name=*/0, Qt::WType_Popup | WNoAutoErase),
    m_selector(parent)
 {
 	hide();
@@ -130,7 +130,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 		m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
 		painter.setFont(m_selector->font());
 		painter.setPen(textColor);
-		painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, AlignLeft | AlignVCenter | DontClip, i18n("(Default)"));
+		painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("(Default)"));
 	}
 	x = 1 + MARGIN + m_columnOther * (colorWidth + MARGIN);
 	if (m_selectedColumn >= m_columnOther && rowCount == m_selectedRow) {
@@ -142,7 +142,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 	m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
 	painter.setFont(m_selector->font());
 	painter.setPen(textColor);
-	painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, AlignLeft | AlignVCenter | DontClip, i18n("Other..."));
+	painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("Other..."));
 
 //	QPoint pos = mapFromGlobal(QCursor::pos());
 //	painter.drawRect(pos.x(), pos.y(), 5000, 5000);

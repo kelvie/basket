@@ -102,7 +102,7 @@ class TagListView : public Q3ListView
 {
   Q_OBJECT
   public:
-	TagListView(QWidget *parent = 0, const char *name = 0, WFlags flags = 0);
+	TagListView(QWidget *parent = 0, const char *name = 0, Qt::WFlags flags = 0);
 	~TagListView();
 	void keyPressEvent(QKeyEvent *event);
 	void contentsMouseDoubleClickEvent(QMouseEvent *event);

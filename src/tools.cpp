@@ -73,7 +73,7 @@ QString Tools::textToHTML(const QString &text)
 		return "<p>&nbsp;</p>";
 
 	// convertFromPlainText() replace "\n\n" by "</p>\n<p>": we don't want that
-	QString htmlString = Q3StyleSheet::convertFromPlainText(text, Q3StyleSheetItem::WhiteSpaceNormal);
+	QString htmlString = Qt::convertFromPlainText(text, Qt::WhiteSpaceNormal);
 	return htmlString.replace("</p>\n", "<br>\n<br>\n").replace("\n<p>", "\n"); // Don't replace first and last tags
 }
 
@@ -351,6 +351,7 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
 }
 
 #include <iostream>
+#include <QTextDocument>
 
 void Tools::deleteRecursively(const QString &folderOrFile)
 {

@@ -50,7 +50,7 @@
 
 /** class SingleSelectionKIconView: */
 
-SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, WFlags f)
+SingleSelectionKIconView::SingleSelectionKIconView(QWidget *parent, const char *name, Qt::WFlags f)
  : KIconView(parent, name, f), m_lastSelected(0)
 {
 	connect( this, SIGNAL(selectionChanged(Q3IconViewItem*)), this, SLOT(slotSelectionChanged(Q3IconViewItem*)) );

@@ -92,7 +92,7 @@ bool UniqueAppHandler::process( const QCString &fun, const QByteArray &data,
     loadCommandLineOptions();
 
     // This bit is duplicated from KUniqueApplication::processDelayed()
-    QDataStream ds( data, IO_ReadOnly );
+    QDataStream ds( data, QIODevice::ReadOnly );
     KCmdLineArgs::loadAppArgs( ds );
     if ( !ds.atEnd() ) { // backwards compatibility
       QCString asn_id;
@@ -100,13 +100,13 @@ bool UniqueAppHandler::process( const QCString &fun, const QByteArray &data,
       kapp->setStartupId( asn_id );
     }
 
-    QDataStream _replyStream( replyData, IO_WriteOnly );
+    QDataStream _replyStream( replyData, QIODevice::WriteOnly );
     _replyStream << newInstance( );
   } else if ( fun == "load()" ) {
     replyType = "bool";
     (void)mPlugin->part(); // load the part without bringing it to front
 
-    QDataStream _replyStream( replyData, IO_WriteOnly );
+    QDataStream _replyStream( replyData, QIODevice::WriteOnly );
     _replyStream << true;
   } else {
     return DCOPObject::process( fun, data, replyType, replyData );

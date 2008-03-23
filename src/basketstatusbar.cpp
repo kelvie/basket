@@ -67,7 +67,7 @@ void BasketStatusBar::addWidget(QWidget * widget, int stretch, bool permanent)
 void BasketStatusBar::setupStatusBar()
 {
 	QWidget* parent = statusBar();
-	QObjectList* lst = parent->queryList("KRSqueezedTextLabel");
+	QObjectList lst = parent->queryList("KRSqueezedTextLabel");
 
 	//Tools::printChildren(parent);
 	if(lst->count() == 0)

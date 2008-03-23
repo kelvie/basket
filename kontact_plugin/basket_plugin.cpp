@@ -37,7 +37,7 @@ BasketPlugin::BasketPlugin( Kontact::Core *core, const char *, const QStringList
   : Kontact::Plugin( core, core, "basket" )
 {
 	setInstance( BasketPluginFactory::instance() );
-	insertNewAction(new KAction( i18n("&New Basket..."), "basket", CTRL+SHIFT+Key_B,
+	insertNewAction(new KAction( i18n("&New Basket..."), "basket", Qt::CTRL+Qt::SHIFT+Qt::Key_B,
 					this, SLOT(newBasket()), actionCollection(), "basket_new" ));
 
 	m_uniqueAppWatcher = new Kontact::UniqueAppWatcher(

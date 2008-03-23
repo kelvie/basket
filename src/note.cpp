@@ -1300,7 +1300,7 @@ void Note::drawExpander(QPainter *painter, int x, int y, const QColor &backgroun
 		basket->viewport(),
 		QRect(x, y, 9, 9),
 		cg,
-		(expand ? QStyle::Style_On : QStyle::Style_Off) );
+		(expand ? QStyle::State_On : QStyle::State_Off) );
 	// Else, QStyle does not provide easy way to do so (if it's doable at all...)
 	// So, I'm drawing it myself my immitating Plastik (pretty style)...
 	// After all, the note/group handles are all non-QStyle aware so that doesn't matter if the expander is a custom one too.
@@ -2838,7 +2838,7 @@ QString Note::toHtml(const QString &imageName)
 					image = pixmap()->convertToImage();
 				else
 					image = movie()->framePixmap().convertToImage();
-				image = image.smoothScale(200, 150, QImage::ScaleMin);
+				image = image.smoothScale(200, 150, Qt::ScaleMin);
 				QPixmap pixmap = QPixmap(image);
 				Q3MimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
 				return "<img src=" + imageName + ">"; ///
@@ -2851,7 +2851,7 @@ QString Note::toHtml(const QString &imageName)
 					image = pixmap()->convertToImage();
 				else
 					image = movie()->framePixmap().convertToImage();
-				image = image.smoothScale(200, 150, QImage::ScaleMin);
+				image = image.smoothScale(200, 150, Qt::ScaleMin);
 				QPixmap pixmap = QPixmap(image);
 				QMimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
 				return "<img src=" + imageName + ">"; ///

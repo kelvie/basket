@@ -121,7 +121,7 @@
                                 </sizepolicy>
                             </property>
                             <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
+                                <enum>Qt::StrongFocus</enum>
                             </property>
                         </widget>
                     </hbox>
