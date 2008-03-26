@@ -60,7 +60,6 @@ class GeneralPage : public KCModule
   Q_OBJECT
   public:
 	GeneralPage(QWidget * parent=0, const char * name=0);
-	GeneralPage() {};
 	virtual ~GeneralPage() {}
 
 	virtual void load();
@@ -88,7 +87,6 @@ class BasketsPage : public KCModule
   Q_OBJECT
   public:
 	BasketsPage(QWidget * parent=0, const char * name=0);
-	BasketsPage() {};
 
 	virtual void load();
 	virtual void save();
@@ -119,7 +117,6 @@ class NewNotesPage : public KCModule
   Q_OBJECT
   public:
 	NewNotesPage(QWidget * parent=0, const char * name=0);
-	NewNotesPage() {};
 
 	virtual void load();
 	virtual void save();
@@ -147,7 +144,6 @@ class NotesAppearancePage : public KCModule
   Q_OBJECT
   public:
 	NotesAppearancePage(QWidget * parent=0, const char * name=0);
-	NotesAppearancePage() {};
 
 	virtual void load();
 	virtual void save();
@@ -167,7 +163,6 @@ class ApplicationsPage : public KCModule
   Q_OBJECT
   public:
 	ApplicationsPage(QWidget * parent=0, const char * name=0);
-	ApplicationsPage() {};
 
 	virtual void load();
 	virtual void save();
