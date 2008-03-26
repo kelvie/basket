@@ -35,9 +35,7 @@
 #include <Q3PopupMenu>
 #include <QEvent>
 #include <QShowEvent>
-#include <dcopref.h>
 #include "global.h"
-#include "basketdcopiface.h"
 
  /// NEW:
 
@@ -62,7 +60,7 @@ class Tag;
 class State;
 class Note;
 
-class BNPView : public QSplitter, virtual public BasketDcopInterface
+class BNPView : public QSplitter
 {
 	Q_OBJECT
 	public:
@@ -295,7 +293,7 @@ class BNPView : public QSplitter, virtual public BasketDcopInterface
 		bool isMainWindowActive();
 		void showMainWindow();
 
-		// dcop calls
+		// TODO: dcop calls -- dbus these
 		virtual void newBasket();
 		virtual void handleCommandLine();
 		virtual void reloadBasket(const QString &folderName);

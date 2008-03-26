@@ -55,8 +55,7 @@
 #include <kcmdlineargs.h>
 #include <kglobalaccel.h>
 #include <kapplication.h>
-#include <kkeydialog.h>
-#include <dcopclient.h>
+#include <KShortcutsDialog>
 #include <kdebug.h>
 #include <iostream>
 #include <KShortcutsDialog>
@@ -92,12 +91,24 @@
 const int BNPView::c_delayTooltipTime = 275;
 
 BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
-				 KActionCollection *actionCollection, BasketStatusBar *bar)
-	: DCOPObject("BasketIface"), QSplitter(Qt::Horizontal, parent, name), m_actLockBasket(0), m_actPassBasket(0),
-	m_loading(true), m_newBasketPopup(false), m_firstShow(true),
-	m_regionGrabber(0), m_passiveDroppedSelection(0), m_passivePopup(0), m_actionCollection(actionCollection),
-	m_guiClient(aGUIClient), m_statusbar(bar), m_tryHideTimer(0), m_hideTimer(0)
+		 KActionCollection *actionCollection, BasketStatusBar *bar)
+	: QSplitter(Qt::Horizontal, parent)
+	, m_actLockBasket(0)
+	, m_actPassBasket(0)
+	, m_loading(true)
+	, m_newBasketPopup(false)
+	, m_firstShow(true)
+	, m_regionGrabber(0)
+	, m_passiveDroppedSelection(0)
+	, m_passivePopup(0)
+	, m_actionCollection(actionCollection)
+	, m_guiClient(aGUIClient)
+	, m_statusbar(bar)
+	, m_tryHideTimer(0)
+	, m_hideTimer(0)
 {
+	setObjectName(name);
+
 	/* Settings */
 	Settings::loadConfig();
 
@@ -2213,7 +2224,7 @@ QStringList BNPView::listBaskets()
 		basketList.append(item->basket()->basketName());
 		basketList.append(item->basket()->folderName());
 		++it;
-	}	
+	}
 	return basketList;
 }
 
@@ -2473,4 +2484,3 @@ void BNPView::showGlobalShortcutsSettingsDialog()
 	Global::globalAccel->writeSettings();
 }
 
-#include "bnpview.moc"
