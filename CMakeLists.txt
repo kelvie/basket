@@ -3,7 +3,10 @@ find_package(KDE4 REQUIRED)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
-add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
+add_definitions(-DQT3_SUPPORT)
+
+# fix these warnings after we get it to compile
+#add_definitions(-DQT3_SUPPORT_WARNINGS)
 
 include(KDE4Defaults)
 
