@@ -21,7 +21,7 @@
 #ifndef SYSTEMTRAY_H
 #define SYSTEMTRAY_H
 
-#include <ksystemtray.h>
+#include <KSystemTrayIcon>
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QEvent>
@@ -38,7 +38,7 @@ class MainWindow;
   * hopefuly integrated in KDE 3.4
   * @author S�astien Laot
   */
-class KSystemTray2 : public KSystemTray
+class KSystemTray2 : public KSystemTrayIcon
 {
   Q_OBJECT
   public:
