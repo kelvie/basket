@@ -196,7 +196,7 @@ QList<Note*> NoteSelection::parentGroups()
 DecoratedBasket::DecoratedBasket ( QWidget *parent, const QString &folderName, Qt::WFlags flags )
 		: QWidget ( parent, flags )
 {
-	kDebug() << (int)parent << endl;
+//	kDebug() << (int)parent << endl;
 	kDebug() << folderName << endl;
 	kDebug() << "---------" << endl;
 

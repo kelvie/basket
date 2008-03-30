@@ -767,7 +767,7 @@ void BasketTree::contentsDropEvent ( QDropEvent *event )
 
 void BasketTree::contentsDragMoveEvent ( QDragMoveEvent *event )
 {
-	kDebug() << "Enter : " << (int)event << endl;
+//	kDebug() << "Enter : " << (int)event << endl;
 
 	if ( event->provides ( "application/x-qlistviewitem" ) )
 		QTreeWidget::dragMoveEvent ( event );

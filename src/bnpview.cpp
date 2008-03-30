@@ -944,8 +944,8 @@ bool BNPView::canExpand()
 
 BasketTreeItem* BNPView::appendBasket ( Basket *basket, BasketTreeItem *parentItem )
 {
-	kDebug() << "append basket to the tree" << endl;
-	kDebug() << (int)basket << " " << (int)parentItem << endl;
+//	kDebug() << "append basket to the tree" << endl;
+//	kDebug() << (int)basket << " " << (int)parentItem << endl;
 
 	BasketTreeItem *newBasketItem;
 	if ( parentItem ) {
@@ -974,7 +974,7 @@ BasketTreeItem* BNPView::appendBasket ( Basket *basket, BasketTreeItem *parentIt
 
 void BNPView::loadNewBasket ( const QString &folderName, const QDomElement &properties, Basket *parent )
 {
-	kDebug() << folderName << " " << (int)parent << endl;
+//	kDebug() << folderName << " " << (int)parent << endl;
 	Basket *basket = loadBasket ( folderName );
 	appendBasket ( basket, ( basket ? listViewItemForBasket ( parent ) : 0 ) );
 	basket->loadProperties ( properties );
@@ -1381,7 +1381,7 @@ void BNPView::filterPlacementChanged ( bool onTop )
 
 void BNPView::updateBasketListViewItem ( Basket *basket )
 {
-	kDebug() << "update BasketTree : " << (int)basket << endl;
+//	kDebug() << "update BasketTree : " << (int)basket << endl;
 	BasketTreeItem *item = listViewItemForBasket ( basket );
 	if ( item )
 		item->setup();

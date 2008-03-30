@@ -115,7 +115,7 @@ void BasketFactory::newBasket(const QString &icon,
 	kDebug() << name << endl;
 	kDebug() << backgroundImage << endl;
 	kDebug() << templateName << endl;
-	kDebug() << (int)parent << endl;
+//	kDebug() << (int)parent << endl;
 	kDebug() << "----------------" << endl;
 
 	// Unpack the templateName file to a new basket folder:
