@@ -55,10 +55,10 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	QIcon resetIconSet = KIconLoader::global()->loadIconSet( "edit-clear-locationbar", KIconLoader::Toolbar );
 	QIcon inAllIconSet = KIconLoader::global()->loadIconSet( "edit-find",              KIconLoader::Toolbar );
 
-	m_resetButton = new QToolButton(this);
+	m_resetButton        = new QToolButton(this);
 	m_resetButton->setIcon( resetIconSet );
 	m_resetButton->setToolTip( i18n("Reset Filter") );
-	m_resetButton->setAutoRaise( true );
+	m_resetButton->setAutoRaise(true);
 
 	m_lineEdit           = new FocusedLineEdit(this);
 //	m_lineEdit->setMaximumWidth(150);
@@ -69,10 +69,10 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 
 	QLabel *label2       = new QLabel( i18n("T&ag: "), this);
 
-	m_inAllBasketsButton = new QToolButton( this );
+	m_inAllBasketsButton = new QToolButton(this);
 	m_inAllBasketsButton->setIcon( inAllIconSet );
 	m_inAllBasketsButton->setToolTip( i18n("Filter all Baskets") );
-	m_inAllBasketsButton->setAutoRaise( true );
+	m_inAllBasketsButton->setAutoRaise(true);
 	m_inAllBasketsButton->setCheckable( true );
 	//FIXME Global::bnpView->toggleFilterAllBaskets(true);
 

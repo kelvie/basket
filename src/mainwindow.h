@@ -56,6 +56,7 @@ class ClickableLabel;
 class Settings;
 namespace KSettings { class Dialog; };
 
+
 /** The window that contain baskets, organized by tabs.
   * @author S�astien Laot
   */

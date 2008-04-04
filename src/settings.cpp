@@ -114,17 +114,17 @@ void Settings::loadConfig()
 	LinkLook defaultLocalLinkLook;
 	LinkLook defaultNetworkLinkLook;
 	LinkLook defaultLauncherLook; /* italic  bold    underlining                color      hoverColor  iconSize  preview */
-	defaultSoundLook.setLook ( false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::None );
-	defaultFileLook.setLook ( false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::TwiceIconSize );
-	defaultLocalLinkLook.setLook ( true,   false,  LinkLook::OnMouseHover,    QColor(),  QColor(),   22,       LinkLook::TwiceIconSize );
-	defaultNetworkLinkLook.setLook ( false,  false,  LinkLook::OnMouseOutside,  QColor(),  QColor(),   16,       LinkLook::None );
-	defaultLauncherLook.setLook ( false,  true,   LinkLook::Never,           QColor(),  QColor(),   48,       LinkLook::None );
+	defaultSoundLook.setLook(        false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::None           );
+	defaultFileLook.setLook(         false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::TwiceIconSize  );
+	defaultLocalLinkLook.setLook(    true,   false,  LinkLook::OnMouseHover,    QColor(),  QColor(),   22,       LinkLook::TwiceIconSize  );
+	defaultNetworkLinkLook.setLook(  false,  false,  LinkLook::OnMouseOutside,  QColor(),  QColor(),   16,       LinkLook::None           );
+	defaultLauncherLook.setLook(     false,  true,   LinkLook::Never,           QColor(),  QColor(),   48,       LinkLook::None           );
 
-	loadLinkLook ( LinkLook::soundLook,       "Sound Look",        defaultSoundLook );
-	loadLinkLook ( LinkLook::fileLook,        "File Look",         defaultFileLook );
-	loadLinkLook ( LinkLook::localLinkLook,   "Local Link Look",   defaultLocalLinkLook );
-	loadLinkLook ( LinkLook::networkLinkLook, "Network Link Look", defaultNetworkLinkLook );
-	loadLinkLook ( LinkLook::launcherLook,    "Launcher Look",     defaultLauncherLook );
+	loadLinkLook(LinkLook::soundLook,       "Sound Look",        defaultSoundLook      );
+	loadLinkLook(LinkLook::fileLook,        "File Look",         defaultFileLook       );
+	loadLinkLook(LinkLook::localLinkLook,   "Local Link Look",   defaultLocalLinkLook  );
+	loadLinkLook(LinkLook::networkLinkLook, "Network Link Look", defaultNetworkLinkLook);
+	loadLinkLook(LinkLook::launcherLook,    "Launcher Look",     defaultLauncherLook   );
 
 	KConfigGroup config = KGlobal::config()->group ( "Main window" );// TODO: Split with a "System tray icon" group !
 	setTreeOnLeft ( config.readEntry ( "treeOnLeft",           true ) );
@@ -186,10 +186,10 @@ void Settings::loadConfig()
 	// The first time we start, we define "Text Alongside Icons" for the main toolbar.
 	// After that, the user is free to hide the text from the icons or customize as he/she want.
 	// But it is a good default (Fitt's Laws, better looking, less "empty"-feeling), especially for this application.
-	//	if (!config->readBoolEntry("alreadySetIconTextRight", false)) {
-	//		config->writeEntry( "IconText",                "IconTextRight" );
-	//		config->writeEntry( "alreadySetIconTextRight", true            );
-	//	}
+//	if (!config->readBoolEntry("alreadySetIconTextRight", false)) {
+//		config->writeEntry( "IconText",                "IconTextRight" );
+//		config->writeEntry( "alreadySetIconTextRight", true            );
+//	}
 	if ( !config.readEntry ( "alreadySetToolbarSettings", false ) )
 	{
 		config.writeEntry ( "IconText", "IconOnly" ); // In 0.6.0 Alpha versions, it was made "IconTextRight". We're back to IconOnly
@@ -205,11 +205,11 @@ void Settings::loadConfig()
 
 void Settings::saveConfig()
 {
-	saveLinkLook ( LinkLook::soundLook,       "Sound Look" );
-	saveLinkLook ( LinkLook::fileLook,        "File Look" );
-	saveLinkLook ( LinkLook::localLinkLook,   "Local Link Look" );
-	saveLinkLook ( LinkLook::networkLinkLook, "Network Link Look" );
-	saveLinkLook ( LinkLook::launcherLook,    "Launcher Look" );
+	saveLinkLook(LinkLook::soundLook,       "Sound Look"       );
+	saveLinkLook(LinkLook::fileLook,        "File Look"        );
+	saveLinkLook(LinkLook::localLinkLook,   "Local Link Look"  );
+	saveLinkLook(LinkLook::networkLinkLook, "Network Link Look");
+	saveLinkLook(LinkLook::launcherLook,    "Launcher Look"    );
 
 	KConfigGroup config = KGlobal::config()->group ( "Main window" );
 	config.writeEntry ( "treeOnLeft",           treeOnLeft() );
@@ -221,7 +221,7 @@ void Settings::saveConfig()
 	config.writeEntry ( "autoBullet",           autoBullet() );
 	config.writeEntry ( "exportTextTags",       exportTextTags() );
 #ifdef HAVE_LIBGPGME
-	if ( KGpgMe::isGnuPGAgentAvailable() )
+	if (KGpgMe::isGnuPGAgentAvailable())
 		config.writeEntry ( "useGnuPGAgent",    useGnuPGAgent() );
 #endif
 	config.writeEntry ( "blinkedFilter",        blinkedFilter() );
@@ -276,15 +276,15 @@ void Settings::saveConfig()
 	config.sync();
 }
 
-void Settings::loadLinkLook ( LinkLook *look, const QString &name, const LinkLook &defaultLook )
+void Settings::loadLinkLook(LinkLook *look, const QString &name, const LinkLook &defaultLook)
 {
 	KConfigGroup config = KGlobal::config()->group ( name );
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
-	QString defaultUnderliningString = underliningStrings[defaultLook.underlining() ];
+	QString defaultUnderliningString = underliningStrings[defaultLook.underlining()];
 
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
-	QString defaultPreviewString = previewStrings[defaultLook.preview() ];
+	QString defaultPreviewString = previewStrings[defaultLook.preview()];
 
 	bool    italic            = config.readEntry ( "italic",      defaultLook.italic() );
 	bool    bold              = config.readEntry ( "bold",        defaultLook.bold() );
@@ -295,27 +295,27 @@ void Settings::loadLinkLook ( LinkLook *look, const QString &name, const LinkLoo
 	QString previewString     = config.readEntry ( "preview",     defaultPreviewString );
 
 	int underlining = 0;
-	if ( underliningString == underliningStrings[1] ) underlining = 1;
-	else if ( underliningString == underliningStrings[2] ) underlining = 2;
-	else if ( underliningString == underliningStrings[3] ) underlining = 3;
+	if      (underliningString == underliningStrings[1]) underlining = 1;
+	else if (underliningString == underliningStrings[2]) underlining = 2;
+	else if (underliningString == underliningStrings[3]) underlining = 3;
 
 	int preview = 0;
-	if ( previewString == previewStrings[1] ) preview = 1;
-	else if ( previewString == previewStrings[2] ) preview = 2;
-	else if ( previewString == previewStrings[3] ) preview = 3;
+	if      (previewString == previewStrings[1]) preview = 1;
+	else if (previewString == previewStrings[2]) preview = 2;
+	else if (previewString == previewStrings[3]) preview = 3;
 
-	look->setLook ( italic, bold, underlining, color, hoverColor, iconSize, preview );
+	look->setLook(italic, bold, underlining, color, hoverColor, iconSize, preview);
 }
 
-void Settings::saveLinkLook ( LinkLook *look, const QString &name )
+void Settings::saveLinkLook(LinkLook *look, const QString &name)
 {
 	KConfigGroup config = KGlobal::config()->group ( name );
 
 	QString underliningStrings[] = { "Always", "Never", "OnMouseHover", "OnMouseOutside" };
-	QString underliningString = underliningStrings[look->underlining() ];
+	QString underliningString = underliningStrings[look->underlining()];
 
 	QString previewStrings[] = { "None", "IconSize", "TwiceIconSize", "ThreeIconSize" };
-	QString previewString = previewStrings[look->preview() ];
+	QString previewString = previewStrings[look->preview()];
 
 	config.writeEntry ( "italic",      look->italic() );
 	config.writeEntry ( "bold",        look->bold() );
@@ -326,33 +326,32 @@ void Settings::saveLinkLook ( LinkLook *look, const QString &name )
 	config.writeEntry ( "preview",     previewString );
 }
 
-void Settings::setBigNotes ( bool big )
+void Settings::setBigNotes(bool big)
 {
-	if ( big == s_bigNotes )
+	if (big == s_bigNotes)
 		return;
 
 	s_bigNotes = big;
 	// Big notes for accessibility reasons OR Standard small notes:
-	Note::NOTE_MARGIN      = ( big ? 4 : 2 );
-	Note::INSERTION_HEIGHT = ( big ? 5 : 3 );
+	Note::NOTE_MARGIN      = (big ? 4 : 2);
+	Note::INSERTION_HEIGHT = (big ? 5 : 3);
 	Note::EXPANDER_WIDTH   = 9;
 	Note::EXPANDER_HEIGHT  = 9;
 	Note::GROUP_WIDTH      = 2*Note::NOTE_MARGIN + Note::EXPANDER_WIDTH;
 	Note::HANDLE_WIDTH     = Note::GROUP_WIDTH;
 	Note::RESIZER_WIDTH    = Note::GROUP_WIDTH;
-	Note::TAG_ARROW_WIDTH  = 5 + ( big ? 4 : 0 );
+	Note::TAG_ARROW_WIDTH  = 5 + (big ? 4 : 0);
 	Note::EMBLEM_SIZE      = 16;
 	Note::MIN_HEIGHT       = 2*Note::NOTE_MARGIN + Note::EMBLEM_SIZE;
 
-	if ( Global::bnpView )
+	if (Global::bnpView)
 		Global::bnpView->relayoutAllBaskets();
 }
 
-void Settings::setAutoBullet ( bool yes )
+void Settings::setAutoBullet(bool yes)
 {
 	s_autoBullet = yes;
-	if ( Global::bnpView && Global::bnpView->currentBasket() )
-	{
+	if (Global::bnpView && Global::bnpView->currentBasket()) {
 		Global::bnpView->currentBasket()->editorPropertiesChanged();
 	}
 }
@@ -466,22 +465,22 @@ GeneralPage::GeneralPage ( QWidget *parent, const QStringList& args )
 void GeneralPage::load()
 {
 	/* FIXME 1.5	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
-		m_filterOnTop->setCurrentItem( (int)!Settings::filterOnTop() );
+	m_filterOnTop->setCurrentItem( (int)!Settings::filterOnTop() );
 
-		m_usePassivePopup->setChecked(Settings::usePassivePopup());
+	m_usePassivePopup->setChecked(Settings::usePassivePopup());
 
-		m_useSystray->setChecked(           Settings::useSystray()           );
-		m_systray->setEnabled(              Settings::useSystray()           );
+	m_useSystray->setChecked(           Settings::useSystray()           );
+	m_systray->setEnabled(              Settings::useSystray()           );
 
-		m_showIconInSystray->setChecked(    Settings::showIconInSystray()    );
+	m_showIconInSystray->setChecked(    Settings::showIconInSystray()    );
 
-		m_hideOnMouseOut->setChecked(       Settings::hideOnMouseOut()       );
-		m_timeToHideOnMouseOut->setValue(   Settings::timeToHideOnMouseOut() );
-		m_timeToHideOnMouseOut->setEnabled( Settings::hideOnMouseOut()       );
+	m_hideOnMouseOut->setChecked(       Settings::hideOnMouseOut()       );
+	m_timeToHideOnMouseOut->setValue(   Settings::timeToHideOnMouseOut() );
+	m_timeToHideOnMouseOut->setEnabled( Settings::hideOnMouseOut()       );
 
-		m_showOnMouseIn->setChecked(        Settings::showOnMouseIn()        );
-		m_timeToShowOnMouseIn->setValue(    Settings::timeToShowOnMouseIn()  );
-		m_timeToShowOnMouseIn->setEnabled(  Settings::showOnMouseIn()        );
+	m_showOnMouseIn->setChecked(        Settings::showOnMouseIn()        );
+	m_timeToShowOnMouseIn->setValue(    Settings::timeToShowOnMouseIn()  );
+	m_timeToShowOnMouseIn->setEnabled(  Settings::showOnMouseIn()        );
 
 	*/
 }
@@ -489,15 +488,15 @@ void GeneralPage::load()
 void GeneralPage::save()
 {
 	/* FIXME 1.5	Settings::setTreeOnLeft(           ! m_treeOnLeft->currentItem()    );
-		Settings::setFilterOnTop(          ! m_filterOnTop->currentItem()   );
+	Settings::setFilterOnTop(          ! m_filterOnTop->currentItem()   );
 
-		Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()   );
+	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()   );
 
-		Settings::setUseSystray(           m_useSystray->isChecked()        );
-		Settings::setShowIconInSystray(    m_showIconInSystray->isChecked() );
-		Settings::setShowOnMouseIn(        m_showOnMouseIn->isChecked()     );
-		Settings::setTimeToShowOnMouseIn(  m_timeToShowOnMouseIn->value()   );
-		Settings::setHideOnMouseOut(       m_hideOnMouseOut->isChecked()    );
+	Settings::setUseSystray(           m_useSystray->isChecked()        );
+	Settings::setShowIconInSystray(    m_showIconInSystray->isChecked() );
+	Settings::setShowOnMouseIn(        m_showOnMouseIn->isChecked()     );
+	Settings::setTimeToShowOnMouseIn(  m_timeToShowOnMouseIn->value()   );
+	Settings::setHideOnMouseOut(       m_hideOnMouseOut->isChecked()    );
 		Settings::setTimeToHideOnMouseOut( m_timeToHideOnMouseOut->value()  );*/
 }
 
@@ -634,53 +633,50 @@ BasketsPage::BasketsPage ( QWidget * parent, const QStringList& args )
 
 void BasketsPage::load()
 {
-	m_playAnimations->setChecked ( Settings::playAnimations() );
-	m_showNotesToolTip->setChecked ( Settings::showNotesToolTip() );
-	m_bigNotes->setChecked ( Settings::bigNotes() );
+	m_playAnimations->setChecked(Settings::playAnimations());
+	m_showNotesToolTip->setChecked(Settings::showNotesToolTip());
+	m_bigNotes->setChecked(Settings::bigNotes());
 
-	m_autoBullet->setChecked ( Settings::autoBullet() );
-	m_confirmNoteDeletion->setChecked ( Settings::confirmNoteDeletion() );
-	m_exportTextTags->setChecked ( Settings::exportTextTags() );
+	m_autoBullet->setChecked(Settings::autoBullet());
+	m_confirmNoteDeletion->setChecked(Settings::confirmNoteDeletion());
+	m_exportTextTags->setChecked(Settings::exportTextTags());
 
-	m_groupOnInsertionLine->setChecked ( Settings::groupOnInsertionLine() );
+	m_groupOnInsertionLine->setChecked(Settings::groupOnInsertionLine());
 	m_middleAction->setCurrentIndex ( Settings::middleAction() );
 
 	// The correctness of this code depends on the default of enableReLockTimeout
 	// being true - otherwise, the reLockTimeoutMinutes widget is not disabled properly.
-	m_enableReLockTimeoutMinutes->setChecked ( Settings::enableReLockTimeout() );
-	m_reLockTimeoutMinutes->setValue ( Settings::reLockTimeoutMinutes() );
+	m_enableReLockTimeoutMinutes->setChecked(Settings::enableReLockTimeout());
+	m_reLockTimeoutMinutes->setValue(Settings::reLockTimeoutMinutes());
 #ifdef HAVE_LIBGPGME
-	m_useGnuPGAgent->setChecked ( Settings::useGnuPGAgent() );
+	m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
 
-	if ( KGpgMe::isGnuPGAgentAvailable() )
-	{
-		m_useGnuPGAgent->setChecked ( Settings::useGnuPGAgent() );
-	}
-	else
-	{
-		m_useGnuPGAgent->setChecked ( false );
-		m_useGnuPGAgent->setEnabled ( false );
+	if (KGpgMe::isGnuPGAgentAvailable()) {
+		m_useGnuPGAgent->setChecked(Settings::useGnuPGAgent());
+	} else {
+		m_useGnuPGAgent->setChecked(false);
+		m_useGnuPGAgent->setEnabled(false);
 	}
 #endif
 }
 
 void BasketsPage::save()
 {
-	Settings::setPlayAnimations ( m_playAnimations->isChecked() );
-	Settings::setShowNotesToolTip ( m_showNotesToolTip->isChecked() );
-	Settings::setBigNotes ( m_bigNotes->isChecked() );
+	Settings::setPlayAnimations(       m_playAnimations->isChecked()       );
+	Settings::setShowNotesToolTip(     m_showNotesToolTip->isChecked()     );
+	Settings::setBigNotes(             m_bigNotes->isChecked()             );
 
-	Settings::setAutoBullet ( m_autoBullet->isChecked() );
-	Settings::setConfirmNoteDeletion ( m_confirmNoteDeletion->isChecked() );
-	Settings::setExportTextTags ( m_exportTextTags->isChecked() );
+	Settings::setAutoBullet(           m_autoBullet->isChecked()           );
+	Settings::setConfirmNoteDeletion(  m_confirmNoteDeletion->isChecked()  );
+	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 
-	Settings::setGroupOnInsertionLine ( m_groupOnInsertionLine->isChecked() );
+	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
 	Settings::setMiddleAction ( m_middleAction->currentIndex() );
 
-	Settings::setEnableReLockTimeout ( m_enableReLockTimeoutMinutes->isChecked() );
-	Settings::setReLockTimeoutMinutes ( m_reLockTimeoutMinutes->value() );
+	Settings::setEnableReLockTimeout(  m_enableReLockTimeoutMinutes->isChecked());
+	Settings::setReLockTimeoutMinutes(m_reLockTimeoutMinutes->value());
 #ifdef HAVE_LIBGPGME
-	Settings::setUseGnuPGAgent ( m_useGnuPGAgent->isChecked() );
+	Settings::setUseGnuPGAgent(        m_useGnuPGAgent->isChecked()        );
 #endif
 }
 
@@ -705,51 +701,51 @@ NewNotesPage::NewNotesPage ( QWidget * parent,  const QStringList& args )
 	hLay = new QHBoxLayout ( 0L );
 	hLay->setMargin ( 0 );
 	hLay->setSpacing ( KDialog::spacingHint() );
-	m_newNotesPlace = new QComboBox ( this );
+	m_newNotesPlace = new QComboBox(this);
 	label = new QLabel ( i18n ( "&Place of new notes:" ), this );
 	label->setBuddy ( m_newNotesPlace );
 
 	m_newNotesPlace->insertItem ( m_newNotesPlace->count(),i18n ( "On top" ) );
 	m_newNotesPlace->insertItem ( m_newNotesPlace->count(),i18n ( "On bottom" ) );
 	m_newNotesPlace->insertItem ( m_newNotesPlace->count(),i18n ( "At current note" ) );
-	hLay->addWidget ( label );
-	hLay->addWidget ( m_newNotesPlace );
+	hLay->addWidget(label);
+	hLay->addWidget(m_newNotesPlace);
 	hLay->addStretch();
 	//layout->addLayout(hLay);
 	label->hide();
 	m_newNotesPlace->hide();
-	connect ( m_newNotesPlace, SIGNAL ( textChanged ( const QString & ) ), this, SLOT ( changed() ) );
+	connect( m_newNotesPlace, SIGNAL(textChanged(const QString &)), this, SLOT(changed()) );
 
 	// New Images Size:
 
 	hLay = new QHBoxLayout ( 0L );
 	hLay->setMargin ( 0 );
 	hLay->setSpacing ( KDialog::spacingHint() );
-	m_imgSizeX = new KIntNumInput ( this );
+	m_imgSizeX = new KIntNumInput(this);
 	m_imgSizeX->setMinimum ( 1 );
 	m_imgSizeX->setMaximum ( 4096 );
-	m_imgSizeX->setReferencePoint ( 100 );
-	connect ( m_imgSizeX, SIGNAL ( valueChanged ( int ) ), this, SLOT ( changed() ) );
+	m_imgSizeX->setReferencePoint(100);
+	connect( m_imgSizeX, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
 	label = new QLabel ( i18n ( "&New images size:" ), this );
 	label->setBuddy ( m_imgSizeX );
-	hLay->addWidget ( label );
-	hLay->addWidget ( m_imgSizeX );
-	m_imgSizeY = new KIntNumInput ( this );
+	hLay->addWidget(label);
+	hLay->addWidget(m_imgSizeX);
+	m_imgSizeY = new KIntNumInput(this);
 	m_imgSizeY->setMinimum ( 1 );
 	m_imgSizeY->setMaximum ( 4096 );
-	m_imgSizeY->setReferencePoint ( 100 );
-	connect ( m_imgSizeY, SIGNAL ( valueChanged ( int ) ), this, SLOT ( changed() ) );
+	m_imgSizeY->setReferencePoint(100);
+	connect( m_imgSizeY, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
 	label = new QLabel ( i18n ( "&by" ), this );
 	label->setBuddy ( m_imgSizeY );
-	hLay->addWidget ( label );
-	hLay->addWidget ( m_imgSizeY );
-	label = new QLabel ( i18n ( "pixels" ), this );
-	hLay->addWidget ( label );
-	m_pushVisualize = new QPushButton ( i18n ( "&Visualize..." ), this );
-	hLay->addWidget ( m_pushVisualize );
+	hLay->addWidget(label);
+	hLay->addWidget(m_imgSizeY);
+	label = new QLabel(i18n("pixels"), this);
+	hLay->addWidget(label);
+	m_pushVisualize = new QPushButton(i18n("&Visualize..."), this);
+	hLay->addWidget(m_pushVisualize);
 	hLay->addStretch();
-	layout->addLayout ( hLay );
-	connect ( m_pushVisualize, SIGNAL ( clicked() ), this, SLOT ( visualize() ) );
+	layout->addLayout(hLay);
+	connect( m_pushVisualize, SIGNAL(clicked()), this, SLOT(visualize()) );
 
 	// View File Content:
 
@@ -771,10 +767,10 @@ NewNotesPage::NewNotesPage ( QWidget * parent,  const QStringList& args )
 	layout->addWidget ( m_viewSoundFileContent );
 	buttonGroup->setLayout(layout);
 
-	connect ( m_viewTextFileContent,  SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_viewHtmlFileContent,  SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_viewImageFileContent, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_viewSoundFileContent, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
+	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewImageFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
+	connect( m_viewSoundFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	load();
 }
@@ -783,26 +779,26 @@ void NewNotesPage::load()
 {
 	m_newNotesPlace->setCurrentIndex ( Settings::newNotesPlace() );
 
-	m_imgSizeX->setValue ( Settings::defImageX() );
-	m_imgSizeY->setValue ( Settings::defImageY() );
+	m_imgSizeX->setValue(Settings::defImageX());
+	m_imgSizeY->setValue(Settings::defImageY());
 
-	m_viewTextFileContent->setChecked ( Settings::viewTextFileContent() );
-	m_viewHtmlFileContent->setChecked ( Settings::viewHtmlFileContent() );
-	m_viewImageFileContent->setChecked ( Settings::viewImageFileContent() );
-	m_viewSoundFileContent->setChecked ( Settings::viewSoundFileContent() );
+	m_viewTextFileContent->setChecked(  Settings::viewTextFileContent()  );
+	m_viewHtmlFileContent->setChecked(  Settings::viewHtmlFileContent()  );
+	m_viewImageFileContent->setChecked( Settings::viewImageFileContent() );
+	m_viewSoundFileContent->setChecked( Settings::viewSoundFileContent() );
 }
 
 void NewNotesPage::save()
 {
 	Settings::setNewNotesPlace ( m_newNotesPlace->currentIndex() );
 
-	Settings::setDefImageX ( m_imgSizeX->value() );
-	Settings::setDefImageY ( m_imgSizeY->value() );
+	Settings::setDefImageX(m_imgSizeX->value());
+	Settings::setDefImageY(m_imgSizeY->value());
 
-	Settings::setViewTextFileContent ( m_viewTextFileContent->isChecked() );
-	Settings::setViewHtmlFileContent ( m_viewHtmlFileContent->isChecked() );
-	Settings::setViewImageFileContent ( m_viewImageFileContent->isChecked() );
-	Settings::setViewSoundFileContent ( m_viewSoundFileContent->isChecked() );
+	Settings::setViewTextFileContent(  m_viewTextFileContent->isChecked()  );
+	Settings::setViewHtmlFileContent(  m_viewHtmlFileContent->isChecked()  );
+	Settings::setViewImageFileContent( m_viewImageFileContent->isChecked() );
+	Settings::setViewSoundFileContent( m_viewSoundFileContent->isChecked() );
 }
 
 void NewNotesPage::defaults()
@@ -812,10 +808,10 @@ void NewNotesPage::defaults()
 
 void NewNotesPage::visualize()
 {
-	ViewSizeDialog size ( this, m_imgSizeX->value(), m_imgSizeY->value() );
+	ViewSizeDialog size(this, m_imgSizeX->value(), m_imgSizeY->value());
 	size.exec();
-	m_imgSizeX->setValue ( size.width() );
-	m_imgSizeY->setValue ( size.height() );
+	m_imgSizeX->setValue(size.width());
+	m_imgSizeY->setValue(size.height());
 }
 
 /** class NotesAppearancePage: */
@@ -826,30 +822,30 @@ NotesAppearancePage::NotesAppearancePage ( QWidget * parent, const QStringList& 
 	QVBoxLayout *layout = new QVBoxLayout ( this );
 	layout->setMargin ( 0 );
 	layout->setSpacing ( KDialog::spacingHint() );
-	QTabWidget *tabs = new QTabWidget ( this );
-	layout->addWidget ( tabs );
+	QTabWidget *tabs = new QTabWidget(this);
+	layout->addWidget(tabs);
 
-	m_soundLook       = new LinkLookEditWidget ( this, i18n ( "Conference audio record" ),                         "sound",       tabs );
-	m_fileLook        = new LinkLookEditWidget ( this, i18n ( "Annual report" ),                                   "document",    tabs );
+	m_soundLook       = new LinkLookEditWidget(this, i18n("Conference audio record"),                         "sound",       tabs);
+	m_fileLook        = new LinkLookEditWidget(this, i18n("Annual report"),                                   "document",    tabs);
 	m_localLinkLook   = new LinkLookEditWidget ( this, i18n ( "Home folder" ),                                     "user-home", tabs );
 	m_networkLinkLook = new LinkLookEditWidget ( this, "www.kde.org",  "http://www.kde.org", tabs );
 	m_launcherLook    = new LinkLookEditWidget ( this, i18n ( "Launch %1" ).arg ( KCmdLineArgs::aboutData(   )->programName() ), "basket",      tabs );
-	tabs->addTab ( m_soundLook,       i18n ( "&Sounds" ) );
-	tabs->addTab ( m_fileLook,        i18n ( "&Files" ) );
-	tabs->addTab ( m_localLinkLook,   i18n ( "&Local Links" ) );
-	tabs->addTab ( m_networkLinkLook, i18n ( "&Network Links" ) );
-	tabs->addTab ( m_launcherLook,    i18n ( "Launc&hers" ) );
+	tabs->addTab(m_soundLook,       i18n("&Sounds")       );
+	tabs->addTab(m_fileLook,        i18n("&Files")        );
+	tabs->addTab(m_localLinkLook,   i18n("&Local Links")  );
+	tabs->addTab(m_networkLinkLook, i18n("&Network Links"));
+	tabs->addTab(m_launcherLook,    i18n("Launc&hers")    );
 
 	load();
 }
 
 void NotesAppearancePage::load()
 {
-	m_soundLook->set ( LinkLook::soundLook );
-	m_fileLook->set ( LinkLook::fileLook );
-	m_localLinkLook->set ( LinkLook::localLinkLook );
-	m_networkLinkLook->set ( LinkLook::networkLinkLook );
-	m_launcherLook->set ( LinkLook::launcherLook );
+	m_soundLook->set(LinkLook::soundLook);
+	m_fileLook->set(LinkLook::fileLook);
+	m_localLinkLook->set(LinkLook::localLinkLook);
+	m_networkLinkLook->set(LinkLook::networkLinkLook);
+	m_launcherLook->set(LinkLook::launcherLook);
 }
 
 void NotesAppearancePage::save()
@@ -877,160 +873,160 @@ ApplicationsPage::ApplicationsPage ( QWidget * parent,  const QStringList& args 
 	layout->setMargin ( 0 );
 	layout->setSpacing ( KDialog::spacingHint() );
 
-	m_htmlUseProg  = new QCheckBox ( i18n ( "Open &text notes with a custom application:" ), this );
-	m_htmlProg     = new RunCommandRequester ( "", i18n ( "Open text notes with:" ), this );
+	m_htmlUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
+	m_htmlProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
 	QHBoxLayout *hLayH = new QHBoxLayout ( 0L );
 	hLayH->setMargin ( 0 );
 	hLayH->setSpacing ( KDialog::spacingHint() );
-	hLayH->insertSpacing ( -1, 20 );
-	hLayH->addWidget ( m_htmlProg );
-	connect ( m_htmlUseProg, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_htmlProg->lineEdit(), SIGNAL ( textChanged ( const QString & ) ), this, SLOT ( changed() ) );
+	hLayH->insertSpacing(-1, 20);
+	hLayH->addWidget(m_htmlProg);
+	connect(m_htmlUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect(m_htmlProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
 
-	m_imageUseProg = new QCheckBox ( i18n ( "Open &image notes with a custom application:" ), this );
-	m_imageProg    = new RunCommandRequester ( "", i18n ( "Open image notes with:" ), this );
+	m_imageUseProg = new QCheckBox(i18n("Open &image notes with a custom application:"), this);
+	m_imageProg    = new RunCommandRequester("", i18n("Open image notes with:"), this);
 	QHBoxLayout *hLayI = new QHBoxLayout ( 0L );
 	hLayI->setMargin ( 0 );
 	hLayI->setSpacing ( KDialog::spacingHint() );
-	hLayI->insertSpacing ( -1, 20 );
-	hLayI->addWidget ( m_imageProg );
-	connect ( m_imageUseProg, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_imageProg->lineEdit(), SIGNAL ( textChanged ( const QString & ) ), this, SLOT ( changed() ) );
+	hLayI->insertSpacing(-1, 20);
+	hLayI->addWidget(m_imageProg);
+	connect(m_imageUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect(m_imageProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
 
-	m_animationUseProg = new QCheckBox ( i18n ( "Open a&nimation notes with a custom application:" ), this );
-	m_animationProg    = new RunCommandRequester ( "", i18n ( "Open animation notes with:" ), this );
+	m_animationUseProg = new QCheckBox(i18n("Open a&nimation notes with a custom application:"), this);
+	m_animationProg    = new RunCommandRequester("", i18n("Open animation notes with:"), this);
 	QHBoxLayout *hLayA = new QHBoxLayout ( 0L );
 	hLayA->setMargin ( 0 );
 	hLayA->setSpacing ( KDialog::spacingHint() );
-	hLayA->insertSpacing ( -1, 20 );
-	hLayA->addWidget ( m_animationProg );
-	connect ( m_animationUseProg, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_animationProg->lineEdit(), SIGNAL ( textChanged ( const QString & ) ), this, SLOT ( changed() ) );
+	hLayA->insertSpacing(-1, 20);
+	hLayA->addWidget(m_animationProg);
+	connect(m_animationUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect(m_animationProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
 
-	m_soundUseProg = new QCheckBox ( i18n ( "Open so&und notes with a custom application:" ), this );
-	m_soundProg    = new RunCommandRequester ( "", i18n ( "Open sound notes with:" ), this );
+	m_soundUseProg = new QCheckBox(i18n("Open so&und notes with a custom application:"), this);
+	m_soundProg    = new RunCommandRequester("", i18n("Open sound notes with:"), this);
 	QHBoxLayout *hLayS = new QHBoxLayout ( 0L );
 	hLayS->setMargin ( 0 );
 	hLayS->setSpacing ( KDialog::spacingHint() );
-	hLayS->insertSpacing ( -1, 20 );
-	hLayS->addWidget ( m_soundProg );
-	connect ( m_soundUseProg, SIGNAL ( stateChanged ( int ) ), this, SLOT ( changed() ) );
-	connect ( m_soundProg->lineEdit(), SIGNAL ( textChanged ( const QString & ) ), this, SLOT ( changed() ) );
+	hLayS->insertSpacing(-1, 20);
+	hLayS->addWidget(m_soundProg);
+	connect(m_soundUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
+	connect(m_soundProg->lineEdit(), SIGNAL(textChanged(const QString &)), this, SLOT(changed()));
 
-	QString whatsthis = i18n (
-	                        "<p>If checked, the application defined below will be used when opening that type of note.</p>"
-	                        "<p>Otherwise, the application you've configured in Konqueror will be used.</p>" );
+	QString whatsthis = i18n(
+		"<p>If checked, the application defined below will be used when opening that type of note.</p>"
+		"<p>Otherwise, the application you've configured in Konqueror will be used.</p>");
 
 	m_htmlUseProg->setWhatsThis( whatsthis );
 	m_imageUseProg->setWhatsThis( whatsthis );
 	m_animationUseProg->setWhatsThis( whatsthis );
 	m_soundUseProg->setWhatsThis( whatsthis );
 
-	whatsthis = i18n (
-	                "<p>Define the application to use for opening that type of note instead of the "
-	                "application configured in Konqueror.</p>" );
+	whatsthis = i18n(
+		"<p>Define the application to use for opening that type of note instead of the "
+		"application configured in Konqueror.</p>");
 
 	m_htmlProg->setWhatsThis( whatsthis );
 	m_imageProg->setWhatsThis( whatsthis );
 	m_animationProg->setWhatsThis( whatsthis );
 	m_soundProg->setWhatsThis( whatsthis );
 
-	layout->addWidget ( m_htmlUseProg );
-	layout->addItem ( hLayH );
-	layout->addWidget ( m_imageUseProg );
-	layout->addItem ( hLayI );
-	layout->addWidget ( m_animationUseProg );
-	layout->addItem ( hLayA );
-	layout->addWidget ( m_soundUseProg );
-	layout->addItem ( hLayS );
+	layout->addWidget(m_htmlUseProg);
+	layout->addItem(hLayH);
+	layout->addWidget(m_imageUseProg);
+	layout->addItem(hLayI);
+	layout->addWidget(m_animationUseProg);
+	layout->addItem(hLayA);
+	layout->addWidget(m_soundUseProg);
+	layout->addItem(hLayS);
 
 	layout->addSpacing ( KDialog::spacingHint() );
 
 	QHBoxLayout *hLay = new QHBoxLayout ( 0L );
 	hLay->setMargin ( 0 );
 	hLay->setSpacing ( 0 );
-	HelpLabel *hl1 = new HelpLabel (
-	                     i18n ( "How to change the application used to open Web links?" ),
-	                     i18n ( "<p>When opening Web links, they are opened in different applications, depending on the content of the link "
-	                            "(a Web page, an image, a PDF document...), such as if they were files on your computer.</p>"
-	                            "<p>Here is how to do if you want every Web addresses to be opened in your Web browser. "
-	                            "It is useful if you are not using KDE (if you are using eg. GNOME, XFCE...).</p>"
-	                            "<ul>"
-	                            "<li>Open the KDE Control Center (if it is not available, try to type \"kcontrol\" in a command line terminal);</li>"
-	                            "<li>Go to the \"KDE Components\" and then \"Components Selector\" section;</li>"
-	                            "<li>Choose \"Web Browser\", check \"In the following browser:\" and enter the name of your Web browser (like \"firefox\" or \"epiphany\").</li>"
-	                            "</ul>"
-	                            "<p>Now, when you click <i>any</i> link that start with \"http://...\", it will be opened in your Web browser (eg. Mozilla Firefox or Epiphany or...).</p>"
-	                            "<p>For more fine-grained configuration (like opening only Web pages in your Web browser), read the second help link.</p>" ),
-	                     this );
-	hLay->addWidget ( hl1 );
+	HelpLabel *hl1 = new HelpLabel(
+		i18n("How to change the application used to open Web links?"),
+		i18n("<p>When opening Web links, they are opened in different applications, depending on the content of the link "
+		     "(a Web page, an image, a PDF document...), such as if they were files on your computer.</p>"
+		     "<p>Here is how to do if you want every Web addresses to be opened in your Web browser. "
+		     "It is useful if you are not using KDE (if you are using eg. GNOME, XFCE...).</p>"
+		     "<ul>"
+		     "<li>Open the KDE Control Center (if it is not available, try to type \"kcontrol\" in a command line terminal);</li>"
+		     "<li>Go to the \"KDE Components\" and then \"Components Selector\" section;</li>"
+		     "<li>Choose \"Web Browser\", check \"In the following browser:\" and enter the name of your Web browser (like \"firefox\" or \"epiphany\").</li>"
+		     "</ul>"
+		     "<p>Now, when you click <i>any</i> link that start with \"http://...\", it will be opened in your Web browser (eg. Mozilla Firefox or Epiphany or...).</p>"
+		     "<p>For more fine-grained configuration (like opening only Web pages in your Web browser), read the second help link.</p>"),
+		this);
+	hLay->addWidget(hl1);
 	hLay->addStretch();
-	layout->addLayout ( hLay );
+	layout->addLayout(hLay);
 
 	/* QHBoxLayout(int, int, int) dont exist without qt3 support*/
 	hLay = new QHBoxLayout ( 0L );
 	hLay->setMargin ( 0 );
 	hLay->setSpacing ( 0 );
-	HelpLabel *hl2 = new HelpLabel (
-	                     i18n ( "How to change the applications used to open files and links?" ),
-	                     i18n ( "<p>Here is how to set the application to be used for each type of file. "
-	                            "This also applies to Web links if you choose not to open them systematically in a Web browser (see the first help link). "
-	                            "The default settings should be good enough for you, but this tip is useful if you are using GNOME, XFCE, or another environment than KDE.</p>"
-	                            "<p>This is an example of how to open HTML pages in your Web browser (and keep using the other applications for other addresses or files). "
-	                            "Repeat these steps for each type of file you want to open in a specific application.</p>"
-	                            "<ul>"
-	                            "<li>Open the KDE Control Center (if it is not available, try to type \"kcontrol\" in a command line terminal);</li>"
-	                            "<li>Go to the \"KDE Components\" and then \"File Associations\" section;</li>"
-	                            "<li>In the tree, expand \"text\" and click \"html\";</li>"
-	                            "<li>In the applications list, add your Web browser as the first entry;</li>"
-	                            "<li>Do the same for the type \"application -> xhtml+xml\".</li>"
-	                            "</ul>" ),
-	                     this );
-	hLay->addWidget ( hl2 );
+	HelpLabel *hl2 = new HelpLabel(
+		i18n("How to change the applications used to open files and links?"),
+		i18n("<p>Here is how to set the application to be used for each type of file. "
+		     "This also applies to Web links if you choose not to open them systematically in a Web browser (see the first help link). "
+		     "The default settings should be good enough for you, but this tip is useful if you are using GNOME, XFCE, or another environment than KDE.</p>"
+		     "<p>This is an example of how to open HTML pages in your Web browser (and keep using the other applications for other addresses or files). "
+		     "Repeat these steps for each type of file you want to open in a specific application.</p>"
+		     "<ul>"
+		     "<li>Open the KDE Control Center (if it is not available, try to type \"kcontrol\" in a command line terminal);</li>"
+		     "<li>Go to the \"KDE Components\" and then \"File Associations\" section;</li>"
+		     "<li>In the tree, expand \"text\" and click \"html\";</li>"
+		     "<li>In the applications list, add your Web browser as the first entry;</li>"
+		     "<li>Do the same for the type \"application -> xhtml+xml\".</li>"
+		     "</ul>"),
+		this);
+	hLay->addWidget(hl2);
 	hLay->addStretch();
-	layout->addLayout ( hLay );
+	layout->addLayout(hLay);
 
-	connect ( m_htmlUseProg,      SIGNAL ( toggled ( bool ) ), m_htmlProg,      SLOT ( setEnabled ( bool ) ) );
-	connect ( m_imageUseProg,     SIGNAL ( toggled ( bool ) ), m_imageProg,     SLOT ( setEnabled ( bool ) ) );
-	connect ( m_animationUseProg, SIGNAL ( toggled ( bool ) ), m_animationProg, SLOT ( setEnabled ( bool ) ) );
-	connect ( m_soundUseProg,     SIGNAL ( toggled ( bool ) ), m_soundProg,     SLOT ( setEnabled ( bool ) ) );
+	connect( m_htmlUseProg,      SIGNAL(toggled(bool)), m_htmlProg,      SLOT(setEnabled(bool)) );
+	connect( m_imageUseProg,     SIGNAL(toggled(bool)), m_imageProg,     SLOT(setEnabled(bool)) );
+	connect( m_animationUseProg, SIGNAL(toggled(bool)), m_animationProg, SLOT(setEnabled(bool)) );
+	connect( m_soundUseProg,     SIGNAL(toggled(bool)), m_soundProg,     SLOT(setEnabled(bool)) );
 
-	layout->insertStretch ( -1 );
+	layout->insertStretch(-1);
 	load();
 }
 
 void ApplicationsPage::load()
 {
-	m_htmlProg->setRunCommand ( Settings::htmlProg() );
-	m_htmlUseProg->setChecked ( Settings::isHtmlUseProg() );
-	m_htmlProg->setEnabled ( Settings::isHtmlUseProg() );
+	m_htmlProg->setRunCommand(Settings::htmlProg());
+	m_htmlUseProg->setChecked(Settings::isHtmlUseProg());
+	m_htmlProg->setEnabled(Settings::isHtmlUseProg());
 
-	m_imageProg->setRunCommand ( Settings::imageProg() );
-	m_imageUseProg->setChecked ( Settings::isImageUseProg() );
-	m_imageProg->setEnabled ( Settings::isImageUseProg() );
+	m_imageProg->setRunCommand(Settings::imageProg());
+	m_imageUseProg->setChecked(Settings::isImageUseProg());
+	m_imageProg->setEnabled(Settings::isImageUseProg());
 
-	m_animationProg->setRunCommand ( Settings::animationProg() );
-	m_animationUseProg->setChecked ( Settings::isAnimationUseProg() );
-	m_animationProg->setEnabled ( Settings::isAnimationUseProg() );
+	m_animationProg->setRunCommand(Settings::animationProg());
+	m_animationUseProg->setChecked(Settings::isAnimationUseProg());
+	m_animationProg->setEnabled(Settings::isAnimationUseProg());
 
-	m_soundProg->setRunCommand ( Settings::soundProg() );
-	m_soundUseProg->setChecked ( Settings::isSoundUseProg() );
-	m_soundProg->setEnabled ( Settings::isSoundUseProg() );
+	m_soundProg->setRunCommand(Settings::soundProg());
+	m_soundUseProg->setChecked(Settings::isSoundUseProg());
+	m_soundProg->setEnabled(Settings::isSoundUseProg());
 }
 
 void ApplicationsPage::save()
 {
-	Settings::setIsHtmlUseProg ( m_htmlUseProg->isChecked() );
-	Settings::setHtmlProg ( m_htmlProg->runCommand() );
+	Settings::setIsHtmlUseProg(      m_htmlUseProg->isChecked()      );
+	Settings::setHtmlProg(           m_htmlProg->runCommand()        );
 
-	Settings::setIsImageUseProg ( m_imageUseProg->isChecked() );
-	Settings::setImageProg ( m_imageProg->runCommand() );
+	Settings::setIsImageUseProg(     m_imageUseProg->isChecked()     );
+	Settings::setImageProg(          m_imageProg->runCommand()       );
 
-	Settings::setIsAnimationUseProg ( m_animationUseProg->isChecked() );
-	Settings::setAnimationProg ( m_animationProg->runCommand() );
+	Settings::setIsAnimationUseProg( m_animationUseProg->isChecked() );
+	Settings::setAnimationProg(      m_animationProg->runCommand()   );
 
-	Settings::setIsSoundUseProg ( m_soundUseProg->isChecked() );
-	Settings::setSoundProg ( m_soundProg->runCommand() );
+	Settings::setIsSoundUseProg(     m_soundUseProg->isChecked()     );
+	Settings::setSoundProg(          m_soundProg->runCommand()       );
 }
 
 void ApplicationsPage::defaults()

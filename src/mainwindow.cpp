@@ -194,8 +194,8 @@ void MainWindow::configureToolbars()
 void MainWindow::configureNotifications()
 {
 	//FIXME
-	//KNotifyDialog *dialog = new KNotifyDialog(this, "KNotifyDialog", false);
-	//dialog->show();
+	// KNotifyDialog *dialog = new KNotifyDialog(this, "KNotifyDialog", false);
+	// dialog->show();
 }
 
 void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is clicked

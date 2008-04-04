@@ -248,7 +248,7 @@ void SystemTray::mousePressEvent(QMouseEvent *event)
 		event->accept();
 	} else if (event->button() & Qt::RightButton) { // Popup menu
 		KMenu menu(parentWidget());
-		setContextMenu(qobject_cast<QMenu*>(&menu)); 
+		setContextMenu(qobject_cast<QMenu*>(&menu));
 		menu.setTitle( KCmdLineArgs::aboutData( )->programName() );
 		menu.setIcon(KIcon("basket"));
 		menu.addAction(Global::bnpView->actNewBasket);

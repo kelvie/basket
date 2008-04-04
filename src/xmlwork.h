@@ -28,7 +28,6 @@ class QDomElement;
 /** All related functions to manage XML files and trees
   * @author S�bastien Lao�t
   */
-
 namespace XMLWork
 {
 	// Manage XML files :

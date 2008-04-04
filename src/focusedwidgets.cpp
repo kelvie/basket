@@ -275,7 +275,6 @@ FocusedLineEdit::FocusedLineEdit(QWidget *parent, const char *name)
 	: KLineEdit( parent )
 //FIXME 1.5 : KLineEdit(parent, name)
 {
-
 }
 
 FocusedLineEdit::~FocusedLineEdit()

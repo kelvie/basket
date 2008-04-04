@@ -1,6 +1,5 @@
 PROJECT(basket)
 
-
 # Find the requisite packages
 #FIND_PACKAGE(Qt4 REQUIRED)
 FIND_PACKAGE(KDE4 REQUIRED)
@@ -53,7 +52,7 @@ ADD_SUBDIRECTORY(doc)
 #$(top_srcdir)/acinclude.m4: $(top_srcdir)/admin/acinclude.m4.in $(top_srcdir)/admin/libtool.m4.in
 #	@cd $(top_srcdir) && cat admin/acinclude.m4.in admin/libtool.m4.in > acinclude.m4
 #
-#MAINTAINERCLEANFILES = subdirs configure.in acinclude.m4 configure.files 
+#MAINTAINERCLEANFILES = subdirs configure.in acinclude.m4 configure.files
 #
 #package-messages:
 #	$(MAKE) -f admin/Makefile.common package-messages

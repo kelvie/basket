@@ -85,11 +85,11 @@ QIcon Global::openNoteIcon() // FIXME: Now an edit icon
 
 KMainWindow* Global::mainWindow()
 {
- 	QWidgetList list = QApplication::topLevelWidgets();
+	QWidgetList list = QApplication::topLevelWidgets();
      for (int i = 0; i < list.size(); ++i) {
          if (KMainWindow *mainWin = qobject_cast<KMainWindow*>(list.at(i)))
              return mainWin;
-     }
+	}
 	return 0;
 }
 

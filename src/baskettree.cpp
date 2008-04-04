@@ -467,7 +467,7 @@ void BasketTreeItem::paintCell ( QPainter *painter, const QPalette &/*colorGroup
 	}
 	int effectiveWidth = width - ( countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN )
 	                     - ( showLoadingIcon || showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0 ) /*
-	                     			- (showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0)*/;
+						- (showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0)*/;
 
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
@@ -691,7 +691,7 @@ BasketTree::BasketTree ( QWidget *parent, const char *name )
 
 void BasketTree::contentsDragEnterEvent ( QDragEnterEvent *event )
 {
-/* FIXME 1.5 
+/* FIXME 1.5
 */
 	if ( event->provides ( "application/x-qlistviewitem" ) )
 	{

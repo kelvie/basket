@@ -234,7 +234,6 @@ void LinkLabel::setLook(LinkLook *look) // FIXME: called externaly (so, without 
 	font.setBold(look->bold());
 	font.setUnderline(look->underlineOutside());
 	font.setItalic(look->italic());
-
 	m_title->setFont(font);
 	QPalette pal(m_title->palette());
 	pal.setColor( QPalette::WindowText, m_isSelected ? KApplication::palette().highlight().color() : look->effectiveColor() );
@@ -274,10 +273,10 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 	}
 
 	// Clear the widget :
-	m_layout->removeItem( m_spacer1 );
+	m_layout->removeItem(m_spacer1);
 	m_layout->removeWidget(m_icon);
 	m_layout->removeWidget(m_title);
-	m_layout->removeItem( m_spacer2 );
+	m_layout->removeItem(m_spacer2);
 
 	// Otherwise, minimumSize will be incoherent (last size ? )
 	m_layout->setSizeConstraint( QLayout::SetMinimumSize );

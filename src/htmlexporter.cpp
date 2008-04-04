@@ -242,7 +242,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 //
 //	// Output the header:
 //	QString borderColor = Tools::mixColor(basket->backgroundColor(), basket->textColor()).name();
-//	stream <<
+//		stream <<
 //		"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
 //		"<html>\n"
 //		" <head>\n"
@@ -454,7 +454,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 //		stream << '\n' << spaces.fill(' ', indent) << "<table" << freeStyle << ">\n"; // Note content is expected to be on the same HTML line, but NOT groups
 //		int i = 0;
 //		for (Note *child = note->firstChild(); child; child = child->next()) {
-//			stream << spaces.fill(' ', indent);
+		//stream << spaces.fill(' ', indent);
 //			if (i == 0)
 //				stream << " <tr><td class=\"groupHandle\"><img src=\"" << imagesFolderName << (note->isFolded() ? "expand_group_" : "fold_group_") << backgroundColorName << ".png"
 //				       << "\" width=\"" << Note::EXPANDER_WIDTH << "\" height=\"" << Note::EXPANDER_HEIGHT << "\"></td>\n";

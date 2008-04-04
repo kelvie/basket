@@ -44,7 +44,6 @@
 #include "global.h"
 #include "backgroundmanager.h"
 
-
 BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
  : //KDialog(KDialog::Swallow, i18n("Basket Properties"), KDialog::Ok | KDialog::Apply | KDialog::Cancel,
    //            KDialog::Ok, parent, /*name=*/"BasketProperties", /*modal=*/true, /*separator=*/false),
@@ -80,7 +79,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	//TODO QGroupBox *appearance = new QGroupBox(1, Qt::Horizontal, i18n("Appearance"), page);
 	QGroupBox *appearance = new QGroupBox( i18n("Appearance"), page );
 
-	QWidget *appearanceWidget = new QWidget( appearance );
+	QWidget *appearanceWidget = new QWidget(appearance);
 	//TODO QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
 	QGridLayout *grid = new QGridLayout( appearanceWidget );
 
@@ -102,7 +101,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	topLayout->addWidget(appearance);
 
 /*TODO
-	m_backgroundImage->insertItem( i18n("(None)"), 0 );
+	m_backgroundImage->insertItem(i18n("(None)"), 0);
 	m_backgroundImagesMap.insert(0, "");
 	QStringList backgrounds = Global::backgroundManager->imageNames();
 	int index = 1;
@@ -121,7 +120,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	//TODO m_backgroundImage->setSizeLimit(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
 	//TODO m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);
 
-	//Disposition:
+	// Disposition:
 //	m_disposition = new QButtonGroup(i18n("Disposition"), page);
 //	QWidget *columnsWidget = new QWidget(m_disposition);
 //	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());

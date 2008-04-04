@@ -1,17 +1,17 @@
 ########### next target ###############
 
 SET(basketcommon_LIB_SRCS
-   archive.cpp
+	archive.cpp
    bnpview.cpp
-   basket.cpp
-   basketproperties.cpp
+	basket.cpp
+	basketproperties.cpp
    linklabel.cpp
    variouswidgets.cpp
    xmlwork.cpp
    keyboard.cpp
-   global.cpp
+	global.cpp
    exporterdialog.cpp
-   htmlexporter.cpp
+	htmlexporter.cpp
    notefactory.cpp
    softwareimporters.cpp
    focusedwidgets.cpp
@@ -19,18 +19,18 @@ SET(basketcommon_LIB_SRCS
    basketfactory.cpp
    tag.cpp
    qeffects.cpp
-   kcolorcombo2.cpp
-   newbasketdialog.cpp
+	kcolorcombo2.cpp
+	newbasketdialog.cpp
    tagsedit.cpp
    formatimporter.cpp
-   note.cpp
+	note.cpp
    notecontent.cpp
-   notedrag.cpp
-   noteedit.cpp
+	notedrag.cpp
+	noteedit.cpp
    filter.cpp
    tools.cpp
    backgroundmanager.cpp
-   regiongrabber.cpp
+	regiongrabber.cpp
    #kicondialog.cpp
    #kiconcanvas.cpp
    kgpgme.cpp
@@ -40,13 +40,13 @@ SET(basketcommon_LIB_SRCS
    colorpicker.cpp
    baskettree.cpp
    debugwindow.cpp
-   systemtray.cpp
+	systemtray.cpp
    aboutdata.cpp
    basketstatusbar.cpp
    clickablelabel.cpp
    backup.cpp
    settings.cpp
-   )
+)
 
 #kde4_automoc(${basketcommon_LIB_SRCS})
 

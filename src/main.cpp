@@ -68,12 +68,12 @@ class Application : public KUniqueApplication
 #endif
 */
 
-int main ( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
 	// KCmdLineArgs::init will modify argv[0] so we remember it:
-	const char *argv0 = ( argc >= 1 ? argv[0] : "" );
+	const char *argv0 = (argc >= 1 ? argv[0] : "");
 
-	KCmdLineArgs::init ( argc, argv, Global::about() );
+	KCmdLineArgs::init(argc, argv, Global::about());
 
 	KCmdLineOptions basket_options;
 	basket_options.add ( "d", KLocalizedString(), 0 );
@@ -85,13 +85,13 @@ int main ( int argc, char *argv[] )
 	basket_options.add ( "k", KLocalizedString(), 0 );
 	//basket_options.add ( "use-drkonquy", ki18n ( "When crashing, use the standard KDE report dialog instead" "of sending an email" ), 0 );
 	basket_options.add ( "+[file]", ki18n ( "Open basket archive or template" ), 0 );
-	KCmdLineArgs::addCmdLineOptions ( basket_options );
+	KCmdLineArgs::addCmdLineOptions(basket_options);
 
 	//KUniqueApplication::addCmdLineOptions();
 	//KUniqueApplication app;
 	KApplication app;
 	//Application app;
-	
+
 	//Backup::figureOutBinaryPath ( argv0, app );
 
 	/* Main Window */
@@ -102,19 +102,17 @@ int main ( int argc, char *argv[] )
 //	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
 //		win->show();
 
-	if ( Settings::useSystray() )
-	{
+	if (Settings::useSystray()) {
 		// The user wanted to not show the window (but it is already hidden by default, so we do nothing):
-		if ( KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet ( "start-hidden" ) )
+		if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
 			;
 		// When the application is restored by KDE session, restore its state:
 		else if ( app.isSessionRestored() )
-			win->setShown ( !Settings::startDocked() );
+			win->setShown(!Settings::startDocked());
 		// Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
 		else
 			win->show();
-	}
-	else
+	} else
 		// No system tray icon: always show:
 		win->show();
 
@@ -126,5 +124,5 @@ int main ( int argc, char *argv[] )
 	/* Go */
 	int result = app.exec();
 	//return result;
-	exit ( result ); // Do not clean up memory to not crash while deleting the KApplication, or do not hang up on KDE exit
+	exit(result); // Do not clean up memory to not crash while deleting the KApplication, or do not hang up on KDE exit
 }

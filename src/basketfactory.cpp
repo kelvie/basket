@@ -65,7 +65,7 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 		KMessageBox::error(/*parent=*/0, i18n("Sorry, but the folder creation for this new basket has failed."), i18n("Basket Creation Failed"));
 		return "";
 	}
-	
+
 	kDebug() << "successfully create directory!" << endl;
 
 	// Unpack the template file to that folder:

@@ -76,7 +76,8 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
 }
 
 ExporterDialog::~ExporterDialog()
-{}
+{
+}
 
 void ExporterDialog::show()
 {

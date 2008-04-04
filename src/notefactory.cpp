@@ -449,7 +449,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 //			"<a href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>").arg(KCmdLineArgs::aboutData( )->programName());
 //	KMessageBox::information(parent, message, i18n("Unsupported MIME Type(s)"),
 //							 "unsupportedDropInfo", KMessageBox::AllowLink);
-//	return note;
+//				return note;
 }
 
 Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, const QString &annotations*/)
@@ -481,7 +481,7 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 //		Note *note = new Note(parent);
 //		new UnknownContent(note, fileName);
 //		return note;
-}
+		}
 
 Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop)
 {
@@ -762,7 +762,7 @@ Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, Basket *
 //	}
 //
 //	return note;
-}
+	}
 
 NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 {

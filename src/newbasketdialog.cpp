@@ -90,7 +90,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
  //: KDialog(KDialog::Swallow, i18n("New Basket"), KDialog::Ok | KDialog::Cancel,
  //              KDialog::Ok, parent, /*name=*/"NewBasket", /*modal=*/true, /*separator=*/true)
 	: KDialog(parent)
-	, m_defaultProperties(defaultProperties)
+ , m_defaultProperties(defaultProperties)
 {
 	this->setCaption( i18n("New Basket") );
 	this->setButtons( KDialog::Ok | KDialog::Cancel );
@@ -160,15 +160,15 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	//m_templates->setMode(K3IconView::Select);
 	//m_templates->setGridX(m_templates->maxItemWidth());
 	//K3IconViewItem *lastTemplate = 0;
-	
+
 	QPixmap icon(40, 53);
 	QPainter painter(&icon);
 	painter.fillRect(0, 0, icon.width(), icon.height(), KColorScheme(QPalette::Active, KColorScheme::View).background());
 	//painter.setPen( KColorScheme(QPalette::Active, KColorScheme::View).foreground() );
-	painter.drawRect( 0, 0, icon.width(), icon.height() );
+	painter.drawRect(0, 0, icon.width(), icon.height());
 	painter.end();
 
-	
+
 
 //	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("One column"), icon);
 //
@@ -231,7 +231,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 //	layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	layout = new QHBoxLayout( page );
-	m_createIn = new QComboBox( page );
+	m_createIn = new QComboBox(page);
 	m_createIn->addItem(i18n("(Baskets)"));
 //	label = new QLabel(m_createIn, i18n("C&reate in:"), page);
 //	HelpLabel *helpLabel = new HelpLabel(i18n("How is it useful?"), i18n(
