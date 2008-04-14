@@ -424,7 +424,7 @@ void BNPView::initialize()
 	m_tree->setTreeStepSize(16);
 	m_tree->setLineWidth(1);
 	m_tree->setMidLineWidth(0);
-	m_tree->setFocusPolicy(QWidget::NoFocus);
+	m_tree->setFocusPolicy(Qt::NoFocus);
 
 	/// Configure the List View Drag and Drop:
 	m_tree->setDragEnabled(true);
