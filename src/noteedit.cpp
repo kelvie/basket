@@ -54,6 +54,9 @@
 
 #include <iostream>
 
+#include <KActionCollection>
+#include <KToggleAction>
+
 /** class NoteEditor: */
 
 NoteEditor::NoteEditor(NoteContent *noteContent)
@@ -814,7 +817,7 @@ InlineEditors* InlineEditors::instance()
 	return instance;
 }
 
-void InlineEditors::initToolBars(KActionCollection *actionCollection)
+void InlineEditors::initToolBars(KActionCollection *ac)
 {
 	QFont defaultFont;
 	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
@@ -825,38 +828,104 @@ void InlineEditors::initToolBars(KActionCollection *actionCollection)
 	richTextFont = new FocusedFontCombo(Global::mainWindow());
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
 	richTextFont->setCurrentFont(defaultFont.family());
-	K3WidgetAction *action = new K3WidgetAction(richTextFont, i18n("Font"), Qt::Key_F6,
-	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font");
+
+	KAction *action = ac->addAction("richtext_font");
+	action->setDefaultWidget(richTextFont);
+	action->setText(i18n("Font"));
+	action->setShortcut(Qt::Key_F6);
 
 	richTextFontSize = new FontSizeCombo(/*rw=*/true, Global::mainWindow());
 	richTextFontSize->setFontSize(defaultFont.pointSize());
-	action = new K3WidgetAction(richTextFontSize, i18n("Font Size"), Qt::Key_F7,
-	                                          /*receiver=*/0, /*slot=*/"", actionCollection, "richtext_font_size");
+	action = ac->addAction("richtext_font_size");
+	action->setDefaultWidget(richTextFontSize);
+	action->setText(i18n("Font Size"));
+	action->setShortcut(Qt::Key_F7);
 
 	richTextColor = new FocusedColorCombo(Global::mainWindow());
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	richTextColor->setColor(textColor);
-	action = new K3WidgetAction(richTextColor, i18n("Color"), KShortcut(), 0, SLOT(), actionCollection, "richtext_color");
+	action = ac->addAction("richtext_color");
+	action->setText(i18n("Color"));
 
-	richTextBold      = new KToggleAction( i18n("Bold"),        "text_bold",   "Ctrl+B", actionCollection, "richtext_bold"      );
-	richTextItalic    = new KToggleAction( i18n("Italic"),      "text_italic", "Ctrl+I", actionCollection, "richtext_italic"    );
-	richTextUnderline = new KToggleAction( i18n("Underline"),   "text_under",  "Ctrl+U", actionCollection, "richtext_underline" );
+	KToggleAction *ta = NULL;
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_bold", ta);
+	ta->setText(i18n("Bold"));
+	ta->setIcon(KIcon("text_bold"));
+	ta->setShortcut(KShortcut("Ctrl+B"));
+	richTextBold = ta;
 
-//	richTextSuper     = new KToggleAction( i18n("Superscript"), "text_super",  "",       actionCollection, "richtext_super"     );
-//	richTextSub       = new KToggleAction( i18n("Subscript"),   "text_sub",    "",       actionCollection, "richtext_sub"       );
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_italic", ta);
+	ta->setText(i18n("Italic"));
+	ta->setIcon(KIcon("text_italic"));
+	ta->setShortcut(KShortcut("Ctrl+I"));
+	richTextItalic = ta;
 
-	richTextLeft      = new KToggleAction( i18n("Align Left"),  "text_left",   "",       actionCollection, "richtext_left"      );
-	richTextCenter    = new KToggleAction( i18n("Centered"),    "text_center", "",       actionCollection, "richtext_center"    );
-	richTextRight     = new KToggleAction( i18n("Align Right"), "text_right",  "",       actionCollection, "richtext_right"     );
-	richTextJustified = new KToggleAction( i18n("Justified"),   "text_block",  "",       actionCollection, "richtext_block"     );
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_underline", ta);
+	ta->setText(i18n("Underline"));
+	ta->setIcon(KIcon("text_under"));
+	ta->setShortcut(KShortcut("Ctrl+U"));
+	richTextUnderline = ta;
 
-	richTextLeft->setExclusiveGroup("rt_justify");
-	richTextCenter->setExclusiveGroup("rt_justify");
-	richTextRight->setExclusiveGroup("rt_justify");
-	richTextJustified->setExclusiveGroup("rt_justify");
+#if 0
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_super", ta);
+	ta->setText(i18n("Superscript"));
+	ta->setIcon(KIcon("text_super"));
+	richTextSuper = ta;
 
-	richTextUndo      = new KAction( i18n("Undo"), "undo", "", actionCollection, "richtext_undo");
-	richTextRedo      = new KAction( i18n("Redo"), "redo", "", actionCollection, "richtext_redo");
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_sub", ta);
+	ta->setText(i18n("Subscript"));
+	ta->setIcon(KIcon("text_sub"));
+	richTextSub = ta;
+#endif
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_left", ta);
+	ta->setText(i18n("Align Left"));
+	ta->setIcon(KIcon("text_left"));
+	richTextLeft = ta;
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_center", ta);
+	ta->setText(i18n("Centered"));
+	ta->setIcon(KIcon("text_center"));
+	ta->setShortcut(KShortcut(""));
+	richTextCenter = ta;
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_right", ta);
+	ta->setText(i18n("Align Right"));
+	ta->setIcon(KIcon("text_right"));
+	richTextRight = ta;
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_block", ta);
+	ta->setText(i18n("Justified"));
+	ta->setIcon(KIcon("text_block"));
+	richTextJustified = ta;
+
+	QActionGroup *alignmentGroup = new QActionGroup(this);
+	alignmentGroup->addAction(richTextLeft);
+	alignmentGroup->addAction(richTextCenter);
+	alignmentGroup->addAction(richTextRight);
+	alignmentGroup->addAction(richTextJustified);
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_undo", ta);
+	ta->setText(i18n("Undo"));
+	ta->setIcon(KIcon("undo"));
+	ta->setShortcut(KShortcut(""));
+	richTextUndo = ta;
+
+	ta = new KToggleAction(ac);
+	ac->addAction("richtext_redo", ta);
+	ta->setText(i18n("Redo"));
+	ta->setIcon(KIcon("redo"));
+	richTextRedo = ta;
 
 	disableRichTextToolBar();
 }

@@ -42,6 +42,7 @@
 class Q3WidgetStack;
 class QDomDocument;
 class QDomElement;
+class KAction;
 class KToggleAction;
 class KPassivePopup;
 class Q3PopupMenu;
@@ -215,7 +216,6 @@ class BNPView : public QSplitter
 		void isLockedChanged();
 		void lateInit();
 		void onFirstShow();
-		void showGlobalShortcutsSettingsDialog();
 
 	public:
 		KAction       *m_actEditNote;

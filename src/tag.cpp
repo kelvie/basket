@@ -227,7 +227,13 @@ Tag::Tag()
 	static int tagNumber = 0;
 	++tagNumber;
 	QString sAction = "tag_shortcut_number_" + QString::number(tagNumber);
-	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), Global::bnpView, SLOT(activatedTagShortcut()), Global::bnpView->actionCollection(), sAction);
+
+	KActionCollection *ac = Global::bnpView->actionCollection();
+	m_action = ac->addAction(sAction, Global::bnpView,
+				 SLOT(activatedTagShortcut()));
+	m_action->setText("FAKE TEXT");
+	m_action->setIcon(KIcon("FAKE ICON"));
+
 	m_action->setShortcutConfigurable(false); // We do it in the tag properties dialog
 
 	m_inheritedBySiblings = false;

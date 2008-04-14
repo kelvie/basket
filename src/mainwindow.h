@@ -56,6 +56,8 @@ class RegionGrabber;
 class NoteSelection;
 class BNPView;
 class ClickableLabel;
+class KActionCollection;
+
 namespace KSettings { class Dialog; };
 
 
@@ -90,12 +92,15 @@ class MainWindow : public KMainWindow
 	bool queryClose();
 	virtual void resizeEvent(QResizeEvent*);
 	virtual void moveEvent(QMoveEvent*);
+	KActionCollection *actionCollection() const;
+
   public:
 	void polish();
 
   private:
 	// Settings actions :
 //	KToggleAction *m_actShowToolbar;
+	KActionCollection *m_actionCollection;
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;

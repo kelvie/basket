@@ -100,12 +100,16 @@
 #include <iostream>
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
+
 #include <KShortcutsDialog>
+#include <KActionCollection>
+#include <KToggleAction>
 
 /** Container */
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
 	: KMainWindow(parent, name != 0 ? name : "MainWindow"), m_settings(0), m_quit(false)
+	, m_actionCollection(new KActionCollection(this))
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
@@ -137,8 +141,13 @@ MainWindow::~MainWindow()
 void MainWindow::setupActions()
 {
 	actQuit         = KStandardAction::quit( this, SLOT(quit()), actionCollection() );
-	new KAction(i18n("Minimize"), "", 0,
-				this, SLOT(minimizeRestore()), actionCollection(), "minimizeRestore" );
+	KAction *a = NULL;
+	a = actionCollection()->addAction("minimizeRestore", this,
+					  SLOT(minimizeRestore()));
+	a->setText(i18n("Minimize"));
+	a->setIcon(KIcon(""));
+	a->setShortcut(0);
+
 	/** Settings : ************************************************************/
 //	m_actShowToolbar   = KStandardAction::showToolbar(   this, SLOT(toggleToolBar()),   actionCollection());
 	m_actShowStatusbar = KStandardAction::showStatusbar( this, SLOT(toggleStatusBar()), actionCollection());
@@ -276,6 +285,11 @@ void MainWindow::moveEvent(QMoveEvent *event)
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 	KMainWindow::moveEvent(event);
+}
+
+KActionCollection *MainWindow::actionCollection() const
+{
+	return m_actionCollection;
 }
 
 bool MainWindow::queryExit()

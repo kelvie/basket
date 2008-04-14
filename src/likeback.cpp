@@ -381,14 +381,15 @@ KConfig* LikeBack::config()
 
 KAction* LikeBack::sendACommentAction(KActionCollection *parent)
 {
-	if (d->action == 0)
-		d->action = new KAction(
-			i18n("&Send a Comment to Developers"), /*icon=*/"mail_new", /*shortcut=*/"",
-			this, SLOT(execCommentDialog()),
-			parent, "likeback_send_a_comment"
-		);
+    if (d->action == 0)
+    {
+	d->action = parent->addAction("likeback_send_a_comment", this,
+				      SLOT(execCommentDialog()));
+	d->action->setText(i18n("&Send a Comment to Developers"));
+	d->action->setIcon(KIcon("mail_new"));
+    }
 
-	return d->action;
+    return d->action;
 }
 
 bool LikeBack::userWantsToShowBar()

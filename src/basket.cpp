@@ -1382,7 +1382,11 @@ Basket::Basket(QWidget *parent, const QString &folderName)
    m_finishLoadOnFirstShow(false), m_relayoutOnNextShow(false)
 {
 	QString sAction = "local_basket_activate_" + folderName;
-	m_action = new KAction("FAKE TEXT", "FAKE ICON", KShortcut(), this, SLOT(activatedShortcut()), Global::bnpView->actionCollection(), sAction);
+	m_action = actionCollection->addAction(sAction, this,
+					       SLOT(activatedShortcut()));
+	m_action->setText("FAKE TEXT");
+	m_action->setIcon(KIcon("FAKE ICON"));
+	m_action->setShortcut(KShortcut());
 	m_action->setShortcutConfigurable(false); // We do it in the basket properties dialog (and keep it in sync with the global one)
 
 	if (!m_folderName.endsWith("/"))

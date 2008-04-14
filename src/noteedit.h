@@ -34,8 +34,9 @@ class KIconButton;
 class KUrlRequester;
 class KTextEdit;
 class KMainWindow;
-class KTooolBar;
+class KToolBar;
 class KToggleAction;
+class KActionCollection;
 
 class FontSizeCombo;
 
@@ -265,7 +266,7 @@ class InlineEditors : public QObject
   public:
 	InlineEditors();
 	~InlineEditors();
-	void initToolBars(KActionCollection *actionCollection);
+	void initToolBars(KActionCollection *ac);
 	static InlineEditors* instance();
 
   public:

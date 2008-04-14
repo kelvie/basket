@@ -49,7 +49,6 @@
 #include <kstandarddirs.h>
 #include <kaboutdata.h>
 #include <kwindowsystem.h>
-#include <kaccel.h>
 #include <kpassivepopup.h>
 #include <kxmlguifactory.h>
 #include <kcmdlineargs.h>
@@ -58,7 +57,6 @@
 #include <KShortcutsDialog>
 #include <kdebug.h>
 #include <iostream>
-#include <KShortcutsDialog>
 #include "bnpview.h"
 #include "basket.h"
 #include "tools.h"
@@ -85,6 +83,12 @@
 #include "backup.h"
 #include "notefactory.h"
 #include "notecontent.h"
+
+#include <KAction>
+#include <KActionMenu>
+#include <KActionCollection>
+#include <KStandardShortcut>
+#include <KToggleAction>
 
 /** class BNPView: */
 
@@ -115,7 +119,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	Global::bnpView = this;
 
 	// Needed when loading the baskets:
-	Global::globalAccel       = new KGlobalAccel(this); // FIXME: might be null (KPart case)!
 	Global::backgroundManager = new BackgroundManager();
 
 	setupGlobalShortcuts();
@@ -286,74 +289,127 @@ void BNPView::onFirstShow()
 
 void BNPView::setupGlobalShortcuts()
 {
-	/* Global shortcuts */
-	KGlobalAccel *globalAccel = Global::globalAccel; // Better for the following lines
+    KActionCollection *ac = new KActionCollection(this);
+    KAction *a = NULL;
 
-	// Ctrl+Shift+W only works when started standalone:
-	QWidget *basketMainWindow = (QWidget*) (Global::bnpView->parent()->inherits("MainWindow") ? Global::bnpView->parent() : 0);
+    // Ctrl+Shift+W only works when started standalone:
+    QWidget *basketMainWindow =
+	    qobject_cast<KMainWindow *>(Global::bnpView->parent());
 
-	if (basketMainWindow) {
-		globalAccel->insert( "global_show_hide_main_window", i18n("Show/hide main window"),
-							i18n("Allows you to show main Window if it is hidden, and to hide it if it is shown."),
-							Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_W, Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_W,
-							basketMainWindow, SLOT(changeActive()),           true, true );
-	}
-	globalAccel->insert( "global_paste", i18n("Paste clipboard contents in current basket"),
-						 i18n("Allows you to paste clipboard contents in the current basket without having to open the main window."),
-						 Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V, Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V,
-						 Global::bnpView, SLOT(globalPasteInCurrentBasket()), true, true );
-	globalAccel->insert( "global_show_current_basket", i18n("Show current basket name"),
-						 i18n("Allows you to know basket is current without opening the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(showPassiveContentForced()), true, true );
-	globalAccel->insert( "global_paste_selection", i18n("Paste selection in current basket"),
-						 i18n("Allows you to paste clipboard selection in the current basket without having to open the main window."),
-						 Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_S, Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_S,
-						 Global::bnpView, SLOT(pasteSelInCurrentBasket()),  true, true );
-	globalAccel->insert( "global_new_basket", i18n("Create a new basket"),
-						 i18n("Allows you to create a new basket without having to open the main window (you then can use the other global shortcuts to add a note, paste clipboard or paste selection in this new basket)."),
-						 "", "",
-						 Global::bnpView, SLOT(askNewBasket()),       true, true );
-	globalAccel->insert( "global_previous_basket", i18n("Go to previous basket"),
-						 i18n("Allows you to change current basket to the previous one without having to open the main window."),
-						 "", "",
-						 Global::bnpView,    SLOT(goToPreviousBasket()), true, true );
-	globalAccel->insert( "global_next_basket", i18n("Go to next basket"),
-						 i18n("Allows you to change current basket to the next one without having to open the main window."),
-						 "", "",
-						 Global::bnpView,    SLOT(goToNextBasket()),     true, true );
-//	globalAccel->insert( "global_note_add_text", i18n("Insert plain text note"),
-//						 i18n("Add a plain text note to the current basket without having to open the main window."),
-//						 "", "", //Qt::CTRL+Qt::ALT+Qt::Key_T, Qt::CTRL+Qt::ALT+Qt::Key_T,
-//						 Global::bnpView, SLOT(addNoteText()),        true, true );
-	globalAccel->insert( "global_note_add_html", i18n("Insert text note"),
-						 i18n("Add a text note to the current basket without having to open the main window."),
-						 Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_T, Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_T, //"", "",
-						 Global::bnpView, SLOT(addNoteHtml()),        true, true );
-	globalAccel->insert( "global_note_add_image", i18n("Insert image note"),
-						 i18n("Add an image note to the current basket without having to open the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(addNoteImage()),       true, true );
-	globalAccel->insert( "global_note_add_link", i18n("Insert link note"),
-						 i18n("Add a link note to the current basket without having to open the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(addNoteLink()),        true, true );
-	globalAccel->insert( "global_note_add_color", i18n("Insert color note"),
-						 i18n("Add a color note to the current basket without having to open the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(addNoteColor()),       true, true );
-	globalAccel->insert( "global_note_pick_color", i18n("Pick color from screen"),
-						 i18n("Add a color note picked from one pixel on screen to the current basket without "
-								 "having to open the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(slotColorFromScreenGlobal()), true, true );
-	globalAccel->insert( "global_note_grab_screenshot", i18n("Grab screen zone"),
-						 i18n("Grab a screen zone as an image in the current basket without "
-								 "having to open the main window."),
-						 "", "",
-						 Global::bnpView, SLOT(grabScreenshotGlobal()), true, true );
-	globalAccel->readSettings();
-	globalAccel->updateConnections();
+    int modifier = Qt::CTRL + Qt::ALT + Qt::SHIFT;
+
+    if (basketMainWindow) {
+	a = ac->addAction("global_show_hide_main_window", basketMainWindow,
+			  SLOT(changeActive()));
+	a->setText(i18n("Show/hide main window"));
+	a->setStatusTip(
+	    i18n("Allows you to show main Window if it is hidden, and to hide "
+		 "it if it is shown.") );
+	a->setGlobalShortcut(KShortcut(modifier + Qt::Key_W));
+    }
+
+    a = ac->addAction("global_paste", Global::bnpView,
+		      SLOT(globalPasteInCurrentBasket()));
+    a->setText(i18n("Paste clipboard contents in current basket"));
+    a->setStatusTip(
+	i18n("Allows you to paste clipboard contents in the current basket "
+	     "without having to open the main window.") );
+    a->setGlobalShortcut(KShortcut(modifier + Qt::Key_V));
+
+
+
+    a = ac->addAction("global_show_current_basket", Global::bnpView,
+		      SLOT(showPassiveContentForced()));
+    a->setText(i18n("Show current basket name"));
+    a->setStatusTip(i18n("Allows you to know basket is current without opening "
+			 "the main window."));
+
+
+    a = ac->addAction("global_paste_selection", Global::bnpView,
+		      SLOT(pasteSelInCurrentBasket()));
+    a->setText(i18n("Paste selection in current basket"));
+    a->setStatusTip(
+	i18n("Allows you to paste clipboard selection in the current basket "
+	     "without having to open the main window.") );
+    a->setGlobalShortcut(KShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_S));
+
+    a = ac->addAction("global_new_basket", Global::bnpView,
+		      SLOT(askNewBasket()));
+    a->setText(i18n("Create a new basket"));
+    a->setStatusTip(
+	i18n("Allows you to create a new basket without having to open the "
+	     "main window (you then can use the other global shortcuts to add "
+	     "a note, paste clipboard or paste selection in this new basket).")
+	);
+
+    a = ac->addAction("global_previous_basket", Global::bnpView,
+		      SLOT(goToPreviousBasket()));
+    a->setText(i18n("Go to previous basket"));
+    a->setStatusTip(
+	i18n("Allows you to change current basket to the previous one without "
+	     "having to open the main window.") );
+
+    a = ac->addAction("global_next_basket", Global::bnpView,
+		      SLOT(goToNextBasket()));
+    a->setText(i18n("Go to next basket"));
+    a->setStatusTip(i18n("Allows you to change current basket to the next one "
+			 "without having to open the main window."));
+
+    a = ac->addAction("global_note_add_html", Global::bnpView,
+		      SLOT(addNoteHtml()));
+    a->setText(i18n("Insert text note"));
+    a->setStatusTip(
+	i18n("Add a text note to the current basket without having to open "
+	     "the main window.") );
+    a->setGlobalShortcut(KShortcut(modifier + Qt::Key_T));
+
+    a = ac->addAction("global_note_add_image", Global::bnpView,
+		      SLOT(addNoteImage()));
+    a->setText(i18n("Insert image note"));
+    a->setStatusTip(
+	i18n("Add an image note to the current basket without having to open "
+	     "the main window.") );
+
+    a = ac->addAction("global_note_add_link", Global::bnpView,
+		      SLOT(addNoteLink()));
+    a->setText(i18n("Insert link note"));
+    a->setStatusTip(
+	i18n("Add a link note to the current basket without having "
+	     "to open the main window."));
+    a->setGlobalShortcut(KShortcut(""));
+
+    a = ac->addAction("global_note_add_color", Global::bnpView,
+		      SLOT(addNoteColor()));
+    a->setText(i18n("Insert color note"));
+    a->setStatusTip(
+	i18n("Add a color note to the current basket without having to open "
+	     "the main window."));
+    a->setGlobalShortcut(KShortcut(""));
+
+    a = ac->addAction("global_note_pick_color", Global::bnpView,
+		      SLOT(slotColorFromScreenGlobal()));
+    a->setText(i18n("Pick color from screen"));
+    a->setStatusTip(
+	i18n("Add a color note picked from one pixel on screen to the current "
+	     "basket without " "having to open the main window.") );
+    a->setGlobalShortcut(KShortcut(""));
+
+    a = ac->addAction("global_note_grab_screenshot", Global::bnpView,
+		      SLOT(grabScreenshotGlobal()));
+    a->setText(i18n("Grab screen zone"));
+    a->setStatusTip(
+	i18n("Grab a screen zone as an image in the current basket without "
+	     "having to open the main window."));
+    a->setGlobalShortcut(KShortcut(""));
+
+#if 0
+    a = ac->addAction("global_note_add_text", Global::bnpView,
+		      SLOT(addNoteText()));
+    a->setText(i18n("Insert plain text note"));
+    a->setStatusTip(
+	    i18n("Add a plain text note to the current basket without having to "
+		 "open the main window."));
+#endif
 }
 
 void BNPView::initialize()
@@ -431,224 +487,417 @@ void BNPView::initialize()
 
 void BNPView::setupActions()
 {
-	m_actSaveAsArchive = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
-	                                  this, SLOT(saveAsArchive()), actionCollection(), "basket_export_basket_archive" );
-	m_actOpenArchive   = new KAction( i18n("&Basket Archive..."),  "baskets", 0,
-	                                  this, SLOT(openArchive()),   actionCollection(), "basket_import_basket_archive" );
+    KAction *a = NULL;
+    KActionCollection *ac = actionCollection();
 
-	m_actHideWindow = new KAction( i18n("&Hide Window"), "", KStandardShortcut::shortcut(KStandardShortcut::Close),
-								   this, SLOT(hideOnEscape()), actionCollection(), "window_hide" );
-	m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
+    a = ac->addAction("basket_export_basket_archive", this,
+		      SLOT(saveAsArchive()));
+    a->setText(i18n("&Basket Archive..."));
+    a->setIcon(KIcon("baskets"));
+    a->setShortcut(0);
+    m_actSaveAsArchive = a;
 
-	m_actExportToHtml = new KAction( i18n("&HTML Web Page..."), "html", 0,
-	             this, SLOT(exportToHTML()),      actionCollection(), "basket_export_html" );
-	new KAction( i18n("K&Notes"), "knotes", 0,
-	             this, SLOT(importKNotes()),      actionCollection(), "basket_import_knotes" );
-	new KAction( i18n("K&Jots"), "kjots", 0,
-	             this, SLOT(importKJots()),       actionCollection(), "basket_import_kjots" );
-	new KAction( i18n("&KnowIt..."), "knowit", 0,
-	             this, SLOT(importKnowIt()),      actionCollection(), "basket_import_knowit" );
-	new KAction( i18n("Tux&Cards..."), "tuxcards", 0,
-	             this, SLOT(importTuxCards()),    actionCollection(), "basket_import_tuxcards" );
-	new KAction( i18n("&Sticky Notes"), "gnome", 0,
-	             this, SLOT(importStickyNotes()), actionCollection(), "basket_import_sticky_notes" );
-	new KAction( i18n("&Tomboy"), "tintin", 0,
-	             this, SLOT(importTomboy()),      actionCollection(), "basket_import_tomboy" );
-	new KAction( i18n("Text &File..."), "txt", 0,
-	             this, SLOT(importTextFile()),    actionCollection(), "basket_import_text_file" );
+    a = ac->addAction("basket_import_basket_archive", this,
+		      SLOT(openArchive()));
+    a->setText(i18n("&Basket Archive..."));
+    a->setIcon(KIcon("baskets"));
+    a->setShortcut(0);
+    m_actOpenArchive = a;
 
-	new KAction( i18n("&Backup && Restore..."), "", 0,
-	             this, SLOT(backupRestore()), actionCollection(), "basket_backup_restore" );
+    a = ac->addAction("window_hide", this, SLOT(hideOnEscape()));
+    a->setText(i18n("&Hide Window"));
+    a->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::Close));
+    m_actHideWindow = a;
 
-	/** Note : ****************************************************************/
+    m_actHideWindow->setEnabled(Settings::useSystray()); // Init here !
 
-	m_actDelNote  = new KAction( i18n("D&elete"), "editdelete", "Delete",
-								 this, SLOT(delNote()), actionCollection(), "edit_delete" );
-	m_actCutNote  = KStandardAction::cut(   this, SLOT(cutNote()),               actionCollection() );
-	m_actCopyNote = KStandardAction::copy(  this, SLOT(copyNote()),              actionCollection() );
+    a = ac->addAction("basket_export_html", this, SLOT(exportToHTML()));
+    a->setText(i18n("&HTML Web Page..."));
+    a->setIcon(KIcon("html"));
+    a->setShortcut(0);
+    m_actExportToHtml = a;
 
-	m_actSelectAll = KStandardAction::selectAll( this, SLOT( slotSelectAll() ), actionCollection() );
-	m_actSelectAll->setStatusText( i18n( "Selects all notes" ) );
-	m_actUnselectAll = new KAction( i18n( "U&nselect All" ), "", this, SLOT( slotUnselectAll() ),
-									actionCollection(), "edit_unselect_all" );
-	m_actUnselectAll->setStatusText( i18n( "Unselects all selected notes" ) );
-	m_actInvertSelection = new KAction( i18n( "&Invert Selection" ), Qt::CTRL+Qt::Key_Asterisk,
-										this, SLOT( slotInvertSelection() ),
-										actionCollection(), "edit_invert_selection" );
-	m_actInvertSelection->setStatusText( i18n( "Inverts the current selection of notes" ) );
+    a = ac->addAction("basket_import_knotes", this, SLOT(importKNotes()));
+    a->setText(i18n("K&Notes"));
+    a->setIcon(KIcon("knotes"));
+    a->setShortcut(0);
 
-	m_actEditNote         = new KAction( i18n("Verb; not Menu", "&Edit..."), "edit",   "Return",
-										 this, SLOT(editNote()), actionCollection(), "note_edit" );
+    a = ac->addAction("basket_import_kjots", this, SLOT(importKJots()));
+    a->setText(i18n("K&Jots"));
+    a->setIcon(KIcon("kjots"));
+    a->setShortcut(0);
 
-	m_actOpenNote         = KStandardAction::open( this, SLOT(openNote()), actionCollection(), "note_open" );
-	m_actOpenNote->setIcon("window_new");
-	m_actOpenNote->setText(i18n("&Open"));
-	m_actOpenNote->setShortcut("F9");
+    a = ac->addAction("basket_import_knowit", this, SLOT(importKnowIt()));
+    a->setText(i18n("&KnowIt..."));
+    a->setIcon(KIcon("knowit"));
+    a->setShortcut(0);
 
-	m_actOpenNoteWith     = new KAction( i18n("Open &With..."), "", "Shift+F9",
-										 this, SLOT(openNoteWith()), actionCollection(), "note_open_with" );
-	m_actSaveNoteAs       = KStandardAction::saveAs( this, SLOT(saveNoteAs()), actionCollection(), "note_save_to_file" );
-	m_actSaveNoteAs->setIcon("");
-	m_actSaveNoteAs->setText(i18n("&Save to File..."));
-	m_actSaveNoteAs->setShortcut("F10");
+    a = ac->addAction("basket_import_tuxcards", this, SLOT(importTuxCards()));
+    a->setText(i18n("Tux&Cards..."));
+    a->setIcon(KIcon("tuxcards"));
+    a->setShortcut(0);
 
-	m_actGroup        = new KAction( i18n("&Group"),          "attach",     "Ctrl+G",
-									 this, SLOT(noteGroup()),    actionCollection(), "note_group" );
-	m_actUngroup      = new KAction( i18n("U&ngroup"),        "",           "Ctrl+Shift+G",
-									 this, SLOT(noteUngroup()),  actionCollection(), "note_ungroup" );
+    a = ac->addAction("basket_import_sticky_notes", this,
+		      SLOT(importStickyNotes()));
+    a->setText(i18n("&Sticky Notes"));
+    a->setIcon(KIcon("gnome"));
+    a->setShortcut(0);
 
-	m_actMoveOnTop    = new KAction( i18n("Move on &Top"),    "2uparrow",   "Ctrl+Shift+Home",
-									 this, SLOT(moveOnTop()),    actionCollection(), "note_move_top" );
-	m_actMoveNoteUp   = new KAction( i18n("Move &Up"),        "1uparrow",   "Ctrl+Shift+Up",
-									 this, SLOT(moveNoteUp()),   actionCollection(), "note_move_up" );
-	m_actMoveNoteDown = new KAction( i18n("Move &Down"),      "1downarrow", "Ctrl+Shift+Down",
-									 this, SLOT(moveNoteDown()), actionCollection(), "note_move_down" );
-	m_actMoveOnBottom = new KAction( i18n("Move on &Bottom"), "2downarrow", "Ctrl+Shift+End",
-									 this, SLOT(moveOnBottom()), actionCollection(), "note_move_bottom" );
-#if KDE_IS_VERSION( 3, 1, 90 ) // KDE 3.2.x
-	m_actPaste = KStandardAction::pasteText( this, SLOT(pasteInCurrentBasket()), actionCollection() );
-#else
-	m_actPaste = KStandardAction::paste(     this, SLOT(pasteInCurrentBasket()), actionCollection() );
+    a = ac->addAction("basket_import_tomboy", this, SLOT(importTomboy()));
+    a->setText(i18n("&Tomboy"));
+    a->setIcon(KIcon("tintin"));
+    a->setShortcut(0);
+
+    a = ac->addAction("basket_import_text_file", this, SLOT(importTextFile()));
+    a->setText(i18n("Text &File..."));
+    a->setIcon(KIcon("txt"));
+    a->setShortcut(0);
+
+    a = ac->addAction("basket_backup_restore", this, SLOT(backupRestore()));
+    a->setText(i18n("&Backup && Restore..."));
+    a->setShortcut(0);
+
+    /** Note : ****************************************************************/
+
+    a = ac->addAction("edit_delete", this, SLOT(delNote()));
+    a->setText(i18n("D&elete"));
+    a->setIcon(KIcon("editdelete"));
+    a->setShortcut(KShortcut("Delete"));
+    m_actDelNote = a;
+
+    m_actCutNote  = ac->addAction(KStandardAction::Cut, this, SLOT(cutNote()));
+    m_actCopyNote = ac->addAction(KStandardAction::Copy, this, SLOT(copyNote()));
+
+    m_actSelectAll = ac->addAction(KStandardAction::SelectAll, this,
+				   SLOT(slotSelectAll()));
+    m_actSelectAll->setStatusTip( i18n( "Selects all notes" ) );
+
+    a = ac->addAction("edit_unselect_all", this, SLOT( slotUnselectAll() ));
+    a->setText(i18n( "U&nselect All" ));
+    m_actUnselectAll = a;
+    m_actUnselectAll->setStatusTip( i18n( "Unselects all selected notes" ) );
+
+    a = ac->addAction("edit_invert_selection", this,
+		      SLOT( slotInvertSelection() ));
+    a->setText(i18n( "&Invert Selection" ));
+    a->setShortcut(Qt::CTRL+Qt::Key_Asterisk);
+    m_actInvertSelection = a;
+
+    m_actInvertSelection->setStatusTip(
+	    i18n( "Inverts the current selection of notes" )
+	    );
+
+    a = ac->addAction("note_edit", this, SLOT(editNote()));
+    a->setText(i18nc("Verb; not Menu", "&Edit..."));
+    a->setIcon(KIcon("edit"));
+    a->setShortcut(KShortcut("Return"));
+    m_actEditNote = a;
+
+    m_actOpenNote = ac->addAction(KStandardAction::Open, "note_open",
+				  this, SLOT(openNote()));
+    m_actOpenNote->setIcon(KIcon("window_new"));
+    m_actOpenNote->setText(i18n("&Open"));
+    m_actOpenNote->setShortcut(KShortcut("F9"));
+
+    a = ac->addAction("note_open_with", this, SLOT(openNoteWith()));
+    a->setText(i18n("Open &With..."));
+    a->setShortcut(KShortcut("Shift+F9"));
+    m_actOpenNoteWith = a;
+
+    m_actSaveNoteAs = ac->addAction(KStandardAction::SaveAs,
+				    "note_save_to_file",
+				    this, SLOT(saveNoteAs()));
+    m_actSaveNoteAs->setText(i18n("&Save to File..."));
+    m_actSaveNoteAs->setShortcut(KShortcut("F10"));
+
+    a = ac->addAction("note_group", this, SLOT(noteGroup()));
+    a->setText(i18n("&Group"));
+    a->setIcon(KIcon("attach"));
+    a->setShortcut(KShortcut("Ctrl+G"));
+    m_actGroup = a;
+
+    a = ac->addAction("note_ungroup", this, SLOT(noteUngroup()));
+    a->setText(i18n("U&ngroup"));
+    a->setShortcut(KShortcut("Ctrl+Shift+G"));
+    m_actUngroup = a;
+
+    a = ac->addAction("note_move_top", this, SLOT(moveOnTop()));
+    a->setText(i18n("Move on &Top"));
+    a->setIcon(KIcon("2uparrow"));
+    a->setShortcut(KShortcut("Ctrl+Shift+Home"));
+    m_actMoveOnTop = a;
+
+    a = ac->addAction("note_move_up", this, SLOT(moveNoteUp()));
+    a->setText(i18n("Move &Up"));
+    a->setIcon(KIcon("1uparrow"));
+    a->setShortcut(KShortcut("Ctrl+Shift+Up"));
+    m_actMoveNoteUp = a;
+
+    a = ac->addAction("note_move_down", this, SLOT(moveNoteDown()));
+    a->setText(i18n("Move &Down"));
+    a->setIcon(KIcon("1downarrow"));
+    a->setShortcut(KShortcut("Ctrl+Shift+Down"));
+    m_actMoveNoteDown = a;
+
+    a = ac->addAction("note_move_bottom", this, SLOT(moveOnBottom()));
+    a->setText(i18n("Move on &Bottom"));
+    a->setIcon(KIcon("2downarrow"));
+    a->setShortcut(KShortcut("Ctrl+Shift+End"));
+    m_actMoveOnBottom = a;
+
+    m_actPaste = ac->addAction(KStandardAction::Paste, this,
+			       SLOT(pasteInCurrentBasket()));
+
+    /** Insert : **************************************************************/
+
+    QSignalMapper *insertEmptyMapper  = new QSignalMapper(this);
+    QSignalMapper *insertWizardMapper = new QSignalMapper(this);
+    connect( insertEmptyMapper,  SIGNAL(mapped(int)), this, SLOT(insertEmpty(int))  );
+    connect( insertWizardMapper, SIGNAL(mapped(int)), this, SLOT(insertWizard(int)) );
+
+#if 0
+    a = ac->addAction("insert_text");
+    a->setText(i18n("Plai&n Text"));
+    a->setIcon(KIcon("text"));
+    a->setShortcut(KShortcut("Ctrl+T"));
+    m_actInsertText = a;
 #endif
 
-	/** Insert : **************************************************************/
+    a = ac->addAction("insert_html");
+    a->setText(i18n("&Text"));
+    a->setIcon(KIcon("html"));
+    a->setShortcut(KShortcut("Insert"));
+    m_actInsertHtml = a;
 
-	QSignalMapper *insertEmptyMapper  = new QSignalMapper(this);
-	QSignalMapper *insertWizardMapper = new QSignalMapper(this);
-	connect( insertEmptyMapper,  SIGNAL(mapped(int)), this, SLOT(insertEmpty(int))  );
-	connect( insertWizardMapper, SIGNAL(mapped(int)), this, SLOT(insertWizard(int)) );
+    a = ac->addAction("insert_link");
+    a->setText(i18n("&Link"));
+    a->setIcon(KIcon("link"));
+    a->setShortcut(KShortcut("Ctrl+Y"));
+    m_actInsertLink = a;
 
-//	m_actInsertText   = new KAction( i18n("Plai&n Text"), "text",     "Ctrl+T", actionCollection(), "insert_text"     );
-	m_actInsertHtml   = new KAction( i18n("&Text"),       "html",     "Insert", actionCollection(), "insert_html"     );
-	m_actInsertLink   = new KAction( i18n("&Link"),       "link",     "Ctrl+Y", actionCollection(), "insert_link"     );
-	m_actInsertImage  = new KAction( i18n("&Image"),      "image",    "",       actionCollection(), "insert_image"    );
-	m_actInsertColor  = new KAction( i18n("&Color"),      "colorset", "",       actionCollection(), "insert_color"    );
-	m_actInsertLauncher=new KAction( i18n("L&auncher"),   "launch",   "",       actionCollection(), "insert_launcher" );
+    a = ac->addAction("insert_image");
+    a->setText(i18n("&Image"));
+    a->setIcon(KIcon("image"));
+    m_actInsertImage = a;
 
-	m_actImportKMenu  = new KAction( i18n("Import Launcher from &KDE Menu..."), "kmenu",      "", actionCollection(), "insert_kmenu"     );
-	m_actImportIcon   = new KAction( i18n("Im&port Icon..."),                   "icons",      "", actionCollection(), "insert_icon"      );
-	m_actLoadFile     = new KAction( i18n("Load From &File..."),                "fileimport", "", actionCollection(), "insert_from_file" );
+    a = ac->addAction("insert_color");
+    a->setText(i18n("&Color"));
+    a->setIcon(KIcon("colorset"));
+    m_actInsertColor = a;
+
+    a = ac->addAction("insert_launcher");
+    a->setText(i18n("L&auncher"));
+    a->setIcon(KIcon("launch"));
+    m_actInsertLauncher = a;
+
+    a = ac->addAction("insert_kmenu");
+    a->setText(i18n("Import Launcher from &KDE Menu..."));
+    a->setIcon(KIcon("kmenu"));
+    m_actImportKMenu = a;
+
+    a = ac->addAction("insert_icon");
+    a->setText(i18n("Im&port Icon..."));
+    a->setIcon(KIcon("icons"));
+    m_actImportIcon = a;
+
+    a = ac->addAction("insert_from_file");
+    a->setText(i18n("Load From &File..."));
+    a->setIcon(KIcon("fileimport"));
+    m_actLoadFile = a;
 
 //	connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	connect( m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	connect( m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	connect( m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	connect( m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-	connect( m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+    connect( m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+    connect( m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+    connect( m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+    connect( m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
+    connect( m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
 //	insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
-	insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html    );
-	insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image   );
-	insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link    );
-	insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color   );
-	insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
+    insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html    );
+    insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image   );
+    insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link    );
+    insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color   );
+    insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
-	connect( m_actImportKMenu, SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
-	connect( m_actImportIcon,  SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
-	connect( m_actLoadFile,    SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
-	insertWizardMapper->setMapping(m_actImportKMenu,  1 );
-	insertWizardMapper->setMapping(m_actImportIcon,   2 );
-	insertWizardMapper->setMapping(m_actLoadFile,     3 );
+    connect( m_actImportKMenu, SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
+    connect( m_actImportIcon,  SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
+    connect( m_actLoadFile,    SIGNAL(activated()), insertWizardMapper, SLOT(map()) );
+    insertWizardMapper->setMapping(m_actImportKMenu,  1 );
+    insertWizardMapper->setMapping(m_actImportIcon,   2 );
+    insertWizardMapper->setMapping(m_actLoadFile,     3 );
 
-	m_colorPicker = new DesktopColorPicker();
-	m_actColorPicker = new KAction( i18n("C&olor from Screen"), "kcolorchooser", "",
-									this, SLOT(slotColorFromScreen()), actionCollection(), "insert_screen_color" );
-	connect( m_colorPicker, SIGNAL(pickedColor(const QColor&)), this, SLOT(colorPicked(const QColor&)) );
-	connect( m_colorPicker, SIGNAL(canceledPick()),             this, SLOT(colorPickingCanceled())     );
+    m_colorPicker = new DesktopColorPicker();
 
-	m_actGrabScreenshot = new KAction( i18n("Grab Screen &Zone"), "ksnapshot", "",
-									   this, SLOT(grabScreenshot()), actionCollection(), "insert_screen_capture" );
-	//connect( m_actGrabScreenshot, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)) );
-	//connect( m_colorPicker, SIGNAL(canceledPick()),             this, SLOT(colorPickingCanceled())     );
+    a = ac->addAction("insert_screen_color", this, SLOT(slotColorFromScreen()));
+    a->setText(i18n("C&olor from Screen"));
+    a->setIcon(KIcon("kcolorchooser"));
+    m_actColorPicker = a;
+
+    connect(m_colorPicker, SIGNAL(pickedColor(const QColor&)),
+	    this, SLOT(colorPicked(const QColor&)));
+    connect(m_colorPicker, SIGNAL(canceledPick()),
+	    this, SLOT(colorPickingCanceled()));
+
+    a = ac->addAction("insert_screen_capture", this, SLOT(grabScreenshot()));
+    a->setText(i18n("Grab Screen &Zone"));
+    a->setIcon(KIcon("ksnapshot"));
+    m_actGrabScreenshot = a;
+
+    //connect( m_actGrabScreenshot, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)) );
+    //connect( m_colorPicker, SIGNAL(canceledPick()),             this, SLOT(colorPickingCanceled())     );
 
 //	m_insertActions.append( m_actInsertText     );
-	m_insertActions.append( m_actInsertHtml     );
-	m_insertActions.append( m_actInsertLink     );
-	m_insertActions.append( m_actInsertImage    );
-	m_insertActions.append( m_actInsertColor    );
-	m_insertActions.append( m_actImportKMenu    );
-	m_insertActions.append( m_actInsertLauncher );
-	m_insertActions.append( m_actImportIcon     );
-	m_insertActions.append( m_actLoadFile       );
-	m_insertActions.append( m_actColorPicker    );
-	m_insertActions.append( m_actGrabScreenshot );
+    m_insertActions.append( m_actInsertHtml     );
+    m_insertActions.append( m_actInsertLink     );
+    m_insertActions.append( m_actInsertImage    );
+    m_insertActions.append( m_actInsertColor    );
+    m_insertActions.append( m_actImportKMenu    );
+    m_insertActions.append( m_actInsertLauncher );
+    m_insertActions.append( m_actImportIcon     );
+    m_insertActions.append( m_actLoadFile       );
+    m_insertActions.append( m_actColorPicker    );
+    m_insertActions.append( m_actGrabScreenshot );
 
-	/** Basket : **************************************************************/
+    /** Basket : **************************************************************/
 
-	// At this stage, main.cpp has not set kapp->mainWidget(), so Global::runInsideKontact()
-	// returns true. We do it ourself:
-	bool runInsideKontact = true;
-	QWidget *parentWidget = (QWidget*) parent();
-	while (parentWidget) {
-		if (parentWidget->inherits("MainWindow"))
-			runInsideKontact = false;
-		parentWidget = (QWidget*) parentWidget->parent();
-	}
+    // At this stage, main.cpp has not set kapp->mainWidget(), so Global::runInsideKontact()
+    // returns true. We do it ourself:
+    bool runInsideKontact = true;
+    QWidget *parentWidget = (QWidget*) parent();
+    while (parentWidget) {
+	    if (parentWidget->inherits("MainWindow"))
+		    runInsideKontact = false;
+	    parentWidget = (QWidget*) parentWidget->parent();
+    }
 
-	// Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
-	actNewBasket        = new KAction( i18n("&New Basket..."), (runInsideKontact ? "basket" : "filenew"), KStandardShortcut::shortcut(KStandardShortcut::New),
-									   this, SLOT(askNewBasket()), actionCollection(), "basket_new" );
-	actNewSubBasket     = new KAction( i18n("New &Sub-Basket..."), "", "Ctrl+Shift+N",
-									   this, SLOT(askNewSubBasket()), actionCollection(), "basket_new_sub" );
-	actNewSiblingBasket = new KAction( i18n("New Si&bling Basket..."), "", "",
-									   this, SLOT(askNewSiblingBasket()), actionCollection(), "basket_new_sibling" );
+    // Use the "basket" incon in Kontact so it is consistent with the Kontact "New..." icon
 
-	KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), "filenew", actionCollection(), "basket_new_menu");
-	newBasketMenu->insert(actNewBasket);
-	newBasketMenu->insert(actNewSubBasket);
-	newBasketMenu->insert(actNewSiblingBasket);
-	connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
+    a = ac->addAction("basket_new", this, SLOT(askNewBasket()));
+    a->setText(i18n("&New Basket..."));
+    a->setIcon(KIcon((runInsideKontact ? "basket" : "filenew")));
+    a->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::New));
+    actNewBasket = a;
 
-	m_actPropBasket = new KAction( i18n("&Properties..."), "misc", "F2",
-								   this, SLOT(propBasket()), actionCollection(), "basket_properties" );
-	m_actDelBasket  = new KAction( i18n("Remove Basket", "&Remove"), "", 0,
-								   this, SLOT(delBasket()), actionCollection(), "basket_remove" );
+    a = ac->addAction("basket_new_sub", this, SLOT(askNewSubBasket()));
+    a->setText(i18n("New &Sub-Basket..."));
+    a->setShortcut(KShortcut("Ctrl+Shift+N"));
+    actNewSubBasket = a;
+
+    a = ac->addAction("basket_new_sibling", this, SLOT(askNewSiblingBasket()));
+    a->setText(i18n("New Si&bling Basket..."));
+    actNewSiblingBasket = a;
+
+    KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), ac);
+    newBasketMenu->setIcon(KIcon("filenew"));
+    ac->addAction("basket_new_menu", newBasketMenu);
+
+    newBasketMenu->addAction(actNewBasket);
+    newBasketMenu->addAction(actNewSubBasket);
+    newBasketMenu->addAction(actNewSiblingBasket);
+    connect( newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()) );
+
+    a = ac->addAction("basket_properties", this, SLOT(propBasket()));
+    a->setText(i18n("&Properties..."));
+    a->setIcon(KIcon("misc"));
+    a->setShortcut(KShortcut("F2"));
+    m_actPropBasket = a;
+
+    a = ac->addAction("basket_remove", this, SLOT(delBasket()));
+    a->setText(i18nc("Remove Basket", "&Remove"));
+    a->setShortcut(0);
+    m_actDelBasket = a;
+
 #ifdef HAVE_LIBGPGME
-	m_actPassBasket = new KAction( i18n("Password protection", "Pass&word..."), "", 0,
-								   this, SLOT(password()), actionCollection(), "basket_password" );
-	m_actLockBasket = new KAction( i18n("Lock Basket", "&Lock"), "", "Ctrl+L",
-								   this, SLOT(lockBasket()), actionCollection(), "basket_lock" );
+    a = ac->addAction("basket_password", this, SLOT(password()));
+    a->setText(i18nc("Password protection", "Pass&word..."));
+    a->setShortcut(0);
+    m_actPassBasket = a;
+
+    a = ac->addAction("basket_lock", this, SLOT(lockBasket()));
+    a->setText(i18nc("Lock Basket", "&Lock"));
+    a->setShortcut(KShortcut("Ctrl+L"));
+    m_actLockBasket = a;
 #endif
-	/** Edit : ****************************************************************/
 
-	//m_actUndo     = KStandardAction::undo(  this, SLOT(undo()),                 actionCollection() );
-	//m_actUndo->setEnabled(false); // Not yet implemented !
-	//m_actRedo     = KStandardAction::redo(  this, SLOT(redo()),                 actionCollection() );
-	//m_actRedo->setEnabled(false); // Not yet implemented !
+    /** Edit : ****************************************************************/
 
-	m_actShowFilter  = new KToggleAction( i18n("&Filter"), "filter", KStandardShortcut::shortcut(KStandardShortcut::Find),
-										  actionCollection(), "edit_filter" );
-	connect( m_actShowFilter, SIGNAL(toggled(bool)), this, SLOT(showHideFilterBar(bool)) );
+    //m_actUndo     = KStandardAction::undo(  this, SLOT(undo()),                 actionCollection() );
+    //m_actUndo->setEnabled(false); // Not yet implemented !
+    //m_actRedo     = KStandardAction::redo(  this, SLOT(redo()),                 actionCollection() );
+    //m_actRedo->setEnabled(false); // Not yet implemented !
 
-	m_actFilterAllBaskets = new KToggleAction( i18n("Filter all &Baskets"), "find", "Ctrl+Shift+F",
-											   actionCollection(), "edit_filter_all_baskets" );
-	connect( m_actFilterAllBaskets, SIGNAL(toggled(bool)), this, SLOT(toggleFilterAllBaskets(bool)) );
+    KToggleAction *toggleAct = NULL;
+    toggleAct = new KToggleAction(i18n("&Filter"), ac);
+    ac->addAction("edit_filter", toggleAct);
+    toggleAct->setIcon(KIcon("filter"));
+    toggleAct->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::Find));
+    m_actShowFilter = toggleAct;
 
-	m_actResetFilter = new KAction( i18n( "&Reset Filter" ), "locationbar_erase", "Ctrl+R",
-									this, SLOT( slotResetFilter() ), actionCollection(), "edit_filter_reset" );
+    connect(m_actShowFilter, SIGNAL(toggled(bool)),
+	    this, SLOT(showHideFilterBar(bool)) );
 
-	/** Go : ******************************************************************/
+    toggleAct = new KToggleAction(ac);
+    ac->addAction("edit_filter_all_baskets", toggleAct);
+    toggleAct->setText(i18n("Filter all &Baskets"));
+    toggleAct->setIcon(KIcon("find"));
+    toggleAct->setShortcut(KShortcut("Ctrl+Shift+F"));
+    m_actFilterAllBaskets = toggleAct;
 
-	m_actPreviousBasket = new KAction( i18n( "&Previous Basket" ), "up",      "Alt+Up",
-									   this, SLOT(goToPreviousBasket()), actionCollection(), "go_basket_previous" );
-	m_actNextBasket     = new KAction( i18n( "&Next Basket" ),     "down",    "Alt+Down",
-									   this, SLOT(goToNextBasket()),     actionCollection(), "go_basket_next"     );
-	m_actFoldBasket     = new KAction( i18n( "&Fold Basket" ),     "back",    "Alt+Left",
-									   this, SLOT(foldBasket()),         actionCollection(), "go_basket_fold"     );
-	m_actExpandBasket   = new KAction( i18n( "&Expand Basket" ),   "forward", "Alt+Right",
-									   this, SLOT(expandBasket()),       actionCollection(), "go_basket_expand"   );
-	// FOR_BETA_PURPOSE:
-//	m_convertTexts = new KAction( i18n("Convert text notes to rich text notes"), "compfile", "",
-//								  this, SLOT(convertTexts()), actionCollection(), "beta_convert_texts" );
+    connect(m_actFilterAllBaskets, SIGNAL(toggled(bool)),
+	    this, SLOT(toggleFilterAllBaskets(bool)));
 
-	InlineEditors::instance()->initToolBars(actionCollection());
+    a = ac->addAction("edit_filter_reset", this, SLOT( slotResetFilter() ));
+    a->setText(i18n( "&Reset Filter" ));
+    a->setIcon(KIcon("locationbar_erase"));
+    a->setShortcut(KShortcut("Ctrl+R"));
+    m_actResetFilter = a;
 
-	actConfigGlobalShortcuts = KStandardAction::keyBindings(this, SLOT(showGlobalShortcutsSettingsDialog()),
-			actionCollection(), "options_configure_global_keybinding");
-	actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
+    /** Go : ******************************************************************/
 
-	/** Help : ****************************************************************/
+    a = ac->addAction("go_basket_previous", this, SLOT(goToPreviousBasket()));
+    a->setText(i18n( "&Previous Basket" ));
+    a->setIcon(KIcon("up"));
+    a->setShortcut(KShortcut("Alt+Up"));
+    m_actPreviousBasket = a;
 
-	new KAction( i18n("&Welcome Baskets"), "", "", this, SLOT(addWelcomeBaskets()), actionCollection(), "help_welcome_baskets" );
+    a = ac->addAction("go_basket_next", this, SLOT(goToNextBasket()));
+    a->setText(i18n( "&Next Basket" ));
+    a->setIcon(KIcon("down"));
+    a->setShortcut(KShortcut("Alt+Down"));
+    m_actNextBasket = a;
+
+    a = ac->addAction("go_basket_fold", this, SLOT(foldBasket()));
+    a->setText(i18n( "&Fold Basket" ));
+    a->setIcon(KIcon("back"));
+    a->setShortcut(KShortcut("Alt+Left"));
+    m_actFoldBasket = a;
+
+    a = ac->addAction("go_basket_expand", this, SLOT(expandBasket()));
+    a->setText(i18n( "&Expand Basket" ));
+    a->setIcon(KIcon("forward"));
+    a->setShortcut(KShortcut("Alt+Right"));
+    m_actExpandBasket = a;
+
+#if 0
+   // FOR_BETA_PURPOSE:
+    a = ac->addAction("beta_convert_texts", this, SLOT(convertTexts()));
+    a->setText(i18n("Convert text notes to rich text notes"));
+    a->setIcon(KIcon("compfile"));
+    m_convertTexts = a;
+#endif
+
+    InlineEditors::instance()->initToolBars(actionCollection());
+
+    actConfigGlobalShortcuts = ac->addAction(KStandardAction::KeyBindings,
+					     "options_configure_global_keybinding",
+					     this,
+					     SLOT(showGlobalShortcutsSettingsDialog()));
+
+    actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
+
+    /** Help : ****************************************************************/
+
+    a = ac->addAction("help_welcome_baskets", this, SLOT(addWelcomeBaskets()));
+    a->setText(i18n("&Welcome Baskets"));
 }
 
 Q3ListViewItem* BNPView::firstListViewItem()
@@ -2392,15 +2641,15 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 		currentTag = *it;
 		currentState = currentTag->states().first();
 		QKeySequence sequence;
-		if (!currentTag->shortcut().isNull())
-			sequence = currentTag->shortcut().operator QKeySequence();
+		if (!currentTag->shortcut().isEmpty())
+			sequence = currentTag->shortcut().primary();
 		menu.insertItem(StateMenuItem::checkBoxIconSet(
 			(referenceNote ? referenceNote->hasTag(currentTag) : false),
 			menu.colorGroup()),
 			new StateMenuItem(currentState, sequence, true),
 			i
 		);
-		if (!currentTag->shortcut().isNull())
+		if (!currentTag->shortcut().isEmpty())
 			menu.setAccel(sequence, i);
 		menu.setItemEnabled(i, enable);
 		++i;
@@ -2476,11 +2725,3 @@ void BNPView::disconnectTagsMenuDelayed()
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
 }
-
-void BNPView::showGlobalShortcutsSettingsDialog()
-{
-	KShortcutsDialog::configure(Global::globalAccel);
-	//.setCaption(..)
-	Global::globalAccel->writeSettings();
-}
-

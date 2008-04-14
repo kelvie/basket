@@ -29,7 +29,6 @@ class DebugWindow;
 class BackgroundManager;
 class SystemTray;
 class BNPView;
-class KGlobalAccel;
 class KMainWindow;
 class KAboutData;
 
@@ -49,7 +48,6 @@ class Global
 	static BackgroundManager *backgroundManager;
 	static SystemTray        *systemTray;
 	static BNPView           *bnpView;
-	static KGlobalAccel      *globalAccel;
 	static KConfig           *basketConfig;
 	static AboutData          basketAbout;
 
