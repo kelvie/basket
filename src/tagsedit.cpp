@@ -212,7 +212,7 @@ void TagListViewItem::setup()
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
-		text = i18n("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = state->font(listView()->font());
 
@@ -232,7 +232,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
-		text = i18n("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
 
@@ -398,7 +398,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
 
 	m_shortcut = new KKeyButton(tagWidget);
-	m_removeShortcut = new QPushButton(i18n("Remove tag shortcut", "&Remove"), tagWidget);
+	m_removeShortcut = new QPushButton(i18nc("Remove tag shortcut", "&Remove"), tagWidget);
 	QLabel *shortcutLabel = new QLabel(m_shortcut, i18n("S&hortcut:"), tagWidget);
 	connect( m_shortcut,       SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
 	connect( m_removeShortcut, SIGNAL(clicked()),                          this, SLOT(removeShortcut())                   );
@@ -425,7 +425,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_emblem->setIconType(KIconLoader::NoGroup, KIcon::Action);
 	m_emblem->setIconSize(16);
 	m_emblem->setIcon("editdelete");
-	m_removeEmblem = new QPushButton(i18n("Remove tag emblem", "Remo&ve"), emblemWidget);
+	m_removeEmblem = new QPushButton(i18nc("Remove tag emblem", "Remo&ve"), emblemWidget);
 	QLabel *emblemLabel = new QLabel(m_emblem, i18n("&Emblem:"), stateWidget);
 	connect( m_removeEmblem, SIGNAL(clicked()), this, SLOT(removeEmblem()) ); // m_emblem.resetIcon() is not a slot!
 

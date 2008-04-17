@@ -181,7 +181,7 @@ void BackupDialog::backup()
 	KConfig *config = KGlobal::config();
 	config->setGroup("Backups");
 	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
-	QString fileName = i18n("Backup filename (without extension), %1 is the date", "Baskets_%1")
+	QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1")
 		.arg(QDate::currentDate().toString(Qt::ISODate));
 	QString url = folder + fileName;
 
@@ -361,12 +361,12 @@ QString Backup::newSafetyFolder()
 	QDir dir;
 	QString fullPath;
 
-	fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
+	fullPath = QDir::homePath() + "/" + i18nc("Safety folder name before restoring a basket data archive", "Baskets Before Restoration") + "/";
 	if (!dir.exists(fullPath))
 		return fullPath;
 
 	for (int i = 2; ; ++i) {
-		fullPath = QDir::homePath() + "/" + i18n("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
+		fullPath = QDir::homePath() + "/" + i18nc("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
 		if (!dir.exists(fullPath))
 			return fullPath;
 	}

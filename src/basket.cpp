@@ -1611,7 +1611,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 		KMenu* menu = (KMenu*)(Global::bnpView->popupMenu("insert_popup"));
 		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
 			menu->removeItem(/*id=*/120);
-		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18n("The verb (Group New Note)", "Group") : i18n("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
+		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18nc("The verb (Group New Note)", "Group") : i18nc("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
 		setInsertPopupMenu();
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
@@ -2904,7 +2904,7 @@ void Basket::maybeTip(const QPoint &pos)
 			QStringList::iterator key;
 			QStringList::iterator value;
 			for (key = keys.begin(), value = values.begin(); key != keys.end() && value != values.end(); ++key, ++value)
-				message += "<br>" + i18n("of the form 'key: value'", "<b>%1</b>: %2").arg(*key, *value);
+				message += "<br>" + i18nc("of the form 'key: value'", "<b>%1</b>: %2").arg(*key, *value);
 			message += "</nobr></qt>";
 		} else if (m_inserterSplit && (zone == Note::TopInsert || zone == Note::BottomInsert))
 			message += "\n" + i18n("Click on the right to group instead of insert");
@@ -4128,10 +4128,10 @@ void Basket::noteDelete()
 	int really = KMessageBox::Yes;
 	if (Settings::confirmNoteDeletion())
 		really = KMessageBox::questionYesNo( this,
-			i18n("<qt>Do you really want to delete this note?</qt>",
+			i18np("<qt>Do you really want to delete this note?</qt>",
 			     "<qt>Do you really want to delete those <b>%n</b> notes?</qt>",
 			     countSelecteds()),
-			i18n("Delete Note", "Delete Notes", countSelecteds())
+			i18np("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
 			, KStandardGuiItem::del(), KStandardGuiItem::cancel());
 #else
@@ -4229,9 +4229,9 @@ void Basket::doCopy(CopyMode copyMode)
 
 		switch (copyMode) {
 			default:
-			case CopyToClipboard: emit postMessage(i18n("Copied note to clipboard.", "Copied notes to clipboard.", countCopied)); break;
-			case CutToClipboard:  emit postMessage(i18n("Cut note to clipboard.",    "Cut notes to clipboard.",    countCopied)); break;
-			case CopyToSelection: emit postMessage(i18n("Copied note to selection.", "Copied notes to selection.", countCopied)); break;
+			case CopyToClipboard: emit postMessage(i18np("Copied note to clipboard.", "Copied notes to clipboard.", countCopied)); break;
+			case CutToClipboard:  emit postMessage(i18np("Cut note to clipboard.",    "Cut notes to clipboard.",    countCopied)); break;
+			case CopyToSelection: emit postMessage(i18np("Copied note to selection.", "Copied notes to selection.", countCopied)); break;
 		}
 	}
 }

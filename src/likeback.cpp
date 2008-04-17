@@ -466,7 +466,7 @@ void LikeBack::showInformationMessage()
 						"briefly describe the mis-behaviour and click Send.")
 				) + "</p>"
 			: "") +
-		"<p>" + i18n("Example:", "Examples:", nbButtons) + "</p>" +
+		"<p>" + i18np("Example:", "Examples:", nbButtons) + "</p>" +
 		(buttons & LikeBack::Like ?
 			"<p><img source=\"likeback_icon_like\"> &nbsp;" +
 				i18n("<b>I like</b> the new artwork. Very refreshing.") + "</p>"

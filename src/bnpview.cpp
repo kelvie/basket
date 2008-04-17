@@ -1622,13 +1622,13 @@ void BNPView::notesStateChanged()
 	else if (basket->count() == 0)
 		setSelectionStatus(i18n("No notes"));
 	else {
-		QString count     = i18n("%n note",     "%n notes",    basket->count()         );
-		QString selecteds = i18n("%n selected", "%n selected", basket->countSelecteds());
+		QString count     = i18np("%n note",     "%n notes",    basket->count()         );
+		QString selecteds = i18np("%n selected", "%n selected", basket->countSelecteds());
 		QString showns    = (currentDecoratedBasket()->filterData().isFiltering ? i18n("all matches") : i18n("no filter"));
 		if (basket->countFounds() != basket->count())
-			showns = i18n("%n match", "%n matches", basket->countFounds());
+			showns = i18np("%n match", "%n matches", basket->countFounds());
 		setSelectionStatus(
-				i18n("e.g. '18 notes, 10 matches, 5 selected'", "%1, %2, %3").arg(count, showns, selecteds) );
+				i18nc("e.g. '18 notes, 10 matches, 5 selected'", "%1, %2, %3").arg(count, showns, selecteds) );
 	}
 
 	// If we added a note that match the global filter, update the count number in the tree:

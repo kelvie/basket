@@ -1657,10 +1657,10 @@ void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 	int hue, saturation, value;
 	m_color.getHsv(hue, saturation, value);
 
-	keys->append(i18n("RGB Colorspace: Red/Green/Blue", "RGB"));
+	keys->append(i18nc("RGB Colorspace: Red/Green/Blue", "RGB"));
 	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,").arg(QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
 
-	keys->append(i18n("HSV Colorspace: Hue/Saturation/Value", "HSV"));
+	keys->append(i18nc("HSV Colorspace: Hue/Saturation/Value", "HSV"));
 	values->append(i18n("<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,").arg(QString::number(hue), QString::number(saturation), QString::number(value)));
 
 	static QString cssColors[] = {
