@@ -42,7 +42,7 @@
 #include <kfilemetainfo.h>
 #include <kio/jobclasses.h>
 #include <qtextcodec.h>
-#include <kopenwith.h>
+#include <KOpenWithDialog>
 #include <kfiledialog.h>
 #include <kiconloader.h>
 #include <qfileinfo.h>
@@ -976,7 +976,7 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)
 
 Note* NoteFactory::importKMenuLauncher(Basket *parent)
 {
-	KOpenWithDlg dialog(parent);
+	KOpenWithDialog dialog(parent);
 	dialog.setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
 	dialog.exec();
 	if (dialog.service()) {

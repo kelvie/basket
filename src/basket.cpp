@@ -54,7 +54,7 @@
 #include <qstringlist.h>
 #include <kapplication.h>
 #include <kglobalsettings.h>
-#include <kopenwith.h>
+#include <KOpenWithDialog>
 #include <kservice.h>
 #include <klocale.h>
 #include <kglobalaccel.h>
@@ -4304,7 +4304,7 @@ bool KRun__displayOpenWithDialog(const KUrl::List& lst, bool tempFiles, const QS
 		KMessageBox::sorry(0L, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
-	KOpenWithDlg l(lst, text, QString::null, 0L);
+	KOpenWithDialog l(lst, text, QString::null, 0L);
 	if (l.exec()) {
 		KService::Ptr service = l.service();
 		if (!!service)

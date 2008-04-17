@@ -31,7 +31,7 @@
 #include <Q3ValueList>
 #include <QKeyEvent>
 #include <Q3VBoxLayout>
-#include <kopenwith.h>
+#include <KOpenWithDialog>
 #include <klocale.h>
 #include <q3whatsthis.h>
 #include <k3iconview.h>
@@ -66,7 +66,7 @@ RunCommandRequester::~RunCommandRequester()
 
 void RunCommandRequester::slotSelCommand()
 {
-	KOpenWithDlg *dlg =  new KOpenWithDlg(KUrl::List(), m_message, m_runCommand->text(), this);
+	KOpenWithDialog *dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
 	dlg->exec();
 	if ( ! dlg->text().isEmpty() )
 		m_runCommand->setText(dlg->text());
