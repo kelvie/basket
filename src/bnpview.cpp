@@ -2485,8 +2485,8 @@ void BNPView::handleCommandLine()
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
 	/* Custom data folder */
-	Q3CString customDataFolder = args->getOption("data-folder");
-	if (customDataFolder != 0 && !customDataFolder.isEmpty())
+	QString customDataFolder = args->getOption("data-folder");
+	if (!customDataFolder.isNull && !customDataFolder.isEmpty())
 	{
 		Global::setCustomSavesFolder(customDataFolder);
 	}
