@@ -2243,7 +2243,7 @@ void BNPView::showPassiveDroppedDelayed()
 	m_passivePopup->setView(
 			title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
 	(contentsPixmap.isNull() ? "" : "<img src=\"_passivepopup_image_\">"),
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
+	KIconLoader::global()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2256,7 +2256,7 @@ void BNPView::showPassiveImpossible(const QString &message)
 			.arg(i18n("Basket <i>%1</i> is locked"))
 			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
 	message,
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
+	KIconLoader::global()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2281,7 +2281,7 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
 			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName()), i18n("(Locked)"))
 	: Tools::textToHTMLWithoutP(currentBasket()->basketName()) ),
 	message,
-	kapp->iconLoader()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
+	KIconLoader::global()->loadIcon(currentBasket()->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
@@ -2295,7 +2295,7 @@ void BNPView::showPassiveLoading(Basket *basket)
 	m_passivePopup->setView(
 			Tools::textToHTMLWithoutP(basket->basketName()),
 	i18n("Loading..."),
-	kapp->iconLoader()->loadIcon(basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
+	KIconLoader::global()->loadIcon(basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true));
 	m_passivePopup->show();
 }
 
