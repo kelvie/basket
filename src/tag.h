@@ -154,26 +154,6 @@ class Tag
 
 class QPainter;
 
-/** A menu item to indent icon and text (to keep place for a checkbox or a radiobutton on left).
-  * You should not set any icon when adding this entry to the menu.
-  * Instead, the constructor take the icon and the item take care to draw it itself.
-  * Better suited to be used with StateMenuItem (or TagMenuItem).
-  * @author S�astien Laot
-  */
-class IndentedMenuItem : public QCustomMenuItem
-{
-  public:
-	IndentedMenuItem(const QString &text, const QString &icon = "", const QString &shortcut = "");
-	~IndentedMenuItem();
-	void paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h);
-	QSize sizeHint();
-	bool fullSpan() { return true; }
-  private:
-	QString  m_text;
-	QString  m_icon;
-	QString  m_shortcut;
-};
-
 /** A menu item representing a State or a Tag.
   * @author S�astien Laot
   */

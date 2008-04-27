@@ -3427,11 +3427,26 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			++i;
 		}
 		menu.insertSeparator();
-		menu.insertItem( new IndentedMenuItem(i18n("&Remove"),               "editdelete", (sequenceOnDelete ? sequence : QKeySequence())), 1 );
-		menu.insertItem( new IndentedMenuItem(i18n("&Customize..."),         "configure"),  2 );
+		menu.insertItem(new KAction(
+				    KIcon("editdelete"),
+				    i18n("&Remove"),
+				    (sequenceOnDelete ? sequence : QKeySequence())),
+				1);
+		menu.insertItem(new KAction(
+				    KIcon("configure"),
+				    i18n("&Customize...")),
+				2);
+
 		menu.insertSeparator();
-		menu.insertItem( new IndentedMenuItem(i18n("&Filter by this Tag"),   "filter"),     3 );
-		menu.insertItem( new IndentedMenuItem(i18n("Filter by this &State"), "filter"),     4 );
+
+		menu.insertItem(new KAction(
+				    KIcon("filter"),
+				    i18n("&Filter by this Tag")),
+				3);
+		menu.insertItem(new KAction(
+				    KIcon("filter"),
+				    i18n("Filter by this &State")),
+				4);
 	}
 	if (sequenceOnDelete)
 		menu.setAccel(sequence, 1);
@@ -3512,39 +3527,6 @@ void Basket::popupTagsMenu(Note *note)
 
 	KMenu menu(this);
 	menu.insertTitle(i18n("Tags"));
-// 	QValueList<Tag*>::iterator it;
-// 	Tag *currentTag;
-// 	State *currentState;
-// 	int i = 10;
-// 	for (it = Tag::all.begin(); it != Tag::all.end(); ++it) {
-// 		// Current tag and first state of it:
-// 		currentTag = *it;
-// 		currentState = currentTag->states().first();
-// 		QKeySequence sequence;
-// 		if (!currentTag->shortcut().isNull())
-// 			sequence = currentTag->shortcut().operator QKeySequence();
-// 		menu.insertItem(StateMenuItem::checkBoxIconSet(note->hasTag(currentTag), menu.colorGroup()), new StateMenuItem(currentState, sequence, true), i );
-// 		if (!currentTag->shortcut().isNull())
-// 			menu.setAccel(sequence, i);
-// 		++i;
-// 	}
-//
-// 	menu.insertSeparator();
-// //	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign New Tag...", 1 );
-// 	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
-// 	//if (note->states().isEmpty())
-// 	//	menu.setItemEnabled(id, false);
-// //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
-// 	menu.insertItem( new IndentedMenuItem(i18n("&Assign New Tag...")),          1 );
-// 	menu.insertItem( new IndentedMenuItem(i18n("&Remove All"),   "editdelete"), 2 );
-// 	menu.insertItem( new IndentedMenuItem(i18n("&Customize..."), "configure"),  3 );
-//
-// 	if (!selectedNotesHaveTags())//note->states().isEmpty())
-// 		menu.setItemEnabled(2, false);
-//
-// 	connect( &menu, SIGNAL(activated(int)), this, SLOT(toggledTagInMenu(int)) );
-// 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())      );
-// 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())    );
 
 	Global::bnpView->populateTagsMenu(menu, note);
 
