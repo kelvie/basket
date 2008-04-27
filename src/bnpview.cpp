@@ -2661,9 +2661,9 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	//if (referenceNote->states().isEmpty())
 	//	menu.setItemEnabled(id, false);
 //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
-	menu.insertItem( new KAction(i18n("&Assign new Tag...")),          1 );
-	menu.insertItem( new KAction(KIcon("editdelete"), i18n("&Remove All")), 2 );
-	menu.insertItem( new KAction(KIcon("configure"), i18n("&Customize...")),  3 );
+	menu.addAction( new KAction(i18n("&Assign new Tag..."), &menu));
+	menu.addAction( new KAction(KIcon("editdelete"), i18n("&Remove All"), &menu));
+	menu.addAction( new KAction(KIcon("configure"), i18n("&Customize..."), &menu));
 
 	menu.setItemEnabled(1, enable);
 	if (!currentBasket()->selectedNotesHaveTags())

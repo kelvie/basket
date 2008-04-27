@@ -3427,26 +3427,30 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			++i;
 		}
 		menu.insertSeparator();
-		menu.insertItem(new KAction(
-				    KIcon("editdelete"),
-				    i18n("&Remove"),
-				    (sequenceOnDelete ? sequence : QKeySequence())),
-				1);
-		menu.insertItem(new KAction(
-				    KIcon("configure"),
-				    i18n("&Customize...")),
-				2);
+		menu.addAction(new KAction(
+				   KIcon("editdelete"),
+				   i18n("&Remove"),
+				   (sequenceOnDelete ? sequence : QKeySequence()),
+				   &menu)
+		    );
+		menu.addAction(new KAction(
+				   KIcon("configure"),
+				   i18n("&Customize..."),
+				   &menu)
+		    );
 
 		menu.insertSeparator();
 
-		menu.insertItem(new KAction(
-				    KIcon("filter"),
-				    i18n("&Filter by this Tag")),
-				3);
-		menu.insertItem(new KAction(
-				    KIcon("filter"),
-				    i18n("Filter by this &State")),
-				4);
+		menu.addAction(new KAction(
+				   KIcon("filter"),
+				   i18n("&Filter by this Tag"),
+				   &menu)
+		    );
+		menu.addAction(new KAction(
+				   KIcon("filter"),
+				   i18n("Filter by this &State"),
+				   &menu)
+		    );
 	}
 	if (sequenceOnDelete)
 		menu.setAccel(sequence, 1);
