@@ -62,11 +62,11 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
 	progress->setValue(0);
 
-	// Create the temporar folder:
+	// Create the temporary folder:
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
 	dir.mkdir(tempFolder);
 
-	// Create the temporar archive file:
+	// Create the temporary archive file:
 	QString tempDestination = tempFolder + "temp-archive.tar.gz";
 	KTar tar(tempDestination, "application/x-gzip");
 	tar.open(QIODevice::WriteOnly);
