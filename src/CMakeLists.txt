@@ -36,8 +36,6 @@ set(basketcommon_LIB_SRCS
     tools.cpp
     backgroundmanager.cpp
     regiongrabber.cpp
-    kicondialog.cpp
-    kiconcanvas.cpp
     kgpgme.cpp
     likeback.cpp
     crashhandler.cpp
@@ -51,7 +49,7 @@ set(basketcommon_LIB_SRCS
     clickablelabel.cpp
     backup.cpp)
 
-kde4_add_ui_files(basketcommon_LIB_SRCS kicondialogui.ui passwordlayout.ui)
+kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
 message(STATUS "DCOP has been removed in KDE 4; port code to D-Bus. kde4_add_dcop_skels macro does not exist anymore. We keep it just to remember to port to D-Bus.")
 #kde4_add_dcop_skels(basketcommon_LIB_SRCS
