@@ -152,27 +152,22 @@ class Tag
 #include <qmenudata.h>
 #include <qstring.h>
 
-class QPainter;
+#include <KToggleAction>
 
-/** A menu item representing a State or a Tag.
-  * @author S�astien Laot
-  */
-class StateMenuItem : public QCustomMenuItem
+/** An action that represents a State or a Tag
+ * @author Kelvie Wong
+ * Based off of StateMenuItem by Sèbastien Laoût
+ */
+class StateAction : public KToggleAction
 {
-  public:
-	StateMenuItem(State *state, const QString &shortcut, bool withTagName = false);
-	~StateMenuItem();
-	void paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h);
-	QSize sizeHint();
-	bool fullSpan() { return true; }
-  private:
-	State   *m_state;
-	QString  m_name;
-	QString  m_shortcut;
-  public:
-	static QIcon checkBoxIconSet(bool checked, QColorGroup cg);
-	static QIcon radioButtonIconSet(bool checked, QColorGroup cg);
-	static int iconMargin() { return 5; }
+    Q_OBJECT
+    Q_DISABLE_COPY(StateAction);
+public:
+    StateAction(State *state,
+		const KShortcut &shortcut,
+		bool withTagName=false);
+
+    ~StateAction();
 };
 
 #endif // TAG_H

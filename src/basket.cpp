@@ -3420,8 +3420,12 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			currentState = *it;
 			QKeySequence sequence;
 			if (currentState == nextState && !tag->shortcut().isNull())
-				sequence = tag->shortcut().operator QKeySequence();
-			menu.insertItem(StateMenuItem::radioButtonIconSet(state == currentState, menu.colorGroup()), new StateMenuItem(currentState, sequence, false), i );
+			    sequence = tag->shortcut().primary();
+
+			StateAction *sa = new StateAction(state, KShortcut(sequence), false);
+			sa->setChecked(state == currentState);
+
+			menu.addAction(sa);
 			if (currentState == nextState && !tag->shortcut().isNull())
 				menu.setAccel(sequence, i);
 			++i;

@@ -2657,22 +2657,25 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	State *currentState;
 	int i = 10;
 	for (it = Tag::all.begin(); it != Tag::all.end(); ++it) {
-		// Current tag and first state of it:
-		currentTag = *it;
-		currentState = currentTag->states().first();
-		QKeySequence sequence;
-		if (!currentTag->shortcut().isEmpty())
-			sequence = currentTag->shortcut().primary();
-		menu.insertItem(StateMenuItem::checkBoxIconSet(
-			(referenceNote ? referenceNote->hasTag(currentTag) : false),
-			menu.colorGroup()),
-			new StateMenuItem(currentState, sequence, true),
-			i
-		);
-		if (!currentTag->shortcut().isEmpty())
-			menu.setAccel(sequence, i);
-		menu.setItemEnabled(i, enable);
-		++i;
+	    // Current tag and first state of it:
+	    currentTag = *it;
+	    currentState = currentTag->states().first();
+
+	    QKeySequence sequence;
+	    if (!currentTag->shortcut().isEmpty())
+		sequence = currentTag->shortcut().primary();
+
+	    StateAction *mi = new StateAction(currentState, KShortcut(sequence), true);
+	    if (referenceNote && referenceNote->hasTag(currentTag))
+		mi->setChecked(true);
+
+	    menu.addAction(mi);
+
+	    if (!currentTag->shortcut().isEmpty())
+		menu.setAccel(sequence, i);
+
+	    menu.setItemEnabled(i, enable);
+	    ++i;
 	}
 
 	menu.insertSeparator();

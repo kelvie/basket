@@ -74,6 +74,7 @@ State* State::nextState(bool cycle /*= true*/)
 			return next;
 		}
 	// Should not happens:
+	Q_ASSERT(false);
 	return 0;
 }
 
@@ -718,159 +719,26 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 #include <qradiobutton.h>
 #include <kiconeffect.h>
 
-/** class StateMenuItem: */
 
-StateMenuItem::StateMenuItem(State *state, const QString &shortcut, bool withTagName)
- : m_state(state), m_shortcut(shortcut)
+// StateAction
+StateAction::StateAction(State *state,
+                         const KShortcut &shortcut,
+                         bool withTagName)
 {
-	m_name = (withTagName && m_state->parentTag() ? m_state->parentTag()->name() : m_state->name());
-}
+    setText(m_state->name());
 
-StateMenuItem::~StateMenuItem()
-{
-}
+    if (withTagName && m_state->parentTag())
+	setText(m_state->parentTag()->name());
 
-void StateMenuItem::paint(QPainter *painter, const QColorGroup &cg, bool active, bool enabled, int x, int y, int w, int h)
-{
-	QPen  pen  = painter->pen();
-	QFont font = painter->font();
+    setIcon(KIconLoader::global()->loadIcon(m_state->emblem(),
+					    KIconLoader::Small,
+					    16,
+					    KIconLoader::DefaultState,
+					    QStringList(),
+					    /*path_store=*/0L,
+					    /*canReturnNull=*/true
+					    )
+	    );
 
-	int iconSize   = 16; // We use 16 instead of KIconLoader::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
-
-	if (!active && m_state->backgroundColor().isValid())
-		painter->fillRect(x/*-1*/, y/*-1*/, w/*+2*/, h/*+2*/, m_state->backgroundColor());
-	/* When an item is disabled, it often have a 3D sunken look.
-	 * This is done by calling this paint routine two times, with different pen color and offset.
-	 * A disabled item is first painted in the rect (x+1, y+1, w, h) and with pen of cg.light() color,
-	 * It is then drawn a second time in the rect (x, y, w, h).
-	 * But we don't want to draw the icon two times! So, we try to detect if we are in the "etched-text draw" state and then don't draw the icon.
-	 * This doesn't work for every styles but it's already better than nothing (styles when it doesn't work are seldomly used, if used).
-	 */
-	bool drawingEtchedText = !enabled && !active && painter->pen().color() != cg.mid()/*== cg.foreground()*/;
-	if (drawingEtchedText) {
-		QString styleName = kapp->style().name();
-		if (styleName == "plastik" || styleName == "lipstik")
-			painter->setPen(cg.light());
-		drawingEtchedText = !enabled && !active && painter->pen().color() != cg.foreground();
-	} else
-		drawingEtchedText = !enabled && !active && painter->pen().color() == cg.light();
-	if (!m_state->emblem().isEmpty() && !drawingEtchedText) {
-		QPixmap icon = kapp->iconLoader()->loadIcon(m_state->emblem(), KIcon::Small, iconSize,
-		                                            (enabled ? (active ? KIcon::ActiveState : KIconLoader::DefaultState) : KIcon::DisabledState),
-		                                            /*path_store=*/0L, /*canReturnNull=*/true);
-		painter->drawPixmap(x, y + (h-iconSize)/2, icon);
-	}
-	if (enabled && !active && m_state->textColor().isValid())
-		painter->setPen(m_state->textColor());
-	/* Pen and font are already set to the good ones, so we can directly draw the text.
-	 * BUT, for the half of styles provided with KDE, the pen is not set for the Active state (when hovered by mouse of selected by keyboard).
-	 * So, I set the pen myself.
-	 * But it's certainly a bug in those styles because some other styles eg. just draw a 3D sunken rect when an item is selected
-	 * and keep the background to white, drawing a white text over it is... very bad. But I can't see what can be done.
-	 */
-	if (active && enabled)
-		painter->setPen(KGlobalSettings::highlightedTextColor());
-	painter->setFont( m_state->font(painter->font()) );
-	painter->drawText(x + iconSize + iconMargin(), y, w - iconSize - iconMargin(), h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_name);
-
-	if (!m_shortcut.isEmpty()) {
-		painter->setPen(pen);
-		if (active && enabled)
-			painter->setPen(KGlobalSettings::highlightedTextColor());
-		painter->setFont(font);
-		painter->setClipping(false);
-		painter->drawText(x + 5 + w, y, 3000, h, Qt::AlignLeft | Qt::AlignVCenter | DontClip | ShowPrefix, m_shortcut);
-	}
-}
-
-QSize StateMenuItem::sizeHint()
-{
-	int iconSize   = 16; // We use 16 instead of KIconLoader::SizeSmall (the size of icons in menus) because tags will always be 16*16 icons
-	QFont theFont = m_state->font(KGlobalSettings::menuFont());
-	QSize textSize = QFontMetrics(theFont).size( Qt::AlignLeft | Qt::AlignVCenter | ShowPrefix | DontClip,  m_name );
-	return QSize(iconSize + iconMargin() + textSize.width(), textSize.height());
-}
-
-QIcon StateMenuItem::checkBoxIconSet(bool checked, QColorGroup cg)
-{
-	int width  = kapp->style().pixelMetric(QStyle::PM_IndicatorWidth,  0);
-	int height = kapp->style().pixelMetric(QStyle::PM_IndicatorHeight, 0);
-	QRect rect(0, 0, width, height);
-
-	QColor menuBackgroundColor = (dynamic_cast<KStyle*>(&(kapp->style())) == NULL ? cg.background() : cg.background().light(103));
-
-	// Enabled, Not hovering
-	QPixmap  pixmap(width, height);
-	pixmap.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	QPainter painter(&pixmap);
-	int style = QStyle::State_Enabled | QStyle::Style_Active | (checked ? QStyle::State_On : QStyle::State_Off);
-	QColor background = cg.color(QColorGroup::Background);
-	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
-	painter.end();
-
-	// Enabled, Hovering
-	QPixmap  pixmapHover(width, height);
-	pixmapHover.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	painter.begin(&pixmapHover);
-	style |= QStyle::Style_MouseOver;
-	cg.setColor(QColorGroup::Background, KGlobalSettings::highlightColor());
-	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
-	painter.end();
-
-	// Disabled
-	QPixmap  pixmapDisabled(width, height);
-	pixmapDisabled.fill(menuBackgroundColor); // In case the pixelMetric() haven't returned a bigger rectangle than what drawPrimitive() draws
-	painter.begin(&pixmapDisabled);
-	style = /*QStyle::State_Enabled | */QStyle::Style_Active | (checked ? QStyle::State_On : QStyle::State_Off);
-	cg.setColor(QColorGroup::Background, background);
-	kapp->style().drawPrimitive(QStyle::PE_Indicator, &painter, rect, cg, style);
-	painter.end();
-
-	QIcon iconSet(pixmap);
-	iconSet.setPixmap(pixmapHover,         QIcon::Automatic, QIcon::Active);
-	iconSet.setPixmap(pixmapDisabled,      QIcon::Automatic, QIcon::Disabled);
-	return iconSet;
-}
-
-QIcon StateMenuItem::radioButtonIconSet(bool checked, QColorGroup cg)
-{
-	int width  = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorWidth,  0);
-	int height = kapp->style().pixelMetric(QStyle::PM_ExclusiveIndicatorHeight, 0);
-	QRect rect(0, 0, width, height);
-
-	int style = QStyle::Style_Default | QStyle::State_Enabled | (checked ? QStyle::State_On : QStyle::State_Off);
-
-	QPixmap pixmap(width, height);
-	pixmap.fill(Qt::red);
-	QPainter painter(&pixmap);
-	/* We can't use that line of code (like for checkboxes):
-	 * //kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
-	 * because Plastik (and derived styles) don't care of the QStyle::State_On flag and will ALWAYS draw an unchecked radiobutton.
-	 * So, we use another method:
-	 */
-	QRadioButton rb(0);
-	rb.setChecked(checked);
-	kapp->style().drawControl(QStyle::CE_RadioButton, &painter, &rb, rect, cg, style);
-	painter.end();
-	/* Some styles like Plastik (and derived ones) have QStyle::PE_ExclusiveIndicator drawing a radiobutton disc, as wanted,
-	 * and leave pixels ouside it untouched, BUT QStyle::PE_ExclusiveIndicatorMask is a fully black square.
-	 * So, we can't apply the mask to make the radiobutton circle transparent outside.
-	 * We're using an hack by filling the pixmap in Qt::red, drawing the radiobutton and then creating an heuristic mask.
-	 * The heuristic mask is created using the 4 edge pixels (that are red) and by making transparent every pixels that are of this color:
-	 */
-	pixmap.setMask(pixmap.createHeuristicMask());
-
-	QPixmap pixmapHover(width, height);
-	pixmapHover.fill(Qt::red);
-	painter.begin(&pixmapHover);
-	//kapp->style().drawPrimitive(QStyle::PE_ExclusiveIndicator, &painter, rect, cg, style);
-	style |= QStyle::Style_MouseOver;
-	cg.setColor(QColorGroup::Background, KGlobalSettings::highlightColor());
-	kapp->style().drawControl(QStyle::CE_RadioButton, &painter, &rb, rect, cg, style);
-	painter.end();
-	pixmapHover.setMask(pixmapHover.createHeuristicMask());
-
-	QIcon iconSet(pixmap);
-	iconSet.setPixmap(pixmapHover, QIcon::Automatic, QIcon::Active);
-	return iconSet;
+    setShortcut(shortcut);
 }
