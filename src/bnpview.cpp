@@ -2126,7 +2126,7 @@ void BNPView::delayedOpenArchive()
 void BNPView::openArchive()
 {
 	QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
-	QString path = KFileDialog::getOpenFileName(QString::null, filter, this, i18n("Open Basket Archive"));
+	QString path = KFileDialog::getOpenFileName(KUrl(), filter, this, i18n("Open Basket Archive"));
 	if (!path.isEmpty()) // User has not canceled
 		Archive::open(path);
 }
