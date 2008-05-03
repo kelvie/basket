@@ -32,7 +32,6 @@
 #include <Q3PtrList>
 #include <QPixmap>
 #include <QHideEvent>
-#include <Q3PopupMenu>
 #include <QEvent>
 #include <QShowEvent>
 #include "global.h"
@@ -45,7 +44,6 @@ class QDomElement;
 class KAction;
 class KToggleAction;
 class KPassivePopup;
-class Q3PopupMenu;
 class KMenu;
 class KTar;
 
@@ -288,7 +286,7 @@ class BNPView : public QSplitter
 
 		Basket* basketForFolderName(const QString &folderName);
 		Note* noteForFileName(const QString &fileName, Basket &basket, Note* note = 0);
-		Q3PopupMenu* popupMenu(const QString &menuName);
+		KMenu* popupMenu(const QString &menuName);
 		bool isPart();
 		bool isMainWindowActive();
 		void showMainWindow();

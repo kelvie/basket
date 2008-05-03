@@ -35,7 +35,6 @@
 #include <QEvent>
 #include <QHideEvent>
 #include <Q3CString>
-#include <Q3PopupMenu>
 #include <kmenu.h>
 #include <qsignalmapper.h>
 #include <qdir.h>
@@ -938,7 +937,7 @@ void BNPView::slotContextMenu(K3ListView */*listView*/, Q3ListViewItem *item, co
 		setNewBasketPopup();
 	}
 
-	Q3PopupMenu *menu = popupMenu(menuName);
+	KMenu *menu = popupMenu(menuName);
 	connect( menu, SIGNAL(aboutToHide()),  this, SLOT(aboutToHideNewBasketPopup()) );
 	menu->exec(pos);
 }
@@ -1787,9 +1786,9 @@ void BNPView::slotConvertTexts()
 		KMessageBox::information(this, i18n("There are no plain text notes to convert."), i18n("Conversion Finished"));
 }
 
-Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
+KMenu* BNPView::popupMenu(const QString &menuName)
 {
-	Q3PopupMenu *menu = 0;
+	KMenu *menu = 0;
 	bool hack = false; // TODO fix this
 	// When running in kontact and likeback Information message is shown
 	// factory is 0. Don't show error then and don't crash either :-)
@@ -1799,7 +1798,7 @@ Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
 		KXMLGUIFactory* factory = m_guiClient->factory();
 		if(factory)
 		{
-			menu = (Q3PopupMenu *)factory->container(menuName, m_guiClient);
+			menu = (KMenu *)factory->container(menuName, m_guiClient);
 		}
 		else
 			hack = isPart();
