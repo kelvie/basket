@@ -2471,7 +2471,7 @@ void BNPView::handleCommandLine()
 
 	/* Custom data folder */
 	QString customDataFolder = args->getOption("data-folder");
-	if (!customDataFolder.isNull && !customDataFolder.isEmpty())
+	if (!customDataFolder.isNull() && !customDataFolder.isEmpty())
 	{
 		Global::setCustomSavesFolder(customDataFolder);
 	}
