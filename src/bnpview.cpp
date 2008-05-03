@@ -1220,10 +1220,10 @@ bool BNPView::convertTexts()
 	bool convertedNotes = false;
 	KProgressDialog dialog(
 			/*parent=*/0,
-			/*name=*/"",
 			/*caption=*/i18n("Plain Text Notes Conversion"),
-			/*text=*/i18n("Converting plain text notes to rich text ones..."),
-			/*modal=*/true);
+			/*text=*/i18n("Converting plain text notes to rich text ones...")
+		);
+	dialog.setModal(true);
 	dialog.progressBar()->setRange(0, basketCount());
 	dialog.show(); //setMinimumDuration(50/*ms*/);
 
