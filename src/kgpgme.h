@@ -27,7 +27,7 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <gpgme.h>
+#include <gpgme/gpgme.h>
 #include <qstringlist.h>
 
 /**
