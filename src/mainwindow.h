@@ -84,7 +84,6 @@ class MainWindow : public KMainWindow
 	void showSettingsDialog();
 	void minimizeRestore();
 	void quit();
-	void changeActive();
 	void slotNewToolbarConfig();
 
   protected:

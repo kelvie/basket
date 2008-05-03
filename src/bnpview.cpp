@@ -298,8 +298,8 @@ void BNPView::setupGlobalShortcuts()
     int modifier = Qt::CTRL + Qt::ALT + Qt::SHIFT;
 
     if (basketMainWindow) {
-	a = ac->addAction("global_show_hide_main_window", basketMainWindow,
-			  SLOT(changeActive()));
+	a = ac->addAction("global_show_hide_main_window", Global::systemTray,
+			  SLOT(toggleActive()));
 	a->setText(i18n("Show/hide main window"));
 	a->setStatusTip(
 	    i18n("Allows you to show main Window if it is hidden, and to hide "
@@ -2376,45 +2376,14 @@ void BNPView::setUnsavedStatus(bool isUnsaved)
 
 void BNPView::setActive(bool active)
 {
-//	std::cout << "Main Window Position: setActive(" << (active ? "true" : "false") << ")" << std::endl;
-	KMainWindow* win = Global::mainWindow();
-	if(!win)
-		return;
+    KMainWindow* win = Global::mainWindow();
+    if(!win)
+	return;
 
-#if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
-	if (active) {
-		kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-		Global::systemTray->setActive();   //  FIXME: add this in the places it need
-	} else
-		Global::systemTray->setInactive();
-#elif KDE_IS_VERSION( 3, 1, 90 ) // KDE 3.2.x
-	// Code from Kopete (that seem to work, in waiting KSystemTray make puplic the toggleSHown) :
-	if (active) {
-		win->show();
-		//raise() and show() should normaly deIconify the window. but it doesn't do here due
-		// to a bug in Qt or in KDE  (qt3.1.x or KDE 3.1.x) then, i have to call KWindowSystem's method
-		if (win->isMinimized())
-			KWindowSystem::deIconifyWindow(winId());
-
-		if ( ! KWindowSystem::windowInfo(winId(), NET::WMDesktop).onAllDesktops() )
-			KWindowSystem::setOnDesktop(winId(), KWindowSystem::currentDesktop());
-		win->raise();
-		// Code from me: expected and correct behavviour:
-		kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
-		KWindowSystem::activateWindow(win->winId());
-	} else
-		win->hide();
-#else                            // KDE 3.1.x and lower
-	if (win->active) {
-		if (win->isMinimized())
-			win->hide();        // If minimized, show() doesn't work !
-		win->show();            // Show it
-	//		showNormal();      // If it was minimized
-		win->raise();           // Raise it on top
-		win->setActiveWindow(); // And set it the active window
-	} else
-		win->hide();
-#endif
+    if (active == isMainWindowActive())
+	return;
+    kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
+    Global::systemTray->toggleActive();
 }
 
 void BNPView::hideOnEscape()
