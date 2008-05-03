@@ -48,24 +48,6 @@
 
 #include <config.h>
 
-/* Thanks to JuK for this Application class */
-/*#if KDE_IS_VERSION( 3, 1, 90 )
-typedef KUniqueApplication Application; // KDE 3.2 and later already re-show the main window
-#else
-class Application : public KUniqueApplication
-{
-  public:
-	Application() : KUniqueApplication(true, true, false) {}
-	virtual ~Application() {}
-	virtual int newInstance() {
-		if (win)
-			win->setActive(true);
-		return KUniqueApplication::newInstance();
-	}
-};
-#endif
-*/
-
 int main(int argc, char *argv[])
 {
 	// KCmdLineArgs::init will modify argv[0] so we remember it:
