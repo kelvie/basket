@@ -1224,7 +1224,7 @@ bool BNPView::convertTexts()
 			/*caption=*/i18n("Plain Text Notes Conversion"),
 			/*text=*/i18n("Converting plain text notes to rich text ones..."),
 			/*modal=*/true);
-	dialog.progressBar()->setTotalSteps(basketCount());
+	dialog.progressBar()->setRange(0, basketCount());
 	dialog.show(); //setMinimumDuration(50/*ms*/);
 
 	Q3ListViewItemIterator it(m_tree);
@@ -1232,7 +1232,10 @@ bool BNPView::convertTexts()
 		BasketListViewItem *item = (BasketListViewItem*)(it.current());
 		if (item->basket()->convertTexts())
 			convertedNotes = true;
-		dialog.progressBar()->advance(1);
+
+		QProgressBar *pb = dialog.progressBar();
+		pb->setValue(pb->value() + 1);
+
 		if (dialog.wasCancelled())
 			break;
 		++it;
