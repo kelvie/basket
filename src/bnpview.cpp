@@ -1808,6 +1808,7 @@ Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
 		if(!hack)
 		{
 			KStandardDirs stdDirs;
+			const KAboutData *aboutData = KGlobal::mainComponent().aboutData();
 			KMessageBox::error( this, i18n(
 					"<p><b>The file basketui.rc seems to not exist or is too old.<br>"
 							"%1 cannot run without it and will stop.</b></p>"
@@ -1818,7 +1819,7 @@ Q3PopupMenu* BNPView::popupMenu(const QString &menuName)
 							"<p>As last ressort, if you are sure the application is correctly installed "
 							"but you had a preview version of it, try to remove the "
 							"file %5basketui.rc</p>")
-							.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName(),
+							.arg(aboutData->programName(), aboutData->programName(),
 								stdDirs.saveLocation("data", "basket/")).arg(stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
 					i18n("Ressource not Found"), KMessageBox::AllowLink );
 		}
