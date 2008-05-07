@@ -274,7 +274,11 @@ int NewBasketDialog::populateBasketsList(Q3ListViewItem *item, int indent, int i
 	while (item) {
 		// Get the basket data:
 		Basket *basket = ((BasketListViewItem*)item)->basket();
-		QPixmap icon = kapp->iconLoader()->loadIcon(basket->icon(), KIconLoader::NoGroup, ICON_SIZE, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon(
+            basket->icon(), KIconLoader::NoGroup, ICON_SIZE,
+            KIconLoader::DefaultState, QStringList(), 0L,
+            /*canReturnNull=*/false
+            ); 
 		icon = Tools::indentPixmap(icon, indent, 2 * ICON_SIZE / 3);
 
 		// Append item to the list:

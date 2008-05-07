@@ -239,7 +239,10 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	QFontMetrics fontMetrics(font);
 	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
-	QPixmap emblem = (withIcon ? kapp->iconLoader()->loadIcon(state->emblem(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true) : QPixmap());
+	QPixmap emblem = QPixmap();
+    if (withIcon)
+        empblem = KIconLoader::global()->loadIcon(
+            state->emblem(), KIconLoader::NoGroup, 16);
 
 	QColor backgroundColor = (isSelected() ? KGlobalSettings::highlightColor()
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
@@ -448,26 +451,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIcon boldIconSet = kapp->iconLoader()->loadIconSet("text_bold", KIcon::Small);
+	QIcon boldIconSet = KIconLoader::global()->loadIconSet("text_bold", KIcon::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIcon underlineIconSet = kapp->iconLoader()->loadIconSet("text_under", KIcon::Small);
+	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("text_under", KIcon::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIcon italicIconSet = kapp->iconLoader()->loadIconSet("text_italic", KIcon::Small);
+	QIcon italicIconSet = KIconLoader::global()->loadIconSet("text_italic", KIcon::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIcon strikeIconSet = kapp->iconLoader()->loadIconSet("text_strike", KIcon::Small);
+	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("text_strike", KIcon::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!

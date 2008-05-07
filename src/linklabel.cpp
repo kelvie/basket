@@ -450,7 +450,10 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 		int           iconSize   = m_look->iconSize();
 		QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
 		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIconLoader::DefaultState);
-		pixmap = kapp->iconLoader()->loadIcon(iconName, KIconLoader::Desktop, iconSize, iconState, 0L, /*canReturnNull=*/false);
+		pixmap = KIconLoader::global()->loadIcon(
+            iconName, KIconLoader::Desktop, iconSize, iconState, QStringList(),
+            0L, /*canReturnNull=*/false
+            );
 	}
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;

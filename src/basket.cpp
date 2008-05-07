@@ -926,7 +926,10 @@ void Basket::setAppearance(const QString &icon, const QString &name, const QStri
 	m_action->setText("BASKET SHORTCUT: " + name);
 
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
-	QPixmap iconTest = kapp->iconLoader()->loadIcon(m_icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/true);
+    QPixmap iconTest = KIconLoader::global()->loadIcon(
+        m_icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+        QStringList(), 0L, /*canReturnNull=*/true
+        );
 	if (iconTest.isNull())
 		m_icon = "basket";
 
@@ -5461,7 +5464,10 @@ DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &mes
 	//enableButtonOk(false);
 	setModal(true);
 	Q3HBoxLayout *layout = new Q3HBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
-	QPixmap icon = kapp->iconLoader()->loadIcon("hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState, /*path_store=*/0L, /*canReturnNull=*/true);
+	QPixmap icon = KIconLoader::global()->loadIcon(
+        "hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState,
+        QStringList(), /*path_store=*/0L, /*canReturnNull=*/true
+        );
 	QLabel *iconLabel  = new QLabel(mainWidget());
 	iconLabel->setPixmap(icon);
 	iconLabel->setFixedSize(iconLabel->sizeHint());

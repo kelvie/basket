@@ -144,7 +144,10 @@ void BasketListViewItem::setup()
 	int height = MARGIN + qMax(BASKET_ICON_SIZE, textRect.height()) + MARGIN;
 	setHeight(height);
 
-	QPixmap icon = kapp->iconLoader()->loadIcon(m_basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
+    QPixmap icon = KIconLoader::global()->loadIcon(
+        m_basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+        QStringList(), 0L, /*canReturnNull=*/false
+        );
 
 	setPixmap(/*column=*/0, icon);
 
@@ -588,12 +591,17 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		effectiveWidth += countPixmap.width() + MARGIN;
 	}
 	if (showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("find", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon(
+            "find", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            QStringList(), 0L, /*canReturnNull=*/false
+            );
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 		effectiveWidth += BASKET_ICON_SIZE + MARGIN;
 	}
 	if (showEncryptedIcon && !showLoadingIcon) {
-		QPixmap icon = kapp->iconLoader()->loadIcon("encrypted", KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, /*canReturnNull=*/false);
+		QPixmap icon = KIconLoader::global()->loadIcon(
+            "encrypted", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            QStringList(), 0L, /*canReturnNull=*/false);
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
 	}
 

@@ -943,7 +943,10 @@ QString NoteFactory::iconForCommand(const QString &command)
 
 bool NoteFactory::isIconExist(const QString &icon)
 {
-	return ! kapp->iconLoader()->loadIcon(icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, true).isNull();
+	return ! KIconLoader::global()->loadIcon(
+        icon, KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+        QStringList(), 0L, true
+        ).isNull();
 }
 
 Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)

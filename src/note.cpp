@@ -1975,7 +1975,11 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	int xIcon = HANDLE_WIDTH + NOTE_MARGIN;
 	for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
 		if (!(*it)->emblem().isEmpty()) {
-			QPixmap stateEmblem = kapp->iconLoader()->loadIcon((*it)->emblem(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState, 0L, false);
+			QPixmap stateEmblem = KIconLoader::global()->loadIcon(
+                (*it)->emblem(), KIconLoader::NoGroup, 16,
+                KIconLoader::DefaultState, QStringList(), 0L, false
+                );
+                                                                                                                                                       
 			painter2.drawPixmap(xIcon, yIcon, stateEmblem);
 			xIcon += NOTE_MARGIN + EMBLEM_SIZE;
 		}
