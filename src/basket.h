@@ -752,7 +752,7 @@ class FileEvent
 /** Basket that contain some Notes.
   * @author S�astien Laot
   */
-clas   s Bas    ket : public Q3ScrollView
+class Basket : public Q3ScrollView
 {
   Q_OBJECT
   public:
