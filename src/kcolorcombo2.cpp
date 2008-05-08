@@ -433,22 +433,22 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
 	}
 
 #ifdef DEBUG_COLOR_ARRAY
-	std::cout << "KColorCombo2::setColorPreset" << std::endl;
+	kDebug() << "KColorCombo2::setColorPreset";
 	for (int j = 0; j < rowCount; ++j) {
 		for (int i = 0; i < columnCount; ++i) {
 			int h, s, v;
 			m_colorArray[i][j].getHsv(h, s, v);
-			std::cout << "(" << std::setw(3) << h << "," << std::setw(3) << s << "," << std::setw(3) << v << ") ";
-			//std::cout << colorArray[i][j].name() << " ";
+			kDebug() << "(" << std::setw(3) << h << "," << std::setw(3) << s << "," << std::setw(3) << v << ") ";
+			//kDebug() << colorArray[i][j].name() << " ";
 		}
-		std::cout << std::endl;
+		kDebug();
 	}
 #endif
 #ifdef OUTPUT_GIMP_PALETTE
-	std::cout << "GIMP Palette" << std::endl;
+	kDebug() << "GIMP Palette";
 	for (int j = 0; j < rowCount; ++j) {
 		for (int i = 0; i < columnCount; ++i) {
-			std::cout << std::setw(3) << m_colorArray[i][j].red() << ", " << std::setw(3) << m_colorArray[i][j].green() << ", " << std::setw(3) << m_colorArray[i][j].blue() << std::endl;
+			kDebug() << std::setw(3) << m_colorArray[i][j].red() << ", " << std::setw(3) << m_colorArray[i][j].green() << ", " << std::setw(3) << m_colorArray[i][j].blue();
 		}
 	}
 #endif

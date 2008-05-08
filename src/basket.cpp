@@ -358,7 +358,7 @@ void debugZone(int zone)
 				s = "Emblem0+" + QString::number(zone - Note::Emblem0);
 			break;
 	}
-	std::cout << s << std::endl;
+	kDebug() << s;
 }
 
 #define FOR_EACH_NOTE(noteVar) \
@@ -1844,7 +1844,7 @@ void Basket::removedStates(const Q3ValueList<State*> &deletedStates)
 void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, bool animateNewPosition)
 {
 	if (!note) {
-		std::cout << "Wanted to insert NO note" << std::endl;
+		kDebug() << "Wanted to insert NO note";
 		return;
 	}
 
@@ -1995,7 +1995,7 @@ void Basket::contentsDragLeaveEvent(QDragLeaveEvent*)
 void Basket::contentsDropEvent(QDropEvent *event)
 {
 	QPoint pos = event->pos();
-	std::cout << "Contents Drop Event at position " << pos.x() << ":" << pos.y() << std::endl;
+	kDebug() << "Contents Drop Event at position " << pos.x() << ":" << pos.y();
 
 	m_isDuringDrag = false;
 	emit resetStatusBarText();
@@ -2400,7 +2400,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 			// We select note on mousePress if it was unselected or Ctrl is pressed.
 			// But the user can want to drag select_s_ notes, so it the note is selected, we only select it alone on mouseRelease:
 			if (event->stateAfter() == 0) {
-				std::cout << "EXEC" << std::endl;
+				kDebug() << "EXEC";
 				if ( !(event->stateAfter() & Qt::ControlModifier) && clicked->allSelected())
 					unselectAllBut(clicked);
 				if (zone == Note::Handle && isDuringEdit() && editedNote() == clicked) {
@@ -3417,7 +3417,7 @@ void Basket::animateObjects()
 	if (!m_animationTimer.isActive() || (m_lastFrameTime.msecsTo(QTime::currentTime()) < FRAME_DELAY*11/10)) { // *11/10 == *1.1 : We keep a 0.1 security margin
 		m_lastFrameTime = m_lastFrameTime.addMSecs(FRAME_DELAY);                                               // because timers are not accurate and can trigger late
 		//m_lastFrameTime = QTime::currentTime();
-//std::cout << ">>" << m_lastFrameTime.toString("hh:mm:ss.zzz") << std::endl;
+//kDebug() << ">>" << m_lastFrameTime.toString("hh:mm:ss.zzz");
 		if (m_underMouse)
 			doHoverEffects();
 		recomputeBlankRects();
@@ -3426,7 +3426,7 @@ void Basket::animateObjects()
 	// If the drawing of the last frame was too long, we skip the drawing of the current and do the next one:
 	} else {
 		m_lastFrameTime = m_lastFrameTime.addMSecs(FRAME_DELAY);
-//std::cout << "+=" << m_lastFrameTime.toString("hh:mm:ss.zzz") << std::endl;
+//kDebug() << "+=" << m_lastFrameTime.toString("hh:mm:ss.zzz");
 		animateObjects();
 	}
 
@@ -3880,7 +3880,6 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 }
 
 #include <iostream>
-#include <private/qrichtext_p.h>
 void Basket::editorCursorPositionChanged()
 {
 	if (!isDuringEdit())
@@ -3888,9 +3887,9 @@ void Basket::editorCursorPositionChanged()
 
 	FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
 	const QTextCursor *cursor = textEdit->textCursor();
-//	std::cout << cursor->x() << ";" << cursor->y() << "      "
+//	kDebug() << cursor->x() << ";" << cursor->y() << "      "
 //			  << cursor->globalX() << ";" << cursor->globalY() << "          "
-//			  << cursor->offsetX() << ";" << cursor->offsetY() << ";" << std::endl;
+//			  << cursor->offsetX() << ";" << cursor->offsetY() << ";";
 
 	ensureVisible(m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50);
 }
@@ -3996,7 +3995,7 @@ void Basket::openBasket()
 Note* Basket::theSelectedNote()
 {
 	if (countSelecteds() != 1) {
-		std::cout << "NO SELECTED NOTE !!!!" << std::endl;
+		kDebug() << "NO SELECTED NOTE !!!!";
 		return 0;
 	}
 
@@ -4007,7 +4006,7 @@ Note* Basket::theSelectedNote()
 			return selectedOne;
 	}
 
-	std::cout << "One selected note, BUT NOT FOUND !!!!" << std::endl;
+	kDebug() << "One selected note, BUT NOT FOUND !!!!";
 
 	return 0;
 }
@@ -4016,8 +4015,8 @@ void debugSel(NoteSelection* sel, int n = 0)
 {
 	for (NoteSelection *node = sel; node; node = node->next) {
 		for (int i = 0; i < n; i++)
-			std::cout << "-";
-		std::cout << (node->firstChild ? "Group" : node->note->content()->toText("")) << std::endl;
+			kDebug() << "-";
+		kDebug() << (node->firstChild ? "Group" : node->note->content()->toText(""));
 		if (node->firstChild)
 			debugSel(node->firstChild, n+1);
 	}
@@ -5434,25 +5433,25 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 	// Do not show the dialog twice in this case!
 	static DiskErrorDialog *dialog = 0;
 
-	//std::cout << "---------- Saving " << fullPath << ":" << std::endl;
+	//kDebug() << "---------- Saving " << fullPath << ":";
 	bool openSuccess;
 	bool closeSuccess;
 	bool errorWhileWritting;
 	do {
 		KSaveFile saveFile(fullPath);
-		//std::cout << "==>>" << std::endl << "SAVE FILE CREATED: " << strerror(saveFile.status()) << std::endl;
+		//kDebug() << "==>>" << "SAVE FILE CREATED: " << strerror(saveFile.status());
 		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
 		if (openSuccess) {
 			saveFile.file()->write(array, length);
-			//std::cout << "FILE WRITTEN: " << strerror(saveFile.status()) << std::endl;
+			//kDebug() << "FILE WRITTEN: " << strerror(saveFile.status());
 			closeSuccess = saveFile.close();
-			//std::cout << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous") << std::endl;
+			//kDebug() << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous");
 		}
 		errorWhileWritting = (!openSuccess || !closeSuccess || saveFile.status() != 0);
 		if (errorWhileWritting) {
-			//std::cout << "ERROR DETECTED" << std::endl;
+			//kDebug() << "ERROR DETECTED";
 			if (dialog == 0) {
-				//std::cout << "Opening dialog for " << fullPath << std::endl;
+				//kDebug() << "Opening dialog for " << fullPath;
 				dialog = new DiskErrorDialog(
 					(openSuccess
 						? i18n("Insufficient Disk Space to Save Basket Data")
@@ -5696,7 +5695,7 @@ void Basket::dragMoveEvent(QDragMoveEvent* event)
 void Basket::dropEvent(QDropEvent *event)
 {
 	QPoint pos = event->pos();
-	std::cout << "Drop Event at position " << pos.x() << ":" << pos.y() << std::endl;
+	kDebug() << "Drop Event at position " << pos.x() << ":" << pos.y();
 	m_isDuringDrag = false;
 	emit resetStatusBarText();
 

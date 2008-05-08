@@ -350,7 +350,7 @@ void SystemTray::dropEvent(QDropEvent *event)
 		basket->load();
 	}
 	basket->contentsDropEvent(event);
-	std::cout << (long) basket->selectedNotes() << std::endl;
+	kDebug() << (long) basket->selectedNotes();
 
 	if (Settings::usePassivePopup())
 		Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));*/

@@ -237,16 +237,16 @@ void MainWindow::polish()
 	//  - Set size to sizeHint()
 	//  - Keep the window manager placing the window where it want and save this
 	if (Settings::mainWindowSize().isEmpty()) {
-//		std::cout << "Main Window Position: Initial Set in show()" << std::endl;
+//		kDebug() << "Main Window Position: Initial Set in show()";
 		int defaultWidth  = kapp->desktop()->width()  * 5 / 6;
 		int defaultHeight = kapp->desktop()->height() * 5 / 6;
 		resize(defaultWidth, defaultHeight); // sizeHint() is bad (too small) and we want the user to have a good default area size
 		shouldSave = true;
 	} else {
-//		std::cout << "Main Window Position: Recall in show(x="
+//		kDebug() << "Main Window Position: Recall in show(x="
 //		          << Settings::mainWindowPosition().x() << ", y=" << Settings::mainWindowPosition().y()
 //		          << ", width=" << Settings::mainWindowSize().width() << ", height=" << Settings::mainWindowSize().height()
-//		          << ")" << std::endl;
+//		          << ")";
 		//move(Settings::mainWindowPosition());
 		//resize(Settings::mainWindowSize());
 	}
@@ -254,10 +254,10 @@ void MainWindow::polish()
 	KMainWindow::polish();
 
 	if (shouldSave) {
-//		std::cout << "Main Window Position: Save size and position in show(x="
+//		kDebug() << "Main Window Position: Save size and position in show(x="
 //		          << pos().x() << ", y=" << pos().y()
 //		          << ", width=" << size().width() << ", height=" << size().height()
-//		          << ")" << std::endl;
+//		          << ")";
 		Settings::setMainWindowPosition(pos());
 		Settings::setMainWindowSize(size());
 		Settings::saveConfig();
@@ -266,8 +266,8 @@ void MainWindow::polish()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-//	std::cout << "Main Window Position: Save size in resizeEvent(width=" << size().width() << ", height=" << size().height() << ") ; isMaximized="
-//	          << (isMaximized() ? "true" : "false") << std::endl;
+//	kDebug() << "Main Window Position: Save size in resizeEvent(width=" << size().width() << ", height=" << size().height() << ") ; isMaximized="
+//	          << (isMaximized() ? "true" : "false");
 	Settings::setMainWindowSize(size());
 	Settings::saveConfig();
 
@@ -278,7 +278,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::moveEvent(QMoveEvent *event)
 {
-//	std::cout << "Main Window Position: Save position in moveEvent(x=" << pos().x() << ", y=" << pos().y() << ")" << std::endl;
+//	kDebug() << "Main Window Position: Save position in moveEvent(x=" << pos().x() << ", y=" << pos().y() << ")";
 	Settings::setMainWindowPosition(pos());
 	Settings::saveConfig();
 

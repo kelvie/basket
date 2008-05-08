@@ -85,13 +85,13 @@ BasketListViewItem::~BasketListViewItem()
 
 bool BasketListViewItem::acceptDrop(const QMimeSource *) const
 {
-	std::cout << "accept" << std::endl;
+	kDebug() << "accept";
 	return true;
 }
 
 void BasketListViewItem::dropped(QDropEvent *event)
 {
-	std::cout << "Dropping into basket " << m_basket->name() << std::endl;
+	kDebug() << "Dropping into basket " << m_basket->name();
 	m_basket->contentsDropEvent(event);
 	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
@@ -429,7 +429,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	// When the splitter is moved to hide the tree view and then the application is restarted,
 	// Qt try to draw items with a negative size!
 	if (width <= 0) {
-		std::cout << "width <= 0" << std::endl;
+		kDebug() << "width <= 0";
 		return;
 	}
 
@@ -695,7 +695,7 @@ void BasketTreeListView::removeExpands()
 
 void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 {
-	std::cout << "BasketTreeListView::contentsDragLeaveEvent" << std::endl;
+	kDebug() << "BasketTreeListView::contentsDragLeaveEvent";
 	m_autoOpenItem = 0;
 	m_autoOpenTimer.stop();
 	setItemUnderDrag(0);
@@ -705,20 +705,20 @@ void BasketTreeListView::contentsDragLeaveEvent(QDragLeaveEvent *event)
 
 void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 {
-	std::cout << "BasketTreeListView::contentsDropEvent()" << std::endl;
+	kDebug() << "BasketTreeListView::contentsDropEvent()";
 	if (event->provides("application/x-qlistviewitem"))
 	{
 		K3ListView::contentsDropEvent(event);
 	}
 	else {
-		std::cout << "Forwarding dropped data to the basket" << std::endl;
+		kDebug() << "Forwarding dropped data to the basket";
 		Q3ListViewItem *item = itemAt(contentsToViewport(event->pos()));
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (bitem) {
 			bitem->basket()->blindDrop(event);
 		}
 		else {
-			std::cout << "Forwarding failed: no bitem found" << std::endl;
+			kDebug() << "Forwarding failed: no bitem found";
 		}
 	}
 
@@ -732,7 +732,7 @@ void BasketTreeListView::contentsDropEvent(QDropEvent *event)
 
 void BasketTreeListView::contentsDragMoveEvent(QDragMoveEvent *event)
 {
-	std::cout << "BasketTreeListView::contentsDragMoveEvent" << std::endl;
+	kDebug() << "BasketTreeListView::contentsDragMoveEvent";
 	if (event->provides("application/x-qlistviewitem"))
 		K3ListView::contentsDragMoveEvent(event);
 	else {

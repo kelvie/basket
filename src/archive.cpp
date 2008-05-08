@@ -73,7 +73,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	tar.writeDir("baskets", "", "");
 
 	progress->advance(1); // Preparation finished
-	std::cout << "Preparation finished out of " << progress->totalSteps() << std::endl;
+	kDebug() << "Preparation finished out of " << progress->totalSteps();
 
 	// Copy the baskets data into the archive:
 	QStringList backgrounds;
@@ -175,7 +175,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	}
 
 	progress->advance(1); // Finishing finished
-	std::cout << "Finishing finished" << std::endl;
+	kDebug() << "Finishing finished";
 
 	// Clean Up Everything:
 	dir.remove(tempFolder + "preview.png");
@@ -226,7 +226,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	}
 
 	progress->advance(1); // Basket exportation finished
-	std::cout << basket->basketName() << " finished" << std::endl;
+	kDebug() << basket->basketName() << " finished";
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);

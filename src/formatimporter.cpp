@@ -77,13 +77,13 @@ void FormatImporter::moveFolder(const QString &folder, const QString &newFolder)
 
 void FormatImporter::slotCopyingDone(KIO::Job *)
 {
-//	std::cout << "Copy finished of " + from.path() + " to " + to.path() << std::endl;
+//	kDebug() << "Copy finished of " + from.path() + " to " + to.path();
 	copyFinished = true;
 }
 
 void FormatImporter::importBaskets()
 {
-	std::cout << "Import Baskets: Preparing..." << std::endl;
+	kDebug() << "Import Baskets: Preparing...";
 
 	// Some preliminary preparations (create the destination folders and the basket tree file):
 	QDir dirPrep;
@@ -120,13 +120,13 @@ void FormatImporter::importBaskets()
 				     baskets.find(*it)         == baskets.end()    ) // And if it is not already in the imported baskets list
 					baskets.append(*it);
 
-	std::cout << "Import Baskets: Found " << baskets.count() << " baskets to import." << std::endl;
+	kDebug() << "Import Baskets: Found " << baskets.count() << " baskets to import.";
 
 	// Import every baskets:
 	int i = 0;
 	for (QStringList::iterator it = baskets.begin(); it != baskets.end(); ++it) {
 		++i;
-		std::cout << "Import Baskets: Importing basket " << i << " of " << baskets.count() << "..." << std::endl;
+		kDebug() << "Import Baskets: Importing basket " << i << " of " << baskets.count() << "...";
 
 		// Move the folder to the new repository (normal basket) or copy the folder (mirorred folder):
 		QString folderName = *it;
@@ -158,7 +158,7 @@ void FormatImporter::importBaskets()
 	}
 
 	// Finalize (write to disk and delete now useless files):
-	std::cout << "Import Baskets: Finalizing..." << std::endl;
+	kDebug() << "Import Baskets: Finalizing...";
 
 	QFile file(Global::basketsFolder() + "baskets.xml");
 	if (file.open(QIODevice::WriteOnly)) {
@@ -173,7 +173,7 @@ void FormatImporter::importBaskets()
 	Tools::deleteRecursively(Global::savesFolder() + ".tmp");
 	dir.remove(Global::savesFolder() + "container.baskets");
 
-	std::cout << "Import Baskets: Finished." << std::endl;
+	kDebug() << "Import Baskets: Finished.";
 }
 
 QDomElement FormatImporter::importBasket(const QString &folderName)
@@ -181,7 +181,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	// Load the XML file:
 	QDomDocument *document = XMLWork::openFile("basket", Global::basketsFolder() + folderName + "/.basket");
 	if (!document) {
-		std::cout << "Import Baskets: Failed to read the basket file!" << std::endl;
+		kDebug() << "Import Baskets: Failed to read the basket file!";
 		return QDomElement();
 	}
 	QDomElement docElem = document->documentElement();
@@ -300,7 +300,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 		stream << document->toString(); // Document is ALREADY using UTF-8
 		file.close();
 	} else
-		std::cout << "Import Baskets: Failed to save the basket file!" << std::endl;
+		kDebug() << "Import Baskets: Failed to save the basket file!";
 
 	// Return the newly created properties (to put in the basket tree):
 	return properties;

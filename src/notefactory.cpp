@@ -222,7 +222,7 @@ Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
 
 			// If we got a new note, insert it in a linked list (we will return the first note of that list):
 			if (note) {
-//				std::cout << "Drop URL: " << (*it).prettyUrl() << std::endl;
+//				kDebug() << "Drop URL: " << (*it).prettyUrl();
 				if (!firstNote)
 					firstNote = note;
 				else {

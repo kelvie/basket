@@ -976,7 +976,7 @@ void Note::toggleFolded(bool animate)
 		// We don't animate expanding: we place sub-notes directly under the first note (and the next relayout will animate the expanding)
 		// But if user quickly collapsed and then expand (while the collapsing animation isn't finished), we animate anyway
 		bool animateSetUnder = (m_isFolded || !m_collapseFinished);
-//		std::cout << "fold:" << m_isFolded << " collapseFinished:"  << m_collapseFinished << " animateSetUnder:" << animateSetUnder << std::endl;
+//		kDebug() << "fold:" << m_isFolded << " collapseFinished:"  << m_collapseFinished << " animateSetUnder:" << animateSetUnder;
 
 		if (m_isFolded)
 			m_collapseFinished = false;
@@ -2574,19 +2574,19 @@ bool Note::isShown()
 
 void Note::debug()
 {
-	std::cout << "Note@" << (quint64)this;
+	kDebug() << "Note@" << (quint64)this;
 	if (!this) {
-		std::cout << std::endl;
+		kDebug();
 		return;
 	}
 
 	if (isColumn())
-		std::cout << ": Column";
+		kDebug() << ": Column";
 	else if (isGroup())
-		std::cout << ": Group";
+		kDebug() << ": Group";
 	else
-		std::cout << ": Content[" << content()->lowerTypeName() << "]: " << toText("");
-	std::cout << std::endl;
+		kDebug() << ": Content[" << content()->lowerTypeName() << "]: " << toText("");
+	kDebug();
 }
 
 Note* Note::firstSelected()

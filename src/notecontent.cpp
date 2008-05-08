@@ -542,7 +542,7 @@ bool TextContent::loadFromFile(bool lazyLoad)
 	if (success)
 		setText(content, lazyLoad);
 	else {
-		std::cout << "FAILED TO LOAD TextContent: " << fullPath() << std::endl;
+		kDebug() << "FAILED TO LOAD TextContent: " << fullPath();
 		setText("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -651,7 +651,7 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 	if (success)
 		setHtml(content, lazyLoad);
 	else {
-		std::cout << "FAILED TO LOAD HtmlContent: " << fullPath() << std::endl;
+		kDebug() << "FAILED TO LOAD HtmlContent: " << fullPath();
 		setHtml("", lazyLoad);
 		if (!QFile::exists(fullPath()))
 			saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -783,7 +783,7 @@ bool ImageContent::finishLazyLoad()
 		}
 	}
 
-	std::cout << "FAILED TO LOAD ImageContent: " << fullPath() << std::endl;
+	kDebug() << "FAILED TO LOAD ImageContent: " << fullPath();
 	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
 	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
 	m_pixmap.fill();
@@ -1171,7 +1171,7 @@ void SoundContent::setHoveredZone(int oldZone, int newZone)
 #ifdef WITHOUT_ARTS
 	Q_UNUSED(oldZone);
 	if (newZone == Note::Custom0 || newZone == Note::Content)
-		std::cout << "Compiled without aRts: sound is not played." << std::endl;
+		kDebug() << "Compiled without aRts: sound is not played.";
 #else
 	static KArtsDispatcher        *s_dispatcher  = new KArtsDispatcher(); // Needed for s_playObj (we don't use it directly)
 	static KArtsServer            *s_playServer  = new KArtsServer();
@@ -1370,7 +1370,7 @@ void LinkContent::httpReadyRead(const Q3HttpResponseHeader& )
 		QRegExp reg("<title>[\\s]*(&nbsp;)?([^<]+)[\\s]*</title>", false);
 		reg.setMinimal(TRUE);
 		int offset = 0;
-		//std::cout << *m_httpBuff << " bytes: " << bytes_read << std::endl;
+		//kDebug() << *m_httpBuff << " bytes: " << bytes_read;
 		if((offset = reg.search(*m_httpBuff)) >= 0) {
 			m_title = reg.cap(2);
 			m_autoTitle = false;
@@ -1418,7 +1418,7 @@ void LinkContent::startFetchingLinkTitle()
 		QString path = this->url().encodedPathAndQuery(1);
 		if(path == "")
 			path = "/";
-		//std::cout  <<  "path: " << path << std::endl;
+		//kDebug()  <<  "path: " << path;
 		m_http->get(path);
 	}
 }

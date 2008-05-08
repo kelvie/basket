@@ -206,10 +206,10 @@
                         /*startup_id*/  "" );
             }
             else {
-				std::cout << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
+				kDebug() << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
                                           "But, all is not lost! Perhaps an upgrade is already available "
                                           "which fixes the problem. Please check your distribution's software repository." )
-						.arg(kapp->aboutData()->programName()).local8Bit() << std::endl;
+						.arg(kapp->aboutData()->programName()).local8Bit();
             }
 
             //_exit() exits immediately, otherwise this

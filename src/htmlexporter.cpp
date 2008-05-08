@@ -157,19 +157,19 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	iconsFolderName   = (isSubBasket ? "../" : filesFolderName) + i18nc("HTML export folder (icons)",   "icons")   + "/"; // eg.: "foo.html_files/icons/"   or "../icons/"
 	imagesFolderName  = (isSubBasket ? "../" : filesFolderName) + i18nc("HTML export folder (images)",  "images")  + "/"; // eg.: "foo.html_files/images/"  or "../images/"
 
-	std::cout << "Exporting ================================================" << std::endl;
-	std::cout << "  filePath:" << filePath << std::endl;
-	std::cout << "  basketFilePath:" << basketFilePath << std::endl;
-	std::cout << "  filesFolderPath:" << filesFolderPath << std::endl;
-	std::cout << "  filesFolderName:" << filesFolderName << std::endl;
-	std::cout << "  iconsFolderPath:" << iconsFolderPath << std::endl;
-	std::cout << "  iconsFolderName:" << iconsFolderName << std::endl;
-	std::cout << "  imagesFolderPath:" << imagesFolderPath << std::endl;
-	std::cout << "  imagesFolderName:" << imagesFolderName << std::endl;
-	std::cout << "  dataFolderPath:" << dataFolderPath << std::endl;
-	std::cout << "  dataFolderName:" << dataFolderName << std::endl;
-	std::cout << "  basketsFolderPath:" << basketsFolderPath << std::endl;
-	std::cout << "  basketsFolderName:" << basketsFolderName << std::endl;
+	kDebug() << "Exporting ================================================";
+	kDebug() << "  filePath:" << filePath;
+	kDebug() << "  basketFilePath:" << basketFilePath;
+	kDebug() << "  filesFolderPath:" << filesFolderPath;
+	kDebug() << "  filesFolderName:" << filesFolderName;
+	kDebug() << "  iconsFolderPath:" << iconsFolderPath;
+	kDebug() << "  iconsFolderName:" << iconsFolderName;
+	kDebug() << "  imagesFolderPath:" << imagesFolderPath;
+	kDebug() << "  imagesFolderName:" << imagesFolderName;
+	kDebug() << "  dataFolderPath:" << dataFolderPath;
+	kDebug() << "  dataFolderName:" << dataFolderName;
+	kDebug() << "  basketsFolderPath:" << basketsFolderPath;
+	kDebug() << "  basketsFolderName:" << basketsFolderName;
 
 	// Create the data folder for this basket:
 	QDir dir;

@@ -142,9 +142,9 @@ void LikeBackBar::autoMove()
 
 		if (window != lastWindow && m_likeBack->windowNamesListing() != LikeBack::NoListing) {
 			if (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0) {
-				std::cout << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << LikeBack::activeWindowPath() << std::endl;
+				kDebug() << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << LikeBack::activeWindowPath();
 			} else if (m_likeBack->windowNamesListing() == LikeBack::AllWindows) {
-				std::cout << "LikeBack: Active Window: " << LikeBack::activeWindowPath() << std::endl;
+				kDebug() << "LikeBack: Active Window: " << LikeBack::activeWindowPath();
 			}
 		}
 		lastWindow = window;
@@ -340,7 +340,7 @@ void LikeBack::enableBar()
 {
 	d->disabledCount--;
 	if (d->disabledCount < 0)
-		std::cerr << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints." << std::endl;
+		std::cerr << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints.";
 	if (d->bar && d->disabledCount <= 0) {
 		d->bar->startTimer();
 	}
@@ -845,8 +845,8 @@ void LikeBackDialog::send()
 		"email="    + KUrl::encode_string(emailAddress);
 	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
 
-	std::cout << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath() << std::endl;
-	std::cout << data << std::endl;
+	kDebug() << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath();
+	kDebug() << data;
 	connect( http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)) );
 
 	Q3HttpRequestHeader header("POST", m_likeBack->remotePath());

@@ -69,21 +69,21 @@ OpaqueBackgroundEntry::~OpaqueBackgroundEntry()
 
 BackgroundManager::BackgroundManager()
 {
-///	std::cout << "BackgroundManager: Found the following background images in  ";
+///	kDebug() << "BackgroundManager: Found the following background images in  ";
 	QStringList directories = KGlobal::dirs()->resourceDirs("data"); // eg. { "/home/seb/.kde/share/apps/", "/usr/share/apps/" }
 	// For each folder:
 	for (QStringList::Iterator it = directories.begin(); it != directories.end(); ++it) {
 		// For each file in those directories:
 		QDir dir(*it + "basket/backgrounds/", /*nameFilder=*/"*.png", /*sortSpec=*/QDir::Name | QDir::IgnoreCase, /*filterSpec=*/QDir::Files | QDir::NoSymLinks);
-///		std::cout << *it + "basket/backgrounds/  ";
+///		kDebug() << *it + "basket/backgrounds/  ";
 		QStringList files = dir.entryList();
 		for (QStringList::Iterator it2 = files.begin(); it2 != files.end(); ++it2) // TODO: If an image name is present in two folders?
 			addImage(*it + "basket/backgrounds/" + *it2);
 	}
 
-///	std::cout << ":" << std::endl;
+///	kDebug() << ":";
 ///	for (BackgroundsList::Iterator it = m_backgroundsList.begin(); it != m_backgroundsList.end(); ++it)
-///		std::cout << "* " << (*it)->location << "  [ref: " << (*it)->name << "]" << std::endl;
+///		kDebug() << "* " << (*it)->location << "  [ref: " << (*it)->name << "]";
 
 	connect( &m_garbageTimer, SIGNAL(timeout()), this, SLOT(doGarbage()) );
 }
@@ -128,7 +128,7 @@ bool BackgroundManager::subscribe(const QString &image)
 		}
 		// Return if the image loading has failed:
 		if (entry->pixmap->isNull()) {
-///			std::cout << "BackgroundManager: Failed to load " << entry->location << std::endl;
+///			kDebug() << "BackgroundManager: Failed to load " << entry->location;
 			return false;
 		}
 		// Success: effectively subscribe:
@@ -136,7 +136,7 @@ bool BackgroundManager::subscribe(const QString &image)
 		return true;
 	} else {
 		// Don't exist: subscription failed:
-///		std::cout << "BackgroundManager: Requested unexisting image: " << image << std::endl;
+///		kDebug() << "BackgroundManager: Requested unexisting image: " << image;
 		return false;
 	}
 }
@@ -147,7 +147,7 @@ bool BackgroundManager::subscribe(const QString &image, const QColor &color)
 
 	// First, if the image doesn't exist, isn't subscribed, or failed to load then we don't go further:
 	if (!backgroundEntry || !backgroundEntry->pixmap || backgroundEntry->pixmap->isNull()) {
-///		std::cout << "BackgroundManager: Requested an unexisting or unsubscribed image: (" << image << "," << color.name() << ")..." << std::endl;
+///		kDebug() << "BackgroundManager: Requested an unexisting or unsubscribed image: (" << image << "," << color.name() << ")...";
 		return false;
 	}
 
@@ -155,7 +155,7 @@ bool BackgroundManager::subscribe(const QString &image, const QColor &color)
 
 	// If this couple is requested for the first time or it haven't been subscribed for a long time enough, create it:
 	if (!opaqueBackgroundEntry) {
-///		std::cout << "BackgroundManager: Computing (" << image << "," << color.name() << ")..." << std::endl;
+///		kDebug() << "BackgroundManager: Computing (" << image << "," << color.name() << ")...";
 		opaqueBackgroundEntry = new OpaqueBackgroundEntry(image, color);
 		opaqueBackgroundEntry->pixmap = new QPixmap(backgroundEntry->pixmap->size());
 		opaqueBackgroundEntry->pixmap->fill(color);
@@ -175,7 +175,7 @@ void BackgroundManager::unsubscribe(const QString &image)
 	BackgroundEntry *entry = backgroundEntryFor(image);
 
 	if (!entry) {
-///		std::cout << "BackgroundManager: Wanted to unsuscribe a not subscribed image: " << image << std::endl;
+///		kDebug() << "BackgroundManager: Wanted to unsuscribe a not subscribed image: " << image;
 		return;
 	}
 
@@ -189,7 +189,7 @@ void BackgroundManager::unsubscribe(const QString &image, const QColor &color)
 	OpaqueBackgroundEntry *entry = opaqueBackgroundEntryFor(image, color);
 
 	if (!entry) {
-///		std::cout << "BackgroundManager: Wanted to unsuscribe a not subscribed colored image: (" << image << "," << color.name() << ")" << std::endl;
+///		kDebug() << "BackgroundManager: Wanted to unsuscribe a not subscribed colored image: (" << image << "," << color.name() << ")";
 		return;
 	}
 
@@ -203,7 +203,7 @@ QPixmap* BackgroundManager::pixmap(const QString &image)
 	BackgroundEntry *entry = backgroundEntryFor(image);
 
 	if (!entry || !entry->pixmap || entry->pixmap->isNull()) {
-///		std::cout << "BackgroundManager: Requested an unexisting or unsubscribed image: " << image << std::endl;
+///		kDebug() << "BackgroundManager: Requested an unexisting or unsubscribed image: " << image;
 		return 0;
 	}
 
@@ -215,7 +215,7 @@ QPixmap* BackgroundManager::opaquePixmap(const QString &image, const QColor &col
 	OpaqueBackgroundEntry *entry = opaqueBackgroundEntryFor(image, color);
 
 	if (!entry || !entry->pixmap || entry->pixmap->isNull()) {
-///		std::cout << "BackgroundManager: Requested an unexisting or unsubscribed colored image: (" << image << "," << color.name() << ")" << std::endl;
+///		kDebug() << "BackgroundManager: Requested an unexisting or unsubscribed colored image: (" << image << "," << color.name() << ")";
 		return 0;
 	}
 
@@ -227,7 +227,7 @@ bool BackgroundManager::tiled(const QString &image)
 	BackgroundEntry *entry = backgroundEntryFor(image);
 
 	if (!entry || !entry->pixmap || entry->pixmap->isNull()) {
-///		std::cout << "BackgroundManager: Requested an unexisting or unsubscribed image: " << image << std::endl;
+///		kDebug() << "BackgroundManager: Requested an unexisting or unsubscribed image: " << image;
 		return false;
 	}
 
@@ -259,7 +259,7 @@ QPixmap* BackgroundManager::preview(const QString &image)
 	BackgroundEntry *entry = backgroundEntryFor(image);
 
 	if (!entry) {
-///		std::cout << "BackgroundManager: Requested the preview of an unexisting image: " << image << std::endl;
+///		kDebug() << "BackgroundManager: Requested the preview of an unexisting image: " << image;
 		return false;
 	}
 
@@ -272,7 +272,7 @@ QPixmap* BackgroundManager::preview(const QString &image)
 	QPixmap *previewPixmap = new QPixmap(previewPath);
 	// Success:
 	if (!previewPixmap->isNull()) {
-///		std::cout << "BackgroundManager: Loaded image preview for " << entry->location << " from file " << previewPath << std::endl;
+///		kDebug() << "BackgroundManager: Loaded image preview for " << entry->location << " from file " << previewPath;
 		entry->preview = previewPixmap;
 		return entry->preview;
 	}
@@ -364,32 +364,32 @@ void BackgroundManager::requestDelayedGarbage()
 
 void BackgroundManager::doGarbage()
 {
-///	std::cout << "BackgroundManager: Doing garbage..." << std::endl;
+///	kDebug() << "BackgroundManager: Doing garbage...";
 
-///	std::cout << "BackgroundManager: Images:" << std::endl;
+///	kDebug() << "BackgroundManager: Images:";
 	for (BackgroundsList::Iterator it = m_backgroundsList.begin(); it != m_backgroundsList.end(); ++it) {
 		BackgroundEntry *entry = *it;
-///		std::cout << "* " << entry->name << ": used " << entry->customersCount << " times";
+///		kDebug() << "* " << entry->name << ": used " << entry->customersCount << " times";
 		if (entry->customersCount <= 0 && entry->pixmap) {
-///			std::cout << " [Deleted cached pixmap]";
+///			kDebug() << " [Deleted cached pixmap]";
 			delete entry->pixmap;
 			entry->pixmap = 0;
 		}
-///		std::cout << std::endl;
+///		kDebug();
 	}
 
-///	std::cout << "BackgroundManager: Opaque Cached Images:" << std::endl;
+///	kDebug() << "BackgroundManager: Opaque Cached Images:";
 	for (OpaqueBackgroundsList::Iterator it = m_opaqueBackgroundsList.begin(); it != m_opaqueBackgroundsList.end(); ) {
 		OpaqueBackgroundEntry *entry = *it;
-///		std::cout << "* " << entry->name << "," << entry->color.name() << ": used " << entry->customersCount << " times";
+///		kDebug() << "* " << entry->name << "," << entry->color.name() << ": used " << entry->customersCount << " times";
 		if (entry->customersCount <= 0) {
-///			std::cout << " [Deleted entry]";
+///			kDebug() << " [Deleted entry]";
 			delete entry->pixmap;
 			entry->pixmap = 0;
 			it = m_opaqueBackgroundsList.remove(it);
 		} else
 			++it;
-///		std::cout << std::endl;
+///		kDebug();
 	}
 }
 
