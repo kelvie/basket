@@ -1396,7 +1396,6 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 		m_folderName += "/";
 
 	setFocusPolicy(Qt::StrongFocus);
-	setWFlags(Qt::WNoAutoErase);
 	setDragAutoScroll(true);
 
 	// By default, there is no corner widget: we set one for the corner area to be painted!

@@ -66,7 +66,6 @@ KColorPopup::KColorPopup(KColorCombo2 *parent)
 	hide();
 	setMouseTracking(true);
 	//resize(20, 20);
-	//setWFlags(Qt::WNoAutoErase);
 }
 
 KColorPopup::~KColorPopup()

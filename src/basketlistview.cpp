@@ -652,9 +652,6 @@ BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
 	: K3ListView(parent, name), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
-	setWFlags(Qt::WStaticContents | WNoAutoErase);
-	clearWFlags(Qt::WStaticContents | WNoAutoErase);
-	//viewport()->clearWFlags(Qt::WStaticContents);
 	connect( &m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()) );
 
 	new BasketTreeListView_ToolTip(this);
