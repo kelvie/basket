@@ -1362,7 +1362,6 @@ void Basket::countsChangedTimeOut()
 
 Basket::Basket(QWidget *parent, const QString &folderName)
  : Q3ScrollView(parent),
-   QToolTip(viewport()),
    m_noActionOnMouseRelease(false), m_ignoreCloseEditorOnNextMouseRelease(false), m_pressPos(-100, -100), m_canDrag(false),
    m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
    m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
@@ -2822,8 +2821,19 @@ void Basket::drawInserter(QPainter &painter, int xPainter, int yPainter)
 	}
 }
 
-void Basket::maybeTip(const QPoint &pos)
+bool Basket::event(QEvent *event)
 {
+    // Only take the help events
+    if (event->type() == QEvent::ToolTip) {
+	helpEvent(event);
+	return false;
+    } else
+	return true;
+}
+
+void Basket::tooltipEvent(QHelpEvent *event)
+{
+    QPoint point = event->pos();
 	if ( !m_loaded || !Settings::showNotesToolTip() )
 		return;
 
@@ -2922,7 +2932,7 @@ void Basket::maybeTip(const QPoint &pos)
 		rect.moveTop( rect.top()  + note->y());
 	}
 
-	tip(rect, message);
+	QToolTip::showText(pos, message, this, rect);
 }
 
 Note* Basket::lastNote()

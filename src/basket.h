@@ -179,7 +179,7 @@ class TransparentWidget : public QWidget
 /**
   * @author S�astien Laot
   */
-class Basket : public Q3ScrollView, public QToolTip
+class Basket : public Q3ScrollView
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
   Q_OBJECT
@@ -290,7 +290,9 @@ class Basket : public Q3ScrollView, public QToolTip
 
 /// TOOL TIPS:
   protected:
-	void maybeTip(const QPoint &pos);
+    bool event(QEvent *event);
+    // TODO: replace with QGraphicsScene::helpEvent()
+    void toolTipEvent(QHelpEvent *event);
 
 /// ANIMATIONS:
   private:
