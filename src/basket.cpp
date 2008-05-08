@@ -270,7 +270,6 @@ TransparentWidget::TransparentWidget(Basket *basket)
  : QWidget(basket->viewport(), "", Qt::WNoAutoErase), m_basket(basket)
 {
 	setFocusPolicy(Qt::NoFocus);
-	setWFlags(Qt::WNoAutoErase);
 	setMouseTracking(true); // To receive mouseMoveEvents
 
 	basket->viewport()->installEventFilter(this);
