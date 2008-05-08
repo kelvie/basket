@@ -57,7 +57,6 @@
 #include <KOpenWithDialog>
 #include <kservice.h>
 #include <klocale.h>
-#include <kglobalaccel.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -922,6 +921,7 @@ void Basket::setAppearance(const QString &icon, const QString &name, const QStri
 	m_backgroundColorSetting = backgroundColor;
 	m_textColorSetting       = textColor;
 
+	// Where is this shown?
 	m_action->setText("BASKET SHORTCUT: " + name);
 
 	// Basket should ALWAYS have an icon (the "basket" icon by default):
@@ -1325,18 +1325,14 @@ QString Basket::fullPathForFileName(const QString &fileName)
 
 void Basket::setShortcut(KShortcut shortcut, int action)
 {
-	if(!Global::globalAccel)
-		return;
-	QString sAction = "global_basket_activate_" + folderName();
-	Global::globalAccel->remove(sAction);
-	Global::globalAccel->updateConnections();
-
-	m_action->setShortcut(shortcut);
-	m_shortcutAction = action;
-
-	if (action > 0)
-		Global::globalAccel->insert(sAction, m_action->text(), /*whatsThis=*/"", m_action->shortcut(), KShortcut(), this, SLOT(activatedShortcut()), /*configurable=*/false);
-	Global::globalAccel->updateConnections();
+    if (action > 0) {
+        m_action->setGlobalShortcut(
+	    shortcut,
+            KAction::ActiveShortcut | KAction::DefaultShortcut,
+            KAction::NoAutoloading
+            );
+    }
+    m_shortcutAction = action;
 }
 
 void Basket::activatedShortcut()
@@ -1419,13 +1415,13 @@ Basket::Basket(QWidget *parent, const QString &folderName)
     , m_finishLoadOnFirstShow(false)
     , m_relayoutOnNextShow(false)
 {
-	QString sAction = "local_basket_activate_" + folderName;
-	m_action = actionCollection->addAction(sAction, this,
-					       SLOT(activatedShortcut()));
-	m_action->setText("FAKE TEXT");
-	m_action->setIcon(KIcon("FAKE ICON"));
-	m_action->setShortcut(KShortcut());
-	m_action->setShortcutConfigurable(false); // We do it in the basket properties dialog (and keep it in sync with the global one)
+    m_action = new KAction(this);
+    connect(m_action, SLOT(triggered(bool)), SLOT(activatedShortcut()));
+    m_action->setObjectName("basket_activate_" + folderName);
+    m_action->setGlobalShortcut(KShortcut());
+    // We do this in the basket properties dialog (and keep it in sync with the
+    // global one)
+    m_action->setShortcutConfigurable(false);
 
 	if (!m_folderName.endsWith("/"))
 		m_folderName += "/";
@@ -3050,7 +3046,6 @@ Note* Basket::noteAt(int x, int y)
 
 Basket::~Basket()
 {
-	//delete m_action;
 	if(m_decryptBox)
 		delete m_decryptBox;
 #ifdef HAVE_LIBGPGME

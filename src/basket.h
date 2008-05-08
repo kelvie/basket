@@ -381,7 +381,7 @@ public slots:
 	void unsubscribeBackgroundImages();
 
 /// KEYBOARD SHORTCUT:
-  public: // Temporar: for deletion purpose
+  public:
 	KAction *m_action;
   private:
 	int      m_shortcutAction;
