@@ -1361,27 +1361,64 @@ void Basket::countsChangedTimeOut()
 
 
 Basket::Basket(QWidget *parent, const QString &folderName)
- : Q3ScrollView(parent),
-   m_noActionOnMouseRelease(false), m_ignoreCloseEditorOnNextMouseRelease(false), m_pressPos(-100, -100), m_canDrag(false),
-   m_firstNote(0), m_columnsCount(1), m_mindMap(false), m_resizingNote(0L), m_pickedResizer(0), m_movingNote(0L), m_pickedHandle(0, 0),
-   m_clickedToInsert(0), m_zoneToInsert(0), m_posToInsert(-1, -1),
-   m_isInsertPopupMenu(false),
-   m_loaded(false), m_loadingLaunched(false), m_locked(false), m_decryptBox(0), m_button(0), m_encryptionType(NoEncryption),
+    : Q3ScrollView(parent)
+    , m_noActionOnMouseRelease(false)
+    , m_ignoreCloseEditorOnNextMouseRelease(false)
+    , m_pressPos(-100, -100)
+    , m_canDrag(false)
+    , m_firstNote(0)
+    , m_columnsCount(1)
+    , m_mindMap(false)
+    , m_resizingNote(0L)
+    , m_pickedResizer(0)
+    , m_movingNote(0L)
+    , m_pickedHandle(0 , 0)
+    , m_clickedToInsert(0)
+    , m_zoneToInsert(0)
+    , m_posToInsert(-1 , -1)
+    , m_isInsertPopupMenu(false)
+    , m_loaded(false)
+    , m_loadingLaunched(false)
+    , m_locked(false)
+    , m_decryptBox(0)
+    , m_button(0)
+    , m_encryptionType(NoEncryption)
 #ifdef HAVE_LIBGPGME
-   m_gpg(0),
+    , m_gpg(0)
 #endif
-   m_backgroundPixmap(0), m_opaqueBackgroundPixmap(0), m_selectedBackgroundPixmap(0),
-   m_action(0), m_shortcutAction(0),
-   m_hoveredNote(0), m_hoveredZone(Note::None), m_lockedHovering(false), m_underMouse(false),
-   m_inserterRect(), m_inserterShown(false), m_inserterSplit(true), m_inserterTop(false), m_inserterGroup(false),
-   m_isSelecting(false), m_selectionStarted(false),
-   m_count(0), m_countFounds(0), m_countSelecteds(0),
-   m_folderName(folderName),
-   m_editor(0), m_leftEditorBorder(0), m_rightEditorBorder(0), m_redirectEditActions(false), m_editorWidth(-1), m_editorHeight(-1),
-   m_doNotCloseEditor(false), m_editParagraph(0), m_editIndex(0),
-   m_isDuringDrag(false), m_draggedNotes(),
-   m_focusedNote(0), m_startOfShiftSelectionNote(0),
-   m_finishLoadOnFirstShow(false), m_relayoutOnNextShow(false)
+    , m_backgroundPixmap(0)
+    , m_opaqueBackgroundPixmap(0)
+    , m_selectedBackgroundPixmap(0)
+    , m_action(0)
+    , m_shortcutAction(0)
+    , m_hoveredNote(0)
+    , m_hoveredZone(Note::None)
+    , m_lockedHovering(false)
+    , m_underMouse(false)
+    , m_inserterRect()
+    , m_inserterShown(false)
+    , m_inserterSplit(true)
+    , m_inserterTop(false)
+    , m_inserterGroup(false)
+    , m_isSelecting(false)
+    , m_selectionStarted(false)
+    , m_count(0)
+    , m_countFounds(0)
+    , m_countSelecteds(0)
+    , m_folderName(folderName)
+    , m_editor(0)
+    , m_leftEditorBorder(0)
+    , m_rightEditorBorder(0)
+    , m_redirectEditActions(false)
+    , m_editorWidth(-1)
+    , m_editorHeight(-1)
+    , m_doNotCloseEditor(false)
+    , m_isDuringDrag(false)
+    , m_draggedNotes()
+    , m_focusedNote(0)
+    , m_startOfShiftSelectionNote(0)
+    , m_finishLoadOnFirstShow(false)
+    , m_relayoutOnNextShow(false)
 {
 	QString sAction = "local_basket_activate_" + folderName;
 	m_action = actionCollection->addAction(sAction, this,
@@ -1516,8 +1553,8 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				m_canDrag  = true;
 				// Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
 				if (m_editor && m_editor->textEdit()) {
-					Q3TextEdit *editor = m_editor->textEdit();
-					editor->getCursorPosition(&m_editParagraph, &m_editIndex);
+					KTextEdit *editor = m_editor->textEdit();
+					m_textCursor = editor->textCursor();
 				}
 			}
 		}
@@ -2012,7 +2049,7 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// So we re-show the cursor, and re-position it at the right place:
 	if (m_editor && m_editor->textEdit()) {
 		Q3TextEdit *editor = m_editor->textEdit();
-		editor->setCursorPosition(m_editParagraph, m_editIndex);
+		editor->setTextCursor(m_textCursor);
 	}
 }
 
@@ -3632,9 +3669,7 @@ void Basket::updateEditorAppearance()
 		// Uggly Hack arround Qt bugs: placeCursor() don't call any signal:
 		HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
 		if (htmlEditor) {
-			int para, index;
-			m_editor->textEdit()->getCursorPosition(&para, &index);
-			if (para == 0 && index == 0) {
+			if (m_editor->textEdit()->textCursor().atStart()) {
 				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
 				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
 			} else {
