@@ -449,7 +449,7 @@ void Tag::saveTagsTo(Q3ValueList<Tag*> &list, const QString &fullPath)
 		root.appendChild(tagNode);
 		// Save tag properties:
 		XMLWork::addElement( document, tagNode, "name",      tag->name()                                      );
-		XMLWork::addElement( document, tagNode, "shortcut",  tag->shortcut().toStringInternal()               );
+		XMLWork::addElement( document, tagNode, "shortcut", tag->shortcut().primary().toString());
 		XMLWork::addElement( document, tagNode, "inherited", XMLWork::trueOrFalse(tag->inheritedBySiblings()) );
 		// Save all states:
 		for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2) {

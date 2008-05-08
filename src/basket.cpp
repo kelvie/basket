@@ -840,7 +840,9 @@ void Basket::loadProperties(const QDomElement &properties)
 
 	QDomElement shortcut = XMLWork::getElement(properties, "shortcut");
 	QString actionStrings[] = { "show", "globalShow", "globalSwitch" };
-	KShortcut combination  = KShortcut( shortcut.attribute( "combination", m_action->shortcut().toStringInternal() ) );
+	KShortcut combination  = KShortcut(shortcut.attribute(
+						   "combination",
+						   m_action->shortcut().primary().toString()));
 	QString   actionString =            shortcut.attribute( "action" );
 	int action = shortcutAction();
 	if (actionString == actionStrings[0]) action = 0;
@@ -877,7 +879,7 @@ void Basket::saveProperties(QDomDocument &document, QDomElement &properties)
 	QDomElement shortcut = document.createElement("shortcut");
 	properties.appendChild(shortcut);
 	QString actionStrings[] = { "show", "globalShow", "globalSwitch" };
-	shortcut.setAttribute( "combination", m_action->shortcut().toStringInternal() );
+	shortcut.setAttribute( "combination", m_action->shortcut().primary().toString());
 	shortcut.setAttribute( "action",      actionStrings[shortcutAction()]         );
 
 	QDomElement protection = document.createElement("protection");
