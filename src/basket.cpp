@@ -1438,7 +1438,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 
 	viewport()->setAcceptDrops(true);
 	viewport()->setMouseTracking(true);
-	viewport()->setAutoFillBackround(false); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
+	viewport()->setAutoFillBackground(false); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
 
 	// File Watcher:
 	m_watcher = new KDirWatch(this);
