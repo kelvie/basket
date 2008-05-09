@@ -1591,29 +1591,6 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			m_noActionOnMouseRelease = true;
 			return;
 		}
-		// MOVED TO RELEASE EVENT:
-		/* else if (clicked && zone != Note::None && zone != Note::BottomColumn && zone != Note::Resizer && (controlPressed || shiftPressed)) {
-			if (controlPressed && shiftPressed)
-				selectRange(m_startOfShiftSelectionNote, clicked, / *unselectOthers=* /false);
-			else if (shiftPressed)
-				selectRange(m_startOfShiftSelectionNote, clicked);
-			else if (controlPressed)
-				clicked->setSelectedRecursivly(!clicked->allSelected());
-			setFocusedNote(clicked); /// /// ///
-			m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
-			m_noActionOnMouseRelease = true;
-			return;
-		}*/
-
-		// Initializing Note move:
-/*		if ((zone == Note::Group || zone == Note::Handle) && clicked->isFree()) {
-			m_movingNote   = clicked;
-			m_pickedHandle = QPoint(event->pos().x() - clicked->x(), event->pos().y() - clicked->y());
-			m_noActionOnMouseRelease = true;
-			m_lockedHovering = true;
-			return;
-		}
-*/
 
 		// Folding/Unfolding group:
 		if (zone == Note::GroupExpander) {
@@ -1698,24 +1675,8 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 				case 4: type = NoteType::Launcher; break;
 				default:
 					m_noActionOnMouseRelease = false;
-					return; // Other options should be done on mouse release (to avoid mouse release to cancel them!)
-/*				case 5: type = NoteType::Color;    break;
-				case 6:
-					Global::bnpView->grabScreenshot();
-					break;
-				case 7:
-					Global::bnpView->slotColorFromScreen();
-					break;
-				case 8:
-					Global::bnpView->insertWizard(3); // loadFromFile
-					break;
-				case 9:
-					Global::bnpView->insertWizard(1); // importKMenuLauncher
-					break;
-				case 10:
-					Global::bnpView->insertWizard(2); // importIcon
-					break;
-*/			}
+					return;
+		}
 			if (type != 0) {
 				m_ignoreCloseEditorOnNextMouseRelease = true;
 				Global::bnpView->insertEmpty(type);
