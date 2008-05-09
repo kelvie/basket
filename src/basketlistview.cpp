@@ -111,24 +111,21 @@ int BasketListViewItem::width(const QFontMetrics &/* fontMetrics */, const Q3Lis
 
 QString BasketListViewItem::escapedName(const QString &string)
 {
-	// Underlining the Alt+Letter shortcut (and escape all other '&' characters), if any:
-	QString basketName = string;
-	basketName.replace('&', "&&"); // First escape all the amperstamp
-	QString letter; // Find the letter
-	QString altKey   = /*i18n(*/"Alt"/*)*/;   //i18n("The [Alt] key, as shown in shortcuts like Alt+C...", "Alt");
-	QString shiftKey = /*i18n(*/"Shift"/*)*/; //i18n("The [Shift] key, as shown in shortcuts like Alt+Shift+1...", "Shift");
-	QRegExp altLetterExp(      QString("^%1\\+(.)$").arg(altKey)                );
-	QRegExp altShiftLetterExp( QString("^%1\\+%2\\+(.)$").arg(altKey, shiftKey) );
-	if (altLetterExp.search(m_basket->shortcut().toStringInternal()) != -1)
-		letter = altLetterExp.cap(1);
-	if (letter.isEmpty() && altShiftLetterExp.search(m_basket->shortcut().toStringInternal()) != -1)
-		letter = altShiftLetterExp.cap(1);
-	if (!letter.isEmpty()) {
-		int index = basketName.find(letter, /*index=*/0, /*caseSensitive=*/false);
-		if (index != -1)
-			basketName.insert(index, '&');
-	}
-	return basketName;
+    // Underlining the Alt+Letter shortcut (and escape all other '&' characters), if any:
+    QString basketName = string;
+    basketName.replace('&', "&&"); // First escape all the amperstamp
+    QString letter;
+    QRegExp letterExp("^Alt\\+(?:Shift\\+)?(.)$");
+
+    QString basketShortcut = m_basket->shortcut().primary().toString();
+    if (letterExp.indexIn(basketShortcut) != -1) {
+        int index;
+        letter = letterExp.cap(1);
+        if ((index = basketName.indexOf(letter)) != -1)
+            basketName.insert(index, '&');
+    }
+
+    return basketName;
 }
 
 void BasketListViewItem::setup()
