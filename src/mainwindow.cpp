@@ -82,7 +82,6 @@
 //#include "addbasketwizard.h"
 #include "newbasketdialog.h"
 #include "basketfactory.h"
-#include "popupmenu.h"
 #include "xmlwork.h"
 #include "debugwindow.h"
 #include "notefactory.h"

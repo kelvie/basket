@@ -98,7 +98,6 @@
 #include "debugwindow.h"
 #include "exporterdialog.h"
 #include "config.h"
-#include "popupmenu.h"
 #ifdef HAVE_LIBGPGME
 #include "kgpgme.h"
 #endif
