@@ -1736,15 +1736,14 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 {
 	if (event->reason() == QContextMenuEvent::Keyboard) {
 		if (countFounds/*countShown*/() == 0) { // TODO: Count shown!!
-			QRect basketRect( mapToGlobal(QPoint(0,0)), size() );
-			Q3PopupMenu *menu = Global::bnpView->popupMenu("insert_popup");
+			KMenu *menu = Global::bnpView->popupMenu("insert_popup");
 			setInsertPopupMenu();
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())             );
 			removeInserter();
 			m_lockedHovering = true;
-			PopupMenu::execAtRectCenter(*menu, basketRect); // Popup at center or the basket
+			menu->exec(mapToGlobal(QPoint(0,0)));
 		} else {
 			if ( ! m_focusedNote->isSelected() )
 				unselectAllBut(m_focusedNote);
@@ -1756,7 +1755,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 			doHoverEffects(m_focusedNote, Note::Content); // In the case where another popup menu was open, we should do that manually!
 			m_lockedHovering = true;
-			PopupMenu::execAtRectBottom(*menu, noteVisibleRect(m_focusedNote), true);
+			menu->exec(noteVisibleRect(m_focusedNote).bottomLeft());
 		}
 	}
 }

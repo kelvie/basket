@@ -20,7 +20,6 @@ set(basketcommon_LIB_SRCS
     notefactory.cpp
     softwareimporters.cpp
     focusedwidgets.cpp
-    popupmenu.cpp
     basketfactory.cpp
     tag.cpp
     qeffects.cpp
