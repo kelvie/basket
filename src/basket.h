@@ -271,6 +271,7 @@ class Basket : public Q3ScrollView
 	int    m_savedZoneToInsert;
 	QPoint m_savedPosToInsert;
 	bool   m_isInsertPopupMenu;
+    QAction *m_insertMenuTitle;
   public:
 	void saveInsertionData();
 	void restoreInsertionData();

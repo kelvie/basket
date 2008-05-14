@@ -1374,6 +1374,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
     , m_zoneToInsert(0)
     , m_posToInsert(-1 , -1)
     , m_isInsertPopupMenu(false)
+    , m_insertMenuTitle(0)
     , m_loaded(false)
     , m_loadingLaunched(false)
     , m_locked(false)
@@ -1613,17 +1614,33 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 	}
 
 	// Insertion Popup Menu:
-	if ( (event->button() == Qt::RightButton) &&
-	     ((!clicked && isFreeLayout()) ||
-	      (clicked && (zone == Note::TopInsert || zone == Note::TopGroup || zone == Note::BottomInsert || zone == Note::BottomGroup || zone == Note::BottomColumn))) ) {
+	if ((event->button() == Qt::RightButton)
+         && ((!clicked && isFreeLayout())
+             || (clicked
+                 && (zone == Note::TopInsert
+                     || zone == Note::TopGroup
+                     || zone == Note::BottomInsert
+                     || zone == Note::BottomGroup
+                     || zone == Note::BottomColumn)))) {
 		unselectAll();
 		m_clickedToInsert = clicked;
 		m_zoneToInsert    = zone;
 		m_posToInsert     = event->pos();
-		KMenu* menu = (KMenu*)(Global::bnpView->popupMenu("insert_popup"));
-		if (!menu->title(/*id=*/120).isEmpty()) // If we already added a title, remove it because it would be kept and then added several times:
-			menu->removeItem(/*id=*/120);
-		menu->insertTitle((zone == Note::TopGroup || zone == Note::BottomGroup ? i18nc("The verb (Group New Note)", "Group") : i18nc("The verb (Insert New Note)", "Insert")), /*id=*/120, /*index=*/0);
+
+		KMenu* menu = Global::bnpView->popupMenu("insert_popup");
+        // If we already added a title, remove it because it would be kept and
+        // then added several times.
+        if (m_insertMenuTitle && menu->actions().contains(m_insertMenuTitle))
+            menu->removeAction(m_insertMenuTitle);
+
+        QAction *first = menu->actions().value(0);
+
+        // i18n: Verbs (for the "insert" menu)
+        if (zone == Note::TopGroup || zone == Note::BottomGroup)
+            m_insertMenuTitle = menu->addTitle(i18n("Group"), first);
+        else
+            m_insertMenuTitle = menu->addTitle(i18n("Insert"), first);
+
 		setInsertPopupMenu();
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()) );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())               );
@@ -1646,7 +1663,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			clicked->setSelected(true);
 		}
 		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
-		Q3PopupMenu* menu = Global::bnpView->popupMenu("note_popup");
+		KMenu* menu = Global::bnpView->popupMenu("note_popup");
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 		connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 		doHoverEffects(clicked, zone); // In the case where another popup menu was open, we should do that manually!
