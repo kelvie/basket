@@ -247,7 +247,7 @@ void SystemTray::mousePressEvent(QMouseEvent *event)
 		event->accept();
 	} else if (event->button() & Qt::RightButton) { // Popup menu
 		KMenu menu(this);
-		menu.insertTitle( SmallIcon("basket"), kapp->aboutData()->programName() );
+		menu.addTitle( SmallIcon("basket"), kapp->aboutData()->programName() );
 
 		Global::bnpView->actNewBasket->plug(&menu);
 		Global::bnpView->actNewSubBasket->plug(&menu);

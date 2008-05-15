@@ -36,7 +36,6 @@
 #include <QResizeEvent>
 #include <QLabel>
 #include <QDropEvent>
-#include <Q3PopupMenu>
 #include <QDragEnterEvent>
 #include <Q3HBoxLayout>
 #include <Q3ValueList>
@@ -1749,7 +1748,7 @@ void Basket::contentsContextMenuEvent(QContextMenuEvent *event)
 			setFocusedNote(m_focusedNote); /// /// ///
 			m_startOfShiftSelectionNote = (m_focusedNote->isGroup() ? m_focusedNote->firstRealChild() : m_focusedNote);
 			// Popup at bottom (or top) of the focused note, if visible :
-			Q3PopupMenu *menu = Global::bnpView->popupMenu("note_popup");
+			KMenu *menu = Global::bnpView->popupMenu("note_popup");
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())   );
 			connect( menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()) );
 			doHoverEffects(m_focusedNote, Note::Content); // In the case where another popup menu was open, we should do that manually!
@@ -2400,7 +2399,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 					// TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
 					Global::bnpView->doBasketDeletion(this);
 				} else if (link == "basket-internal-import") {
-					Q3PopupMenu *menu = Global::bnpView->popupMenu("fileimport");
+					KMenu *menu = Global::bnpView->popupMenu("fileimport");
 					menu->exec(event->globalPos());
 				} else {
 					KRun *run = new KRun(link); //  open the URL.
@@ -3426,13 +3425,13 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
-		menu.insertTitle(/*SmallIcon(state->icon()), */tag->name());
+		menu.addTitle(/*SmallIcon(state->icon()), */tag->name());
 		menu.insertItem( SmallIconSet("editdelete"), i18n("&Remove"),             1 );
 		menu.insertItem( SmallIconSet("configure"),  i18n("&Customize..."),       2 );
 		menu.insertSeparator();
 		menu.insertItem( SmallIconSet("filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
-		menu.insertTitle(tag->name());
+		menu.addTitle(tag->name());
 		Q3ValueList<State*>::iterator it;
 		State *currentState;
 
@@ -3555,7 +3554,7 @@ void Basket::popupTagsMenu(Note *note)
 	m_tagPopupNote = note;
 
 	KMenu menu(this);
-	menu.insertTitle(i18n("Tags"));
+	menu.addTitle(i18n("Tags"));
 
 	Global::bnpView->populateTagsMenu(menu, note);
 

@@ -27,7 +27,6 @@
 #include <qlabel.h>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3PopupMenu>
 #include <Q3VBoxLayout>
 #include <QMoveEvent>
 #include <ksystemtray.h>
@@ -44,7 +43,6 @@ class QWidget;
 class QPoint;
 class KAction;
 class KToggleAction;
-class Q3PopupMenu;
 class QSignalMapper;
 class QStringList;
 class QToolTipGroup;

@@ -29,7 +29,6 @@
 #include <kapplication.h>
 #include <qclipboard.h>
 //Added by qt3to4:
-#include <Q3PopupMenu>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QWheelEvent>
@@ -47,7 +46,7 @@ class FocusedTextEdit : public KTextEdit
 	void keyPressEvent(QKeyEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	void enterEvent(QEvent *event);
-	Q3PopupMenu* createPopupMenu(const QPoint &pos);
+	KMenu* createPopupMenu(const QPoint &pos);
   signals:
 	void escapePressed();
 	void mouseEntered();

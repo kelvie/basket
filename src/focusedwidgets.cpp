@@ -184,9 +184,9 @@ void FocusedTextEdit::enterEvent(QEvent *event)
 	KTextEdit::enterEvent(event);
 }
 
-Q3PopupMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
+KMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 {
-	Q3PopupMenu *menu = KTextEdit::createPopupMenu(pos);
+	KMenu *menu = KTextEdit::createPopupMenu(pos);
 
 	int index = 0;
 	int id = 0;
