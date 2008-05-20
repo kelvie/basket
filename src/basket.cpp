@@ -3424,8 +3424,8 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	Tag *tag = state->parentTag();
 	m_tagPopup = tag;
 
-	QKeySequence sequence = tag->shortcut().operator QKeySequence();
-	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isNull());
+	QKeySequence sequence = tag->shortcut().primary();
+	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isEmpty());
 
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
@@ -3443,24 +3443,23 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		for (it = tag->states().begin(); it != tag->states().end(); ++it) {
 			currentState = *it;
 			QKeySequence sequence;
-			if (currentState == nextState && !tag->shortcut().isNull())
+			if (currentState == nextState && !tag->shortcut().isEmpty())
 			    sequence = tag->shortcut().primary();
 
 			StateAction *sa = new StateAction(state, KShortcut(sequence), false);
 			sa->setChecked(state == currentState);
 
 			menu.addAction(sa);
-			if (currentState == nextState && !tag->shortcut().isNull())
+			if (currentState == nextState && !tag->shortcut().isEmpty())
 				menu.setAccel(sequence, i);
 			++i;
 		}
 		menu.insertSeparator();
-		menu.addAction(new KAction(
-				   KIcon("editdelete"),
-				   i18n("&Remove"),
-				   (sequenceOnDelete ? sequence : QKeySequence()),
-				   &menu)
-		    );
+		KAction *act = new KAction(&menu);
+        act->setIcon(KIcon("editdelete"));
+        act->setText(i18n("&Remove"));
+        act->setShortcut(sequenceOnDelete ? sequence : QKeySequence());
+		menu.addAction(act);
 		menu.addAction(new KAction(
 				   KIcon("configure"),
 				   i18n("&Customize..."),
