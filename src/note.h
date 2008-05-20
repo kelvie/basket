@@ -22,10 +22,10 @@
 #define NOTE_H
 
 #include <qstring.h>
-#include <qpixmap.h>
+
 //Added by qt3to4:
 #include <Q3ValueList>
-#include <kpixmap.h>
+#include <QPixmap>
 #include <qdatetime.h>
 
 #include "notecontent.h"
@@ -163,7 +163,7 @@ class Note
 /// DRAWING:
   private:
 	QPixmap m_bufferedPixmap;
-	KPixmap m_bufferedSelectionPixmap;
+	QPixmap m_bufferedSelectionPixmap;
   public:
 	void draw(QPainter *painter, const QRect &clipRect);
 	void drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap);
@@ -174,7 +174,7 @@ class Note
 	void drawRoundings(QPainter *painter, int x, int y, int type, int width = 0, int height = 0);
 	void unbufferizeAll();
 	void bufferizeSelectionPixmap();
-	inline void unbufferize()  { m_bufferedPixmap.resize(0, 0); m_bufferedSelectionPixmap.resize(0, 0); }
+	inline void unbufferize()  { m_bufferedPixmap = QPixmap(); m_bufferedSelectionPixmap = QPixmap(); }
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
 	void recomputeBlankRects(Q3ValueList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
