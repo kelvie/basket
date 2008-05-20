@@ -52,7 +52,7 @@
 #include <qpoint.h>
 #include <qstringlist.h>
 #include <kapplication.h>
-#include <kglobalsettings.h>
+#include <KColorScheme> // for KStatefulBrush
 #include <KOpenWithDialog>
 #include <kservice.h>
 #include <klocale.h>
@@ -2802,11 +2802,12 @@ void Basket::drawInserter(QPainter &painter, int xPainter, int yPainter)
 	rect.moveBy(-xPainter, -yPainter);
 	int lineY  = (m_inserterGroup && m_inserterTop ? 0 : 2);
 	int roundY = (m_inserterGroup && m_inserterTop ? 0 : 1);
-
-	QColor dark  = KApplication::palette().active().dark();
-	QColor light = dark.light().light();
+    
+    KStatefulBrush statefulBrush(KColorScheme::View, KColorScheme::HoverColor);
+    QColor dark = statefulBrush.brush(palette()).color();
+	QColor light = dark.lighter().lighter();
 	if (m_inserterGroup && Settings::groupOnInsertionLine())
-		light = Tools::mixColor(light, KGlobalSettings::highlightColor());
+		light = Tools::mixColor(light, palette().color(QPalette::Highlight));
 	painter.setPen(dark);
 	// The horizontal line:
 	//painter.drawRect(       rect.x(),                    rect.y() + lineY,  rect.width(), 2);
@@ -3066,7 +3067,9 @@ void Basket::animateLoad()
 
 QColor Basket::selectionRectInsideColor()
 {
-	return Tools::mixColor(Tools::mixColor(backgroundColor(), KGlobalSettings::highlightColor()), backgroundColor());
+	return Tools::mixColor(Tools::mixColor(backgroundColor(),
+                                           palette().color(QPalette::Highlight)),
+                           backgroundColor());
 }
 
 QColor alphaBlendColors(const QColor &bgColor, const QColor &fgColor, const int a)
@@ -3229,9 +3232,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 						selectionRectInside.moveBy(rect.x(), rect.y());
 						blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap);
 					}
-					painter2.setPen(KGlobalSettings::highlightColor().dark());
+					painter2.setPen(palette().color(QPalette::Highlight).darker());
 					painter2.drawRect(selectionRect);
-					painter2.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), backgroundColor()));
+					painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), backgroundColor()));
 					painter2.drawPoint(selectionRect.topLeft());
 					painter2.drawPoint(selectionRect.topRight());
 					painter2.drawPoint(selectionRect.bottomLeft());
@@ -3686,7 +3689,7 @@ QColor Basket::backgroundColor()
 	if (m_backgroundColorSetting.isValid())
 		return m_backgroundColorSetting;
 	else
-		return KGlobalSettings::baseColor();
+		return palette().color(QPalette::Base);
 }
 
 QColor Basket::textColor()
@@ -3694,7 +3697,7 @@ QColor Basket::textColor()
 	if (m_textColorSetting.isValid())
 		return m_textColorSetting;
 	else
-		return KGlobalSettings::textColor();
+		return palette().color(QPalette::Text);
 }
 
 void Basket::unbufferizeAll()
