@@ -2020,7 +2020,7 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// This is because during a drag, the mouse can fly over the text edit and move the cursor position, and even HIDE the cursor.
 	// So we re-show the cursor, and re-position it at the right place:
 	if (m_editor && m_editor->textEdit()) {
-		Q3TextEdit *editor = m_editor->textEdit();
+		KTextEdit *editor = m_editor->textEdit();
 		editor->setTextCursor(m_textCursor);
 	}
 }
@@ -2623,7 +2623,9 @@ void Basket::unselectAll()
 {
 	if (redirectEditActions()) {
 		if (m_editor->textEdit()) {
-			m_editor->textEdit()->removeSelection();
+            QTextCursor cursor = m_editor->textEdit()->textCursor();
+            cursor.clearSelection();
+			m_editor->textEdit()->setTextCursor(cursor);
 			selectionChangedInEditor(); // THIS IS NOT EMITED BY Qt!!!
 		} else if (m_editor->lineEdit())
 			m_editor->lineEdit()->deselect();
@@ -3644,11 +3646,11 @@ void Basket::updateEditorAppearance()
 		HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
 		if (htmlEditor) {
 			if (m_editor->textEdit()->textCursor().atStart()) {
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward);
 			} else {
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward);
 			}
 			htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
 		}
@@ -3658,7 +3660,7 @@ void Basket::updateEditorAppearance()
 void Basket::editorPropertiesChanged()
 {
 	if (isDuringEdit() && m_editor->note()->content()->type() == NoteType::Html) {
-		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? Q3TextEdit::AutoAll : Q3TextEdit::AutoNone);
+		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
 	}
 }
 
@@ -3785,6 +3787,7 @@ void Basket::placeEditorAndEnsureVisible()
 	placeEditor(/*andEnsureVisible=*/true);
 }
 
+// TODO: [kw] Oh boy, this will probably require some tweaking.
 void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 {
 	if (!isDuringEdit())
@@ -3810,7 +3813,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 			//        editor->sync() CRASH!!
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
-			height = textEdit->contentsHeight() + 2*frameWidth;
+			height = textEdit->viewport()->height() + 2*frameWidth;
 //			height = /*qMax(*/height/*, note->height())*/;
 //			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
@@ -3853,19 +3856,15 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 //		ensureNoteVisible(note);
 }
 
-#include <iostream>
 void Basket::editorCursorPositionChanged()
 {
 	if (!isDuringEdit())
 		return;
 
 	FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
-	const QTextCursor *cursor = textEdit->textCursor();
-//	kDebug() << cursor->x() << ";" << cursor->y() << "      "
-//			  << cursor->globalX() << ";" << cursor->globalY() << "          "
-//			  << cursor->offsetX() << ";" << cursor->offsetY() << ";";
 
-	ensureVisible(m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50);
+    QPoint cursorPoint = mapTo(viewport(), textEdit->cursorRect().center());
+	ensureVisible(cursorPoint.x(), cursorPoint.y());
 }
 
 void Basket::closeEditorDelayed()
@@ -4103,20 +4102,28 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 		m_editor->widget()->show();
 		//m_editor->widget()->raise();
 		m_editor->widget()->setFocus();
-		connect( m_editor, SIGNAL(askValidation()),            this, SLOT(closeEditorDelayed())       );
-		connect( m_editor, SIGNAL(mouseEnteredEditorWidget()), this, SLOT(mouseEnteredEditorWidget()) );
-		if (m_editor->textEdit()) {
-			connect( m_editor->textEdit(), SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()) );
-			if (clickedPoint != QPoint()) {
-				QPoint pos(clickedPoint.x() - note->x() - note->contentX() + m_editor->textEdit()->frameWidth() + 4   - m_editor->textEdit()->frameWidth(),
-				           clickedPoint.y() - note->y()   - m_editor->textEdit()->frameWidth());
-				// Do it right before the kapp->processEvents() to not have the cursor to quickly flicker at end (and sometimes stay at end AND where clicked):
-				m_editor->textEdit()->moveCursor(KTextEdit::MoveHome, false);
-				m_editor->textEdit()->ensureCursorVisible();
-				m_editor->textEdit()->placeCursor(pos);
-				updateEditorAppearance();
-			}
-		}
+        connect(m_editor, SIGNAL(askValidation()),
+                this, SLOT(closeEditorDelayed()));
+        connect(m_editor, SIGNAL(mouseEnteredEditorWidget()),
+                this, SLOT(mouseEnteredEditorWidget()));
+
+        KTextEdit *textEdit = m_editor->textEdit();
+        if (textEdit) {
+            connect(textEdit, SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()));
+            if (clickedPoint != QPoint()) {
+                // clickedPoint comes from the QMouseEvent, which is in this
+                // widget's coordinate system.
+                QPoint pos = textEdit->mapFrom(this, clickedPoint);
+                // Do it right before the kapp->processEvents() to not have the
+                // cursor to quickly flicker at end (and sometimes stay at end
+                // AND where clicked):
+                textEdit->moveCursor(KTextEdit::MoveHome, false);
+                textEdit->ensureCursorVisible();
+                textEdit->setTextCursor(textEdit->cursorForPosition(pos));
+                updateEditorAppearance();
+            }
+        }
+
 //		kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
 		ensureNoteVisible(note);   //  because toolbar can create a new line and then partially hide the note
 		m_editor->widget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
@@ -4129,7 +4136,7 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 			editor->note()->deleteSelectedNotes();
 			save();
 		}
-		delete editor;
+		editor->deleteLater();
 		unlockHovering();
 		filterAgain();
 		unselectAll();
@@ -4141,7 +4148,7 @@ void Basket::noteDelete()
 {
 	if (redirectEditActions()) {
 		if (m_editor->textEdit())
-			m_editor->textEdit()->del();
+			m_editor->textEdit()->textCursor().deleteChar();
 		else if (m_editor->lineEdit())
 			m_editor->lineEdit()->del();
 		return;
@@ -4153,7 +4160,7 @@ void Basket::noteDelete()
 	if (Settings::confirmNoteDeletion())
 		really = KMessageBox::questionYesNo( this,
 			i18np("<qt>Do you really want to delete this note?</qt>",
-			     "<qt>Do you really want to delete those <b>%n</b> notes?</qt>",
+			     "<qt>Do you really want to delete these <b>%n</b> notes?</qt>",
 			     countSelecteds()),
 			i18np("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
