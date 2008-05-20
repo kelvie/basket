@@ -23,7 +23,7 @@
 
 #include <ktextedit.h>
 #include <kcolorcombo.h>
-#include <kfontcombo.h>
+#include <QFontComboBox>
 #include <kcombobox.h>
 #include <klineedit.h>
 #include <kapplication.h>
@@ -54,12 +54,29 @@ class FocusedTextEdit : public KTextEdit
 	bool m_disableUpdatesOnKeyPress;
 };
 
+
+// BIG TODO: Use this event filter instead
+class EscapableWidgetFilter : public QObject
+{
+	Q_OBJECT
+public:
+	EscapableWidgetFilter(QWidget *parent=0);
+	~EscapableWidgetFilter() {}
+
+protected:
+	bool eventFilter(QObject *object, QEvent *event);
+
+signals:
+	void escapePressed();
+	void returnPressed();
+};
+
 // TODO: Rename to EscapableKColorCombo
 class FocusedColorCombo : public KColorCombo
 {
   Q_OBJECT
   public:
-	FocusedColorCombo(QWidget *parent = 0, const char *name = 0);
+	FocusedColorCombo(QWidget *parent = 0);
 	~FocusedColorCombo();
   protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -69,11 +86,11 @@ class FocusedColorCombo : public KColorCombo
 };
 
 // TODO: Rename to EscapableKFontCombo
-class FocusedFontCombo : public KFontCombo
+class FocusedFontCombo : public QFontComboBox
 {
   Q_OBJECT
   public:
-	FocusedFontCombo(QWidget *parent = 0, const char *name = 0);
+	FocusedFontCombo(QWidget *parent = 0);
 	~FocusedFontCombo();
   protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -85,13 +102,13 @@ class FocusedFontCombo : public KFontCombo
 // TODO: Rename to EscapableKComboBox
 class FocusedComboBox : public KComboBox
 {
-  Q_OBJECT
-  public:
-	FocusedComboBox(QWidget *parent = 0, const char *name = 0);
+	Q_OBJECT
+public:
+	FocusedComboBox(QWidget *parent = 0);
 	~FocusedComboBox();
-  protected:
+protected:
 	void keyPressEvent(QKeyEvent *event);
-  signals:
+signals:
 	void escapePressed();
 	void returnPressed2();
 };
