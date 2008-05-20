@@ -22,7 +22,6 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <Q3ValueList>
-#include <kglobalsettings.h>
 #include <qstyle.h>
 #include <kapplication.h>
 #include <kstyle.h>
@@ -1291,7 +1290,7 @@ void Note::drawExpander(QPainter *painter, int x, int y, const QColor &backgroun
 		cg.setColor(QColorGroup::Base, background);
 
 		// Fill the inside of the expander in white, typically:
-		QBrush brush(KGlobalSettings::baseColor());
+		QBrush brush(palette().color(QPalette::Base));
 		painter->fillRect(x, y, 9, 9, brush);
 
 		// Draw it:
@@ -1779,7 +1778,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 			// Draw gradient or resizer:
 			if (m_hovered && m_hoveredZone == Resizer) {
 				QColor baseColor(basket()->backgroundColor());
-				QColor highColor(KGlobalSettings::highlightColor());
+				QColor highColor(palette().color(QPalette::Highlight));
 				drawResizer(&painter2, 0, 0, RESIZER_WIDTH, resizerHeight(), baseColor, highColor, /*rounded=*/!isColumn());
 				if (!isColumn()) {
 					drawRoundings(&painter2, RESIZER_WIDTH - 3, 0,                   /*type=*/3);
@@ -1811,9 +1810,9 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 						selectionRectInside.moveBy(right, y());
 						basket()->blendBackground(painter2, selectionRectInside, right, y(), false);
 				}
-				painter2.setPen(KGlobalSettings::highlightColor().dark());
+				painter2.setPen(palette().color(QPalette::Highlight).darker());
 				painter2.drawRect(selectionRect);
-				painter2.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), basket()->backgroundColor()));
+				painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
 				painter2.drawPoint(selectionRect.topLeft());
 				painter2.drawPoint(selectionRect.topRight());
 				painter2.drawPoint(selectionRect.bottomLeft());
@@ -1855,7 +1854,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
 	/** Initialise colors: */
 	QColor baseColor(basket()->backgroundColor());
-	QColor highColor(KGlobalSettings::highlightColor());
+	QColor highColor(palette().color(QPalette::Highlight));
 	QColor midColor = Tools::mixColor(baseColor, highColor);
 
 	/** Initialise brushs and pens: */
@@ -1907,9 +1906,9 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	QColor background = basket()->backgroundColor();
 	if (isSelected())
 		if (m_computedState.backgroundColor().isValid())
-			background = Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), KGlobalSettings::highlightColor()), KGlobalSettings::highlightColor());
+			background = Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight));
 		else
-			background = KGlobalSettings::highlightColor();
+			background = palette().color(QPalette::Highlight);
 	else if (m_computedState.backgroundColor().isValid())
 		background = m_computedState.backgroundColor();
 	QColor bgColor;
@@ -1990,7 +1989,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	cg.setColor(QColorGroup::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
 	cg.setColor(QColorGroup::Background, bgColor);
 	if (isSelected())
-		cg.setColor(QColorGroup::Text, KGlobalSettings::highlightedTextColor());
+		cg.setColor(QColorGroup::Text, palette().color(QPalette::HighlightedText));
 
 	// Draw the Tags Arrow:
 	if (hovered) {
@@ -2054,18 +2053,18 @@ void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 					//blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, &m_selectedBackgroundPixmap);
 				}
 
-				painter3.setPen(KGlobalSettings::highlightColor().dark());
+				painter3.setPen(palette().color(QPalette::Highlight).darker());
 				painter3.drawRect(selectionRect);
 				if (isGroup())
-					painter3.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), basket()->backgroundColor()));
+					painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
 				else {
 					// What are the background colors:
 					QColor bgColor = basket()->backgroundColor();
 					if (isSelected())
-						bgColor = (m_computedState.backgroundColor().isValid() ? Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), KGlobalSettings::highlightColor()), KGlobalSettings::highlightColor()) : KGlobalSettings::highlightColor());
+						bgColor = (m_computedState.backgroundColor().isValid() ? Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight)) : palette().color(QPalette::Highlight));
 					else if (m_computedState.backgroundColor().isValid())
 						bgColor = m_computedState.backgroundColor();
-					painter3.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), bgColor));
+					painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), bgColor));
 				}
 				painter3.drawPoint(selectionRect.topLeft());
 				painter3.drawPoint(selectionRect.topRight());
@@ -2381,7 +2380,7 @@ void Note::unbufferizeAll()
 void Note::bufferizeSelectionPixmap()
 {
 	if (m_bufferedSelectionPixmap.isNull()) {
-		QColor insideColor = KGlobalSettings::highlightColor();
+		QColor insideColor = palette().color(QPalette::Highlight);
 		KPixmap kpixmap(m_bufferedPixmap);
 		m_bufferedSelectionPixmap = KPixmapEffect::fade(kpixmap, 0.25, insideColor);
 	}

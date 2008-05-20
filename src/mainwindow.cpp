@@ -50,7 +50,6 @@
 
 #include <qpainter.h>
 #include <qstyle.h>
-#include <kglobalsettings.h>
 #include <kstandarddirs.h>
 #include <qdir.h>
 #include <qstringlist.h>

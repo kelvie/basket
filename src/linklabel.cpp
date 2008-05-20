@@ -37,7 +37,6 @@
 #include <qcombobox.h>
 #include <q3hgroupbox.h>
 #include <qpainter.h>
-#include <kglobalsettings.h>
 #include <qstyle.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
@@ -122,9 +121,9 @@ QColor LinkLook::effectiveHoverColor() const
 QColor LinkLook::defaultColor() const
 {
 	if (m_useLinkColor)
-		return KGlobalSettings::linkColor();
+		return palette().color(QPalette::Link);
 	else
-		return KGlobalSettings::textColor();
+		return palette().color(QPalette::Text);
 }
 
 QColor LinkLook::defaultHoverColor() const
@@ -466,7 +465,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 
 	// Figure out the text color:
 	if (isSelected)
-		painter->setPen(KGlobalSettings::highlightedTextColor());
+		painter->setPen(palette().color(QPalette::HighlightedText));
 	else if (isIconButtonHovered)
 		painter->setPen(m_look->effectiveHoverColor());
 	else if (!isDefaultColor || (!m_look->color().isValid() && !m_look->useLinkColor())) // If the color is FORCED or if the link color default to the text color:

@@ -36,7 +36,6 @@
 #include <kcolordialog.h>
 #include <kmessagebox.h>
 #include <klocale.h>
-#include <kglobalsettings.h>
 
 #include <qbitmap.h>
 #include <kurifilter.h>
@@ -744,7 +743,7 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QCo
 	width -= 1;
 //	KPixmap pixmap = m_pixmap;
 //	if (note()->isSelected())
-//		pixmap = KPixmapEffect::selectedPixmap(m_pixmap, KGlobalSettings::highlightColor());
+//		pixmap = KPixmapEffect::selectedPixmap(m_pixmap, palette().color(QPalette::Highlight));
 
 	if (width >= m_pixmap.width()) // Full size
 		painter->drawPixmap(0, 0, m_pixmap);
