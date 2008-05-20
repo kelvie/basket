@@ -308,7 +308,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	bool    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
-	QMovie  movie() { return m_movie; }    /// << @return the movie note-content.
+	QMovie&  movie() { return m_movie; }    /// << @return the movie note-content.
   protected slots:
 	void movieUpdated(const QRect&);
 	void movieResized(const QSize&);
