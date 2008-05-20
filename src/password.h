@@ -24,13 +24,13 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include "passwordlayout.h"
+#include "ui_passwordlayout.h"
 #include <KDialog>
 
 /**
 	@author Petri Damsten <damu@iki.fi>
 */
-class Password : public PasswordLayout
+class Password : public KDialog, public Ui::PasswordLayout
 {
 	Q_OBJECT
 	public:
