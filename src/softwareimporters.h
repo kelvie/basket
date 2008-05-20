@@ -28,6 +28,8 @@ class QString;
 class Q3VButtonGroup;
 class QDomElement;
 class KTextEdit;
+class QRadioButton;
+class Q3TextEdit;
 
 class Basket;
 class Note;
