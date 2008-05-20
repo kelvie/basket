@@ -293,7 +293,7 @@ class Basket : public Q3ScrollView
   protected:
     bool event(QEvent *event);
     // TODO: replace with QGraphicsScene::helpEvent()
-    void toolTipEvent(QHelpEvent *event);
+    void tooltipEvent(QHelpEvent *event);
 
 /// ANIMATIONS:
   private:

@@ -2835,15 +2835,16 @@ bool Basket::event(QEvent *event)
 {
     // Only take the help events
     if (event->type() == QEvent::ToolTip) {
-	helpEvent(event);
-	return false;
+        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+        tooltipEvent(helpEvent);
+        return false;
     } else
-	return true;
+        return true;
 }
 
 void Basket::tooltipEvent(QHelpEvent *event)
 {
-    QPoint point = event->pos();
+    QPoint pos = event->pos();
 	if ( !m_loaded || !Settings::showNotesToolTip() )
 		return;
 
