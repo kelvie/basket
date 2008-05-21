@@ -2846,14 +2846,14 @@ bool Basket::event(QEvent *event)
 
 void Basket::tooltipEvent(QHelpEvent *event)
 {
-    QPoint pos = event->pos();
+    QPoint pos = event->globalPos();
 	if ( !m_loaded || !Settings::showNotesToolTip() )
 		return;
 
 	QString message;
 	QRect   rect;
 
-	QPoint contentPos = viewportToContents(pos);
+	QPoint contentPos = viewportToContents(event->pos());
 	Note *note = noteAt(contentPos.x(), contentPos.y());
 
 	if (!note && isFreeLayout()) {
