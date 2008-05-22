@@ -2402,7 +2402,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 					KMenu *menu = Global::bnpView->popupMenu("fileimport");
 					menu->exec(event->globalPos());
 				} else {
-					KRun *run = new KRun(link); //  open the URL.
+					KRun *run = new KRun(KUrl(link), window()); //  open the URL.
 					run->setAutoDelete(true);
 				}
 				break;
@@ -4319,29 +4319,29 @@ void Basket::noteOpen(Note *note)
 		// Finally do the opening job:
 		QString customCommand = note->content()->customOpenCommand();
 		if (customCommand.isEmpty()) {
-			KRun *run = new KRun(url);
+			KRun *run = new KRun(url, window());
 			run->setAutoDelete(true);
 		} else
-			KRun::run(customCommand, url);
+			KRun::run(customCommand, url, window());
 	}
 }
 
 /** Code from bool KRun::displayOpenWithDialog(const KUrl::List& lst, bool tempFiles)
   * It does not allow to set a text, so I ripped it to do that:
   */
-bool KRun__displayOpenWithDialog(const KUrl::List& lst, bool tempFiles, const QString &text)
+bool KRun__displayOpenWithDialog(const KUrl::List& lst, QWidget *window, bool tempFiles, const QString &text)
 {
 	if (kapp && !KAuthorized::authorizeKAction("openwith")) {
-		KMessageBox::sorry(0L, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
+		KMessageBox::sorry(window, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
 	KOpenWithDialog l(lst, text, QString::null, 0L);
 	if (l.exec()) {
 		KService::Ptr service = l.service();
 		if (!!service)
-			return KRun::run(*service, lst, tempFiles);
+			return KRun::run(*service, lst, window, tempFiles);
 		//kDebug(250) << "No service set, running " << l.text() << endl;
-		return KRun::run(l.text(), lst); // TODO handle tempFiles
+		return KRun::run(l.text(), lst, window); // TODO handle tempFiles
 	}
 	return false;
 }
@@ -4358,7 +4358,7 @@ void Basket::noteOpenWith(Note *note)
 	QString text    = note->content()->messageWhenOpening(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
 	if (url.isEmpty())
 		emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
-	else if (KRun__displayOpenWithDialog(url, false, text))
+	else if (KRun__displayOpenWithDialog(url, window(), false, text))
 		emit postMessage(message); // "Opening link target with..." / "Opening note file with..."
 }
 
