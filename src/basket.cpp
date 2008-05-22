@@ -5290,16 +5290,15 @@ bool Basket::isEncrypted()
 
 bool Basket::isFileEncrypted()
 {
-	QFile file(fullPath() + ".basket");
+    QFile file(fullPath() + ".basket");
 
-	if (file.open(QIODevice::ReadOnly)){
-		QString line;
-
-		file.readLine(line, 32);
-		if(line.startsWith("-----BEGIN PGP MESSAGE-----"))
-		return true;
-	}
-	return false;
+    if (file.open(QIODevice::ReadOnly)){
+        // Should be ASCII anyways
+        QString line = file.readLine(32);
+        if (line.startsWith("-----BEGIN PGP MESSAGE-----"))
+            return true;
+    }
+    return false;
 }
 
 bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
