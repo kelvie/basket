@@ -66,6 +66,8 @@
 
 #include "debugwindow.h"
 
+#include <KIO/CopyJob>
+
 /** Create notes from scratch (just a content) */
 
 Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool reallyPlainText/* = false*/)
@@ -699,9 +701,8 @@ Note* NoteFactory::copyFileAndLoad(const KUrl &url, Basket *parent)
 	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
 			url, KUrl(fullPath), 0666, /*move=*/false,
 			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
-	parent->connect( copyJob,  SIGNAL(result(KIO::Job *)),
-					 parent, SLOT(slotCopyingDone2(KIO::Job *)) );
-
+	parent->connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
+					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
 	NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet
 	return loadFile(fileName, type, parent);
@@ -727,8 +728,8 @@ Note* NoteFactory::moveFileAndLoad(const KUrl &url, Basket *parent)
 	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
 			url, KUrl(fullPath), 0666, /*move=*/true,
 			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
-	parent->connect( copyJob,  SIGNAL(result(KIO::Job *)),
-					 parent, SLOT(slotCopyingDone2(KIO::Job *)) );
+	parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
+					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
 
 	NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet

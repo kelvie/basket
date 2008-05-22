@@ -40,6 +40,8 @@
 #include "xmlwork.h"
 #include "tools.h"
 
+#include <KIO/CopyJob>
+
 bool FormatImporter::shouldImportBaskets()
 {
 	// We should import if the application have not successfully loaded any basket...
@@ -60,7 +62,8 @@ void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 {
 	copyFinished = false;
 	KIO::CopyJob *copyJob = KIO::copyAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
-	connect( copyJob,  SIGNAL(result(KIO::Job*)), this, SLOT(slotCopyingDone(KIO::Job*)) );
+	connect( copyJob,  SIGNAL(result(KIO::Job*)),
+             this, SLOT(slotCopyingDone(KIO::Job*)) );
 	while (!copyFinished)
 		kapp->processEvents();
 }

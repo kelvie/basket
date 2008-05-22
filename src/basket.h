@@ -606,7 +606,7 @@ public slots:
 	void contentsDragMoveEvent(QDragMoveEvent *event);
 	void contentsDragLeaveEvent(QDragLeaveEvent*);
   public slots:
-	void slotCopyingDone2(KIO::Job *job);
+	void slotCopyingDone2(KIO::Job *job, const KUrl &from, const KUrl &to);
   public:
 	Note* noteForFullPath(const QString &path);
 

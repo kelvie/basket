@@ -66,6 +66,9 @@
 #include <kdebug.h>
 #include <q3vbox.h>
 
+#include <KAuthorized>
+#include <KIO/CopyJob>
+
 #include <unistd.h> // For sleep()
 
 #include <kmenu.h>
@@ -4652,15 +4655,16 @@ void Basket::linkLookChanged()
 	relayoutNotes(true);
 }
 
-void Basket::slotCopyingDone2(KIO::Job *job)
+void Basket::slotCopyingDone2(KIO::Job *job,
+                              const KUrl &/*from*/,
+                              const KUrl &to)
 {
 	if (job->error()) {
 		DEBUG_WIN << "Copy finished, ERROR";
 		return;
 	}
-	KIO::FileCopyJob *fileCopyJob = (KIO::FileCopyJob*)job;
-	Note *note = noteForFullPath(fileCopyJob->destURL().path());
-	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destURL().path() + (note ? "" : " --- NO CORRESPONDING NOTE");
+	Note *note = noteForFullPath(to.path());
+	DEBUG_WIN << "Copy finished, load note: " + to.path() + (note ? "" : " --- NO CORRESPONDING NOTE");
 	if (note != 0L) {
 		note->content()->loadFromFile(/*lazyLoad=*/false);
 		if(isEncrypted())
