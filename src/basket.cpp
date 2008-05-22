@@ -4305,7 +4305,7 @@ void Basket::noteOpen(Note *note)
 		return;
 
 	KUrl    url     = note->content()->urlToOpen(/*with=*/false);
-	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
+	QString message = note->content()->messageWhenOpening(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
 	if (url.isEmpty()) {
 		if (message.isEmpty())
 			emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
@@ -4354,12 +4354,12 @@ void Basket::noteOpenWith(Note *note)
 		return;
 
 	KUrl    url     = note->content()->urlToOpen(/*with=*/true);
-	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
-	QString text    = note->content()->messageWhenOpenning(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
+	QString message = note->content()->messageWhenOpening(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
+	QString text    = note->content()->messageWhenOpening(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
 	if (url.isEmpty())
 		emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
 	else if (KRun__displayOpenWithDialog(url, false, text))
-		emit postMessage(message); // "Openning link target with..." / "Openning note file with..."
+		emit postMessage(message); // "Opening link target with..." / "Opening note file with..."
 }
 
 void Basket::noteSaveAs()
