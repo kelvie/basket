@@ -310,7 +310,7 @@ void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers
 		if ((showSubNotes() || first) && child->matching())
 			child->selectIn(rect, invertSelection, unselectOthers);
 		else
-			child->setSelectedRecursivly(false);
+			child->setSelectedRecursively(false);
 		child = child->next();
 		first = false;
 	}
@@ -333,27 +333,27 @@ bool Note::allSelected()
 		return isSelected();
 }
 
-void Note::setSelectedRecursivly(bool selected)
+void Note::setSelectedRecursively(bool selected)
 {
 	setSelected(selected && matching());
 
 	FOR_EACH_CHILD (child)
-		child->setSelectedRecursivly(selected);
+		child->setSelectedRecursively(selected);
 }
 
-void Note::invertSelectionRecursivly()
+void Note::invertSelectionRecursively()
 {
 	if (content())
 		setSelected(!isSelected() && matching());
 
 	FOR_EACH_CHILD (child)
-		child->invertSelectionRecursivly();
+		child->invertSelectionRecursively();
 }
 
 void Note::unselectAllBut(Note *toSelect)
 {
 	if (this == toSelect)
-		setSelectedRecursivly(true);
+		setSelectedRecursively(true);
 	else {
 		setSelected(false);
 
@@ -363,7 +363,7 @@ void Note::unselectAllBut(Note *toSelect)
 			if ((showSubNotes() || first) && child->matching())
 				child->unselectAllBut(toSelect);
 			else
-				child->setSelectedRecursivly(false);
+				child->setSelectedRecursively(false);
 			child = child->next();
 			first = false;
 		}
@@ -373,7 +373,7 @@ void Note::unselectAllBut(Note *toSelect)
 void Note::invertSelectionOf(Note *toSelect)
 {
 	if (this == toSelect)
-		setSelectedRecursivly(!isSelected());
+		setSelectedRecursively(!isSelected());
 	else {
 		Note *child = firstChild();
 		bool first = true;
@@ -1132,7 +1132,7 @@ void Note::relayoutAt(int x, int y, bool animate)
 				child->relayoutAt(x + width(), y+h, animate);
 				h += child->finalHeight();
 			} else                                  // In case the user collapse a group, then move it and then expand it:
-				child->setXRecursivly(x + width()); //  notes SHOULD have a good X coordonate, and not the old one!
+				child->setXRecursively(x + width()); //  notes SHOULD have a good X coordonate, and not the old one!
 			// For future animation when re-match, but on bottom of already matched notes!
 			// Find parent primary note and set the Y to THAT y:
 			if (!child->matching())
@@ -1170,22 +1170,22 @@ void Note::relayoutAt(int x, int y, bool animate)
 	}
 }
 
-void Note::setXRecursivly(int x)
+void Note::setXRecursively(int x)
 {
 	m_deltaX = 0;
 	setX(x);
 
 	FOR_EACH_CHILD (child)
-		child->setXRecursivly(x + width());
+		child->setXRecursively(x + width());
 }
 
-void Note::setYRecursivly(int y)
+void Note::setYRecursively(int y)
 {
 	m_deltaY = 0;
 	setY(y);
 
 	FOR_EACH_CHILD (child)
-		child->setYRecursivly(y);
+		child->setYRecursively(y);
 }
 
 void Note::setGroupWidth(int width)

@@ -80,8 +80,8 @@ class Note
 	void setInitialHeight(int height) { m_height = height; } /// << Do NEVER use it unless you know what you do!
 	void setX(int x);
 	void setY(int y);
-	void setXRecursivly(int x);
-	void setYRecursivly(int y);
+	void setXRecursively(int x);
+	void setYRecursively(int y);
 	inline int  x()      { return m_x;                }
 	inline int  y()      { return m_y;                }
 	inline int  width()  { return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width); }
@@ -238,8 +238,8 @@ class Note
   public:
 	NoteSelection* selectedNotes();
 	void setSelected(bool selected);
-	void setSelectedRecursivly(bool selected);
-	void invertSelectionRecursivly();
+	void setSelectedRecursively(bool selected);
+	void invertSelectionRecursively();
 	void selectIn(const QRect &rect, bool invertSelection, bool unselectOthers = true);
 	void setFocused(bool focused);
 	inline bool isFocused()  { return m_focused; }

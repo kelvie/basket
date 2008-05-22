@@ -521,7 +521,7 @@ void Basket::preparePlug(Note *note)
 	Note *last = 0;
 	for (Note *n = note; n; n = n->next()) {
 		if (m_loaded)
-			n->setSelectedRecursivly(true); // Notes should have a parent basket (and they have, so that's OK).
+			n->setSelectedRecursively(true); // Notes should have a parent basket (and they have, so that's OK).
 		count  += n->count();
 		founds += n->newFilter(decoration()->filterData());
 		last = n;
@@ -551,7 +551,7 @@ void Basket::unplugNote(Note *note)
 		return;
 
 //	if (!willBeReplugged) {
-	note->setSelectedRecursivly(false); // To removeSelectedNote() and decrease the selectedsCount.
+	note->setSelectedRecursively(false); // To removeSelectedNote() and decrease the selectedsCount.
 	m_count -= note->count();
 	m_countFounds -= note->newFilter(decoration()->filterData());
 	signalCountsChanged();
@@ -1581,7 +1581,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			else if (shiftPressed)
 				selectRange(m_startOfShiftSelectionNote, end);
 			else if (controlPressed)
-				clicked->setSelectedRecursivly(!clicked->allSelected());
+				clicked->setSelectedRecursively(!clicked->allSelected());
 			else if (!clicked->allSelected())
 				unselectAllBut(clicked);
 			setFocusedNote(end); /// /// ///
@@ -1836,8 +1836,8 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		Note *lastChild = clicked->lastChild();
 		if (!animateNewPosition || !Settings::playAnimations())
 			for (Note *n = note; n; n = n->next()) {
-				n->setXRecursivly(clicked->x());
-				n->setYRecursivly((lastChild ? lastChild : clicked)->bottom() + 1);
+				n->setXRecursively(clicked->x());
+				n->setYRecursively((lastChild ? lastChild : clicked)->bottom() + 1);
 			}
 		appendNoteIn(note, clicked);
 
@@ -1847,13 +1847,13 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		if (!animateNewPosition || !Settings::playAnimations())
 			for (Note *n = note; n; n = n->next()) {
 				if (zone == Note::TopGroup || zone == Note::BottomGroup)
-					n->setXRecursivly(clicked->x() + Note::GROUP_WIDTH);
+					n->setXRecursively(clicked->x() + Note::GROUP_WIDTH);
 				else
-					n->setXRecursivly(clicked->x());
+					n->setXRecursively(clicked->x());
 				if (zone == Note::TopInsert || zone == Note::TopGroup)
-					n->setYRecursivly(clicked->y());
+					n->setYRecursively(clicked->y());
 				else
-					n->setYRecursivly(clicked->bottom() + 1);
+					n->setYRecursively(clicked->bottom() + 1);
 			}
 
 		if      (zone == Note::TopInsert)    { appendNoteBefore(note, clicked); }
@@ -1880,8 +1880,8 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		if (animateNewPosition && Settings::playAnimations())
 			note->setFinalPosition(pos.x(), pos.y());
 		else {
-			note->setXRecursivly(pos.x());
-			note->setYRecursivly(pos.y());
+			note->setXRecursively(pos.x());
+			note->setYRecursively(pos.y());
 		}
 		appendNoteAfter(note, lastNote());
 	}
@@ -2318,7 +2318,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		else if (shiftPressed)
 			selectRange(m_startOfShiftSelectionNote, clicked);
 		else if (controlPressed)
-			clicked->setSelectedRecursivly(!clicked->allSelected());
+			clicked->setSelectedRecursively(!clicked->allSelected());
 		setFocusedNote(clicked); /// /// ///
 		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
 		m_noActionOnMouseRelease = true;
@@ -2486,7 +2486,7 @@ void Basket::contentsMouseMoveEvent(QMouseEvent *event)
 			Note *column = m_resizingNote;
 			if ( (column = column->next()) ) {
 				// Next columns should not have them X coordinate animated, because it would flicker:
-				column->setXRecursivly(column->x() + delta);
+				column->setXRecursively(column->x() + delta);
 				// And the resizer should resize the TWO sibling columns, and not push the other columns on th right:
 				column->setGroupWidth(column->groupWidth() - delta);
 			}
@@ -2607,7 +2607,7 @@ void Basket::selectAll()
 		Note *parent = (m_focusedNote ? m_focusedNote->parentNote() : 0);
 		while (parent) {
 			if (!parent->allSelected()) {
-				parent->setSelectedRecursivly(true);
+				parent->setSelectedRecursively(true);
 				return;
 			}
 			child  = parent;
@@ -2615,7 +2615,7 @@ void Basket::selectAll()
 		}
 		// Then, select all:
 		FOR_EACH_NOTE (note)
-			note->setSelectedRecursivly(true);
+			note->setSelectedRecursively(true);
 	}
 }
 
@@ -2632,14 +2632,14 @@ void Basket::unselectAll()
 	} else {
 		if (countSelecteds() > 0) // Optimisation
 			FOR_EACH_NOTE (note)
-				note->setSelectedRecursivly(false);
+				note->setSelectedRecursively(false);
 	}
 }
 
 void Basket::invertSelection()
 {
 	FOR_EACH_NOTE (note)
-		note->invertSelectionRecursivly();
+		note->invertSelectionRecursively();
 }
 
 void Basket::unselectAllBut(Note *toSelect)
@@ -4496,7 +4496,7 @@ void Basket::noteGroup()
 	// Do cleanup:
 	unplugNote(fakeNote);
 	unselectAll();
-	group->setSelectedRecursivly(true); // Notes were unselected by unplugging
+	group->setSelectedRecursively(true); // Notes were unselected by unplugging
 
 	relayoutNotes(true);
 	save();
