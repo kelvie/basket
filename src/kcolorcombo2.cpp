@@ -44,11 +44,9 @@
 //#define OUTPUT_GIMP_PALETTE
 
 #ifdef DEBUG_COLOR_ARRAY
-  #include <iostream>
   #include <iomanip>
 #endif
 #ifdef OUTPUT_GIMP_PALETTE
-  #include <iostream>
   #include <iomanip>
 #endif
 
@@ -437,7 +435,7 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
 		for (int i = 0; i < columnCount; ++i) {
 			int h, s, v;
 			m_colorArray[i][j].getHsv(h, s, v);
-			kDebug() << "(" << std::setw(3) << h << "," << std::setw(3) << s << "," << std::setw(3) << v << ") ";
+			kDebug() << QString("(%1,%2,%3)").arg(h, 3).arg(s, 3).arg(v, 3);
 			//kDebug() << colorArray[i][j].name() << " ";
 		}
 		kDebug();
@@ -447,7 +445,10 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
 	kDebug() << "GIMP Palette";
 	for (int j = 0; j < rowCount; ++j) {
 		for (int i = 0; i < columnCount; ++i) {
-			kDebug() << std::setw(3) << m_colorArray[i][j].red() << ", " << std::setw(3) << m_colorArray[i][j].green() << ", " << std::setw(3) << m_colorArray[i][j].blue();
+			kDebug() << QString("(%1,%2,%3)")
+                .arg(m_colorArray[i][j].red(), 3)
+                .arg(m_colorArray[i][j].green(), 3)
+                .arg(m_colorArray[i][j].blue(), 3);
 		}
 	}
 #endif

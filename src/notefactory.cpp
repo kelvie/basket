@@ -50,8 +50,6 @@
 #include <kstandarddirs.h>
 #include <kurifilter.h>
 
-#include <iostream>
-
 #include "basket.h"
 #include "note.h"
 #include "notefactory.h"

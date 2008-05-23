@@ -48,7 +48,6 @@ void Global::setCustomSavesFolder(const QString &folder)
 	s_customSavesFolder = folder;
 }
 
-#include <iostream>
 QString Global::savesFolder()
 {
 	static QString *folder = 0L; // Memorize the folder to do not have to re-compute it each time it's needed

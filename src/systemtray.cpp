@@ -335,7 +335,6 @@ void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
 	Global::bnpView->updateStatusBarHint();
 }
 
-#include <iostream>
 #include <QX11Info>
 
 void SystemTray::dropEvent(QDropEvent *event)

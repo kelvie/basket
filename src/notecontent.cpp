@@ -51,8 +51,6 @@
 #include <kio/previewjob.h>
 #include <kio/global.h>
 
-#include <iostream>
-
 #include "notecontent.h"
 #include "note.h"
 #include "noteedit.h"

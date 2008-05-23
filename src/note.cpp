@@ -37,8 +37,6 @@
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
 
-#include <iostream>
-
 #ifdef None
 #undef None
 #endif

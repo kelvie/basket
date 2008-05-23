@@ -51,8 +51,6 @@
 #include "variouswidgets.h"
 #include "focusedwidgets.h"
 
-#include <iostream>
-
 #include <KActionCollection>
 #include <KToggleAction>
 
@@ -129,8 +127,6 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 			m_lineEdit = lineEdit;
 	}
 }
-
-#include <iostream>
 
 /** class TextEditor: */
 

@@ -95,7 +95,6 @@
 #include "systemtray.h"
 #include "clickablelabel.h"
 #include "basketstatusbar.h"
-#include <iostream>
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
 

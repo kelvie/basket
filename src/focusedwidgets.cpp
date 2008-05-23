@@ -24,8 +24,6 @@
 #include <QKeyEvent>
 #include <klocale.h>
 
-#include <iostream>
-
 #include "focusedwidgets.h"
 #include "bnpview.h"
 #include "global.h"

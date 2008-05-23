@@ -48,8 +48,6 @@
 #include <kmessagebox.h>
 #include <qtimer.h>
 
-#include <iostream>
-
 #include "kicondialog.h"
 #include "tag.h"
 #include "tagsedit.h"

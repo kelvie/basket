@@ -48,8 +48,6 @@
 #include "backgroundmanager.h"
 #include "formatimporter.h"
 
-#include <iostream>
-
 void Archive::save(Basket *basket, bool withSubBaskets, const QString &destination)
 {
 	QDir dir;

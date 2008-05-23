@@ -39,8 +39,6 @@
 #include "tools.h"
 #include "global.h"
 
-#include <iostream>
-
 #include <KIO/CopyJob>
 
 /** NoteDrag */

@@ -29,8 +29,6 @@
 #include <klocale.h>
 #include <kapplication.h>
 
-#include <iostream>
-
 #include "formatimporter.h"
 #include "notecontent.h"
 #include "notefactory.h"

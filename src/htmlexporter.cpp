@@ -130,8 +130,6 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	progress->advance(1); // Preparation finished
 }
 
-#include <iostream>
-
 void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 {
 	if (!basket->isLoaded()) {

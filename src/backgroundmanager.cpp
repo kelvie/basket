@@ -28,8 +28,6 @@
 //Added by qt3to4:
 #include <QPixmap>
 
-#include <iostream>
-
 #include "backgroundmanager.h"
 
 /** class BackgroundEntry: */

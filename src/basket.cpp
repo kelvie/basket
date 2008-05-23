@@ -104,8 +104,6 @@
 #include "kgpgme.h"
 #endif
 
-#include <iostream>
-
 /** Class NoteSelection: */
 
 NoteSelection* NoteSelection::nextStacked()

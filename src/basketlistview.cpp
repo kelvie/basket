@@ -35,7 +35,6 @@
 #include <qbitmap.h>
 #include <qpixmapcache.h>
 #include <qtooltip.h>
-#include <iostream>
 #include <kdebug.h>
 #include "global.h"
 #include "bnpview.h"

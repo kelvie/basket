@@ -39,8 +39,6 @@
 #include "tools.h"
 #include "basket.h"
 
-#include <iostream>
-
 /** class State: */
 
 State::State(const QString &id, Tag *tag)
