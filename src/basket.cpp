@@ -5306,13 +5306,13 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 
 	if (file.open(QIODevice::ReadOnly)){
 		*array = file.readAll();
-		const char* magic = "-----BEGIN PGP MESSAGE-----";
-		uint i = 0;
+		QByteArray magic = "-----BEGIN PGP MESSAGE-----";
+		int i = 0;
 
-		if(array->size() > strlen(magic))
+		if(array->size() > magic.size())
 			for (i = 0; array->at(i) == magic[i]; ++i)
 				;
-		if (i == strlen(magic))
+		if (i == magic.size())
 		{
 			encrypted = true;
 		}
