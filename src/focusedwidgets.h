@@ -33,6 +33,8 @@
 #include <QEvent>
 #include <QWheelEvent>
 
+class KMenu;
+
 class FocusedTextEdit : public KTextEdit
 {
   Q_OBJECT
