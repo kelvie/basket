@@ -38,8 +38,10 @@
 #include <kiconloader.h>
 #include <q3dragobject.h>
 #include <qfontdatabase.h>
+#include <kpushbutton.h>
 
 #include "variouswidgets.h"
+
 
 /** class RunCommandRequester: */
 
@@ -190,7 +192,7 @@ class UndraggableKIconView : public K3IconView
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
-     : KDialog(parent);
+     : KDialog(parent)
 {
 	// KDialog options
 	setCaption(caption);
@@ -264,7 +266,7 @@ void IconSizeDialog::slotSelectionChanged()
 
 void IconSizeDialog::choose(Q3IconViewItem*)
 {
-	actionButton(Ok)->animateClick();
+	button(Ok)->animateClick();
 }
 
 void IconSizeDialog::slotCancel()
@@ -275,7 +277,7 @@ void IconSizeDialog::slotCancel()
 /** class FontSizeCombo: */
 
 FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const char *name)
- : KComboBox(rw, parent, name), m_withDefault(withDefault)
+ : KComboBox(rw, parent), m_withDefault(withDefault)
 {
 	if (m_withDefault)
 		insertItem(i18n("(Default)"));
