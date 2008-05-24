@@ -5398,72 +5398,59 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		return false;
 }
 
-/** Same as saveToFile(), but it is static, and does not crypt the data if needed.
-  * Basically, to save a file owned by a basket (a basket or a note file), use saveToFile().
-  * But to save another file (eg. the basket hierarchy), use this safelySaveToFile() static method.
-  */
-/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+/**
+ * A safer version of saveToFile, that doesn't perform encryption.  To save a
+ * file owned by a basket (i.e. a basket or a note file), use saveToFile(), but
+ * to save to another file, (e.g. the basket hierarchy), use this function
+ * instead.
+ */
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath,
+                                         const QByteArray& array,
+                                         Q_ULONG length)
 {
-	// Here, we take a double protection:
-	// - We use KSaveFile to write atomically to the file (either it's a success or the file is untouched)
-	// - We show a modal dialog to the user when no disk space is left or access is denied and retry every couple of seconds
+    // Modulus operandi:
+    // 1. Use KSaveFile to try and save the file
+    // 2. Show a modal dialog (with the error) when bad things happen
+    // 3. We keep trying (at increasing intervals, up until every minute)
+    //    until we finally save the file.
 
-	// Static, because safelySaveToFile() can be called a second time while blocked.
-	// Example:
-	// User type something and press Enter: safelySaveToFile() is called and block.
-	// Three seconds later, a timer ask to save changes, and this second safelySaveToFile() block too.
-	// Do not show the dialog twice in this case!
-	static DiskErrorDialog *dialog = 0;
+    // The error dialog is static to make sure we never show the dialog twice,
+    static DiskErrorDialog *dialog = 0;
+    static const uint maxDelay = 60 * 1000; // ms
+    uint retryDelay = 1000; // ms
+    bool success = false;
+    do {
+        KSaveFile saveFile(fullPath);
+        if (!saveFile.open()) {
+            saveFile.write(array, length);
+            if (saveFile.finalize())
+                success = true;
+        }
 
-	//kDebug() << "---------- Saving " << fullPath << ":";
-	bool openSuccess;
-	bool closeSuccess;
-	bool errorWhileWritting;
-	do {
-		KSaveFile saveFile(fullPath);
-		//kDebug() << "==>>" << "SAVE FILE CREATED: " << strerror(saveFile.status());
-		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
-		if (openSuccess) {
-			saveFile.file()->write(array, length);
-			//kDebug() << "FILE WRITTEN: " << strerror(saveFile.status());
-			closeSuccess = saveFile.close();
-			//kDebug() << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous");
-		}
-		errorWhileWritting = (!openSuccess || !closeSuccess || saveFile.status() != 0);
-		if (errorWhileWritting) {
-			//kDebug() << "ERROR DETECTED";
-			if (dialog == 0) {
-				//kDebug() << "Opening dialog for " << fullPath;
-				dialog = new DiskErrorDialog(
-					(openSuccess
-						? i18n("Insufficient Disk Space to Save Basket Data")
-						: i18n("Wrong Basket File Permissions")
-					),
-					(openSuccess
-						? i18n("Please remove files on the disk <b>%1</b> to let the application safely save your changes.")
-							.arg(KIO::findPathMountPoint(fullPath))
-						: i18n("File permissions are bad for <b>%1</b>. Please check that you have write access to it and the parent folders.")
-							.arg(fullPath)
-					),
-					kapp->activeWindow()
-				);
-			}
-			if (!dialog->isShown())
-				dialog->show();
-			const int retryDelay = 1000/*ms*/;
-			const int sleepDelay = 50/*ms*/;
-			for (int i = 0; i < retryDelay / sleepDelay; ++i) {
-				kapp->processEvents();
-				usleep(sleepDelay);
-			}
-		}
-	} while (errorWhileWritting);
-	if (dialog) {
-		delete dialog;
-		dialog = 0;
-	}
+        if (!success) {
+            if (!dialog) {
+                dialog = new DiskErrorDialog(i18n("Error while saving"),
+                                             saveFile.errorString(),
+                                             kapp->activeWindow());
+            }
 
-	return true; // Hum...?!
+            if (!dialog->isVisible())
+                dialog->show();
+
+            static const uint sleepDelay = 50; // ms
+            for (uint i = 0; i < retryDelay / sleepDelay; ++i) {
+                kapp->processEvents();
+                usleep(sleepDelay * 1000); // usec
+            }
+            // Double the retry delay, but don't go over the max.
+            retryDelay = qMin(maxDelay, retryDelay * 2); // ms
+        }
+    } while (!success);
+
+    dialog->deleteLater();
+    dialog = NULL;
+
+    return true; // Guess we can't really return a fail
 }
 
 /*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
