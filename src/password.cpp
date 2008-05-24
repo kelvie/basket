@@ -39,6 +39,9 @@ PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
      : KDialog(parent)
      , w(0)
 {
+	// Setup from the UI file
+	setupUi(this);
+
 	// KDialog options
 	setCaption(i18n("Password Protection"));
 	setButtons(Ok | Cancel);

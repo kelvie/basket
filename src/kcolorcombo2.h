@@ -46,7 +46,7 @@ class KColorPopup;
  *
  * @par Quick usage:
  * Just create a new KColorCombo2() with the initial color and eventually an allowed default color
- * (eg. KGlobalSettings::baseColor() for a background color, KGlobalSettings::textColor()...).\n
+ * (eg. palette().color(QPalette::Base) for a background color, palette().color(QPalette::Text)...).\n
  * You will be noticed of the color the user selects with the signal changed(), or you can use color() to get the color at any moment.\n
  * Note that they can return an invalid color (see QColor::isValid()) if the user chosen the default color (if he can choose that).\n
  * It's then easy to save in settings, but if you want the real color (even for the default), you can get it with effectiveColor().

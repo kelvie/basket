@@ -350,7 +350,6 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
 	return result;
 }
 
-#include <iostream>
 #include <QTextDocument>
 
 void Tools::deleteRecursively(const QString &folderOrFile)

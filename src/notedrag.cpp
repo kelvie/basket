@@ -39,7 +39,7 @@
 #include "tools.h"
 #include "global.h"
 
-#include <iostream>
+#include <KIO/CopyJob>
 
 /** NoteDrag */
 
@@ -489,8 +489,8 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 					note->content()->setFileName(newFileName);
 					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
-					parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
-					                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
+					parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
+                                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, Kurl)));
 				}
 				note->setGroupWidth(groupWidth);
 				note->setParentNote(0);
@@ -515,8 +515,8 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				else
 					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
-				parent->connect( copyJob, SIGNAL(result(KIO::Job *)),
-				                 parent,  SLOT(slotCopyingDone2(KIO::Job *)) );
+				parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
+				                parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 				note->setGroupWidth(groupWidth);
 				note->setAddedDate(addedDate);
 				note->setLastModificationDate(lastModificationDate);

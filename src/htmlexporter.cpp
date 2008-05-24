@@ -40,7 +40,6 @@
 #include <Q3TextStream>
 #include <Q3ValueList>
 #include <QPixmap>
-#include <kglobalsettings.h>
 #include <kprogressdialog.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
@@ -130,8 +129,6 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 
 	progress->advance(1); // Preparation finished
 }
-
-#include <iostream>
 
 void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 {
@@ -236,8 +233,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			"   .tree span { -moz-border-radius: 6px; display: block; float: left;\n"
 			"                line-height: 16px; height: 16px; vertical-align: middle; padding: 0 1px; }\n"
 			"   .tree img { vertical-align: top; padding-right: 1px; }\n"
-			"   .tree .current { background-color: " << KGlobalSettings::highlightColor().name() << "; "
-			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << KGlobalSettings::highlightedTextColor().name() << "; }\n"
+			"   .tree .current { background-color: " << palette().color(QPalette::Highlight).name() << "; "
+			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << palette().color(QPalette::HighlightedText).name() << "; }\n"
 			"   .basketSurrounder { margin-left: 152px; _margin: 0; _float: right; }\n";
 	}
 	stream <<

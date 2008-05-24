@@ -52,7 +52,7 @@
 #include <qpoint.h>
 #include <qstringlist.h>
 #include <kapplication.h>
-#include <kglobalsettings.h>
+#include <KColorScheme> // for KStatefulBrush
 #include <KOpenWithDialog>
 #include <kservice.h>
 #include <klocale.h>
@@ -65,6 +65,9 @@
 #include <ksavefile.h>
 #include <kdebug.h>
 #include <q3vbox.h>
+
+#include <KAuthorized>
+#include <KIO/CopyJob>
 
 #include <unistd.h> // For sleep()
 
@@ -100,8 +103,6 @@
 #ifdef HAVE_LIBGPGME
 #include "kgpgme.h"
 #endif
-
-#include <iostream>
 
 /** Class NoteSelection: */
 
@@ -521,7 +522,7 @@ void Basket::preparePlug(Note *note)
 	Note *last = 0;
 	for (Note *n = note; n; n = n->next()) {
 		if (m_loaded)
-			n->setSelectedRecursivly(true); // Notes should have a parent basket (and they have, so that's OK).
+			n->setSelectedRecursively(true); // Notes should have a parent basket (and they have, so that's OK).
 		count  += n->count();
 		founds += n->newFilter(decoration()->filterData());
 		last = n;
@@ -551,7 +552,7 @@ void Basket::unplugNote(Note *note)
 		return;
 
 //	if (!willBeReplugged) {
-	note->setSelectedRecursivly(false); // To removeSelectedNote() and decrease the selectedsCount.
+	note->setSelectedRecursively(false); // To removeSelectedNote() and decrease the selectedsCount.
 	m_count -= note->count();
 	m_countFounds -= note->newFilter(decoration()->filterData());
 	signalCountsChanged();
@@ -1581,7 +1582,7 @@ void Basket::contentsMousePressEvent(QMouseEvent *event)
 			else if (shiftPressed)
 				selectRange(m_startOfShiftSelectionNote, end);
 			else if (controlPressed)
-				clicked->setSelectedRecursivly(!clicked->allSelected());
+				clicked->setSelectedRecursively(!clicked->allSelected());
 			else if (!clicked->allSelected())
 				unselectAllBut(clicked);
 			setFocusedNote(end); /// /// ///
@@ -1836,8 +1837,8 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		Note *lastChild = clicked->lastChild();
 		if (!animateNewPosition || !Settings::playAnimations())
 			for (Note *n = note; n; n = n->next()) {
-				n->setXRecursivly(clicked->x());
-				n->setYRecursivly((lastChild ? lastChild : clicked)->bottom() + 1);
+				n->setXRecursively(clicked->x());
+				n->setYRecursively((lastChild ? lastChild : clicked)->bottom() + 1);
 			}
 		appendNoteIn(note, clicked);
 
@@ -1847,13 +1848,13 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		if (!animateNewPosition || !Settings::playAnimations())
 			for (Note *n = note; n; n = n->next()) {
 				if (zone == Note::TopGroup || zone == Note::BottomGroup)
-					n->setXRecursivly(clicked->x() + Note::GROUP_WIDTH);
+					n->setXRecursively(clicked->x() + Note::GROUP_WIDTH);
 				else
-					n->setXRecursivly(clicked->x());
+					n->setXRecursively(clicked->x());
 				if (zone == Note::TopInsert || zone == Note::TopGroup)
-					n->setYRecursivly(clicked->y());
+					n->setYRecursively(clicked->y());
 				else
-					n->setYRecursivly(clicked->bottom() + 1);
+					n->setYRecursively(clicked->bottom() + 1);
 			}
 
 		if      (zone == Note::TopInsert)    { appendNoteBefore(note, clicked); }
@@ -1880,8 +1881,8 @@ void Basket::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, 
 		if (animateNewPosition && Settings::playAnimations())
 			note->setFinalPosition(pos.x(), pos.y());
 		else {
-			note->setXRecursivly(pos.x());
-			note->setYRecursivly(pos.y());
+			note->setXRecursively(pos.x());
+			note->setYRecursively(pos.y());
 		}
 		appendNoteAfter(note, lastNote());
 	}
@@ -2020,7 +2021,7 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// This is because during a drag, the mouse can fly over the text edit and move the cursor position, and even HIDE the cursor.
 	// So we re-show the cursor, and re-position it at the right place:
 	if (m_editor && m_editor->textEdit()) {
-		Q3TextEdit *editor = m_editor->textEdit();
+		KTextEdit *editor = m_editor->textEdit();
 		editor->setTextCursor(m_textCursor);
 	}
 }
@@ -2318,7 +2319,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 		else if (shiftPressed)
 			selectRange(m_startOfShiftSelectionNote, clicked);
 		else if (controlPressed)
-			clicked->setSelectedRecursivly(!clicked->allSelected());
+			clicked->setSelectedRecursively(!clicked->allSelected());
 		setFocusedNote(clicked); /// /// ///
 		m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
 		m_noActionOnMouseRelease = true;
@@ -2402,7 +2403,7 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
 					KMenu *menu = Global::bnpView->popupMenu("fileimport");
 					menu->exec(event->globalPos());
 				} else {
-					KRun *run = new KRun(link); //  open the URL.
+					KRun *run = new KRun(KUrl(link), window()); //  open the URL.
 					run->setAutoDelete(true);
 				}
 				break;
@@ -2486,7 +2487,7 @@ void Basket::contentsMouseMoveEvent(QMouseEvent *event)
 			Note *column = m_resizingNote;
 			if ( (column = column->next()) ) {
 				// Next columns should not have them X coordinate animated, because it would flicker:
-				column->setXRecursivly(column->x() + delta);
+				column->setXRecursively(column->x() + delta);
 				// And the resizer should resize the TWO sibling columns, and not push the other columns on th right:
 				column->setGroupWidth(column->groupWidth() - delta);
 			}
@@ -2607,7 +2608,7 @@ void Basket::selectAll()
 		Note *parent = (m_focusedNote ? m_focusedNote->parentNote() : 0);
 		while (parent) {
 			if (!parent->allSelected()) {
-				parent->setSelectedRecursivly(true);
+				parent->setSelectedRecursively(true);
 				return;
 			}
 			child  = parent;
@@ -2615,7 +2616,7 @@ void Basket::selectAll()
 		}
 		// Then, select all:
 		FOR_EACH_NOTE (note)
-			note->setSelectedRecursivly(true);
+			note->setSelectedRecursively(true);
 	}
 }
 
@@ -2623,21 +2624,23 @@ void Basket::unselectAll()
 {
 	if (redirectEditActions()) {
 		if (m_editor->textEdit()) {
-			m_editor->textEdit()->removeSelection();
+            QTextCursor cursor = m_editor->textEdit()->textCursor();
+            cursor.clearSelection();
+			m_editor->textEdit()->setTextCursor(cursor);
 			selectionChangedInEditor(); // THIS IS NOT EMITED BY Qt!!!
 		} else if (m_editor->lineEdit())
 			m_editor->lineEdit()->deselect();
 	} else {
 		if (countSelecteds() > 0) // Optimisation
 			FOR_EACH_NOTE (note)
-				note->setSelectedRecursivly(false);
+				note->setSelectedRecursively(false);
 	}
 }
 
 void Basket::invertSelection()
 {
 	FOR_EACH_NOTE (note)
-		note->invertSelectionRecursivly();
+		note->invertSelectionRecursively();
 }
 
 void Basket::unselectAllBut(Note *toSelect)
@@ -2802,11 +2805,12 @@ void Basket::drawInserter(QPainter &painter, int xPainter, int yPainter)
 	rect.moveBy(-xPainter, -yPainter);
 	int lineY  = (m_inserterGroup && m_inserterTop ? 0 : 2);
 	int roundY = (m_inserterGroup && m_inserterTop ? 0 : 1);
-
-	QColor dark  = KApplication::palette().active().dark();
-	QColor light = dark.light().light();
+    
+    KStatefulBrush statefulBrush(KColorScheme::View, KColorScheme::HoverColor);
+    QColor dark = statefulBrush.brush(palette()).color();
+	QColor light = dark.lighter().lighter();
 	if (m_inserterGroup && Settings::groupOnInsertionLine())
-		light = Tools::mixColor(light, KGlobalSettings::highlightColor());
+		light = Tools::mixColor(light, palette().color(QPalette::Highlight));
 	painter.setPen(dark);
 	// The horizontal line:
 	//painter.drawRect(       rect.x(),                    rect.y() + lineY,  rect.width(), 2);
@@ -2834,22 +2838,23 @@ bool Basket::event(QEvent *event)
 {
     // Only take the help events
     if (event->type() == QEvent::ToolTip) {
-	helpEvent(event);
-	return false;
+        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+        tooltipEvent(helpEvent);
+        return false;
     } else
-	return true;
+        return true;
 }
 
 void Basket::tooltipEvent(QHelpEvent *event)
 {
-    QPoint point = event->pos();
+    QPoint pos = event->globalPos();
 	if ( !m_loaded || !Settings::showNotesToolTip() )
 		return;
 
 	QString message;
 	QRect   rect;
 
-	QPoint contentPos = viewportToContents(pos);
+	QPoint contentPos = viewportToContents(event->pos());
 	Note *note = noteAt(contentPos.x(), contentPos.y());
 
 	if (!note && isFreeLayout()) {
@@ -3066,7 +3071,9 @@ void Basket::animateLoad()
 
 QColor Basket::selectionRectInsideColor()
 {
-	return Tools::mixColor(Tools::mixColor(backgroundColor(), KGlobalSettings::highlightColor()), backgroundColor());
+	return Tools::mixColor(Tools::mixColor(backgroundColor(),
+                                           palette().color(QPalette::Highlight)),
+                           backgroundColor());
 }
 
 QColor alphaBlendColors(const QColor &bgColor, const QColor &fgColor, const int a)
@@ -3229,9 +3236,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 						selectionRectInside.moveBy(rect.x(), rect.y());
 						blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap);
 					}
-					painter2.setPen(KGlobalSettings::highlightColor().dark());
+					painter2.setPen(palette().color(QPalette::Highlight).darker());
 					painter2.drawRect(selectionRect);
-					painter2.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), backgroundColor()));
+					painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), backgroundColor()));
 					painter2.drawPoint(selectionRect.topLeft());
 					painter2.drawPoint(selectionRect.topRight());
 					painter2.drawPoint(selectionRect.bottomLeft());
@@ -3420,8 +3427,8 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	Tag *tag = state->parentTag();
 	m_tagPopup = tag;
 
-	QKeySequence sequence = tag->shortcut().operator QKeySequence();
-	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isNull());
+	QKeySequence sequence = tag->shortcut().primary();
+	bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isEmpty());
 
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
@@ -3439,24 +3446,23 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		for (it = tag->states().begin(); it != tag->states().end(); ++it) {
 			currentState = *it;
 			QKeySequence sequence;
-			if (currentState == nextState && !tag->shortcut().isNull())
+			if (currentState == nextState && !tag->shortcut().isEmpty())
 			    sequence = tag->shortcut().primary();
 
 			StateAction *sa = new StateAction(state, KShortcut(sequence), false);
 			sa->setChecked(state == currentState);
 
 			menu.addAction(sa);
-			if (currentState == nextState && !tag->shortcut().isNull())
+			if (currentState == nextState && !tag->shortcut().isEmpty())
 				menu.setAccel(sequence, i);
 			++i;
 		}
 		menu.insertSeparator();
-		menu.addAction(new KAction(
-				   KIcon("editdelete"),
-				   i18n("&Remove"),
-				   (sequenceOnDelete ? sequence : QKeySequence()),
-				   &menu)
-		    );
+		KAction *act = new KAction(&menu);
+        act->setIcon(KIcon("editdelete"));
+        act->setText(i18n("&Remove"));
+        act->setShortcut(sequenceOnDelete ? sequence : QKeySequence());
+		menu.addAction(act);
 		menu.addAction(new KAction(
 				   KIcon("configure"),
 				   i18n("&Customize..."),
@@ -3641,11 +3647,11 @@ void Basket::updateEditorAppearance()
 		HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
 		if (htmlEditor) {
 			if (m_editor->textEdit()->textCursor().atStart()) {
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward);
 			} else {
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveBackward, /*select=*/false);
-				m_editor->textEdit()->moveCursor(Q3TextEdit::MoveForward,  /*select=*/false);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveBackward);
+				m_editor->textEdit()->moveCursor(QTextEdit::MoveForward);
 			}
 			htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
 		}
@@ -3655,7 +3661,7 @@ void Basket::updateEditorAppearance()
 void Basket::editorPropertiesChanged()
 {
 	if (isDuringEdit() && m_editor->note()->content()->type() == NoteType::Html) {
-		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? Q3TextEdit::AutoAll : Q3TextEdit::AutoNone);
+		m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
 	}
 }
 
@@ -3686,7 +3692,7 @@ QColor Basket::backgroundColor()
 	if (m_backgroundColorSetting.isValid())
 		return m_backgroundColorSetting;
 	else
-		return KGlobalSettings::baseColor();
+		return palette().color(QPalette::Base);
 }
 
 QColor Basket::textColor()
@@ -3694,7 +3700,7 @@ QColor Basket::textColor()
 	if (m_textColorSetting.isValid())
 		return m_textColorSetting;
 	else
-		return KGlobalSettings::textColor();
+		return palette().color(QPalette::Text);
 }
 
 void Basket::unbufferizeAll()
@@ -3782,6 +3788,7 @@ void Basket::placeEditorAndEnsureVisible()
 	placeEditor(/*andEnsureVisible=*/true);
 }
 
+// TODO: [kw] Oh boy, this will probably require some tweaking.
 void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 {
 	if (!isDuringEdit())
@@ -3807,7 +3814,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 			//        editor->sync() CRASH!!
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
-			height = textEdit->contentsHeight() + 2*frameWidth;
+			height = textEdit->viewport()->height() + 2*frameWidth;
 //			height = /*qMax(*/height/*, note->height())*/;
 //			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
@@ -3850,19 +3857,15 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 //		ensureNoteVisible(note);
 }
 
-#include <iostream>
 void Basket::editorCursorPositionChanged()
 {
 	if (!isDuringEdit())
 		return;
 
 	FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
-	const QTextCursor *cursor = textEdit->textCursor();
-//	kDebug() << cursor->x() << ";" << cursor->y() << "      "
-//			  << cursor->globalX() << ";" << cursor->globalY() << "          "
-//			  << cursor->offsetX() << ";" << cursor->offsetY() << ";";
 
-	ensureVisible(m_editorX + cursor->globalX(), m_editorY + cursor->globalY(), 50, 50);
+    QPoint cursorPoint = mapTo(viewport(), textEdit->cursorRect().center());
+	ensureVisible(cursorPoint.x(), cursorPoint.y());
 }
 
 void Basket::closeEditorDelayed()
@@ -4100,20 +4103,28 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 		m_editor->widget()->show();
 		//m_editor->widget()->raise();
 		m_editor->widget()->setFocus();
-		connect( m_editor, SIGNAL(askValidation()),            this, SLOT(closeEditorDelayed())       );
-		connect( m_editor, SIGNAL(mouseEnteredEditorWidget()), this, SLOT(mouseEnteredEditorWidget()) );
-		if (m_editor->textEdit()) {
-			connect( m_editor->textEdit(), SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()) );
-			if (clickedPoint != QPoint()) {
-				QPoint pos(clickedPoint.x() - note->x() - note->contentX() + m_editor->textEdit()->frameWidth() + 4   - m_editor->textEdit()->frameWidth(),
-				           clickedPoint.y() - note->y()   - m_editor->textEdit()->frameWidth());
-				// Do it right before the kapp->processEvents() to not have the cursor to quickly flicker at end (and sometimes stay at end AND where clicked):
-				m_editor->textEdit()->moveCursor(KTextEdit::MoveHome, false);
-				m_editor->textEdit()->ensureCursorVisible();
-				m_editor->textEdit()->placeCursor(pos);
-				updateEditorAppearance();
-			}
-		}
+        connect(m_editor, SIGNAL(askValidation()),
+                this, SLOT(closeEditorDelayed()));
+        connect(m_editor, SIGNAL(mouseEnteredEditorWidget()),
+                this, SLOT(mouseEnteredEditorWidget()));
+
+        KTextEdit *textEdit = m_editor->textEdit();
+        if (textEdit) {
+            connect(textEdit, SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()));
+            if (clickedPoint != QPoint()) {
+                // clickedPoint comes from the QMouseEvent, which is in this
+                // widget's coordinate system.
+                QPoint pos = textEdit->mapFrom(this, clickedPoint);
+                // Do it right before the kapp->processEvents() to not have the
+                // cursor to quickly flicker at end (and sometimes stay at end
+                // AND where clicked):
+                textEdit->moveCursor(KTextEdit::MoveHome, false);
+                textEdit->ensureCursorVisible();
+                textEdit->setTextCursor(textEdit->cursorForPosition(pos));
+                updateEditorAppearance();
+            }
+        }
+
 //		kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
 		ensureNoteVisible(note);   //  because toolbar can create a new line and then partially hide the note
 		m_editor->widget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
@@ -4126,7 +4137,7 @@ void Basket::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) //
 			editor->note()->deleteSelectedNotes();
 			save();
 		}
-		delete editor;
+		editor->deleteLater();
 		unlockHovering();
 		filterAgain();
 		unselectAll();
@@ -4138,7 +4149,7 @@ void Basket::noteDelete()
 {
 	if (redirectEditActions()) {
 		if (m_editor->textEdit())
-			m_editor->textEdit()->del();
+			m_editor->textEdit()->textCursor().deleteChar();
 		else if (m_editor->lineEdit())
 			m_editor->lineEdit()->del();
 		return;
@@ -4150,7 +4161,7 @@ void Basket::noteDelete()
 	if (Settings::confirmNoteDeletion())
 		really = KMessageBox::questionYesNo( this,
 			i18np("<qt>Do you really want to delete this note?</qt>",
-			     "<qt>Do you really want to delete those <b>%n</b> notes?</qt>",
+			     "<qt>Do you really want to delete these <b>%n</b> notes?</qt>",
 			     countSelecteds()),
 			i18np("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
@@ -4295,7 +4306,7 @@ void Basket::noteOpen(Note *note)
 		return;
 
 	KUrl    url     = note->content()->urlToOpen(/*with=*/false);
-	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
+	QString message = note->content()->messageWhenOpening(NoteContent::OpenOne /*NoteContent::OpenSeveral*/);
 	if (url.isEmpty()) {
 		if (message.isEmpty())
 			emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
@@ -4309,29 +4320,29 @@ void Basket::noteOpen(Note *note)
 		// Finally do the opening job:
 		QString customCommand = note->content()->customOpenCommand();
 		if (customCommand.isEmpty()) {
-			KRun *run = new KRun(url);
+			KRun *run = new KRun(url, window());
 			run->setAutoDelete(true);
 		} else
-			KRun::run(customCommand, url);
+			KRun::run(customCommand, url, window());
 	}
 }
 
 /** Code from bool KRun::displayOpenWithDialog(const KUrl::List& lst, bool tempFiles)
   * It does not allow to set a text, so I ripped it to do that:
   */
-bool KRun__displayOpenWithDialog(const KUrl::List& lst, bool tempFiles, const QString &text)
+bool KRun__displayOpenWithDialog(const KUrl::List& lst, QWidget *window, bool tempFiles, const QString &text)
 {
 	if (kapp && !KAuthorized::authorizeKAction("openwith")) {
-		KMessageBox::sorry(0L, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
+		KMessageBox::sorry(window, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
 		return false;
 	}
 	KOpenWithDialog l(lst, text, QString::null, 0L);
 	if (l.exec()) {
 		KService::Ptr service = l.service();
 		if (!!service)
-			return KRun::run(*service, lst, tempFiles);
+			return KRun::run(*service, lst, window, tempFiles);
 		//kDebug(250) << "No service set, running " << l.text() << endl;
-		return KRun::run(l.text(), lst); // TODO handle tempFiles
+		return KRun::run(l.text(), lst, window); // TODO handle tempFiles
 	}
 	return false;
 }
@@ -4344,12 +4355,12 @@ void Basket::noteOpenWith(Note *note)
 		return;
 
 	KUrl    url     = note->content()->urlToOpen(/*with=*/true);
-	QString message = note->content()->messageWhenOpenning(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
-	QString text    = note->content()->messageWhenOpenning(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
+	QString message = note->content()->messageWhenOpening(NoteContent::OpenOneWith /*NoteContent::OpenSeveralWith*/);
+	QString text    = note->content()->messageWhenOpening(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
 	if (url.isEmpty())
 		emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
-	else if (KRun__displayOpenWithDialog(url, false, text))
-		emit postMessage(message); // "Openning link target with..." / "Openning note file with..."
+	else if (KRun__displayOpenWithDialog(url, window(), false, text))
+		emit postMessage(message); // "Opening link target with..." / "Opening note file with..."
 }
 
 void Basket::noteSaveAs()
@@ -4486,7 +4497,7 @@ void Basket::noteGroup()
 	// Do cleanup:
 	unplugNote(fakeNote);
 	unselectAll();
-	group->setSelectedRecursivly(true); // Notes were unselected by unplugging
+	group->setSelectedRecursively(true); // Notes were unselected by unplugging
 
 	relayoutNotes(true);
 	save();
@@ -4642,15 +4653,16 @@ void Basket::linkLookChanged()
 	relayoutNotes(true);
 }
 
-void Basket::slotCopyingDone2(KIO::Job *job)
+void Basket::slotCopyingDone2(KIO::Job *job,
+                              const KUrl &/*from*/,
+                              const KUrl &to)
 {
 	if (job->error()) {
 		DEBUG_WIN << "Copy finished, ERROR";
 		return;
 	}
-	KIO::FileCopyJob *fileCopyJob = (KIO::FileCopyJob*)job;
-	Note *note = noteForFullPath(fileCopyJob->destURL().path());
-	DEBUG_WIN << "Copy finished, load note: " + fileCopyJob->destURL().path() + (note ? "" : " --- NO CORRESPONDING NOTE");
+	Note *note = noteForFullPath(to.path());
+	DEBUG_WIN << "Copy finished, load note: " + to.path() + (note ? "" : " --- NO CORRESPONDING NOTE");
 	if (note != 0L) {
 		note->content()->loadFromFile(/*lazyLoad=*/false);
 		if(isEncrypted())
@@ -5276,16 +5288,15 @@ bool Basket::isEncrypted()
 
 bool Basket::isFileEncrypted()
 {
-	QFile file(fullPath() + ".basket");
+    QFile file(fullPath() + ".basket");
 
-	if (file.open(QIODevice::ReadOnly)){
-		QString line;
-
-		file.readLine(line, 32);
-		if(line.startsWith("-----BEGIN PGP MESSAGE-----"))
-		return true;
-	}
-	return false;
+    if (file.open(QIODevice::ReadOnly)){
+        // Should be ASCII anyways
+        QString line = file.readLine(32);
+        if (line.startsWith("-----BEGIN PGP MESSAGE-----"))
+            return true;
+    }
+    return false;
 }
 
 bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
@@ -5295,13 +5306,13 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 
 	if (file.open(QIODevice::ReadOnly)){
 		*array = file.readAll();
-		const char* magic = "-----BEGIN PGP MESSAGE-----";
-		uint i = 0;
+		QByteArray magic = "-----BEGIN PGP MESSAGE-----";
+		int i = 0;
 
-		if(array->size() > strlen(magic))
+		if(array->size() > magic.size())
 			for (i = 0; array->at(i) == magic[i]; ++i)
 				;
-		if (i == strlen(magic))
+		if (i == magic.size())
 		{
 			encrypted = true;
 		}
@@ -5387,72 +5398,59 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 		return false;
 }
 
-/** Same as saveToFile(), but it is static, and does not crypt the data if needed.
-  * Basically, to save a file owned by a basket (a basket or a note file), use saveToFile().
-  * But to save another file (eg. the basket hierarchy), use this safelySaveToFile() static method.
-  */
-/*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length)
+/**
+ * A safer version of saveToFile, that doesn't perform encryption.  To save a
+ * file owned by a basket (i.e. a basket or a note file), use saveToFile(), but
+ * to save to another file, (e.g. the basket hierarchy), use this function
+ * instead.
+ */
+/*static*/ bool Basket::safelySaveToFile(const QString& fullPath,
+                                         const QByteArray& array,
+                                         Q_ULONG length)
 {
-	// Here, we take a double protection:
-	// - We use KSaveFile to write atomically to the file (either it's a success or the file is untouched)
-	// - We show a modal dialog to the user when no disk space is left or access is denied and retry every couple of seconds
+    // Modulus operandi:
+    // 1. Use KSaveFile to try and save the file
+    // 2. Show a modal dialog (with the error) when bad things happen
+    // 3. We keep trying (at increasing intervals, up until every minute)
+    //    until we finally save the file.
 
-	// Static, because safelySaveToFile() can be called a second time while blocked.
-	// Example:
-	// User type something and press Enter: safelySaveToFile() is called and block.
-	// Three seconds later, a timer ask to save changes, and this second safelySaveToFile() block too.
-	// Do not show the dialog twice in this case!
-	static DiskErrorDialog *dialog = 0;
+    // The error dialog is static to make sure we never show the dialog twice,
+    static DiskErrorDialog *dialog = 0;
+    static const uint maxDelay = 60 * 1000; // ms
+    uint retryDelay = 1000; // ms
+    bool success = false;
+    do {
+        KSaveFile saveFile(fullPath);
+        if (!saveFile.open()) {
+            saveFile.write(array, length);
+            if (saveFile.finalize())
+                success = true;
+        }
 
-	//kDebug() << "---------- Saving " << fullPath << ":";
-	bool openSuccess;
-	bool closeSuccess;
-	bool errorWhileWritting;
-	do {
-		KSaveFile saveFile(fullPath);
-		//kDebug() << "==>>" << "SAVE FILE CREATED: " << strerror(saveFile.status());
-		openSuccess = (saveFile.status() == 0 && saveFile.file() != 0);
-		if (openSuccess) {
-			saveFile.file()->write(array, length);
-			//kDebug() << "FILE WRITTEN: " << strerror(saveFile.status());
-			closeSuccess = saveFile.close();
-			//kDebug() << "FILE CLOSED: " << (closeSuccess ? "well" : "erroneous");
-		}
-		errorWhileWritting = (!openSuccess || !closeSuccess || saveFile.status() != 0);
-		if (errorWhileWritting) {
-			//kDebug() << "ERROR DETECTED";
-			if (dialog == 0) {
-				//kDebug() << "Opening dialog for " << fullPath;
-				dialog = new DiskErrorDialog(
-					(openSuccess
-						? i18n("Insufficient Disk Space to Save Basket Data")
-						: i18n("Wrong Basket File Permissions")
-					),
-					(openSuccess
-						? i18n("Please remove files on the disk <b>%1</b> to let the application safely save your changes.")
-							.arg(KIO::findPathMountPoint(fullPath))
-						: i18n("File permissions are bad for <b>%1</b>. Please check that you have write access to it and the parent folders.")
-							.arg(fullPath)
-					),
-					kapp->activeWindow()
-				);
-			}
-			if (!dialog->isShown())
-				dialog->show();
-			const int retryDelay = 1000/*ms*/;
-			const int sleepDelay = 50/*ms*/;
-			for (int i = 0; i < retryDelay / sleepDelay; ++i) {
-				kapp->processEvents();
-				usleep(sleepDelay);
-			}
-		}
-	} while (errorWhileWritting);
-	if (dialog) {
-		delete dialog;
-		dialog = 0;
-	}
+        if (!success) {
+            if (!dialog) {
+                dialog = new DiskErrorDialog(i18n("Error while saving"),
+                                             saveFile.errorString(),
+                                             kapp->activeWindow());
+            }
 
-	return true; // Hum...?!
+            if (!dialog->isVisible())
+                dialog->show();
+
+            static const uint sleepDelay = 50; // ms
+            for (uint i = 0; i < retryDelay / sleepDelay; ++i) {
+                kapp->processEvents();
+                usleep(sleepDelay * 1000); // usec
+            }
+            // Double the retry delay, but don't go over the max.
+            retryDelay = qMin(maxDelay, retryDelay * 2); // ms
+        }
+    } while (!success);
+
+    dialog->deleteLater();
+    dialog = NULL;
+
+    return true; // Guess we can't really return a fail
 }
 
 /*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)

@@ -22,7 +22,6 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <Q3ValueList>
-#include <kglobalsettings.h>
 #include <qstyle.h>
 #include <kapplication.h>
 #include <kstyle.h>
@@ -37,8 +36,6 @@
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
-
-#include <iostream>
 
 #ifdef None
 #undef None
@@ -311,7 +308,7 @@ void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers
 		if ((showSubNotes() || first) && child->matching())
 			child->selectIn(rect, invertSelection, unselectOthers);
 		else
-			child->setSelectedRecursivly(false);
+			child->setSelectedRecursively(false);
 		child = child->next();
 		first = false;
 	}
@@ -334,27 +331,27 @@ bool Note::allSelected()
 		return isSelected();
 }
 
-void Note::setSelectedRecursivly(bool selected)
+void Note::setSelectedRecursively(bool selected)
 {
 	setSelected(selected && matching());
 
 	FOR_EACH_CHILD (child)
-		child->setSelectedRecursivly(selected);
+		child->setSelectedRecursively(selected);
 }
 
-void Note::invertSelectionRecursivly()
+void Note::invertSelectionRecursively()
 {
 	if (content())
 		setSelected(!isSelected() && matching());
 
 	FOR_EACH_CHILD (child)
-		child->invertSelectionRecursivly();
+		child->invertSelectionRecursively();
 }
 
 void Note::unselectAllBut(Note *toSelect)
 {
 	if (this == toSelect)
-		setSelectedRecursivly(true);
+		setSelectedRecursively(true);
 	else {
 		setSelected(false);
 
@@ -364,7 +361,7 @@ void Note::unselectAllBut(Note *toSelect)
 			if ((showSubNotes() || first) && child->matching())
 				child->unselectAllBut(toSelect);
 			else
-				child->setSelectedRecursivly(false);
+				child->setSelectedRecursively(false);
 			child = child->next();
 			first = false;
 		}
@@ -374,7 +371,7 @@ void Note::unselectAllBut(Note *toSelect)
 void Note::invertSelectionOf(Note *toSelect)
 {
 	if (this == toSelect)
-		setSelectedRecursivly(!isSelected());
+		setSelectedRecursively(!isSelected());
 	else {
 		Note *child = firstChild();
 		bool first = true;
@@ -1133,7 +1130,7 @@ void Note::relayoutAt(int x, int y, bool animate)
 				child->relayoutAt(x + width(), y+h, animate);
 				h += child->finalHeight();
 			} else                                  // In case the user collapse a group, then move it and then expand it:
-				child->setXRecursivly(x + width()); //  notes SHOULD have a good X coordonate, and not the old one!
+				child->setXRecursively(x + width()); //  notes SHOULD have a good X coordonate, and not the old one!
 			// For future animation when re-match, but on bottom of already matched notes!
 			// Find parent primary note and set the Y to THAT y:
 			if (!child->matching())
@@ -1171,22 +1168,22 @@ void Note::relayoutAt(int x, int y, bool animate)
 	}
 }
 
-void Note::setXRecursivly(int x)
+void Note::setXRecursively(int x)
 {
 	m_deltaX = 0;
 	setX(x);
 
 	FOR_EACH_CHILD (child)
-		child->setXRecursivly(x + width());
+		child->setXRecursively(x + width());
 }
 
-void Note::setYRecursivly(int y)
+void Note::setYRecursively(int y)
 {
 	m_deltaY = 0;
 	setY(y);
 
 	FOR_EACH_CHILD (child)
-		child->setYRecursivly(y);
+		child->setYRecursively(y);
 }
 
 void Note::setGroupWidth(int width)
@@ -1291,7 +1288,7 @@ void Note::drawExpander(QPainter *painter, int x, int y, const QColor &backgroun
 		cg.setColor(QColorGroup::Base, background);
 
 		// Fill the inside of the expander in white, typically:
-		QBrush brush(KGlobalSettings::baseColor());
+		QBrush brush(palette().color(QPalette::Base));
 		painter->fillRect(x, y, 9, 9, brush);
 
 		// Draw it:
@@ -1779,7 +1776,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 			// Draw gradient or resizer:
 			if (m_hovered && m_hoveredZone == Resizer) {
 				QColor baseColor(basket()->backgroundColor());
-				QColor highColor(KGlobalSettings::highlightColor());
+				QColor highColor(palette().color(QPalette::Highlight));
 				drawResizer(&painter2, 0, 0, RESIZER_WIDTH, resizerHeight(), baseColor, highColor, /*rounded=*/!isColumn());
 				if (!isColumn()) {
 					drawRoundings(&painter2, RESIZER_WIDTH - 3, 0,                   /*type=*/3);
@@ -1811,9 +1808,9 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 						selectionRectInside.moveBy(right, y());
 						basket()->blendBackground(painter2, selectionRectInside, right, y(), false);
 				}
-				painter2.setPen(KGlobalSettings::highlightColor().dark());
+				painter2.setPen(palette().color(QPalette::Highlight).darker());
 				painter2.drawRect(selectionRect);
-				painter2.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), basket()->backgroundColor()));
+				painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
 				painter2.drawPoint(selectionRect.topLeft());
 				painter2.drawPoint(selectionRect.topRight());
 				painter2.drawPoint(selectionRect.bottomLeft());
@@ -1855,7 +1852,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
 	/** Initialise colors: */
 	QColor baseColor(basket()->backgroundColor());
-	QColor highColor(KGlobalSettings::highlightColor());
+	QColor highColor(palette().color(QPalette::Highlight));
 	QColor midColor = Tools::mixColor(baseColor, highColor);
 
 	/** Initialise brushs and pens: */
@@ -1907,9 +1904,9 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	QColor background = basket()->backgroundColor();
 	if (isSelected())
 		if (m_computedState.backgroundColor().isValid())
-			background = Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), KGlobalSettings::highlightColor()), KGlobalSettings::highlightColor());
+			background = Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight));
 		else
-			background = KGlobalSettings::highlightColor();
+			background = palette().color(QPalette::Highlight);
 	else if (m_computedState.backgroundColor().isValid())
 		background = m_computedState.backgroundColor();
 	QColor bgColor;
@@ -1990,7 +1987,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	cg.setColor(QColorGroup::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
 	cg.setColor(QColorGroup::Background, bgColor);
 	if (isSelected())
-		cg.setColor(QColorGroup::Text, KGlobalSettings::highlightedTextColor());
+		cg.setColor(QColorGroup::Text, palette().color(QPalette::HighlightedText));
 
 	// Draw the Tags Arrow:
 	if (hovered) {
@@ -2054,18 +2051,18 @@ void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 					//blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, &m_selectedBackgroundPixmap);
 				}
 
-				painter3.setPen(KGlobalSettings::highlightColor().dark());
+				painter3.setPen(palette().color(QPalette::Highlight).darker());
 				painter3.drawRect(selectionRect);
 				if (isGroup())
-					painter3.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), basket()->backgroundColor()));
+					painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
 				else {
 					// What are the background colors:
 					QColor bgColor = basket()->backgroundColor();
 					if (isSelected())
-						bgColor = (m_computedState.backgroundColor().isValid() ? Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), KGlobalSettings::highlightColor()), KGlobalSettings::highlightColor()) : KGlobalSettings::highlightColor());
+						bgColor = (m_computedState.backgroundColor().isValid() ? Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight)) : palette().color(QPalette::Highlight));
 					else if (m_computedState.backgroundColor().isValid())
 						bgColor = m_computedState.backgroundColor();
-					painter3.setPen(Tools::mixColor(KGlobalSettings::highlightColor().dark(), bgColor));
+					painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), bgColor));
 				}
 				painter3.drawPoint(selectionRect.topLeft());
 				painter3.drawPoint(selectionRect.topRight());
@@ -2381,7 +2378,7 @@ void Note::unbufferizeAll()
 void Note::bufferizeSelectionPixmap()
 {
 	if (m_bufferedSelectionPixmap.isNull()) {
-		QColor insideColor = KGlobalSettings::highlightColor();
+		QColor insideColor = palette().color(QPalette::Highlight);
 		KPixmap kpixmap(m_bufferedPixmap);
 		m_bufferedSelectionPixmap = KPixmapEffect::fade(kpixmap, 0.25, insideColor);
 	}

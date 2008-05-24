@@ -38,7 +38,6 @@
 #include <kurifilter.h>
 #include <kdebug.h>
 #include <kstandardaction.h>
-#include <kglobalsettings.h>
 
 #include "kicondialog.h"
 #include "noteedit.h"
@@ -51,8 +50,6 @@
 #include "tools.h"
 #include "variouswidgets.h"
 #include "focusedwidgets.h"
-
-#include <iostream>
 
 #include <KActionCollection>
 #include <KToggleAction>
@@ -130,8 +127,6 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 			m_lineEdit = lineEdit;
 	}
 }
-
-#include <iostream>
 
 /** class TextEditor: */
 
@@ -822,7 +817,7 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	QFont defaultFont;
 	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
 		Global::bnpView->currentBasket()->textColor() :
-		KGlobalSettings::textColor());
+		palette().color(QPalette::Text));
 
 	// Init the RichTextEditor Toolbar:
 	richTextFont = new FocusedFontCombo(Global::mainWindow());
@@ -987,7 +982,7 @@ void InlineEditors::disableRichTextToolBar()
 	QFont defaultFont;
 	QColor textColor = (Global::bnpView && Global::bnpView->currentBasket() ?
 		Global::bnpView->currentBasket()->textColor() :
-		KGlobalSettings::textColor());
+		palette().color(QPalette::Text));
 	richTextFont->setCurrentFont(defaultFont.family());
 	richTextFontSize->setFontSize(defaultFont.pointSize());
 	richTextColor->setColor(textColor);

@@ -54,7 +54,6 @@
 
 #include <pwd.h>
 
-#include <iostream>
 #include <kglobal.h>
 
 #include "likeback.h"
@@ -340,7 +339,7 @@ void LikeBack::enableBar()
 {
 	d->disabledCount--;
 	if (d->disabledCount < 0)
-		std::cerr << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints.";
+		kDebug() << "===== LikeBack ===== Enabled more times than it was disabled. Please refer to the disableBar() documentation for more information and hints.";
 	if (d->bar && d->disabledCount <= 0) {
 		d->bar->startTimer();
 	}

@@ -22,10 +22,10 @@
 #define NOTE_H
 
 #include <qstring.h>
-#include <qpixmap.h>
+
 //Added by qt3to4:
 #include <Q3ValueList>
-#include <kpixmap.h>
+#include <QPixmap>
 #include <qdatetime.h>
 
 #include "notecontent.h"
@@ -80,8 +80,8 @@ class Note
 	void setInitialHeight(int height) { m_height = height; } /// << Do NEVER use it unless you know what you do!
 	void setX(int x);
 	void setY(int y);
-	void setXRecursivly(int x);
-	void setYRecursivly(int y);
+	void setXRecursively(int x);
+	void setYRecursively(int y);
 	inline int  x()      { return m_x;                }
 	inline int  y()      { return m_y;                }
 	inline int  width()  { return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width); }
@@ -163,7 +163,7 @@ class Note
 /// DRAWING:
   private:
 	QPixmap m_bufferedPixmap;
-	KPixmap m_bufferedSelectionPixmap;
+	QPixmap m_bufferedSelectionPixmap;
   public:
 	void draw(QPainter *painter, const QRect &clipRect);
 	void drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap);
@@ -174,7 +174,7 @@ class Note
 	void drawRoundings(QPainter *painter, int x, int y, int type, int width = 0, int height = 0);
 	void unbufferizeAll();
 	void bufferizeSelectionPixmap();
-	inline void unbufferize()  { m_bufferedPixmap.resize(0, 0); m_bufferedSelectionPixmap.resize(0, 0); }
+	inline void unbufferize()  { m_bufferedPixmap = QPixmap(); m_bufferedSelectionPixmap = QPixmap(); }
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
 	void recomputeBlankRects(Q3ValueList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
@@ -238,8 +238,8 @@ class Note
   public:
 	NoteSelection* selectedNotes();
 	void setSelected(bool selected);
-	void setSelectedRecursivly(bool selected);
-	void invertSelectionRecursivly();
+	void setSelectedRecursively(bool selected);
+	void invertSelectionRecursively();
 	void selectIn(const QRect &rect, bool invertSelection, bool unselectOthers = true);
 	void setFocused(bool focused);
 	inline bool isFocused()  { return m_focused; }

@@ -293,7 +293,7 @@ class Basket : public Q3ScrollView
   protected:
     bool event(QEvent *event);
     // TODO: replace with QGraphicsScene::helpEvent()
-    void toolTipEvent(QHelpEvent *event);
+    void tooltipEvent(QHelpEvent *event);
 
 /// ANIMATIONS:
   private:
@@ -606,7 +606,7 @@ public slots:
 	void contentsDragMoveEvent(QDragMoveEvent *event);
 	void contentsDragLeaveEvent(QDragLeaveEvent*);
   public slots:
-	void slotCopyingDone2(KIO::Job *job);
+	void slotCopyingDone2(KIO::Job *job, const KUrl &from, const KUrl &to);
   public:
 	Note* noteForFullPath(const QString &path);
 

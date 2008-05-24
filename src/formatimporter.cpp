@@ -25,12 +25,9 @@
 #include <qdom.h>
 //Added by qt3to4:
 #include <Q3TextStream>
-#include <kglobalsettings.h>
 #include <kmessagebox.h>
 #include <klocale.h>
 #include <kapplication.h>
-
-#include <iostream>
 
 #include "formatimporter.h"
 #include "notecontent.h"
@@ -40,6 +37,8 @@
 #include "global.h"
 #include "xmlwork.h"
 #include "tools.h"
+
+#include <KIO/CopyJob>
 
 bool FormatImporter::shouldImportBaskets()
 {
@@ -61,7 +60,8 @@ void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 {
 	copyFinished = false;
 	KIO::CopyJob *copyJob = KIO::copyAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
-	connect( copyJob,  SIGNAL(result(KIO::Job*)), this, SLOT(slotCopyingDone(KIO::Job*)) );
+	connect( copyJob,  SIGNAL(result(KIO::Job*)),
+             this, SLOT(slotCopyingDone(KIO::Job*)) );
 	while (!copyFinished)
 		kapp->processEvents();
 }
@@ -190,7 +190,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	QDomElement properties = XMLWork::getElement(docElem, "properties");
 	QDomElement background = XMLWork::getElement(properties, "background");
 	QColor backgroundColor = QColor(background.attribute("color"));
-	if (backgroundColor.isValid() && (backgroundColor != KGlobalSettings::baseColor())) { // Use the default color if it was already that color:
+	if (backgroundColor.isValid() && (backgroundColor != palette().color(QPalette::Base))) { // Use the default color if it was already that color:
 		QDomElement appearance = document->createElement("appearance");
 		appearance.setAttribute("backgroundColor", backgroundColor.name());
 		properties.appendChild(appearance);

@@ -29,7 +29,6 @@
 #include <Q3TextStream>
 #include <Q3ValueList>
 #include <QPixmap>
-#include <kglobalsettings.h>
 #include <klocale.h>
 
 #include "tag.h"
@@ -39,8 +38,6 @@
 #include "bnpview.h"
 #include "tools.h"
 #include "basket.h"
-
-#include <iostream>
 
 /** class State: */
 
@@ -714,7 +711,6 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 #include <qstyle.h>
 #include <qcheckbox.h>
 #include <qbitmap.h>
-#include <kglobalsettings.h>
 #include <qimage.h>
 #include <qradiobutton.h>
 #include <kiconeffect.h>

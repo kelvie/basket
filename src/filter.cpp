@@ -28,7 +28,6 @@
 //#include <klineedit.h>
 #include <kiconloader.h>
 #include <klocale.h>
-#include <kglobalsettings.h>
 #include <kapplication.h>
 #include <kiconloader.h>
 #include <qpixmap.h>

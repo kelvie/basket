@@ -28,7 +28,6 @@
 #include <QDropEvent>
 #include <QResizeEvent>
 #include <QFocusEvent>
-#include <kglobalsettings.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kstringhandler.h>
@@ -36,7 +35,6 @@
 #include <qbitmap.h>
 #include <qpixmapcache.h>
 #include <qtooltip.h>
-#include <iostream>
 #include <kdebug.h>
 #include "global.h"
 #include "bnpview.h"
@@ -282,17 +280,17 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 	QPixmap gradient(3 * width, 3 * height); // We double the size to be able to smooth scale down it (== antialiased curves)
 	QPainter gradientPainter(&gradient);
 #if 1 // Enable the new look of the gradient:
-	QColor topColor       = KGlobalSettings::highlightColor().light(130); //120
-	QColor topMidColor    = KGlobalSettings::highlightColor().light(105); //105
-	QColor bottomMidColor = KGlobalSettings::highlightColor().dark(130);  //120
-	QColor bottomColor    = KGlobalSettings::highlightColor();
+	QColor topColor       = palette().color(QPalette::Highlight).lighter(130); //120
+	QColor topMidColor    = palette().color(QPalette::Highlight).lighter(105); //105
+	QColor bottomMidColor = palette().color(QPalette::Highlight).darker(130);  //120
+	QColor bottomColor    = palette().color(QPalette::Highlight);
 	drawGradient(&gradientPainter, topColor, topMidColor,
 				  0, 0, gradient.width(), gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 	drawGradient(&gradientPainter, bottomMidColor, bottomColor,
 				  0, gradient.height() / 2, gradient.width(), gradient.height() - gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-	gradientPainter.fillRect(0, 0, gradient.width(), 3, KGlobalSettings::highlightColor());
+	gradientPainter.fillRect(0, 0, gradient.width(), 3, palette().color(QPalette::Highlight));
 #else
-	drawGradient(&gradientPainter, KGlobalSettings::highlightColor(), KGlobalSettings::highlightColor().dark(),
+	drawGradient(&gradientPainter, palette().color(QPalette::Highlight), palette().color(QPalette::Highlight).darker(),
 				  0, 0, gradient.width(), gradient.height(), /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 #endif
 	gradientPainter.end();
@@ -355,7 +353,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
 			return QPixmap();
 	}
 
-	return circledTextPixmap(text, height, boldFont, KGlobalSettings::highlightedTextColor());
+	return circledTextPixmap(text, height, boldFont, palette().color(QPalette::HighlightedText));
 }
 
 bool BasketListViewItem::haveChildsLoading()
@@ -452,7 +450,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 
 
 	bool drawRoundRect = m_basket->backgroundColorSetting().isValid() || m_basket->textColorSetting().isValid();
-	QColor textColor = (drawRoundRect ? m_basket->textColor() : (isCurrentBasket() ? KGlobalSettings::highlightedTextColor() : KGlobalSettings::textColor()));
+	QColor textColor = (drawRoundRect ?
+                        m_basket->textColor() :
+                        (isCurrentBasket() ?
+                         palette().color(QPalette::HighlightedText) :
+                         palette().color(QPalette::Text));
 
 	BasketListViewItem *shownAbove = shownItemAbove();
 	BasketListViewItem *shownBelow = shownItemBelow();
@@ -488,7 +490,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	QPainter thePainter(&theBuffer);
 
 	// Fill with the basket background color:
-	QColor background = (isCurrentBasket() ? KGlobalSettings::highlightColor() : listView()->paletteBackgroundColor());
+	QColor background = (isCurrentBasket() ? palette().color(QPalette::Highlight) : listView()->paletteBackgroundColor());
 	thePainter.fillRect(0, 0, width, height(), background);
 
 	int textWidth = effectiveWidth - MARGIN - BASKET_ICON_SIZE - MARGIN - MARGIN;
@@ -523,7 +525,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	}
 
 	QColor bgColor  = listView()->paletteBackgroundColor();
-	QColor selColor = KGlobalSettings::highlightColor();
+	QColor selColor = palette().color(QPalette::Highlight);
 	QColor midColor = Tools::mixColor(bgColor, selColor);
 	// Draw the left selection roundings:
 	if (isCurrentBasket()) {
@@ -790,7 +792,7 @@ void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 	if (last && last->isCurrentBasket()) {
 		int y = last->itemPos() + last->height();
 		QColor bgColor  = paletteBackgroundColor();
-		QColor selColor = KGlobalSettings::highlightColor();
+		QColor selColor = palette().color(QPalette::Highlight);
 		QColor midColor = Tools::mixColor(bgColor, selColor);
 		painter->setPen(selColor);
 		painter->drawPoint(visibleWidth() - 1, y);

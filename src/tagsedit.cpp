@@ -34,7 +34,6 @@
 #include <kkeybutton.h>
 #include <kiconloader.h>
 #include <kapplication.h>
-#include <kglobalsettings.h>
 #include <qcheckbox.h>
 #include <kpushbutton.h>
 #include <q3groupbox.h>
@@ -48,8 +47,6 @@
 #include <qaction.h>
 #include <kmessagebox.h>
 #include <qtimer.h>
-
-#include <iostream>
 
 #include "kicondialog.h"
 #include "tag.h"
@@ -244,10 +241,10 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
         empblem = KIconLoader::global()->loadIcon(
             state->emblem(), KIconLoader::NoGroup, 16);
 
-	QColor backgroundColor = (isSelected() ? KGlobalSettings::highlightColor()
+	QColor backgroundColor = (isSelected() ? palette().color(QPalette::Highlight)
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
 	                                                                                         : listView()->paletteBackgroundColor()));
-	QColor textColor = (isSelected() ? KGlobalSettings::highlightedTextColor()
+	QColor textColor = (isSelected() ? palette().color(QPalette::HighlightedText)
 	                                 : (withIcon && state->textColor().isValid() ? state->textColor()
 	                                                                             : listView()->paletteForegroundColor()));
 
@@ -444,7 +441,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
 
-	m_backgroundColor = new KColorCombo2(QColor(), KGlobalSettings::baseColor(), stateWidget);
+	m_backgroundColor = new KColorCombo2(QColor(), palette().color(QPalette::Base), stateWidget);
 	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
 
 	Q3HBoxLayout *backgroundColorLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
@@ -485,7 +482,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	textLayout->addWidget(m_strike);
 	textLayout->addStretch();
 
-	m_textColor = new KColorCombo2(QColor(), KGlobalSettings::textColor(), stateWidget);
+	m_textColor = new KColorCombo2(QColor(), palette().color(QPalette::Text), stateWidget);
 	QLabel *textColorLabel = new QLabel(m_textColor, i18n("Co&lor:"), stateWidget);
 
 	m_font = new KFontCombo(stateWidget);

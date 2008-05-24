@@ -119,7 +119,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 		OpenOneWithDialog,    /// << Prompt-message of the "Open With..." dialog for this note.
 		OpenSeveralWithDialog /// << Prompt-message of the "Open With..." dialog for several notes of this type.
 	};
-	virtual QString messageWhenOpenning(OpenMessage /*where*/) { return QString(); } /// << @return the message to display according to @p where or nothing if it can't be done. @see OpenMessage describing the nature of the message that should be returned... The default implementation return an empty string. NOTE: If urlToOpen() is invalid and messageWhenOpenning() is not empty, then the user will be prompted to edit the note (with the message returned by messageWhenOpenning()) for eg. being able to edit URL of a link if it's empty when opening it...
+	virtual QString messageWhenOpening(OpenMessage /*where*/) { return QString(); } /// << @return the message to display according to @p where or nothing if it can't be done. @see OpenMessage describing the nature of the message that should be returned... The default implementation return an empty string. NOTE: If urlToOpen() is invalid and messageWhenOpening() is not empty, then the user will be prompted to edit the note (with the message returned by messageWhenOpening()) for eg. being able to edit URL of a link if it's empty when opening it...
 	virtual QString customOpenCommand() { return QString(); }  /// << Reimplement this if your urlToOpen() should be opened with another application instead of the default KDE one. This choice should be left to the users in the setting (choice to use a custom app or not, and which app).
 	// Common File Management:                                            ///    (and do save changes) and optionnaly hide the toolbar.
 	virtual void setFileName(const QString &fileName); /// << Set the filename. Reimplement it if you eg. want to update the view when the filename is changed.
@@ -174,7 +174,7 @@ class TextContent : public NoteContent
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 //	QString customOpenCommand();
 	// Content-Specific Methods:
 	void    setText(const QString &text, bool lazyLoad = false); /// << Change the text note-content and relayout the note.
@@ -217,7 +217,7 @@ class HtmlContent : public NoteContent
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	void    setHtml(const QString &html, bool lazyLoad = false); /// << Change the HTML note-content and relayout the note.
@@ -261,7 +261,7 @@ class ImageContent : public NoteContent
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	void    setPixmap(const QPixmap &pixmap); /// << Change the pixmap note-content and relayout the note.
@@ -304,11 +304,11 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	bool    finishLazyLoad();
 	bool    saveToFile();
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	bool    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
-	QMovie  movie() { return m_movie; }    /// << @return the movie note-content.
+	QMovie&  movie() { return m_movie; }    /// << @return the movie note-content.
   protected slots:
 	void movieUpdated(const QRect&);
 	void movieResized(const QSize&);
@@ -357,7 +357,7 @@ class FileContent : public QObject, public NoteContent
 	// Content Edition:
 	int      xEditorIndent();
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	// Content-Specific Methods:
 	void    setFileName(const QString &fileName); /// << Reimplemented to be able to relayout the note.
 	virtual LinkLook* linkLook() { return LinkLook::fileLook; }
@@ -397,7 +397,7 @@ class SoundContent : public FileContent // A sound is a file with just a bit dif
 	QString zoneTip(int zone);
 	void    setHoveredZone(int oldZone, int newZone);
 	// Open Content or File:
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	LinkLook* linkLook() { return LinkLook::soundLook; }
@@ -445,7 +445,7 @@ class LinkContent : public QObject, public NoteContent
 	QString statusBarMessage(int zone);
 	// Open Content or File:
 	KUrl urlToOpen(bool /*with*/);
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	// Content-Specific Methods:
 	void    setLink(const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon); /// << Change the link and relayout the note.
 	KUrl    url()       { return m_url;       } /// << @return the URL of the link note-content.
@@ -510,7 +510,7 @@ class LauncherContent : public NoteContent
 	void    setCursor(QWidget *widget, int zone);
 	// Open Content or File:
 	KUrl urlToOpen(bool with);
-	QString messageWhenOpenning(OpenMessage where);
+	QString messageWhenOpening(OpenMessage where);
 	// Content-Specific Methods:
 	void    setLauncher(const QString &name, const QString &icon, const QString &exec); /// << Change the launcher note-content and relayout the note. Normally called by loadFromFile (no save done).
 	QString name() { return m_name; }                              /// << @return the URL of the launcher note-content.

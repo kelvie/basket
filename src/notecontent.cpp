@@ -36,7 +36,6 @@
 #include <kcolordialog.h>
 #include <kmessagebox.h>
 #include <klocale.h>
-#include <kglobalsettings.h>
 
 #include <qbitmap.h>
 #include <kurifilter.h>
@@ -51,8 +50,6 @@
 #include <kfileitem.h>
 #include <kio/previewjob.h>
 #include <kio/global.h>
-
-#include <iostream>
 
 #include "notecontent.h"
 #include "note.h"
@@ -578,7 +575,7 @@ QString TextContent::linkAt(const QPoint &pos)
 }
 
 
-QString TextContent::messageWhenOpenning(OpenMessage where)
+QString TextContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening plain text...");
@@ -686,7 +683,7 @@ QString HtmlContent::linkAt(const QPoint &pos)
 }
 
 
-QString HtmlContent::messageWhenOpenning(OpenMessage where)
+QString HtmlContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening text...");
@@ -744,7 +741,7 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QCo
 	width -= 1;
 //	KPixmap pixmap = m_pixmap;
 //	if (note()->isSelected())
-//		pixmap = KPixmapEffect::selectedPixmap(m_pixmap, KGlobalSettings::highlightColor());
+//		pixmap = KPixmapEffect::selectedPixmap(m_pixmap, palette().color(QPalette::Highlight));
 
 	if (width >= m_pixmap.width()) // Full size
 		painter->drawPixmap(0, 0, m_pixmap);
@@ -811,7 +808,7 @@ void ImageContent::toolTipInfos(QStringList *keys, QStringList *values)
 	values->append(i18n("%1 by %2 pixels").arg(QString::number(m_pixmap.width()), QString::number(m_pixmap.height())));
 }
 
-QString ImageContent::messageWhenOpenning(OpenMessage where)
+QString ImageContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening image...");
@@ -911,7 +908,7 @@ bool AnimationContent::saveToFile()
 }
 
 
-QString AnimationContent::messageWhenOpenning(OpenMessage where)
+QString AnimationContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening animation...");
@@ -1084,7 +1081,7 @@ int FileContent::xEditorIndent()
 }
 
 
-QString FileContent::messageWhenOpenning(OpenMessage where)
+QString FileContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening file...");
@@ -1197,7 +1194,7 @@ void SoundContent::setHoveredZone(int oldZone, int newZone)
 }
 
 
-QString SoundContent::messageWhenOpenning(OpenMessage where)
+QString SoundContent::messageWhenOpening(OpenMessage where)
 {
 	switch (where) {
 		case OpenOne:               return i18n("Opening sound...");
@@ -1294,7 +1291,7 @@ KUrl LinkContent::urlToOpen(bool /*with*/)
 	return NoteFactory::filteredURL(url());//KURIFilter::self()->filteredURI(url());
 }
 
-QString LinkContent::messageWhenOpenning(OpenMessage where)
+QString LinkContent::messageWhenOpening(OpenMessage where)
 {
 	if (url().isEmpty())
 		return i18n("Link have no URL to open.");
@@ -1563,7 +1560,7 @@ KUrl LauncherContent::urlToOpen(bool with)
 	return (with ? KUrl() : KUrl(fullPath())); // Can open the appliation, but not with another application :-)
 }
 
-QString LauncherContent::messageWhenOpenning(OpenMessage where)
+QString LauncherContent::messageWhenOpening(OpenMessage where)
 {
 	if (KService(fullPath()).exec().isEmpty())
 		return i18n("The launcher have no command to run.");

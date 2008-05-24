@@ -30,7 +30,6 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QDragEnterEvent>
-#include <kglobalsettings.h>
 #include <klocale.h>
 #include <kcolordialog.h>
 #include <qclipboard.h>
@@ -45,11 +44,9 @@
 //#define OUTPUT_GIMP_PALETTE
 
 #ifdef DEBUG_COLOR_ARRAY
-  #include <iostream>
   #include <iomanip>
 #endif
 #ifdef OUTPUT_GIMP_PALETTE
-  #include <iostream>
   #include <iomanip>
 #endif
 
@@ -90,8 +87,8 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 	// Initialize the pixmap:
 	m_pixmap.resize(width, height);
 	QPainter painter(&m_pixmap);
-	painter.fillRect(0, 0, width, height, KGlobalSettings::baseColor());
-	painter.setPen(KGlobalSettings::textColor());
+	painter.fillRect(0, 0, width, height, palette().color(QPalette::Base));
+	painter.setPen(palette().color(QPalette::Text));
 	painter.drawRect(0, 0, width, height);
 
 	// Needed to draw:
@@ -105,7 +102,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 			y = 1 + MARGIN + (colorHeight + MARGIN) * j;
 			if (i == m_selectedColumn && j == m_selectedRow) {
 				selectionRect = QRect(x - 2, y - 2, colorWidth + 4, colorHeight + 4);
-				painter.fillRect(selectionRect, KGlobalSettings::highlightColor());
+				painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
 			}
 			m_selector->drawColorRect(painter, x, y, m_selector->colorAt(i, j), /*isDefault=*/false, colorWidth, colorHeight);
 		}
@@ -122,10 +119,10 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 		x = 1 + MARGIN;
 		if (m_selectedColumn < m_columnOther && rowCount == m_selectedRow) {
 			selectionRect = QRect(x - 2, y - 2, defaultCellWidth, colorHeight + 4);
-			painter.fillRect(selectionRect, KGlobalSettings::highlightColor());
-			textColor = KGlobalSettings::highlightedTextColor();
+			painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
+			textColor = palette().color(QPalette::HighlightedText);
 		} else
-			textColor = KGlobalSettings::textColor();
+			textColor = palette().color(QPalette::Text);
 		m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
 		painter.setFont(m_selector->font());
 		painter.setPen(textColor);
@@ -134,10 +131,10 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 	x = 1 + MARGIN + m_columnOther * (colorWidth + MARGIN);
 	if (m_selectedColumn >= m_columnOther && rowCount == m_selectedRow) {
 		selectionRect = QRect(x - 2, y - 2, otherCellWidth, colorHeight + 4);
-		painter.fillRect(selectionRect, KGlobalSettings::highlightColor());
-		textColor = KGlobalSettings::highlightedTextColor();
+		painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
+		textColor = palette().color(QPalette::HighlightedText);
 	} else
-		textColor = KGlobalSettings::textColor();
+		textColor = palette().color(QPalette::Text);
 	m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
 	painter.setFont(m_selector->font());
 	painter.setPen(textColor);
@@ -438,7 +435,7 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
 		for (int i = 0; i < columnCount; ++i) {
 			int h, s, v;
 			m_colorArray[i][j].getHsv(h, s, v);
-			kDebug() << "(" << std::setw(3) << h << "," << std::setw(3) << s << "," << std::setw(3) << v << ") ";
+			kDebug() << QString("(%1,%2,%3)").arg(h, 3).arg(s, 3).arg(v, 3);
 			//kDebug() << colorArray[i][j].name() << " ";
 		}
 		kDebug();
@@ -448,7 +445,10 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
 	kDebug() << "GIMP Palette";
 	for (int j = 0; j < rowCount; ++j) {
 		for (int i = 0; i < columnCount; ++i) {
-			kDebug() << std::setw(3) << m_colorArray[i][j].red() << ", " << std::setw(3) << m_colorArray[i][j].green() << ", " << std::setw(3) << m_colorArray[i][j].blue();
+			kDebug() << QString("(%1,%2,%3)")
+                .arg(m_colorArray[i][j].red(), 3)
+                .arg(m_colorArray[i][j].green(), 3)
+                .arg(m_colorArray[i][j].blue(), 3);
 		}
 	}
 #endif
@@ -567,7 +567,7 @@ void KColorCombo2::drawColorRect(QPainter &painter, int x, int y, const QColor &
 	// Stroke:
 	int dontCare, value;
 	color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
-	QColor stroke = (color.isValid() ? color.dark(125) : KGlobalSettings::textColor());
+	QColor stroke = (color.isValid() ? color.dark(125) : palette().color(QPalette::Text));
 	painter.setPen(/*color);//*/stroke);
 	painter.drawLine(x + 1,         y,              x + width - 2, y);
 	painter.drawLine(x,             y + 1,          x,             y + height - 2);

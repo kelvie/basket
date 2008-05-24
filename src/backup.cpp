@@ -313,7 +313,6 @@ void BackupDialog::restore()
 
 QString Backup::binaryPath = "";
 
-#include <iostream>
 #include <kiconloader.h>
 
 void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)

@@ -50,7 +50,6 @@
 
 #include <qpainter.h>
 #include <qstyle.h>
-#include <kglobalsettings.h>
 #include <kstandarddirs.h>
 #include <qdir.h>
 #include <qstringlist.h>
@@ -96,7 +95,6 @@
 #include "systemtray.h"
 #include "clickablelabel.h"
 #include "basketstatusbar.h"
-#include <iostream>
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
 
