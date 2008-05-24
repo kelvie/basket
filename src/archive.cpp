@@ -36,6 +36,10 @@
 #include <kprogressdialog.h>
 #include <kmainwindow.h>
 
+#include <QProgressBar>
+#include "kdebug.h"
+
+
 #include "archive.h"
 #include "global.h"
 #include "bnpview.h"
@@ -51,13 +55,13 @@
 void Archive::save(Basket *basket, bool withSubBaskets, const QString &destination)
 {
 	QDir dir;
-
-	KProgressDialog dialog(0, 0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
+	KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
 	dialog.showCancelButton(false);
 	dialog.setAutoClose(true);
 	dialog.show();
-	KProgress *progress = dialog.progressBar();
-	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
+	QProgressBar *progress = dialog.progressBar();
+    
+    progress->setRange(0,/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/(withSubBaskets ? Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)) : 0));
 	progress->setValue(0);
 
 	// Create the temporary folder:
@@ -70,12 +74,13 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	tar.open(QIODevice::WriteOnly);
 	tar.writeDir("baskets", "", "");
 
-	progress->advance(1); // Preparation finished
-	kDebug() << "Preparation finished out of " << progress->totalSteps();
+    progress->setValue(progress->value()+1);        // Preparation finished
+    
+	kDebug() << "Preparation finished out of " << progress->maximum();
 
 	// Copy the baskets data into the archive:
 	QStringList backgrounds;
-	saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds, tempFolder, progress);
+	Archive::saveBasketToArchive(basket, withSubBaskets, &tar, backgrounds, tempFolder, progress);
 
 	// Create a Small baskets.xml Document:
 	QDomDocument document("basketTree");
@@ -100,8 +105,8 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		for (State::List::iterator it2 = states.begin(); it2 != states.end(); ++it2) {
 			State *state = (*it2);
 			QPixmap icon = KIconLoader::global()->loadIcon(
-                state->emblem(), KIcon::Small, 16, KIconLoader::DefaultState,
-                QStringList(),/*path_store=*/0L, /*canReturnNull=*/true
+                state->emblem(), KIconLoader::Small, 16, KIconLoader::DefaultState,
+                QStringList(), 0L, true
                 );
 			if (!icon.isNull()) {
 				icon.save(tempIconFile, "PNG");
@@ -135,7 +140,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	painter.end();
 	QImage previewImage = previewPixmap.convertToImage();
 	const int PREVIEW_SIZE = 256;
-	previewImage = previewImage.scale(PREVIEW_SIZE, PREVIEW_SIZE, Qt::ScaleMin);
+	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, Qt::ScaleMin);
 	previewImage.save(tempFolder + "preview.png", "PNG");
 
 	// Finaly Save to the Real Destination file:
@@ -172,7 +177,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		file.close();
 	}
 
-	progress->advance(1); // Finishing finished
+    progress->setValue(progress->value()+1); // Finishing finished
 	kDebug() << "Finishing finished";
 
 	// Clean Up Everything:
@@ -181,7 +186,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, KProgress *progress)
+void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
 {
 	// Basket need to be loaded for tags exportation.
 	// We load it NOW so that the progress bar really reflect the state of the exportation:
@@ -196,7 +201,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	// Save basket icon:
 	QString tempIconFile = tempFolder + "icon.png";
 	if (!basket->icon().isEmpty() && basket->icon() != "basket") {
-		QPixmap icon = KIconLoader::global()->loadIcon(basket->icon(), KIcon::Small, 16, KIconLoader::DefaultState,
+		QPixmap icon = KIconLoader::global()->loadIcon(basket->icon(), KIconLoader::Small, 16, KIconLoader::DefaultState,
                                                                QStringList(), /*path_store=*/0L, /*canReturnNull=*/true);
 		if (!icon.isNull()) {
 			icon.save(tempIconFile, "PNG");
@@ -223,7 +228,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 		backgrounds.append(imageName);
 	}
 
-	progress->advance(1); // Basket exportation finished
+    progress->setValue(progress->value()+1); // Basket exportation finished
 	kDebug() << basket->basketName() << " finished";
 
 	// Recursively save child baskets:
@@ -317,7 +322,7 @@ void Archive::open(const QString &path)
 						     "It can be opened but not every information will be available to you. "
 						     "For instance, some notes may be missing because they are of a type only available in new versions. "
 						     "When saving the file back, consider to save it to another file, to preserve the original one.")
-							.arg(kapp->aboutData()->programName()),
+							.arg(KGlobal::mainComponent().aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 				}
@@ -325,7 +330,7 @@ void Archive::open(const QString &path)
 					KMessageBox::error(
 						0,
 						i18n("This file was created with a recent version of %1. Please upgrade to a newer version to be able to open that file.")
-							.arg(kapp->aboutData()->programName()),
+							.arg(KGlobal::mainComponent().aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 					file.close();

@@ -43,7 +43,7 @@ class Archive
 	static void open(const QString &path);
   private:
 	// Convenient Methods for Saving:
-	static void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, KProgress *progress);
+	static void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress);
 	static void listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &list);
 	// Convenient Methods for Loading:
 	static void renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates);
