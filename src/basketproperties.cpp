@@ -20,14 +20,13 @@
 
 #include <qlineedit.h>
 #include <qcombobox.h>
-#include <qvbuttongroup.h>
 //Added by qt3to4:
 #include <Q3HBoxLayout>
 #include <Q3GridLayout>
 #include <QPixmap>
 #include <Q3VBoxLayout>
 #include <knuminput.h>
-#include <kkeybutton.h>
+#include <kshortcutwidget.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <q3buttongroup.h>
@@ -64,7 +63,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	// Icon and Name:
 	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Action);
+	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
@@ -110,8 +109,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 		}
 	}
 //	m_backgroundImage->insertItem(i18n("Other..."), -1);
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
-	m_backgroundImage->setSizeLimit(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+	m_backgroundImage->setMaxVisibleItems(50/*75 * 6 / m_backgroundImage->sizeHint().height()*/);
 	m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);
 
 	// Disposition:
@@ -139,8 +138,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_shortcutRole = new Q3VButtonGroup(i18n("&Keyboard Shortcut"), page);
 	QWidget *shortcutWidget = new QWidget(m_shortcutRole);
 	Q3HBoxLayout *shortcutLayout = new Q3HBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
-	m_shortcut = new KKeyButton(shortcutWidget);
-	m_shortcut->setShortcut(m_basket->shortcut(), /*bQtShortcut=*/true);
+	m_shortcut = new KShortcutWidget(shortcutWidget);
+	m_shortcut->setShortcut(m_basket->shortcut());
 	HelpLabel *helpLabel = new HelpLabel(i18n("Learn some tips..."), i18n(
 		"<p><strong>Easily Remember your Shortcuts</strong>:<br>"
 		"With the first option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> will underline that letter in the basket tree.<br>"
@@ -195,7 +194,7 @@ void BasketPropertiesDialog::applyChanges()
 void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)
 {
 	// TODO: Validate it!
-	m_shortcut->setShortcut(shortcut, /*bQtShortcut=*/true);
+	m_shortcut->setShortcut(shortcut);
 }
 
 void BasketPropertiesDialog::selectColumnsLayout()
