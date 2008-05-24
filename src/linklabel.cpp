@@ -43,6 +43,9 @@
 #include <KDialog>
 #include <kcmodule.h>
 #include <kdebug.h>
+#include <Qt3Support>
+#include <kcolorscheme.h>
+
 
 #include "linklabel.h"
 #include "variouswidgets.h"
@@ -121,9 +124,9 @@ QColor LinkLook::effectiveHoverColor() const
 QColor LinkLook::defaultColor() const
 {
 	if (m_useLinkColor)
-		return palette().color(QPalette::Link);
+		return kapp->palette().color(QPalette::Link);
 	else
-		return palette().color(QPalette::Text);
+		return kapp->palette().color(QPalette::Text);
 }
 
 QColor LinkLook::defaultHoverColor() const
@@ -219,7 +222,7 @@ void LinkLabel::setLink(const QString &title, const QString &icon, LinkLook *loo
 	if (icon.isEmpty())
 		m_icon->clear();
 	else {
-		QPixmap pixmap = DesktopIcon(icon, m_look->iconSize(), m_look->iconSize(), kapp);
+		QPixmap pixmap = DesktopIcon(icon, m_look->iconSize(), m_look->iconSize());
 		if (!pixmap.isNull())
 			m_icon->setPixmap(pixmap);
 	}
@@ -399,7 +402,7 @@ void LinkDisplay::setLink(const QString &title, const QString &icon, const QPixm
 	m_font    = font;
 
 	// "Constants":
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN   = BUTTON_MARGIN + 2;
 
 	// Recompute m_minWidth:
@@ -437,7 +440,7 @@ void LinkDisplay::setWidth(int width)
 void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QColorGroup &colorGroup,
                         bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const
 {
-	int BUTTON_MARGIN = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN   = BUTTON_MARGIN + 2;
 
 	QPixmap pixmap;
@@ -448,7 +451,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	else {
 		int           iconSize   = m_look->iconSize();
 		QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
-		KIcon::States iconState  = (isIconButtonHovered ? KIcon::ActiveState : KIconLoader::DefaultState);
+		KIconLoader::States iconState  = (isIconButtonHovered ? KIconLoader::ActiveState : KIconLoader::DefaultState);
 		pixmap = KIconLoader::global()->loadIcon(
             iconName, KIconLoader::Desktop, iconSize, iconState, QStringList(),
             0L, /*canReturnNull=*/false
@@ -458,15 +461,18 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
 	int pixmapY = (height - pixmap.height()) / 2;
 	// Draw the button (if any) and the icon:
-	if (isHovered)
-		kapp->style().drawPrimitive(QStyle::PE_ButtonCommand, painter, QRect(-1, -1, iconPreviewWidth + 2*BUTTON_MARGIN, height + 2),
-		                            colorGroup, QStyle::State_Enabled | (isIconButtonHovered ? QStyle::Style_MouseOver : 0));
+	if (isHovered) {
+        QStyleOption opt;
+        opt.rect = QRect(-1, -1, iconPreviewWidth + 2*BUTTON_MARGIN, height + 2);        
+        opt.state = isIconButtonHovered ? (QStyle::State_MouseOver | QStyle::State_Enabled)  : QStyle::State_Enabled;
+		kapp->style()->drawPrimitive(QStyle::PE_PanelButtonCommand, &opt, painter);
+    }
 	painter->drawPixmap(x + BUTTON_MARGIN - 1 + pixmapX, y + pixmapY, pixmap);
 
 	// Figure out the text color:
-	if (isSelected)
-		painter->setPen(palette().color(QPalette::HighlightedText));
-	else if (isIconButtonHovered)
+	if (isSelected) {
+		painter->setPen(kapp->palette().color(QPalette::HighlightedText));
+	} else if (isIconButtonHovered)
 		painter->setPen(m_look->effectiveHoverColor());
 	else if (!isDefaultColor || (!m_look->color().isValid() && !m_look->useLinkColor())) // If the color is FORCED or if the link color default to the text color:
 		painter->setPen(colorGroup.text());
@@ -493,7 +499,7 @@ QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QColorGroup &co
 
 bool LinkDisplay::iconButtonAt(const QPoint &pos) const
 {
-	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
 	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
@@ -502,7 +508,7 @@ bool LinkDisplay::iconButtonAt(const QPoint &pos) const
 
 QRect LinkDisplay::iconButtonRect() const
 {
-	int BUTTON_MARGIN    = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //	int LINK_MARGIN      = BUTTON_MARGIN + 2;
 	int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
@@ -527,7 +533,7 @@ QFont LinkDisplay::labelFont(QFont font, bool isIconButtonHovered) const
 
 int LinkDisplay::heightForWidth(int width) const
 {
-	int BUTTON_MARGIN     = kapp->style().pixelMetric(QStyle::PM_ButtonMargin);
+	int BUTTON_MARGIN     = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 	int LINK_MARGIN       = BUTTON_MARGIN + 2;
 	int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 	int iconPreviewHeight = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
@@ -624,7 +630,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		     "<p>If you do not want the application to create notes depending on the content of the files you drop, "
 		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>")
 		// TODO: Note: you can resize down maximum size of images...
-			.arg(kapp->aboutData()->programName(), kapp->aboutData()->programName()),
+			.arg(KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName()),
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);
