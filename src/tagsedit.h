@@ -34,11 +34,11 @@ class Q3GroupBox;
 class QLineEdit;
 class QCheckBox;
 class KPushButton;
-class KKeyButton;
 class KIconButton;
-class KFontCombo;
+class QFontComboBox;
 class QLabel;
 class KShortcut;
+class KShortcutWidget;
 
 class KColorCombo2;
 
@@ -160,7 +160,7 @@ class TagsEditDialog : public KDialog
 	KPushButton   *m_moveDown;
 	KPushButton   *m_deleteTag;
 	QLineEdit     *m_tagName;
-	KKeyButton    *m_shortcut;
+	KShortcutWidget *m_shortcut;
 	QPushButton   *m_removeShortcut;
 	QCheckBox     *m_inherit;
 	Q3GroupBox     *m_tagBox;
@@ -174,7 +174,7 @@ class TagsEditDialog : public KDialog
 	QPushButton   *m_italic;
 	QPushButton   *m_strike;
 	KColorCombo2  *m_textColor;
-	KFontCombo    *m_font;
+	QFontComboBox *m_font;
 	FontSizeCombo *m_fontSize;
 	KColorCombo2  *m_backgroundColor;
 	QLineEdit     *m_textEquivalent;
