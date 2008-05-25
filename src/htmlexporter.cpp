@@ -41,15 +41,19 @@
 #include <Q3ValueList>
 #include <QPixmap>
 #include <kprogressdialog.h>
+#include <QProgressBar>
+#include "kdebug.h"
+#include <kcolorscheme.h>
+#include <kio/copyjob.h>
+#include <kio/jobclasses.h>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {
 	QDir dir;
 
 	// Compute a default file name & path:
-	KConfig *config = KGlobal::config();
-	config->setGroup("Export to HTML");
-	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
+	KConfigGroup config = Global::config()->group("Export to HTML");
+	QString folder = config.readEntry("lastFolder", QDir::homePath()) + "/";
 	QString url = folder + QString(basket->basketName()).replace("/", "_") + ".html";
 
 	// Ask a file name & path to the user:
@@ -79,20 +83,20 @@ HTMLExporter::HTMLExporter(Basket *basket)
 	}
 
 	// Create the progress dialog that will always be shown during the export:
-	KProgressDialog dialog(0, 0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."), /*Not modal, for password dialogs!*/false);
+	KProgressDialog dialog(0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."), /*Not modal, for password dialogs!*/false);
 	dialog.showCancelButton(false);
 	dialog.setAutoClose(true);
 	dialog.show();
 	progress = dialog.progressBar();
 
 	// Remember the last folder used for HTML exporation:
-	config->writeEntry("lastFolder", KUrl(destination).directory());
-	config->sync();
+	config.writeEntry("lastFolder", KUrl(destination).directory());
+	config.sync();
 
 	prepareExport(basket, destination);
 	exportBasket(basket, /*isSubBasket*/false);
 
-	progress->advance(1); // Finishing finished
+    progress->setValue(progress->value()+1); // Finishing finished
 }
 
 HTMLExporter::~HTMLExporter()
@@ -101,7 +105,7 @@ HTMLExporter::~HTMLExporter()
 
 void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 {
-	progress->setTotalSteps(/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
+	progress->setRange(0,/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
 	progress->setValue(0);
 	kapp->processEvents();
 
@@ -127,7 +131,7 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	dir.mkdir(imagesFolderPath);
 	dir.mkdir(basketsFolderPath);
 
-	progress->advance(1); // Preparation finished
+	progress->setValue(progress->value()+1); // Preparation finished
 }
 
 void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
@@ -215,7 +219,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		"<html>\n"
 		" <head>\n"
 		"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-		"  <meta name=\"Generator\" content=\"" << kapp->aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
+		"  <meta name=\"Generator\" content=\"" << KGlobal::mainComponent().aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
 		"  <style type=\"text/css\">\n"
 //		"   @media print {\n"
 //		"    span.printable { display: inline; }\n"
@@ -233,8 +237,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 			"   .tree span { -moz-border-radius: 6px; display: block; float: left;\n"
 			"                line-height: 16px; height: 16px; vertical-align: middle; padding: 0 1px; }\n"
 			"   .tree img { vertical-align: top; padding-right: 1px; }\n"
-			"   .tree .current { background-color: " << palette().color(QPalette::Highlight).name() << "; "
-			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << palette().color(QPalette::HighlightedText).name() << "; }\n"
+			"   .tree .current { background-color: " << kapp->palette().color(QPalette::Highlight).name() << "; "
+			                    "-moz-border-radius: 3px 0 0 3px; border-radius: 3px 0 0 3px; color: " << kapp->palette().color(QPalette::Highlight).name() << "; }\n"
 			"   .basketSurrounder { margin-left: 152px; _margin: 0; _float: right; }\n";
 	}
 	stream <<
@@ -319,7 +323,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		"  <p class=\"credits\">%1</p>\n").arg(
 			i18n("Made with %1, a KDE tool to take notes and keep information at hand.")
 				.arg("<a href=\"http://basket.kde.org/\">%1</a> %2")
-				.arg(kapp->aboutData()->programName(), VERSION));
+				.arg(KGlobal::mainComponent().aboutData()->programName(), VERSION));
 
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";
@@ -363,7 +367,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	file.close();
 	stream.unsetDevice();
-	progress->advance(1); // Basket exportation finished
+	progress->setValue(progress->value()+1); // Basket exportation finished
 
 	// Recursively export child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -551,11 +555,9 @@ QString HTMLExporter::copyFile(const QString &srcPath, bool createIt)
 		if (file.open(QIODevice::WriteOnly))
 			file.close();
 		// And then we copy the file AND overwriting the file we juste created:
-		new KIO::FileCopyJob(
-			KUrl(srcPath), KUrl(fullPath), 0666, /*move=*/false,
-			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/false );
+        KIO::file_copy(KUrl(srcPath), KUrl(fullPath), 0666, KIO::HideProgressInfo| KIO::Resume | KIO::Overwrite);
 	} else
-		/*KIO::CopyJob *copyJob = */KIO::copy(KUrl(srcPath), KUrl(fullPath)); // Do it as before
+		/*KIO::CopyJob *copyJob = */KIO::copy(KUrl(srcPath), KUrl(fullPath), KIO::DefaultFlags); // Do it as before
 
 	return fileName;
 }
