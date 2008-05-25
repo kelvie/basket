@@ -48,6 +48,7 @@ class ExporterDialog : public KDialog
   protected slots:
 	void load();
 	void save();
+    void accept();
   private:
 	Basket        *m_basket;
 	KUrlRequester *m_url;
