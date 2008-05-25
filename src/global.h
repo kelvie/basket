@@ -48,7 +48,7 @@ class Global
 	static BackgroundManager *backgroundManager;
 	static SystemTray        *systemTray;
 	static BNPView           *bnpView;
-	static KConfig           *basketConfig;
+	static KSharedConfig::Ptr basketConfig;
 	static AboutData          basketAbout;
 
 	// Application Folders:

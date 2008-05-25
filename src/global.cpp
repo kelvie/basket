@@ -40,7 +40,7 @@ DebugWindow       *Global::debugWindow         = 0L;
 BackgroundManager *Global::backgroundManager   = 0L;
 SystemTray        *Global::systemTray          = 0L;
 BNPView           *Global::bnpView             = 0L;
-KConfig           *Global::basketConfig        = 0L;
+KSharedConfig::Ptr Global::basketConfig        = KSharedConfig::openConfig("basketrc");
 AboutData          Global::basketAbout;
 
 void Global::setCustomSavesFolder(const QString &folder)
@@ -76,7 +76,7 @@ QString Global::tempCutFolder()     { return savesFolder() + "temp-cut/";    }
 
 QString Global::openNoteIcon() // FIXME: Now an edit icon
 {
-	return Global::bnpView->m_actEditNote->icon();
+	return QVariant(Global::bnpView->m_actEditNote->icon()).toString();
 }
 
 KMainWindow* Global::mainWindow()
@@ -92,7 +92,6 @@ KMainWindow* Global::mainWindow()
 
 KConfig* Global::config()
 {
-	if(!Global::basketConfig)
-		Global::basketConfig = KSharedConfig::openConfig("basketrc");
-	return Global::basketConfig;
+    //The correct solution is to go and replace all KConfig* with KSharedConfig::Ptr, but that seems awfully annoying to do right now
+	return Global::basketConfig.data();
 }
