@@ -51,7 +51,7 @@ QDomElement XMLWork::getElement(const QDomElement &startElement, const QString &
 	for (unsigned int i = 0; i < elements.count(); ++i) {               // For each elements
 		while ( ! n.isNull() ) {                                        // Browse theire sub elements
 			QDomElement e = n.toElement();                              //  and search the good one
-			if ( (!e.isNull()) && e.tagName() == *elements.at(i) ) {    // If found
+			if ( (!e.isNull()) && e.tagName() == elements.at(i) ) {    // If found
 				if ( i + 1 == elements.count() )                        // And if it is the asked element
 					return e;                                           // Return the first corresponding
 				else {                                                  // Or if it is an intermediate element
