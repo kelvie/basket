@@ -29,10 +29,11 @@
 #include <kfiledialog.h>
 #include <q3ptrstack.h>
 #include <qlayout.h>
-#include <qvbuttongroup.h>
+#include <Qt3Support>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
 #include <q3textedit.h>
+#include <QDomDocument>
 
 #include "softwareimporters.h"
 #include "basket.h"
@@ -81,7 +82,7 @@ int TreeImportDialog::choice()
 
 /** class TextFileImportDialog: */
 
-TextFileImportDialog::TextFileImportDialog(QWidget *parent),
+TextFileImportDialog::TextFileImportDialog(QWidget *parent)
      : KDialog(parent)
 {
 	QWidget *page = new QWidget(this);
@@ -446,7 +447,7 @@ QString loadUtf8FileToString(const QString &fileName)
 
 void SoftwareImporters::importTomboy()
 {
-	QString path().absolutePath() + "/.tomboy/"; // I thing the assumption is good
+	QString dirPath = QDir::home().absolutePath() + "/.tomboy/"; // I thing the assumption is good
 	QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
 	Basket *basket = 0; // Create the basket ONLY if we found at least one note to add!
@@ -489,15 +490,16 @@ void SoftwareImporters::importTomboy()
 
 void SoftwareImporters::importTextFile()
 {
-	QString fileName = KFileDialog::getOpenFileName(":ImportTextFile",  "*|All files");
+	QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportTextFile"),  "*|All files");
 	if (fileName.isEmpty())
-		return;
+		return;    
 
 	TextFileImportDialog dialog;
 	if (dialog.exec() == QDialog::Rejected)
 		return;
 	QString separator = dialog.separator();
 
+    
 	QFile file(fileName);
 	if (file.open(QIODevice::ReadOnly)) {
 		Q3TextStream stream(&file);
@@ -529,7 +531,7 @@ void SoftwareImporters::importTextFile()
   */
 void SoftwareImporters::importKnowIt()
 {
-	KUrl url = KFileDialog::getOpenUrl(":ImportKnowIt",
+	KUrl url = KFileDialog::getOpenUrl(KUrl("kfiledialog:///:ImportKnowIt"),
 	                                   "*.kno|KnowIt files\n*|All files");
 	if (!url.isEmpty())
 	{
@@ -646,7 +648,7 @@ void SoftwareImporters::importKnowIt()
 
 void SoftwareImporters::importTuxCards()
 {
-	QString fileName = KFileDialog::getOpenFileName(":ImportTuxCards",  "*|All files");
+	QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportTuxCards"),  "*|All files");
 	if (fileName.isEmpty())
 		return;
 
