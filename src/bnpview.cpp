@@ -2632,7 +2632,7 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	    if (!currentTag->shortcut().isEmpty())
 		sequence = currentTag->shortcut().primary();
 
-	    StateAction *mi = new StateAction(currentState, KShortcut(sequence), true);
+	    StateAction *mi = new StateAction(currentState, KShortcut(sequence), this, true);
 	    if (referenceNote && referenceNote->hasTag(currentTag))
 		mi->setChecked(true);
 

@@ -31,6 +31,8 @@
 #include <QPixmap>
 #include <klocale.h>
 
+#include <kactioncollection.h>
+
 #include "tag.h"
 #include "xmlwork.h"
 #include "global.h"
@@ -435,7 +437,7 @@ void Tag::saveTagsTo(Q3ValueList<Tag*> &list, const QString &fullPath)
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");
 	QDomElement root = document.createElement("basketTags");
-	root.setAttribute("nextStateUid", nextStateUid);
+	root.setAttribute("nextStateUid", static_cast<long long int>(nextStateUid) );
 	document.appendChild(root);
 
 	// Save all tags:
@@ -717,9 +719,8 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 
 
 // StateAction
-StateAction::StateAction(State *state,
-                         const KShortcut &shortcut,
-                         bool withTagName)
+StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* parent, bool withTagName) 
+    : KToggleAction(parent)
 {
     setText(m_state->name());
 

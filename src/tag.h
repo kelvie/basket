@@ -165,8 +165,12 @@ class StateAction : public KToggleAction
 public:
     StateAction(State *state,
 		const KShortcut &shortcut,
+        QWidget * parent,
 		bool withTagName=false);
-
+private:
+	State   *m_state;
+	QString  m_name;
+	QString  m_shortcut;
     ~StateAction();
 };
 
