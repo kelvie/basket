@@ -1281,62 +1281,21 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 	}
 }
 
-void Note::drawExpander(QPainter *painter, int x, int y, const QColor &background, bool expand, Basket *basket)
+void Note::drawExpander(QPainter *painter, int x, int y,
+			const QColor &background, bool expand,
+			Basket *basket)
 {
-	// If the current style is a KStyle, use it to draw the expander (plus or minus):
-	if (dynamic_cast<KStyle*>(&(kapp->style())) != NULL) {
-		// Set the 4 rounded corners background to background color:
-		QColorGroup cg(basket->colorGroup());
-		cg.setColor(QColorGroup::Base, background);
+    QStyleOption opt;
+    opt.state = (expand ? QStyle::State_On : QStyle::State_Off);
+    opt.rect = QRect(x, y, 9, 9);
+    opt.palette = basket->palette();
+    opt.palette.setColor(QPalette::Base, background);
 
-		// Fill the inside of the expander in white, typically:
-		QBrush brush(palette().color(QPalette::Base));
-		painter->fillRect(x, y, 9, 9, brush);
+    painter->fillRect(opt.rect, background);
 
-		// Draw it:
-		((KStyle&)(kapp->style())).drawKStylePrimitive( KStyle::KPE_ListViewExpander,
-		painter,
-		basket->viewport(),
-		QRect(x, y, 9, 9),
-		cg,
-		(expand ? QStyle::State_On : QStyle::State_Off) );
-	// Else, QStyle does not provide easy way to do so (if it's doable at all...)
-	// So, I'm drawing it myself my immitating Plastik (pretty style)...
-	// After all, the note/group handles are all non-QStyle aware so that doesn't matter if the expander is a custom one too.
-	} else {
-		int width  = EXPANDER_WIDTH;
-		int height = EXPANDER_HEIGHT;
-		const QColorGroup &cg = basket->colorGroup();
-
-		// Fill white area:
-		painter->fillRect(x + 1, y + 1, width - 2, height - 2, cg.base());
-		// Draw contour lines:
-		painter->setPen(cg.dark());
-		painter->drawLine(x + 2,         y,              x + width - 3, y);
-		painter->drawLine(x + 2,         y + height - 1, x + width - 3, y + height - 1);
-		painter->drawLine(x,             y + 2,          x,             y + height - 3);
-		painter->drawLine(x + width - 1, y + 2,          x + width - 1, y + height - 3);
-		// Draw edge points:
-		painter->drawPoint(x + 1,         y + 1);
-		painter->drawPoint(x + width - 2, y + 1);
-		painter->drawPoint(x + 1,         y + height - 2);
-		painter->drawPoint(x + width - 2, y + height - 2);
-		// Draw anti-aliased points:
-		painter->setPen(Tools::mixColor(cg.dark(), background));
-		painter->drawPoint(x + 1,         y);
-		painter->drawPoint(x + width - 2, y);
-		painter->drawPoint(x,             y + 1);
-		painter->drawPoint(x + width - 1, y + 1);
-		painter->drawPoint(x,             y + height - 2);
-		painter->drawPoint(x + width - 1, y + height - 2);
-		painter->drawPoint(x + 1,         y + height - 1);
-		painter->drawPoint(x + width - 2, y + height - 1);
-		// Draw plus / minus:
-		painter->setPen(cg.text());
-		painter->drawLine(x + 2, y + height / 2, x + width - 3, y + height / 2);
-		if (expand)
-			painter->drawLine(x + width / 2, y + 2, x + width / 2, y + height - 3);
-	}
+    QStyle *style = basket->style();
+    style->drawPrimitive(QStyle::PE_IndicatorBranch, &opt, painter,
+			basket->viewport());
 }
 
 QColor expanderBackground(int height, int y, const QColor &foreground)
