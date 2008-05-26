@@ -28,7 +28,6 @@
 #include <qcursor.h>
 #include <kiconloader.h>
 
-#include <kpixmap.h>
 #include <kglobal.h>
 #include <klocale.h>
 #include <kurifilter.h>
@@ -47,6 +46,9 @@
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
+
+#include <KDebug>
+#include <QImage>
 
 /** class Note: */
 
@@ -1538,9 +1540,6 @@ void Note::drawInactiveResizer(QPainter *painter, int x, int y, int height, cons
 		drawGradient(painter, darkBgColor, background,  x,         y, RESIZER_WIDTH,             height, /*sunken=*/false, /*horz=*/false, /*flat=*/false );
 }
 
-
-#include <qimage.h>
-#include <kimageeffect.h>
 
 /* type: 1: topLeft
  *       2: bottomLeft
