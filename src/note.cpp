@@ -126,7 +126,7 @@ QString Note::toText(const QString &cuttedFullPath)
 			return firstLine + text;
 		QStringList lines = QStringList::split('\n', text, /*allowEmptyEntries=*/true);
 		QString result = firstLine + lines[0] + (lines.count() > 1 ? "\n" : "");
-		for (uint i = 1/*Skip the first line*/; i < lines.count(); ++i)
+		for (int i = 1/*Skip the first line*/; i < lines.count(); ++i)
 			result += otherLines + lines[i] + (i < lines.count() - 1 ? "\n" : "");
 		return result;
 	} else
