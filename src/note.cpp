@@ -1703,11 +1703,18 @@ void Note::getGradientColors(const QColor &originalBackground, QColor *colorTop,
 
 /* Drawing policy:
  * ==============
- * - Draw the note on a pixmap and then draw the pixmap on screen is faster and flicker-free, rather than drawing directly on screen
- * - The next time the pixmap can be directly redrawn on screen without (relatively low, for small texts) time-consuming text-drawing
- * - To keep memory footprint low, we can destruct the bufferPixmap because redrawing it offscreen and applying it onscreen is nearly as fast as just drawing the pixmap onscreen
- * - But as drawing the pixmap offscreen is little time consuming we can keep last visible notes buffered and then the redraw of the entire window is INSTANTANEOUS
- * - We keep bufferized note/group draws BUT NOT the resizer: such objects are small and fast to draw, so we don't complexify code for that
+ * - Draw the note on a pixmap and then draw the pixmap on screen is faster and
+ *   flicker-free, rather than drawing directly on screen 
+ * - The next time the pixmap can be directly redrawn on screen without
+ *   (relatively low, for small texts) time-consuming text-drawing 
+ * - To keep memory footprint low, we can destruct the bufferPixmap because
+ *   redrawing it offscreen and applying it onscreen is nearly as fast as just
+ *   drawing the pixmap onscreen 
+ * - But as drawing the pixmap offscreen is little time consuming we can keep
+ *   last visible notes buffered and then the redraw of the entire window is
+ *   INSTANTANEOUS 
+ * - We keep bufferized note/group draws BUT NOT the resizer: such objects are
+ *   small and fast to draw, so we don't complexify code for that 
  */
 void Note::draw(QPainter *painter, const QRect &clipRect)
 {
