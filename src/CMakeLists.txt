@@ -1,5 +1,5 @@
 
-include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
+include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES})
 
 
 ########### next target ###############
@@ -56,7 +56,8 @@ message(STATUS "DCOP has been removed in KDE 4; port code to D-Bus. kde4_add_dco
 
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-target_link_libraries(basketcommon ${KDE4_KDECORE_LIBS} kio ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} DCOP kdefx kdeui)
+target_link_libraries(basketcommon ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS}
+  ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ${QIMAGEBLITZ_LIBRARIES})
 
 set_target_properties(basketcommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})

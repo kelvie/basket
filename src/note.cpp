@@ -49,6 +49,7 @@
 
 #include <KDebug>
 #include <QImage>
+#include <qimageblitz/qimageblitz.h>
 
 /** class Note: */
 
@@ -1932,8 +1933,15 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	}
 
 	if (isFocused()) {
-		QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1, width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
-		painter2.drawWinFocusRect(focusRect);
+		QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1,
+						width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
+		
+		// TODO: make this look right/better
+		QStyleOptionFocusRect opt;
+		opt.initFrom(m_basket);
+		opt.rect = focusRect;
+		kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+									 &painter2);
 	}
 
 	// Draw the Emblems:
@@ -2348,8 +2356,9 @@ void Note::bufferizeSelectionPixmap()
 {
 	if (m_bufferedSelectionPixmap.isNull()) {
 		QColor insideColor = palette().color(QPalette::Highlight);
-		KPixmap kpixmap(m_bufferedPixmap);
-		m_bufferedSelectionPixmap = KPixmapEffect::fade(kpixmap, 0.25, insideColor);
+		QImage image = m_bufferedPixmap.toImage();
+		image = Blitz::fade(image, 0.25, insideColor);
+		m_bufferedSelectionPixmap = QPixmap::fromImage(image);
 	}
 }
 

@@ -1,5 +1,6 @@
 
 find_package(KDE4 REQUIRED)
+find_package(QImageBlitz REQUIRED)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
