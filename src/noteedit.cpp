@@ -478,7 +478,7 @@ LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent
 ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
  : NoteEditor(colorContent)
 {
-	KColorDialog dialog(parent, /*name=*/"EditColor", /*modal=*/true);
+	KColorDialog dialog(parent);
 	dialog.setColor(colorContent->color());
 	dialog.setCaption(i18n("Edit Color Note"));
 	if (dialog.exec() == QDialog::Accepted) {
