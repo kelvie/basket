@@ -140,7 +140,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());
-	textEdit->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	if (Settings::spellCheckTextNotes())
 		textEdit->setCheckSpellingEnabled(true);
 	textEdit->setText(m_textContent->text());
@@ -208,11 +208,12 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
 	textEdit->setTextFormat(Qt::RichText);
-	textEdit->setAutoFormatting(Settings::autoBullet() ? Q3TextEdit::AutoAll : Q3TextEdit::AutoNone);
+	textEdit->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll :
+                                QTextEdit::AutoNone);
 	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());
-	textEdit->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	textEdit->setText(m_htmlContent->html());
 	textEdit->moveCursor(KTextEdit::MoveEnd, false);
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
