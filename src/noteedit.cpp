@@ -564,7 +564,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
-	m_icon->setIconType(KIconLoader::NoGroup, KIcon::MimeType);
+	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::MimeType);
 	m_icon->setIconSize(LinkLook::lookForURL(filteredURL)->iconSize());
 	m_autoIcon = new QPushButton(i18n("Auto"), wid); // Create before to know size here:
 	/* Icon button: */
@@ -703,7 +703,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 {
 	// KDialog options
 	setCaption(i18n("Edit Launcher Note"));
-	setbuttons(Ok | Cancel);
+	setButtons(Ok | Cancel);
 	setDefaultButton(Ok);
 	setObjectName("EditLauncher");
 	setModal(true);
@@ -724,7 +724,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
-	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Application);
+	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Application);
 	m_icon->setIconSize(LinkLook::launcherLook->iconSize());
 	QPushButton *guessButton = new QPushButton(i18n("&Guess"), wid);
 	/* Icon button: */
