@@ -178,6 +178,7 @@ class Note
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
 	void recomputeBlankRects(Q3ValueList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
+    QPalette palette() const;
 
 /// VISIBLE AREAS COMPUTATION:
   private:

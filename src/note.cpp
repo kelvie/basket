@@ -1540,6 +1540,10 @@ void Note::drawInactiveResizer(QPainter *painter, int x, int y, int height, cons
 		drawGradient(painter, darkBgColor, background,  x,         y, RESIZER_WIDTH,             height, /*sunken=*/false, /*horz=*/false, /*flat=*/false );
 }
 
+QPalette Note::palette() const
+{
+    return (m_basket ? m_basket->palette() : kapp->palette());
+}
 
 /* type: 1: topLeft
  *       2: bottomLeft
