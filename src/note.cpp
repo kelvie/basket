@@ -726,7 +726,7 @@ void Note::setCursor(Zone zone)
 		case Note::TagsArrow:
 		case Note::GroupExpander: basket()->viewport()->setCursor(Qt::PointingHandCursor); break;
 
-		case Note::Content:       basket()->viewport()->setCursor(Qt::IbeamCursor);        break;
+		case Note::Content:       basket()->viewport()->setCursor(Qt::IBeamCursor);        break;
 
 		case Note::TopInsert:
 		case Note::TopGroup:
