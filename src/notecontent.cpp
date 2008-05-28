@@ -76,6 +76,8 @@
 	#include <arts/kartsdispatcher.h>
 #endif
 
+#include <KDebug>
+
 /** class NoteContent:
  */
 
