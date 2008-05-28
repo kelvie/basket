@@ -28,7 +28,6 @@
 #include <qcursor.h>
 #include <kiconloader.h>
 
-#include <kpixmap.h>
 #include <kglobal.h>
 #include <klocale.h>
 #include <kurifilter.h>
@@ -47,6 +46,10 @@
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
+
+#include <KDebug>
+#include <QImage>
+#include <qimageblitz/qimageblitz.h>
 
 /** class Note: */
 
@@ -123,7 +126,7 @@ QString Note::toText(const QString &cuttedFullPath)
 			return firstLine + text;
 		QStringList lines = QStringList::split('\n', text, /*allowEmptyEntries=*/true);
 		QString result = firstLine + lines[0] + (lines.count() > 1 ? "\n" : "");
-		for (uint i = 1/*Skip the first line*/; i < lines.count(); ++i)
+		for (int i = 1/*Skip the first line*/; i < lines.count(); ++i)
 			result += otherLines + lines[i] + (i < lines.count() - 1 ? "\n" : "");
 		return result;
 	} else
@@ -723,7 +726,7 @@ void Note::setCursor(Zone zone)
 		case Note::TagsArrow:
 		case Note::GroupExpander: basket()->viewport()->setCursor(Qt::PointingHandCursor); break;
 
-		case Note::Content:       basket()->viewport()->setCursor(Qt::IbeamCursor);        break;
+		case Note::Content:       basket()->viewport()->setCursor(Qt::IBeamCursor);        break;
 
 		case Note::TopInsert:
 		case Note::TopGroup:
@@ -1279,62 +1282,21 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 	}
 }
 
-void Note::drawExpander(QPainter *painter, int x, int y, const QColor &background, bool expand, Basket *basket)
+void Note::drawExpander(QPainter *painter, int x, int y,
+			const QColor &background, bool expand,
+			Basket *basket)
 {
-	// If the current style is a KStyle, use it to draw the expander (plus or minus):
-	if (dynamic_cast<KStyle*>(&(kapp->style())) != NULL) {
-		// Set the 4 rounded corners background to background color:
-		QColorGroup cg(basket->colorGroup());
-		cg.setColor(QColorGroup::Base, background);
+    QStyleOption opt;
+    opt.state = (expand ? QStyle::State_On : QStyle::State_Off);
+    opt.rect = QRect(x, y, 9, 9);
+    opt.palette = basket->palette();
+    opt.palette.setColor(QPalette::Base, background);
 
-		// Fill the inside of the expander in white, typically:
-		QBrush brush(palette().color(QPalette::Base));
-		painter->fillRect(x, y, 9, 9, brush);
+    painter->fillRect(opt.rect, background);
 
-		// Draw it:
-		((KStyle&)(kapp->style())).drawKStylePrimitive( KStyle::KPE_ListViewExpander,
-		painter,
-		basket->viewport(),
-		QRect(x, y, 9, 9),
-		cg,
-		(expand ? QStyle::State_On : QStyle::State_Off) );
-	// Else, QStyle does not provide easy way to do so (if it's doable at all...)
-	// So, I'm drawing it myself my immitating Plastik (pretty style)...
-	// After all, the note/group handles are all non-QStyle aware so that doesn't matter if the expander is a custom one too.
-	} else {
-		int width  = EXPANDER_WIDTH;
-		int height = EXPANDER_HEIGHT;
-		const QColorGroup &cg = basket->colorGroup();
-
-		// Fill white area:
-		painter->fillRect(x + 1, y + 1, width - 2, height - 2, cg.base());
-		// Draw contour lines:
-		painter->setPen(cg.dark());
-		painter->drawLine(x + 2,         y,              x + width - 3, y);
-		painter->drawLine(x + 2,         y + height - 1, x + width - 3, y + height - 1);
-		painter->drawLine(x,             y + 2,          x,             y + height - 3);
-		painter->drawLine(x + width - 1, y + 2,          x + width - 1, y + height - 3);
-		// Draw edge points:
-		painter->drawPoint(x + 1,         y + 1);
-		painter->drawPoint(x + width - 2, y + 1);
-		painter->drawPoint(x + 1,         y + height - 2);
-		painter->drawPoint(x + width - 2, y + height - 2);
-		// Draw anti-aliased points:
-		painter->setPen(Tools::mixColor(cg.dark(), background));
-		painter->drawPoint(x + 1,         y);
-		painter->drawPoint(x + width - 2, y);
-		painter->drawPoint(x,             y + 1);
-		painter->drawPoint(x + width - 1, y + 1);
-		painter->drawPoint(x,             y + height - 2);
-		painter->drawPoint(x + width - 1, y + height - 2);
-		painter->drawPoint(x + 1,         y + height - 1);
-		painter->drawPoint(x + width - 2, y + height - 1);
-		// Draw plus / minus:
-		painter->setPen(cg.text());
-		painter->drawLine(x + 2, y + height / 2, x + width - 3, y + height / 2);
-		if (expand)
-			painter->drawLine(x + width / 2, y + 2, x + width / 2, y + height - 3);
-	}
+    QStyle *style = basket->style();
+    style->drawPrimitive(QStyle::PE_IndicatorBranch, &opt, painter,
+			basket->viewport());
 }
 
 QColor expanderBackground(int height, int y, const QColor &foreground)
@@ -1538,9 +1500,10 @@ void Note::drawInactiveResizer(QPainter *painter, int x, int y, int height, cons
 		drawGradient(painter, darkBgColor, background,  x,         y, RESIZER_WIDTH,             height, /*sunken=*/false, /*horz=*/false, /*flat=*/false );
 }
 
-
-#include <qimage.h>
-#include <kimageeffect.h>
+QPalette Note::palette() const
+{
+    return (m_basket ? m_basket->palette() : kapp->palette());
+}
 
 /* type: 1: topLeft
  *       2: bottomLeft
@@ -1741,11 +1704,18 @@ void Note::getGradientColors(const QColor &originalBackground, QColor *colorTop,
 
 /* Drawing policy:
  * ==============
- * - Draw the note on a pixmap and then draw the pixmap on screen is faster and flicker-free, rather than drawing directly on screen
- * - The next time the pixmap can be directly redrawn on screen without (relatively low, for small texts) time-consuming text-drawing
- * - To keep memory footprint low, we can destruct the bufferPixmap because redrawing it offscreen and applying it onscreen is nearly as fast as just drawing the pixmap onscreen
- * - But as drawing the pixmap offscreen is little time consuming we can keep last visible notes buffered and then the redraw of the entire window is INSTANTANEOUS
- * - We keep bufferized note/group draws BUT NOT the resizer: such objects are small and fast to draw, so we don't complexify code for that
+ * - Draw the note on a pixmap and then draw the pixmap on screen is faster and
+ *   flicker-free, rather than drawing directly on screen 
+ * - The next time the pixmap can be directly redrawn on screen without
+ *   (relatively low, for small texts) time-consuming text-drawing 
+ * - To keep memory footprint low, we can destruct the bufferPixmap because
+ *   redrawing it offscreen and applying it onscreen is nearly as fast as just
+ *   drawing the pixmap onscreen 
+ * - But as drawing the pixmap offscreen is little time consuming we can keep
+ *   last visible notes buffered and then the redraw of the entire window is
+ *   INSTANTANEOUS 
+ * - We keep bufferized note/group draws BUT NOT the resizer: such objects are
+ *   small and fast to draw, so we don't complexify code for that 
  */
 void Note::draw(QPainter *painter, const QRect &clipRect)
 {
@@ -1963,8 +1933,15 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	}
 
 	if (isFocused()) {
-		QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1, width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
-		painter2.drawWinFocusRect(focusRect);
+		QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1,
+						width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
+		
+		// TODO: make this look right/better
+		QStyleOptionFocusRect opt;
+		opt.initFrom(m_basket);
+		opt.rect = focusRect;
+		kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+									 &painter2);
 	}
 
 	// Draw the Emblems:
@@ -2379,8 +2356,9 @@ void Note::bufferizeSelectionPixmap()
 {
 	if (m_bufferedSelectionPixmap.isNull()) {
 		QColor insideColor = palette().color(QPalette::Highlight);
-		KPixmap kpixmap(m_bufferedPixmap);
-		m_bufferedSelectionPixmap = KPixmapEffect::fade(kpixmap, 0.25, insideColor);
+		QImage image = m_bufferedPixmap.toImage();
+		image = Blitz::fade(image, 0.25, insideColor);
+		m_bufferedSelectionPixmap = QPixmap::fromImage(image);
 	}
 }
 
@@ -2811,84 +2789,3 @@ bool Note::convertTexts()
 
 	return convertedNotes;
 }
-
-#if 0
-
-/** Note */
-
-QString Note::toHtml(const QString &imageName)
-{
-	switch (m_type) {
-		case Text:
-			/*return "<font color=" + backgroundColor().name() + + font().name() + font + ">" +
-			Tools::textToHTMLWithoutP(text()) + "</font>";*/
-			return Tools::textToHTMLWithoutP(text());
-		case Html:
-			return Tools::htmlToParagraph(html());
-		case Image:
-		case Animation:
-			{
-				if ( (m_type == Image     && pixmap() == 0L) ||
-				     (m_type == Animation && movie()  == 0L)    ) {
-					Q3MimeSourceFactory::defaultFactory()->setData(imageName, 0L);
-					return i18n("(Image)"); // Image or animation not yet loaded!!
-				}
-
-				QImage image;
-				if (m_type == Image)
-					image = pixmap()->convertToImage();
-				else
-					image = movie()->framePixmap().convertToImage();
-				image = image.smoothScale(200, 150, Qt::ScaleMin);
-				QPixmap pixmap = QPixmap(image);
-				Q3MimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
-				return "<img src=" + imageName + ">"; ///
-
-/*				// FIXME: movie isn't loaded yet: CRASH!
-				return i18n("(Image)");
-				// Not executed, because don't work:
-				QImage image;
-				if (m_type == Image)
-					image = pixmap()->convertToImage();
-				else
-					image = movie()->framePixmap().convertToImage();
-				image = image.smoothScale(200, 150, Qt::ScaleMin);
-				QPixmap pixmap = QPixmap(image);
-				QMimeSourceFactory::defaultFactory()->setPixmap(imageName, pixmap);
-				return "<img src=" + imageName + ">"; ///
-	*/			//TODO?: QMimeSourceFactory::defaultFactory()->setData(imageName, 0L);
-			}
-		case Sound:
-		case File:
-			{
-				/// FIXME: Since fullPath() doesn't exist yet, the icon rely on the extension.
-				///        Bad if there isn't one or if it's a wrong one.
-				/*QPixmap icon = DesktopIcon(
-					NoteFactory::iconForURL(fullPath()),
-					(m_type == Sound ? LinkLook::soundLook : LinkLook::fileLook)->iconSize());
-				QMimeSourceFactory::defaultFactory()->setPixmap(imageName, icon);
-				return "<img src=" + imageName + "> " + fileName(); */ ///
-				return m_linkLabel->toHtml(imageName);
-			}
-		case Link:
-			{
-				QString link = m_linkLabel->toHtml(imageName);
-				if (!autoTitle() && title() != NoteFactory::titleForURL(url().prettyUrl()))
-					link += "<br><i>" + url().prettyUrl() + "</i>"; ///
-				return link;
-			}
-		case Launcher:
-			{
-				return m_linkLabel->toHtml(imageName);
-				//KService service(fullPath()); // service.icon()
-				//return service.name() + "<br><i>" + service.exec() + "</i>"; ///
-			}
-		case Color:
-			return "<b><font color=" + color().name() + ">" + color().name() + "</font></b>";
-		case Unknown:
-			return text();
-	}
-	return QString();
-}
-
-#endif // #if 0

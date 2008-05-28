@@ -274,6 +274,7 @@ class InlineEditors : public QObject
 	KToolBar* richTextToolBar();
 	void enableRichTextToolBar();
 	void disableRichTextToolBar();
+    QPalette palette() const;
 	FocusedFontCombo  *richTextFont;
 	FontSizeCombo     *richTextFontSize;
 	FocusedColorCombo *richTextColor;
