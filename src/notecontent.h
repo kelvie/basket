@@ -268,7 +268,7 @@ class ImageContent : public NoteContent
 	QPixmap pixmap() { return m_pixmap; }     /// << @return the pixmap note-content.
   protected:
 	QPixmap  m_pixmap;
-	char    *m_format;
+	QByteArray m_format;
 };
 
 /** Real implementation of animated image (GIF, MNG) notes:

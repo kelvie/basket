@@ -718,7 +718,7 @@ void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
  */
 
 ImageContent::ImageContent(Note *parent, const QString &fileName, bool lazyLoad)
- : NoteContent(parent, fileName), m_format(0)
+ : NoteContent(parent, fileName), m_format()
 {
 	basket()->addWatchedFile(fullPath());
 	loadFromFile(lazyLoad);
@@ -768,12 +768,12 @@ bool ImageContent::finishLazyLoad()
 
 	if (basket()->loadFromFile(fullPath(), &content))
 	{
-		QBuffer buffer(content);
+		QBuffer buffer(&content);
 
 		buffer.open(QIODevice::ReadOnly);
-		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
+		m_format = QImageReader::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
 		buffer.close();
-		if (m_format) {
+		if (!m_format.isNull()) {
 			m_pixmap.loadFromData(content);
 			setPixmap(m_pixmap);
 			return true;
@@ -781,7 +781,7 @@ bool ImageContent::finishLazyLoad()
 	}
 
 	kDebug() << "FAILED TO LOAD ImageContent: " << fullPath();
-	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
+	m_format = "PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
 	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
 	m_pixmap.fill();
 	m_pixmap.setMask(m_pixmap.createHeuristicMask());
@@ -794,7 +794,7 @@ bool ImageContent::finishLazyLoad()
 bool ImageContent::saveToFile()
 {
 	QByteArray ba;
-	QBuffer buffer(ba);
+	QBuffer buffer(&ba);
 
 	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
