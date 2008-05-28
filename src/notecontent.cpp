@@ -406,7 +406,8 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 	} else { // Scalled down
 		QImage imageToScale = m_pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
+		pmScaled.convertFromImage(imageToScale.scaled(width, height,
+                                                      Qt::ScaleMin));
 		if (pmScaled.hasAlpha()) {
 			QPixmap opaque(pmScaled.width(), pmScaled.height());
 			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -427,7 +428,8 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
 	else { // Scalled down
 		QImage imageToScale = pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
+		pmScaled.convertFromImage(imageToScale.scaled(width, height,
+                                                      Qt::ScaleMin));
 		return pmScaled;
 	}
 }
