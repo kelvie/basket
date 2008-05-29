@@ -250,7 +250,7 @@ QString UnknownContent::toHtml(const QString &/*imageName*/, const QString &/*cu
 { return "";                                                                                  }
 
 QPixmap ImageContent::toPixmap()     { return pixmap();              }
-QPixmap AnimationContent::toPixmap() { return movie().framePixmap(); }
+QPixmap AnimationContent::toPixmap() { return m_movie->currentPixmap(); }
 
 void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPath)
 {
@@ -348,7 +348,7 @@ QString UnknownContent::cssClass()   { return "";         }
 void TextContent::fontChanged()      { setText(text());                                          }
 void HtmlContent::fontChanged()      { setHtml(html());                                          }
 void ImageContent::fontChanged()     { setPixmap(pixmap());                                      }
-void AnimationContent::fontChanged() { setMovie(movie());                                        }
+void AnimationContent::fontChanged() { updateMovie();                                            }
 void FileContent::fontChanged()      { setFileName(fileName());                                  }
 void LinkContent::fontChanged()      { setLink(url(), title(), icon(), autoTitle(), autoIcon()); }
 void LauncherContent::fontChanged()  { setLauncher(name(), icon(), exec());                      }
@@ -424,7 +424,7 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 
 QPixmap AnimationContent::feedbackPixmap(int width, int height)
 {
-	QPixmap pixmap = m_movie.framePixmap();
+	QPixmap pixmap = m_movie->currentPixmap();
 	if (width >= pixmap.width() && height >= pixmap.height()) // Full size
 		return pixmap;
 	else { // Scalled down
@@ -857,30 +857,32 @@ void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 /** class AnimationContent:
  */
 
-int AnimationContent::INVALID_STATUS = -100;
-
-AnimationContent::AnimationContent(Note *parent, const QString &fileName, bool lazyLoad)
- : NoteContent(parent, fileName), m_oldStatus(INVALID_STATUS)
+AnimationContent::AnimationContent(Note *parent,
+                                   const QString &fileName,
+                                   bool lazyLoad)
+ : NoteContent(parent, fileName)
+ , m_buffer(new QBuffer(this))
+ , m_movie(new QMovie(this))
 {
-	basket()->addWatchedFile(fullPath());
-	loadFromFile(lazyLoad);
+    basket()->addWatchedFile(fullPath());
+    loadFromFile(lazyLoad);
+    connect(m_movie, SIGNAL(updated(QRect)), this, SLOT(movieUpdated()));
+    connect(m_movie, SIGNAL(resized(QSize)), this, SLOT(movieResized()));
 }
 
 int AnimationContent::setWidthAndGetHeight(int /*width*/)
 {
 	/*width -= 1*/;
-	return  m_movie.framePixmap().height()  ; // TODO!!!
+	return  m_movie->currentPixmap().height()  ; // TODO!!!
 }
 
 void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	/*width -= 1*/;
-//	DEBUG_WIN << "AnimationContent::paint()";
-	const QPixmap &frame = m_movie.framePixmap();
+	QPixmap frame = m_movie->currentPixmap();
 	if (width >= frame.width()) // Full size
 		painter->drawPixmap(0, 0, frame);
-	else // Scalled down
-		painter->drawPixmap(0, 0, frame);  // TODO: Scall down
+	else // Scaled down
+		painter->drawPixmap(0, 0, frame);  // TODO: Scale down
 }
 
 bool AnimationContent::loadFromFile(bool lazyLoad)
@@ -893,16 +895,14 @@ bool AnimationContent::loadFromFile(bool lazyLoad)
 
 bool AnimationContent::finishLazyLoad()
 {
-	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
-//	return setMovie(QMovie(fullPath()));
-
-	bool success = false;
-	QByteArray content;
-	if (basket()->loadFromFile(fullPath(), &content))
-		success = setMovie(QMovie(content, content.size()));
-	if (!success)
-		setMovie(QMovie());
-	return success;
+    QByteArray content;
+    if (basket()->loadFromFile(fullPath(), &content)) {
+        m_buffer->setData(content);
+        updateMovie();
+        return true;
+    }
+    m_buffer->setData(0);
+    return false;
 }
 
 bool AnimationContent::saveToFile()
@@ -925,72 +925,32 @@ QString AnimationContent::messageWhenOpening(OpenMessage where)
 	}
 }
 
-bool AnimationContent::setMovie(const QMovie &movie)
+bool AnimationContent::updateMovie()
 {
-	if (!m_movie.isNull()) {
-		// Disconnect?
-		return false;
-	}
-	m_movie = movie;
-	m_movie.connectUpdate( this, SLOT(movieUpdated(const QRect&)) );
-	m_movie.connectResize( this, SLOT(movieResized(const QSize&)) );
-	m_movie.connectStatus( this, SLOT(movieStatus(int))           );
-	contentChanged(  m_movie.framePixmap().width() + 1  ); // TODO
-	return true;
+    if (!m_buffer->data().isEmpty())
+        return false;
+    m_movie->setDevice(m_buffer);
+    contentChanged(m_movie->currentPixmap().width() + 1); // TODO
+    return true;
 }
 
-void AnimationContent::movieUpdated(const QRect&)
+void AnimationContent::movieUpdated()
 {
 	note()->unbufferize();
 	note()->update();
 }
 
-void AnimationContent::movieResized(const QSize&)
+void AnimationContent::movieResized()
 {
 	note()->requestRelayout(); // ?
-}
-
-/** When a user drop a .gif file, for instance, we don't know if it is an image
-  * or an animtion (gif file contain multiple images).
-  * To determin that, we assume this is an animation and count the number of images.
-  * QMovie send, in this order:
-  * - For a unique image: QMovie::EndOfFrame, QMovie::EndOfLoop, QMovie::EndOfMovie.
-  * - For animation:      QMovie::EndOfFrame... (for each image), QMovie::EndOfLoop,
-  *                       and it then restart that for each loop.
-  */
-void AnimationContent::movieStatus(int status)
-{
-	DEBUG_WIN << "movieStatus()";
-
-	// At least two frames: it's an animation, everything is OK
-	if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfFrame) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-//		if (note()->isFocused())                 // When inserting a new note we ensure it visble
-//			basket()->ensureNoteVisible(note()); //  But after loading it has certainly grown and if it was
-	}
-	// Only one image: it's an image, change note's type
-	else if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfLoop) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-		note()->setContent(new ImageContent(note(), fileName()));
-		basket()->save();
-		//delete this; // CRASH, as always !!!!!!!!!
-		//QTimer::singleShot(0,   this, SLOT(loadContent()));    // Delayed to avoid crash!
-		//QTimer::singleShot(100, this, SLOT(saveProperties())); // We should save it's an image and not an animation
-//		if (note()->isFocused())
-//			QTimer::singleShot(25, note(), SLOT(delayedEnsureVisible()));
-	}
-	else
-		m_oldStatus = status;
 }
 
 void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
 	exporter->stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
 	                    .arg( exporter->dataFolderName + exporter->copyFile(fullPath(), /*createIt=*/true),
-	                          QString::number(movie().framePixmap().size().width()),
-	                          QString::number(movie().framePixmap().size().height()) );
+	                          QString::number(m_movie->currentPixmap().size().width()),
+	                          QString::number(m_movie->currentPixmap().size().height()) );
 }
 
 /** class FileContent:
