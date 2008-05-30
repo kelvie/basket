@@ -1308,7 +1308,7 @@ void LinkContent::removePreview(const KFileItem*)
 }
 
 // QHttp slots for getting link title
-void LinkContent::httpReadyRead(const Q3HttpResponseHeader& )
+void LinkContent::httpReadyRead()
 {
 	Q_ULONG bytesAvailable = m_http->bytesAvailable();
 	if(bytesAvailable <= 0)
@@ -1370,13 +1370,13 @@ void LinkContent::startFetchingLinkTitle()
 			m_http = 0;
 		}
 		if(m_http == 0) {
-			m_http = new Q3Http(this);
+			m_http = new QHttp(this);
 			connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
-			connect(m_http, SIGNAL(readyRead(const Q3HttpResponseHeader&)), this,
-					SLOT(httpReadyRead(const Q3HttpResponseHeader&)));
+			connect(m_http, SIGNAL(readyRead(QHttpResponseHeader)), this,
+					SLOT(httpReadyRead()));
 		}
 		m_http->setHost(this->url().host(), this->url().port() == 0 ? 80: this->url().port());
-		QString path = this->url().encodedPathAndQuery(1);
+		QString path = this->url().encodedPathAndQuery(KUrl::AddTrailingSlash);
 		if(path == "")
 			path = "/";
 		//kDebug()  <<  "path: " << path;

@@ -28,7 +28,7 @@
 #include <qmovie.h>
 #include <qcolor.h>
 #include <kurl.h>
-#include <q3http.h>
+#include <QHttp>
 
 #include "linklabel.h"
 
@@ -463,12 +463,12 @@ class LinkContent : public QObject, public NoteContent
 	bool        m_autoTitle;
 	bool        m_autoIcon;
 	LinkDisplay m_linkDisplay;
-	Q3Http*      m_http;
+	QHttp*      m_http;
 	QString*    m_httpBuff;
 	// File Preview Management:
   protected slots:
 	void httpDone(bool err);
-	void httpReadyRead(const Q3HttpResponseHeader& resp);
+	void httpReadyRead();
 	void newPreview(const KFileItem*, const QPixmap &preview);
 	void removePreview(const KFileItem*);
 	void startFetchingUrlPreview();
