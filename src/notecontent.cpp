@@ -1943,7 +1943,7 @@ void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 		quint64     size; // TODO: It was quint32 in version 0.5.0 !
 		QByteArray  *array;
 		Q3StoredDrag *storedDrag;
-		for (uint i = 0; i < mimes.count(); ++i) {
+		for (int i = 0; i < mimes.count(); ++i) {
 			// Get the size:
 			stream >> size;
 			// Allocate memory to retreive size bytes and store them:
