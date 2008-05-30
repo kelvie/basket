@@ -997,17 +997,22 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 	}
 
 	KFileMetaInfo infos = KFileMetaInfo(KUrl(fullPath()));
-	if (infos.isValid() && !infos.isEmpty()) {
-		QStringList groups = infos.preferredKeys();
-		int i = 0;
-		for (QStringList::Iterator it = groups.begin(); i < 6 && it != groups.end(); ++it) {
-			KFileMetaInfoItem metaInfoItem = infos.item(*it);
-			if (!metaInfoItem.string().isEmpty()) {
-				keys->append(metaInfoItem.translatedKey());
-				values->append(metaInfoItem.string());
-				++i;
-			}
-		}
+	if (infos.isValid()) {
+            QStringList groups = infos.preferredKeys();
+            int i = 0;
+            for (QStringList::Iterator it = groups.begin();
+                 i < 6 && it != groups.end();
+                 ++it) {
+                KFileMetaInfoItem item = infos.item(*it);
+                QString value = item.value().toString();
+                if (!value.isEmpty()) {
+                    keys->append(item.name());
+                    value = QString("%1%2%3").arg(item.prefix(), value,
+                                                  item.suffix());
+                    values->append(value);
+                    ++i;
+                }
+            }
 	}
 }
 
