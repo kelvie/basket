@@ -1617,7 +1617,7 @@ void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
 void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	int hue, saturation, value;
-	m_color.getHsv(hue, saturation, value);
+	m_color.getHsv(&hue, &saturation, &value);
 
 	keys->append(i18nc("RGB Colorspace: Red/Green/Blue", "RGB"));
 	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,").arg(QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
