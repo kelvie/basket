@@ -69,6 +69,7 @@
 #include "htmlexporter.h"
 
 #include "config.h"
+#define WITHOUT_ARTS
 #ifndef WITHOUT_ARTS
 	#include <arts/kplayobject.h>
 	#include <arts/kplayobjectfactory.h>
