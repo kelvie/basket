@@ -1119,7 +1119,7 @@ void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
 SoundContent::SoundContent(Note *parent, const QString &fileName)
  : FileContent(parent, fileName)
 {
-	setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???
+	setFileName(fileName);
 }
 
 
