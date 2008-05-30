@@ -1950,7 +1950,7 @@ void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 			array = new QByteArray(size);
 			stream.readRawBytes(array->data(), size);
 			// Creata and add the QDragObject:
-			storedDrag = new Q3StoredDrag(*(mimes.at(i)));
+			storedDrag = new Q3StoredDrag(mimes.at(i)->toAscii());
 			storedDrag->setEncodedData(*array);
 			dragObject->addDragObject(storedDrag);
 			delete array; // FIXME: Should we?
