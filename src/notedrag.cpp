@@ -380,7 +380,8 @@ bool NoteDrag::canDecode(QMimeSource *source)
 
 Basket* NoteDrag::basketOf(QMimeSource *source)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+	QBuffer buffer(&srcData);
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
@@ -393,7 +394,8 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 
 Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+	QBuffer buffer(&srcData);
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
@@ -415,7 +417,8 @@ Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 
 Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes)
 {
-	QBuffer buffer(source->encodedData(NOTE_MIME_STRING));
+    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+	QBuffer buffer(&srcData);
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
 		// Get the parent basket:
