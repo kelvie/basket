@@ -706,14 +706,8 @@ Note* NoteFactory::copyFileAndLoad(const KUrl &url, Basket *parent)
 //	QString annotations = i18n("Original file: %1").arg(url.prettyUrl());
 //	parent->dontCareOfCreation(fullPath);
 
-
-//	KIO::CopyJob *copyJob = KIO::copy(url, KUrl(fullPath));
-//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)),
-//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)) );
-
-	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
-			url, KUrl(fullPath), 0666, /*move=*/false,
-			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
+	KIO::CopyJob *copyJob = KIO::copy(url, KUrl(fullPath),
+					  KIO::Overwrite | KIO::Resume);
 	parent->connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
 					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
@@ -733,14 +727,9 @@ Note* NoteFactory::moveFileAndLoad(const KUrl &url, Basket *parent)
 //	QString annotations = i18n("Original file: %1").arg(url.prettyUrl());
 //	parent->dontCareOfCreation(fullPath);
 
+	KIO::CopyJob *copyJob = KIO::move(url, KUrl(fullPath),
+					  KIO::Overwrite | KIO::Resume);
 
-//	KIO::CopyJob *copyJob = KIO::move(url, KUrl(fullPath));
-//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)),
-//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)) );
-
-	KIO::FileCopyJob *copyJob = new KIO::FileCopyJob(
-			url, KUrl(fullPath), 0666, /*move=*/true,
-			/*overwrite=*/true, /*resume=*/true, /*showProgress=*/true );
 	parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
 					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
@@ -1024,7 +1013,8 @@ Note* NoteFactory::importIcon(Basket *parent)
 
 Note* NoteFactory::importFileContent(Basket *parent)
 {
-	KUrl url = KFileDialog::getOpenUrl( QString::null, QString::null, parent, i18n("Load File Content into a Note") );
+	KUrl url = KFileDialog::getOpenUrl(KUrl(), "", parent,
+                                       i18n("Load File Content into a Note"));
 	if ( ! url.isEmpty() )
 		return copyFileAndLoad(url, parent);
 	return 0;
