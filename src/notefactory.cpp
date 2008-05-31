@@ -988,7 +988,7 @@ Note* NoteFactory::importKMenuLauncher(Basket *parent)
 	if (dialog.service()) {
 		// * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
 		// * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
-		QString serviceUrl = dialog.service()->desktopEntryPath();
+		QString serviceUrl = dialog.service()->entryPath();
 		if ( ! serviceUrl.startsWith("/") )
 			serviceUrl = dialog.service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
 		return createNoteLauncher(serviceUrl, parent);
