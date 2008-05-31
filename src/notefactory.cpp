@@ -28,7 +28,7 @@
 #include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
-#include <kcolordrag.h>
+#include <k3colordrag.h>
 #include <k3urldrag.h>
 #include <q3stylesheet.h>
 #include <qdir.h>
@@ -64,6 +64,7 @@
 
 #include "debugwindow.h"
 
+#include <QBitmap>
 #include <KIO/CopyJob>
 
 /** Create notes from scratch (just a content) */
