@@ -660,12 +660,16 @@ bool NoteFactory::maybeImageOrAnimation(const KUrl &url)
 	{"BMP", "GIF", "JPEG", "MNG", "PBM", "PGM", "PNG", "PPM", "XBM", "XPM"}
 		QImageDecoder::inputFormats():
 	{"GIF", "MNG", "PNG"} */
-	Q3StrList list = QImageIO::inputFormats();
-	list.prepend("jpg"); // Since QImageDrag return only "JPEG" and extensions can be "JPG"; preprend for heuristic optim.
-	char *s;
+	QList<QByteArray> formats = QImageReader::supportedImageFormats();
+	formats << QMovie::supportedFormats();
+
+	// Since QImageDrag return only "JPEG" and extensions can be "JPG";
+	// preprend for heuristic optim.
+	formats.prepend("jpg");
+
 	QString path = url.url().toLower();
-	for (s = list.first(); s; s = list.next())
-		if (path.endsWith(QString(".") + QString(s).toLower()))
+	foreach (QByteArray format, formats)
+		if (path.endsWith(QString(".") + QString(format).toLower()))
 			return true;
 	// TODO: Search real MIME type for local files?
 	return false;
