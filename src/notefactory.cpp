@@ -994,7 +994,7 @@ Note* NoteFactory::importKMenuLauncher(Basket *parent)
 
 Note* NoteFactory::importIcon(Basket *parent)
 {
-	QString iconName = KIconDialog::getIcon( KIconLoader::Desktop, KIcon::Application, false, Settings::defIconSize() );
+	QString iconName = KIconDialog::getIcon( KIconLoader::Desktop, KIconLoader::Application, false, Settings::defIconSize() );
 	if ( ! iconName.isEmpty() ) {
 		IconSizeDialog dialog(i18n("Import Icon as Image"), i18n("Choose the size of the icon to import as an image:"), iconName, Settings::defIconSize(), 0);
 		dialog.exec();
