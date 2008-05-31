@@ -23,6 +23,7 @@
 #include <Q3TextStream>
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <QDomElement>
 
 #include "basketfactory.h"
 #include "global.h"

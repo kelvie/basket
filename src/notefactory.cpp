@@ -25,8 +25,7 @@
 #include <QDropEvent>
 #include <Q3MemArray>
 #include <kurl.h>
-#include <QPixmap>
-#include <QBitmap>
+#include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
 #include <k3colordrag.h>
@@ -65,8 +64,8 @@
 
 #include "debugwindow.h"
 
+#include <QBitmap>
 #include <KIO/CopyJob>
-
 
 /** Create notes from scratch (just a content) */
 
@@ -410,15 +409,15 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 		Q3MemArray<QChar> chars( mozilla.count() / 2 );
 		// A small debug work to know the value of each bytes
 		if (Global::debugWindow)
-			for (uint i = 0; i < mozilla.count(); i++)
+			for (int i = 0; i < mozilla.count(); i++)
 				*Global::debugWindow << QString("'") + QChar(mozilla[i]) + "' " + QString::number(int(mozilla[i]));
 		// text/x-moz-url give the URL followed by the link title and separed by OxOA (10 decimal: new line?)
 		uint size   = 0;
 		QChar *name = 0L;
 		// For each little endian mozilla chars, copy it to the array of QChars
-		for (uint i = 0; i < mozilla.count(); i += 2) {
+		for (int i = 0; i < mozilla.count(); i += 2) {
 			chars[i/2] = QChar(mozilla[i], mozilla[i+1]);
-			if (mozilla[i] == static_cast<const char>(0x0A)) {
+			if (mozilla.at(i) == 0x0A) {
 				size = i/2;
 				name = &(chars[i/2+1]);
 			}
@@ -507,18 +506,29 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 			}
 			if (shouldAsk) {
 				KMenu menu(parent);
-				menu.insertItem( SmallIconSet("goto"),     i18n("&Move Here\tShift"),      0 );
-				menu.insertItem( SmallIconSet("editcopy"), i18n("&Copy Here\tCtrl"),       1 );
-				menu.insertItem( SmallIconSet("www"),      i18n("&Link Here\tCtrl+Shift"), 2 );
+				QList<QAction *> actList;
+				actList << new KAction(KIcon("goto"),
+						       i18n("&Move Here\tShift"),
+						       &menu)
+					<< new KAction(KIcon("editcopy"),
+						       i18n("&Copy Here\tCtrl"),
+						       &menu)
+					<< new KAction(KIcon("www"),
+						       i18n("&Link Here\tCtrl+Shift"),
+						       &menu);
+
+				foreach (QAction *a, actList)
+					menu.addAction(a);
+
 				menu.insertSeparator();
-				menu.insertItem( SmallIconSet("cancel"),   i18n("C&ancel\tEscape"),        3 );
-				//~ int id = menu.exec(QCursor::pos());
-				//~ switch (id) {
-					//~ case 0: action = QDropEvent::Move; break;
-					//~ case 1: action = QDropEvent::Copy; break;
-					//~ case 2: action = QDropEvent::Link; break;
-					//~ default: return 0;
-				//~ }
+				menu.addAction(KIcon("cancel"), i18n("C&ancel\tEscape"));
+				int id = actList.indexOf(menu.exec(QCursor::pos()));
+				switch (id) {
+					case 0: action = QDropEvent::Move; break;
+					case 1: action = QDropEvent::Copy; break;
+					case 2: action = QDropEvent::Link; break;
+					default: return 0;
+				}
 				modified = true;
 			}
 	} else { // fromPaste
@@ -650,12 +660,16 @@ bool NoteFactory::maybeImageOrAnimation(const KUrl &url)
 	{"BMP", "GIF", "JPEG", "MNG", "PBM", "PGM", "PNG", "PPM", "XBM", "XPM"}
 		QImageDecoder::inputFormats():
 	{"GIF", "MNG", "PNG"} */
-	Q3StrList list = QImageReader::supportedImageFormats();
-	list.prepend("jpg"); // Since QImageDrag return only "JPEG" and extensions can be "JPG"; preprend for heuristic optim.
-	char *s;
+	QList<QByteArray> formats = QImageReader::supportedImageFormats();
+	formats << QMovie::supportedFormats();
+
+	// Since QImageDrag return only "JPEG" and extensions can be "JPG";
+	// preprend for heuristic optim.
+	formats.prepend("jpg");
+
 	QString path = url.url().toLower();
-	for (s = list.first(); s; s = list.next())
-		if (path.endsWith(QString(".") + QString(s).toLower()))
+	foreach (QByteArray format, formats)
+		if (path.endsWith(QString(".") + QString(format).toLower()))
 			return true;
 	// TODO: Search real MIME type for local files?
 	return false;
@@ -692,12 +706,8 @@ Note* NoteFactory::copyFileAndLoad(const KUrl &url, Basket *parent)
 //	QString annotations = i18n("Original file: %1").arg(url.prettyUrl());
 //	parent->dontCareOfCreation(fullPath);
 
-
-//	KIO::CopyJob *copyJob = KIO::copy(url, KUrl(fullPath));
-//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)),
-//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)) );
-
-	KIO::FileCopyJob *copyJob = KIO::file_copy(url, KUrl(fullPath), 0666, KIO::Resume | KIO::Overwrite);
+	KIO::CopyJob *copyJob = KIO::copy(url, KUrl(fullPath),
+					  KIO::Overwrite | KIO::Resume);
 	parent->connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
 					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
@@ -717,12 +727,9 @@ Note* NoteFactory::moveFileAndLoad(const KUrl &url, Basket *parent)
 //	QString annotations = i18n("Original file: %1").arg(url.prettyUrl());
 //	parent->dontCareOfCreation(fullPath);
 
+	KIO::CopyJob *copyJob = KIO::move(url, KUrl(fullPath),
+					  KIO::Overwrite | KIO::Resume);
 
-//	KIO::CopyJob *copyJob = KIO::move(url, KUrl(fullPath));
-//	parent->connect( copyJob,  SIGNAL(copyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)),
-//					 parent, SLOT(slotCopyingDone(KIO::Job *, const KUrl &, const KUrl &, bool, bool)) );
-
-	KIO::FileCopyJob *copyJob = KIO::file_move(url, KUrl(fullPath), 0666, KIO::Resume | KIO::Overwrite);
 	parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
 					parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 
@@ -776,10 +783,9 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 	bool viewSound = Settings::viewSoundFileContent();
 
 	KFileMetaInfo metaInfo(url);
-    bool metalInfoIsEmpty = metaInfo.items().isEmpty();
-	if (Global::debugWindow && metalInfoIsEmpty)
-		*Global::debugWindow << "typeForURL: metaInfo is not valid for " + url.prettyUrl();
-	if (metalInfoIsEmpty) { // metaInfo is empty for GIF files on my machine !
+	if (Global::debugWindow && !metaInfo.isValid())
+		*Global::debugWindow << "typeForURL: metaInfo is empty for " + url.prettyUrl();
+	if (metaInfo.isValid()) { // metaInfo is empty for GIF files on my machine !
 		if      (viewText  && maybeText(url))             return NoteType::Text;
 		else if (viewHTML  && (maybeHtml(url)))           return NoteType::Html;
 		else if (viewImage && maybeAnimation(url))        return NoteType::Animation; // See Note::movieStatus(int)
@@ -788,26 +794,19 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 		else if (maybeLauncher(url))                      return NoteType::Launcher;
 		else                                              return NoteType::File;
 	}
-    //mime type information no longer in KFileMetaInfo
-    //Use KIO::mimetype instead
-    KIO::MimetypeJob * mimeJob = KIO::mimetype(url,KIO::HideProgressInfo);
-    bool mimeJobComplete = mimeJob->exec();
-    if(mimeJobComplete) {
-        QString mimeType = mimeJob->mimetype();
-        if (Global::debugWindow)
-            *Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME type = " + mimeType;
-        if      (mimeType == "application/x-desktop")            return NoteType::Launcher;
-        else if (viewText  && mimeType.startsWith("text/plain")) return NoteType::Text;
-        else if (viewHTML  && mimeType.startsWith("text/html"))  return NoteType::Html;
-        else if (viewImage && mimeType == "movie/x-mng")         return NoteType::Animation;
-        else if (viewImage && mimeType == "image/gif")           return NoteType::Animation;
-        else if (viewImage && mimeType.startsWith("image/"))     return NoteType::Image;
-        else if (viewSound && mimeType.startsWith("audio/"))     return NoteType::Sound;
-        else                                                     return NoteType::File;
-    } else {
-        if (Global::debugWindow)
-            *Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME job can not complete";
-    }
+	QString mimeType = KMimeType::findByUrl(url)->name();
+
+	if (Global::debugWindow)
+		*Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME type = " + mimeType;
+
+	if      (mimeType == "application/x-desktop")            return NoteType::Launcher;
+	else if (viewText  && mimeType.startsWith("text/plain")) return NoteType::Text;
+	else if (viewHTML  && mimeType.startsWith("text/html"))  return NoteType::Html;
+	else if (viewImage && mimeType == "movie/x-mng")         return NoteType::Animation;
+	else if (viewImage && mimeType == "image/gif")           return NoteType::Animation;
+	else if (viewImage && mimeType.startsWith("image/"))     return NoteType::Image;
+	else if (viewSound && mimeType.startsWith("audio/"))     return NoteType::Sound;
+	else                                                     return NoteType::File;
 }
 
 QString NoteFactory::fileNameForNewNote(Basket *parent, const QString &wantedName)
@@ -853,7 +852,7 @@ KUrl NoteFactory::filteredURL(const KUrl &url)
 	// KURIFilter::filteredURI() is slow if the URL contains only letters, digits and '-' or '+'.
 	// So, we don't use that function is that case:
 	bool isSlow = true;
-	for (uint i = 0; i < url.url().length(); ++i) {
+	for (int i = 0; i < url.url().length(); ++i) {
 		QChar c = url.url()[i];
 		if (!c.isLetterOrNumber() && c != '-' && c != '+') {
 			isSlow = false;
@@ -987,9 +986,9 @@ Note* NoteFactory::importKMenuLauncher(Basket *parent)
 	dialog.setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
 	dialog.exec();
 	if (dialog.service()) {
-		// * KStandardDirs::locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
+		// * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
 		// * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
-		QString serviceUrl = dialog.service()->desktopEntryPath();
+		QString serviceUrl = dialog.service()->entryPath();
 		if ( ! serviceUrl.startsWith("/") )
 			serviceUrl = dialog.service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
 		return createNoteLauncher(serviceUrl, parent);
@@ -1014,7 +1013,8 @@ Note* NoteFactory::importIcon(Basket *parent)
 
 Note* NoteFactory::importFileContent(Basket *parent)
 {
-	KUrl url = KFileDialog::getOpenUrl( KUrl(QString::null), QString::null, parent, i18n("Load File Content into a Note") );
+	KUrl url = KFileDialog::getOpenUrl(KUrl(), "", parent,
+                                       i18n("Load File Content into a Note"));
 	if ( ! url.isEmpty() )
 		return copyFileAndLoad(url, parent);
 	return 0;

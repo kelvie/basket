@@ -29,9 +29,7 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <Q3VBoxLayout>
-#include <kfontcombo.h>
 #include <qlayout.h>
-#include <kkeybutton.h>
 #include <kiconloader.h>
 #include <kapplication.h>
 #include <qcheckbox.h>
@@ -47,6 +45,10 @@
 #include <qaction.h>
 #include <kmessagebox.h>
 #include <qtimer.h>
+
+#include <kshortcutwidget.h>
+#include <QFontComboBox>
+#include <Qt3Support>
 
 #include "kicondialog.h"
 #include "tag.h"
@@ -208,7 +210,7 @@ void TagListViewItem::setup()
 	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
-	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
+	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
 		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = state->font(listView()->font());
@@ -228,7 +230,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
-	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isNull())
+	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
 		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
@@ -238,13 +240,13 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 
 	QPixmap emblem = QPixmap();
     if (withIcon)
-        empblem = KIconLoader::global()->loadIcon(
+        emblem = KIconLoader::global()->loadIcon(
             state->emblem(), KIconLoader::NoGroup, 16);
 
-	QColor backgroundColor = (isSelected() ? palette().color(QPalette::Highlight)
+	QColor backgroundColor = (isSelected() ? kapp->palette().color(QPalette::Highlight)
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
 	                                                                                         : listView()->paletteBackgroundColor()));
-	QColor textColor = (isSelected() ? palette().color(QPalette::HighlightedText)
+	QColor textColor = (isSelected() ? kapp->palette().color(QPalette::HighlightedText)
 	                                 : (withIcon && state->textColor().isValid() ? state->textColor()
 	                                                                             : listView()->paletteForegroundColor()));
 
@@ -261,7 +263,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	thePainter.setFont(font);
 	int textWidth = width - xText;
 	if (thePainter.fontMetrics().width(text) > textWidth)
-		text = KStringHandler::rPixelSqueeze(text, fontMetrics, textWidth);
+        text = fontMetrics.elidedText(text, Qt::ElideRight, width );
 	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::TextShowMnemonic, text);
 
 	// Apply the buffer:
@@ -397,7 +399,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tagName = new QLineEdit(tagWidget);
 	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
 
-	m_shortcut = new KKeyButton(tagWidget);
+	m_shortcut = new KShortcutWidget(tagWidget);
 	m_removeShortcut = new QPushButton(i18nc("Remove tag shortcut", "&Remove"), tagWidget);
 	QLabel *shortcutLabel = new QLabel(m_shortcut, i18n("S&hortcut:"), tagWidget);
 	connect( m_shortcut,       SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
@@ -422,7 +424,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *emblemWidget = new QWidget(stateWidget);
 	m_emblem = new KIconButton(emblemWidget);
-	m_emblem->setIconType(KIconLoader::NoGroup, KIcon::Action);
+	m_emblem->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_emblem->setIconSize(16);
 	m_emblem->setIcon("editdelete");
 	m_removeEmblem = new QPushButton(i18nc("Remove tag emblem", "Remo&ve"), emblemWidget);
@@ -448,26 +450,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIcon boldIconSet = KIconLoader::global()->loadIconSet("text_bold", KIcon::Small);
+	QIcon boldIconSet = KIconLoader::global()->loadIconSet("text_bold", KIconLoader::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("text_under", KIcon::Small);
+	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("text_under", KIconLoader::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIcon italicIconSet = KIconLoader::global()->loadIconSet("text_italic", KIcon::Small);
+	QIcon italicIconSet = KIconLoader::global()->loadIconSet("text_italic", KIconLoader::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("text_strike", KIcon::Small);
+	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("text_strike", KIconLoader::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -485,7 +487,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_textColor = new KColorCombo2(QColor(), palette().color(QPalette::Text), stateWidget);
 	QLabel *textColorLabel = new QLabel(m_textColor, i18n("Co&lor:"), stateWidget);
 
-	m_font = new KFontCombo(stateWidget);
+	m_font = new QFontComboBox(stateWidget);
 	m_font->insertItem(i18n("(Default)"), 0);
 	QLabel *fontLabel = new QLabel(m_font, i18n("&Font:"), stateWidget);
 
@@ -984,12 +986,12 @@ void TagsEditDialog::renameIt()
 void TagsEditDialog::capturedShortcut(const KShortcut &shortcut)
 {
 	// TODO: Validate it!
-	m_shortcut->setShortcut(shortcut, /*bQtShortcut=*/true);
+	m_shortcut->setShortcut(shortcut);
 }
 
 void TagsEditDialog::removeShortcut()
 {
-	m_shortcut->setShortcut(KShortcut(), /*bQtShortcut=*/true);
+	m_shortcut->setShortcut(KShortcut());
 	modified();
 }
 
@@ -1024,7 +1026,7 @@ void TagsEditDialog::modified()
 	if (m_tags->currentItem()->parent())
 		m_tags->currentItem()->parent()->setup();
 
-	m_removeShortcut->setEnabled(!m_shortcut->shortcut().isNull());
+	m_removeShortcut->setEnabled(!m_shortcut->shortcut().isEmpty());
 	m_removeEmblem->setEnabled(!m_emblem->icon().isEmpty() && !m_tags->currentItem()->isEmblemObligatory());
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
@@ -1133,8 +1135,8 @@ void TagsEditDialog::loadStateFrom(State *state)
 void TagsEditDialog::loadTagFrom(Tag *tag)
 {
 	m_tagName->setText(tag->name());
-	m_shortcut->setShortcut(tag->shortcut(), /*bQtShortcut=*/false);
-	m_removeShortcut->setEnabled(!tag->shortcut().isNull());
+	m_shortcut->setShortcut(tag->shortcut());
+	m_removeShortcut->setEnabled(!tag->shortcut().isEmpty());
 	m_inherit->setChecked(tag->inheritedBySiblings());
 }
 
@@ -1154,7 +1156,7 @@ void TagsEditDialog::saveStateTo(State *state)
 	if (m_font->currentItem() == 0)
 		state->setFontName("");
 	else
-		state->setFontName(m_font->currentFont());
+		state->setFontName(m_font->currentFont().family());
 
 	bool conversionOk;
 	int fontSize = m_fontSize->currentText().toInt(&conversionOk);

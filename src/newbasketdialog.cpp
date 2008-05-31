@@ -36,6 +36,8 @@
 #include <kiconloader.h>
 #include <kmainwindow.h>
 
+#include <QComboBox>
+
 #include "kicondialog.h"
 #include "newbasketdialog.h"
 #include "basketfactory.h"
@@ -97,7 +99,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	setDefaultButton(Ok);
 	setObjectName("NewBasket");
 	setModal(true);
-	setSeparator(true);
+	showButtonSeparator(true);
 	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
 
 	QWidget *page = new QWidget(this);
@@ -106,7 +108,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	// Icon, Name and Background Color:
 	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
-	m_icon->setIconType(KIconLoader::NoGroup, KIcon::Action);
+	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
@@ -263,7 +265,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 void NewBasketDialog::returnPressed()
 {
-	actionButton(Ok)->animateClick();
+	button(Ok)->animateClick();
 }
 
 int NewBasketDialog::populateBasketsList(Q3ListViewItem *item, int indent, int index)
