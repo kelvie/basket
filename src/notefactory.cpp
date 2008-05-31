@@ -783,9 +783,9 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 	bool viewSound = Settings::viewSoundFileContent();
 
 	KFileMetaInfo metaInfo(url);
-	if (Global::debugWindow && metaInfo.isEmpty())
+	if (Global::debugWindow && !metaInfo.isValid())
 		*Global::debugWindow << "typeForURL: metaInfo is empty for " + url.prettyUrl();
-	if (metaInfo.isEmpty()) { // metaInfo is empty for GIF files on my machine !
+	if (metaInfo.isValid()) { // metaInfo is empty for GIF files on my machine !
 		if      (viewText  && maybeText(url))             return NoteType::Text;
 		else if (viewHTML  && (maybeHtml(url)))           return NoteType::Html;
 		else if (viewImage && maybeAnimation(url))        return NoteType::Animation; // See Note::movieStatus(int)
@@ -794,7 +794,7 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 		else if (maybeLauncher(url))                      return NoteType::Launcher;
 		else                                              return NoteType::File;
 	}
-	QString mimeType = metaInfo.mimeType();
+	QString mimeType = KMimeType::findByUrl(url)->name();
 
 	if (Global::debugWindow)
 		*Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME type = " + mimeType;
@@ -862,7 +862,7 @@ KUrl NoteFactory::filteredURL(const KUrl &url)
 	if (isSlow)
 		return url;
 	else
-		return KURIFilter::self()->filteredURI(url);
+		return KUriFilter::self()->filteredUri(url);
 }
 
 QString NoteFactory::titleForURL(const KUrl &url)
