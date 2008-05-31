@@ -491,7 +491,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 					QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
 					note->content()->setFileName(newFileName);
 					KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                                           /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+					                         /*perms=*/-1, KIO::Overwrite | KIO::HideProgressInfo);
 					parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
                                     parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, Kurl)));
 				}
@@ -514,10 +514,10 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 				KIO::FileCopyJob *copyJob;
 				if (moveFiles)
 					copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+					                         /*perms=*/-1, KIO::Overwrite | KIO::HideProgressInfo);
 				else
 					copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					                         /*perms=*/-1, /*override=*/true, /*resume=*/false, /*showProgressInfo=*/false);
+					                         /*perms=*/-1, KIO::Overwrite | KIO::HideProgressInfo);
 				parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
 				                parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
 				note->setGroupWidth(groupWidth);
