@@ -409,15 +409,15 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 		Q3MemArray<QChar> chars( mozilla.count() / 2 );
 		// A small debug work to know the value of each bytes
 		if (Global::debugWindow)
-			for (uint i = 0; i < mozilla.count(); i++)
+			for (int i = 0; i < mozilla.count(); i++)
 				*Global::debugWindow << QString("'") + QChar(mozilla[i]) + "' " + QString::number(int(mozilla[i]));
 		// text/x-moz-url give the URL followed by the link title and separed by OxOA (10 decimal: new line?)
 		uint size   = 0;
 		QChar *name = 0L;
 		// For each little endian mozilla chars, copy it to the array of QChars
-		for (uint i = 0; i < mozilla.count(); i += 2) {
+		for (int i = 0; i < mozilla.count(); i += 2) {
 			chars[i/2] = QChar(mozilla[i], mozilla[i+1]);
-			if (mozilla[i] == 0x0A) {
+			if (mozilla.at(i) == 0x0A) {
 				size = i/2;
 				name = &(chars[i/2+1]);
 			}
@@ -848,7 +848,7 @@ KUrl NoteFactory::filteredURL(const KUrl &url)
 	// KURIFilter::filteredURI() is slow if the URL contains only letters, digits and '-' or '+'.
 	// So, we don't use that function is that case:
 	bool isSlow = true;
-	for (uint i = 0; i < url.url().length(); ++i) {
+	for (int i = 0; i < url.url().length(); ++i) {
 		QChar c = url.url()[i];
 		if (!c.isLetterOrNumber() && c != '-' && c != '+') {
 			isSlow = false;
