@@ -986,11 +986,11 @@ Note* NoteFactory::importKMenuLauncher(Basket *parent)
 	dialog.setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
 	dialog.exec();
 	if (dialog.service()) {
-		// * KStandardDirs::locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
+		// * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
 		// * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
 		QString serviceUrl = dialog.service()->desktopEntryPath();
 		if ( ! serviceUrl.startsWith("/") )
-			serviceUrl = dialog.service()->KStandardDirs::locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
+			serviceUrl = dialog.service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
 		return createNoteLauncher(serviceUrl, parent);
 	}
 	return 0;
