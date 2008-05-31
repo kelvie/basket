@@ -506,12 +506,23 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 			}
 			if (shouldAsk) {
 				KMenu menu(parent);
-				menu.insertItem( SmallIconSet("goto"),     i18n("&Move Here\tShift"),      0 );
-				menu.insertItem( SmallIconSet("editcopy"), i18n("&Copy Here\tCtrl"),       1 );
-				menu.insertItem( SmallIconSet("www"),      i18n("&Link Here\tCtrl+Shift"), 2 );
+				QList<QAction *> actList;
+				actList << new KAction(KIcon("goto"),
+						       i18n("&Move Here\tShift"),
+						       &menu)
+					<< new KAction(KIcon("editcopy"),
+						       i18n("&Copy Here\tCtrl"),
+						       &menu)
+					<< new KAction(KIcon("www"),
+						       i18n("&Link Here\tCtrl+Shift"),
+						       &menu);
+
+				foreach (QAction *a, actList)
+					menu.addAction(a);
+
 				menu.insertSeparator();
-				menu.insertItem( SmallIconSet("cancel"),   i18n("C&ancel\tEscape"),        3 );
-				int id = menu.exec(QCursor::pos());
+				menu.addAction(KIcon("cancel"), i18n("C&ancel\tEscape"));
+				int id = actList.indexOf(menu.exec(QCursor::pos()));
 				switch (id) {
 					case 0: action = QDropEvent::Move; break;
 					case 1: action = QDropEvent::Copy; break;
