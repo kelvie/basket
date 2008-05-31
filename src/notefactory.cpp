@@ -337,7 +337,6 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 			case QDropEvent::Move:       *Global::debugWindow << ">> Drop action: Move";       break;
 			case QDropEvent::Link:       *Global::debugWindow << ">> Drop action: Link";       break;
 			case QDropEvent::Private:    *Global::debugWindow << ">> Drop action: Private";    break; // What is it? (Copy?)
-			case QDropEvent::UserAction: *Global::debugWindow << ">> Drop action: UserAction"; break; // Not currently
 			default:                     *Global::debugWindow << ">> Drop action: Unknown";           //  supported by Qt!
 		}
 	}
