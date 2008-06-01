@@ -53,6 +53,7 @@
 
 #include <KActionCollection>
 #include <KToggleAction>
+#include <KDesktopFile>
 
 /** class NoteEditor: */
 
@@ -477,7 +478,7 @@ LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent
 ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
  : NoteEditor(colorContent)
 {
-	KColorDialog dialog(parent, /*name=*/"EditColor", /*modal=*/true);
+	KColorDialog dialog(parent);
 	dialog.setColor(colorContent->color());
 	dialog.setCaption(i18n("Edit Color Note"));
 	if (dialog.exec() == QDialog::Accepted) {
@@ -777,17 +778,20 @@ void LauncherEditDialog::polish()
 
 void LauncherEditDialog::slotOk()
 {
-	// TODO: Remember if a string has been modified AND IS DIFFERENT FROM THE ORIGINAL!
+    // TODO: Remember if a string has been modified AND IS DIFFERENT FROM THE
+    // ORIGINAL!
 
-	KConfig conf(m_noteContent->fullPath());
-	conf.setGroup("Desktop Entry");
-	conf.writeEntry("Exec", m_command->runCommand());
-	conf.writeEntry("Name", m_name->text());
-	conf.writeEntry("Icon", m_icon->icon());
+    KDesktopFile dtFile(m_noteContent->fullPath());
+    KConfigGroup grp = dtFile.desktopGroup();
+    grp.writeEntry("Exec", m_command->runCommand());
+    grp.writeEntry("Name", m_name->text());
+    grp.writeEntry("Icon", m_icon->icon());
 
-	// Just for faster feedback: conf object will save to disk (and then m_note->loadContent() called)
-	m_noteContent->setLauncher(m_name->text(), m_icon->icon(), m_command->runCommand());
-	m_noteContent->setEdited();
+    // Just for faster feedback: conf object will save to disk (and then
+    // m_note->loadContent() called)
+    m_noteContent->setLauncher(m_name->text(), m_icon->icon(),
+                               m_command->runCommand());
+    m_noteContent->setEdited();
 }
 
 void LauncherEditDialog::guessIcon()

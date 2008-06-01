@@ -22,7 +22,6 @@ set(basketcommon_LIB_SRCS
     focusedwidgets.cpp
     basketfactory.cpp
     tag.cpp
-    qeffects.cpp
     kcolorcombo2.cpp
     newbasketdialog.cpp
     tagsedit.cpp

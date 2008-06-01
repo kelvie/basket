@@ -28,7 +28,7 @@
 #include <qmovie.h>
 #include <qcolor.h>
 #include <kurl.h>
-#include <q3http.h>
+#include <QHttp>
 
 #include "linklabel.h"
 
@@ -39,6 +39,8 @@ class QWidget;
 class QPoint;
 class QRect;
 class QStringList;
+class QBuffer;
+
 class K3MultipleDrag;
 
 class KFileItem;
@@ -268,7 +270,7 @@ class ImageContent : public NoteContent
 	QPixmap pixmap() { return m_pixmap; }     /// << @return the pixmap note-content.
   protected:
 	QPixmap  m_pixmap;
-	char    *m_format;
+	QByteArray m_format;
 };
 
 /** Real implementation of animated image (GIF, MNG) notes:
@@ -306,17 +308,17 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	// Open Content or File:
 	QString messageWhenOpening(OpenMessage where);
 	QString customOpenCommand();
+
 	// Content-Specific Methods:
-	bool    setMovie(const QMovie &movie); /// << Change the movie note-content and relayout the note.
-	QMovie&  movie() { return m_movie; }    /// << @return the movie note-content.
-  protected slots:
-	void movieUpdated(const QRect&);
-	void movieResized(const QSize&);
-	void movieStatus(int status);
-  protected:
-	QMovie  m_movie;
-	int     m_oldStatus;
-	static int INVALID_STATUS;
+    bool updateMovie();
+
+protected slots:
+    void movieUpdated();
+    void movieResized();
+
+protected:
+    QBuffer *m_buffer;
+    QMovie  *m_movie;
 };
 
 /** Real implementation of file notes:
@@ -461,12 +463,12 @@ class LinkContent : public QObject, public NoteContent
 	bool        m_autoTitle;
 	bool        m_autoIcon;
 	LinkDisplay m_linkDisplay;
-	Q3Http*      m_http;
+	QHttp*      m_http;
 	QString*    m_httpBuff;
 	// File Preview Management:
   protected slots:
 	void httpDone(bool err);
-	void httpReadyRead(const Q3HttpResponseHeader& resp);
+	void httpReadyRead();
 	void newPreview(const KFileItem*, const QPixmap &preview);
 	void removePreview(const KFileItem*);
 	void startFetchingUrlPreview();

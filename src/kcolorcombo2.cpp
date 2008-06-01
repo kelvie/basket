@@ -38,8 +38,6 @@
 
 #include "kcolorcombo2.h"
 
-//#include "qeffects.h"
-
 //#define DEBUG_COLOR_ARRAY
 //#define OUTPUT_GIMP_PALETTE
 

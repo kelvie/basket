@@ -69,12 +69,15 @@
 #include "htmlexporter.h"
 
 #include "config.h"
+#define WITHOUT_ARTS
 #ifndef WITHOUT_ARTS
 	#include <arts/kplayobject.h>
 	#include <arts/kplayobjectfactory.h>
 	#include <arts/kartsserver.h>
 	#include <arts/kartsdispatcher.h>
 #endif
+
+#include <KDebug>
 
 /** class NoteContent:
  */
@@ -248,7 +251,7 @@ QString UnknownContent::toHtml(const QString &/*imageName*/, const QString &/*cu
 { return "";                                                                                  }
 
 QPixmap ImageContent::toPixmap()     { return pixmap();              }
-QPixmap AnimationContent::toPixmap() { return movie().framePixmap(); }
+QPixmap AnimationContent::toPixmap() { return m_movie->currentPixmap(); }
 
 void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPath)
 {
@@ -346,7 +349,7 @@ QString UnknownContent::cssClass()   { return "";         }
 void TextContent::fontChanged()      { setText(text());                                          }
 void HtmlContent::fontChanged()      { setHtml(html());                                          }
 void ImageContent::fontChanged()     { setPixmap(pixmap());                                      }
-void AnimationContent::fontChanged() { setMovie(movie());                                        }
+void AnimationContent::fontChanged() { updateMovie();                                            }
 void FileContent::fontChanged()      { setFileName(fileName());                                  }
 void LinkContent::fontChanged()      { setLink(url(), title(), icon(), autoTitle(), autoIcon()); }
 void LauncherContent::fontChanged()  { setLauncher(name(), icon(), exec());                      }
@@ -406,7 +409,8 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 	} else { // Scalled down
 		QImage imageToScale = m_pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
+		pmScaled.convertFromImage(imageToScale.scaled(width, height,
+                                                      Qt::ScaleMin));
 		if (pmScaled.hasAlpha()) {
 			QPixmap opaque(pmScaled.width(), pmScaled.height());
 			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -421,13 +425,14 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 
 QPixmap AnimationContent::feedbackPixmap(int width, int height)
 {
-	QPixmap pixmap = m_movie.framePixmap();
+	QPixmap pixmap = m_movie->currentPixmap();
 	if (width >= pixmap.width() && height >= pixmap.height()) // Full size
 		return pixmap;
 	else { // Scalled down
 		QImage imageToScale = pixmap.convertToImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale./*smoothScale*/scale(width, height, Qt::ScaleMin));
+		pmScaled.convertFromImage(imageToScale.scaled(width, height,
+                                                      Qt::ScaleMin));
 		return pmScaled;
 	}
 }
@@ -718,7 +723,7 @@ void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
  */
 
 ImageContent::ImageContent(Note *parent, const QString &fileName, bool lazyLoad)
- : NoteContent(parent, fileName), m_format(0)
+ : NoteContent(parent, fileName), m_format()
 {
 	basket()->addWatchedFile(fullPath());
 	loadFromFile(lazyLoad);
@@ -768,12 +773,12 @@ bool ImageContent::finishLazyLoad()
 
 	if (basket()->loadFromFile(fullPath(), &content))
 	{
-		QBuffer buffer(content);
+		QBuffer buffer(&content);
 
 		buffer.open(QIODevice::ReadOnly);
-		m_format = (char* /* from const char* */)QImageIO::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
+		m_format = QImageReader::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
 		buffer.close();
-		if (m_format) {
+		if (!m_format.isNull()) {
 			m_pixmap.loadFromData(content);
 			setPixmap(m_pixmap);
 			return true;
@@ -781,7 +786,7 @@ bool ImageContent::finishLazyLoad()
 	}
 
 	kDebug() << "FAILED TO LOAD ImageContent: " << fullPath();
-	m_format = (char*)"PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
+	m_format = "PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
 	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
 	m_pixmap.fill();
 	m_pixmap.setMask(m_pixmap.createHeuristicMask());
@@ -794,7 +799,7 @@ bool ImageContent::finishLazyLoad()
 bool ImageContent::saveToFile()
 {
 	QByteArray ba;
-	QBuffer buffer(ba);
+	QBuffer buffer(&ba);
 
 	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
@@ -853,30 +858,32 @@ void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 /** class AnimationContent:
  */
 
-int AnimationContent::INVALID_STATUS = -100;
-
-AnimationContent::AnimationContent(Note *parent, const QString &fileName, bool lazyLoad)
- : NoteContent(parent, fileName), m_oldStatus(INVALID_STATUS)
+AnimationContent::AnimationContent(Note *parent,
+                                   const QString &fileName,
+                                   bool lazyLoad)
+ : NoteContent(parent, fileName)
+ , m_buffer(new QBuffer(this))
+ , m_movie(new QMovie(this))
 {
-	basket()->addWatchedFile(fullPath());
-	loadFromFile(lazyLoad);
+    basket()->addWatchedFile(fullPath());
+    loadFromFile(lazyLoad);
+    connect(m_movie, SIGNAL(updated(QRect)), this, SLOT(movieUpdated()));
+    connect(m_movie, SIGNAL(resized(QSize)), this, SLOT(movieResized()));
 }
 
 int AnimationContent::setWidthAndGetHeight(int /*width*/)
 {
 	/*width -= 1*/;
-	return  m_movie.framePixmap().height()  ; // TODO!!!
+	return  m_movie->currentPixmap().height()  ; // TODO!!!
 }
 
 void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
-	/*width -= 1*/;
-//	DEBUG_WIN << "AnimationContent::paint()";
-	const QPixmap &frame = m_movie.framePixmap();
+	QPixmap frame = m_movie->currentPixmap();
 	if (width >= frame.width()) // Full size
 		painter->drawPixmap(0, 0, frame);
-	else // Scalled down
-		painter->drawPixmap(0, 0, frame);  // TODO: Scall down
+	else // Scaled down
+		painter->drawPixmap(0, 0, frame);  // TODO: Scale down
 }
 
 bool AnimationContent::loadFromFile(bool lazyLoad)
@@ -889,16 +896,14 @@ bool AnimationContent::loadFromFile(bool lazyLoad)
 
 bool AnimationContent::finishLazyLoad()
 {
-	DEBUG_WIN << "Loading MovieContent From " + basket()->folderName() + fileName();
-//	return setMovie(QMovie(fullPath()));
-
-	bool success = false;
-	QByteArray content;
-	if (basket()->loadFromFile(fullPath(), &content))
-		success = setMovie(QMovie(content, content.size()));
-	if (!success)
-		setMovie(QMovie());
-	return success;
+    QByteArray content;
+    if (basket()->loadFromFile(fullPath(), &content)) {
+        m_buffer->setData(content);
+        updateMovie();
+        return true;
+    }
+    m_buffer->setData(0);
+    return false;
 }
 
 bool AnimationContent::saveToFile()
@@ -921,72 +926,32 @@ QString AnimationContent::messageWhenOpening(OpenMessage where)
 	}
 }
 
-bool AnimationContent::setMovie(const QMovie &movie)
+bool AnimationContent::updateMovie()
 {
-	if (!m_movie.isNull()) {
-		// Disconnect?
-		return false;
-	}
-	m_movie = movie;
-	m_movie.connectUpdate( this, SLOT(movieUpdated(const QRect&)) );
-	m_movie.connectResize( this, SLOT(movieResized(const QSize&)) );
-	m_movie.connectStatus( this, SLOT(movieStatus(int))           );
-	contentChanged(  m_movie.framePixmap().width() + 1  ); // TODO
-	return true;
+    if (!m_buffer->data().isEmpty())
+        return false;
+    m_movie->setDevice(m_buffer);
+    contentChanged(m_movie->currentPixmap().width() + 1); // TODO
+    return true;
 }
 
-void AnimationContent::movieUpdated(const QRect&)
+void AnimationContent::movieUpdated()
 {
 	note()->unbufferize();
 	note()->update();
 }
 
-void AnimationContent::movieResized(const QSize&)
+void AnimationContent::movieResized()
 {
 	note()->requestRelayout(); // ?
-}
-
-/** When a user drop a .gif file, for instance, we don't know if it is an image
-  * or an animtion (gif file contain multiple images).
-  * To determin that, we assume this is an animation and count the number of images.
-  * QMovie send, in this order:
-  * - For a unique image: QMovie::EndOfFrame, QMovie::EndOfLoop, QMovie::EndOfMovie.
-  * - For animation:      QMovie::EndOfFrame... (for each image), QMovie::EndOfLoop,
-  *                       and it then restart that for each loop.
-  */
-void AnimationContent::movieStatus(int status)
-{
-	DEBUG_WIN << "movieStatus()";
-
-	// At least two frames: it's an animation, everything is OK
-	if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfFrame) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-//		if (note()->isFocused())                 // When inserting a new note we ensure it visble
-//			basket()->ensureNoteVisible(note()); //  But after loading it has certainly grown and if it was
-	}
-	// Only one image: it's an image, change note's type
-	else if (m_oldStatus == QMovie::EndOfFrame && status == QMovie::EndOfLoop) {
-		movie().disconnectStatus(this);
-		m_oldStatus = INVALID_STATUS;
-		note()->setContent(new ImageContent(note(), fileName()));
-		basket()->save();
-		//delete this; // CRASH, as always !!!!!!!!!
-		//QTimer::singleShot(0,   this, SLOT(loadContent()));    // Delayed to avoid crash!
-		//QTimer::singleShot(100, this, SLOT(saveProperties())); // We should save it's an image and not an animation
-//		if (note()->isFocused())
-//			QTimer::singleShot(25, note(), SLOT(delayedEnsureVisible()));
-	}
-	else
-		m_oldStatus = status;
 }
 
 void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
 	exporter->stream << QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
 	                    .arg( exporter->dataFolderName + exporter->copyFile(fullPath(), /*createIt=*/true),
-	                          QString::number(movie().framePixmap().size().width()),
-	                          QString::number(movie().framePixmap().size().height()) );
+	                          QString::number(m_movie->currentPixmap().size().width()),
+	                          QString::number(m_movie->currentPixmap().size().height()) );
 }
 
 /** class FileContent:
@@ -1032,17 +997,22 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
 	}
 
 	KFileMetaInfo infos = KFileMetaInfo(KUrl(fullPath()));
-	if (infos.isValid() && !infos.isEmpty()) {
-		QStringList groups = infos.preferredKeys();
-		int i = 0;
-		for (QStringList::Iterator it = groups.begin(); i < 6 && it != groups.end(); ++it) {
-			KFileMetaInfoItem metaInfoItem = infos.item(*it);
-			if (!metaInfoItem.string().isEmpty()) {
-				keys->append(metaInfoItem.translatedKey());
-				values->append(metaInfoItem.string());
-				++i;
-			}
-		}
+	if (infos.isValid()) {
+            QStringList groups = infos.preferredKeys();
+            int i = 0;
+            for (QStringList::Iterator it = groups.begin();
+                 i < 6 && it != groups.end();
+                 ++it) {
+                KFileMetaInfoItem item = infos.item(*it);
+                QString value = item.value().toString();
+                if (!value.isEmpty()) {
+                    keys->append(item.name());
+                    value = QString("%1%2%3").arg(item.prefix(), value,
+                                                  item.suffix());
+                    values->append(value);
+                    ++i;
+                }
+            }
 	}
 }
 
@@ -1154,7 +1124,7 @@ void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
 SoundContent::SoundContent(Note *parent, const QString &fileName)
  : FileContent(parent, fileName)
 {
-	setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???
+	setFileName(fileName);
 }
 
 
@@ -1344,7 +1314,7 @@ void LinkContent::removePreview(const KFileItem*)
 }
 
 // QHttp slots for getting link title
-void LinkContent::httpReadyRead(const Q3HttpResponseHeader& )
+void LinkContent::httpReadyRead()
 {
 	Q_ULONG bytesAvailable = m_http->bytesAvailable();
 	if(bytesAvailable <= 0)
@@ -1406,13 +1376,13 @@ void LinkContent::startFetchingLinkTitle()
 			m_http = 0;
 		}
 		if(m_http == 0) {
-			m_http = new Q3Http(this);
+			m_http = new QHttp(this);
 			connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
-			connect(m_http, SIGNAL(readyRead(const Q3HttpResponseHeader&)), this,
-					SLOT(httpReadyRead(const Q3HttpResponseHeader&)));
+			connect(m_http, SIGNAL(readyRead(QHttpResponseHeader)), this,
+					SLOT(httpReadyRead()));
 		}
 		m_http->setHost(this->url().host(), this->url().port() == 0 ? 80: this->url().port());
-		QString path = this->url().encodedPathAndQuery(1);
+		QString path = this->url().encodedPathAndQuery(KUrl::AddTrailingSlash);
 		if(path == "")
 			path = "/";
 		//kDebug()  <<  "path: " << path;
@@ -1652,7 +1622,7 @@ void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
 void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	int hue, saturation, value;
-	m_color.getHsv(hue, saturation, value);
+	m_color.getHsv(&hue, &saturation, &value);
 
 	keys->append(i18nc("RGB Colorspace: Red/Green/Blue", "RGB"));
 	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,").arg(QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
@@ -1973,14 +1943,14 @@ void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 		quint64     size; // TODO: It was quint32 in version 0.5.0 !
 		QByteArray  *array;
 		Q3StoredDrag *storedDrag;
-		for (uint i = 0; i < mimes.count(); ++i) {
+		for (int i = 0; i < mimes.count(); ++i) {
 			// Get the size:
 			stream >> size;
 			// Allocate memory to retreive size bytes and store them:
 			array = new QByteArray(size);
 			stream.readRawBytes(array->data(), size);
 			// Creata and add the QDragObject:
-			storedDrag = new Q3StoredDrag(*(mimes.at(i)));
+			storedDrag = new Q3StoredDrag(mimes.at(i)->toAscii());
 			storedDrag->setEncodedData(*array);
 			dragObject->addDragObject(storedDrag);
 			delete array; // FIXME: Should we?
