@@ -45,7 +45,6 @@ class FocusedTextEdit : public KTextEdit
 	void keyPressEvent(QKeyEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	void enterEvent(QEvent *event);
-	KMenu* createPopupMenu(const QPoint &pos);
   signals:
 	void escapePressed();
 	void mouseEntered();

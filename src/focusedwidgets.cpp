@@ -101,29 +101,6 @@ void FocusedTextEdit::enterEvent(QEvent *event)
 	KTextEdit::enterEvent(event);
 }
 
-KMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
-{
-	KMenu *menu = KTextEdit::createPopupMenu(pos);
-
-	int index = 0;
-	int id = 0;
-	while (true) {
-		id = menu->idAt(index);
-		if (id == -1)
-			break;
-		// Disable Spell Check for rich text editors, because it doesn't work anyway:
-		if (textFormat() == Qt::RichText && (menu->text(id) == i18n("Auto Spell Check") || menu->text(id) == i18n("Check Spelling...")))
-			menu->setItemEnabled(id, false);
-		// Always enable tabulations!:
-		if (menu->text(id) == i18n("Allow Tabulations"))
-			menu->setItemEnabled(id, false);
-		index++;
-	}
-
-	// And return the menu:
-	return menu;
-}
-
 /** class FocusWidgetFilter */
 FocusWidgetFilter::FocusWidgetFilter(QWidget *parent)
   : QObject(parent)
