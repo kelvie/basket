@@ -22,7 +22,7 @@
 #include <kaboutdata.h>
 #include <kconfig.h>
 #include <kaction.h>
-#include <kiconloader.h>
+#include <kicon.h>
 #include <kaboutdata.h>
 #include <klocale.h>
 #include <kdebug.h>
@@ -64,15 +64,15 @@
 /****************************************/
 
 LikeBackBar::LikeBackBar(LikeBack *likeBack)
- : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::Qt::WGroupLeader)
+ : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WGroupLeader)
  , m_likeBack(likeBack)
 {
 	Q3HBoxLayout *layout = new Q3HBoxLayout(this);
 
-	QIcon likeIconSet    = KIconLoader::global()->loadIconSet("likeback_like",    KIcon::Small);
-	QIcon dislikeIconSet = KIconLoader::global()->loadIconSet("likeback_dislike", KIcon::Small);
-	QIcon bugIconSet     = KIconLoader::global()->loadIconSet("likeback_bug",     KIcon::Small);
-	QIcon featureIconSet = KIconLoader::global()->loadIconSet("likeback_feature", KIcon::Small);
+	QIcon likeIconSet    = KIcon("likeback_like");
+	QIcon dislikeIconSet = KIcon("likeback_dislike");
+	QIcon bugIconSet     = KIcon("likeback_bug");
+	QIcon featureIconSet = KIcon("likeback_feature");
 
 	m_likeButton = new QToolButton(this, "likeback_like");
 	m_likeButton->setIconSet(likeIconSet);
@@ -417,10 +417,10 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 void LikeBack::showInformationMessage()
 {
 	// Load and register the images needed by the message:
-	QPixmap likeIcon    = KIconLoader::global()->loadIcon("likeback_like",    KIcon::Small);
-	QPixmap dislikeIcon = KIconLoader::global()->loadIcon("likeback_dislike", KIcon::Small);
-	QPixmap bugIcon     = KIconLoader::global()->loadIcon("likeback_bug",     KIcon::Small);
-	QPixmap featureIcon = KIconLoader::global()->loadIcon("likeback_feature", KIcon::Small);
+	QPixmap likeIcon    = KIcon("likeback_like");
+	QPixmap dislikeIcon = KIcon("likeback_dislike");
+	QPixmap bugIcon     = KIcon("likeback_bug");
+	QPixmap featureIcon = KIcon("likeback_feature");
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
