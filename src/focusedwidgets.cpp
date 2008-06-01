@@ -86,14 +86,14 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 
 void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 {
-	if (event->delta() > 0 && contentsY() > 0) {
-		KTextEdit::wheelEvent(event);
-		return;
-	} else if (event->delta() < 0 && contentsY() + visibleHeight() < contentsHeight()) {
-		KTextEdit::wheelEvent(event);
-		return;
-	} else
-		Global::bnpView->currentBasket()->wheelEvent(event);
+    // If we're already scrolled all the way to the top or bottom, we pass the
+    // wheel event onto the basket.
+    QScrollBar *sb = verticalScrollBar();
+    if (event->delta() > 0 && sb->value() > sb->minimum()
+        || event->delta() < 0 && sb->value() < sb->maximum())
+        KTextEdit::wheelEvent(event);
+    else
+        Global::bnpView->currentBasket()->wheelEvent(event);
 }
 
 void FocusedTextEdit::enterEvent(QEvent *event)
