@@ -121,13 +121,6 @@ void FocusedTextEdit::adaptClipboardText(QClipboard::Mode mode)
 	}
 }
 
-
-QTextCursor* FocusedTextEdit::textCursor() const
-{
-	return KTextEdit::textCursor();
-}
-
-
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape) {
