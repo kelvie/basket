@@ -60,6 +60,9 @@ int main(int argc, char *argv[])
 	//KUniqueApplication app;
 	Application app;
 
+	// Initialize the config file
+	Global::basketConfig = KSharedConfig::openConfig("basketrc");
+
 	Backup::figureOutBinaryPath(argv0, app);
 
 	/* Main Window */

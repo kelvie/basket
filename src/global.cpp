@@ -40,7 +40,7 @@ DebugWindow       *Global::debugWindow         = 0L;
 BackgroundManager *Global::backgroundManager   = 0L;
 SystemTray        *Global::systemTray          = 0L;
 BNPView           *Global::bnpView             = 0L;
-KSharedConfig::Ptr Global::basketConfig        = KSharedConfig::openConfig("basketrc");
+KSharedConfig::Ptr Global::basketConfig;
 AboutData          Global::basketAbout;
 
 void Global::setCustomSavesFolder(const QString &folder)
