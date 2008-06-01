@@ -39,7 +39,7 @@ class FocusedTextEdit : public KTextEdit
 {
   Q_OBJECT
   public:
-	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0, const char *name = 0);
+	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0);
 	~FocusedTextEdit();
   protected:
 	void keyPressEvent(QKeyEvent *event);

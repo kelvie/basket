@@ -36,8 +36,9 @@
 
 /** class FocusedTextEdit */
 
-FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent, const char *name)
- : KTextEdit(parent, name),
+FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress,
+                                 QWidget *parent)
+ : KTextEdit(parent),
    m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
     // pass
