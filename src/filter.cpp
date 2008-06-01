@@ -61,9 +61,9 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	m_resetButton->setTextLabel(i18n("Reset Filter"));//, /*groupText=*/"", this, SLOT(reset()), 0);
 	m_resetButton->setAutoRaise(true);
 			//new KToolBarButton("locationbar_erase", /*id=*/1230, this, /*name=*/0, i18n("Reset Filter"));
-	m_lineEdit           = new FocusedLineEdit(this);
+	m_lineEdit = new KLineEdit(this);
 	QLabel *label        = new QLabel(m_lineEdit, i18n("&Filter: "), this);
-	m_tagsBox            = new FocusedComboBox(this);
+	m_tagsBox = new KComboBox(this);
 	QLabel *label2       = new QLabel(m_tagsBox, i18n("T&ag: "), this);
 	m_inAllBasketsButton = new QToolButton(this);
 	m_inAllBasketsButton->setIconSet(inAllIconSet);
@@ -105,10 +105,12 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 //	connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
 	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)) );
 
-	connect( m_lineEdit, SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
-	connect( m_lineEdit, SIGNAL(returnPressed()),  this, SIGNAL(returnPressed()) );
-	connect( m_tagsBox,  SIGNAL(escapePressed()),  this, SIGNAL(escapePressed()) );
-	connect( m_tagsBox,  SIGNAL(returnPressed2()), this, SIGNAL(returnPressed()) );
+	FocusWidgetFilter *lineEditF = new FocusWidgetFilter(m_lineEdit);
+	FocusWidgetFilter *tagsBoxF = new FocusWidgetFilter(m_tagsBox);
+	connect(lineEditF, SIGNAL(escapePressed()), SIGNAL(escapePressed()));
+	connect(lineEditF, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
+	connect(tagsBoxF, SIGNAL(escapePressed()), SIGNAL(escapePressed()));
+	connect(tagsBoxF, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
 }
 
 FilterBar::~FilterBar()

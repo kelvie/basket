@@ -198,92 +198,37 @@ KMenu* FocusedTextEdit::createPopupMenu(const QPoint &pos)
 	return menu;
 }
 
-/** class FocusedColorCombo: */
-
-FocusedColorCombo::FocusedColorCombo(QWidget *parent, const char *name)
- : KColorCombo(parent, name)
+/** class FocusWidgetFilter */
+FocusWidgetFilter::FocusWidgetFilter(QWidget *parent)
+  : QObject(parent)
 {
+    if (parent)
+	parent->installEventFilter(this);
 }
 
-FocusedColorCombo::~FocusedColorCombo()
+bool FocusWidgetFilter::eventFilter(QObject *, QEvent *e)
 {
-}
-
-void FocusedColorCombo::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KColorCombo::keyPressEvent(event);
-}
-
-/** class FocusedFontCombo: */
-
-FocusedFontCombo::FocusedFontCombo(QWidget *parent, const char *name)
- : KFontCombo(parent, name)
-{
-}
-
-FocusedFontCombo::~FocusedFontCombo()
-{
-}
-
-void FocusedFontCombo::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KFontCombo::keyPressEvent(event);
-}
-
-/** class FocusedComboBox: */
-
-FocusedComboBox::FocusedComboBox(QWidget *parent, const char *name)
- : KComboBox(parent, name)
-{
-}
-
-FocusedComboBox::~FocusedComboBox()
-{
-}
-
-void FocusedComboBox::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else if (event->key() == Qt::Key_Return)
-		emit returnPressed2();
-	else
-		KComboBox::keyPressEvent(event);
-}
-
-/** class FocusedLineEdit: */
-
-FocusedLineEdit::FocusedLineEdit(QWidget *parent, const char *name)
- : KLineEdit(parent, name)
-{
-}
-
-FocusedLineEdit::~FocusedLineEdit()
-{
-}
-
-void FocusedLineEdit::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Escape)
-		emit escapePressed();
-	else
-		KLineEdit::keyPressEvent(event);
-}
-
-void FocusedLineEdit::enterEvent(QEvent *event)
-{
+    switch (e->type()) {
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *ke = static_cast<QKeyEvent*>(e);
+        switch (ke->key()) {
+        case Qt::Key_Return:
+            emit returnPressed();
+            return true;
+        case Qt::Key_Escape:
+            emit escapePressed();
+            return true;
+        default:
+            return false;
+        };
+    }
+    case QEvent::Enter:
 	emit mouseEntered();
-	KLineEdit::enterEvent(event);
+	// pass through
+    default:
+	return false;
+    };
 }
 
 #include "focusedwidgets.moc"

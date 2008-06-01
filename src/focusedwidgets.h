@@ -56,77 +56,36 @@ class FocusedTextEdit : public KTextEdit
 };
 
 
-// BIG TODO: Use this event filter instead
-class EscapableWidgetFilter : public QObject
+/** class FocusWidgetFilter
+ * @author Kelvie Wong
+ *
+ * A very simple event filter that returns when escape and return are pressed,
+ * and as well, to emit a signal for the mouse event.
+ *
+ * This allows us to create our own focus model with widgets inside baskets
+ * (although I'm not sure how useful this will all be after we port Basket to be
+ * use QGraphicsView).
+ *
+ * Keypresses are filtered (i.e. the widget will not get the key press events),
+ * but the enterEvent is not (for backwards compatibility).
+ */
+class FocusWidgetFilter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	EscapableWidgetFilter(QWidget *parent=0);
-	~EscapableWidgetFilter() {}
+    /** Constructor
+     * @param watched The widget to install the event filter on; also becomes
+     * the parent of this object. */
+    FocusWidgetFilter(QWidget *watched=0);
+    ~FocusWidgetFilter() {}
 
 protected:
-	bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 
 signals:
-	void escapePressed();
-	void returnPressed();
-};
-
-// TODO: Rename to EscapableKColorCombo
-class FocusedColorCombo : public KColorCombo
-{
-  Q_OBJECT
-  public:
-	FocusedColorCombo(QWidget *parent = 0);
-	~FocusedColorCombo();
-  protected:
-	void keyPressEvent(QKeyEvent *event);
-  signals:
-	void escapePressed();
-	void returnPressed2();
-};
-
-// TODO: Rename to EscapableKFontCombo
-class FocusedFontCombo : public QFontComboBox
-{
-  Q_OBJECT
-  public:
-	FocusedFontCombo(QWidget *parent = 0);
-	~FocusedFontCombo();
-  protected:
-	void keyPressEvent(QKeyEvent *event);
-  signals:
-	void escapePressed();
-	void returnPressed2();
-};
-
-// TODO: Rename to EscapableKComboBox
-class FocusedComboBox : public KComboBox
-{
-	Q_OBJECT
-public:
-	FocusedComboBox(QWidget *parent = 0);
-	~FocusedComboBox();
-protected:
-	void keyPressEvent(QKeyEvent *event);
-signals:
-	void escapePressed();
-	void returnPressed2();
-};
-
-// TODO: Rename to EscapableKLineEdit
-class FocusedLineEdit : public KLineEdit
-{
-  Q_OBJECT
-  public:
-	FocusedLineEdit(QWidget *parent = 0, const char *name = 0);
-	~FocusedLineEdit();
-  protected:
-	void keyPressEvent(QKeyEvent *event);
-	void enterEvent(QEvent *event);
-  signals:
-	void escapePressed();
-	void mouseEntered();
+    void escapePressed();
+    void returnPressed();
+    void mouseEntered();
 };
 
 #endif // FOCUSEDWIDGETS_H

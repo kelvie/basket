@@ -81,9 +81,9 @@ class FilterBar : public QWidget
 	void tagChanged(int index);
   private:
 	FilterData      *m_data;
-	FocusedLineEdit *m_lineEdit;
+	KLineEdit *m_lineEdit;
 	QToolButton     *m_resetButton;
-	FocusedComboBox *m_tagsBox;
+	KComboBox *m_tagsBox;
 	QToolButton     *m_inAllBasketsButton;
 
 	QMap<int, Tag*>   m_tagsMap;
