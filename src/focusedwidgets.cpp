@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <q3popupmenu.h>
-//Added by qt3to4:
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <klocale.h>
@@ -125,5 +123,3 @@ bool FocusWidgetFilter::eventFilter(QObject *, QEvent *e)
 	return false;
     };
 }
-
-#include "focusedwidgets.moc"
