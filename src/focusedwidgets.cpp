@@ -50,38 +50,29 @@ FocusedTextEdit::~FocusedTextEdit()
 
 void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape) {
-		emit escapePressed();
-		return;
-	// In RichTextFormat mode, [Return] create a new paragraphe.
-	// To keep consistency with TextFormat mode (new line on [Return]),
-	// we redirect [Return] to simulate [Ctrl+Return] (create a new line in both modes).
-	// Create new paragraphes still possible in RichTextFormat mode with [Shift+Enter].
-	} else if (event->key() == Qt::Key_Return && event->state() == 0)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ControlModifier,
-		                      event->text(), event->isAutoRepeat(), event->count() );
-	else if (event->key() == Qt::Key_Return && event->state() & Qt::ControlModifier)
-		event = new QKeyEvent(QEvent::KeyPress, event->key(), event->ascii(), Qt::ShiftModifier,
-		                      event->text(), event->isAutoRepeat(), event->count() );
+    if (event->key() == Qt::Key_Escape) {
+        emit escapePressed();
+        return;
+    }
 
-	if (m_disableUpdatesOnKeyPress)
-		setUpdatesEnabled(false);
-	KTextEdit::keyPressEvent(event);
-	// Workarround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
-	if (event->key() == Qt::Key_Home || event->key() == Qt::Key_End || event->key() == Qt::Key_PageUp || event->key() == Qt::Key_PageDown) {
-		int para;
-		int index;
-		getCursorPosition(&para, &index);
-		emit cursorPositionChanged(para, index);
-	}
-	if (m_disableUpdatesOnKeyPress) {
-		setUpdatesEnabled(true);
-		if (text().isEmpty())
-			;// emit textChanged(); // TODO: DOESN'T WORK: the editor is not resized down to only one line of text
-		else
-			ensureCursorVisible();
-		updateContents();
-	}
+    if (m_disableUpdatesOnKeyPress)
+        setUpdatesEnabled(false);
+
+    KTextEdit::keyPressEvent(event);
+
+    // Workaround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
+    if (event->key() == Qt::Key_Home
+        || event->key() == Qt::Key_End
+        || event->key() == Qt::Key_PageUp
+        || event->key() == Qt::Key_PageDown)
+        emit cursorPositionChanged();
+
+
+    if (m_disableUpdatesOnKeyPress) {
+        setUpdatesEnabled(true);
+        if (!text().isEmpty())
+            ensureCursorVisible();
+    }
 }
 
 void FocusedTextEdit::wheelEvent(QWheelEvent *event)
