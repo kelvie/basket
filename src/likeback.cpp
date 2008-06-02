@@ -58,7 +58,10 @@
 
 #include "likeback.h"
 #include "likeback_private.h"
-
+#include <kaction.h>
+#include <kactioncollection.h>
+#include <kuser.h>
+#include <QDesktopWidget>
 /****************************************/
 /********** class LikeBackBar: **********/
 /****************************************/
@@ -224,9 +227,9 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 
 	// Use default KApplication config and aboutData if not provided:
 	if (d->config == 0)
-		d->config = KGlobal::config();
+		d->config = KGlobal::config().data();
 	if (d->aboutData == 0)
-		d->aboutData = kapp->aboutData();
+		d->aboutData = KGlobal::mainComponent().aboutData();
 
 	// Initialize properties (2/2) [Needs aboutData to be set]:
 	d->showBar          = userWantsToShowBar();
@@ -394,8 +397,8 @@ KAction* LikeBack::sendACommentAction(KActionCollection *parent)
 bool LikeBack::userWantsToShowBar()
 {
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
-	d->config->setGroup("LikeBack");
-	return d->config->readBoolEntry("userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault);
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
+	return configGroup.readEntry("userWantToShowBarForVersion_" + d->aboutData->version(), d->showBarByDefault);
 }
 
 void LikeBack::setUserWantsToShowBar(bool showBar)
@@ -406,9 +409,9 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 	d->showBar = showBar;
 
 	// Store the button-bar per version, so it can be disabled by the developer for the final version:
-	d->config->setGroup("LikeBack");
-	d->config->writeEntry("userWantToShowBarForVersion_" + d->aboutData->version(), showBar);
-	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
+	configGroup.writeEntry("userWantToShowBarForVersion_" + d->aboutData->version(), showBar);
+	configGroup.sync(); // Make sure the option is saved, even if the application crashes after that.
 
 	if (showBar)
 		d->bar->startTimer();
@@ -417,10 +420,10 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 void LikeBack::showInformationMessage()
 {
 	// Load and register the images needed by the message:
-	QPixmap likeIcon    = KIcon("likeback_like");
-	QPixmap dislikeIcon = KIcon("likeback_dislike");
-	QPixmap bugIcon     = KIcon("likeback_bug");
-	QPixmap featureIcon = KIcon("likeback_feature");
+	QPixmap likeIcon    = KIcon("likeback_like").pixmap(32,32);
+	QPixmap dislikeIcon = KIcon("likeback_dislike").pixmap(32,32);
+	QPixmap bugIcon     = KIcon("likeback_bug").pixmap(32,32);
+	QPixmap featureIcon = KIcon("likeback_feature").pixmap(32,32);
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
 	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
@@ -521,8 +524,8 @@ QString LikeBack::activeWindowPath()
 
 bool LikeBack::emailAddressAlreadyProvided()
 {
-	d->config->setGroup("LikeBack");
-	return d->config->readBoolEntry("emailAlreadyAsked", false);
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
+	return configGroup.readEntry("emailAlreadyAsked", false);
 }
 
 QString LikeBack::emailAddress()
@@ -530,23 +533,23 @@ QString LikeBack::emailAddress()
 	if (!emailAddressAlreadyProvided())
 		askEmailAddress();
 
-	d->config->setGroup("LikeBack");
-	return d->config->readEntry("emailAddress", "");
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
+	return configGroup.readEntry("emailAddress", "");
 }
 
 void LikeBack::setEmailAddress(const QString &address, bool userProvided)
 {
-	d->config->setGroup("LikeBack");
-	d->config->writeEntry("emailAddress",      address);
-	d->config->writeEntry("emailAlreadyAsked", userProvided || emailAddressAlreadyProvided());
-	d->config->sync(); // Make sure the option is saved, even if the application crashes after that.
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
+	configGroup.writeEntry("emailAddress",      address);
+	configGroup.writeEntry("emailAlreadyAsked", userProvided || emailAddressAlreadyProvided());
+	configGroup.sync(); // Make sure the option is saved, even if the application crashes after that.
 }
 
 void LikeBack::askEmailAddress()
 {
-	d->config->setGroup("LikeBack");
+	KConfigGroup configGroup = KGlobal::config()->group("LikeBack");
 
-	QString currentEmailAddress = d->config->readEntry("emailAddress", "");
+	QString currentEmailAddress = configGroup.readEntry("emailAddress", "");
 	if (!emailAddressAlreadyProvided() && !d->fetchedEmail.isEmpty())
 		currentEmailAddress = d->fetchedEmail;
 
@@ -564,7 +567,7 @@ void LikeBack::askEmailAddress()
 		"<p><b>" + i18n("Please provide your email address.") + "</b></p>" +
 		"<p>" + i18n("It will only be used to contact you back if more information is needed about your comments, ask you how to reproduce the bugs you report, send bug corrections for you to test, etc.") + "</p>" +
 		"<p>" + i18n("The email address is optional. If you do not provide any, your comments will be sent anonymously.") + "</p>",
-		currentEmailAddress, &ok, kapp->activeWindow(), /*name=*/(const char*)0, &emailValidator);
+		currentEmailAddress, &ok, kapp->activeWindow(), &emailValidator);
 	enableBar();
 
 	if (ok)
@@ -613,18 +616,17 @@ void LikeBack::fetchUserEmail()
 	KConfig emailConf( QString::fromLatin1("emaildefaults") );
 
 	// find out the default profile
-	emailConf.setGroup(QString::fromLatin1("Defaults"));
+	KConfigGroup configGroup = KConfigGroup(&emailConf,QString::fromLatin1("Defaults"));
 	QString profile = QString::fromLatin1("PROFILE_");
-	profile += emailConf.readEntry(QString::fromLatin1("Profile"), QString::fromLatin1("Default"));
+	profile += configGroup.readEntry(QString::fromLatin1("Profile"), QString::fromLatin1("Default"));
 
-	emailConf.setGroup(profile);
-	QString fromaddr = emailConf.readEntry(QString::fromLatin1("EmailAddress"));
+	configGroup = KConfigGroup(&emailConf,profile);
+	QString fromaddr = configGroup.readEntry(QString::fromLatin1("EmailAddress"));
 	if (fromaddr.isEmpty()) {
-		struct passwd *p;
-		p = getpwuid(getuid());
-		d->fetchedEmail = QString::fromLatin1(p->pw_name);
+		KUser userInfo;
+		d->fetchedEmail = userInfo.property(KUser::FullName).toString();
 	} else {
-		QString name = emailConf.readEntry(QString::fromLatin1("FullName"));
+		QString name = configGroup.readEntry(QString::fromLatin1("FullName"));
 		if (!name.isEmpty())
 			d->fetchedEmail = /*name + QString::fromLatin1(" <") +*/ fromaddr /*+ QString::fromLatin1(">")*/;
 	}
@@ -646,11 +648,11 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	setButtons(Ok | Cancel | Default);
 	setDefaultButton(Ok);
 	setParent(kapp->activeWindow());
-	setObjectName("_likeback_feedback_window_"0);
+	setObjectName("_likeback_feedback_window_");
 	setModal(true);
 	showButtonSeparator(true);
 	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
-	connect(this, SIGNAL(defaultClicked())), SLOT(slotDefault());
+	connect(this, SIGNAL(defaultClicked()), SLOT(slotDefault()));
 
 	// If no specific "reason" is provided, choose the first one:
 	if (reason == LikeBack::AllButtons) {
@@ -746,7 +748,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	pageLayout->addWidget(m_showButtons);
 	connect( m_showButtons, SIGNAL(stateChanged(int)), this, SLOT(changeButtonBarVisible()) );
 
-	setButtonOK(KGuiItem(i18n("&Send Comment"), "mail_send"));
+	setButtonGuiItem(Ok,KGuiItem(i18n("&Send Comment")));
 	enableButtonOk(false);
 	connect( m_comment, SIGNAL(textChanged()), this, SLOT(commentChanged()) );
 
@@ -756,7 +758,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 
 	QAction *sendShortcut = new QAction(this);
 	sendShortcut->setAccel(QString("Ctrl+Return"));
-	connect( sendShortcut, SIGNAL(activated()), actionButton(Ok), SLOT(animateClick()) );
+	connect( sendShortcut, SIGNAL(activated()), button(Ok), SLOT(animateClick()) );
 
 	setMainWidget(page);
 }
@@ -823,7 +825,7 @@ void LikeBackDialog::changeButtonBarVisible()
 
 void LikeBackDialog::commentChanged()
 {
-	QPushButton *sendButton = actionButton(Ok);
+	QPushButton *sendButton = button(Ok);
 	sendButton->setEnabled(!m_comment->text().isEmpty());
 }
 
@@ -834,14 +836,14 @@ void LikeBackDialog::send()
 	int reason = m_group->selectedId();
 	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
 	QString data =
-		"protocol=" + KUrl::encode_string("1.0")                              + '&' +
-		"type="     + KUrl::encode_string(type)                               + '&' +
-		"version="  + KUrl::encode_string(m_likeBack->aboutData()->version()) + '&' +
-		"locale="   + KUrl::encode_string(KGlobal::locale()->language())      + '&' +
-		"window="   + KUrl::encode_string(m_windowPath)                       + '&' +
-		"context="  + KUrl::encode_string(m_context)                          + '&' +
-		"comment="  + KUrl::encode_string(m_comment->text())                  + '&' +
-		"email="    + KUrl::encode_string(emailAddress);
+		"protocol=" + QUrl::toPercentEncoding("1.0")                              + '&' +
+		"type="     + QUrl::toPercentEncoding(type)                               + '&' +
+		"version="  + QUrl::toPercentEncoding(m_likeBack->aboutData()->version()) + '&' +
+		"locale="   + QUrl::toPercentEncoding(KGlobal::locale()->language())      + '&' +
+		"window="   + QUrl::toPercentEncoding(m_windowPath)                       + '&' +
+		"context="  + QUrl::toPercentEncoding(m_context)                          + '&' +
+		"comment="  + QUrl::toPercentEncoding(m_comment->text())                  + '&' +
+		"email="    + QUrl::toPercentEncoding(emailAddress);
 	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	kDebug() << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath();
