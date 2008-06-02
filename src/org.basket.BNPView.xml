@@ -1,0 +1,31 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="local.BNPView">
+    <method name="newBasket">
+    </method>
+    <method name="handleCommandLine">
+    </method>
+    <method name="reloadBasket">
+      <arg name="folderName" type="s" direction="in"/>
+    </method>
+    <method name="createNoteHtml">
+      <arg type="b" direction="out"/>
+      <arg name="content" type="s" direction="in"/>
+      <arg name="basket" type="s" direction="in"/>
+    </method>
+    <method name="listBaskets">
+      <arg type="as" direction="out"/>
+    </method>
+    <method name="createNoteFromFile">
+      <arg type="b" direction="out"/>
+      <arg name="url" type="s" direction="in"/>
+      <arg name="basket" type="s" direction="in"/>
+    </method>
+    <method name="changeNoteHtml">
+      <arg type="b" direction="out"/>
+      <arg name="content" type="s" direction="in"/>
+      <arg name="basket" type="s" direction="in"/>
+      <arg name="noteName" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

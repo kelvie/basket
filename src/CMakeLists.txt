@@ -49,9 +49,7 @@ set(basketcommon_LIB_SRCS
 
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
-message(STATUS "DCOP has been removed in KDE 4; port code to D-Bus. kde4_add_dcop_skels macro does not exist anymore. We keep it just to remember to port to D-Bus.")
-#kde4_add_dcop_skels(basketcommon_LIB_SRCS
-#basketdcopiface.h )
+QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
 
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 

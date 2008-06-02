@@ -88,6 +88,7 @@
 #include <KStandardShortcut>
 #include <KToggleAction>
 
+#include "bnpviewadaptor.h"
 /** class BNPView: */
 
 const int BNPView::c_delayTooltipTime = 275;
@@ -109,6 +110,11 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 	, m_tryHideTimer(0)
 	, m_hideTimer(0)
 {
+
+	new BNPViewAdaptor(this);
+	QDBusConnection dbus = QDBusConnection::sessionBus();
+	dbus.registerObject("BNPView",this);
+
 	setObjectName(name);
 
 	/* Settings */

@@ -62,6 +62,7 @@ class Note;
 class BNPView : public QSplitter
 {
 	Q_OBJECT
+	  Q_CLASSINFO("D Bus Interface", "org.basket.dbus");
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
 		BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
@@ -292,13 +293,14 @@ class BNPView : public QSplitter
 		void showMainWindow();
 
 		// TODO: dcop calls -- dbus these
-		virtual void newBasket();
-		virtual void handleCommandLine();
-		virtual void reloadBasket(const QString &folderName);
-		virtual bool createNoteHtml(const QString content, const QString basket);
-		virtual QStringList listBaskets();
-		virtual bool createNoteFromFile(const QString url, const QString basket);
-		virtual bool changeNoteHtml(const QString content, const QString basket, const QString noteName);
+		public Q_SLOTS:
+		Q_SCRIPTABLE void newBasket();
+		Q_SCRIPTABLE void handleCommandLine();
+		Q_SCRIPTABLE void reloadBasket(const QString &folderName);
+		Q_SCRIPTABLE bool createNoteHtml(const QString content, const QString basket);
+		Q_SCRIPTABLE QStringList listBaskets();
+		Q_SCRIPTABLE bool createNoteFromFile(const QString url, const QString basket);
+		Q_SCRIPTABLE bool changeNoteHtml(const QString content, const QString basket, const QString noteName);
 
 	public slots:
 		void setCaption(QString s);
