@@ -59,7 +59,6 @@
 #include <qaction.h>
 #include <kstdaccel.h>
 #include <kglobalaccel.h>
-#include <kkeydialog.h>
 #include <kpassivepopup.h>
 #include <kconfig.h>
 #include <kcolordialog.h>
