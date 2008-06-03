@@ -227,16 +227,14 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(int)),            textEdit, SLOT(setPointSize(int))         );
 	connect( InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
 
-	connect( InlineEditors::instance()->richTextFont,     SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextFont,     SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->focusWidgetFilter, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->focusWidgetFilter, SIGNAL(returnPressed()), textEdit, SLOT(setFocus()) );
 	connect( InlineEditors::instance()->richTextFont,     SIGNAL(activated(int)),   textEdit, SLOT(setFocus()) );
 
-	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
 	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(activated(int)),   textEdit, SLOT(setFocus()) );
 
 	connect( InlineEditors::instance()->richTextColor,    SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
-	connect( InlineEditors::instance()->richTextColor,    SIGNAL(returnPressed2()), textEdit, SLOT(setFocus()) );
+	connect( InlineEditors::instance()->richTextColor,    SIGNAL(returnPressed()), textEdit, SLOT(setFocus()) );
 
 	connect( textEdit,  SIGNAL(cursorPositionChanged(int, int)),  this, SLOT(cursorPositionChanged())   );
 	connect( textEdit,  SIGNAL(clicked(int, int)),                this, SLOT(cursorPositionChanged())   );
@@ -416,7 +414,8 @@ AnimationEditor::AnimationEditor(AnimationContent *animationContent, QWidget *pa
 FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
  : NoteEditor(fileContent), m_fileContent(fileContent)
 {
-	FocusedLineEdit *lineEdit = new FocusedLineEdit(parent);
+	KLineEdit *lineEdit = new KLineEdit(parent);
+	FocusWidgetFilter *filter = new FocusWidgetFilter(lineEdit);
 	lineEdit->setLineWidth(0);
 	lineEdit->setMidLineWidth(0);
 	lineEdit->setPaletteBackgroundColor(note()->backgroundColor());
@@ -425,9 +424,12 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 	lineEdit->setText(m_fileContent->fileName());
 	lineEdit->selectAll();
 	setInlineEditor(lineEdit);
-	connect( lineEdit, SIGNAL(returnPressed()), this, SIGNAL(askValidation())            );
-	connect( lineEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
-	connect( lineEdit, SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
+	connect(filter, SIGNAL(returnPressed()),
+		this, SIGNAL(askValidation()));
+	connect(filter, SIGNAL(escapePressed()),
+		this, SIGNAL(askValidation()));
+	connect(filter, SIGNAL(mouseEntered()),
+		this, SIGNAL(mouseEnteredEditorWidget()));
 }
 
 FileEditor::~FileEditor()
@@ -825,7 +827,8 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 		palette().color(QPalette::Text));
 
 	// Init the RichTextEditor Toolbar:
-	richTextFont = new FocusedFontCombo(Global::mainWindow());
+	richTextFont = new QFontComboBox(Global::mainWindow());
+	focusWidgetFilter = new FocusWidgetFilter(richTextFont);
 	richTextFont->setFixedWidth(richTextFont->sizeHint().width() * 2 / 3);
 	richTextFont->setCurrentFont(defaultFont.family());
 
@@ -841,7 +844,8 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	action->setText(i18n("Font Size"));
 	action->setShortcut(Qt::Key_F7);
 
-	richTextColor = new FocusedColorCombo(Global::mainWindow());
+	richTextColor = new KColorCombo(Global::mainWindow());
+	richTextColor->installEventFilter(focusWidgetfilter);
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	richTextColor->setColor(textColor);
 	action = ac->addAction("richtext_color");

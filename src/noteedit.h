@@ -42,8 +42,9 @@ class FontSizeCombo;
 
 class Note;
 class RunCommandRequester;
-class FocusedFontCombo;
-class FocusedColorCombo;
+class QFontComboBox;
+class KColorCombo;
+class FocusWidgetFilter;
 
 #include "notecontent.h"
 
@@ -275,9 +276,9 @@ class InlineEditors : public QObject
 	void enableRichTextToolBar();
 	void disableRichTextToolBar();
     QPalette palette() const;
-	FocusedFontCombo  *richTextFont;
+	QFontComboBox *richTextFont;
 	FontSizeCombo     *richTextFontSize;
-	FocusedColorCombo *richTextColor;
+	KColorCombo *richTextColor;
 	KToggleAction     *richTextBold;
 	KToggleAction     *richTextItalic;
 	KToggleAction     *richTextUnderline;
@@ -289,6 +290,7 @@ class InlineEditors : public QObject
 	KToggleAction     *richTextJustified;
 	KAction	  *richTextUndo;
 	KAction	  *richTextRedo;
+	FocusWidgetFilter *focusWidgetFilter;
 };
 
 #endif // NOTEEDIT_H

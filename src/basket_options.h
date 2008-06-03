@@ -21,21 +21,26 @@
 #ifndef BASKET_OPTIONS_H
 #define BASKET_OPTIONS_H
 
-#include <kcmdlineargs.h>
-#include <klocale.h>
+#include <KCmdLineArgs>
+#include <KLocalizedString>
 
-KCmdLineOptions basket_options[] =
+void setupCmdLineOptions(KCmdLineOptions *opts)
 {
-	{ "d", 0, 0 },
-	{ "debug", I18N_NOOP("Show the debug window"), 0 },
-	{ "f", 0, 0 },
-	{ "data-folder <folder>", I18N_NOOP("Custom folder where to load and save basket data and application data (useful for debugging purpose)"), 0 },
-	{ "h", 0, 0 },
-	{ "start-hidden", I18N_NOOP("Hide the main window in the system tray icon on startup"), 0 },
-	{ "k", 0, 0 },
-	{ "use-drkonquy", I18N_NOOP("When crashing, use the standard KDE report dialog instead of sending an email"), 0 },
-	{ "+[file]", I18N_NOOP("Open basket archive or template"), 0 },
-	KCmdLineLastOption
-};
+    opts->add("d");
+    opts->add("debug", ki18n("Show the debug window"));
+    opts->add("f");
+    opts->add("data-folder \\<folder>",
+              ki18n("Custom folder to load and save baskets and other "
+                   "application data."));
+    opts->add("h");
+    opts->add("start-hidden",
+              ki18n("Automatically hide the main window in the system tray on "
+                   "startup."));
+    opts->add("k");
+    opts->add("use-drkonqi",
+              ki18n("On crash, use the standard KDE crash handler rather than "
+                   "send an email."));
+    opts->add("+[file]", ki18n("Open a basket archive or template."));
+}
 
 #endif // BASKET_OPTIONS_H
