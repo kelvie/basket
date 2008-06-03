@@ -38,6 +38,7 @@
 #include <qdesktopwidget.h>
 #include <qtimer.h>
 #include <qsplitter.h>
+#include <KXmlGuiWindow>
 
 class QWidget;
 class QPoint;
@@ -62,12 +63,12 @@ namespace KSettings { class Dialog; };
 /** The window that contain baskets, organized by tabs.
   * @author S�astien Laot
   */
-class MainWindow : public KMainWindow
+class MainWindow : public KXmlGuiWindow
 {
   Q_OBJECT
   public:
 	/** Construtor, initializer and destructor */
-	MainWindow(QWidget *parent = 0, const char *name = 0);
+	MainWindow(QWidget *parent = 0);
 	~MainWindow();
   private:
 	void setupActions();

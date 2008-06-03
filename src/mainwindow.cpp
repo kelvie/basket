@@ -104,9 +104,9 @@
 
 /** Container */
 
-MainWindow::MainWindow(QWidget *parent, const char *name)
-	: KMainWindow(parent, name != 0 ? name : "MainWindow"), m_settings(0), m_quit(false)
-	, m_actionCollection(new KActionCollection(this))
+MainWindow::MainWindow(QWidget *parent)
+	: KXmlGuiWindow(parent), m_settings(0), m_quit(false)
+	, m_actionCollection(new KActionCollection(this, KComponentData()))
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
@@ -248,7 +248,7 @@ void MainWindow::polish()
 		//resize(Settings::mainWindowSize());
 	}
 
-	KMainWindow::polish();
+	KXmlGuiWindow::polish();
 
 	if (shouldSave) {
 //		kDebug() << "Main Window Position: Save size and position in show(x="
@@ -270,7 +270,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
-	KMainWindow::resizeEvent(event);
+	KXmlGuiWindow::resizeEvent(event);
 }
 
 void MainWindow::moveEvent(QMoveEvent *event)
@@ -281,7 +281,7 @@ void MainWindow::moveEvent(QMoveEvent *event)
 
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
-	KMainWindow::moveEvent(event);
+	KXmlGuiWindow::moveEvent(event);
 }
 
 KActionCollection *MainWindow::actionCollection() const
