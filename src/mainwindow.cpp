@@ -216,9 +216,9 @@ void MainWindow::showSettingsDialog()
 	if(m_settings == 0)
 		m_settings = new KSettings::Dialog(kapp->activeWindow());
 	if (Global::mainWindow()) {
-		m_settings->dialog()->showButton(KDialog::Help,    false); // Not implemented!
-		m_settings->dialog()->showButton(KDialog::Default, false); // Not implemented!
-		m_settings->dialog()->exec();
+		m_settings->showButton(KDialog::Help,    false); // Not implemented!
+		m_settings->showButton(KDialog::Default, false); // Not implemented!
+		m_settings->exec();
 	} else
 		m_settings->show();
 }
