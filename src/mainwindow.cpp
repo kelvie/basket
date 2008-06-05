@@ -124,12 +124,14 @@ MainWindow::MainWindow(QWidget *parent)
 	setStandardToolBarMenuEnabled(true);
 
 	createGUI("basketui.rc");
-	applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+	applyMainWindowSettings(group);
 }
 
 MainWindow::~MainWindow()
 {
-	saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    saveMainWindowSettings(group);
 	delete m_settings;
 }
 
@@ -176,12 +178,14 @@ void MainWindow::toggleStatusBar()
 	else
 		statusBar()->show();
 
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    saveMainWindowSettings(group);
 }
 
 void MainWindow::configureToolbars()
 {
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+	saveMainWindowSettings(group);
 
 	KEditToolBar dlg(actionCollection());
 	connect( &dlg, SIGNAL(newToolbarConfig()), this, SLOT(slotNewToolbarConfig()) );
@@ -201,8 +205,10 @@ void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is cl
 	createGUI("basketui.rc"); // TODO: Reconnect tags menu aboutToShow() ??
 	if (!Global::bnpView->isPart())
 		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
+    // TODO: Does this do anything?
 	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
-	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    applyMainWindowSettings(group);
 }
 
 void MainWindow::showSettingsDialog()
