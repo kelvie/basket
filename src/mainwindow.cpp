@@ -105,7 +105,6 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: KXmlGuiWindow(parent), m_settings(0), m_quit(false)
-	, m_actionCollection(new KActionCollection(this, KComponentData()))
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
@@ -220,7 +219,7 @@ void MainWindow::showSettingsDialog()
 
 void MainWindow::showShortcutsSettingsDialog()
 {
-	KShortcutsDialog::configure(actionCollection(), "basketui.rc");
+	KShortcutsDialog::configure(actionCollection());
 	//.setCaption(..)
 	//actionCollection()->writeSettings();
 }
@@ -281,11 +280,6 @@ void MainWindow::moveEvent(QMoveEvent *event)
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
 	KXmlGuiWindow::moveEvent(event);
-}
-
-KActionCollection *MainWindow::actionCollection() const
-{
-	return m_actionCollection;
 }
 
 bool MainWindow::queryExit()

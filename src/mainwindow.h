@@ -89,7 +89,6 @@ class MainWindow : public KXmlGuiWindow
 	bool queryClose();
 	virtual void resizeEvent(QResizeEvent*);
 	virtual void moveEvent(QMoveEvent*);
-	KActionCollection *actionCollection() const;
 
   public:
 	void polish();
@@ -97,11 +96,10 @@ class MainWindow : public KXmlGuiWindow
   private:
 	// Settings actions :
 //	KToggleAction *m_actShowToolbar;
-	KActionCollection *m_actionCollection;
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;
-	Q3PtrList<KAction> actBasketsList;
+	QList<QAction *> actBasketsList;
 
   private:
 	Q3VBoxLayout        *m_layout;
