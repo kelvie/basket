@@ -3139,7 +3139,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 #ifdef HAVE_LIBGPGME
 			label->setText( text + i18n("Press Unlock to access it.") );
 #else
-			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(kapp->aboutData()->programName()) );
+			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(KGlobal::mainComponent().aboutData()->programName()) );
 #endif
 			label->setAlignment( int( Qt::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );

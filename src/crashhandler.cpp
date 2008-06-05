@@ -85,7 +85,7 @@
                     "But, all is not lost! You could potentially help us fix the crash. "
                     "Information describing the crash is below, so just click send, "
                     "or if you have time, write a brief description of how the crash happened first.\n\n"
-                    "Many thanks." ).arg(kapp->aboutData()->programName()) + "\n\n";
+                    "Many thanks." ).arg(KGlobal::mainComponent().aboutData()->programName()) + "\n\n";
             body += "\n\n\n\n\n\n" + i18n(
                     "The information below is to help the developers identify the problem, "
                     "please do not modify it." ) + "\n\n\n\n";
@@ -209,7 +209,7 @@
 				kDebug() << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
                                           "But, all is not lost! Perhaps an upgrade is already available "
                                           "which fixes the problem. Please check your distribution's software repository." )
-						.arg(kapp->aboutData()->programName()).local8Bit();
+						.arg(KGlobal::mainComponent().aboutData()->programName()).local8Bit();
             }
 
             //_exit() exits immediately, otherwise this

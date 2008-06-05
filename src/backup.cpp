@@ -89,9 +89,9 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 		"In this case, mount the shared-folder to the local file system and ask %2 to use that mount point.<br>"
 		"Warning: you should not run %3 at the same time on both computers, or you risk to loss data while the two applications are desynced.</li>"
 		"</ul><p>Please remember that you should not change the content of that folder manually (eg. adding a file in a basket folder will not add that file to the basket).</p>")
-			.arg(kapp->aboutData()->programName())
-			.arg(kapp->aboutData()->programName())
-			.arg(kapp->aboutData()->programName()),
+			.arg(KGlobal::mainComponent().aboutData()->programName())
+			.arg(KGlobal::mainComponent().aboutData()->programName())
+			.arg(KGlobal::mainComponent().aboutData()->programName()),
 		folderWidget);
 	folderLayout->addWidget(moveFolder);
 	folderLayout->addWidget(useFolder);
@@ -346,12 +346,12 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
 		0,
 		"<qt>" + message.arg(
 			(folder.endsWith("/") ? folder.left(folder.length() - 1) : folder),
-			kapp->aboutData()->programName()),
+			KGlobal::mainComponent().aboutData()->programName()),
 		i18n("Restart")
 	);
 
 	// Restart the application:
-	KRun::runCommand(binaryPath, kapp->aboutData()->programName(), kapp->iconName());
+	KRun::runCommand(binaryPath, KGlobal::mainComponent().aboutData()->programName(), kapp->iconName());
 	exit(0);
 }
 

@@ -226,7 +226,7 @@ LikeBack::LikeBack(Button buttons, bool showBarByDefault, KConfig *config, const
 	if (d->config == 0)
 		d->config = KGlobal::config();
 	if (d->aboutData == 0)
-		d->aboutData = kapp->aboutData();
+		d->aboutData = KGlobal::mainComponent().aboutData();
 
 	// Initialize properties (2/2) [Needs aboutData to be set]:
 	d->showBar          = userWantsToShowBar();

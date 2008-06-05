@@ -57,7 +57,7 @@ class LikeBackDialog;
  * Here is an example of code to call to quickly setup LikeBack on the client:
  * @code
  *     // Instanciate the LikeBack system, and show the first-use information dialog if the button-bar is shown:
- *     LikeBack *likeBack = new LikeBack(LikeBack::AllButtons, LikeBack::isDevelopmentVersion(kapp->aboutData->version())); // Show button-bar only in beta-versions
+ *     LikeBack *likeBack = new LikeBack(LikeBack::AllButtons, LikeBack::isDevelopmentVersion(KGlobal::mainComponent().aboutData->version())); // Show button-bar only in beta-versions
  *     likeBack->setServer("myapp.kde.org", "/likeback/send.php");
  *     likeBack->setAcceptedLanguages(QStringList::split(";", "en;fr"), i18n("Please write in English or French."));
  *
