@@ -29,7 +29,6 @@
 #include <QResizeEvent>
 #include <Q3VBoxLayout>
 #include <QMoveEvent>
-#include <ksystemtray.h>
 #include <q3ptrlist.h>
 #include <qpoint.h>
 #include <qclipboard.h>
@@ -38,6 +37,7 @@
 #include <qdesktopwidget.h>
 #include <qtimer.h>
 #include <qsplitter.h>
+#include <KXmlGuiWindow>
 
 class QWidget;
 class QPoint;
@@ -62,12 +62,12 @@ namespace KSettings { class Dialog; };
 /** The window that contain baskets, organized by tabs.
   * @author S�astien Laot
   */
-class MainWindow : public KMainWindow
+class MainWindow : public KXmlGuiWindow
 {
   Q_OBJECT
   public:
 	/** Construtor, initializer and destructor */
-	MainWindow(QWidget *parent = 0, const char *name = 0);
+	MainWindow(QWidget *parent = 0);
 	~MainWindow();
   private:
 	void setupActions();
@@ -89,7 +89,6 @@ class MainWindow : public KMainWindow
 	bool queryClose();
 	virtual void resizeEvent(QResizeEvent*);
 	virtual void moveEvent(QMoveEvent*);
-	KActionCollection *actionCollection() const;
 
   public:
 	void polish();
@@ -97,11 +96,10 @@ class MainWindow : public KMainWindow
   private:
 	// Settings actions :
 //	KToggleAction *m_actShowToolbar;
-	KActionCollection *m_actionCollection;
 	KToggleAction *m_actShowStatusbar;
 	KAction       *actQuit;
 	KAction       *actAppConfig;
-	Q3PtrList<KAction> actBasketsList;
+	QList<QAction *> actBasketsList;
 
   private:
 	Q3VBoxLayout        *m_layout;

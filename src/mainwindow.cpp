@@ -59,7 +59,6 @@
 #include <qaction.h>
 #include <kstdaccel.h>
 #include <kglobalaccel.h>
-#include <kkeydialog.h>
 #include <kpassivepopup.h>
 #include <kconfig.h>
 #include <kcolordialog.h>
@@ -104,9 +103,8 @@
 
 /** Container */
 
-MainWindow::MainWindow(QWidget *parent, const char *name)
-	: KMainWindow(parent, name != 0 ? name : "MainWindow"), m_settings(0), m_quit(false)
-	, m_actionCollection(new KActionCollection(this))
+MainWindow::MainWindow(QWidget *parent)
+	: KXmlGuiWindow(parent), m_settings(0), m_quit(false)
 {
 	BasketStatusBar* bar = new BasketStatusBar(statusBar());
 	m_baskets = new BNPView(this, "BNPViewApp", this, actionCollection(), bar);
@@ -126,12 +124,14 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	setStandardToolBarMenuEnabled(true);
 
 	createGUI("basketui.rc");
-	applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+	applyMainWindowSettings(group);
 }
 
 MainWindow::~MainWindow()
 {
-	saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    saveMainWindowSettings(group);
 	delete m_settings;
 }
 
@@ -178,12 +178,14 @@ void MainWindow::toggleStatusBar()
 	else
 		statusBar()->show();
 
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    saveMainWindowSettings(group);
 }
 
 void MainWindow::configureToolbars()
 {
-	saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+	saveMainWindowSettings(group);
 
 	KEditToolBar dlg(actionCollection());
 	connect( &dlg, SIGNAL(newToolbarConfig()), this, SLOT(slotNewToolbarConfig()) );
@@ -203,8 +205,10 @@ void MainWindow::slotNewToolbarConfig() // This is called when OK or Apply is cl
 	createGUI("basketui.rc"); // TODO: Reconnect tags menu aboutToShow() ??
 	if (!Global::bnpView->isPart())
 		Global::bnpView->connectTagsMenu(); // The Tags menu was created again!
+    // TODO: Does this do anything?
 	plugActionList( QString::fromLatin1("go_baskets_list"), actBasketsList);
-	applyMainWindowSettings( KGlobal::config(), autoSaveGroup() );
+    KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
+    applyMainWindowSettings(group);
 }
 
 void MainWindow::showSettingsDialog()
@@ -212,16 +216,16 @@ void MainWindow::showSettingsDialog()
 	if(m_settings == 0)
 		m_settings = new KSettings::Dialog(kapp->activeWindow());
 	if (Global::mainWindow()) {
-		m_settings->dialog()->showButton(KDialog::Help,    false); // Not implemented!
-		m_settings->dialog()->showButton(KDialog::Default, false); // Not implemented!
-		m_settings->dialog()->exec();
+		m_settings->showButton(KDialog::Help,    false); // Not implemented!
+		m_settings->showButton(KDialog::Default, false); // Not implemented!
+		m_settings->exec();
 	} else
 		m_settings->show();
 }
 
 void MainWindow::showShortcutsSettingsDialog()
 {
-	KShortcutsDialog::configure(actionCollection(), "basketui.rc");
+	KShortcutsDialog::configure(actionCollection());
 	//.setCaption(..)
 	//actionCollection()->writeSettings();
 }
@@ -248,7 +252,7 @@ void MainWindow::polish()
 		//resize(Settings::mainWindowSize());
 	}
 
-	KMainWindow::polish();
+	KXmlGuiWindow::polish();
 
 	if (shouldSave) {
 //		kDebug() << "Main Window Position: Save size and position in show(x="
@@ -270,7 +274,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
-	KMainWindow::resizeEvent(event);
+	KXmlGuiWindow::resizeEvent(event);
 }
 
 void MainWindow::moveEvent(QMoveEvent *event)
@@ -281,12 +285,7 @@ void MainWindow::moveEvent(QMoveEvent *event)
 
 	// Added to make it work (previous lines do not work):
 	//saveMainWindowSettings( KGlobal::config(), autoSaveGroup() );
-	KMainWindow::moveEvent(event);
-}
-
-KActionCollection *MainWindow::actionCollection() const
-{
-	return m_actionCollection;
+	KXmlGuiWindow::moveEvent(event);
 }
 
 bool MainWindow::queryExit()
@@ -322,13 +321,16 @@ bool MainWindow::queryClose()
 
 bool MainWindow::askForQuit()
 {
-	QString message = i18n("<p>Do you really want to quit %1?</p>").arg(kapp->aboutData()->programName());
+	QString message = i18n("<p>Do you really want to quit %1?</p>").arg(KGlobal::mainComponent().aboutData()->programName());
 	if (Settings::useSystray())
 		message += i18n("<p>Notice that you do not have to quit the application before ending your KDE session. "
 				"If you end your session while the application is still running, the application will be reloaded the next time you log in.</p>");
 
-	int really = KMessageBox::warningContinueCancel( this, message, i18n("Quit Confirm"),
-			KStandardGuiItem::quit(), "confirmQuitAsking" );
+    int really = KMessageBox::warningContinueCancel(this, message,
+                                                    i18n("Quit Confirm"),
+                                                    KStandardGuiItem::quit(),
+                                                    KStandardGuiItem::cancel(),
+                                                    "confirmQuitAsking");
 
 	if (really == KMessageBox::Cancel)
 	{
