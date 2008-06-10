@@ -29,29 +29,29 @@ static const char description[] = I18N_NOOP(
 	// Or how to make order of disorganized toughts.
 
 AboutData::AboutData()
- : KAboutData( "basket", I18N_NOOP("BasKet Note Pads"),
-   VERSION, description, KAboutData::License_GPL_V2,
-   "(c) 2003-2007, S\303\251bastien Lao\303\273t", 0,
+ : KAboutData( "basket", "", ki18n("BasKet Note Pads"),
+   VERSION, ki18n(description), KAboutData::License_GPL_V2,
+   ki18n("(c) 2003-2007, S\303\251bastien Lao\303\273t"), KLocalizedString(),
    "http://basket.kde.org/",
    "basket-devel@lists.sourceforge.net" )
 {
-	addAuthor( "Kelvie Wong",
-		   I18N_NOOP("Maintainer"),
+	addAuthor( ki18n("Kelvie Wong"),
+		   ki18n("Maintainer"),
 		   "kelvie@ieee.org" );
 
-	addAuthor( "S\303\251bastien Lao\303\273t",
-	           I18N_NOOP("Original Author"),
+	addAuthor( ki18n("S\303\251bastien Lao\303\273t"),
+	           ki18n("Author, maintainer"),
 	           "slaout@linux62.org" );
 
-	addAuthor( "Petri Damst\303\251n",
-	           I18N_NOOP("Basket encryption, Kontact integration, KnowIt importer"),
+	addAuthor( ki18n("Petri Damst\303\251n"),
+	           ki18n("Basket encryption, Kontact integration, KnowIt importer"),
 	           "damu@iki.fi" );
 
-	addAuthor( "Alex Gontmakher",
-	           I18N_NOOP("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
+	addAuthor( ki18n("Alex Gontmakher"),
+	           ki18n("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
 	           "gsasha@cs.technion.ac.il" );
 
-	addAuthor( "Marco Martin",
-	           I18N_NOOP("Icon"),
+	addAuthor( ki18n("Marco Martin"),
+	           ki18n("Icon"),
 	           "m4rt@libero.it" );
 }

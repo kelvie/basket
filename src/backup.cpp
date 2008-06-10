@@ -46,7 +46,7 @@
 #include <kfiledialog.h>
 #include <kprogressdialog.h>
 #include <kmessagebox.h>
-#include <cstdlib>
+#include <QProgressBar>
 #include <unistd.h> // usleep()
 
 #include <KVBox>
@@ -179,11 +179,10 @@ void BackupDialog::backup()
 	QDir dir;
 
 	// Compute a default file name & path (eg. "Baskets_2007-01-31.tar.gz"):
-	KConfig *config = KGlobal::config();
-	config->setGroup("Backups");
-	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
-	QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1")
-		.arg(QDate::currentDate().toString(Qt::ISODate));
+	KConfig *config = KGlobal::config().data();
+	KConfigGroup configGroup(config,"Backups");
+	QString folder = configGroup.readEntry("lastFolder", QDir::homePath()) + "/";
+	QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1",QDate::currentDate().toString(Qt::ISODate));
 	QString url = folder + fileName;
 
 	// Ask a file name & path to the user:
@@ -212,19 +211,20 @@ void BackupDialog::backup()
 			askAgain = false;
 	}
 
-	KProgressDialog dialog(0, 0, i18n("Backup Baskets"), i18n("Backing up baskets. Please wait..."), /*modal=*/true);
+	KProgressDialog dialog(0, i18n("Backup Baskets"), i18n("Backing up baskets. Please wait..."));
+	dialog.setModal( true );
 	dialog.setAllowCancel(false);
 	dialog.setAutoClose(true);
 	dialog.show();
-	KProgress *progress = dialog.progressBar();
-	progress->setTotalSteps(0/*Busy/Undefined*/);
-	progress->setProgress(0);
-	progress->setPercentageVisible(false);
+	QProgressBar *progress = dialog.progressBar();
+	progress->setRange(0, 0/*Busy/Undefined*/);
+	progress->setValue(0);
+	progress->setTextVisible(false);
 
 	BackupThread thread(destination, Global::savesFolder());
 	thread.start();
 	while (thread.running()) {
-		progress->advance(1); // Or else, the animation is not played!
+		progress->setValue(progress->value()+1); // Or else, the animation is not played!
 		kapp->processEvents();
 		usleep(300); // Not too long because if the backup process is finished, we wait for nothing
 	}
@@ -237,9 +237,9 @@ void BackupDialog::backup()
 void BackupDialog::restore()
 {
 	// Get last backup folder:
-	KConfig *config = KGlobal::config();
-	config->setGroup("Backups");
-	QString folder = config->readEntry("lastFolder", QDir::homePath()) + "/";
+	KConfig *config = KGlobal::config().data();
+	KConfigGroup configGroup(config,"Backups");
+	QString folder = configGroup.readEntry("lastFolder", QDir::homePath()) + "/";
 
 	// Ask a file name to the user:
 	QString filter = "*.tar.gz|" + i18n("Tar Archives Compressed by Gzip") + "\n*|" + i18n("All Files");
@@ -269,20 +269,21 @@ void BackupDialog::restore()
 		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...").arg(KUrl(path).fileName()) + "</nobr></p><p>" +
 		i18n("If something goes wrong during the restoration process, read the file <b>%1</b>.").arg(readmePath);
 
-	KProgressDialog *dialog = new KProgressDialog(0, 0, i18n("Restore Baskets"), message, /*modal=*/true);
+	KProgressDialog *dialog = new KProgressDialog(0, i18n("Restore Baskets"), message);
+	dialog->setModal(/*modal=*/true);
 	dialog->setAllowCancel(false);
 	dialog->setAutoClose(true);
 	dialog->show();
-	KProgress *progress = dialog->progressBar();
-	progress->setTotalSteps(0/*Busy/Undefined*/);
-	progress->setProgress(0);
-	progress->setPercentageVisible(false);
+	QProgressBar *progress = dialog->progressBar();
+	progress->setRange(0, 0/*Busy/Undefined*/);
+	progress->setValue(0);
+	progress->setTextVisible(false);
 
 	// Uncompress:
 	RestoreThread thread(path, Global::savesFolder());
 	thread.start();
 	while (thread.running()) {
-		progress->advance(1); // Or else, the animation is not played!
+		progress->setValue(progress->value()+1); // Or else, the animation is not played!
 		kapp->processEvents();
 		usleep(300); // Not too long because if the restore process is finished, we wait for nothing
 	}
@@ -352,7 +353,7 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
 	);
 
 	// Restart the application:
-	KRun::runCommand(binaryPath, KGlobal::mainComponent().aboutData()->programName(), kapp->iconName());
+	KRun::runCommand(binaryPath, KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName(),0);
 	exit(0);
 }
 
@@ -411,7 +412,7 @@ void RestoreThread::run()
 	m_success = false;
 	KTar tar(m_tarFile, "application/x-gzip");
 	tar.open(QIODevice::ReadOnly);
-	if (tar.isOpened()) {
+	if (tar.isOpen()) {
 		const KArchiveDirectory *directory = tar.directory();
 		if (directory->entries().contains(backupMagicFolder)) {
 			const KArchiveEntry *entry = directory->entry(backupMagicFolder);
