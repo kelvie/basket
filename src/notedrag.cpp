@@ -25,7 +25,6 @@
 #include <qbuffer.h>
 //Added by qt3to4:
 #include <Q3TextStream>
-#include <Q3CString>
 #include <Q3ValueList>
 #include <QPixmap>
 #include <k3urldrag.h>
@@ -554,11 +553,11 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 
 bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str)
 {
-	Q3CString subtype("plain");
+	QString subtype("plain");
 	return decode(e, str, subtype);
 }
 
-bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, Q3CString &subtype)
+bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QString &subtype)
 {
 	// Get the string:
 	bool ok = Q3TextDrag::decode(e, str, subtype);

@@ -85,7 +85,7 @@ class ExtendedTextDrag : public Q3TextDrag
   Q_OBJECT
   public:
 	static bool decode(const QMimeSource *e, QString &str);
-	static bool decode(const QMimeSource *e, QString &str, Q3CString &subtype);
+	static bool decode(const QMimeSource *e, QString &str, QString &subtype);
 };
 
 // Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!

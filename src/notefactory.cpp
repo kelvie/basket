@@ -21,7 +21,6 @@
 #include <qstring.h>
 //Added by qt3to4:
 #include <Q3TextStream>
-#include <Q3CString>
 #include <QDropEvent>
 #include <Q3MemArray>
 #include <kurl.h>
@@ -435,7 +434,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 
 	if (source->provides("text/html")) {
 		QString html;
-		Q3CString subtype("html");
+		QString subtype("html");
 		// If the text/html comes from Mozilla or GNOME it can be UTF-16 encoded: we need ExtendedTextDrag to check that
 		ExtendedTextDrag::decode(source, html, subtype);
 		return createNoteHtml(html, parent);
