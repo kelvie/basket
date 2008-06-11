@@ -35,6 +35,7 @@
 #include <qpainter.h>
 #include <qbitmap.h>
 #include <KDialog>
+#include <kcombobox.h>
 
 #include "filter.h"
 //#include "settings.h"
@@ -137,7 +138,7 @@ void FilterBar::setFilterData(const FilterData &data)
 	}
 
 	if (m_tagsBox->currentItem() != index) {
-		m_tagsBox->setCurrentItem(index);
+		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}
 }
@@ -225,7 +226,7 @@ void FilterBar::filterTag(Tag *tag)
 		return;
 
 	if (m_tagsBox->currentItem() != index) {
-		m_tagsBox->setCurrentItem(index);
+		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}
 }
@@ -243,7 +244,7 @@ void FilterBar::filterState(State *state)
 		return;
 
 	if (m_tagsBox->currentItem() != index) {
-		m_tagsBox->setCurrentItem(index);
+		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}
 }
