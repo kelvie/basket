@@ -439,12 +439,11 @@ bool Tools::isAFileCut(QMimeSource *source)
 
 void Tools::printChildren(QObject* parent)
 {
-	const QObjectList* objs = parent->children();
-	QObjectListIt it(*objs);
-	QObject *obj;
+	const QObjectList objs = parent->children();
+    QObject * obj;
+    for(int i = 0 ; i < objs.size() ; i++) {
+        obj = objs.at(i);
+        kDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
+    }
 
-	while((obj = it.current())!= 0){
-		++it;
-		kDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
-	}
 }
