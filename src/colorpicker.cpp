@@ -65,7 +65,7 @@ void DesktopColorPicker::pickColor()
 void DesktopColorPicker::slotDelayedPick()
 {
 	grabKeyboard();
-	grabMouse(crossCursor);
+	grabMouse(Qt::crossCursor);
 }
 
 /* Validate the color
