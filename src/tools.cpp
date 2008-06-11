@@ -35,6 +35,9 @@
 #include <Q3CString>
 #include <Q3MemArray>
 
+#include <QTextDocument>
+#include <QTime>
+
 #include "tools.h"
 
 Q3MemArray<QTime>  StopWatch::starts;
