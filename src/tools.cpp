@@ -294,9 +294,7 @@ QColor Tools::mixColor(const QColor &color1, const QColor &color2)
 
 bool Tools::tooDark(const QColor &color)
 {
-	int dontCare, value;
-	color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
-	return value < 175;
+	return color.value() < 175;
 }
 
 
