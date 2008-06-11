@@ -293,13 +293,13 @@ void FilterBar::tagChanged(int index)
 			break;
 		default:
 			// Try to find if we are filtering a tag:
-			QMapIterator<int, Tag*> it = m_tagsMap.find(index);
+			QMap<int, Tag*>::iterator it = m_tagsMap.find(index);
 			if (it != m_tagsMap.end()) {
 				m_data->tagFilterType = FilterData::TagFilter;
 				m_data->tag           = *it;
 			} else {
 				// If not, try to find if we are filtering a state:
-				QMapIterator<int, State*> it2 = m_statesMap.find(index);
+				QMap<int, State*>::iterator it2 = m_statesMap.find(index);
 				if (it2 != m_statesMap.end()) {
 					m_data->tagFilterType = FilterData::StateFilter;
 					m_data->state         = *it2;
