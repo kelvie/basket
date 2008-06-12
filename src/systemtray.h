@@ -22,49 +22,45 @@
 #define SYSTEMTRAY_H
 
 #include <KSystemTrayIcon>
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QEvent>
-#include <QDragMoveEvent>
-#include <QDragLeaveEvent>
-#include <QWheelEvent>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QPixmap>
 
 class MainWindow;
 
-/** Convenient class to develop the displayCloseMessage() dialog
-  * hopefuly integrated in KDE 3.4
-  * @author S�astien Laot
-  */
-class KSystemTray2 : public KSystemTrayIcon
+/** A thin wrapper around KSystemTrayIcon until the old SystemTray is ported.
+ * As things are ported, items should
+ * @author Kelvie Wong
+ */
+class SystemTray : public KSystemTrayIcon
 {
-  Q_OBJECT
-  public:
-	KSystemTray2(QWidget *parent = 0, const char *name = 0);
-	~KSystemTray2();
-	/**
-	  * Call this method when the user clicked the close button of the window
-	  * (the [x]) to inform him that the application sit in the system tray
-	  * and willn't be closed (as he is used to).
-	  *
-	  * You usualy call it from reimplemented KMainWindow::queryClose()
-	  *
-	  * @since 3.4
-	  */
-	void displayCloseMessage(QString fileMenu = "");
+    Q_OBJECT
+    Q_DISABLE_COPY(SystemTray);
+
+public:
+    SystemTray(QWidget *parent=0);
+    ~SystemTray();
+
+public slots:
+    void updateDisplay();
+
+signals:
+    void showPart();
+
+private:
+    QSize m_iconSize;
+    QIcon m_icon;
+    QIcon m_lockedIcon;
 };
+
+#ifdef USE_OLD_SYSTRAY
 
 /** This class provide a personalized system tray icon.
   * @author S�astien Laot
   */
-class SystemTray : public KSystemTray2
+class SystemTray2 : public SystemTray
 {
   Q_OBJECT
   public:
-	SystemTray(QWidget *parent = 0, const char *name = 0);
-	~SystemTray();
+	SystemTray2(QWidget *parent = 0, const char *name = 0);
+	~SystemTray2();
   protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
@@ -76,19 +72,13 @@ class SystemTray : public KSystemTray2
 	void wheelEvent(QWheelEvent *event);
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
-  public slots:
-	void updateToolTip();
-  protected slots:
-	void updateToolTipDelayed();
-  signals:
-	void showPart();
+
   private:
 	QTimer    *m_showTimer;
 	QTimer    *m_autoShowTimer;
 	bool       m_canDrag;
 	QPoint     m_pressPos;
-	QPixmap    m_iconPixmap;
-	QPixmap    m_lockedIconPixmap;
 };
+#endif // USE_OLD_SYSTRAY
 
 #endif // SYSTEMTRAY_H

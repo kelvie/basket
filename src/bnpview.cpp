@@ -1418,7 +1418,7 @@ void BNPView::setCurrentBasket(Basket *basket)
 		countsChanged(basket);
 		updateStatusBarHint();
 		if (Global::systemTray)
-			Global::systemTray->updateToolTip();
+			Global::systemTray->updateDisplay();
 		m_tree->ensureItemVisible(m_tree->currentItem());
 		item->basket()->setFocus();
 	}
@@ -1534,7 +1534,7 @@ void BNPView::updateBasketListViewItem(Basket *basket)
 	if (basket == currentBasket()) {
 		setCaption(basket->basketName());
 		if (Global::systemTray)
-			Global::systemTray->updateToolTip();
+			Global::systemTray->updateDisplay();
 	}
 
 	// Don't save if we are loading!
