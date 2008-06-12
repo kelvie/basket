@@ -53,15 +53,15 @@ class BasketStatusBar : public QObject
 	void setUnsavedStatus(bool isUnsaved);
 
   protected:
-	  KStatusBar *statusBar () const;
-	  void addWidget(QWidget * widget, int stretch = 0, bool permanent = false);
-	  void setStatusText(const QString &txt);
-
+    KStatusBar *statusBar () const;
+    void addWidget(QWidget * widget, int stretch = 0, bool permanent = false);
+    void setStatusText(const QString &txt);
+    bool eventFilter(QObject * obj, QEvent * event);
   private:
 	KStatusBar                 *m_bar;
 	KParts::StatusBarExtension *m_extension;
 	QLabel                     *m_selectionStatus;
-	ClickableLabel             *m_lockStatus;
+	QLabel                     *m_lockStatus;
 	QLabel                     *m_basketStatus;
 	QLabel                     *m_savedStatus;
 	QPixmap                     m_savedStatusPixmap;

@@ -25,7 +25,6 @@
 #include <qlabel.h>
 #include <qobject.h>
 #include "basketstatusbar.h"
-#include "clickablelabel.h"
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"
@@ -67,27 +66,27 @@ void BasketStatusBar::addWidget(QWidget * widget, int stretch, bool permanent)
 void BasketStatusBar::setupStatusBar()
 {
 	QWidget* parent = statusBar();
-	QObjectList lst = parent->queryList("KRSqueezedTextLabel");
+	QObjectList lst = parent->findChildren<QObject*>("KRSqueezedTextLabel");
 
 	//Tools::printChildren(parent);
-	if(lst->count() == 0)
+	if(lst.count() == 0)
 	{
 		m_basketStatus = new QLabel(parent);
 		m_basketStatus->setSizePolicy( QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored, 0, 0, false) );
 		addWidget( m_basketStatus, 1, false ); // Fit all extra space and is hiddable
 	}
 	else
-		m_basketStatus = static_cast<QLabel*>(lst->at(0));
-	delete lst;
+        m_basketStatus = static_cast<QLabel*>(lst.at(0));
+    lst.clear();
 
 	m_selectionStatus = new QLabel(i18n("Loading..."), parent);
 	addWidget( m_selectionStatus, 0, true );
 
-	m_lockStatus = new ClickableLabel(0/*this*/);
+	m_lockStatus = new QLabel(0/*this*/);
 	m_lockStatus->setMinimumSize(18, 18);
 	m_lockStatus->setAlignment(Qt::AlignCenter);
 //	addWidget( m_lockStatus, 0, true );
-	connect( m_lockStatus, SIGNAL(clicked()), Global::bnpView, SLOT(lockBasket()) );
+    m_lockStatus->installEventFilter(this);
 
 	m_savedStatusPixmap = SmallIcon("filesave");
 	m_savedStatus = new QLabel(parent);
@@ -98,6 +97,8 @@ void BasketStatusBar::setupStatusBar()
 	//m_savedStatus->setEnabled(false);
 	addWidget( m_savedStatus, 0, true );
 	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not yet been saved."));
+
+
 }
 
 void BasketStatusBar::postStatusbarMessage(const QString& text)
@@ -171,6 +172,19 @@ void BasketStatusBar::setUnsavedStatus(bool isUnsaved)
 			m_savedStatus->setPixmap(m_savedStatusPixmap);
 	} else
 		m_savedStatus->clear();
+}
+
+bool BasketStatusBar::eventFilter(QObject * obj, QEvent * event) {
+    if (obj == m_lockStatus && event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent * mevent = dynamic_cast<QMouseEvent *>(event);
+        if(mevent->button() & Qt::LeftButton) {
+            Global::bnpView->lockBasket();
+            return true;
+        } else {
+            return QObject::eventFilter(obj, event); // standard event processing
+        }
+    }
+    return QObject::eventFilter(obj, event); // standard event processing
 }
 
 #include "basketstatusbar.moc"

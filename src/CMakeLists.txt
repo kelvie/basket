@@ -44,7 +44,6 @@ set(basketcommon_LIB_SRCS
     systemtray.cpp
     aboutdata.cpp
     basketstatusbar.cpp
-    clickablelabel.cpp
     backup.cpp)
 
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
