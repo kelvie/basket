@@ -350,9 +350,10 @@ HtmlEditor::~HtmlEditor()
 void HtmlEditor::autoSave(bool toFileToo)
 {
 	m_htmlContent->setHtml(textEdit()->text());
-	if (toFileToo)
+	if (toFileToo) {
 		m_htmlContent->saveToFile();
 	m_htmlContent->setEdited();
+	}
 }
 
 void HtmlEditor::validate()
