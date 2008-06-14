@@ -97,6 +97,7 @@ class BasketTreeListView : public K3ListView
 		void resizeEvent(QResizeEvent *event);
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
 	protected:
+		bool event(QEvent *e);
 		void focusInEvent(QFocusEvent*);
 		void viewportResizeEvent(QResizeEvent *event);
 	private:
