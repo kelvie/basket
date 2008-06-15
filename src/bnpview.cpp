@@ -49,6 +49,7 @@
 #include <kkeydialog.h>
 #include <dcopclient.h>
 #include <kdebug.h>
+#include <cstdlib>
 #include <iostream>
 #include "bnpview.h"
 #include "basket.h"
