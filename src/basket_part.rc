@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui version="1.0.2" name="basket" >
+<kpartgui version="1.0.3" name="basket" >
  <MenuBar noMerge="1" >
   <Menu name="file" >
    <text>&amp;Basket</text>

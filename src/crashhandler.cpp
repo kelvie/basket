@@ -78,7 +78,7 @@
             // we are the child process (the result of the fork)
 //            debug() << "amaroK is crashing...\n";
 
-            QString subject = "CRASH: " VERSION " ";
+            QString subject = "[basket-crash] " VERSION " ";
             QString body = i18n(
                     "%1 has crashed! We're sorry about this.\n"
                     "\n"
@@ -196,7 +196,7 @@
 
                 //TODO startup notification
                 KToolInvocation::invokeMailer(
-                        /*to*/          "slaout@linux62.org",
+                        /*to*/          "kelvie@ieee.org",
                         /*cc*/          QString(),
                         /*bcc*/         QString(),
                         /*subject*/     subject,

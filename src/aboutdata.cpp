@@ -33,10 +33,14 @@ AboutData::AboutData()
    VERSION, description, KAboutData::License_GPL_V2,
    "(c) 2003-2007, S\303\251bastien Lao\303\273t", 0,
    "http://basket.kde.org/",
-   "slaout@linux62.org" )
+   "basket-devel@lists.sourceforge.net" )
 {
+	addAuthor( "Kelvie Wong",
+		   I18N_NOOP("Maintainer"),
+		   "kelvie@ieee.org" );
+
 	addAuthor( "S\303\251bastien Lao\303\273t",
-	           I18N_NOOP("Author, maintainer"),
+	           I18N_NOOP("Original Author"),
 	           "slaout@linux62.org" );
 
 	addAuthor( "Petri Damst\303\251n",

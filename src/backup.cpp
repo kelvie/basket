@@ -46,6 +46,7 @@
 #include <kfiledialog.h>
 #include <kprogressdialog.h>
 #include <kmessagebox.h>
+#include <cstdlib>
 #include <unistd.h> // usleep()
 
 #include <KVBox>

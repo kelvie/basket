@@ -55,6 +55,8 @@
 #include <kapplication.h>
 #include <KShortcutsDialog>
 #include <kdebug.h>
+#include <cstdlib>
+
 #include "bnpview.h"
 #include "basket.h"
 #include "tools.h"
