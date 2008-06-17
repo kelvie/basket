@@ -648,8 +648,8 @@ private:
 
 /** class BasketTreeListView: */
 
-BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
-	: K3ListView(parent, name), m_autoOpenItem(0)
+BasketTreeListView::BasketTreeListView(QWidget *parent)
+	: K3ListView(parent), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
 	connect( &m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()) );

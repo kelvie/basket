@@ -88,7 +88,7 @@ class BasketTreeListView : public K3ListView
 {
 	Q_OBJECT
 	public:
-		BasketTreeListView(QWidget *parent = 0, const char *name = 0);
+		BasketTreeListView(QWidget *parent = 0);
 		void contentsDragEnterEvent(QDragEnterEvent *event);
 		void removeExpands();
 		void contentsDragLeaveEvent(QDragLeaveEvent *event);
