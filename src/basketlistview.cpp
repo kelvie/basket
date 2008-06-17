@@ -606,7 +606,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	}
 
 	if (m_isUnderDrag) {
-		thePainter.drawWinFocusRect(0, 0, width, height());
+		QStyleOption opt;
+		opt.initFrom(listView());
+		opt.rect = QRect(0, 0, width, height());
+		listView()->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+										   &thePainter);
 	}
 	thePainter.end();
 
