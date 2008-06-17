@@ -571,9 +571,10 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	thePainter.setPen(textColor);
 	if (textWidth > 0) { // IF there is space left to draw the text:
 		int xText = MARGIN + BASKET_ICON_SIZE + MARGIN;
+        QFontMetrics fm = painter->fontMetrics();
 		QString theText = m_basket->basketName();
-		if (painter->fontMetrics().width(theText) > textWidth) {
-			theText = KStringHandler::rPixelSqueeze(theText, painter->fontMetrics(), textWidth);
+		if (fm.width(theText) > textWidth) {
+			theText = fm.elidedText(theText, Qt::ElideRight, textWidth);
 			m_isAbbreviated = true;
 		}
 		else {
