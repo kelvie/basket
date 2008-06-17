@@ -72,6 +72,8 @@ class BasketListViewItem : public Q3ListViewItem
 
 		void setUnderDrag(bool);
 		bool isAbbreviated();
+
+    QPalette palette() const { return listView()->palette(); }
 		///
 //	QDragObject* dragObject();
 //	bool acceptDrop ( const QMimeSource * mime ) const;

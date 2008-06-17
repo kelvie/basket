@@ -454,7 +454,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
                         m_basket->textColor() :
                         (isCurrentBasket() ?
                          palette().color(QPalette::HighlightedText) :
-                         palette().color(QPalette::Text));
+                         palette().color(QPalette::Text)));
 
 	BasketListViewItem *shownAbove = shownItemAbove();
 	BasketListViewItem *shownBelow = shownItemBelow();
