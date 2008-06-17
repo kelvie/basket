@@ -3443,6 +3443,9 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		State *currentState;
 
 		int i = 10;
+		// QActionGroup makes the actions exclusive; turns checkboxes into radio
+		// buttons on some styles.
+		QActionGroup *emblemGroup = new QActionGroup(&menu);
 		for (it = tag->states().begin(); it != tag->states().end(); ++it) {
 			currentState = *it;
 			QKeySequence sequence;
@@ -3451,6 +3454,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 
 			StateAction *sa = new StateAction(state, KShortcut(sequence), false);
 			sa->setChecked(state == currentState);
+			sa->setActionGroup(emblemGroup);
 
 			menu.addAction(sa);
 			if (currentState == nextState && !tag->shortcut().isEmpty())
