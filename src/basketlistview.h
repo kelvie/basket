@@ -72,6 +72,8 @@ class BasketListViewItem : public Q3ListViewItem
 
 		void setUnderDrag(bool);
 		bool isAbbreviated();
+
+    QPalette palette() const { return listView()->palette(); }
 		///
 //	QDragObject* dragObject();
 //	bool acceptDrop ( const QMimeSource * mime ) const;
@@ -86,7 +88,7 @@ class BasketTreeListView : public K3ListView
 {
 	Q_OBJECT
 	public:
-		BasketTreeListView(QWidget *parent = 0, const char *name = 0);
+		BasketTreeListView(QWidget *parent = 0);
 		void contentsDragEnterEvent(QDragEnterEvent *event);
 		void removeExpands();
 		void contentsDragLeaveEvent(QDragLeaveEvent *event);
@@ -95,6 +97,7 @@ class BasketTreeListView : public K3ListView
 		void resizeEvent(QResizeEvent *event);
 		void paintEmptyArea(QPainter *painter, const QRect &rect);
 	protected:
+		bool event(QEvent *e);
 		void focusInEvent(QFocusEvent*);
 		void viewportResizeEvent(QResizeEvent *event);
 	private:

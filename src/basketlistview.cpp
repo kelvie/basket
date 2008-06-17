@@ -454,7 +454,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
                         m_basket->textColor() :
                         (isCurrentBasket() ?
                          palette().color(QPalette::HighlightedText) :
-                         palette().color(QPalette::Text));
+                         palette().color(QPalette::Text)));
 
 	BasketListViewItem *shownAbove = shownItemAbove();
 	BasketListViewItem *shownBelow = shownItemBelow();
@@ -571,9 +571,10 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	thePainter.setPen(textColor);
 	if (textWidth > 0) { // IF there is space left to draw the text:
 		int xText = MARGIN + BASKET_ICON_SIZE + MARGIN;
+        QFontMetrics fm = painter->fontMetrics();
 		QString theText = m_basket->basketName();
-		if (painter->fontMetrics().width(theText) > textWidth) {
-			theText = KStringHandler::rPixelSqueeze(theText, painter->fontMetrics(), textWidth);
+		if (fm.width(theText) > textWidth) {
+			theText = fm.elidedText(theText, Qt::ElideRight, textWidth);
 			m_isAbbreviated = true;
 		}
 		else {
@@ -605,7 +606,11 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	}
 
 	if (m_isUnderDrag) {
-		thePainter.drawWinFocusRect(0, 0, width, height());
+		QStyleOption opt;
+		opt.initFrom(listView());
+		opt.rect = QRect(0, 0, width, height());
+		listView()->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+										   &thePainter);
 	}
 	thePainter.end();
 
@@ -624,36 +629,29 @@ bool BasketListViewItem::isAbbreviated()
 	return m_isAbbreviated;
 }
 
-/** class BasketListViewToolTip: */
-
-class BasketTreeListView_ToolTip : public QToolTip {
-public:
-	BasketTreeListView_ToolTip(BasketTreeListView* basketView)
-		: QToolTip(basketView->viewport())
-		, m_basketView(basketView)
-	{}
-public:
-	void maybeTip(const QPoint& pos)
-	{
-		Q3ListViewItem *item = m_basketView->itemAt(m_basketView->contentsToViewport(pos));
-		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
-		if (bitem && bitem->isAbbreviated()) {
-			tip(m_basketView->itemRect(bitem), bitem->basket()->basketName());
-		}
-	}
-private:
-	BasketTreeListView* m_basketView;
-};
-
 /** class BasketTreeListView: */
 
-BasketTreeListView::BasketTreeListView(QWidget *parent, const char *name)
-	: K3ListView(parent, name), m_autoOpenItem(0)
+BasketTreeListView::BasketTreeListView(QWidget *parent)
+	: K3ListView(parent), m_autoOpenItem(0)
 	, m_itemUnderDrag(0)
 {
 	connect( &m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()) );
+}
 
-	new BasketTreeListView_ToolTip(this);
+bool BasketTreeListView::event(QEvent *e)
+{
+	if (e->type() == QEvent::ToolTip) {
+		QHelpEvent *he = static_cast<QHelpEvent *>(e);
+		Q3ListViewItem *item = itemAt(contentsToViewport(he->pos()));
+		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+		if (bitem && bitem->isAbbreviated()) {
+			QRect rect = itemRect(bitem);
+			QToolTip::showText(rect.topLeft(), bitem->basket()->basketName(),
+							   viewport(), rect);
+		}
+		return true;
+	}
+	return false;
 }
 
 void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
