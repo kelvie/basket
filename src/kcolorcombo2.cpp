@@ -18,6 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "kcolorcombo2.h"
+
+#ifdef USE_NEW_KCOLORCOMBO
+
 #include <qapplication.h>
 #include <qpixmap.h>
 #include <qbitmap.h>
@@ -36,8 +40,6 @@
 #include <kstdaccel.h>
 #include <kcolordrag.h>
 
-#include "kcolorcombo2.h"
-
 //#define DEBUG_COLOR_ARRAY
 //#define OUTPUT_GIMP_PALETTE
 
@@ -47,6 +49,7 @@
 #ifdef OUTPUT_GIMP_PALETTE
   #include <iomanip>
 #endif
+
 
 /** class KColorPopup: */
 
@@ -771,3 +774,4 @@ void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)
 }
 
 #include "kcolorcombo2.moc"
+#endif // USE_NEW_KCOLORCOMBO

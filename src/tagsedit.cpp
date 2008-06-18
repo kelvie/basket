@@ -614,12 +614,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_inherit,         SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 	connect( m_stateName,       SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_emblem,          SIGNAL(iconChanged(QString)),               this, SLOT(modified()) );
-	connect( m_backgroundColor, SIGNAL(changed(const QColor&)),             this, SLOT(modified()) );
+	connect( m_backgroundColor, SIGNAL(activated(const QColor&)),             this, SLOT(modified()) );
 	connect( m_bold,            SIGNAL(toggled(bool)),                      this, SLOT(modified()) );
 	connect( m_underline,       SIGNAL(toggled(bool)),                      this, SLOT(modified()) );
 	connect( m_italic,          SIGNAL(toggled(bool)),                      this, SLOT(modified()) );
 	connect( m_strike,          SIGNAL(toggled(bool)),                      this, SLOT(modified()) );
-	connect( m_textColor,       SIGNAL(changed(const QColor&)),             this, SLOT(modified()) );
+	connect( m_textColor,       SIGNAL(activated(const QColor&)),             this, SLOT(modified()) );
 	connect( m_font,            SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_fontSize,        SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );

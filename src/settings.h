@@ -327,11 +327,8 @@ class Settings // FIXME: Distaptch new config events ?
 	}
 	static void setShowIconInSystray(bool show)
 	{
-		if (s_showIconInSystray != show) {
+		if (s_showIconInSystray != show)
 			s_showIconInSystray = show;
-			if (Global::systemTray != 0L && Settings::useSystray())
-				Global::systemTray->updateToolTip();
-		}
 	}
 	static inline void setConfirmNoteDeletion(bool confirm)     { s_confirmNoteDeletion  = confirm;     }
 	static void setBigNotes(bool big);

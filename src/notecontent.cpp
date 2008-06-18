@@ -1835,7 +1835,10 @@ void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 
 	QString fileName = /*Tools::fileNameForNewFile(*/QString("color_%1.png").arg(color().name().toLower().mid(1))/*, exportData.iconsFolderPath)*/;
 	QString fullPath = exporter->iconsFolderPath + fileName;
-	QPixmap colorIcon = KColorCombo2::colorRectPixmap(color(), /*isDefault=*/false, rectWidth, rectHeight);
+	QPixmap colorIcon(rectWidth, rectHeight);
+	QPainter painter(&colorIcon);
+	painter.setBrush(color());
+	painter.drawRoundedRect(0, 0, rectWidth, rectHeight, 2, 2);
 	colorIcon.save(fullPath, "PNG");
 	QString iconHtml = QString("<img src=\"%1\" width=\"%2\" height=\"%3\" alt=\"\">")
 	                   .arg(exporter->iconsFolderName + fileName, QString::number(colorIcon.width()), QString::number(colorIcon.height()));

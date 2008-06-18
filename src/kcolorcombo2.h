@@ -34,6 +34,44 @@
 
 class KColorPopup;
 
+
+#ifndef USE_NEW_KCOLORCOMBO
+#include <KColorCombo>
+
+// A temporary class for backwards compatibiility until KColorCombo2 gets
+// ported.
+class KColorCombo2 : public KColorCombo
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(KColorCombo2);
+
+public:
+    KColorCombo2(const QColor &color,
+                 const QColor &defaultColor,
+                 QWidget *parent=0)
+        : KColorCombo(parent)
+    {
+        setColor(color);
+        setDefaultColor(defaultColor);
+    }
+
+    KColorCombo2(const QColor &color,
+                 QWidget *parent=0)
+        : KColorCombo(parent)
+    {
+        setColor(color);
+    }
+
+    KColorCombo2(QWidget *parent=0)
+        : KColorCombo(parent)
+    {}
+
+    void setDefaultColor(const QColor &)
+    { /* noop */ }
+};
+
+
+#else
 /**
  * @short A combobox to display or allow user selection of a color in a user-friendly way.
  *
@@ -345,6 +383,6 @@ class KColorPopup : public QWidget
 	static const int FRAME_WIDTH;
 };
 
-
+#endif // USE_NEW_KCOLORCOMBO
 
 #endif // KCOLORCOMBO2_H

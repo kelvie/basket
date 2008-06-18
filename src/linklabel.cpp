@@ -648,16 +648,16 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	connect( m_italic,      SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()) );
 	connect( m_bold,        SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()) );
 	connect( m_underlining, SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
-	connect( m_color,       SIGNAL(changed(const QColor&)), this,   SLOT(slotChangeLook()) );
-	connect( m_hoverColor,  SIGNAL(changed(const QColor&)), this,   SLOT(slotChangeLook()) );
+	connect( m_color,       SIGNAL(activated(const QColor&)), this,   SLOT(slotChangeLook()) );
+	connect( m_hoverColor,  SIGNAL(activated(const QColor&)), this,   SLOT(slotChangeLook()) );
 	connect( m_iconSize,    SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
 	connect( m_preview,     SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()) );
 
 	connect( m_italic,      SIGNAL(stateChanged(int)),      module, SLOT(changed())        );
 	connect( m_bold,        SIGNAL(stateChanged(int)),      module, SLOT(changed())        );
 	connect( m_underlining, SIGNAL(activated(int)),         module, SLOT(changed())        );
-	connect( m_color,       SIGNAL(changed(const QColor&)), module, SLOT(changed())        );
-	connect( m_hoverColor,  SIGNAL(changed(const QColor&)), module, SLOT(changed())        );
+	connect( m_color,       SIGNAL(activated(const QColor&)), module, SLOT(changed())        );
+	connect( m_hoverColor,  SIGNAL(activated(const QColor&)), module, SLOT(changed())        );
 	connect( m_iconSize,    SIGNAL(activated(int)),         module, SLOT(changed())        );
 	connect( m_preview,     SIGNAL(activated(int)),         module, SLOT(changed())        );
 }
