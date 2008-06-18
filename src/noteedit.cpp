@@ -846,7 +846,7 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	action->setShortcut(Qt::Key_F7);
 
 	richTextColor = new KColorCombo(Global::mainWindow());
-	richTextColor->installEventFilter(focusWidgetfilter);
+	richTextColor->installEventFilter(focusWidgetFilter);
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	richTextColor->setColor(textColor);
 	action = ac->addAction("richtext_color");
