@@ -2061,7 +2061,7 @@ void BNPView::doBasketDeletion(Basket *basket)
 void BNPView::password()
 {
 #ifdef HAVE_LIBGPGME
-	PasswordDlg dlg(kapp->activeWindow(), "Password");
+	PasswordDlg dlg(kapp->activeWindow());
 	Basket *cur = currentBasket();
 
 	dlg.setType(cur->encryptionType());

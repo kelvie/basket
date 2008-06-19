@@ -34,7 +34,7 @@ class Password : public KDialog, public Ui::PasswordLayout
 {
 	Q_OBJECT
 	public:
-		Password(QWidget *parent, const char *name = 0);
+		Password(QWidget *parent=0);
 		~Password();
 };
 
@@ -42,7 +42,7 @@ class PasswordDlg : public KDialog
 {
 	Q_OBJECT
 	public:
-		PasswordDlg(QWidget *parent, const char *name = 0);
+		PasswordDlg(QWidget *parent=0);
 		~PasswordDlg();
 
 		QString key() const;

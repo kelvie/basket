@@ -32,21 +32,18 @@
 #include <kiconloader.h>
 #include <kmessagebox.h>
 
+
 #include "basket.h"
 #include "kgpgme.h"
 
-PasswordDlg::PasswordDlg(QWidget *parent, const char *name)
+PasswordDlg::PasswordDlg(QWidget *parent)
      : KDialog(parent)
      , w(0)
 {
-	// Setup from the UI file
-	setupUi(this);
-
 	// KDialog options
 	setCaption(i18n("Password Protection"));
 	setButtons(Ok | Cancel);
 	setDefaultButton(Ok);
-	setObjectName(name);
 	setModal(true);
 	showButtonSeparator(true);
 
@@ -103,9 +100,12 @@ void PasswordDlg::setType(int type)
 	w->buttonGroup->setButton(type);
 }
 
-Password::Password(QWidget *parent, const char *name)
- : PasswordLayout(parent, name)
+Password::Password(QWidget *parent)
+	: KDialog(parent)
 {
+	// Setup from the UI file
+	setupUi(this);
+
 	KGpgMe gpg;
 
 	KGpgKeyList list = gpg.keys(true);
