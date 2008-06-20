@@ -1865,9 +1865,7 @@ void BNPView::insertWizard(int type)
 	currentBasket()->insertWizard(type);
 }
 
-// BEGIN Screen Grabbing: // FIXME
-// FIXME: don't use KWindowSystem calls
-
+// BEGIN Screen Grabbing:
 void BNPView::grabScreenshot(bool global)
 {
 	if (m_regionGrabber) {
@@ -1891,7 +1889,8 @@ void BNPView::grabScreenshot(bool global)
 		m_colorPickWasShown = false;
 
 		currentBasket()->saveInsertionData();
-		m_regionGrabber = new RegionGrabber(delay);
+		usleep(delay * 1000);
+		m_regionGrabber = new RegionGrabber;
 		connect( m_regionGrabber, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)) );
 }
 

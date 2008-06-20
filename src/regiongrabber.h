@@ -1,75 +1,82 @@
-// Code from KSnapshot!
-
 /*
-  Copyright (C) 2003 Nadeem Hasan <nhasan@kde.org>
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public
-  License as published by the Free Software Foundation; either
-  version 2 of the License, or ( at your option ) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Library General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this library; see the file COPYING.  If not, write to
-  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-  Boston, MA 02110-1301, USA.
-*/
+ *   Copyright (C) 2007 Luca Gugelmann <lucag@student.ethz.ch>
+ *
+ *   This program is free software; you can redistribute it and/or modify it
+ *   under the terms of the GNU Library General Public License version 2 as
+ *   published by the Free Software Foundation
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU Library General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #ifndef REGIONGRABBER_H
 #define REGIONGRABBER_H
 
-#include <qlabel.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QKeyEvent>
+#include <QWidget>
+#include <QRegion>
+#include <QPoint>
+#include <QVector>
+#include <QRect>
+#include <QTimer>
 
-class QTimer;
-
-class SizeTip : public QLabel
-{
-  public:
-    SizeTip( QWidget *parent, const char *name=0 );
-    ~SizeTip() {}
-
-  void setTip( const QRect &rect );
-  void positionTip( const QRect &rect );
-};
+class QPaintEvent;
+class QResizeEvent;
+class QMouseEvent;
 
 class RegionGrabber : public QWidget
 {
-  Q_OBJECT
-
-  public:
-    RegionGrabber(int delay);
+    Q_OBJECT
+public:
+    RegionGrabber();
     ~RegionGrabber();
 
-  protected slots:
-    void initGrabber();
-    void updateSizeTip();
+protected slots:
+    void init();
+    void displayHelp();
 
-  signals:
+signals:
     void regionGrabbed( const QPixmap & );
 
-  protected:
-    void mousePressEvent( QMouseEvent *e );
-    void mouseReleaseEvent( QMouseEvent *e );
-    void mouseMoveEvent( QMouseEvent *e );
-    void keyPressEvent( QKeyEvent *e );
+protected:
+    void paintEvent( QPaintEvent* e );
+    void resizeEvent( QResizeEvent* e );
+    void mousePressEvent( QMouseEvent* e );
+    void mouseMoveEvent( QMouseEvent* e );
+    void mouseReleaseEvent( QMouseEvent* e );
+    void mouseDoubleClickEvent( QMouseEvent* );
+    void keyPressEvent( QKeyEvent* e );
+    void updateHandles();
+    QRegion handleMask() const;
+    QPoint limitPointToRect( const QPoint &p, const QRect &r ) const;
+    void grabRect();
 
-    void drawRubber();
-
+    QRect selection;
     bool mouseDown;
-    QRect grabRect;
-    QPixmap pixmap;
+    bool newSelection;
+    const int handleSize;
+    QRect* mouseOverHandle;
+    QPoint dragStartPoint;
+    QRect  selectionBeforeDrag;
+    QTimer idleTimer;
+    bool showHelp;
+    bool grabbing;
 
-    SizeTip *sizeTip;
-    QTimer *tipTimer;
+    // naming convention for handles
+    // T top, B bottom, R Right, L left
+    // 2 letters: a corner
+    // 1 letter: the handle on the middle of the corresponding side
+    QRect TLHandle, TRHandle, BLHandle, BRHandle;
+    QRect LHandle, THandle, RHandle, BHandle;
+
+    QVector<QRect*> handles;
+    QPixmap pixmap;
 };
 
-#endif // REGIONGRABBER_H
-
+#endif
