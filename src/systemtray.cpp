@@ -100,6 +100,12 @@ SystemTray::SystemTray(QWidget *parent)
     updateDisplay();
 }
 
+/** Destructor */
+SystemTray::~SystemTray()
+{
+    // pass
+}
+
 /** Updates the icon and tooltip in the system tray */
 void SystemTray::updateDisplay()
 {

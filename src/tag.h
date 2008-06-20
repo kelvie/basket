@@ -167,11 +167,12 @@ public:
 		const KShortcut &shortcut,
         QWidget * parent,
 		bool withTagName=false);
+
+    ~StateAction();
 private:
 	State   *m_state;
 	QString  m_name;
 	QString  m_shortcut;
-    ~StateAction();
 };
 
 #endif // TAG_H

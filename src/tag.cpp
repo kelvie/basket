@@ -739,3 +739,8 @@ StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* paren
 
     setShortcut(shortcut);
 }
+
+StateAction::~StateAction()
+{
+    // pass
+}
