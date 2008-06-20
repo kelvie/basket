@@ -57,7 +57,7 @@
 #include <kglobal.h>
 
 #include "likeback.h"
-#include "likeback_private.h"
+#include "likeback_p.h"
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kuser.h>
