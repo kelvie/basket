@@ -311,8 +311,9 @@ bool MainWindow::queryClose()
 		return true;
 	}
 
-	if (Settings::useSystray() && !m_quit) {
-		Global::systemTray->displayCloseMessage(i18n("Basket"));
+	if (Settings::useSystray()
+        && !m_quit
+        && Global::systemTray->parentWidgetTrayClose()) {
 		hide();
 		return false;
 	} else
