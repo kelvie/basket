@@ -92,7 +92,6 @@
 #include "password.h"
 #include "bnpview.h"
 #include "systemtray.h"
-#include "clickablelabel.h"
 #include "basketstatusbar.h"
 #include <ksettings/dialog.h>
 #include <kcmultidialog.h>
