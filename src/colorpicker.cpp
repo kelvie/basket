@@ -96,4 +96,3 @@ void DesktopColorPicker::keyPressEvent(QKeyEvent *event)
 	QDesktopWidget::keyPressEvent(event);
 }
 
-#include "colorpicker.moc"

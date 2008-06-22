@@ -336,4 +336,3 @@ int FontSizeCombo::fontSize()
 	return font().pointSize();
 }
 
-#include "variouswidgets.moc"

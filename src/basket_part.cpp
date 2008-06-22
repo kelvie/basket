@@ -99,4 +99,3 @@ void BasketPart::setCaption(const QString &caption)
 	emit setWindowCaption(caption);
 }
 
-#include "basket_part.moc"

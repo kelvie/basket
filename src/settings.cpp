@@ -990,4 +990,3 @@ void ApplicationsPage::defaults()
 	// TODO
 }
 
-#include "settings.moc"

@@ -392,4 +392,3 @@ void BackgroundManager::doGarbage()
 	}
 }
 
-#include "backgroundmanager.moc"

@@ -73,4 +73,3 @@ void DebugWindow::closeEvent(QCloseEvent *event)
 	QWidget::closeEvent(event);
 }
 
-#include "debugwindow.moc"

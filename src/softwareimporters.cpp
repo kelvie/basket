@@ -713,4 +713,3 @@ void SoftwareImporters::importTuxCardsNode(const QDomElement &element, Basket *p
 	}
 }
 
-#include "softwareimporters.moc"

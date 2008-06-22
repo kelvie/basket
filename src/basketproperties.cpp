@@ -202,4 +202,3 @@ void BasketPropertiesDialog::selectColumnsLayout()
 	m_disposition->setButton(0);
 }
 
-#include "basketproperties.moc"

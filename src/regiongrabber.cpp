@@ -373,4 +373,3 @@ QPoint RegionGrabber::limitPointToRect( const QPoint &p, const QRect &r ) const
     return q;
 }
 
-#include "regiongrabber.moc"

@@ -349,4 +349,3 @@ void MainWindow::minimizeRestore()
 		show();
 }
 
-#include "mainwindow.moc"

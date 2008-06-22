@@ -1220,4 +1220,3 @@ void TagsEditDialog::slotOk()
 	Global::bnpView->recomputeAllStyles();
 }
 
-#include "tagsedit.moc"

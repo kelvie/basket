@@ -1990,4 +1990,3 @@ void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeN
 	else if   (lowerTypeName == "unknown")   new UnknownContent(   parent, content.text()         );
 }
 
-#include "notecontent.moc"

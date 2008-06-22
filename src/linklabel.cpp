@@ -708,4 +708,3 @@ void LinkLookEditWidget::saveToLook(LinkLook *look)
 	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentItem() : LinkLook::None) );
 }
 
-#include "linklabel.moc"

@@ -315,4 +315,3 @@ void FilterBar::tagChanged(int index)
 	emit newFilter(*m_data);
 }
 
-#include "filter.moc"

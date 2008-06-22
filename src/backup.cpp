@@ -425,4 +425,3 @@ void RestoreThread::run()
 	}
 }
 
-#include "backup.moc"

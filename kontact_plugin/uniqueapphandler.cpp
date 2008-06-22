@@ -168,4 +168,3 @@ void UniqueAppWatcher::unregisteredFromDCOP( const QCString& appId )
   }
 }
 
-#include "uniqueapphandler.moc"

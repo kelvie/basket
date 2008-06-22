@@ -773,5 +773,4 @@ void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)
 	/* KBASE::virtual_hook(id, data); */
 }
 
-#include "kcolorcombo2.moc"
 #endif // USE_NEW_KCOLORCOMBO

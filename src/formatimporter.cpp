@@ -308,4 +308,3 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	return properties;
 }
 
-#include "formatimporter.moc"

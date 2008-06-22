@@ -104,4 +104,3 @@ int BasketUniqueAppHandler::newInstance()
 	return 0;
 }
 
-#include "basket_plugin.moc"

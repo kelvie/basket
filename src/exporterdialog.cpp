@@ -155,4 +155,3 @@ bool ExporterDialog::formatForImpression()
 	return m_formatForImpression->isChecked();
 }
 
-#include "exporterdialog.moc"

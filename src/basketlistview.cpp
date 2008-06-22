@@ -814,4 +814,3 @@ void BasketTreeListView::focusInEvent(QFocusEvent*)
 		basket->setFocus();
 }
 
-#include "basketlistview.moc"

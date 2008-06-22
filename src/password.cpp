@@ -123,6 +123,5 @@ Password::~Password()
 {
 }
 
-#include "password.moc"
 
 #endif

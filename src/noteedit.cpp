@@ -1010,4 +1010,3 @@ QPalette InlineEditors::palette() const
     return Global::bnpView->currentBasket()->palette();
 }
 
-#include "noteedit.moc"
