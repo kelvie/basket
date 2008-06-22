@@ -3868,7 +3868,9 @@ void Basket::editorCursorPositionChanged()
 
 	FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
 
-    QPoint cursorPoint = mapTo(viewport(), textEdit->cursorRect().center());
+	QPoint cursorPoint = textEdit->viewport()->mapTo(
+		viewport(), textEdit->cursorRect().center()
+		);
 	ensureVisible(cursorPoint.x(), cursorPoint.y());
 }
 
