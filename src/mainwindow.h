@@ -53,7 +53,6 @@ class Container;
 class RegionGrabber;
 class NoteSelection;
 class BNPView;
-class ClickableLabel;
 class KActionCollection;
 
 namespace KSettings { class Dialog; };

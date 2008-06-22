@@ -31,7 +31,6 @@ class KStatusBar;
 namespace KParts { class StatusBarExtension; }
 class QWidget;
 class QLabel;
-class ClickableLabel;
 
 /**
 	@author Sébastien Laoût <slaout@linux62.org>
