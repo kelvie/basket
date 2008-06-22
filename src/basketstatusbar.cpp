@@ -88,7 +88,7 @@ void BasketStatusBar::setupStatusBar()
 //	addWidget( m_lockStatus, 0, true );
     m_lockStatus->installEventFilter(this);
 
-	m_savedStatusPixmap = SmallIcon("filesave");
+	m_savedStatusPixmap = SmallIcon("document-save");
 	m_savedStatus = new QLabel(parent);
 	m_savedStatus->setPixmap(m_savedStatusPixmap);
 	m_savedStatus->setFixedSize(m_savedStatus->sizeHint());

@@ -54,7 +54,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 
 	// Create every widgets:
 	QIcon resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIconLoader::Toolbar);
-	QIcon inAllIconSet = KIconLoader::global()->loadIconSet("find",              KIconLoader::Toolbar);
+	QIcon inAllIconSet = KIconLoader::global()->loadIconSet("edit-find",              KIconLoader::Toolbar);
 
 
 	m_resetButton        = new QToolButton(this);

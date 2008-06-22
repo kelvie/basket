@@ -567,7 +567,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("edit_delete", this, SLOT(delNote()));
     a->setText(i18n("D&elete"));
-    a->setIcon(KIcon("editdelete"));
+    a->setIcon(KIcon("edit-delete"));
     a->setShortcut(KShortcut("Delete"));
     m_actDelNote = a;
 
@@ -601,7 +601,7 @@ void BNPView::setupActions()
 
     m_actOpenNote = ac->addAction(KStandardAction::Open, "note_open",
 				  this, SLOT(openNote()));
-    m_actOpenNote->setIcon(KIcon("window_new"));
+    m_actOpenNote->setIcon(KIcon("window-new"));
     m_actOpenNote->setText(i18n("&Open"));
     m_actOpenNote->setShortcut(KShortcut("F9"));
 
@@ -629,25 +629,25 @@ void BNPView::setupActions()
 
     a = ac->addAction("note_move_top", this, SLOT(moveOnTop()));
     a->setText(i18n("Move on &Top"));
-    a->setIcon(KIcon("2uparrow"));
+    a->setIcon(KIcon("arrow-up-double"));
     a->setShortcut(KShortcut("Ctrl+Shift+Home"));
     m_actMoveOnTop = a;
 
     a = ac->addAction("note_move_up", this, SLOT(moveNoteUp()));
     a->setText(i18n("Move &Up"));
-    a->setIcon(KIcon("1uparrow"));
+    a->setIcon(KIcon("arrow-up"));
     a->setShortcut(KShortcut("Ctrl+Shift+Up"));
     m_actMoveNoteUp = a;
 
     a = ac->addAction("note_move_down", this, SLOT(moveNoteDown()));
     a->setText(i18n("Move &Down"));
-    a->setIcon(KIcon("1downarrow"));
+    a->setIcon(KIcon("arrow-down"));
     a->setShortcut(KShortcut("Ctrl+Shift+Down"));
     m_actMoveNoteDown = a;
 
     a = ac->addAction("note_move_bottom", this, SLOT(moveOnBottom()));
     a->setText(i18n("Move on &Bottom"));
-    a->setIcon(KIcon("2downarrow"));
+    a->setIcon(KIcon("arrow-down-double"));
     a->setShortcut(KShortcut("Ctrl+Shift+End"));
     m_actMoveOnBottom = a;
 
@@ -708,7 +708,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("insert_from_file");
     a->setText(i18n("Load From &File..."));
-    a->setIcon(KIcon("fileimport"));
+    a->setIcon(KIcon("document-import"));
     m_actLoadFile = a;
 
 //	connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
@@ -779,7 +779,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_new", this, SLOT(askNewBasket()));
     a->setText(i18n("&New Basket..."));
-    a->setIcon(KIcon((runInsideKontact ? "basket" : "filenew")));
+    a->setIcon(KIcon((runInsideKontact ? "basket" : "document-new")));
     a->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::New));
     actNewBasket = a;
 
@@ -793,7 +793,7 @@ void BNPView::setupActions()
     actNewSiblingBasket = a;
 
     KActionMenu *newBasketMenu = new KActionMenu(i18n("&New"), ac);
-    newBasketMenu->setIcon(KIcon("filenew"));
+    newBasketMenu->setIcon(KIcon("document-new"));
     ac->addAction("basket_new_menu", newBasketMenu);
 
     newBasketMenu->addAction(actNewBasket);
@@ -834,7 +834,7 @@ void BNPView::setupActions()
     KToggleAction *toggleAct = NULL;
     toggleAct = new KToggleAction(i18n("&Filter"), ac);
     ac->addAction("edit_filter", toggleAct);
-    toggleAct->setIcon(KIcon("filter"));
+    toggleAct->setIcon(KIcon("search-filter"));
     toggleAct->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::Find));
     m_actShowFilter = toggleAct;
 
@@ -844,7 +844,7 @@ void BNPView::setupActions()
     toggleAct = new KToggleAction(ac);
     ac->addAction("edit_filter_all_baskets", toggleAct);
     toggleAct->setText(i18n("Filter all &Baskets"));
-    toggleAct->setIcon(KIcon("find"));
+    toggleAct->setIcon(KIcon("edit-find"));
     toggleAct->setShortcut(KShortcut("Ctrl+Shift+F"));
     m_actFilterAllBaskets = toggleAct;
 
@@ -861,25 +861,25 @@ void BNPView::setupActions()
 
     a = ac->addAction("go_basket_previous", this, SLOT(goToPreviousBasket()));
     a->setText(i18n( "&Previous Basket" ));
-    a->setIcon(KIcon("up"));
+    a->setIcon(KIcon("go-up"));
     a->setShortcut(KShortcut("Alt+Up"));
     m_actPreviousBasket = a;
 
     a = ac->addAction("go_basket_next", this, SLOT(goToNextBasket()));
     a->setText(i18n( "&Next Basket" ));
-    a->setIcon(KIcon("down"));
+    a->setIcon(KIcon("go-down"));
     a->setShortcut(KShortcut("Alt+Down"));
     m_actNextBasket = a;
 
     a = ac->addAction("go_basket_fold", this, SLOT(foldBasket()));
     a->setText(i18n( "&Fold Basket" ));
-    a->setIcon(KIcon("back"));
+    a->setIcon(KIcon("go-previous"));
     a->setShortcut(KShortcut("Alt+Left"));
     m_actFoldBasket = a;
 
     a = ac->addAction("go_basket_expand", this, SLOT(expandBasket()));
     a->setText(i18n( "&Expand Basket" ));
-    a->setIcon(KIcon("forward"));
+    a->setIcon(KIcon("go-next"));
     a->setShortcut(KShortcut("Alt+Right"));
     m_actExpandBasket = a;
 
@@ -887,7 +887,7 @@ void BNPView::setupActions()
    // FOR_BETA_PURPOSE:
     a = ac->addAction("beta_convert_texts", this, SLOT(convertTexts()));
     a->setText(i18n("Convert text notes to rich text notes"));
-    a->setIcon(KIcon("compfile"));
+    a->setIcon(KIcon("run-build-file"));
     m_convertTexts = a;
 #endif
 
@@ -1709,7 +1709,7 @@ void BNPView::updateNotesActions()
 }
 } else if (m_type != Color) {
 	popupMenu->insertSeparator();
-	popupMenu->insertItem( SmallIconSet("filesaveas"), i18n("&Save a copy as..."), this, SLOT(slotSaveAs()), 0, 10 );
+	popupMenu->insertItem( SmallIconSet("document-save-as"), i18n("&Save a copy as..."), this, SLOT(slotSaveAs()), 0, 10 );
 }*/
 }
 
@@ -2005,7 +2005,7 @@ void BNPView::delBasket()
 													 .arg(Tools::textToHTMLWithoutP(basket->basketName())),
 											 i18n("Remove Basket")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
-													 , KGuiItem(i18n("&Remove Basket"), "editdelete"), KStandardGuiItem::cancel());
+													 , KGuiItem(i18n("&Remove Basket"), "edit-delete"), KStandardGuiItem::cancel());
 #else
 		                    );
 #endif
@@ -2021,7 +2021,7 @@ void BNPView::delBasket()
 				basketsList,
 				i18n("Remove Children Baskets")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
-						, KGuiItem(i18n("&Remove Children Baskets"), "editdelete"));
+						, KGuiItem(i18n("&Remove Children Baskets"), "edit-delete"));
 #else
 		);
 #endif
@@ -2104,7 +2104,7 @@ void BNPView::saveAsArchive()
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
 					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
-				KGuiItem(i18n("&Override"), "filesave")
+				KGuiItem(i18n("&Override"), "document-save")
 			);
 			if (result == KMessageBox::Cancel)
 				return;
@@ -2653,13 +2653,13 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	}
 
 	menu.insertSeparator();
-//	menu.insertItem( /*SmallIconSet("editdelete"),*/ "&Assign new Tag...", 1 );
-	//id = menu.insertItem( SmallIconSet("editdelete"), "&Remove All", -2 );
+//	menu.insertItem( /*SmallIconSet("edit-delete"),*/ "&Assign new Tag...", 1 );
+	//id = menu.insertItem( SmallIconSet("edit-delete"), "&Remove All", -2 );
 	//if (referenceNote->states().isEmpty())
 	//	menu.setItemEnabled(id, false);
 //	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
 	menu.addAction( new KAction(i18n("&Assign new Tag..."), &menu));
-	menu.addAction( new KAction(KIcon("editdelete"), i18n("&Remove All"), &menu));
+	menu.addAction( new KAction(KIcon("edit-delete"), i18n("&Remove All"), &menu));
 	menu.addAction( new KAction(KIcon("configure"), i18n("&Customize..."), &menu));
 
 	menu.setItemEnabled(1, enable);

@@ -506,10 +506,10 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 			if (shouldAsk) {
 				KMenu menu(parent);
 				QList<QAction *> actList;
-				actList << new KAction(KIcon("goto"),
+				actList << new KAction(KIcon("go-jump"),
 						       i18n("&Move Here\tShift"),
 						       &menu)
-					<< new KAction(KIcon("editcopy"),
+					<< new KAction(KIcon("edit-copy"),
 						       i18n("&Copy Here\tCtrl"),
 						       &menu)
 					<< new KAction(KIcon("www"),

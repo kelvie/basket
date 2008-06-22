@@ -856,21 +856,21 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_bold", ta);
 	ta->setText(i18n("Bold"));
-	ta->setIcon(KIcon("text_bold"));
+	ta->setIcon(KIcon("format-text-bold"));
 	ta->setShortcut(KShortcut("Ctrl+B"));
 	richTextBold = ta;
 
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_italic", ta);
 	ta->setText(i18n("Italic"));
-	ta->setIcon(KIcon("text_italic"));
+	ta->setIcon(KIcon("format-text-italic"));
 	ta->setShortcut(KShortcut("Ctrl+I"));
 	richTextItalic = ta;
 
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_underline", ta);
 	ta->setText(i18n("Underline"));
-	ta->setIcon(KIcon("text_under"));
+	ta->setIcon(KIcon("format-text-underline"));
 	ta->setShortcut(KShortcut("Ctrl+U"));
 	richTextUnderline = ta;
 
@@ -910,7 +910,7 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_block", ta);
 	ta->setText(i18n("Justified"));
-	ta->setIcon(KIcon("text_block"));
+	ta->setIcon(KIcon("format-justify-fill"));
 	richTextJustified = ta;
 
 	QActionGroup *alignmentGroup = new QActionGroup(this);
@@ -922,14 +922,14 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_undo", ta);
 	ta->setText(i18n("Undo"));
-	ta->setIcon(KIcon("undo"));
+	ta->setIcon(KIcon("edit-undo"));
 	ta->setShortcut(KShortcut(""));
 	richTextUndo = ta;
 
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_redo", ta);
 	ta->setText(i18n("Redo"));
-	ta->setIcon(KIcon("redo"));
+	ta->setIcon(KIcon("edit-redo"));
 	richTextRedo = ta;
 
 	disableRichTextToolBar();

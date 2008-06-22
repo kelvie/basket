@@ -752,7 +752,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	enableButtonOk(false);
 	connect( m_comment, SIGNAL(textChanged()), this, SLOT(commentChanged()) );
 
-	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail_generic"));
+	setButtonGuiItem(Default, KGuiItem(i18n("&Email Address..."), "mail"));
 
 	resize(QSize(kapp->desktop()->width() * 1 / 2, kapp->desktop()->height() * 3 / 5).expandedTo(sizeHint()));
 

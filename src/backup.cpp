@@ -150,7 +150,7 @@ void BackupDialog::moveToAnotherFolder()
 					0,
 					"<qt>" + i18n("The folder <b>%1</b> is not empty. Do you want to override it?").arg(folder),
 					i18n("Override Folder?"),
-					KGuiItem(i18n("&Override"), "filesave")
+					KGuiItem(i18n("&Override"), "document-save")
 				);
 				if (result == KMessageBox::No)
 					return;
@@ -201,7 +201,7 @@ void BackupDialog::backup()
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
 					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
-				KGuiItem(i18n("&Override"), "filesave")
+				KGuiItem(i18n("&Override"), "document-save")
 			);
 			if (result == KMessageBox::Cancel)
 				return;

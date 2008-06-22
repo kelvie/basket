@@ -3433,10 +3433,10 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
 		menu.addTitle(/*SmallIcon(state->icon()), */tag->name());
-		menu.insertItem( SmallIconSet("editdelete"), i18n("&Remove"),             1 );
+		menu.insertItem( SmallIconSet("edit-delete"), i18n("&Remove"),             1 );
 		menu.insertItem( SmallIconSet("configure"),  i18n("&Customize..."),       2 );
 		menu.insertSeparator();
-		menu.insertItem( SmallIconSet("filter"),     i18n("&Filter by this Tag"), 3 );
+		menu.insertItem( SmallIconSet("search-filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
 		menu.addTitle(tag->name());
 		Q3ValueList<State*>::iterator it;
@@ -3463,7 +3463,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		}
 		menu.insertSeparator();
 		KAction *act = new KAction(&menu);
-        act->setIcon(KIcon("editdelete"));
+        act->setIcon(KIcon("edit-delete"));
         act->setText(i18n("&Remove"));
         act->setShortcut(sequenceOnDelete ? sequence : QKeySequence());
 		menu.addAction(act);
@@ -3476,12 +3476,12 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		menu.insertSeparator();
 
 		menu.addAction(new KAction(
-				   KIcon("filter"),
+				   KIcon("search-filter"),
 				   i18n("&Filter by this Tag"),
 				   &menu)
 		    );
 		menu.addAction(new KAction(
-				   KIcon("filter"),
+				   KIcon("search-filter"),
 				   i18n("Filter by this &State"),
 				   &menu)
 		    );

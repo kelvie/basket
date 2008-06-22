@@ -72,7 +72,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
 				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
 					.arg(KUrl(destination).fileName()),
 				i18n("Override File?"),
-				KGuiItem(i18n("&Override"), "filesave")
+				KGuiItem(i18n("&Override"), "document-save")
 			);
 			if (result == KMessageBox::Cancel)
 				return;

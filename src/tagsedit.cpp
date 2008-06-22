@@ -364,9 +364,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags->setSorting(-1); // Sort column -1, so disabled sorting
 	m_tags->setResizeMode(Q3ListView::LastColumn);
 
-	m_moveUp    = new KPushButton( KGuiItem("", "1uparrow"),   mainWidget() );
-	m_moveDown  = new KPushButton( KGuiItem("", "1downarrow"), mainWidget() );
-	m_deleteTag = new KPushButton( KGuiItem("", "editdelete"), mainWidget() );
+	m_moveUp    = new KPushButton( KGuiItem("", "arrow-up"),   mainWidget() );
+	m_moveDown  = new KPushButton( KGuiItem("", "arrow-down"), mainWidget() );
+	m_deleteTag = new KPushButton( KGuiItem("", "edit-delete"), mainWidget() );
 
 	QToolTip::add( m_moveUp,    i18n("Move Up (Ctrl+Shift+Up)")     );
 	QToolTip::add( m_moveDown,  i18n("Move Down (Ctrl+Shift+Down)") );
@@ -426,7 +426,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_emblem = new KIconButton(emblemWidget);
 	m_emblem->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_emblem->setIconSize(16);
-	m_emblem->setIcon("editdelete");
+	m_emblem->setIcon("edit-delete");
 	m_removeEmblem = new QPushButton(i18nc("Remove tag emblem", "Remo&ve"), emblemWidget);
 	QLabel *emblemLabel = new QLabel(m_emblem, i18n("&Emblem:"), stateWidget);
 	connect( m_removeEmblem, SIGNAL(clicked()), this, SLOT(removeEmblem()) ); // m_emblem.resetIcon() is not a slot!
@@ -450,26 +450,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIcon boldIconSet = KIconLoader::global()->loadIconSet("text_bold", KIconLoader::Small);
+	QIcon boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIconLoader::Small);
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("text_under", KIconLoader::Small);
+	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIconLoader::Small);
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIcon italicIconSet = KIconLoader::global()->loadIconSet("text_italic", KIconLoader::Small);
+	QIcon italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIconLoader::Small);
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("text_strike", KIconLoader::Small);
+	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("format-text-strikethrough", KIconLoader::Small);
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -921,14 +921,14 @@ void TagsEditDialog::deleteTag()
 			this,
 			i18n("Deleting the tag will remove it from every note it is currently assigned to."),
 			i18n("Confirm Delete Tag"),
-			KGuiItem(i18n("Delete Tag"), "editdelete")
+			KGuiItem(i18n("Delete Tag"), "edit-delete")
 		);
 	else if (item->stateCopy() && item->stateCopy()->oldState)
 		result = KMessageBox::warningContinueCancel(
 			this,
 			i18n("Deleting the state will remove the tag from every note the state is currently assigned to."),
 			i18n("Confirm Delete State"),
-			KGuiItem(i18n("Delete State"), "editdelete")
+			KGuiItem(i18n("Delete State"), "edit-delete")
 		);
 	if (result != KMessageBox::Continue)
 		return;

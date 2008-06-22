@@ -592,7 +592,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	}
 	if (showLoadingIcon) {
 		QPixmap icon = KIconLoader::global()->loadIcon(
-            "find", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            "edit-find", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, /*canReturnNull=*/false
             );
 		thePainter.drawPixmap(effectiveWidth, 0, icon);
