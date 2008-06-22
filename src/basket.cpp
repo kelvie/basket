@@ -5425,7 +5425,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
     bool success = false;
     do {
         KSaveFile saveFile(fullPath);
-        if (!saveFile.open()) {
+        if (saveFile.open()) {
             saveFile.write(array, length);
             if (saveFile.finalize())
                 success = true;
