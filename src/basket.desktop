@@ -6,6 +6,8 @@ Exec=basket %f
 MimeType=application/x-basket-archive;application/x-basket-template
 Icon=basket
 
+X-DBUS-StartupType=Unique
+
 Name=BasKet Note Pads
 Name[de]=BasKet Notizblätter
 Name[es]=Blocs de notas BasKet
