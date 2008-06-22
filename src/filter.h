@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,7 @@ class Tag;
 class State;
 
 /** The structure that contain all filter terms
-  * @author Sébastien Laoût
+  * @author SÃ©bastien LaoÃ»t
   */
 class FilterData
 {
@@ -51,7 +51,7 @@ class FilterData
 };
 
 /** A QWidget that allow user to enter terms to filter in a Basket.
-  * @author Sébastien Laoût
+  * @author SÃ©bastien LaoÃ»t
   */
 class FilterBar : public QWidget
 {

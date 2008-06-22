@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@ class QDomDocument;
 class QDomElement;
 
 /** All related functions to manage XML files and trees
-  * @author Sébastien Laoût
+  * @author SÃ©bastien LaoÃ»t
   */
 namespace XMLWork
 {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Sébastien Laoût                                 *
+ *   Copyright (C) 2005 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -114,7 +114,7 @@ public:
  * @see KGlobalSettings Use one of the static functions to get KDE standard colors for default values.
  * @see KColorButton    The same, but without the rainbow popup or the choice of a default color.
  * @see KColorDialog    The dialog that is shown when the user click the "Other..." entry.
- * @author Sébastien Laoût <slaout@linux62.org>
+ * @author SÃ©bastien LaoÃ»t <slaout@linux62.org>
  *
  * @image html commoncolorselector.png "Common Color Selector ComboBox"
  */

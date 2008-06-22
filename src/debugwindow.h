@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,7 @@ class QString;
 class QCloseEvent;
 
 /**A simple window that display text through debuging messages.
-  *@author Sébastien Laoût
+  *@author SÃ©bastien LaoÃ»t
   */
 
 class DebugWindow : public QWidget  {

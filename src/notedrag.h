@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -51,7 +51,7 @@ class NoteSelection;
   *
   * Pasting/Dropping Scenario:
   *
-  * @author Sébastien Laoût
+  * @author SÃ©bastien LaoÃ»t
   */
 class NoteDrag
 {
@@ -78,7 +78,7 @@ class NoteDrag
 /** QTextDrag with capabilities to drop GNOME and Mozilla texts
   * as well as UTF-16 texts even if it was supposed to be encoded
   * with local encoding!
-  * @author Sébastien Laoût
+  * @author SÃ©bastien LaoÃ»t
   */
 class ExtendedTextDrag : public Q3TextDrag
 {

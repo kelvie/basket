@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�bastien Lao�t                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +37,7 @@ class KColorCombo2;
 
 /** The class K3IconView allow to drag items. We don't want to, so we disable it.
   * This class also unselect the selected item when the user right click an empty space. We don't want to, so we reselect it if that happens.
-  * @author S�bastien Lao�t
+  * @author Sébastien Laoût
   */
 class SingleSelectionKIconView : public K3IconView
 {
@@ -58,7 +58,7 @@ class SingleSelectionKIconView : public K3IconView
   * A template is choosen depending on @p freeLayout and @p columnLayout.
   * If @p columnLayout is too high, the template with the more columns will be chosen instead.
   * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
-  * @author S�bastien Lao�t
+  * @author Sébastien Laoût
   */
 struct NewBasketDefaultProperties
 {
@@ -73,7 +73,7 @@ struct NewBasketDefaultProperties
 };
 
 /** The dialog to create a new basket from a template.
-  * @author S�bastien Lao�t
+  * @author Sébastien Laoût
   */
 class NewBasketDialog : public KDialog
 {

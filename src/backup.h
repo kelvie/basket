@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by Sébastien Laoût                                 *
+ *   Copyright (C) 2003 by SÃ©bastien LaoÃ»t                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 #include "basket_export.h"
 
 /**
- * @author Sébastien Laoût
+ * @author SÃ©bastien LaoÃ»t
  */
 class BackupDialog : public KDialog
 {
@@ -49,7 +49,7 @@ class BackupDialog : public KDialog
 };
 
 /**
- * @author Sébastien Laoût <slaout@linux62.org>
+ * @author SÃ©bastien LaoÃ»t <slaout@linux62.org>
  */
 class BASKET_EXPORT Backup
 {

@@ -156,7 +156,7 @@ class Tag
 
 /** An action that represents a State or a Tag
  * @author Kelvie Wong
- * Based off of StateMenuItem by Sèbastien Laoût
+ * Based off of StateMenuItem by Sébastien Laoût
  */
 class StateAction : public KToggleAction
 {
