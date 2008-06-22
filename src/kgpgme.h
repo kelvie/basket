@@ -70,7 +70,7 @@ class KGpgMe
 		QString m_text;
 		bool m_saving;
 		bool m_useGnuPGAgent;
-		Q3CString m_cache;
+		QString m_cache;
 
 		void init(gpgme_protocol_t proto);
 		gpgme_error_t readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const;

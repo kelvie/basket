@@ -65,7 +65,7 @@ class KGpgSelKey : public KDialog
 			QWidget* page = new QWidget(this);
 			QLabel* labeltxt;
 			KIconLoader* loader = KIconLoader::global();
-			QPixmap keyPair = loader->loadIcon("kgpg_key2", KIcon::Small, 20);
+			QPixmap keyPair = KIcon("kgpg_key2").pixmap(20, 20);
 
 			setMinimumSize(350,100);
 			keysListpr = new K3ListView(page);
@@ -357,8 +357,8 @@ gpgme_error_t KGpgMe::readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const
 		if(buf) {
 			while((ret = gpgme_data_read(in, buf, BUF_SIZE)) > 0) {
 				uint size = outBuffer->size();
-				if(outBuffer->resize(size + ret))
-					memcpy(outBuffer->data() + size, buf, ret);
+				outBuffer->resize(size + ret);
+				memcpy(outBuffer->data() + size, buf, ret);
 			}
 			if(ret < 0)
 				err = gpgme_err_code_from_errno(errno);
@@ -389,12 +389,12 @@ void KGpgMe::setPassphraseCb()
 		if (agent_info.find(':'))
 			agent = true;
 		if(agent_info.startsWith("disable:"))
-			setenv("GPG_AGENT_INFO", agent_info.mid(8), 1);
+			setenv("GPG_AGENT_INFO", agent_info.mid(8).toAscii(), 1);
 	}
 	else
 	{
 		if(!agent_info.startsWith("disable:"))
-			setenv("GPG_AGENT_INFO", "disable:" + agent_info, 1);
+			setenv("GPG_AGENT_INFO", "disable:" + agent_info.toAscii(), 1);
 	}
 	if (agent)
 		gpgme_set_passphrase_cb(m_ctx, 0, 0);
