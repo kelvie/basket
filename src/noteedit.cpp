@@ -1007,6 +1007,6 @@ void InlineEditors::disableRichTextToolBar()
 
 QPalette InlineEditors::palette() const
 {
-    return Global::bnpView->currentBasket()->palette();
+    return kapp->palette();
 }
 
