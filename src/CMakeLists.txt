@@ -46,6 +46,8 @@ set(basketcommon_LIB_SRCS
     basketstatusbar.cpp
     backup.cpp)
 
+link_libraries( ${KDE4_KDE3SUPPORT_LIBS} )
+
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
@@ -64,19 +66,18 @@ install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
 set(basket_SRCS main.cpp mainwindow.cpp application.cpp)
 
 kde4_add_executable(basket ${basket_SRCS})
-
 target_link_libraries(basket ${KDE4_KDECORE_LIBS} ${KDE4_KUTILS_LIBS} basketcommon)
 
 install(TARGETS basket DESTINATION ${BIN_INSTALL_DIR})
 
-
+if(BUILD_KPARTS)
 ########### next target ###############
 
 set(kcm_basket_PART_SRCS kcm_basket.cpp)
 
 kde4_add_plugin(kcm_basket ${kcm_basket_PART_SRCS})
 
-target_link_libraries(kcm_basket ${KDE4_KDECORE_LIBS} basketcommon kdeui)
+target_link_libraries(kcm_basket ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} basketcommon)
 
 install(TARGETS kcm_basket DESTINATION ${PLUGIN_INSTALL_DIR})
 
@@ -96,7 +97,10 @@ install(TARGETS basketpart DESTINATION ${PLUGIN_INSTALL_DIR})
 
 install(FILES  basket_part.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
 install(FILES  basket_part.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-install(FILES  basket.desktop DESTINATION ${XDG_APPLNK_INSTALL_DIR}/Utilities)
+
+endif(BUILD_KPARTS)
+
+install(FILES  basket.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	basket_config_features.desktop  	basket_config_notes.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 install(FILES  basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
 
