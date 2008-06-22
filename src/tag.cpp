@@ -721,6 +721,7 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 // StateAction
 StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* parent, bool withTagName) 
     : KToggleAction(parent)
+    , m_state(state)
 {
     setText(m_state->name());
 
