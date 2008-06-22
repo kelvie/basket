@@ -431,15 +431,14 @@ gpgme_error_t KGpgMe::passphrase(const char* uid_hint,
 		s += gpg_hint;
 
 	if(m_cache.isEmpty()){
-		Q3CString password;
+		KPasswordDialog dlg;
+		dlg.setPrompt(s);
 
-		if(m_saving)
-			result = KPasswordDialog::getNewPassword(password, s);
-		else
-			result = KPasswordDialog::getPassword(password, s);
+		if (m_saving)
+			dlg.setWindowTitle(i18n("Please enter a new password:"));
 
-		if(result == KPasswordDialog::Accepted)
-			m_cache = password;
+		if (dlg.exec())
+			m_cache = dlg.password();
 	}
 	else
 		result = KPasswordDialog::Accepted;
