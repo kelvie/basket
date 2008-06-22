@@ -1,6 +1,7 @@
 
 find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
+find_package(Gpgme)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
@@ -17,14 +18,12 @@ include(ConvenienceLibs.cmake)
 
 #include(ManualStuff.cmake)
 
-FIND_LIBRARY(GPGME gpgme)
-IF(NOT GPGME-NOTFOUND)
+IF(GPGME_FOUND)
   SET(HAVE_LIBGPGME 1)
-  SET(GPGME_LIB gpgme)
   ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64)
-ELSE(NOT GPGME-NOTFOUND)
+ELSE(GPGME_FOUND)
   MESSAGE("GPG not found, configuring without")
-ENDIF(NOT GPGME-NOTFOUND)
+ENDIF(GPGME_FOUND)
 
 #TODO: find meinproc
 

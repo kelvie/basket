@@ -1,5 +1,5 @@
 
-include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES})
+include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES} ${GPGME_INCLUDES})
 
 
 ########### next target ###############
@@ -53,7 +53,7 @@ QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPV
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
 target_link_libraries(basketcommon ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS}
-  ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ${QIMAGEBLITZ_LIBRARIES})
+  ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ${QIMAGEBLITZ_LIBRARIES} ${GPGME_VANILLA_LIBRARIES})
 
 set_target_properties(basketcommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
