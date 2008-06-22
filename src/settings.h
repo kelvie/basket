@@ -36,6 +36,7 @@
 #include <kmainwindow.h>
 #include <qdatetime.h>
 
+#include "basket_export.h"
 #include "global.h"
 #include "bnpview.h"
 #include "systemtray.h"
@@ -183,7 +184,7 @@ class ApplicationsPage : public KCModule
 /** Handle all global variables (to avoid lot of extern declarations)
   * @author S�astien Laot
   */
-class Settings // FIXME: Distaptch new config events ?
+class BASKET_EXPORT Settings // FIXME: Distaptch new config events ?
 {
   protected:
 	/** Main window */

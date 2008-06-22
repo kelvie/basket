@@ -34,7 +34,9 @@
 #include <QHideEvent>
 #include <QEvent>
 #include <QShowEvent>
+
 #include "global.h"
+#include "basket_export.h"
 
  /// NEW:
 
@@ -59,7 +61,7 @@ class Tag;
 class State;
 class Note;
 
-class BNPView : public QSplitter
+class BASKET_EXPORT BNPView : public QSplitter
 {
 	Q_OBJECT
 	  Q_CLASSINFO("D Bus Interface", "org.basket.dbus");

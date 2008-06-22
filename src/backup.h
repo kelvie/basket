@@ -27,6 +27,8 @@
 //Added by qt3to4:
 #include <QLabel>
 
+#include "basket_export.h"
+
 /**
  * @author Sébastien Laoût
  */
@@ -49,7 +51,7 @@ class BackupDialog : public KDialog
 /**
  * @author Sébastien Laoût <slaout@linux62.org>
  */
-class Backup
+class BASKET_EXPORT Backup
 {
   public:
 	static void figureOutBinaryPath(const char *argv0, QApplication &app);

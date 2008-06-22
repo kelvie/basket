@@ -25,6 +25,8 @@
 //Added by qt3to4:
 #include <QLabel>
 
+#include "basket_export.h"
+
 class KStatusBar;
 namespace KParts { class StatusBarExtension; }
 class QWidget;
@@ -34,7 +36,7 @@ class ClickableLabel;
 /**
 	@author Sébastien Laoût <slaout@linux62.org>
 */
-class BasketStatusBar : public QObject
+class BASKET_EXPORT BasketStatusBar : public QObject
 {
   Q_OBJECT
   public:

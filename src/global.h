@@ -22,7 +22,9 @@
 #define GLOBAL_H
 
 #include <qstring.h>
+
 #include "aboutdata.h"
+#include "basket_export.h"
 
 class LikeBack;
 class DebugWindow;
@@ -37,7 +39,7 @@ class KAboutData;
   * the .h files of variables he use.
   * @author S�astien Laot
   */
-class Global
+class BASKET_EXPORT Global
 {
   private:
 	static QString s_customSavesFolder;
