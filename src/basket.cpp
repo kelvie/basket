@@ -3045,7 +3045,7 @@ void Basket::viewportResizeEvent(QResizeEvent *event)
 			setCornerWidget(m_cornerWidget);
 	} else {
 		if (cornerWidget())
-			setCornerWidget(0);
+			cornerWidget()->hide();
 	}
 //	if (isDuringEdit())
 //		ensureNoteVisible(editedNote());
