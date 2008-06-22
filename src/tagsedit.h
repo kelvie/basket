@@ -30,6 +30,8 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 
+#include "tag.h"
+
 class Q3GroupBox;
 class QLineEdit;
 class QCheckBox;
@@ -43,9 +45,6 @@ class KShortcutWidget;
 class KColorCombo2;
 
 class FontSizeCombo;
-
-class Tag;
-class State;
 
 class StateCopy
 {
