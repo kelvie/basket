@@ -891,20 +891,20 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_left", ta);
 	ta->setText(i18n("Align Left"));
-	ta->setIcon(KIcon("text_left"));
+	ta->setIcon(KIcon("format-justify-left"));
 	richTextLeft = ta;
 
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_center", ta);
 	ta->setText(i18n("Centered"));
-	ta->setIcon(KIcon("text_center"));
+	ta->setIcon(KIcon("format-justify-center"));
 	ta->setShortcut(KShortcut(""));
 	richTextCenter = ta;
 
 	ta = new KToggleAction(ac);
 	ac->addAction("richtext_right", ta);
 	ta->setText(i18n("Align Right"));
-	ta->setIcon(KIcon("text_right"));
+	ta->setIcon(KIcon("format-justify-right"));
 	richTextRight = ta;
 
 	ta = new KToggleAction(ac);

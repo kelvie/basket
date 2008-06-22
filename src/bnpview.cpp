@@ -519,7 +519,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_export_html", this, SLOT(exportToHTML()));
     a->setText(i18n("&HTML Web Page..."));
-    a->setIcon(KIcon("html"));
+    a->setIcon(KIcon("text-html"));
     a->setShortcut(0);
     m_actExportToHtml = a;
 
@@ -556,7 +556,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_import_text_file", this, SLOT(importTextFile()));
     a->setText(i18n("Text &File..."));
-    a->setIcon(KIcon("txt"));
+    a->setIcon(KIcon("text-plain"));
     a->setShortcut(0);
 
     a = ac->addAction("basket_backup_restore", this, SLOT(backupRestore()));
@@ -834,7 +834,7 @@ void BNPView::setupActions()
     KToggleAction *toggleAct = NULL;
     toggleAct = new KToggleAction(i18n("&Filter"), ac);
     ac->addAction("edit_filter", toggleAct);
-    toggleAct->setIcon(KIcon("search-filter"));
+    toggleAct->setIcon(KIcon("view-filter"));
     toggleAct->setShortcut(KStandardShortcut::shortcut(KStandardShortcut::Find));
     m_actShowFilter = toggleAct;
 
@@ -853,7 +853,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("edit_filter_reset", this, SLOT( slotResetFilter() ));
     a->setText(i18n( "&Reset Filter" ));
-    a->setIcon(KIcon("locationbar_erase"));
+    a->setIcon(KIcon("edit-clear-locationbar-rtl"));
     a->setShortcut(KShortcut("Ctrl+R"));
     m_actResetFilter = a;
 

@@ -6,7 +6,7 @@
    <Action name="basket_new_menu" />
    <Separator/>
    <Action name="basket_properties" />
-   <Menu icon="fileexport" >
+   <Menu icon="document-export" >
     <text>&amp;Export</text>
     <Action name="basket_export_basket_archive" />
     <Action name="basket_export_html" />
@@ -16,7 +16,7 @@
    <Action name="basket_password" />
    <Action name="basket_lock" />
    <Separator/>
-   <Menu name="fileimport" icon="fileimport" >
+   <Menu name="fileimport" icon="document-import" >
     <text>&amp;Import</text>
     <Action name="basket_import_basket_archive" />
     <Separator/>
@@ -157,7 +157,7 @@
   <Action name="basket_new_menu" />
   <Separator/>
   <Action name="basket_properties" />
-  <Menu icon="fileexport" >
+  <Menu icon="document-export" >
    <text>&amp;Export</text>
    <Action name="basket_export_basket_archive" />
    <Action name="basket_export_html" />
@@ -167,7 +167,7 @@
   <Action name="basket_password" />
   <Action name="basket_lock" />
   <Separator/>
-  <Menu icon="fileimport" >
+  <Menu icon="document-import" >
    <text>&amp;Import</text>
    <Action name="basket_import_basket_archive" />
    <Separator/>
@@ -185,7 +185,7 @@
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />
-  <Menu icon="fileimport" >
+  <Menu icon="document-import" >
    <text>&amp;Import</text>
    <Action name="basket_import_basket_archive" />
    <Separator/>
