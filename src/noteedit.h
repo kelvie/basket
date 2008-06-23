@@ -37,6 +37,7 @@ class KMainWindow;
 class KToolBar;
 class KToggleAction;
 class KActionCollection;
+class KAction;
 
 class FontSizeCombo;
 
