@@ -277,7 +277,6 @@ class BASKET_EXPORT BNPView : public QSplitter
 		KAction       *m_actFoldBasket;
 		KAction       *m_actExpandBasket;
 //		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
-		KAction       *actConfigGlobalShortcuts;
 
 		void setupActions();
 		void setupGlobalShortcuts();

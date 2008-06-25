@@ -888,14 +888,6 @@ void BNPView::setupActions()
 #endif
 
     InlineEditors::instance()->initToolBars(actionCollection());
-
-    actConfigGlobalShortcuts = ac->addAction(KStandardAction::KeyBindings,
-					     "options_configure_global_keybinding",
-					     this,
-					     SLOT(showGlobalShortcutsSettingsDialog()));
-
-    actConfigGlobalShortcuts->setText(i18n("Configure &Global Shortcuts..."));
-
     /** Help : ****************************************************************/
 
     a = ac->addAction("help_welcome_baskets", this, SLOT(addWelcomeBaskets()));
