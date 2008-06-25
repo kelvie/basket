@@ -1453,9 +1453,9 @@ void BNPView::removeBasket(Basket *basket)
 void BNPView::setTreePlacement(bool onLeft)
 {
 	if (onLeft)
-		moveToFirst(m_tree);
+		insertWidget(0, m_tree);
 	else
-		moveToLast(m_tree);
+		addWidget(m_tree);
 	//updateGeometry();
 	kapp->postEvent( this, new QResizeEvent(size(), size()) );
 }
