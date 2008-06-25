@@ -382,7 +382,6 @@ void BNPView::setupGlobalShortcuts()
     a->setStatusTip(
 	i18n("Add a link note to the current basket without having "
 	     "to open the main window."));
-    a->setGlobalShortcut(KShortcut(""));
 
     a = ac->addAction("global_note_add_color", Global::bnpView,
 		      SLOT(addNoteColor()));
@@ -390,7 +389,6 @@ void BNPView::setupGlobalShortcuts()
     a->setStatusTip(
 	i18n("Add a color note to the current basket without having to open "
 	     "the main window."));
-    a->setGlobalShortcut(KShortcut(""));
 
     a = ac->addAction("global_note_pick_color", Global::bnpView,
 		      SLOT(slotColorFromScreenGlobal()));
@@ -398,7 +396,6 @@ void BNPView::setupGlobalShortcuts()
     a->setStatusTip(
 	i18n("Add a color note picked from one pixel on screen to the current "
 	     "basket without " "having to open the main window.") );
-    a->setGlobalShortcut(KShortcut(""));
 
     a = ac->addAction("global_note_grab_screenshot", Global::bnpView,
 		      SLOT(grabScreenshotGlobal()));
@@ -406,7 +403,6 @@ void BNPView::setupGlobalShortcuts()
     a->setStatusTip(
 	i18n("Grab a screen zone as an image in the current basket without "
 	     "having to open the main window."));
-    a->setGlobalShortcut(KShortcut(""));
 
 #if 0
     a = ac->addAction("global_note_add_text", Global::bnpView,

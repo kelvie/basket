@@ -898,7 +898,6 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ac->addAction("richtext_center", ta);
 	ta->setText(i18n("Centered"));
 	ta->setIcon(KIcon("format-justify-center"));
-	ta->setShortcut(KShortcut(""));
 	richTextCenter = ta;
 
 	ta = new KToggleAction(ac);
@@ -923,7 +922,6 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	ac->addAction("richtext_undo", ta);
 	ta->setText(i18n("Undo"));
 	ta->setIcon(KIcon("edit-undo"));
-	ta->setShortcut(KShortcut(""));
 	richTextUndo = ta;
 
 	ta = new KToggleAction(ac);
