@@ -2890,7 +2890,7 @@ void Basket::tooltipEvent(QHelpEvent *event)
 			                          		if (tagsString.isEmpty())
 			                          			tagsString = tagName;
 			                          		else
-			                          			tagsString = i18n("%1, %2").arg(tagsString, tagName);
+									tagsString = i18n("%1, %2", tagsString, tagName);
 			                          	}
 			                          	message = message.arg(tagsString);
 			                          }
@@ -2929,7 +2929,7 @@ void Basket::tooltipEvent(QHelpEvent *event)
 			QStringList::iterator key;
 			QStringList::iterator value;
 			for (key = keys.begin(), value = values.begin(); key != keys.end() && value != values.end(); ++key, ++value)
-				message += "<br>" + i18nc("of the form 'key: value'", "<b>%1</b>: %2").arg(*key, *value);
+				message += "<br>" + i18nc("of the form 'key: value'", "<b>%1</b>: %2", *key, *value);
 			message += "</nobr></qt>";
 		} else if (m_inserterSplit && (zone == Note::TopInsert || zone == Note::BottomInsert))
 			message += "\n" + i18n("Click on the right to group instead of insert");
@@ -3138,7 +3138,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 #ifdef HAVE_LIBGPGME
 			label->setText( text + i18n("Press Unlock to access it.") );
 #else
-			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.").arg(KGlobal::mainComponent().aboutData()->programName()) );
+			label->setText( text + i18n("Encryption is not supported by<br/>this version of %1.", KGlobal::mainComponent().aboutData()->programName()));
 #endif
 			label->setAlignment( int( Qt::AlignTop ) );
 			layout->addMultiCellWidget( label, 0, 0, 1, 2 );
@@ -5334,7 +5334,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 			if(m_encryptionType == PrivateKeyEncryption)
 				m_gpg->setText(i18n("Please enter the password for the following private key:"), false);
 			else
-				m_gpg->setText(i18n("Please enter the password for the basket <b>%1</b>:").arg(basketName()), false); // Used when decrypting
+				m_gpg->setText(i18n("Please enter the password for the basket <b>%1</b>:", basketName()), false); // Used when decrypting
 			return m_gpg->decrypt(tmp, array);
 		}
 #else
@@ -5379,7 +5379,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 			m_gpg->setText("", false);
 		}
 		else
-			m_gpg->setText(i18n("Please assign a password to the basket <b>%1</b>:").arg(basketName()), true); // Used when defining a new password
+			m_gpg->setText(i18n("Please assign a password to the basket <b>%1</b>:", basketName()), true); // Used when defining a new password
 
 		success = m_gpg->encrypt(array, length, &tmp, key);
 		length = tmp.size();

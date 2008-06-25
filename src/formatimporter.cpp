@@ -136,7 +136,7 @@ void FormatImporter::importBaskets()
 		if (folderName.startsWith("/")) { // It was a folder mirror:
 			KMessageBox::information(0, i18n("<p>Folder mirroring is not possible anymore (see <a href='http://basket.kde.org/'>basket.kde.org</a> for more information).</p>"
 				"<p>The folder <b>%1</b> has been copied for the basket needs. You can either delete this folder or delete the basket, or use both. But remember that "
-				"modifying one will not modify the other anymore as they are now separate entities.</p>").arg(folderName), i18n("Folder Mirror Import"),
+				"modifying one will not modify the other anymore as they are now separate entities.</p>", folderName), i18n("Folder Mirror Import"),
 				"", KMessageBox::AllowLink);
 			// Also modify folderName to be only the folder name and not the full path anymore:
 			QString newFolderName = folderName;

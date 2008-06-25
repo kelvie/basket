@@ -78,7 +78,7 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	savesFolder = savesFolder.left(savesFolder.length() - 1); // savesFolder ends with "/"
 
 	Q3GroupBox *folderGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
-	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>").arg(savesFolder), folderGroup);
+	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>",savesFolder), folderGroup);
 	QWidget *folderWidget = new QWidget(folderGroup);
 	Q3HBoxLayout *folderLayout = new Q3HBoxLayout(folderWidget, 0, spacingHint());
 	QPushButton *moveFolder = new QPushButton(i18n("&Move to Another Folder..."),      folderWidget);
@@ -127,7 +127,7 @@ void BackupDialog::populateLastBackup()
 {
 	QString lastBackupText = i18n("Last backup: never");
 	if (Settings::lastBackup().isValid())
-		lastBackupText = i18n("Last backup: %1").arg(Settings::lastBackup().toString(Qt::LocalDate));
+		lastBackupText = i18n("Last backup: %1",Settings::lastBackup().toString(Qt::LocalDate));
 
 	m_lastBackup->setText(lastBackupText);
 }
@@ -148,7 +148,7 @@ void BackupDialog::moveToAnotherFolder()
 			if (content.count() > 2) { // "." and ".."
 				int result = KMessageBox::questionYesNo(
 					0,
-					"<qt>" + i18n("The folder <b>%1</b> is not empty. Do you want to override it?").arg(folder),
+					"<qt>" + i18n("The folder <b>%1</b> is not empty. Do you want to override it?", folder),
 					i18n("Override Folder?"),
 					KGuiItem(i18n("&Override"), "document-save")
 				);
@@ -198,8 +198,8 @@ void BackupDialog::backup()
 		if (dir.exists(destination)) {
 			int result = KMessageBox::questionYesNoCancel(
 				0,
-				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KUrl(destination).fileName()),
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?",
+                    KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "document-save")
 			);
@@ -258,7 +258,7 @@ void BackupDialog::restore()
 	QFile file(readmePath);
 	if (file.open(QIODevice::WriteOnly)) {
 		Q3TextStream stream(&file);
-		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.").arg(KUrl(path).fileName()) + "\n\n"
+		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.", KUrl(path).fileName()) + "\n\n"
 		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
 		       << i18n("If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n\n"
 		       << i18n("Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing Folder...\" and select that folder.") + "\n";
@@ -266,8 +266,8 @@ void BackupDialog::restore()
 	}
 
 	QString message =
-		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...").arg(KUrl(path).fileName()) + "</nobr></p><p>" +
-		i18n("If something goes wrong during the restoration process, read the file <b>%1</b>.").arg(readmePath);
+		"<p><nobr>" + i18n("Restoring <b>%1</b>. Please wait...", KUrl(path).fileName()) + "</nobr></p><p>" +
+		i18n("If something goes wrong during the restoration process, read the file <b>%1</b>.", readmePath);
 
 	KProgressDialog *dialog = new KProgressDialog(0, i18n("Restore Baskets"), message);
 	dialog->setModal(/*modal=*/true);
@@ -367,7 +367,7 @@ QString Backup::newSafetyFolder()
 		return fullPath;
 
 	for (int i = 2; ; ++i) {
-		fullPath = QDir::homePath() + "/" + i18nc("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)").arg(i) + "/";
+		fullPath = QDir::homePath() + "/" + i18nc("Safety folder name before restoring a basket data archive", "Baskets Before Restoration (%1)", i) + "/";
 		if (!dir.exists(fullPath))
 			return fullPath;
 	}

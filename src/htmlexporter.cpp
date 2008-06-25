@@ -69,8 +69,8 @@ HTMLExporter::HTMLExporter(Basket *basket)
 		if (dir.exists(destination)) {
 			int result = KMessageBox::questionYesNoCancel(
 				0,
-				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KUrl(destination).fileName()),
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?",
+                    KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "document-save")
 			);
@@ -118,7 +118,7 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	withBasketTree = (item->firstChild() != 0);
 
 	// Create and empty the files folder:
-	QString filesFolderPath = i18nc("HTML export folder (files)", "%1_files").arg(filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
+	QString filesFolderPath = i18nc("HTML export folder (files)", "%1_files", filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
 	Tools::deleteRecursively(filesFolderPath);
 	QDir dir;
 	dir.mkdir(filesFolderPath);
@@ -141,7 +141,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	}
 
 	// Compute the absolute & relative paths for this basket:
-	filesFolderPath   = i18nc("HTML export folder (files)", "%1_files").arg(filePath) + "/";
+	filesFolderPath   = i18nc("HTML export folder (files)", "%1_files", filePath) + "/";
 	if (isSubBasket) {
 		basketFilePath    = basketsFolderPath + basket->folderName().left(basket->folderName().length() - 1) + ".html";
 		filesFolderName   = "../";
@@ -150,7 +150,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		basketsFolderName = "";
 	} else {
 		basketFilePath    = filePath;
-		filesFolderName   = i18nc("HTML export folder (files)", "%1_files").arg(KUrl(filePath).fileName()) + "/";
+		filesFolderName   = i18nc("HTML export folder (files)", "%1_files", KUrl(filePath).fileName()) + "/";
 		dataFolderName    = filesFolderName + i18nc("HTML export folder (data)",    "data")  + "/";
 		dataFolderPath    = filesFolderPath + i18nc("HTML export folder (data)",    "data")  + "/";
 		basketsFolderName = filesFolderName + i18nc("HTML export folder (baskets)", "baskets")  + "/";

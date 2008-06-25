@@ -329,8 +329,8 @@ void Archive::open(const QString &path)
 				if (version != "0.6.1" && !readCompatibleVersions.contains("0.6.1") && !writeCompatibleVersions.contains("0.6.1")) {
 					KMessageBox::error(
 						0,
-						i18n("This file was created with a recent version of %1. Please upgrade to a newer version to be able to open that file.")
-							.arg(KGlobal::mainComponent().aboutData()->programName()),
+						i18n("This file was created with a recent version of %1. Please upgrade to a newer version to be able to open that file.",
+                            KGlobal::mainComponent().aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 					file.close();

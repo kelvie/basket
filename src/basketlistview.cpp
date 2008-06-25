@@ -341,12 +341,12 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
 	QString text;
 	if (childsAreLoading) {
 		if (countChildsFound > 0)
-			text = i18n("%1+%2+").arg(QString::number(countFound), QString::number(countChildsFound));
+			text = i18n("%1+%2+", QString::number(countFound), QString::number(countChildsFound));
 		else
-			text = i18n("%1+").arg(QString::number(countFound));
+			text = i18n("%1+", QString::number(countFound));
 	} else {
 		if (countChildsFound > 0)
-			text = i18n("%1+%2").arg(QString::number(countFound), QString::number(countChildsFound));
+			text = i18n("%1+%2", QString::number(countFound), QString::number(countChildsFound));
 		else if (countFound > 0)
 			text = QString::number(countFound);
 		else

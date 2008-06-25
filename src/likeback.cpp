@@ -437,9 +437,9 @@ void LikeBack::showInformationMessage()
 	                (buttons & Feature ? 1 : 0);
 	KMessageBox::information(0,
 		"<p><b>" + (isDevelopmentVersion(d->aboutData->version()) ?
-			i18n("Welcome to this testing version of %1.") :
-			i18n("Welcome to %1.")
-		).arg(d->aboutData->programName()) + "</b></p>"
+			i18n("Welcome to this testing version of %1.", d->aboutData->programName()) :
+			i18n("Welcome to %1.", d->aboutData->programName())
+		) + "</b></p>"
 		"<p>" + i18n("To help us improve it, your comments are important.") + "</p>"
 		"<p>" +
 			((buttons & LikeBack::Like) && (buttons & LikeBack::Dislike) ?
@@ -769,7 +769,7 @@ LikeBackDialog::~LikeBackDialog()
 
 QString LikeBackDialog::introductionText()
 {
-	QString text = "<p>" + i18n("Please provide a brief description of your opinion of %1.").arg(m_likeBack->aboutData()->programName()) + " ";
+	QString text = "<p>" + i18n("Please provide a brief description of your opinion of %1.", m_likeBack->aboutData()->programName()) + " ";
 
 	QString languagesMessage = "";
 	if (!m_likeBack->acceptedLocales().isEmpty() && !m_likeBack->acceptedLanguagesMessage().isEmpty()) {
@@ -788,9 +788,8 @@ QString LikeBackDialog::introductionText()
 	if (!languagesMessage.isEmpty())
 		// TODO: Replace the URL with a localized one:
 		text += languagesMessage + " " +
-			i18n("You may be able to use an <a href=\"%1\">online translation tool</a>.")
-			.arg("http://www.google.com/language_tools?hl=" + KGlobal::locale()->language())
-			+ " ";
+			i18n("You may be able to use an <a href=\"%1\">online translation tool</a>."
+                , "http://www.google.com/language_tools?hl=" + KGlobal::locale()->language()) + " ";
 
 	// If both "I Like" and "I Dislike" buttons are shown and one is clicked:
 	if ((m_likeBack->buttons() & LikeBack::Like) && (m_likeBack->buttons() & LikeBack::Dislike))
