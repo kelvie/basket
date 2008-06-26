@@ -32,7 +32,6 @@
 #include <qfontinfo.h>
 #include <qobject.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <Q3MemArray>
 
 #include <QTextDocument>
@@ -432,7 +431,7 @@ bool Tools::isAFileCut(QMimeSource *source)
 {
 	if (source->provides("application/x-kde-cutselection")) {
 		QByteArray array = source->encodedData("application/x-kde-cutselection");
-		return !array.isEmpty() && Q3CString(array.data(), array.size() + 1).at(0) == '1';
+		return !array.isEmpty() && QByteArray(array.data(), array.size() + 1).at(0) == '1';
 	} else
 		return false;
 }

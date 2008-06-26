@@ -23,7 +23,6 @@
 #include <qpainter.h>
 #include <qstyle.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <QWheelEvent>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
@@ -5351,7 +5350,7 @@ bool Basket::loadFromFile(const QString &fullPath, QByteArray *array)
 
 bool Basket::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	Q3CString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
 	return saveToFile(fullPath, bytes, bytes.length());
 }
 
@@ -5461,7 +5460,7 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, Q_ULON
 
 /*static*/ bool Basket::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
-	Q3CString bytes = (isLocalEncoding ? string.local8Bit() : string.utf8());
+	QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
 	return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
 }
 

@@ -26,7 +26,6 @@
 #include <qvariant.h>
 //Added by qt3to4:
 #include <QDragMoveEvent>
-#include <Q3CString>
 #include <QDropEvent>
 #include <QDragLeaveEvent>
 #include <QWheelEvent>
@@ -96,9 +95,9 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	//  we should not show that screenshot but only a text!
 
 	// 1. Determine if the user use a system tray area or not:
-	Q3CString screenstr;
+	QByteArray screenstr;
 	screenstr.setNum(qt_xscreen());
-	Q3CString trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
+	QByteArrray trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
 	bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
 
 	// 2. And then if the icon is visible too (eg. this->show() has been called):
