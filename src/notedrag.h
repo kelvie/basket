@@ -27,7 +27,6 @@
 #include <qpixmap.h>
 #include <q3valuelist.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <k3multipledrag.h>
 
 class QDataStream;

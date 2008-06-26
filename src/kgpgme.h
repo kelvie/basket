@@ -22,7 +22,6 @@
 
 #include <config.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <Q3ValueList>
 
 #ifdef HAVE_LIBGPGME

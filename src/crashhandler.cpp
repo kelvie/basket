@@ -26,7 +26,6 @@
 #include <qregexp.h>
 #include <q3textstream.h>
 //Added by qt3to4:
-#include <Q3CString>
 
 #include <cstdio>         //popen, fread
 #include <iostream>

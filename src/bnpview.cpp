@@ -34,7 +34,6 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QHideEvent>
-#include <Q3CString>
 #include <kmenu.h>
 #include <qsignalmapper.h>
 #include <qdir.h>

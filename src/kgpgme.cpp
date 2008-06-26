@@ -32,7 +32,6 @@
 #include <qlayout.h>
 #include <qlabel.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <QPixmap>
 #include <Q3VBoxLayout>
 #include <klocale.h>
