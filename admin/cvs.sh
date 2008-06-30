@@ -93,6 +93,7 @@ unset required_automake_version
 
 cvs()
 {
+. $admindir/subst-version.sh
 check_autotool_versions
 acinclude_m4
 
