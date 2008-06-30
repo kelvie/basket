@@ -13,7 +13,7 @@ X-KDE-KontactPluginHasSummary=false
 
 X-KDE-PluginInfo-Website=http://basket.kde.org/
 X-KDE-PluginInfo-Name=kontact_basketplugin
-X-KDE-PluginInfo-Version=1.0.3
+X-KDE-PluginInfo-Version=$$version_number$$
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 

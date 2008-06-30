@@ -1,5 +1,5 @@
 %define name basket
-%define version 1.0.3
+%define version $$version_number$$
 %define release mantic0
 
 Summary: Taking care of your ideas.
