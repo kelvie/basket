@@ -59,7 +59,7 @@ basket_LDFLAGS = $(all_libraries) $(KDE_RPATH) $(LIB_KUTILS)
 basket_LDADD = libbasketcommon.la
 
 # this is where the desktop file will go
-shelldesktopdir = $(kde_appsdir)/Utilities
+shelldesktopdir = $(xdg_appsdir)
 shelldesktop_DATA = basket.desktop
 
 # this is where the shell's XML-GUI resource file goes

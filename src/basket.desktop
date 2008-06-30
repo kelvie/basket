@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Type=Application
 
 Exec=basket %f
-MimeType=application/x-basket-archive;application/x-basket-template
+MimeType=application/x-basket-archive;application/x-basket-template;
 Icon=basket
 
 Name=BasKet Note Pads
@@ -18,6 +17,7 @@ Name[pt]=Bloco de Notas BasKet
 Name[ru]=Альбом заметок BasKet
 Name[tr]=Basket
 Name[xx]=xxBasKet Note Padsxx
+GenericName="Multi-purpose notepad"
 GenericName[tr]=Not Tutma Aracı
 
 Comment=Taking care of your ideas.
