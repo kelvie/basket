@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 2.5)
 
 find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
