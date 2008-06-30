@@ -1,6 +1,6 @@
 #!/bin/sh
 
-default_ver=1.0.3
+default_ver=1.0.3.1
 
 if ! version=$(git describe --tags HEAD | tr -d v); then
 	version=$default_ver
