@@ -40,7 +40,7 @@
 
  /// NEW:
 
-class Q3WidgetStack;
+class QStackedWidget;
 class QDomDocument;
 class QDomElement;
 class KAction;
@@ -345,7 +345,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 
 	private:
 		K3ListView    *m_tree;
-		Q3WidgetStack *m_stack;
+		QStackedWidget *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;
 		bool          m_firstShow;

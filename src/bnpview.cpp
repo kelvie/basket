@@ -20,7 +20,7 @@
 
  /// NEW:
 
-#include <q3widgetstack.h>
+#include <QStackedWidget>
 #include <qregexp.h>
 #include <qpixmap.h>
 #include <qpainter.h>
@@ -436,7 +436,7 @@ void BNPView::initialize()
 	m_tree->setDropHighlighter(true);
 
 	/// Configure the Splitter:
-	m_stack = new Q3WidgetStack(this);
+	m_stack = new QStackedWidget(this);
 
 	setOpaqueResize(true);
 
@@ -1366,7 +1366,7 @@ BasketListViewItem* BNPView::listViewItemForBasket(Basket *basket)
 
 Basket* BNPView::currentBasket()
 {
-	DecoratedBasket *decoBasket = (DecoratedBasket*)m_stack->visibleWidget();
+	DecoratedBasket *decoBasket = (DecoratedBasket*)m_stack->currentWidget();
 	if (decoBasket)
 		return decoBasket->basket();
 	else
@@ -1397,7 +1397,7 @@ void BNPView::setCurrentBasket(Basket *basket)
 	if (item) {
 		m_tree->setSelected(item, true);
 		item->ensureVisible();
-		m_stack->raiseWidget(basket->decoration());
+		m_stack->setCurrentWidget(basket->decoration());
 		// If the window has changed size, only the current basket receive the event,
 		// the others will receive ony one just before they are shown.
 		// But this triggers unwanted animations, so we eliminate it:
