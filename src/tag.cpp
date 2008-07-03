@@ -81,7 +81,7 @@ QString State::fullName()
 {
 	if (!parentTag() || parentTag()->states().count() == 1)
 		return (name().isEmpty() && parentTag() ? parentTag()->name() : name());
-	return QString(i18n("%1: %2")).arg(parentTag()->name(), name());
+	return QString(i18n("%1: %2",parentTag()->name(), name()));
 }
 
 QFont State::font(QFont base)

@@ -211,7 +211,7 @@ void TagListViewItem::setup()
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
-		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+		text = i18nc("Tag name (shortcut)", "%1 (%2)",text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = state->font(listView()->font());
 
@@ -231,7 +231,7 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
 	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
 
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
-		text = i18nc("Tag name (shortcut)", "%1 (%2)").arg(text, m_tagCopy->newTag->shortcut().toString());
+		text = i18nc("Tag name (shortcut)", "%1 (%2)",text, m_tagCopy->newTag->shortcut().toString());
 
 	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
 

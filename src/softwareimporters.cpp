@@ -511,7 +511,7 @@ void SoftwareImporters::importTextFile()
 		);
 
 		// First create a basket for it:
-		QString title = i18nc("From TextFile.txt", "From %1").arg(KUrl(fileName).fileName());
+		QString title = i18nc("From TextFile.txt", "From %1",KUrl(fileName).fileName());
 		BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
 		Basket *basket = Global::bnpView->currentBasket();
 		basket->load();

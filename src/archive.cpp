@@ -321,8 +321,8 @@ void Archive::open(const QString &path)
 						i18n("This file was created with a recent version of %1. "
 						     "It can be opened but not every information will be available to you. "
 						     "For instance, some notes may be missing because they are of a type only available in new versions. "
-						     "When saving the file back, consider to save it to another file, to preserve the original one.")
-							.arg(KGlobal::mainComponent().aboutData()->programName()),
+						     "When saving the file back, consider to save it to another file, to preserve the original one.",
+							KGlobal::mainComponent().aboutData()->programName()),
 						i18n("Basket Archive Error")
 					);
 				}

@@ -1621,7 +1621,7 @@ void BNPView::notesStateChanged()
 		if (basket->countFounds() != basket->count())
 			showns = i18np("%n match", "%n matches", basket->countFounds());
 		setSelectionStatus(
-				i18nc("e.g. '18 notes, 10 matches, 5 selected'", "%1, %2, %3").arg(count, showns, selecteds) );
+				i18nc("e.g. '18 notes, 10 matches, 5 selected'", "%1, %2, %3",count, showns, selecteds));
 	}
 
 	// If we added a note that match the global filter, update the count number in the tree:
@@ -1811,9 +1811,9 @@ KMenu* BNPView::popupMenu(const QString &menuName)
 							"archive to the folder <a href='file://%3'>%4</a>.</p>"
 							"<p>As last ressort, if you are sure the application is correctly installed "
 							"but you had a preview version of it, try to remove the "
-							"file %5basketui.rc</p>")
-							.arg(aboutData->programName(), aboutData->programName(),
-								stdDirs.saveLocation("data", "basket/")).arg(stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
+							"file %5basketui.rc</p>",
+							aboutData->programName(), aboutData->programName(),
+								stdDirs.saveLocation("data", "basket/"),stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
 					i18n("Ressource not Found"), KMessageBox::AllowLink );
 		}
 		if(!isPart())
@@ -1988,8 +1988,8 @@ void BNPView::delBasket()
 	Basket          *basket        = currentBasket();
 
 	int really = KMessageBox::questionYesNo( this,
-											 i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>")
-													 .arg(Tools::textToHTMLWithoutP(basket->basketName())),
+											 i18n("<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>",
+													 Tools::textToHTMLWithoutP(basket->basketName())),
 											 i18n("Remove Basket")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
 													 , KGuiItem(i18n("&Remove Basket"), "edit-delete"), KStandardGuiItem::cancel());
@@ -2003,8 +2003,8 @@ void BNPView::delBasket()
 	QStringList basketsList = listViewItemForBasket(basket)->childNamesTree();
 	if (basketsList.count() > 0) {
 		int deleteChilds = KMessageBox::questionYesNoList( this,
-				i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>")
-						.arg(Tools::textToHTMLWithoutP(basket->basketName())),
+				i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>",
+						Tools::textToHTMLWithoutP(basket->basketName())),
 				basketsList,
 				i18n("Remove Children Baskets")
 #if KDE_IS_VERSION( 3, 2, 90 ) // KDE 3.3.x
@@ -2088,8 +2088,8 @@ void BNPView::saveAsArchive()
 		if (dir.exists(destination)) {
 			int result = KMessageBox::questionYesNoCancel(
 				this,
-				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?")
-					.arg(KUrl(destination).fileName()),
+				"<qt>" + i18n("The file <b>%1</b> already exists. Do you really want to override it?",
+					KUrl(destination).fileName()),
 				i18n("Override File?"),
 				KGuiItem(i18n("&Override"), "document-save")
 			);

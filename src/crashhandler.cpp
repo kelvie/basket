@@ -207,8 +207,8 @@
             else {
 				kDebug() << "\n" + i18n( "%1 has crashed! We're sorry about this.\n\n"
                                           "But, all is not lost! Perhaps an upgrade is already available "
-                                          "which fixes the problem. Please check your distribution's software repository." )
-						.arg(KGlobal::mainComponent().aboutData()->programName()).local8Bit();
+                                          "which fixes the problem. Please check your distribution's software repository.",
+						KGlobal::mainComponent().aboutData()->programName());
             }
 
             //_exit() exits immediately, otherwise this

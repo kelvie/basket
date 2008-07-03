@@ -628,9 +628,9 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		     "For instance, when dropping image or text files, image and text notes are created for them.<br>"
 		     "For type of files %2 does not understand, they are shown as generic file notes with just an icon or file preview and a filename.</p>"
 		     "<p>If you do not want the application to create notes depending on the content of the files you drop, "
-		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>")
+		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>",
 		// TODO: Note: you can resize down maximum size of images...
-			.arg(KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName()),
+			KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName()),
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);

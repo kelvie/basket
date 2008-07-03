@@ -87,12 +87,10 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 		"<p>You can move the folder where %1 store your baskets to:</p><ul>"
 		"<li>Store your baskets in a visible place in your home folder, like ~/Notes or ~/Baskets, so you can manually backup them when you want.</li>"
 		"<li>Store your baskets on a server to share them between two computers.<br>"
-		"In this case, mount the shared-folder to the local file system and ask %2 to use that mount point.<br>"
-		"Warning: you should not run %3 at the same time on both computers, or you risk to loss data while the two applications are desynced.</li>"
-		"</ul><p>Please remember that you should not change the content of that folder manually (eg. adding a file in a basket folder will not add that file to the basket).</p>")
-			.arg(KGlobal::mainComponent().aboutData()->programName())
-			.arg(KGlobal::mainComponent().aboutData()->programName())
-			.arg(KGlobal::mainComponent().aboutData()->programName()),
+		"In this case, mount the shared-folder to the local file system and ask %1 to use that mount point.<br>"
+		"Warning: you should not run %1 at the same time on both computers, or you risk to loss data while the two applications are desynced.</li>"
+		"</ul><p>Please remember that you should not change the content of that folder manually (eg. adding a file in a basket folder will not add that file to the basket).</p>",
+			KGlobal::mainComponent().aboutData()->programName()),
 		folderWidget);
 	folderLayout->addWidget(moveFolder);
 	folderLayout->addWidget(useFolder);

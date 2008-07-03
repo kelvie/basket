@@ -152,7 +152,7 @@ ViewSizeDialog::~ViewSizeDialog()
 
 void ViewSizeDialog::resizeEvent(QResizeEvent *)
 {
-	setCaption( i18n("%1 by %2 pixels").arg(QString::number(width())).arg(QString::number(height())) );
+	setCaption( i18n("%1 by %2 pixels",QString::number(width()),QString::number(height())));
 	m_sizeGrip->move( width() - m_sizeGrip->width(), height() - m_sizeGrip->height() );
 }
 
