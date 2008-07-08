@@ -116,11 +116,15 @@ QString Tools::htmlToParagraph(const QString &html)
 // Thanks to Richard Heck
 QString Tools::tagURLs(const QString &text)
 {
-	QRegExp urlEx("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
-
+	QRegExp urlEx("<!DOCTYPE[^\"]+\"([^\"]+)\"[^\"]+\"([^\"]+)/([^/]+)\\.dtd\">");
 	QString richText(text);
 	int urlPos = 0;
 	int urlLen;
+	if((urlPos = urlEx.search(richText, urlPos)) >= 0)
+		urlPos+=urlEx.matchedLength();
+	else
+		urlPos=0;
+	urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
 	while ((urlPos = urlEx.search(richText, urlPos)) >= 0) {
 		urlLen = urlEx.matchedLength();
 		QString href = richText.mid(urlPos, urlLen);
