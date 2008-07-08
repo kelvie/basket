@@ -21,10 +21,10 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3GridLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPixmap>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <knuminput.h>
 #include <kshortcutwidget.h>
 #include <qlayout.h>
@@ -58,10 +58,10 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	showButtonSeparator(false);
 
 	QWidget *page = new QWidget(this);
-	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
 
 	// Icon and Name:
-	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
+	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
@@ -79,7 +79,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	// Appearance:
 	Q3GroupBox *appearance = new Q3GroupBox(1, Qt::Horizontal, i18n("Appearance"), page);
 	QWidget *appearanceWidget = new QWidget(appearance);
-	Q3GridLayout *grid = new Q3GridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
 	m_backgroundImage = new QComboBox(appearanceWidget);
 	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceWidget);
 	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceWidget);
@@ -116,7 +116,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	// Disposition:
 	m_disposition = new Q3VButtonGroup(i18n("Disposition"), page);
 	QWidget *columnsWidget = new QWidget(m_disposition);
-	Q3HBoxLayout *dispoLayout = new Q3HBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
+	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
 	QRadioButton *radio = new QRadioButton(i18n("Col&umns:"), columnsWidget);
 	m_columnCount = new KIntNumInput(m_basket->columnsCount(), columnsWidget);
 	m_columnCount->setRange(1, 20, /*step=*/1, /*slider=*/false);
@@ -137,7 +137,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	// Keyboard Shortcut:
 	m_shortcutRole = new Q3VButtonGroup(i18n("&Keyboard Shortcut"), page);
 	QWidget *shortcutWidget = new QWidget(m_shortcutRole);
-	Q3HBoxLayout *shortcutLayout = new Q3HBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
+	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
 	m_shortcut = new KShortcutWidget(shortcutWidget);
 	m_shortcut->setShortcut(m_basket->shortcut());
 	HelpLabel *helpLabel = new HelpLabel(i18n("Learn some tips..."), i18n(

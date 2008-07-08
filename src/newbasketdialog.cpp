@@ -20,9 +20,9 @@
 
 #include <qlineedit.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <QPixmap>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <k3iconview.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -103,10 +103,10 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
 
 	QWidget *page = new QWidget(this);
-	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
 
 	// Icon, Name and Background Color:
-	Q3HBoxLayout *nameLayout = new Q3HBoxLayout(0, marginHint()*2/3, spacingHint());
+	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
@@ -129,7 +129,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	nameLayout->addWidget(m_backgroundColor);
 	topLayout->addLayout(nameLayout);
 
-	Q3HBoxLayout *layout = new Q3HBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	KPushButton *button = new KPushButton( KGuiItem(i18n("&Manage Templates..."), "configure"), page );
 	connect( button, SIGNAL(clicked()), this, SLOT(manageTemplates()) );
 	button->hide();
@@ -222,7 +222,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	topLayout->addLayout(layout);
 	topLayout->addWidget(m_templates);
 
-	layout = new Q3HBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
 	m_createIn = new QComboBox(page);
 	m_createIn->insertItem(i18n("(Baskets)"));
 	label = new QLabel(m_createIn, i18n("C&reate in:"), page);

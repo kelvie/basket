@@ -41,7 +41,7 @@
 #include <QDragEnterEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <Q3Frame>
 #include <QDropEvent>
 #include <QDragMoveEvent>
@@ -56,7 +56,7 @@
 #include "note.h" // For Note::Zone
 #include "config.h"
 
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QDomDocument;
 class QDomElement;
 
@@ -154,7 +154,7 @@ class DecoratedBasket : public QWidget
 	FilterBar* filterBar()         { return m_filter;               }
 	Basket*    basket()            { return m_basket;               }
   private:
-	Q3VBoxLayout *m_layout;
+	QVBoxLayout *m_layout;
 	FilterBar   *m_filter;
 	Basket      *m_basket;
 };

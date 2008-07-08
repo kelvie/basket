@@ -23,7 +23,7 @@
 #include <qtoolbutton.h>
 #include <qlabel.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 //#include <qcombobox.h>
 //#include <klineedit.h>
 #include <kiconloader.h>
@@ -50,7 +50,7 @@
 FilterBar::FilterBar(QWidget *parent, const char *name)
  : QWidget(parent, name)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
 {
-	Q3HBoxLayout *hBox  = new Q3HBoxLayout(this, /*margin*/0, /*spacing*/0);
+	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
 
 	// Create every widgets:
 	QIcon resetIconSet = KIconLoader::global()->loadIconSet("locationbar_erase", KIconLoader::Toolbar);

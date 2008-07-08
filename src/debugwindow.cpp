@@ -24,7 +24,7 @@
 #include <qevent.h>
 //Added by qt3to4:
 #include <QCloseEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <klocale.h>
 
 #include "global.h"
@@ -36,7 +36,7 @@ DebugWindow::DebugWindow(QWidget *parent, const char *name )
 	Global::debugWindow = this;
 	setCaption(i18n("Debug Window"));
 
-	layout      = new Q3VBoxLayout(this);
+	layout      = new QVBoxLayout(this);
 	textBrowser = new Q3TextBrowser(this);
 
 	textBrowser->setWordWrap(Q3TextBrowser::NoWrap);

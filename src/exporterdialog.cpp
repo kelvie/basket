@@ -28,7 +28,7 @@
 #include <qlayout.h>
 #include <qlabel.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <klocale.h>
 #include <kconfig.h>
 
@@ -54,7 +54,7 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
 	KVBox *page  = new KVBox(this);
 	QWidget     *wid  = new QWidget(page);
     setMainWidget(wid);
-	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_url = new KUrlRequester(KUrl(""), wid);
 	m_url->setCaption(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");

@@ -20,7 +20,7 @@
 
 #include <qstring.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QDropEvent>
 #include <Q3MemArray>
 #include <kurl.h>
@@ -275,8 +275,8 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 //	parent->dontCareOfCreation(fullPath);
 	QFile file(fullPath);
 	if ( file.open(QIODevice::WriteOnly) ) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << content;
 		file.close();
 		return fileName;
@@ -450,7 +450,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	QString message = i18n("<p>%1 doesn't support the data you've dropped.<br>"
 			"It however created a generic note, allowing you to drag or copy it to an application that understand it.</p>"
 			"<p>If you want the support of these data, please contact developer or visit the "
-			"<a href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>").arg(KGlobal::mainComponent().aboutData()->programName());
+			"<a href=\"http://basket.kde.org/dropdb.php\">BasKet Drop Database</a>.</p>",KGlobal::mainComponent().aboutData()->programName());
 	KMessageBox::information(parent, message, i18n("Unsupported MIME Type(s)"),
 							 "unsupportedDropInfo", KMessageBox::AllowLink);
 	return note;

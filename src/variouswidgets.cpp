@@ -26,11 +26,11 @@
 #include <qstring.h>
 #include <qsizepolicy.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <QResizeEvent>
 #include <Q3ValueList>
 #include <QKeyEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <KOpenWithDialog>
 #include <klocale.h>
 #include <q3whatsthis.h>
@@ -50,7 +50,7 @@ RunCommandRequester::RunCommandRequester(const QString &runCommand, const QStrin
 {
 	m_message = message;
 
-	Q3HBoxLayout *layout = new Q3HBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
 	m_runCommand        = new QLineEdit(runCommand, this);
 	QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
@@ -152,7 +152,7 @@ ViewSizeDialog::~ViewSizeDialog()
 
 void ViewSizeDialog::resizeEvent(QResizeEvent *)
 {
-	setCaption( i18n("%1 by %2 pixels").arg(QString::number(width())).arg(QString::number(height())) );
+	setCaption( i18n("%1 by %2 pixels",QString::number(width()),QString::number(height())));
 	m_sizeGrip->move( width() - m_sizeGrip->width(), height() - m_sizeGrip->height() );
 }
 
@@ -203,7 +203,7 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 	connect(this, SIGNAL(cancelClicked()), SLOT(slotCancel()));
 
 	QWidget *page = new QWidget(this);
-	Q3VBoxLayout *topLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
 
 	QLabel *label = new QLabel(message, page);
 	topLayout->addWidget(label);

@@ -27,7 +27,7 @@
 #include <qlabel.h>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QMoveEvent>
 #include <q3ptrlist.h>
 #include <qpoint.h>
@@ -101,7 +101,7 @@ class MainWindow : public KXmlGuiWindow
 	QList<QAction *> actBasketsList;
 
   private:
-	Q3VBoxLayout        *m_layout;
+	QVBoxLayout        *m_layout;
 	BNPView            *m_baskets;
 	bool                m_startDocked;
 	KSettings::Dialog  *m_settings;

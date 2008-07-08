@@ -140,7 +140,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 	QString message = i18n(
 		"<p>Closing the main window will keep %1 running in the system tray. "
 		"Use <b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
-			).arg(KGlobal::instance()->aboutData()->programName());
+			,KGlobal::instance()->aboutData()->programName());
 	// We are sure the systray icon is visible: ouf!
 	if (useSystray) {
 		// Compute size and position of the pixmap to be grabbed:

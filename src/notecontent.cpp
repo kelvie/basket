@@ -810,7 +810,7 @@ bool ImageContent::saveToFile()
 void ImageContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
 	keys->append(i18n("Size"));
-	values->append(i18n("%1 by %2 pixels").arg(QString::number(m_pixmap.width()), QString::number(m_pixmap.height())));
+	values->append(i18n("%1 by %2 pixels",QString::number(m_pixmap.width()), QString::number(m_pixmap.height())));
 }
 
 QString ImageContent::messageWhenOpening(OpenMessage where)
@@ -1482,7 +1482,7 @@ void LauncherContent::toolTipInfos(QStringList *keys, QStringList *values)
 
 	QString exec = service.exec();
 	if (service.terminal())
-		exec = i18n("%1 <i>(run in terminal)</i>").arg(exec);
+		exec = i18n("%1 <i>(run in terminal)</i>",exec);
 
 	if (!service.comment().isEmpty() && service.comment() != service.name()) {
 		keys->append(i18n("Comment"));
@@ -1625,10 +1625,10 @@ void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 	m_color.getHsv(&hue, &saturation, &value);
 
 	keys->append(i18nc("RGB Colorspace: Red/Green/Blue", "RGB"));
-	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,").arg(QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
+	values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,",QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
 
 	keys->append(i18nc("HSV Colorspace: Hue/Saturation/Value", "HSV"));
-	values->append(i18n("<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,").arg(QString::number(hue), QString::number(saturation), QString::number(value)));
+	values->append(i18n("<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,",QString::number(hue), QString::number(saturation), QString::number(value)));
 
 	static QString cssColors[] = {
 		"aqua",    "00ffff",

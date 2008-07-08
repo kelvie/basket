@@ -22,7 +22,7 @@
 #define HTMLEXPORTER_H
 
 #include <qstring.h>
-#include <q3textstream.h>
+#include <QTextStream>
 
 class QProgressBar;
 
@@ -70,7 +70,7 @@ class HTMLExporter
 	QString backgroundColorName;
 
 	// Variables used by every export methods:
-	Q3TextStream stream;
+	QTextStream stream;
 	Basket *exportedBasket;
 	bool withBasketTree;
 	QProgressBar *progress;

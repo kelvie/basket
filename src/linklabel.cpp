@@ -20,12 +20,12 @@
 
 #include <qlabel.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3GridLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPixmap>
 #include <Q3Frame>
 #include <QEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <Q3BoxLayout>
 #include <kurl.h>
 #include <qlayout.h>
@@ -575,7 +575,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
  : QWidget(parent, name, fl)
 {
 	QLabel      *label;
-	Q3VBoxLayout *layout = new Q3VBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
@@ -583,7 +583,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
 	layout->addWidget(m_bold);
 
-	Q3GridLayout *gl = new Q3GridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
+	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
 	m_underlining = new QComboBox(false, this);
@@ -605,7 +605,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
 
-	Q3HBoxLayout *icoLay = new Q3HBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
 	icoLay->addWidget(m_iconSize);
 	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);
@@ -628,9 +628,9 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		     "For instance, when dropping image or text files, image and text notes are created for them.<br>"
 		     "For type of files %2 does not understand, they are shown as generic file notes with just an icon or file preview and a filename.</p>"
 		     "<p>If you do not want the application to create notes depending on the content of the files you drop, "
-		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>")
+		     "go to the \"General\" page and uncheck \"Image or animation\" in the \"View Content of Added Files for the Following Types\" group.</p>",
 		// TODO: Note: you can resize down maximum size of images...
-			.arg(KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName()),
+			KGlobal::mainComponent().aboutData()->programName(), KGlobal::mainComponent().aboutData()->programName()),
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);

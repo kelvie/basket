@@ -22,9 +22,9 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <QKeyEvent>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <klineedit.h>
 #include <kurlrequester.h>
 #include <kcolordialog.h>
@@ -142,6 +142,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	textEdit->setPaletteForegroundColor(note()->textColor());
 	textEdit->setFont(note()->font());
 	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 	if (Settings::spellCheckTextNotes())
 		textEdit->setCheckSpellingEnabled(true);
 	textEdit->setText(m_textContent->text());
@@ -551,12 +552,12 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 
 	QWidget     *page   = new QWidget(this);
 	setMainWidget(page);
-	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
 
 
 	QWidget *wid1 = new QWidget(page);
-	Q3HBoxLayout *titleLay = new Q3HBoxLayout(wid1, /*margin=*/0, spacingHint());
+	QHBoxLayout *titleLay = new QHBoxLayout(wid1, /*margin=*/0, spacingHint());
 	m_title = new DebuggedLineEdit(m_noteContent->title(), wid1);
 	m_autoTitle = new QPushButton(i18n("Auto"), wid1);
 	m_autoTitle->setToggleButton(true);
@@ -565,7 +566,7 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	titleLay->addWidget(m_autoTitle);
 
 	QWidget *wid = new QWidget(page);
-	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
@@ -718,7 +719,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	QWidget     *page   = new QWidget(this);
 	setMainWidget(page);
 
-	Q3GridLayout *layout = new Q3GridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
 	KService service(contentNote->fullPath());
 
@@ -726,7 +727,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	m_name    = new QLineEdit(service.name(), page);
 
 	QWidget *wid = new QWidget(page);
-	Q3HBoxLayout *hLay = new Q3HBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Application);

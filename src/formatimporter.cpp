@@ -24,7 +24,7 @@
 #include <qfileinfo.h>
 #include <qdom.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <kmessagebox.h>
 #include <klocale.h>
 #include <kapplication.h>
@@ -165,8 +165,8 @@ void FormatImporter::importBaskets()
 
 	QFile file(Global::basketsFolder() + "baskets.xml");
 	if (file.open(QIODevice::WriteOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		QString xml = document.toString();
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
@@ -240,7 +240,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QString annotFullPath = Basket::fullPathForFolderName(folderName) + "/" + annotFileName;
 				QFile file(annotFullPath);
 				if (file.open(QIODevice::WriteOnly)) {
-					Q3TextStream stream(&file);
+					QTextStream stream(&file);
 					stream << annotations;
 					file.close();
 				}
@@ -269,8 +269,8 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QString launcherFullPath = Global::basketsFolder() + folderName /*+ "/"*/ + launcherFileName;
 				QFile file(launcherFullPath);
 				if (file.open(QIODevice::WriteOnly)) {
-					Q3TextStream stream(&file);
-					stream.setEncoding(Q3TextStream::UnicodeUTF8);
+					QTextStream stream(&file);
+					stream.setEncoding(QTextStream::UnicodeUTF8);
 					stream << launcherContent;
 					file.close();
 				}
@@ -295,8 +295,8 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	// Save the resulting XML file:
 	QFile file(Global::basketsFolder() + folderName + "/.basket");
 	if (file.open(QIODevice::WriteOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 //		QString xml = document->toString();
 //		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 //		stream << xml;

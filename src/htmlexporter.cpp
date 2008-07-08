@@ -37,7 +37,7 @@
 #include <qfile.h>
 #include <qpainter.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3ValueList>
 #include <QPixmap>
 #include <kprogressdialog.h>
@@ -203,7 +203,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 	stream.setDevice(&file);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 
 	// Compute the colors to draw dragient for notes:
 	QColor topBgColor;
@@ -321,9 +321,8 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	stream << QString(
 		"  </div>\n"
 		"  <p class=\"credits\">%1</p>\n").arg(
-			i18n("Made with %1, a KDE tool to take notes and keep information at hand.")
-				.arg("<a href=\"http://basket.kde.org/\">%1</a> %2")
-				.arg(KGlobal::mainComponent().aboutData()->programName(), VERSION));
+			i18n("Made with <a href=\"http://basket.kde.org/\">%1</a> %2, a KDE tool to take notes and keep information at hand.",
+				KGlobal::mainComponent().aboutData()->programName(), VERSION));
 
 	// Copy a transparent GIF image in the folder, needed for the JavaScript hack:
 	QString gifFileName = "spacer.gif";
