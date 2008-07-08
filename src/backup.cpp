@@ -32,8 +32,8 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 //Added by qt3to4:
-#include <Q3TextStream>
-#include <Q3HBoxLayout>
+#include <QTextStream>
+#include <QHBoxLayout>
 #include <klocale.h>
 #include <qdir.h>
 #include <kapplication.h>
@@ -80,7 +80,7 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	Q3GroupBox *folderGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
 	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>",savesFolder), folderGroup);
 	QWidget *folderWidget = new QWidget(folderGroup);
-	Q3HBoxLayout *folderLayout = new Q3HBoxLayout(folderWidget, 0, spacingHint());
+	QHBoxLayout *folderLayout = new QHBoxLayout(folderWidget, 0, spacingHint());
 	QPushButton *moveFolder = new QPushButton(i18n("&Move to Another Folder..."),      folderWidget);
 	QPushButton *useFolder  = new QPushButton(i18n("&Use Another Existing Folder..."), folderWidget);
 	HelpLabel *helpLabel = new HelpLabel(i18n("Why to do that?"), i18n(
@@ -101,7 +101,7 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 
 	Q3GroupBox *backupGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Backups"), page);
 	QWidget *backupWidget = new QWidget(backupGroup);
-	Q3HBoxLayout *backupLayout = new Q3HBoxLayout(backupWidget, 0, spacingHint());
+	QHBoxLayout *backupLayout = new QHBoxLayout(backupWidget, 0, spacingHint());
 	QPushButton *backupButton  = new QPushButton(i18n("&Backup..."),           backupWidget);
 	QPushButton *restoreButton = new QPushButton(i18n("&Restore a Backup..."), backupWidget);
 	m_lastBackup = new QLabel("", backupWidget);
@@ -255,7 +255,7 @@ void BackupDialog::restore()
 	QString readmePath = safetyPath + i18n("README.txt");
 	QFile file(readmePath);
 	if (file.open(QIODevice::WriteOnly)) {
-		Q3TextStream stream(&file);
+		QTextStream stream(&file);
 		stream << i18n("This is a safety copy of your baskets like they were before you started to restore the backup %1.", KUrl(path).fileName()) + "\n\n"
 		       << i18n("If the restoration was a success and you restored what you wanted to restore, you can remove this folder.") + "\n\n"
 		       << i18n("If something went wrong during the restoration process, you can re-use this folder to store your baskets and nothing will be lost.") + "\n\n"

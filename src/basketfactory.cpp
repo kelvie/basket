@@ -20,7 +20,7 @@
 
 #include <qdir.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <QDomElement>
@@ -68,8 +68,8 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
 	// TODO: REALLY unpack (this hand-creation is temporary, or it could be used in case the template can't be found)
 	QFile file(fullPath + "/.basket");
 	if (file.open(QIODevice::WriteOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
 		Basket *currentBasket = Global::bnpView->currentBasket();
 		int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns-1)*Note::RESIZER_WIDTH) / nbColumns : 0);

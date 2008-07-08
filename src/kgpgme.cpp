@@ -33,7 +33,7 @@
 #include <qlabel.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <klocale.h>
 #include <locale.h>
 #include <errno.h>
@@ -60,7 +60,7 @@ class KGpgSelKey : public KDialog
 			setButtons(Ok | Cancel);
 
 			QString keyname;
-			Q3VBoxLayout* vbox;
+			QVBoxLayout* vbox;
 			QWidget* page = new QWidget(this);
 			QLabel* labeltxt;
 			KIconLoader* loader = KIconLoader::global();
@@ -77,7 +77,7 @@ class KGpgSelKey : public KDialog
 			keysListpr->setAllColumnsShowFocus(true);
 
 			labeltxt = new QLabel(i18n("Choose a secret key:"),page);
-			vbox = new Q3VBoxLayout(page);
+			vbox = new QVBoxLayout(page);
 
 			KGpgKeyList list = gpg.keys(true);
 

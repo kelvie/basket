@@ -20,7 +20,7 @@
 
 #include <qstring.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QDropEvent>
 #include <Q3MemArray>
 #include <kurl.h>
@@ -275,8 +275,8 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 //	parent->dontCareOfCreation(fullPath);
 	QFile file(fullPath);
 	if ( file.open(QIODevice::WriteOnly) ) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << content;
 		file.close();
 		return fileName;

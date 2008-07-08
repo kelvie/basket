@@ -24,7 +24,7 @@
 #include <qmap.h>
 #include <qdir.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <ktar.h>
 #include <qdom.h>
 #include <kmessagebox.h>
@@ -148,8 +148,8 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	if (file.open(QIODevice::WriteOnly)) {
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::Latin1);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::Latin1);
 		stream << "BasKetNP:archive\n"
 		       << "version:0.6.1\n"
 //		       << "read-compatible:0.6.1\n"
@@ -261,8 +261,8 @@ void Archive::open(const QString &path)
 
 	QFile file(path);
 	if (file.open(QIODevice::ReadOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::Latin1);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::Latin1);
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive") {
 			KMessageBox::error(0, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));

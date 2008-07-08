@@ -30,10 +30,10 @@
 #include <qlayout.h>
 #include <qtoolbutton.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3GridLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPixmap>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <kpushbutton.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
@@ -70,7 +70,7 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
  : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WGroupLeader)
  , m_likeBack(likeBack)
 {
-	Q3HBoxLayout *layout = new Q3HBoxLayout(this);
+	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	QIcon likeIconSet    = KIcon("likeback_like");
 	QIcon dislikeIconSet = KIcon("likeback_dislike");
@@ -670,7 +670,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_windowPath = LikeBack::activeWindowPath();
 
 	QWidget *page = new QWidget(this);
-	Q3VBoxLayout *pageLayout = new Q3VBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *pageLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
 
 	// The introduction message:
 	QLabel *introduction = new QLabel(introductionText(), page);
@@ -683,7 +683,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 
 	// The radio buttons:
 	QWidget *buttons = new QWidget(box);
-	Q3GridLayout *buttonsGrid = new Q3GridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = KIconLoader::global()->loadIcon(
             "likeback_like", KIconLoader::NoGroup, 16,

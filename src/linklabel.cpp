@@ -20,12 +20,12 @@
 
 #include <qlabel.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3GridLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPixmap>
 #include <Q3Frame>
 #include <QEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <Q3BoxLayout>
 #include <kurl.h>
 #include <qlayout.h>
@@ -575,7 +575,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
  : QWidget(parent, name, fl)
 {
 	QLabel      *label;
-	Q3VBoxLayout *layout = new Q3VBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
@@ -583,7 +583,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
 	layout->addWidget(m_bold);
 
-	Q3GridLayout *gl = new Q3GridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
+	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
 	m_underlining = new QComboBox(false, this);
@@ -605,7 +605,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
 
-	Q3HBoxLayout *icoLay = new Q3HBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
 	m_iconSize = new IconSizeCombo(false, this);
 	icoLay->addWidget(m_iconSize);
 	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);

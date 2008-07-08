@@ -27,7 +27,7 @@
 #include <q3buttongroup.h>
 #include <qradiobutton.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
@@ -48,7 +48,7 @@ PasswordDlg::PasswordDlg(QWidget *parent)
 	showButtonSeparator(true);
 
 	setMainWidget(new QWidget(this));
-	Q3HBoxLayout* toplayout = new Q3HBoxLayout(mainWidget(), 0, 0);
+	QHBoxLayout* toplayout = new QHBoxLayout(mainWidget(), 0, 0);
 	w = new Password(mainWidget());
 	toplayout->addWidget(w, 1);
 }

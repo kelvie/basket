@@ -24,9 +24,9 @@
 #include <qwidget.h>
 //Added by qt3to4:
 #include <QCloseEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
-class Q3VBoxLayout;
+class QVBoxLayout;
 class Q3TextBrowser;
 class QString;
 class QCloseEvent;
@@ -48,7 +48,7 @@ class DebugWindow : public QWidget  {
   protected:
 	virtual void closeEvent(QCloseEvent *event);
   private:
-	Q3VBoxLayout  *layout;
+	QVBoxLayout  *layout;
 	Q3TextBrowser *textBrowser;
 };
 

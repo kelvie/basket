@@ -37,7 +37,7 @@
 #include <qfile.h>
 #include <qpainter.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3ValueList>
 #include <QPixmap>
 #include <kprogressdialog.h>
@@ -203,7 +203,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 	stream.setDevice(&file);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 
 	// Compute the colors to draw dragient for notes:
 	QColor topBgColor;

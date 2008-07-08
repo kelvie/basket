@@ -24,7 +24,7 @@
 #include <qtextcodec.h>
 #include <qbuffer.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3ValueList>
 #include <QPixmap>
 #include <k3urldrag.h>
@@ -247,8 +247,8 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 /*		Code for only one: ===============
 		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
-		Q3TextStream stream(baMozUrl, QIODevice::WriteOnly);
-		stream.setEncoding(Q3TextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
+		QTextStream stream(baMozUrl, QIODevice::WriteOnly);
+		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
 		stream << xMozUrl;
 		Q3StoredDrag *xMozUrlDrag = new Q3StoredDrag("text/x-moz-url");
 		xMozUrlDrag->setEncodedData(baMozUrl);

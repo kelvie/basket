@@ -26,7 +26,7 @@
 #include <qdom.h>
 #include <qdir.h>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3ValueList>
 #include <QPixmap>
 #include <klocale.h>
@@ -699,8 +699,8 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 	// Write to Disk:
 	QFile file(fullPath);
 	if (file.open(QIODevice::WriteOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
 		file.close();

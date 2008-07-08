@@ -22,13 +22,13 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 //Added by qt3to4:
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <QKeyEvent>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <qlayout.h>
 #include <kiconloader.h>
 #include <kapplication.h>
@@ -347,7 +347,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	setMainWidget(new QWidget(this));
 
-	Q3HBoxLayout *layout = new Q3HBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
 
 	/* Left part: */
 
@@ -376,12 +376,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_moveDown,  SIGNAL(clicked()), this, SLOT(moveDown())  );
 	connect( m_deleteTag, SIGNAL(clicked()), this, SLOT(deleteTag()) );
 
-	Q3HBoxLayout *topLeftLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *topLeftLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
 	topLeftLayout->addWidget(m_moveUp);
 	topLeftLayout->addWidget(m_moveDown);
 	topLeftLayout->addWidget(m_deleteTag);
 
-	Q3VBoxLayout *leftLayout = new Q3VBoxLayout(0, /*margin=*/0, spacingHint());
+	QVBoxLayout *leftLayout = new QVBoxLayout(0, /*margin=*/0, spacingHint());
 	leftLayout->addWidget(newTag);
 	leftLayout->addWidget(newState);
 	leftLayout->addWidget(m_tags);
@@ -407,7 +407,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	m_inherit = new QCheckBox(i18n("&Inherited by new sibling notes"), tagWidget);
 
-	Q3GridLayout *tagGrid = new Q3GridLayout(tagWidget, /*rows=*/3, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	QGridLayout *tagGrid = new QGridLayout(tagWidget, /*rows=*/3, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
 	tagGrid->addWidget(tagNameLabel,     0, 0);
 	tagGrid->addMultiCellWidget(m_tagName, /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/3);
 	tagGrid->addWidget(shortcutLabel,    1, 0);
@@ -438,7 +438,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_removeEmblem->setFixedHeight(height);
 	m_emblem->resetIcon();
 
-	Q3HBoxLayout *emblemLayout = new Q3HBoxLayout(emblemWidget, /*margin=*/0, spacingHint());
+	QHBoxLayout *emblemLayout = new QHBoxLayout(emblemWidget, /*margin=*/0, spacingHint());
 	emblemLayout->addWidget(m_emblem);
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
@@ -446,7 +446,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_backgroundColor = new KColorCombo2(QColor(), palette().color(QPalette::Base), stateWidget);
 	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
 
-	Q3HBoxLayout *backgroundColorLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
@@ -477,7 +477,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QLabel *textLabel = new QLabel(m_bold, i18n("&Text:"), stateWidget);
 
-	Q3HBoxLayout *textLayout = new Q3HBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *textLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
 	textLayout->addWidget(m_bold);
 	textLayout->addWidget(m_underline);
 	textLayout->addWidget(m_italic);
@@ -510,7 +510,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		     "representing an empty checkbox and a checked box.") + "</p>" +
 		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
 		stateWidget);
-	Q3HBoxLayout *textEquivalentHelpLayout = new Q3HBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
 	textEquivalentHelpLayout->addWidget(textEquivalentHelp);
 	textEquivalentHelpLayout->addStretch(255);
 
@@ -524,11 +524,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		"<p align='center'><img src=\"__resource_help_tag_export_on_every_lines.png\"></p>" +
 		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every line of the note."),
 		stateWidget);
-	Q3HBoxLayout *onEveryLinesHelpLayout = new Q3HBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
 	onEveryLinesHelpLayout->addWidget(onEveryLinesHelp);
 	onEveryLinesHelpLayout->addStretch(255);
 
-	Q3GridLayout *textEquivalentGrid = new Q3GridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	QGridLayout *textEquivalentGrid = new QGridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
 	textEquivalentGrid->addWidget(textEquivalentLabel,      0, 0);
 	textEquivalentGrid->addWidget(m_textEquivalent,         0, 1);
 	textEquivalentGrid->addLayout(textEquivalentHelpLayout, 0, 2);
@@ -538,7 +538,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	KSeparator *separator = new KSeparator(Qt::Horizontal, stateWidget);
 
-	Q3GridLayout *stateGrid = new Q3GridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
+	QGridLayout *stateGrid = new QGridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
 	stateGrid->addWidget(m_stateNameLabel,     0, 0);
 	stateGrid->addMultiCellWidget(m_stateName,            /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/6);
 	stateGrid->addWidget(emblemLabel,          1, 0);
@@ -556,7 +556,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	stateGrid->addMultiCellWidget(separator,              /*fromRow=*/4, /*toRow=*/4, /*fromCol=*/0, /*toCol=*/6);
 	stateGrid->addMultiCellLayout(textEquivalentGrid,     /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/0, /*toCol=*/6);
 
-	Q3VBoxLayout *rightLayout = new Q3VBoxLayout(rightWidget, /*margin=*/0, spacingHint());
+	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget, /*margin=*/0, spacingHint());
 	rightLayout->addWidget(m_tagBox);
 	rightLayout->addWidget(m_stateBox);
 	rightLayout->addStretch();

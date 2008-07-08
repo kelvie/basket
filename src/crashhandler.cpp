@@ -24,7 +24,7 @@
 
 #include <qfile.h>
 #include <qregexp.h>
-#include <q3textstream.h>
+#include <QTextStream>
 //Added by qt3to4:
 
 #include <cstdio>         //popen, fread

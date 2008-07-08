@@ -28,7 +28,7 @@
 #include <QFocusEvent>
 #include <QPaintEvent>
 #include <QDragMoveEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QDragLeaveEvent>
 #include <QKeyEvent>
 #include <Q3Frame>
@@ -36,11 +36,11 @@
 #include <QLabel>
 #include <QDropEvent>
 #include <QDragEnterEvent>
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <Q3ValueList>
 #include <QMouseEvent>
 #include <QCloseEvent>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <kstyle.h>
 #include <qtooltip.h>
 #include <q3listview.h>
@@ -202,7 +202,7 @@ Q3ValueList<Note*> NoteSelection::parentGroups()
 DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, const char *name, Qt::WFlags fl)
  : QWidget(parent, name, fl)
 {
-	m_layout = new Q3VBoxLayout(this);
+	m_layout = new QVBoxLayout(this);
 	m_filter = new FilterBar(this);
 	m_basket = new Basket(this, folderName);
 	m_layout->addWidget(m_basket);
@@ -289,7 +289,6 @@ void TransparentWidget::paintEvent(QPaintEvent*event)
 	QPainter painter(this);
 
 //	painter.save();
-
 	painter.translate(-m_x, -m_y);
 	m_basket->drawContents(&painter, m_x, m_y, width(), height());
 
@@ -3125,7 +3124,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 			m_decryptBox->setFrameShadow( Q3Frame::Plain );
 			m_decryptBox->setLineWidth( 1 );
 
-			Q3GridLayout* layout = new Q3GridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
+			QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
 
 #ifdef HAVE_LIBGPGME
 			m_button = new QPushButton( m_decryptBox, "button" );
@@ -5480,7 +5479,7 @@ DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &mes
 	//enableButton(Close, false);
 	//enableButtonOk(false);
 	setModal(true);
-	Q3HBoxLayout *layout = new Q3HBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
 	QPixmap icon = KIconLoader::global()->loadIcon(
         "hdd_unmount", KIconLoader::NoGroup, 64, KIconLoader::DefaultState,
         QStringList(), /*path_store=*/0L, /*canReturnNull=*/true
