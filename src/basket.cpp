@@ -4165,7 +4165,7 @@ void Basket::noteDelete()
 	if (Settings::confirmNoteDeletion())
 		really = KMessageBox::questionYesNo( this,
 			i18np("<qt>Do you really want to delete this note?</qt>",
-			     "<qt>Do you really want to delete these <b>%n</b> notes?</qt>",
+			     "<qt>Do you really want to delete these <b>%1</b> notes?</qt>",
 			     countSelecteds()),
 			i18np("Delete Note", "Delete Notes", countSelecteds())
 #if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
