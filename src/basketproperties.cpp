@@ -96,13 +96,15 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 
 	m_backgroundImage->insertItem(i18n("(None)"), 0);
 	m_backgroundImagesMap.insert(0, "");
+	m_backgroundImage->setIconSize ( QSize(100,75));
 	QStringList backgrounds = Global::backgroundManager->imageNames();
 	int index = 1;
 	for (QStringList::Iterator it = backgrounds.begin(); it != backgrounds.end(); ++it) {
 		QPixmap *preview = Global::backgroundManager->preview(*it);
 		if (preview) {
 			m_backgroundImagesMap.insert(index, *it);
-			m_backgroundImage->insertItem(*preview, index);
+			m_backgroundImage->insertItem(*it,index);
+			m_backgroundImage->setItemData(index,*preview,Qt::DecorationRole);
 			if (m_basket->backgroundImageName() == *it)
 				m_backgroundImage->setCurrentItem(index);
 			index++;
