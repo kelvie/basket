@@ -651,7 +651,7 @@ bool BasketTreeListView::event(QEvent *e)
 		}
 		return true;
 	}
-	return false;
+	return K3ListView::event(e);
 }
 
 void BasketTreeListView::viewportResizeEvent(QResizeEvent *event)
