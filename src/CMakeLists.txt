@@ -46,27 +46,37 @@ set(basketcommon_LIB_SRCS
     basketstatusbar.cpp
     backup.cpp)
 
-link_libraries( ${KDE4_KDE3SUPPORT_LIBS} )
-
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
 
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-target_link_libraries(basketcommon ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS}
-  ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ${QIMAGEBLITZ_LIBRARIES} ${GPGME_VANILLA_LIBRARIES})
+message (${KDE4_KDECORE_LIBS})
+
+target_link_libraries(basketcommon
+  ${KDE4_KDE3SUPPORT_LIBS} # Remove me
+  ${KDE4_KDECORE_LIBS}
+  ${KDE4_KIO_LIBS}
+  ${KDE4_KDEUI_LIBS}
+  ${KDE4_KPARTS_LIBS}
+  ${QIMAGEBLITZ_LIBRARIES}
+  ${GPGME_VANILLA_LIBRARIES})
 
 set_target_properties(basketcommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
-install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
 
+install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
 
 ########### next target ###############
 
 set(basket_SRCS main.cpp mainwindow.cpp application.cpp)
 
 kde4_add_executable(basket ${basket_SRCS})
-target_link_libraries(basket ${KDE4_KDECORE_LIBS} ${KDE4_KUTILS_LIBS} basketcommon)
+target_link_libraries(basket
+  ${KDE4_KDE3SUPPORT_LIBS} # Remove me as well
+  ${KDE4_KDECORE_LIBS}
+  ${KDE4_KUTILS_LIBS}
+  basketcommon)
 
 install(TARGETS basket DESTINATION ${BIN_INSTALL_DIR})
 
