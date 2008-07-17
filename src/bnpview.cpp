@@ -1696,7 +1696,7 @@ void BNPView::updateNotesActions()
 }
 } else if (m_type != Color) {
 	popupMenu->insertSeparator();
-	popupMenu->insertItem( SmallIconSet("document-save-as"), i18n("&Save a copy as..."), this, SLOT(slotSaveAs()), 0, 10 );
+	popupMenu->insertItem( KIcon("document-save-as"), i18n("&Save a copy as..."), this, SLOT(slotSaveAs()), 0, 10 );
 }*/
 }
 
@@ -2640,11 +2640,11 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	}
 
 	menu.insertSeparator();
-//	menu.insertItem( /*SmallIconSet("edit-delete"),*/ "&Assign new Tag...", 1 );
-	//id = menu.insertItem( SmallIconSet("edit-delete"), "&Remove All", -2 );
+//	menu.insertItem( /*KIcon("edit-delete"),*/ "&Assign new Tag...", 1 );
+	//id = menu.insertItem( KIcon("edit-delete"), "&Remove All", -2 );
 	//if (referenceNote->states().isEmpty())
 	//	menu.setItemEnabled(id, false);
-//	menu.insertItem( SmallIconSet("configure"),  "&Customize...", 3 );
+//	menu.insertItem( KIcon("configure"),  "&Customize...", 3 );
 	menu.addAction( new KAction(i18n("&Assign new Tag..."), &menu));
 	menu.addAction( new KAction(KIcon("edit-delete"), i18n("&Remove All"), &menu));
 	menu.addAction( new KAction(KIcon("configure"), i18n("&Customize..."), &menu));
