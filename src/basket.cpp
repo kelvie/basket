@@ -3431,10 +3431,10 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
 		menu.addTitle(/*SmallIcon(state->icon()), */tag->name());
-		menu.insertItem( SmallIconSet("edit-delete"), i18n("&Remove"),             1 );
-		menu.insertItem( SmallIconSet("configure"),  i18n("&Customize..."),       2 );
+		menu.insertItem( KIcon("edit-delete"), i18n("&Remove"),             1 );
+		menu.insertItem( KIcon("configure"),  i18n("&Customize..."),       2 );
 		menu.insertSeparator();
-		menu.insertItem( SmallIconSet("search-filter"),     i18n("&Filter by this Tag"), 3 );
+		menu.insertItem( KIcon("search-filter"),     i18n("&Filter by this Tag"), 3 );
 	} else {
 		menu.addTitle(tag->name());
 		Q3ValueList<State*>::iterator it;
