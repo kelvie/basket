@@ -52,8 +52,6 @@ QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPV
 
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
-message (${KDE4_KDECORE_LIBS})
-
 target_link_libraries(basketcommon
   ${KDE4_KDE3SUPPORT_LIBS} # Remove me
   ${KDE4_KDECORE_LIBS}
