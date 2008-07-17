@@ -84,7 +84,7 @@
                     "But, all is not lost! You could potentially help us fix the crash. "
                     "Information describing the crash is below, so just click send, "
                     "or if you have time, write a brief description of how the crash happened first.\n\n"
-                    "Many thanks." ).arg(KGlobal::mainComponent().aboutData()->programName()) + "\n\n";
+                    "Many thanks.", KGlobal::mainComponent().aboutData()->programName()) + "\n\n";
             body += "\n\n\n\n\n\n" + i18n(
                     "The information below is to help the developers identify the problem, "
                     "please do not modify it." ) + "\n\n\n\n";
