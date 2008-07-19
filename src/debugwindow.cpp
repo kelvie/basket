@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qlayout.h>
-#include <q3textbrowser.h>
-#include <qstring.h>
-#include <qevent.h>
+#include <QLayout>
+#include <QTextBrowser>
+#include <QString>
+#include <QEvent>
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QVBoxLayout>
@@ -37,9 +37,9 @@ DebugWindow::DebugWindow(QWidget *parent, const char *name )
 	setCaption(i18n("Debug Window"));
 
 	layout      = new QVBoxLayout(this);
-	textBrowser = new Q3TextBrowser(this);
+	textBrowser = new QTextBrowser(this);
 
-	textBrowser->setWordWrap(Q3TextBrowser::NoWrap);
+	textBrowser->setWordWrapMode(QTextOption::NoWrap);
 
 	layout->addWidget(textBrowser);
 	textBrowser->show();

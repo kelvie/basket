@@ -32,7 +32,7 @@
 #include <Qt3Support>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <QDomDocument>
 
 #include "softwareimporters.h"
@@ -106,7 +106,7 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 	QWidget *indentedTextEdit = new QWidget(m_choices);
 	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
 	hLayout->addSpacing(20);
-	m_customSeparator = new Q3TextEdit(indentedTextEdit);
+	m_customSeparator = new QTextEdit(indentedTextEdit);
 	m_customSeparator->setTextFormat(Qt::PlainText);
 	hLayout->addWidget(m_customSeparator);
 	m_choices->insertChild(indentedTextEdit);

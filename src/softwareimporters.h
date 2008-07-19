@@ -29,7 +29,7 @@ class Q3VButtonGroup;
 class QDomElement;
 class KTextEdit;
 class QRadioButton;
-class Q3TextEdit;
+class QTextEdit;
 
 class Basket;
 class Note;
@@ -63,7 +63,7 @@ class TextFileImportDialog : public KDialog
   private:
 	Q3VButtonGroup *m_choices;
 	QRadioButton  *m_anotherSeparator;
-	Q3TextEdit     *m_customSeparator;
+	QTextEdit     *m_customSeparator;
 };
 
 /** Functions that import data from other softwares.

@@ -21,12 +21,12 @@
 #ifndef VARIOUSWIDGETS_H
 #define VARIOUSWIDGETS_H
 
-#include <qwidget.h>
+#include <QWidget>
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <kcombobox.h>
-#include <qdialog.h>
+#include <QDialog>
 #include <kurllabel.h>
 #include <qstring.h>
 #include <KDialog>
