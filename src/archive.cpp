@@ -257,7 +257,7 @@ void Archive::open(const QString &path)
 	QString tempFolder = Global::savesFolder() + "temp-archive/";
 	QDir dir;
 	dir.mkdir(tempFolder);
-	const Q_ULONG BUFFER_SIZE = 1024;
+	const qint64 BUFFER_SIZE = 1024;
 
 	QFile file(path);
 	if (file.open(QIODevice::ReadOnly)) {
@@ -294,7 +294,7 @@ void Archive::open(const QString &path)
 				writeCompatibleVersions = QStringList::split(value, ";");
 			} else if (key == "preview*") {
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qint64 size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -305,15 +305,7 @@ void Archive::open(const QString &path)
 //FIXME: We do not need the preview for now
 //				QFile previewFile(tempFolder + "preview.png");
 //				if (previewFile.open(QIODevice::WriteOnly)) {
-					char *buffer = new char[BUFFER_SIZE];
-					Q_LONG sizeRead;
-					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
-//						previewFile.write(buffer, sizeRead);
-						size -= sizeRead;
-					}
-//					previewFile.close();
-					delete buffer;
-//				}
+					stream.seek(stream.pos()+size);
 			} else if (key == "archive*") {
 				if (version != "0.6.1" && readCompatibleVersions.contains("0.6.1") && !writeCompatibleVersions.contains("0.6.1")) {
 					KMessageBox::information(
@@ -339,7 +331,7 @@ void Archive::open(const QString &path)
 				}
 
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qint64 size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -352,9 +344,10 @@ void Archive::open(const QString &path)
 				// Get the archive file:
 				QString tempArchive = tempFolder + "temp-archive.tar.gz";
 				QFile archiveFile(tempArchive);
+				file.seek(stream.pos());
 				if (archiveFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					Q_LONG sizeRead;
+					qint64 sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 						archiveFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -384,12 +377,13 @@ void Archive::open(const QString &path)
 
 					// Import the Baskets:
 					renameBasketFolders(extractionFolder, mergedStates);
+					stream.seek(file.pos());
 
 				}
 			} else if (key.endsWith("*")) {
 				// We do not know what it is, but we should read the embedded-file in order to discard it:
 				bool ok;
-				ulong size = value.toULong(&ok);
+				qint64 size = value.toULong(&ok);
 				if (!ok) {
 					KMessageBox::error(0, i18n("This file is corrupted. It can not be opened."), i18n("Basket Archive Error"));
 					file.close();
@@ -398,7 +392,7 @@ void Archive::open(const QString &path)
 				}
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
-				Q_LONG sizeRead;
+				qint64 sizeRead;
 				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
