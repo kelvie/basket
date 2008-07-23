@@ -3816,7 +3816,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 			//        editor->sync() CRASH!!
 	//		editor->sync();
 			y = note->y() + Note::NOTE_MARGIN - frameWidth;
-			height = textEdit->viewport()->height() + 2*frameWidth;
+			height = note->height() - 2*frameWidth - 2*Note::NOTE_MARGIN;
 //			height = /*qMax(*/height/*, note->height())*/;
 //			height = qMin(height, visibleHeight());
 			width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
