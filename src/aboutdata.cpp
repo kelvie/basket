@@ -33,7 +33,7 @@ AboutData::AboutData()
    VERSION, ki18n(description), KAboutData::License_GPL_V2,
    ki18n("(c) 2003-2007, S\303\251bastien Lao\303\273t"), KLocalizedString(),
    "http://basket.kde.org/",
-   "basket-devel@lists.sourceforge.net" )
+   "http://basket.kde.org/bugs/" )
 {
 	addAuthor( ki18n("Kelvie Wong"),
 		   ki18n("Maintainer"),
