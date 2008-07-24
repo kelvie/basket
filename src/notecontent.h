@@ -31,7 +31,11 @@
 #include <QHttp>
 
 #include "linklabel.h"
-
+#include <Phonon/AudioOutput>
+#include <Phonon/SeekSlider>
+#include <Phonon/MediaObject>
+#include <Phonon/VolumeSlider>
+#include <Phonon/BackendCapabilities>
 class QDomDocument;
 class QDomElement;
 class QPainter;
@@ -403,6 +407,10 @@ class SoundContent : public FileContent // A sound is a file with just a bit dif
 	QString customOpenCommand();
 	// Content-Specific Methods:
 	LinkLook* linkLook() { return LinkLook::soundLook; }
+	Phonon::MediaObject *music;
+   private slots:
+	void stateChanged(Phonon::State, Phonon::State);
+	
 };
 
 /** Real implementation of link notes:
