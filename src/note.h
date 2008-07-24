@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ class Q3SimpleRichText;
   * new TextContent(note, fileName); // note is now a note with a text content!
   * new ColorContent(note, Qt::red); // Should never be done!!!!! the old Content should be deleted...
   * @endcode
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class Note
 {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -53,7 +53,7 @@ private:
 #ifdef USE_OLD_SYSTRAY
 
 /** This class provide a personalized system tray icon.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class SystemTray2 : public SystemTray
 {

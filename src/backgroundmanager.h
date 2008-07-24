@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 
 /** A node in the list of background images of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class BackgroundEntry
 {
@@ -50,7 +50,7 @@ class BackgroundEntry
 
 /** A node in the list of opaque background images (with a background color applyed to an image) of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class OpaqueBackgroundEntry
 {
@@ -83,7 +83,7 @@ class OpaqueBackgroundEntry
   *   When the user removed the object background image (or when the object/basket/... is removed), the object should call unsubscribe() for
   *   EVERY subscribed image and image couples. Usage count is decreased for those images and a garbage collector will remove the cached images
   *   if nothing is subscribed to them (to free memory).
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class BackgroundManager : private QObject
 {

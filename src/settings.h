@@ -182,7 +182,7 @@ class ApplicationsPage : public KCModule
 };
 
 /** Handle all global variables (to avoid lot of extern declarations)
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class BASKET_EXPORT Settings // FIXME: Distaptch new config events ?
 {

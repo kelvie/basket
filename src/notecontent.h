@@ -53,7 +53,7 @@ class HtmlExporter;
 
 /** A list of numeric identifier for each note type.
   * Declare a varible with the type NoteType::Id and assign a value like NoteType::Text...
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 namespace NoteType
 {
@@ -62,7 +62,7 @@ namespace NoteType
 
 /** Abstract base class for every content type of basket note.
  * It's a base class to represent those types: Text, Html, Image, Animation, Sound, File, Link, Launcher, Color, Unknown.
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class NoteContent // TODO: Mark some methods as const!             and some (like typeName() as static!
 {
@@ -144,7 +144,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 };
 
 /** Real implementation of plain text notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class TextContent : public NoteContent
 {
@@ -187,7 +187,7 @@ class TextContent : public NoteContent
 };
 
 /** Real implementation of rich text (HTML) notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class HtmlContent : public NoteContent
 {
@@ -231,7 +231,7 @@ class HtmlContent : public NoteContent
 };
 
 /** Real implementation of image notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class ImageContent : public NoteContent
 {
@@ -274,7 +274,7 @@ class ImageContent : public NoteContent
 };
 
 /** Real implementation of animated image (GIF, MNG) notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class AnimationContent : public QObject, public NoteContent // QObject to be able to receive QMovie signals
 {
@@ -322,7 +322,7 @@ protected:
 };
 
 /** Real implementation of file notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class FileContent : public QObject, public NoteContent
 {
@@ -375,7 +375,7 @@ class FileContent : public QObject, public NoteContent
 };
 
 /** Real implementation of sound notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class SoundContent : public FileContent // A sound is a file with just a bit different user interaction
 {
@@ -406,7 +406,7 @@ class SoundContent : public FileContent // A sound is a file with just a bit dif
 };
 
 /** Real implementation of link notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class LinkContent : public QObject, public NoteContent
 {
@@ -477,7 +477,7 @@ class LinkContent : public QObject, public NoteContent
 };
 
 /** Real implementation of launcher notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class LauncherContent : public NoteContent
 {
@@ -527,7 +527,7 @@ class LauncherContent : public NoteContent
 };
 
 /** Real implementation of color notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class ColorContent : public NoteContent
 {
@@ -567,7 +567,7 @@ class ColorContent : public NoteContent
 };
 
 /** Real implementation of unknown MIME-types dropped notes:
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class UnknownContent : public NoteContent
 {

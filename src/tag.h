@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by S�astien Laot                                 *
+ *   Copyright (C) 2005 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +34,7 @@ class QPainter;
 class Tag;
 
 /**
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class State
 {
@@ -104,7 +104,7 @@ class State
 /** A Tag is a category of Notes.
   * A Note can have 0, 1 or more Tags.
   * A Tag can have a unique State or several States.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class Tag
 {

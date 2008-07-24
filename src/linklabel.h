@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2003 by S�astien Laot                                 *
+ *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,7 +46,7 @@ class HelpLabel;
 class KCModule;
 
 /** Store the style of links
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class LinkLook
 {
@@ -100,7 +100,7 @@ class LinkLook
 
 /** Used to represent links with icon and specific look
   * Note : This label will appear blank while LinkLook willn't be set
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class LinkLabel : public Q3Frame
 {
@@ -140,7 +140,7 @@ class LinkLabel : public Q3Frame
 /** THE NEW CLASS TO DISPLAY Links FOR THE NEW BASKET ENGINE.
  * We should get ride of class LinkLabel soon.
  * And LinkLabel will be entirely rewritten to use this LinkDisplay as the drawing primitives.
- * @author S�astien Laot
+ * @author Sébastien Laoût
  */
 class LinkDisplay
 {
@@ -179,7 +179,7 @@ class LinkDisplay
 };
 
 /** A widget to edit a LinkLook, showing a live example to the user.
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class LinkLookEditWidget : public QWidget
 {

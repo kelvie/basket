@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by S�astien Laot                                 *
+ *   Copyright (C) 2005 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

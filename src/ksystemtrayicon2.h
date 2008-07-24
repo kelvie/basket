@@ -23,7 +23,7 @@
 
 /** Convenient class to develop the displayCloseMessage() dialog
   * hopefuly integrated in KDE 3.4
-  * @author S�astien Laot
+  * @author Sébastien Laoût
   */
 class KSystemTray2 : public KSystemTrayIcon
 {
