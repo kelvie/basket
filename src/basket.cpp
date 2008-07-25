@@ -3576,8 +3576,9 @@ void Basket::unlockHovering()
 	doHoverEffects();
 }
 
-void Basket::toggledTagInMenu(int id)
+void Basket::toggledTagInMenu(QAction *act)
 {
+	int id = act->data().toInt();
 	if (id == 1) { // Assign new Tag...
 		TagsEditDialog dialog(this, /*stateToEdit=*/0, /*addNewTag=*/true);
 		dialog.exec();

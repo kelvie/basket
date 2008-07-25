@@ -2623,37 +2623,47 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	    currentState = currentTag->states().first();
 
 	    QKeySequence sequence;
-	    if (!currentTag->shortcut().isEmpty())
-		sequence = currentTag->shortcut().primary();
+		if (!currentTag->shortcut().isEmpty())
+			sequence = currentTag->shortcut().primary();
 
 	    StateAction *mi = new StateAction(currentState, KShortcut(sequence), this, true);
-	    if (referenceNote && referenceNote->hasTag(currentTag))
-		mi->setChecked(true);
+
+		// The previously set ID will be set in the actions themselves as data.
+		mi->setData(i);
+
+		if (referenceNote && referenceNote->hasTag(currentTag))
+			mi->setChecked(true);
 
 	    menu.addAction(mi);
 
 	    if (!currentTag->shortcut().isEmpty())
-		menu.setAccel(sequence, i);
+			mi->setShortcut(sequence);
 
-	    menu.setItemEnabled(i, enable);
+		mi->setEnabled(enable);
 	    ++i;
 	}
 
+	// I don't like how this is implemented; but I can't think of a better way
+	// to do this, so I will have to leave it for now
 	menu.insertSeparator();
-//	menu.insertItem( /*KIcon("edit-delete"),*/ "&Assign new Tag...", 1 );
-	//id = menu.insertItem( KIcon("edit-delete"), "&Remove All", -2 );
-	//if (referenceNote->states().isEmpty())
-	//	menu.setItemEnabled(id, false);
-//	menu.insertItem( KIcon("configure"),  "&Customize...", 3 );
-	menu.addAction( new KAction(i18n("&Assign new Tag..."), &menu));
-	menu.addAction( new KAction(KIcon("edit-delete"), i18n("&Remove All"), &menu));
-	menu.addAction( new KAction(KIcon("configure"), i18n("&Customize..."), &menu));
+	KAction *act;
+	act = new KAction(i18n("&Assign new Tag..."), &menu);
+	act->setData(1);
+	menu.addAction(act);
+
+	act = new KAction(KIcon("edit-delete"), i18n("&Remove All"), &menu);
+	act->setData(2);
+	menu.addAction(act);
+
+	act = new KAction(KIcon("configure"), i18n("&Customize..."), &menu);
+	act->setData(3);
+	menu.addAction(act);
 
 	menu.setItemEnabled(1, enable);
 	if (!currentBasket()->selectedNotesHaveTags())
 		menu.setItemEnabled(2, false);
 
-	connect( &menu, SIGNAL(activated(int)), currentBasket(), SLOT(toggledTagInMenu(int)) );
+	connect( &menu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)) );
 	connect( &menu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
 	connect( &menu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
 }
@@ -2705,7 +2715,7 @@ void BNPView::disconnectTagsMenu()
 
 void BNPView::disconnectTagsMenuDelayed()
 {
-	disconnect( m_lastOpenedTagsMenu, SIGNAL(activated(int)), currentBasket(), SLOT(toggledTagInMenu(int)) );
+	disconnect( m_lastOpenedTagsMenu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)) );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );
 	disconnect( m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick())    );
 }
