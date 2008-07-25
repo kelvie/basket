@@ -157,7 +157,7 @@ void BackupDialog::moveToAnotherFolder()
 		}
 		FormatImporter copier;
 		copier.moveFolder(Global::savesFolder(), folder);
-		Backup::setFolderAndRestart(folder, i18n("Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be restarted to take this change into account."));
+		Backup::setFolderAndRestart(folder, i18n("Your baskets have been successfully moved to <b>%1</b>. %2 is going to be restarted to take this change into account."));
 	}
 }
 
