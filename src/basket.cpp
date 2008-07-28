@@ -3450,7 +3450,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			if (currentState == nextState && !tag->shortcut().isEmpty())
 			    sequence = tag->shortcut().primary();
 
-			StateAction *sa = new StateAction(state, KShortcut(sequence), false);
+			StateAction *sa = new StateAction(currentState, KShortcut(sequence), false);
 			sa->setChecked(state == currentState);
 			sa->setActionGroup(emblemGroup);
 
