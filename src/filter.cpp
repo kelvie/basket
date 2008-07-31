@@ -75,7 +75,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 	m_resetButton->setEnabled(false);
 
 	// Configure the Tags combobox:
-	repopulateTagsComnbo();
+	repopulateTagsCombo();
 
 	// Configure the Serach in all Baskets button:
 	m_inAllBasketsButton->setToggleButton(true);
@@ -143,7 +143,7 @@ void FilterBar::setFilterData(const FilterData &data)
 	}
 }
 
-void FilterBar::repopulateTagsComnbo()
+void FilterBar::repopulateTagsCombo()
 {
 	static const int ICON_SIZE = 16;
 

@@ -65,7 +65,7 @@ class FilterBar : public QWidget
 	void escapePressed();
 	void returnPressed();
   public slots:
-	void repopulateTagsComnbo();
+	void repopulateTagsCombo();
 	void reset();
 	void inAllBaskets();
 	void setEditFocus();
