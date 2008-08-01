@@ -243,12 +243,13 @@ void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGro
         emblem = KIconLoader::global()->loadIcon(
             state->emblem(), KIconLoader::NoGroup, 16);
 
+	QWidget *viewport = listView()->viewport();
 	QColor backgroundColor = (isSelected() ? kapp->palette().color(QPalette::Highlight)
 	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
-	                                                                                         : listView()->paletteBackgroundColor()));
+						  : viewport->palette().color(viewport->backgroundRole())));
 	QColor textColor = (isSelected() ? kapp->palette().color(QPalette::HighlightedText)
 	                                 : (withIcon && state->textColor().isValid() ? state->textColor()
-	                                                                             : listView()->paletteForegroundColor()));
+					    : viewport->palette().color(viewport->foregroundRole())));
 
 	// Bufferize the drawing of items (otherwize, resizing the splitter make the tree act like a Christmas Tree ;-D ):
 	QPixmap theBuffer(width, height());

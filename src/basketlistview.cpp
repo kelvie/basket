@@ -488,9 +488,14 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 	// Bufferize the drawing of items (otherwize, resizing the splitter make the tree act like a Christmas Tree ;-D ):
 	QPixmap theBuffer(width, height());
 	QPainter thePainter(&theBuffer);
+	QWidget *viewport  = listView()->viewport();
 
 	// Fill with the basket background color:
-	QColor background = (isCurrentBasket() ? palette().color(QPalette::Highlight) : listView()->paletteBackgroundColor());
+	QColor background = palette().color(QPalette::Highlight);
+
+	if (!isCurrentBasket())
+		background = viewport->palette().color(viewport->backgroundRole());
+
 	thePainter.fillRect(0, 0, width, height(), background);
 
 	int textWidth = effectiveWidth - MARGIN - BASKET_ICON_SIZE - MARGIN - MARGIN;
@@ -524,7 +529,7 @@ void BasketListViewItem::paintCell(QPainter *painter, const QColorGroup &/*color
 		}
 	}
 
-	QColor bgColor  = listView()->paletteBackgroundColor();
+	QColor bgColor  = viewport->palette().color(viewport->backgroundRole());
 	QColor selColor = palette().color(QPalette::Highlight);
 	QColor midColor = Tools::mixColor(bgColor, selColor);
 	// Draw the left selection roundings:
@@ -789,7 +794,7 @@ void BasketTreeListView::paintEmptyArea(QPainter *painter, const QRect &rect)
 		last = last->shownItemAbove();
 	if (last && last->isCurrentBasket()) {
 		int y = last->itemPos() + last->height();
-		QColor bgColor  = paletteBackgroundColor();
+		QColor bgColor  = viewport()->palette().color(viewport()->backgroundRole());
 		QColor selColor = palette().color(QPalette::Highlight);
 		QColor midColor = Tools::mixColor(bgColor, selColor);
 		painter->setPen(selColor);
