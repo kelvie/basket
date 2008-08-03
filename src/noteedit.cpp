@@ -554,8 +554,6 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	setMainWidget(page);
 	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
 
-
-
 	QWidget *wid1 = new QWidget(page);
 	QHBoxLayout *titleLay = new QHBoxLayout(wid1, /*margin=*/0, spacingHint());
 	m_title = new DebuggedLineEdit(m_noteContent->title(), wid1);
@@ -569,6 +567,8 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
 	m_icon = new KIconButton(wid);
 	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
+
+	m_url = new KUrlRequester(KUrl(""), wid);
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::MimeType);
 	m_icon->setIconSize(LinkLook::lookForURL(filteredURL)->iconSize());

@@ -242,7 +242,7 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, K3MultipleDrag *multipleD
 		// FIXME: Does Mozilla support the drag of several URLs at once?
 		// FIXME: If no, only provide that if theire is only ONE URL.
 		QString xMozUrl;
-		for (uint i = 0; i < urls.count(); ++i)
+		for (int i = 0; i < urls.count(); ++i)
 			xMozUrl += (xMozUrl.isEmpty() ? "" : "\n") + urls[i].prettyUrl() + "\n" + titles[i];
 /*		Code for only one: ===============
 		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/

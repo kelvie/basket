@@ -35,14 +35,12 @@ class QColor;
 class Basket;
 class Note;
 
-//enum NoteType::Id;
-
-/** Factory class to create (new, drop, past) or load BasketIem, and eventuelly save them (?)
+/** Factory class to create (new, drop, paste) or load BasketIem, and eventually save them (?)
   * @author Sébastien Laoût
   */
 namespace NoteFactory
 {
-	/** Functions to create a new note from a content.
+	/** Functions to create a new note from a content item.
 	  * Content, if any, is saved to file but the note is not insterted in the basket, and the basket is not saved.
 	  * Return 0 if the note has not been successfully created.
 	  * In some cases, the returned note can be a group containing several notes or the first note of a chained list.
@@ -64,7 +62,7 @@ namespace NoteFactory
 	Note* moveFileAndLoad(    const KUrl &url,         Basket *parent);
 	Note* loadFile(           const QString &fileName, Basket *parent); /// << Determine the content of the file (the file SHOULD exists) and return a note of the good type.
 	Note* loadFile(           const QString &fileName, NoteType::Id type, Basket *parent ); /// <<  Create a note of type @p type. The file is not obliged to exist.
-	/** Functions to create a new note from a drop or past event */
+	/** Functions to create a new note from a drop or paste event */
 	Note* dropNote(QMimeSource *source, Basket *parent,
 	               bool fromDrop = false, QDropEvent::Action action = QDropEvent::Copy, Note *noteSource = 0);
 	bool movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropEvent::Action action);

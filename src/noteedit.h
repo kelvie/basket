@@ -49,7 +49,7 @@ class FocusWidgetFilter;
 
 #include "notecontent.h"
 
-/** The base class for every note editors.
+/** The base class for every note editor.
   * Scenario:
   *  The Basket class calls NoteEditor::editNoteContent() with the NoteContent to edit.
   *  This method create the good child NoteEditor depending
