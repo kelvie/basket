@@ -34,9 +34,9 @@
 #include <kapplication.h>
 #include <qcheckbox.h>
 #include <kpushbutton.h>
-#include <q3groupbox.h>
+#include <QGroupBox>
 #include <q3header.h>
-#include <q3valuelist.h>
+#include <QList>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kseparator.h>
@@ -394,7 +394,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget *rightWidget = new QWidget(mainWidget());
 
-	m_tagBox             = new Q3GroupBox(1, Qt::Horizontal, i18n("Tag"), rightWidget);
+	m_tagBox             = new QGroupBox(i18n("Tag"), rightWidget);
 	QWidget   *tagWidget = new QWidget(m_tagBox);
 
 	m_tagName = new QLineEdit(tagWidget);
@@ -417,8 +417,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	tagGrid->addMultiCellWidget(m_inherit, /*fromRow=*/2, /*toRow=*/2, /*fromCol=*/0, /*toCol=*/3);
 	tagGrid->setColStretch(/*col=*/3, /*stretch=*/255);
 
-	m_stateBox           = new Q3GroupBox(1, Qt::Horizontal, i18n("State"), rightWidget);
-	QWidget *stateWidget = new QWidget(m_stateBox);
+	m_stateBox           = new QGroupBox(i18n("State"), rightWidget);
+	m_stateBoxLayout = new QHBoxLayout;
+	m_stateBox->setLayout(m_stateBoxLayout);
+
+	QWidget *stateWidget = new QWidget;
+	m_stateBoxLayout->addWidget(stateWidget);
 
 	m_stateName = new QLineEdit(stateWidget);
 	m_stateNameLabel = new QLabel(m_stateName, i18n("Na&me:"), stateWidget);
@@ -451,26 +455,29 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
-	QIcon boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIconLoader::Small);
+	//QIcon boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIconLoader::Small);
+	KIcon boldIconSet("format-text-bold", KIconLoader::global());
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
 	m_bold->setToggleButton(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_bold, i18n("Bold"));
 
-	QIcon underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIconLoader::Small);
+	//QIcon underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIconLoader::Small);
+	KIcon underlineIconSet("format-text-underline", KIconLoader::global());
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
 	m_underline->setToggleButton(true);
 	m_underline->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_underline, i18n("Underline"));
 
-	QIcon italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIconLoader::Small);
+	//QIcon italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIconLoader::Small);
+	KIcon italicIconSet("format-text-italic", KIconLoader::global());
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
 	m_italic->setToggleButton(true);
 	m_italic->setFixedSize(size, size); // Make it square!
 	QToolTip::add(m_italic, i18n("Italic"));
 
-	QIcon strikeIconSet = KIconLoader::global()->loadIconSet("format-text-strikethrough", KIconLoader::Small);
+	KIcon strikeIconSet("format-text-strikethrough", KIconLoader::global());
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
 	m_strike->setToggleButton(true);
 	m_strike->setFixedSize(size, size); // Make it square!
@@ -688,6 +695,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags->setMinimumSize(
 		m_tags->sizeHint().width() * 2,
 		m_tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
+		//m_tagBox->sizeHint().height() + stateWidget->sizeHint().height()
 	);
 
 	if (addNewTag)

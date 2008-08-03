@@ -24,7 +24,7 @@
 #include <KDialog>
 #include <kcombobox.h>
 #include <q3listview.h>
-#include <q3valuelist.h>
+#include <QList>
 //Added by qt3to4:
 #include <QLabel>
 #include <QMouseEvent>
@@ -32,7 +32,7 @@
 
 #include "tag.h"
 
-class Q3GroupBox;
+class QGroupBox;
 class QLineEdit;
 class QCheckBox;
 class KPushButton;
@@ -49,7 +49,7 @@ class FontSizeCombo;
 class StateCopy
 {
   public:
-	typedef Q3ValueList<StateCopy*> List;
+	typedef QList<StateCopy*> List;
 	StateCopy(State *old = 0);
 	~StateCopy();
 	State *oldState;
@@ -60,7 +60,7 @@ class StateCopy
 class TagCopy
 {
   public:
-	typedef Q3ValueList<TagCopy*> List;
+	typedef QList<TagCopy*> List;
 	TagCopy(Tag *old = 0);
 	~TagCopy();
 	Tag *oldTag;
@@ -162,8 +162,10 @@ class TagsEditDialog : public KDialog
 	KShortcutWidget *m_shortcut;
 	QPushButton   *m_removeShortcut;
 	QCheckBox     *m_inherit;
-	Q3GroupBox     *m_tagBox;
-	Q3GroupBox     *m_stateBox;
+	QGroupBox     *m_tagBox;
+	QHBoxLayout   *m_tagBoxLayout;
+	QGroupBox     *m_stateBox;
+	QHBoxLayout   *m_stateBoxLayout;
 	QLabel        *m_stateNameLabel;
 	QLineEdit     *m_stateName;
 	KIconButton   *m_emblem;
