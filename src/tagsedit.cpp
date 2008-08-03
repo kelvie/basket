@@ -395,7 +395,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	QWidget *rightWidget = new QWidget(mainWidget());
 
 	m_tagBox             = new QGroupBox(i18n("Tag"), rightWidget);
-	QWidget   *tagWidget = new QWidget(m_tagBox);
+	m_tagBoxLayout       = new QHBoxLayout;
+	m_tagBox->setLayout(m_tagBoxLayout);
+
+	QWidget   *tagWidget = new QWidget;
+	m_tagBoxLayout->addWidget(tagWidget);
+	//(m_tagBox);
 
 	m_tagName = new QLineEdit(tagWidget);
 	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
@@ -695,7 +700,6 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags->setMinimumSize(
 		m_tags->sizeHint().width() * 2,
 		m_tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
-		//m_tagBox->sizeHint().height() + stateWidget->sizeHint().height()
 	);
 
 	if (addNewTag)
