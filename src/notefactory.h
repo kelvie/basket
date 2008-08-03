@@ -35,7 +35,7 @@ class QColor;
 class Basket;
 class Note;
 
-enum NoteType::Id;
+//enum NoteType::Id;
 
 /** Factory class to create (new, drop, past) or load BasketIem, and eventuelly save them (?)
   * @author Sébastien Laoût

@@ -400,7 +400,6 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	QWidget   *tagWidget = new QWidget;
 	m_tagBoxLayout->addWidget(tagWidget);
-	//(m_tagBox);
 
 	m_tagName = new QLineEdit(tagWidget);
 	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
