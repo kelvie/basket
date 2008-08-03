@@ -63,7 +63,7 @@ class KGpgSelKey : public KDialog
 			QVBoxLayout* vbox;
 			QWidget* page = new QWidget(this);
 			QLabel* labeltxt;
-			KIconLoader* loader = KIconLoader::global();
+		//	KIconLoader* loader = KIconLoader::global();
 			QPixmap keyPair = KIcon("kgpg_key2").pixmap(20, 20);
 
 			setMinimumSize(350,100);
