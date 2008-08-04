@@ -114,7 +114,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
 
 	new BNPViewAdaptor(this);
 	QDBusConnection dbus = QDBusConnection::sessionBus();
-	dbus.registerObject("BNPView",this);
+	dbus.registerObject("/BNPView",this);
 
 	setObjectName(name);
 
