@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>images/tag_export_help.png</file>
+	<file>images/tag_export_on_every_lines_help.png</file>
+	<file>images/insertion_help.png</file>
+</qresource>
+</RCC>

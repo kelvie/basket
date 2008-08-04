@@ -1,7 +1,6 @@
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES} ${GPGME_INCLUDES})
 
-
 ########### next target ###############
 
 set(basketcommon_LIB_SRCS
@@ -49,6 +48,8 @@ set(basketcommon_LIB_SRCS
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
+
+QT4_ADD_RESOURCES(basketcommon_LIB_SRCS ../basket.qrc)
 
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
