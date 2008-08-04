@@ -80,9 +80,9 @@ else
 fi
 
 if [ $SYS_WIDE == 0 ]; then
-  prefix=`kde-config --localprefix --expandvars`
+  prefix=`kde4-config --localprefix --expandvars`
 else
-  prefix=`kde-config --prefix --expandvars`
+  prefix=`kde4-config --prefix --expandvars`
 fi
 
 isDevel=alpha
