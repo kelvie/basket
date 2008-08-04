@@ -13,9 +13,32 @@ function error
   echo "                     For example, if libmng cannot be found,"
   echo "  please check if libmng AND libmng-devel packages are installed on your system."
   echo "      See the reported errors to know which librarie need to be installed."
+  echo "      If it complains about not being able to find the file FindGpgme.cmake, "
+  echo "                 you will need the -devel package of kdepimlibs."
+  echo "         Consult the INSTALL document  for a full list of the requirements."
   echo ""
   echo $'\a' # Beep to avert user of the error
   exit 1
+}
+
+function prefix_cmd
+{
+	if test -n "$1"; then
+		echo '-DCMAKE_INSTALL_PREFIX="$1"'
+	fi
+}
+
+function do_warning
+{
+	warn_backup=yes
+	if test "yes" = "$warn_backup"; then
+		echo "                                ==========="
+		echo "                                  WARNING"
+		echo "                                ==========="
+		echo " You are installing an early development version of BasKet; please back up "
+		echo " your baskets before using it if you have a previous version of BasKet "
+		echo " installed."
+	fi
 }
 
 ##echo "  ((                      An error has been encountered                     ))"
@@ -62,35 +85,7 @@ else
   prefix=`kde-config --prefix --expandvars`
 fi
 
-# Uninstall of BasKet:
-if [ $WHAT_TO_DO == 3 ]; then
-  # Search installed basket:
-  prefix=`kde-config --localprefix --expandvars` # First loacally
-  if [ -f $prefix/bin/basket ]; then
-    SYS_WIDE=0
-  else
-    prefix=`kde-config --prefix --expandvars`    # And then system wide
-    if [ -f $prefix/bin/basket ]; then
-      SYS_WIDE=1
-    else
-      echo "BasKet Note Pads does not seem to be installed."
-      exit 1
-    fi
-  fi
-  # TODO: Also definitively remove your baskets?
-  # At this stage, SYS_WIDE and prefix are set and uninstall can begin:
-  if [ $SYS_WIDE == 1 ]; then
-    su
-    make uninstall || ./configure --prefix=$prefix && make uninstall
-    logout
-  else
-    make uninstall || ./configure --prefix=$prefix && make uninstall
-  fi
-  exit 0
-fi
-
-appVersion=$(cat basket.spec | grep "%define version " | cut -d " " -f 3)
-isDevel=$(echo "$appVersion" | grep -i -E "(alpha|beta|pre|rc|svn)")
+isDevel=alpha
 
 clear
 echo ""
@@ -99,30 +94,19 @@ echo "  ((                    BasKet Note Pads Quick Installer                  
 echo "    ========================================================================  "
 echo ""
 echo ""
+do_warning
 echo ""
 echo ""
 echo "      If you do not know what they are, you can ignore errors or warnings."
 echo ""
 echo "                      The process can take several minutes."
 echo "                  A beep will notify you when it will be done."
+echo ""
 echo "                              Press ENTER to start."
 echo ""
 echo ""
 
 read -s -n 1 # read 1 character without echo, ended by ENTER
-
-if [ ! -e configure ]; then
-  clear
-  echo ""
-  echo "    ========================================================================  "
-  echo "  ((                          Preparation from SVN                          ))"
-  echo "    ========================================================================  "
-  echo ""
-  echo ""
-
-  echo "make -f Makefile.cvs"
-  make -f Makefile.cvs || error
-fi
 
 clear
 echo ""
@@ -132,12 +116,17 @@ echo "    ======================================================================
 echo ""
 echo ""
 
+# No one is going to have a file named "build" here, right?
+if test ! -d build ; then
+	mkdir build
+fi
+
+cd build
+
 if [ "_$isDevel" == "_" ]; then
-  echo "./configure --prefix=$prefix"
-  ./configure --prefix=$prefix || error
+  cmake .. $(prefix_cmd $prefix) || error
 else
-  echo "./configure --enable-debug=full --prefix=$prefix"
-  ./configure --enable-debug=full --prefix=$prefix || error
+  cmake .. -DCMAKE_BUILD_TYPE=debugfull $(prefix_cmd $prefix) || error
 fi
 
 clear
@@ -166,12 +155,12 @@ echo $'\a' # Beep to avert user the configuration/compilation is ended and he mu
 
 if [ "_$SYS_WIDE" == "_n" ]; then
   # First make the bin folder to not copy basket file to bin file if bin/ doesn't exist
-  mkdir $prefix/bin
   make install
 else
   echo "            Please now enter the root password in order to install "
   echo "                        BasKet Note Pads on the system."
   echo ""
+  echo 'Installing in "'$prefix'"...'
   sudo make install || exit 1
   echo ""
   echo ""
@@ -187,7 +176,7 @@ echo ""
 echo "                    Do you want to run BasKet Note Pads now?"
 echo "       If an older version is currently running it will be exited before."
 echo ""
-echo "   Notice that you willn't have to exit BasKet : it will be restored each time"
+echo "   Notice that you won't have to exit BasKet : it will be restored each time"
 echo "                               you log in to KDE."
 echo ""
 echo ""
