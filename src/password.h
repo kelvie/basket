@@ -30,7 +30,7 @@
 /**
 	@author Petri Damsten <damu@iki.fi>
 */
-class Password : public KDialog, public Ui::PasswordLayout
+class Password : public QWidget, public Ui::PasswordLayout
 {
 	Q_OBJECT
 	public:

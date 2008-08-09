@@ -48,8 +48,8 @@ PasswordDlg::PasswordDlg(QWidget *parent)
 	showButtonSeparator(true);
 
 	setMainWidget(new QWidget(this));
-	QHBoxLayout* toplayout = new QHBoxLayout(mainWidget(), 0, 0);
-	w = new Password(mainWidget());
+	QHBoxLayout* toplayout = new QHBoxLayout(mainWidget());
+	w = new Password;
 	toplayout->addWidget(w, 1);
 }
 
@@ -80,7 +80,13 @@ QString PasswordDlg::key() const
 
 int PasswordDlg::type() const
 {
-	return w->buttonGroup->selectedId();
+	if (w->noPasswordRadioButton->isChecked())
+		return Basket::NoEncryption;
+	else if (w->passwordRadioButton->isChecked())
+		return Basket::PasswordEncryption;
+	else if (w->publicPrivateRadioButton->isChecked())
+		return Basket::PrivateKeyEncryption;
+	return -1;
 }
 
 void PasswordDlg::setKey(const QString& key)
@@ -97,11 +103,16 @@ void PasswordDlg::setKey(const QString& key)
 
 void PasswordDlg::setType(int type)
 {
-	w->buttonGroup->setButton(type);
+	if (type==Basket::NoEncryption)
+		w->noPasswordRadioButton->setChecked(true);
+	else if (type == Basket::PasswordEncryption)
+		w->passwordRadioButton->setChecked(true);
+	else if (type == Basket::PrivateKeyEncryption)
+		w->publicPrivateRadioButton->setChecked(true);
 }
 
 Password::Password(QWidget *parent)
-	: KDialog(parent)
+	: QWidget(parent)
 {
 	// Setup from the UI file
 	setupUi(this);
