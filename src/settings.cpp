@@ -394,9 +394,8 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 		("<p>" + i18n("You can configure global shortcuts to do some actions without having to show the main window. For instance, you can paste the clipboard content, take a color from "
 		              "a point of the screen, etc. You can also use the mouse scroll wheel over the system tray icon to change the current basket. Or use the middle mouse button "
 		              "on that icon to paste the current selection.") + "</p>" +
-		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.") + "</p>" +
-		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>")
-			.arg(KGlobal::mainComponent().aboutData()->programName()),
+		"<p>" + i18n("When doing so, %1 pops up a little balloon message to inform you the action has been successfully done. You can disable that balloon.",KGlobal::mainComponent().aboutData()->programName()) + "</p>" +
+		"<p>" + i18n("Note that those messages are smart enough to not appear if the main window is visible. This is because you already see the result of your actions in the main window.") + "</p>"),
 		this);
 	hLay->addWidget(m_usePassivePopup);
 	hLay->addWidget(hLabel);
