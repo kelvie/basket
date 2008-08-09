@@ -864,7 +864,7 @@ void TagsEditDialog::moveDown()
 	if (tagItem->tagCopy()) {
 		uint pos = m_tagCopies.findIndex(tagItem->tagCopy());
 		m_tagCopies.remove(tagItem->tagCopy());
-		if (pos == m_tagCopies.count() - 1) // Insert at end: iterator does not go there
+		if (pos == (uint)m_tagCopies.count() - 1) // Insert at end: iterator does not go there
 			m_tagCopies.append(tagItem->tagCopy());
 		else {
 			uint i = 0;
@@ -878,7 +878,7 @@ void TagsEditDialog::moveDown()
 		StateCopy::List &stateCopies = ((TagListViewItem*)( tagItem->parent() ))->tagCopy()->stateCopies;
 		uint pos = stateCopies.findIndex(tagItem->stateCopy());
 		stateCopies.remove(tagItem->stateCopy());
-		if (pos == stateCopies.count() - 1) // Insert at end: iterator does not go there
+		if (pos == (uint)stateCopies.count() - 1) // Insert at end: iterator does not go there
 			stateCopies.append(tagItem->stateCopy());
 		else {
 			uint i = 0;
