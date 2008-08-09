@@ -512,15 +512,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	font.setFamily("monospace");
 	m_textEquivalent->setFont(font);
 
-	//QPixmap textEquivalentPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	//Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", textEquivalentPixmap);
 	HelpLabel *textEquivalentHelp = new HelpLabel(
 		i18n("What is this for?"),
 		"<p>" + i18n("When you copy and paste or drag and drop notes to a text editor, this text will be inserted as a textual equivalent of the tag.") + "</p>" +
 //		"<p>" + i18n("If filled, this property lets you paste this tag or this state as textual equivalent.") + "<br>" +
 		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
 		     "representing an empty checkbox and a checked box.") + "</p>" +
-		//"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
 		"<p align='center'><img src=\":images/tag_export_help.png\"></p>",
 		stateWidget);
 	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
@@ -529,12 +526,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	m_onEveryLines = new QCheckBox(i18n("On ever&y line"), stateWidget);
 
-	//QPixmap onEveryLinesPixmap(KGlobal::dirs()->findResource("data", "basket/images/tag_export_on_every_lines_help.png"));
-	//Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export_on_every_lines.png", onEveryLinesPixmap);
 	HelpLabel *onEveryLinesHelp = new HelpLabel(
 		i18n("What does this mean?"),
 		"<p>" + i18n("When a note has several lines, you can choose to export the tag or the state on the first line or on every line of the note.") + "</p>" +
-		//"<p align='center'><img src=\"__resource_help_tag_export_on_every_lines.png\"></p>" +
 		"<p align='center'><img src=\":images/tag_export_on_every_lines_help.png\"></p>" +
 		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every line of the note."),
 		stateWidget);
