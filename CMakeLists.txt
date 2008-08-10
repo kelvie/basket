@@ -38,6 +38,10 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
 #add_subdirectory(doc)
 add_subdirectory(src)
+add_subdirectory(tags)
+add_subdirectory(welcome)
+add_subdirectory(backgrounds)
+add_subdirectory(images)
 
 message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}: skipped subdir $(TOPSUBDIRS)")
 
