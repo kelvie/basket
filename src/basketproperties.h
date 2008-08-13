@@ -28,7 +28,9 @@
 class KIconButton;
 class QLineEdit;
 class QComboBox;
-class Q3VButtonGroup;
+class QGroupBox;
+class QVBoxLayout;
+class QRadioButton;
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
@@ -63,7 +65,11 @@ class BasketPropertiesDialog : public KDialog
 	Q3VButtonGroup *m_disposition;
 	KIntNumInput  *m_columnCount;
 	KShortcutWidget *m_shortcut;
-	Q3VButtonGroup *m_shortcutRole;
+	QGroupBox *m_shortcutRole;
+	QVBoxLayout *m_shortcutRoleLayout;
+	QRadioButton * m_showButton;
+	QRadioButton * m_globalButton;
+	QRadioButton * m_switchButton;
 	QMap<int, QString> m_backgroundImagesMap;
 };
 

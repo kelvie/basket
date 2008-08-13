@@ -137,8 +137,11 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	mindMap->hide();
 
 	// Keyboard Shortcut:
-	m_shortcutRole = new Q3VButtonGroup(i18n("&Keyboard Shortcut"), page);
-	QWidget *shortcutWidget = new QWidget(m_shortcutRole);
+	m_shortcutRole = new QGroupBox(i18n("&Keyboard Shortcut"), page);
+	m_shortcutRoleLayout = new QVBoxLayout;
+	m_shortcutRole->setLayout(m_shortcutRoleLayout);
+	QWidget *shortcutWidget = new QWidget;
+	m_shortcutRoleLayout->addWidget(shortcutWidget);
 	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
 	m_shortcut = new KShortcutWidget(shortcutWidget);
 	m_shortcut->setShortcut(m_basket->shortcut());
@@ -157,19 +160,27 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	shortcutLayout->addWidget(m_shortcut);
 	shortcutLayout->addStretch();
 	shortcutLayout->addWidget(helpLabel);
-	connect( m_shortcut, SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
-	new QRadioButton(i18n("S&how this basket"),                        m_shortcutRole);
-	new QRadioButton(i18n("Show this basket (&global shortcut)"),      m_shortcutRole);
-	new QRadioButton(i18n("S&witch to this basket (global shortcut)"), m_shortcutRole);
-	m_shortcutRole->setButton(m_basket->shortcutAction()/* + 1*/); // Id 0 is the KKeyButton!
+	connect( m_shortcut, SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
+	m_showButton = new QRadioButton(i18n("S&how this basket"));
+	m_globalButton = new QRadioButton(i18n("Show this basket (&global shortcut)"));
+	m_switchButton = new QRadioButton(i18n("S&witch to this basket (global shortcut)"));
+	m_shortcutRoleLayout->addWidget(m_showButton);
+	m_shortcutRoleLayout->addWidget(m_globalButton);
+	m_shortcutRoleLayout->addWidget(m_switchButton);
+	switch (m_basket->shortcutAction()){
+		default:
+		case 0: m_showButton->setChecked(true); break;
+		case 1: m_globalButton->setChecked(true); break;
+		case 2: m_switchButton->setChecked(true); break;
+	}
 	topLayout->addWidget(m_shortcutRole);
 
 	topLayout->addSpacing(marginHint());
 	topLayout->addStretch(10);
 
 	// Connect the Ok and Apply buttons to actually apply the changes
-	connect(this, SIGNAL(okClicked()), SLOT(applyChanges()));
-	connect(this, SIGNAL(applyClicked()), SLOT(applyChanges()));
+	connect(this, SIGNAL(okClicked()), this, SLOT(applyChanges()));
+	connect(this, SIGNAL(applyClicked()), this, SLOT(applyChanges()));
 
 	setMainWidget(page);
 }
@@ -187,7 +198,16 @@ void BasketPropertiesDialog::polish()
 void BasketPropertiesDialog::applyChanges()
 {
 	m_basket->setDisposition(m_disposition->selectedId(), m_columnCount->value());
-	m_basket->setShortcut(m_shortcut->shortcut(), m_shortcutRole->selectedId());
+	if (m_showButton->isChecked()){
+		m_basket->setShortcut(m_shortcut->shortcut(), 0);
+	}
+	else if (m_globalButton->isChecked()){
+		m_basket->setShortcut(m_shortcut->shortcut(), 1);
+	}
+	else if (m_switchButton->isChecked()){
+		m_basket->setShortcut(m_shortcut->shortcut(), 2);
+	}
+
 	// Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
 	m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentItem()], m_backgroundColor->color(), m_textColor->color());
 	m_basket->save();

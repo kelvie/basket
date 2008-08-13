@@ -1416,7 +1416,7 @@ Basket::Basket(QWidget *parent, const QString &folderName)
     , m_relayoutOnNextShow(false)
 {
     m_action = new KAction(this);
-    connect(m_action, SLOT(triggered(bool)), SLOT(activatedShortcut()));
+    connect(m_action, SLOT(triggered(bool)), this, SLOT(activatedShortcut()));
     m_action->setObjectName("basket_activate_" + folderName);
     m_action->setGlobalShortcut(KShortcut());
     // We do this in the basket properties dialog (and keep it in sync with the
