@@ -77,8 +77,11 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	topLayout->addLayout(nameLayout);
 
 	// Appearance:
-	Q3GroupBox *appearance = new Q3GroupBox(1, Qt::Horizontal, i18n("Appearance"), page);
-	QWidget *appearanceWidget = new QWidget(appearance);
+	QGroupBox *appearance = new QGroupBox(i18n("Appearance"), page);
+	QVBoxLayout* appearanceLayout = new QVBoxLayout;
+	appearance->setLayout(appearanceLayout);
+	QWidget *appearanceWidget = new QWidget;
+	appearanceLayout->addWidget(appearanceWidget);
 	QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
 	m_backgroundImage = new QComboBox(appearanceWidget);
 	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceWidget);
