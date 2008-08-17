@@ -636,9 +636,13 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	gl->addWidget(m_preview, 4, 1);
 	gl->addMultiCellWidget(m_hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
 
-	Q3GroupBox *gb = new Q3HGroupBox(i18n("Example"), this);
+	QGroupBox *gb = new QGroupBox(i18n("Example"), this);
+	QHBoxLayout* gbLayout = new QHBoxLayout;
+	gb->setLayout(gbLayout);
+
 	m_exLook = new LinkLook;
-	m_example = new LinkLabel(exTitle, exIcon, m_exLook, 1, 1, gb);
+	m_example = new LinkLabel(exTitle, exIcon, m_exLook, 1, 1);
+	gbLayout->addWidget(m_example);
 	m_example->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_example->setCursor(QCursor(Qt::PointingHandCursor));
 	layout->addWidget(gb);
