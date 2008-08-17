@@ -77,9 +77,12 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	QString savesFolder = Global::savesFolder();
 	savesFolder = savesFolder.left(savesFolder.length() - 1); // savesFolder ends with "/"
 
-	Q3GroupBox *folderGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Save Folder"), page);
-	new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>",savesFolder), folderGroup);
-	QWidget *folderWidget = new QWidget(folderGroup);
+	QGroupBox *folderGroup = new QGroupBox(i18n("Save Folder"), page);
+	QVBoxLayout* folderGroupLayout = new QVBoxLayout;
+	folderGroup->setLayout(folderGroupLayout);
+	folderGroupLayout->addWidget(new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>",savesFolder), folderGroup));
+	QWidget *folderWidget = new QWidget;
+	folderGroupLayout->addWidget(folderWidget);
 	QHBoxLayout *folderLayout = new QHBoxLayout(folderWidget, 0, spacingHint());
 	QPushButton *moveFolder = new QPushButton(i18n("&Move to Another Folder..."),      folderWidget);
 	QPushButton *useFolder  = new QPushButton(i18n("&Use Another Existing Folder..."), folderWidget);
@@ -99,8 +102,11 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	connect( moveFolder, SIGNAL(clicked()), this, SLOT(moveToAnotherFolder())      );
 	connect( useFolder,  SIGNAL(clicked()), this, SLOT(useAnotherExistingFolder()) );
 
-	Q3GroupBox *backupGroup = new Q3GroupBox(1, Qt::Horizontal, i18n("Backups"), page);
-	QWidget *backupWidget = new QWidget(backupGroup);
+	QGroupBox *backupGroup = new QGroupBox(i18n("Backups"), page);
+	QVBoxLayout* backupGroupLayout = new QVBoxLayout;
+	backupGroup->setLayout(backupGroupLayout);
+	QWidget *backupWidget = new QWidget;
+	backupGroupLayout->addWidget(backupWidget);
 	QHBoxLayout *backupLayout = new QHBoxLayout(backupWidget, 0, spacingHint());
 	QPushButton *backupButton  = new QPushButton(i18n("&Backup..."),           backupWidget);
 	QPushButton *restoreButton = new QPushButton(i18n("&Restore a Backup..."), backupWidget);
