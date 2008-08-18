@@ -306,7 +306,7 @@ QString TextContent::saveAsFilters()      { return "text/plain";            }
 QString HtmlContent::saveAsFilters()      { return "text/html";             }
 QString ImageContent::saveAsFilters()     { return "image/png";             } // TODO: Offer more types
 QString AnimationContent::saveAsFilters() { return "image/gif";             } // TODO: MNG...
-QString SoundContent::saveAsFilters()     { return "audio/x-mp3";           } // TODO: OGG...
+QString SoundContent::saveAsFilters()     { return "audio/mp3 audio/ogg";           } // TODO: OGG...
 QString FileContent::saveAsFilters()      { return "*";                     } // TODO: Get MIME type of the url target
 QString LinkContent::saveAsFilters()      { return "*";                     } // TODO: idem File + If isDir(): return
 QString LauncherContent::saveAsFilters()  { return "application/x-desktop"; }
@@ -1125,8 +1125,16 @@ SoundContent::SoundContent(Note *parent, const QString &fileName)
  : FileContent(parent, fileName)
 {
 	setFileName(fileName);
+	music = new Phonon::MediaObject(this);
+     	music->setCurrentSource(Phonon::MediaSource(fullPath()));
+     	Phonon::AudioOutput *audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+     	Phonon::Path path = Phonon::createPath(music, audioOutput);
+	connect(music, SIGNAL(stateChanged(Phonon::State, Phonon::State)), this, SLOT(stateChanged(Phonon::State, Phonon::State)));
 }
 
+void SoundContent::stateChanged(Phonon::State newState, Phonon::State oldState){
+kDebug()<<"stateChanged "<<oldState<<" to "<<newState;
+}
 
 QString SoundContent::zoneTip(int zone)
 {
@@ -1135,32 +1143,22 @@ QString SoundContent::zoneTip(int zone)
 
 void SoundContent::setHoveredZone(int oldZone, int newZone)
 {
-#ifdef WITHOUT_ARTS
-	Q_UNUSED(oldZone);
-	if (newZone == Note::Custom0 || newZone == Note::Content)
-		kDebug() << "Compiled without aRts: sound is not played.";
-#else
-	static KArtsDispatcher        *s_dispatcher  = new KArtsDispatcher(); // Needed for s_playObj (we don't use it directly)
-	static KArtsServer            *s_playServer  = new KArtsServer();
-	static KDE::PlayObjectFactory *s_playFactory = new KDE::PlayObjectFactory(s_playServer);
-	static KDE::PlayObject        *s_playObj     = 0;
-
-	Q_UNUSED(s_dispatcher); // Avoid the compiler to tell us it is not used!
 	if (newZone == Note::Custom0 || newZone == Note::Content) {
 		// Start the sound preview:
 		if (oldZone != Note::Custom0 && oldZone != Note::Content) { // Don't restart if it was already in one of those zones
-			s_playObj = s_playFactory->createPlayObject(fullPath(), true);
-			s_playObj->play();
+		if(music->state()==1){
+	     		music->play();
+			
+			}
 		}
 	} else {
-		// Stop the sound preview, if it was started:
-		if (s_playObj) {
-			s_playObj->halt();
-			delete s_playObj;
-			s_playObj = 0;
+//		 Stop the sound preview, if it was started:
+		if (music->state()!=1) {
+			music->stop();
+//			delete music;//TODO implement this in slot connected with music alted signal 
+//			music = 0;
 		}
 	}
-#endif
 }
 
 
