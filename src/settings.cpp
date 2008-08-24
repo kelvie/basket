@@ -428,7 +428,8 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	// Hide Main Window when Mouse Goes out of it for Some Time:
 	m_timeToHideOnMouseOut = new KIntNumInput(0, m_systray);
 	m_hideOnMouseOut = new QCheckBox(i18n("&Hide main window when mouse leaves it for"), m_systray);
-	m_timeToHideOnMouseOut->setRange(0, 600, 1, false);
+	m_timeToHideOnMouseOut->setRange(0, 600, 1);
+	m_timeToHideOnMouseOut->setSliderEnabled(false);
 	m_timeToHideOnMouseOut->setSuffix(i18n(" tenths of seconds"));
 	gs->addWidget(m_hideOnMouseOut,       0, 0);
 	gs->addWidget(m_timeToHideOnMouseOut, 0, 1);
@@ -439,7 +440,8 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	// Show Main Window when Mouse Hovers over the System Tray Icon for Some Time:
 	m_timeToShowOnMouseIn = new KIntNumInput(0, m_systray);
 	m_showOnMouseIn  = new QCheckBox(i18n("Show &main window when mouse hovers over the system tray icon for"), m_systray);
-	m_timeToShowOnMouseIn->setRange(0, 600, 1, false);
+	m_timeToShowOnMouseIn->setRange(0, 600, 1);
+	m_timeToShowOnMouseIn->setSliderEnabled(false);
 	m_timeToShowOnMouseIn->setSuffix(i18n(" tenths of seconds"));
 	gs->addWidget(m_showOnMouseIn,       1, 0);
 	gs->addWidget(m_timeToShowOnMouseIn, 1, 1);
