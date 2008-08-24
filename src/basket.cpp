@@ -108,30 +108,31 @@
 NoteSelection* NoteSelection::nextStacked()
 {
 	// First, search in the childs:
-	if (firstChild)
+	if (firstChild){
 		if (firstChild->note && firstChild->note->content())
 			return firstChild;
 		else
 			return firstChild->nextStacked();
-
+	}
 	// Then, in the next:
-	if (next)
+	if (next){
 		if (next->note && next->note->content())
 			return next;
 		else
 			return next->nextStacked();
-
+	}
 	// And finally, in the parent:
 	NoteSelection *node = parent;
-	while (node)
-		if (node->next)
+	while (node){
+		if (node->next){
 			if (node->next->note && node->next->note->content())
 				return node->next;
 			else
 				return node->next->nextStacked();
+		}
 		else
 			node = node->parent;
-
+	}
 	// Not found:
 	return 0;
 }

@@ -167,10 +167,12 @@ void BNPView::lateInit()
 */
 	if(!isPart())
 	{
-		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
+		if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")){
 			if(Global::mainWindow()) Global::mainWindow()->hide();
-		else if (Settings::useSystray() && kapp->isSessionRestored())
+		}
+		else if (Settings::useSystray() && kapp->isSessionRestored()){
 			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
+		}
 		else
 			showMainWindow();
 	}
@@ -1288,11 +1290,12 @@ void BNPView::newFilter()
 	Q3ListViewItemIterator it(m_tree);
 	while (it.current()) {
 		BasketListViewItem *item = ((BasketListViewItem*)it.current());
-		if (item->basket() != current)
+		if (item->basket() != current){
 			if (isFilteringAllBaskets())
 				item->basket()->decoration()->filterBar()->setFilterData(filterData); // Set the new FilterData for every other baskets
 			else
 				item->basket()->decoration()->filterBar()->setFilterData(FilterData()); // We just disabled the global filtering: remove the FilterData
+		}
 		++it;
 	}
 
