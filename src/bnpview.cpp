@@ -173,8 +173,6 @@ void BNPView::lateInit()
 		else if (Settings::useSystray() && kapp->isSessionRestored()){
 			if(Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
 		}
-		else
-			showMainWindow();
 	}
 
 	// If the main window is hidden when session is saved, Container::queryClose()
