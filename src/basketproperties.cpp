@@ -124,7 +124,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
 	QRadioButton *radio = new QRadioButton(i18n("Col&umns:"), columnsWidget);
 	m_columnCount = new KIntNumInput(m_basket->columnsCount(), columnsWidget);
-	m_columnCount->setRange(1, 20, /*step=*/1, /*slider=*/false);
+	m_columnCount->setRange(1, 20, /*step=*/1);
+	m_columnCount->setSliderEnabled(false);
 	m_columnCount->setValue(m_basket->columnsCount());
 	connect( m_columnCount, SIGNAL(valueChanged(int)), this, SLOT(selectColumnsLayout()) );
 	dispoLayout->addWidget(radio);
