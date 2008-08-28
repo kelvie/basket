@@ -292,7 +292,7 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 
 	m_icon->setAlignment( hFlag | vFlag );
 	m_title->setAlignment( hFlag | vFlag | wBreak );
-	if ( addSpacers && (vAlign != 0) ||
+	if ( (addSpacers && (vAlign != 0)) ||
 	   (m_title->text().isEmpty() && hAlign == 2) )
 		m_layout->addItem(m_spacer1);
 	if (hAlign == 2) { // If align at right, icon is at right
@@ -302,7 +302,7 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 		m_layout->addWidget(m_icon);
 		m_layout->addWidget(m_title);
 	}
-	if ( addSpacers && (vAlign != 2) ||
+	if ( (addSpacers && (vAlign != 2)) ||
 	   (m_title->text().isEmpty() && hAlign == 0) )
 		m_layout->addItem(m_spacer2);
 }
