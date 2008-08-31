@@ -47,8 +47,8 @@
 
 /** FilterBar */
 
-FilterBar::FilterBar(QWidget *parent, const char *name)
- : QWidget(parent, name)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
+FilterBar::FilterBar(QWidget *parent)
+ : QWidget(parent)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
 {
 	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
 

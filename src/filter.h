@@ -57,7 +57,7 @@ class FilterBar : public QWidget
 {
   Q_OBJECT
   public:
-	FilterBar(QWidget *parent = 0, const char *name = 0);
+	FilterBar(QWidget *parent = 0);
 	~FilterBar();
 	const FilterData& filterData();
   signals:
