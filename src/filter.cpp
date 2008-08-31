@@ -56,7 +56,7 @@ FilterBar::FilterBar(QWidget *parent)
 	// (Aaron Seigo says we don't need to worry about the 
 	//	"Toolbar group" stuff anymore.)
 	
-	QIcon resetIconSet = KIcon("locationbar_erase", KIconLoader::global());
+	QIcon resetIconSet = KIcon("dialog-close", KIconLoader::global());
 	QIcon inAllIconSet = KIcon("edit-find", KIconLoader::global());
 
 	m_resetButton        = new QToolButton(this);
