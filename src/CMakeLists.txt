@@ -59,7 +59,7 @@ target_link_libraries(basketcommon
   ${KDE4_KDEUI_LIBS}
   ${KDE4_KPARTS_LIBS}
   ${KDE4_KFILE_LIBS}
-  ${QT_PHONON_LIBRARY}
+  ${KDE4_PHONON_LIBRARY}
   ${QIMAGEBLITZ_LIBRARIES}
   ${GPGME_VANILLA_LIBRARIES})
 
@@ -80,7 +80,7 @@ target_link_libraries(basket
   ${KDE4_KDE3SUPPORT_LIBS} # Remove me as well
   ${KDE4_KUTILS_LIBS}
   ${KDE4_KFILE_LIBS}
-  ${QT_PHONON_LIBRARY}
+  ${KDE4_PHONON_LIBRARY}
   basketcommon)
 
 install(TARGETS basket DESTINATION ${BIN_INSTALL_DIR})
