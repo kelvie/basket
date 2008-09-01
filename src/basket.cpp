@@ -208,7 +208,7 @@ DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, con
 	m_layout->addWidget(m_basket);
 	setFilterBarPosition(Settings::filterOnTop());
 
-	m_filter->setShown(true);
+	m_filter->hide();
 	m_basket->setFocus(); // To avoid the filter bar have focus on load
 
 	connect( m_filter, SIGNAL(newFilter(const FilterData&)), m_basket, SLOT(newFilter(const FilterData&)) );
