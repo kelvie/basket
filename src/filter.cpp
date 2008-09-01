@@ -112,6 +112,7 @@ FilterBar::FilterBar(QWidget *parent, const char *name)
 
 FilterBar::~FilterBar()
 {
+	delete m_data;
 }
 
 void FilterBar::setFilterAll(bool filterAll)
