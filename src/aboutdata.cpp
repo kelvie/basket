@@ -40,7 +40,7 @@ AboutData::AboutData()
 		   "kelvie@ieee.org" );
 
 	addAuthor( ki18n("S\303\251bastien Lao\303\273t"),
-	           ki18n("Author, maintainer"),
+	           ki18n("Original Author"),
 	           "slaout@linux62.org" );
 
 	addAuthor( ki18n("Petri Damst\303\251n"),
