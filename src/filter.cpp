@@ -261,7 +261,7 @@ void FilterBar::setEditFocus()
 
 bool FilterBar::hasEditFocus()
 {
-	return m_lineEdit->hasFocus();
+	return m_lineEdit->hasFocus() || m_tagsBox->hasFocus();
 }
 
 const FilterData& FilterBar::filterData()
