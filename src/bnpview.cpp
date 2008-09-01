@@ -1241,6 +1241,11 @@ void BNPView::toggleFilterAllBaskets(bool doFilter)
 {
 	// Set the state:
 	m_actFilterAllBaskets->setChecked(doFilter);
+
+	// If the filter isn't already showing, we make sure it does.
+	if (doFilter)
+		m_actShowFilter->setChecked(true);
+
 	//currentBasket()->decoration()->filterBar()->setFilterAll(doFilter);
 
 //	Basket *current = currentBasket();
@@ -1815,10 +1820,11 @@ void BNPView::showHideFilterBar(bool show, bool switchFocus)
 {
 //	if (show != m_actShowFilter->isChecked())
 //		m_actShowFilter->setChecked(show);
-	m_actShowFilter->setChecked(currentDecoratedBasket()->filterData().isFiltering);
+	m_actShowFilter->setChecked(show);
 
 	currentDecoratedBasket()->setFilterBarShown(show, switchFocus);
-	currentDecoratedBasket()->resetFilter();
+	if (!show)
+		currentDecoratedBasket()->resetFilter();
 }
 
 void BNPView::insertEmpty(int type)
@@ -1945,6 +1951,8 @@ void BNPView::setFiltering(bool filtering)
 {
 	m_actShowFilter->setChecked(filtering);
 	m_actResetFilter->setEnabled(filtering);
+	if (!filtering)
+		m_actFilterAllBaskets->setEnabled(false);
 }
 
 void BNPView::undo()

@@ -207,10 +207,14 @@ void FilterBar::repopulateTagsCombo()
 void FilterBar::reset()
 {
 	m_lineEdit->setText(""); // m_data->isFiltering will be set to false;
+	m_lineEdit->clearFocus();
+	changeFilter();
 	if (m_tagsBox->currentItem() != 0) {
 		m_tagsBox->setCurrentItem(0);
 		tagChanged(0);
 	}
+	hide();
+	emit newFilter(*m_data);
 }
 
 void FilterBar::filterTag(Tag *tag)
@@ -273,7 +277,8 @@ void FilterBar::changeFilter()
 {
 	m_data->string = m_lineEdit->text();
 	m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
-	m_resetButton->setEnabled(m_data->isFiltering);
+	if (hasEditFocus())
+		m_data->isFiltering = true;
 	emit newFilter(*m_data);
 }
 
@@ -311,7 +316,8 @@ void FilterBar::tagChanged(int index)
 			break;
 	}
 	m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
-	m_resetButton->setEnabled(m_data->isFiltering);
+	if (hasEditFocus())
+		m_data->isFiltering = true;
 	emit newFilter(*m_data);
 }
 
