@@ -1237,18 +1237,8 @@ bool BNPView::convertTexts()
 	return convertedNotes;
 }
 
-/** isRunning is to avoid recursive calls because this method can be called
- * when clicking the menu action or when using the filter-bar icon... either of those calls
- * call the other to be checked... and it can cause recursive calls.
- * PS: Uggly hack? Yes, I think so :-)
- */
 void BNPView::toggleFilterAllBaskets(bool doFilter)
 {
-	static bool isRunning = false;
-	if (isRunning)
-		return;
-	isRunning = true;
-
 	// Set the state:
 	m_actFilterAllBaskets->setChecked(doFilter);
 	//currentBasket()->decoration()->filterBar()->setFilterAll(doFilter);
@@ -1260,9 +1250,6 @@ void BNPView::toggleFilterAllBaskets(bool doFilter)
 		item->basket()->decoration()->filterBar()->setFilterAll(doFilter);
 		++it;
 	}
-
-	// Protection is not necessary anymore:
-	isRunning = false;
 
 	if (doFilter)
 		currentBasket()->decoration()->filterBar()->setEditFocus();
