@@ -70,7 +70,7 @@ FilterBar::FilterBar(QWidget *parent)
 	QLabel *label2       = new QLabel(m_tagsBox, i18n("T&ag: "), this);
 	m_inAllBasketsButton = new QToolButton(this);
 	m_inAllBasketsButton->setIconSet(inAllIconSet);
-	m_inAllBasketsButton->setTextLabel(i18n("Filter all Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
+	m_inAllBasketsButton->setTextLabel(i18n("Filter All Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
 	m_inAllBasketsButton->setAutoRaise(true);
 
 	// Configure the Reset button:
