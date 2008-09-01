@@ -34,6 +34,7 @@ class QRadioButton;
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
+class Q3VButtonGroup;
 
 class Basket;
 class KColorCombo2;
