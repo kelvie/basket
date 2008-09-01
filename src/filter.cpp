@@ -73,9 +73,6 @@ FilterBar::FilterBar(QWidget *parent)
 	m_inAllBasketsButton->setTextLabel(i18n("Filter all Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
 	m_inAllBasketsButton->setAutoRaise(true);
 
-	// Configure the Reset button:
-	m_resetButton->setEnabled(false);
-
 	// Configure the Tags combobox:
 	repopulateTagsCombo();
 
@@ -85,6 +82,7 @@ FilterBar::FilterBar(QWidget *parent)
 //	Global::bnpView->toggleFilterAllBaskets(true);
 
 //	m_lineEdit->setMaximumWidth(150);
+	m_lineEdit->setClearButtonShown(true);
 
 	// Layout all those widgets:
 //	hBox->addStretch();

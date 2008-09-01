@@ -838,7 +838,7 @@ void BNPView::setupActions()
 
     toggleAct = new KToggleAction(ac);
     ac->addAction("edit_filter_all_baskets", toggleAct);
-    toggleAct->setText(i18n("Filter all &Baskets"));
+    toggleAct->setText(i18n("&Search All"));
     toggleAct->setIcon(KIcon("edit-find"));
     toggleAct->setShortcut(KShortcut("Ctrl+Shift+F"));
     m_actFilterAllBaskets = toggleAct;
