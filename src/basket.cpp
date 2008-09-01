@@ -212,8 +212,6 @@ DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, con
 	m_basket->setFocus(); // To avoid the filter bar have focus on load
 
 	connect( m_filter, SIGNAL(newFilter(const FilterData&)), m_basket, SLOT(newFilter(const FilterData&)) );
-	connect( m_filter, SIGNAL(escapePressed()),              m_basket, SLOT(cancelFilter())               );
-	connect( m_filter, SIGNAL(returnPressed()),              m_basket, SLOT(validateFilter())             );
 
 	connect( m_basket, SIGNAL(postMessage(const QString&)),      Global::bnpView, SLOT(postStatusbarMessage(const QString&)) );
 	connect( m_basket, SIGNAL(setStatusBarText(const QString&)), Global::bnpView, SLOT(setStatusBarHint(const QString&))     );
@@ -1283,20 +1281,6 @@ void Basket::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
 	Global::bnpView->setFiltering(data.isFiltering);
 
 //StopWatch::check(20);
-}
-
-void Basket::cancelFilter()
-{
-	decoration()->filterBar()->reset();
-	validateFilter();
-}
-
-void Basket::validateFilter()
-{
-	if (isDuringEdit())
-		m_editor->widget()->setFocus();
-	else
-		setFocus();
 }
 
 bool Basket::isFiltering()
@@ -4951,7 +4935,7 @@ void Basket::keyPressEvent(QKeyEvent *event)
 		if (isDuringEdit())
 			closeEditor();
 		else if (decoration()->filterData().isFiltering)
-			cancelFilter();
+			decoration()->filterBar()->reset();
 		else
 			unselectAll();
 	}

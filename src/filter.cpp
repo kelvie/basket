@@ -102,18 +102,16 @@ FilterBar::FilterBar(QWidget *parent)
 
 //	connect( &m_blinkTimer,         SIGNAL(timeout()),                   this, SLOT(blinkBar())                  );
 	connect(  m_resetButton,        SIGNAL(clicked()),                   this, SLOT(reset())                     );
-	connect(  m_lineEdit,           SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)) );
+	connect(  m_lineEdit,           SIGNAL(textChanged(const QString&)), this, SLOT(changeFilter()) );
 	connect(  m_tagsBox,            SIGNAL(activated(int)),              this, SLOT(tagChanged(int))             );
 
 //	connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
 	connect(  m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)) );
 
 	FocusWidgetFilter *lineEditF = new FocusWidgetFilter(m_lineEdit);
-	FocusWidgetFilter *tagsBoxF = new FocusWidgetFilter(m_tagsBox);
-	connect(lineEditF, SIGNAL(escapePressed()), SIGNAL(escapePressed()));
-	connect(lineEditF, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
-	connect(tagsBoxF, SIGNAL(escapePressed()), SIGNAL(escapePressed()));
-	connect(tagsBoxF, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
+	m_tagsBox->installEventFilter(lineEditF);
+	connect(lineEditF, SIGNAL(escapePressed()), SLOT(reset()));
+	connect(lineEditF, SIGNAL(returnPressed()), SLOT(changeFilter()));
 }
 
 FilterBar::~FilterBar()
@@ -271,9 +269,9 @@ const FilterData& FilterBar::filterData()
 	return *m_data;
 }
 
-void FilterBar::textChanged(const QString &text)
+void FilterBar::changeFilter()
 {
-	m_data->string = text;
+	m_data->string = m_lineEdit->text();
 	m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
 	m_resetButton->setEnabled(m_data->isFiltering);
 	emit newFilter(*m_data);
