@@ -838,7 +838,7 @@ void BNPView::setupActions()
 
     toggleAct = new KToggleAction(ac);
     ac->addAction("edit_filter_all_baskets", toggleAct);
-    toggleAct->setText(i18n("Filter all &Baskets"));
+    toggleAct->setText(i18n("&Search All"));
     toggleAct->setIcon(KIcon("edit-find"));
     toggleAct->setShortcut(KShortcut("Ctrl+Shift+F"));
     m_actFilterAllBaskets = toggleAct;
@@ -1237,20 +1237,15 @@ bool BNPView::convertTexts()
 	return convertedNotes;
 }
 
-/** isRunning is to avoid recursive calls because this method can be called
- * when clicking the menu action or when using the filter-bar icon... either of those calls
- * call the other to be checked... and it can cause recursive calls.
- * PS: Uggly hack? Yes, I think so :-)
- */
 void BNPView::toggleFilterAllBaskets(bool doFilter)
 {
-	static bool isRunning = false;
-	if (isRunning)
-		return;
-	isRunning = true;
-
 	// Set the state:
 	m_actFilterAllBaskets->setChecked(doFilter);
+
+	// If the filter isn't already showing, we make sure it does.
+	if (doFilter)
+		m_actShowFilter->setChecked(true);
+
 	//currentBasket()->decoration()->filterBar()->setFilterAll(doFilter);
 
 //	Basket *current = currentBasket();
@@ -1260,9 +1255,6 @@ void BNPView::toggleFilterAllBaskets(bool doFilter)
 		item->basket()->decoration()->filterBar()->setFilterAll(doFilter);
 		++it;
 	}
-
-	// Protection is not necessary anymore:
-	isRunning = false;
 
 	if (doFilter)
 		currentBasket()->decoration()->filterBar()->setEditFocus();
@@ -1828,10 +1820,11 @@ void BNPView::showHideFilterBar(bool show, bool switchFocus)
 {
 //	if (show != m_actShowFilter->isChecked())
 //		m_actShowFilter->setChecked(show);
-	m_actShowFilter->setChecked(currentDecoratedBasket()->filterData().isFiltering);
+	m_actShowFilter->setChecked(show);
 
 	currentDecoratedBasket()->setFilterBarShown(show, switchFocus);
-	currentDecoratedBasket()->resetFilter();
+	if (!show)
+		currentDecoratedBasket()->resetFilter();
 }
 
 void BNPView::insertEmpty(int type)
@@ -1958,6 +1951,8 @@ void BNPView::setFiltering(bool filtering)
 {
 	m_actShowFilter->setChecked(filtering);
 	m_actResetFilter->setEnabled(filtering);
+	if (!filtering)
+		m_actFilterAllBaskets->setEnabled(false);
 }
 
 void BNPView::undo()

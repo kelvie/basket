@@ -70,7 +70,7 @@ bool    Settings::s_autoBullet           = true;
 bool    Settings::s_exportTextTags       = true;
 bool    Settings::s_useGnuPGAgent        = false;
 bool    Settings::s_treeOnLeft           = true;
-bool    Settings::s_filterOnTop          = true;
+bool    Settings::s_filterOnTop          = false;
 int     Settings::s_defImageX            = 300;
 int     Settings::s_defImageY            = 200;
 bool    Settings::s_enableReLockTimeout  = true;
@@ -131,7 +131,7 @@ void Settings::loadConfig()
 
 	KConfigGroup config = Global::config()->group("Main window");    // TODO: Split with a "System tray icon" group !
 	setTreeOnLeft(           config.readEntry("treeOnLeft",           true)  );
-	setFilterOnTop(          config.readEntry("filterOnTop",          true)  );
+	setFilterOnTop(          config.readEntry("filterOnTop",          false)  );
 	setPlayAnimations(       config.readEntry("playAnimations",       true)  );
 	setShowNotesToolTip(     config.readEntry("showNotesToolTip",     true)  );
 	setBigNotes(             config.readEntry("bigNotes",             false) );

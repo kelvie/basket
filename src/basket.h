@@ -585,8 +585,6 @@ public slots:
 /// FILTERING:
   public slots:
 	void newFilter(const FilterData &data, bool andEnsureVisible = true);
-	void cancelFilter();
-	void validateFilter();
 	void filterAgain(bool andEnsureVisible = true);
 	void filterAgainDelayed();
 	bool isFiltering();

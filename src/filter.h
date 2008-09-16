@@ -62,8 +62,6 @@ class FilterBar : public QWidget
 	const FilterData& filterData();
   signals:
 	void newFilter(const FilterData &data);
-	void escapePressed();
-	void returnPressed();
   public slots:
 	void repopulateTagsCombo();
 	void reset();
@@ -77,7 +75,7 @@ class FilterBar : public QWidget
 	bool hasEditFocus();
 	KLineEdit* lineEdit() { return m_lineEdit; }
   private slots:
-	void textChanged(const QString &text);
+	void changeFilter();
 	void tagChanged(int index);
   private:
 	FilterData      *m_data;

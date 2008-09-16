@@ -127,6 +127,9 @@
   <Action name="edit_delete" />
   <Separator lineSeparator="true" name="separator_1" />
   <Action name="note_group" />
+  <Separator lineSeparator="true" name="separator_1" />
+  <Action name="edit_filter" />
+  <Action name="edit_filter_all_baskets" />
  </ToolBar>
  <ToolBar newline="false" position="Top" noMerge="1" name="richTextEditToolBar" fullWidth="true" >
   <text>Text Formating Toolbar</text>
