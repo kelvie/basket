@@ -155,6 +155,8 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 //		       << "read-compatible:0.6.1\n"
 //		       << "write-compatible:0.6.1\n"
 		       << "preview*:" << previewSize << "\n";
+
+		stream.flush();
 		// Copy the Preview File:
 		const Q_ULONG BUFFER_SIZE = 1024;
 		char *buffer = new char[BUFFER_SIZE];
@@ -165,6 +167,8 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 				file.write(buffer, sizeRead);
 		}
 		stream << "archive*:" << archiveSize << "\n";
+		stream.flush();
+
 		// Copy the Archive File:
 		QFile archiveFile(tempDestination);
 		if (archiveFile.open(QIODevice::ReadOnly)) {
@@ -444,7 +448,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
 							QString emblemFileName = (slashIndex < 0 ? emblemName : emblemName.right(slashIndex - 2));
 							QString source      = extractionFolder + "tag-emblems/" + emblemName.replace('/', '_');
 							QString destination = Global::savesFolder() + "tag-emblems/" + emblemFileName;
-							if (!dir.exists(destination))
+							if (!dir.exists(destination) && dir.exists(source))
 								copier.copyFolder(source, destination);
 							// Replace the emblem path in the tags.xml copy:
 							QDomElement emblemElement = XMLWork::getElement(subElement, "emblem");
