@@ -674,6 +674,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 
 	// The introduction message:
 	QLabel *introduction = new QLabel(introductionText(), page);
+	introduction->setWordWrap(true);
 	pageLayout->addWidget(introduction);
 
 	// The comment group:
