@@ -152,7 +152,7 @@ QString SoftwareImporters::fromICS(const QString &ics)
 	// Remove escaped '\' characters and append the text to the body
 	int pos = 0;
 	while ( (pos = result.find('\\', pos)) != -1 ) {
-		if ((uint)pos == result.length() - 1) // End of string
+		if (pos == result.length() - 1) // End of string
 			break;
 		if (result[pos+1] == 'n') {
 			result.replace(pos, 2, '\n');
@@ -603,7 +603,7 @@ void SoftwareImporters::importKnowIt()
 						{
 							insertTitledNote(basket, name, text, Qt::RichText);
 						}
-						for(uint j = 0; j < links.count(); ++j)
+						for(int j = 0; j < links.count(); ++j)
 						{
 							Note* link;
 							if(descriptions.count() < j+1 || descriptions[j].isEmpty())

@@ -170,7 +170,7 @@ QStringList NoteFactory::textToURLList(const QString &text)
 		}
 
 		/* Search for an url and create an URL note */
-		if ( ltext.startsWith("/") && ltext[1] != '/' && ltext[1] != '*' || // Take files but not C/C++/... comments !
+		if ( (ltext.startsWith("/") && ltext[1] != '/' && ltext[1] != '*') || // Take files but not C/C++/... comments !
 				   ltext.startsWith("file:")    ||
 				   ltext.startsWith("http://")  ||
 				   ltext.startsWith("https://") ||
