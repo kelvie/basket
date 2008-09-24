@@ -406,11 +406,12 @@ Note* Note::theSelectedNote()
 
 NoteSelection* Note::selectedNotes()
 {
-	if (content())
+	if (content()){
 		if (isSelected())
 			return new NoteSelection(this);
 		else
 			return 0;
+	}
 
 	NoteSelection *selection = new NoteSelection(this);
 
@@ -620,17 +621,19 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
 	if (pos.x() < HANDLE_WIDTH)
 		return Handle;
 
-	if (pos.y() < INSERTION_HEIGHT)
-		if ((!isFree() && !Settings::groupOnInsertionLine()) || pos.x() < width() / 2 && !isFree())
+	if (pos.y() < INSERTION_HEIGHT){
+		if ((!isFree() && !Settings::groupOnInsertionLine()) || (pos.x() < width() / 2 && !isFree()))
 			return TopInsert;
 		else
 			return TopGroup;
+	}
 
-	if (pos.y() >= height() - INSERTION_HEIGHT)
-		if ((!isFree() && !Settings::groupOnInsertionLine()) || pos.x() < width() / 2 && !isFree())
+	if (pos.y() >= height() - INSERTION_HEIGHT){
+		if ((!isFree() && !Settings::groupOnInsertionLine()) || (pos.x() < width() / 2 && !isFree()))
 			return BottomInsert;
 		else
 			return BottomGroup;
+	}
 
 	for (int i =0; i < m_emblemsCount; i++) {
 		if ( pos.x() >= HANDLE_WIDTH + (NOTE_MARGIN+EMBLEM_SIZE)*i  &&
@@ -1662,8 +1665,8 @@ bool Note::recomputeAreas(Note *note, bool noteIsAfterThis)
 		noteIsAfterThis = true;
 	// Only compute overlapping of notes AFTER this, or ON TOP this:
 	//else if ( note->matching() && noteIsAfterThis && (!isOnTop() || (isOnTop() && note->isOnTop())) || (!isOnTop() && note->isOnTop()) ) {
-	else if ( note->matching() && noteIsAfterThis && (!(isOnTop() || isEditing()) || ((isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing()))) ||
-	           (!(isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing())) ) {
+	else if ( note->matching() && noteIsAfterThis && ((!(isOnTop() || isEditing()) || ((isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing()))) ||
+	           (!(isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing()))) ) {
 		//if (!(isSelected() && !note->isSelected())) { // FIXME: FIXME: FIXME: FIXME: This last condition was added LATE, so we should look if it's ALWAYS good:
 			substractRectOnAreas(note->visibleRect(), m_areas, true);
 			if (note->hasResizer())
@@ -2459,19 +2462,19 @@ void Note::usedStates(Q3ValueList<State*> &states)
 Note* Note::nextInStack()
 {
 	// First, search in the childs:
-	if (firstChild())
+	if (firstChild()){
 		if (firstChild()->content())
 			return firstChild();
 		else
 			return firstChild()->nextInStack();
-
+	}
 	// Then, in the next:
-	if (next())
+	if (next()){
 		if (next()->content())
 			return next();
 		else
 			return next()->nextInStack();
-
+	}
 	// And finally, in the parent:
 	Note *note = parentNote();
 	while (note)
