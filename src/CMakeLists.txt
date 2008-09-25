@@ -35,6 +35,8 @@ set(basketcommon_LIB_SRCS
     regiongrabber.cpp
     kgpgme.cpp
     likeback.cpp
+    likebackbar.cpp
+    likebackdialog.cpp
     crashhandler.cpp
     password.cpp
     colorpicker.cpp
@@ -45,7 +47,7 @@ set(basketcommon_LIB_SRCS
     basketstatusbar.cpp
     backup.cpp)
 
-kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
+kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui likebackbar.ui likebackdialog.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
 

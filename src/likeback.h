@@ -21,7 +21,7 @@
 #ifndef LIKEBACK_H
 #define LIKEBACK_H
 
-#include <qobject.h>
+#include <QObject>
 
 class KConfig;
 class KAboutData;
@@ -29,8 +29,6 @@ class KAction;
 class KActionCollection;
 
 class LikeBackPrivate;
-class LikeBackBar;
-class LikeBackDialog;
 
 /**
  * @short System to Get Quick Feedback from Beta-Testers
