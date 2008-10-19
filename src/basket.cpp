@@ -1902,6 +1902,7 @@ void Basket::contentsDragEnterEvent(QDragEnterEvent *event)
 	Global::bnpView->updateStatusBarHint();
 	if (NoteDrag::basketOf(event) == this)
 		m_draggedNotes = NoteDrag::notesOf(event);
+	event->accept();
 }
 
 void Basket::contentsDragMoveEvent(QDragMoveEvent *event)
