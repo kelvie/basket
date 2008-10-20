@@ -103,7 +103,7 @@ set(basketpart_PART_SRCS basket_part.cpp)
 
 kde4_add_plugin(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 
-target_link_libraries(basketpart ${KDE4_KDECORE_LIBS} basketcommon kparts kdeui DCOP)
+target_link_libraries(basketpart ${KDE4_KDECORE_LIBS} basketcommon kparts kdeui)
 
 install(TARGETS basketpart DESTINATION ${PLUGIN_INSTALL_DIR})
 

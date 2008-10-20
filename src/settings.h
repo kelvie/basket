@@ -56,7 +56,7 @@ class LinkLookEditWidget;
 class RunCommandRequester;
 class IconSizeCombo;
 
-class GeneralPage : public KCModule
+class BASKET_EXPORT GeneralPage : public KCModule
 {
   Q_OBJECT
   public:
@@ -83,7 +83,7 @@ class GeneralPage : public KCModule
 	KIntNumInput        *m_timeToShowOnMouseIn;
 };
 
-class BasketsPage : public KCModule
+class BASKET_EXPORT BasketsPage : public KCModule
 {
   Q_OBJECT
   public:
@@ -113,7 +113,7 @@ class BasketsPage : public KCModule
 	KIntNumInput        *m_reLockTimeoutMinutes;
 };
 
-class NewNotesPage : public KCModule
+class BASKET_EXPORT NewNotesPage : public KCModule
 {
   Q_OBJECT
   public:
@@ -140,7 +140,7 @@ class NewNotesPage : public KCModule
 	QCheckBox           *m_viewSoundFileContent;
 };
 
-class NotesAppearancePage : public KCModule
+class BASKET_EXPORT NotesAppearancePage : public KCModule
 {
   Q_OBJECT
   public:
@@ -159,7 +159,7 @@ class NotesAppearancePage : public KCModule
 	LinkLookEditWidget  *m_launcherLook;
 };
 
-class ApplicationsPage : public KCModule
+class BASKET_EXPORT ApplicationsPage : public KCModule
 {
   Q_OBJECT
   public:

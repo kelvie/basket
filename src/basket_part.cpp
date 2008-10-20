@@ -35,12 +35,12 @@
 typedef KParts::GenericFactory< BasketPart > BasketFactory;
 K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory )
 
-BasketPart::BasketPart( QWidget *parentWidget, const char *,
-						QObject *parent, const char *name, const QStringList & )
-	: KParts::ReadWritePart(parent, name)
+BasketPart::BasketPart( QWidget *parentWidget,
+						QObject *parent, const QStringList & )
+	: KParts::ReadWritePart(parent)
 {
   // we need an instance
-	setInstance( BasketFactory::instance() );
+	//setInstance( BasketFactory::instance() );
 
 	BasketStatusBar* bar = new BasketStatusBar(new KParts::StatusBarExtension(this));
   // this should be your custom internal widget

@@ -21,12 +21,13 @@
 #define ABOUTDATA_H
 
 #include <kaboutdata.h>
+#include <basket_export.h>
 
 /**
 	@author Sébastien Laoût <slaout@linux62.org>
 */
 
-class AboutData : public KAboutData
+class BASKET_EXPORT AboutData : public KAboutData
 {
   public:
 	AboutData();

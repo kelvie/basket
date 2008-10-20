@@ -5,7 +5,6 @@ find_package(QImageBlitz REQUIRED)
 find_package(Gpgme)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
-
 add_definitions(-DQT3_SUPPORT)
 
 # fix these warnings after we get it to compile
@@ -44,4 +43,3 @@ add_subdirectory(backgrounds)
 add_subdirectory(images)
 
 message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}: skipped subdir $(TOPSUBDIRS)")
-
