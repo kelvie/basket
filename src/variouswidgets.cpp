@@ -25,6 +25,9 @@
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qsizepolicy.h>
+
+#include <KListWidget>
+
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <QResizeEvent>
@@ -184,10 +187,15 @@ void HelpLabel::keyPressEvent(QKeyEvent *event)
 
 /** class IconSizeDialog: */
 
-class UndraggableKIconView : public K3IconView
+class UndraggableKIconView : public KListWidget
 {
   public:
-	UndraggableKIconView(QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0) : K3IconView(parent, name, f) {}
+	UndraggableKIconView(QWidget * parent = 0) : KListWidget(parent) { 
+		this->setViewMode(QListView::IconMode);
+		this->setMovement(QListView::Static); 
+		this->setSelectionMode(QAbstractItemView::SingleSelection); 
+		this->setWrapping(false);
+	}
 	Q3DragObject* dragObject() { return 0; }
 };
 
@@ -208,32 +216,30 @@ IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, c
 	QLabel *label = new QLabel(message, page);
 	topLayout->addWidget(label);
 
-	K3IconView *iconView = new UndraggableKIconView(page);
-	iconView->setItemsMovable(false);
-	iconView->setSelectionMode(K3IconView::Single);
-	m_size16  = new K3IconViewItem(iconView, 0,        i18n("16 by 16 pixels"),   DesktopIcon(icon, 16));
-	m_size22  = new K3IconViewItem(iconView, m_size16, i18n("22 by 22 pixels"),   DesktopIcon(icon, 22));
-	m_size32  = new K3IconViewItem(iconView, m_size22, i18n("32 by 32 pixels"),   DesktopIcon(icon, 32));
-	m_size48  = new K3IconViewItem(iconView, m_size32, i18n("48 by 48 pixels"),   DesktopIcon(icon, 48));
-	m_size64  = new K3IconViewItem(iconView, m_size48, i18n("64 by 64 pixels"),   DesktopIcon(icon, 64));
-	m_size128 = new K3IconViewItem(iconView, m_size64, i18n("128 by 128 pixels"), DesktopIcon(icon, 128));
-	iconView->setMinimumWidth(m_size16->width() + m_size22->width() + m_size32->width() + m_size48->width() + m_size64->width() + m_size128->width() +
-	                          (6+2) * iconView->spacing() + 20);
-	iconView->setMinimumHeight(m_size128->height() + 2 * iconView->spacing() + 20);
+	KListWidget *iconView = new UndraggableKIconView(page);
+
+	m_size16  = new QListWidgetItem(DesktopIcon(icon,16), i18n("16 by 16 pixels"),iconView);
+	m_size22  = new QListWidgetItem(DesktopIcon(icon,22), i18n("22 by 22 pixels"),iconView);
+	m_size32  = new QListWidgetItem(DesktopIcon(icon,32), i18n("32 by 32 pixels"),iconView);
+	m_size48  = new QListWidgetItem(DesktopIcon(icon,48), i18n("48 by 48 pixels"),iconView);
+	m_size64  = new QListWidgetItem(DesktopIcon(icon,64), i18n("64 by 64 pixels"),iconView);
+	m_size128 = new QListWidgetItem(DesktopIcon(icon,128), i18n("128 by 128 pixels"),iconView);
+	iconView->setIconSize(QSize(128,128));
+	iconView->setMinimumSize(QSize(128*6 + (6+2) * iconView->spacing() + 20, m_size128->sizeHint().height() + 2 * iconView->spacing() + 20));
 	topLayout->addWidget(iconView);
 	switch (iconSize) {
-		case 16:  iconView->setSelected(m_size16,  true); m_iconSize = 16;  break;
-		case 22:  iconView->setSelected(m_size22,  true); m_iconSize = 22;  break;
+		case 16:  m_size16->setSelected(true); m_iconSize = 16;  break;
+		case 22:  m_size22->setSelected(true); m_iconSize = 22;  break;
 		default:
-		case 32:  iconView->setSelected(m_size32,  true); m_iconSize = 32;  break;
-		case 48:  iconView->setSelected(m_size48,  true); m_iconSize = 48;  break;
-		case 64:  iconView->setSelected(m_size64,  true); m_iconSize = 64;  break;
-		case 128: iconView->setSelected(m_size128, true); m_iconSize = 128; break;
+		case 32:  m_size32->setSelected(true); m_iconSize = 32;  break;
+		case 48:  m_size48->setSelected(true); m_iconSize = 48;  break;
+		case 64:  m_size64->setSelected(true); m_iconSize = 64;  break;
+		case 128: m_size128->setSelected(true); m_iconSize = 128; break;
 	}
 
-	connect( iconView, SIGNAL(executed(Q3IconViewItem*)),      this, SLOT(choose(Q3IconViewItem*)) );
-	connect( iconView, SIGNAL(returnPressed(Q3IconViewItem*)), this, SLOT(choose(Q3IconViewItem*)) );
-	connect( iconView, SIGNAL(selectionChanged()),            this, SLOT(slotSelectionChanged()) );
+	connect( iconView, SIGNAL(executed(QListWidgetItem*)),      this, SLOT(choose(QListWidgetItem*)) ); 
+	connect( iconView, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(choose(QListWidgetItem*)) );
+	connect( iconView, SIGNAL(itemSelectionChanged()),          this, SLOT(slotSelectionChanged()) );
 
 	setMainWidget(page);
 }
@@ -264,7 +270,7 @@ void IconSizeDialog::slotSelectionChanged()
 	}
 }
 
-void IconSizeDialog::choose(Q3IconViewItem*)
+void IconSizeDialog::choose(QListWidgetItem *)
 {
 	button(Ok)->animateClick();
 }
@@ -276,7 +282,7 @@ void IconSizeDialog::slotCancel()
 
 /** class FontSizeCombo: */
 
-FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent, const char *name)
+FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent)
  : KComboBox(rw, parent), m_withDefault(withDefault)
 {
 	if (m_withDefault)

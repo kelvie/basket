@@ -32,8 +32,7 @@
 #include <KDialog>
 
 class QLineEdit;
-class K3IconViewItem;
-class Q3IconViewItem;
+class QListWidgetItem;
 
 class Basket;
 
@@ -117,14 +116,14 @@ class IconSizeDialog : public KDialog
   protected slots:
 	void slotCancel();
 	void slotSelectionChanged();
-	void choose(Q3IconViewItem*);
+	void choose(QListWidgetItem*);
   private:
-	K3IconViewItem *m_size16;
-	K3IconViewItem *m_size22;
-	K3IconViewItem *m_size32;
-	K3IconViewItem *m_size48;
-	K3IconViewItem *m_size64;
-	K3IconViewItem *m_size128;
+	QListWidgetItem *m_size16;
+	QListWidgetItem *m_size22;
+	QListWidgetItem *m_size32;
+	QListWidgetItem *m_size48;
+	QListWidgetItem *m_size64;
+	QListWidgetItem *m_size128;
 	int m_iconSize;
 };
 
@@ -135,7 +134,7 @@ class FontSizeCombo : public KComboBox
 {
   Q_OBJECT
   public:
-	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0, const char *name = 0);
+	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0);
 	~FontSizeCombo();
 	void setFontSize(int size);
 	int fontSize();
