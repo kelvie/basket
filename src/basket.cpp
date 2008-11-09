@@ -3418,10 +3418,17 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	KMenu menu(this);
 	if (tag->countStates() == 1) {
 		menu.addTitle(/*SmallIcon(state->icon()), */tag->name());
-		menu.insertItem( KIcon("edit-delete"), i18n("&Remove"),             1 );
-		menu.insertItem( KIcon("configure"),  i18n("&Customize..."),       2 );
+		KAction* act;
+		act = new KAction(KIcon("edit-delete"), i18n("&Remove"), &menu);
+		act->setData(1);
+		menu.addAction(act); 
+		act = new KAction( KIcon("configure"),  i18n("&Customize..."), &menu);
+		act->setData(2);
+		menu.addAction(act);
 		menu.insertSeparator();
-		menu.insertItem( KIcon("search-filter"),     i18n("&Filter by this Tag"), 3 );
+		act = new KAction( KIcon("search-filter"),     i18n("&Filter by this Tag"), &menu);
+		act->setData(3);
+		menu.addAction(act);
 	} else {
 		menu.addTitle(tag->name());
 		Q3ValueList<State*>::iterator it;
@@ -3440,6 +3447,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 			StateAction *sa = new StateAction(currentState, KShortcut(sequence), false);
 			sa->setChecked(state == currentState);
 			sa->setActionGroup(emblemGroup);
+			sa->setData(i);
 
 			menu.addAction(sa);
 			if (currentState == nextState && !tag->shortcut().isEmpty())
@@ -3451,30 +3459,34 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
         act->setIcon(KIcon("edit-delete"));
         act->setText(i18n("&Remove"));
         act->setShortcut(sequenceOnDelete ? sequence : QKeySequence());
+		act->setData(1);
 		menu.addAction(act);
-		menu.addAction(new KAction(
+		act = new KAction(
 				   KIcon("configure"),
 				   i18n("&Customize..."),
-				   &menu)
-		    );
+				   &menu
+				);
+		act->setData(2);
+		menu.addAction(act);
 
 		menu.insertSeparator();
 
-		menu.addAction(new KAction(
-				   KIcon("search-filter"),
+		act = new KAction( KIcon("search-filter"),
 				   i18n("&Filter by this Tag"),
-				   &menu)
-		    );
-		menu.addAction(new KAction(
+				   &menu);
+		act->setData(3);
+		menu.addAction(act);
+		act = new KAction(
 				   KIcon("search-filter"),
 				   i18n("Filter by this &State"),
-				   &menu)
-		    );
+				   &menu);
+		act->setData(4);
+		menu.addAction(act);
 	}
 	if (sequenceOnDelete)
 		menu.setAccel(sequence, 1);
 
-	connect( &menu, SIGNAL(activated(int)), this, SLOT(toggledStateInMenu(int)) );
+	connect( &menu, SIGNAL(triggered(QAction *)), this, SLOT(toggledStateInMenu(QAction *)) );
 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering())        );
 	connect( &menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick())      );
 
@@ -3482,8 +3494,9 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 	menu.exec(QCursor::pos());
 }
 
-void Basket::toggledStateInMenu(int id)
+void Basket::toggledStateInMenu(QAction* action)
 {
+	int id = action->data().toInt();
 	if (id == 1) {
 		removeTagFromSelectedNotes(m_tagPopup);
 		//m_tagPopupNote->removeTag(m_tagPopup);

@@ -435,7 +435,7 @@ public slots:
 	void removedStates(const Q3ValueList<State*> &deletedStates);
   private slots:
 	void toggledTagInMenu(QAction *act);
-	void toggledStateInMenu(int id);
+	void toggledStateInMenu(QAction *act);
 	void unlockHovering();
 	void disableNextClick();
 	void contentsMoved();
