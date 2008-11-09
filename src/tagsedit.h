@@ -25,6 +25,7 @@
 #include <kcombobox.h>
 #include <q3listview.h>
 #include <QList>
+#include <QHBoxLayout>
 //Added by qt3to4:
 #include <QLabel>
 #include <QMouseEvent>
