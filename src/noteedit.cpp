@@ -224,9 +224,9 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
 	connect( textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
 
-	connect( InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFamily(const QString&)) );
-	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(int)),            textEdit, SLOT(setPointSize(int))         );
-	connect( InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setColor(const QColor&))   );
+	connect( InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(int)),            textEdit, SLOT(setFontPointSize(int))         );
+	connect( InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&))   );
 
 	connect( InlineEditors::instance()->focusWidgetFilter, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
 	connect( InlineEditors::instance()->focusWidgetFilter, SIGNAL(returnPressed()), textEdit, SLOT(setFocus()) );
@@ -242,13 +242,9 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( textEdit,  SIGNAL(currentFontChanged(const QFont&)), this, SLOT(fontChanged(const QFont&)) );
 //	connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
-	connect( InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    textEdit, SLOT(setBold(bool)) );
-	connect( InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setItalic(bool)) );
-	connect( InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setUnderline(bool)) );
-	//REMOVE:
-	//connect( InlineEditors::instance()->richTextBold,      SIGNAL(activated()), this, SLOT(setBold())      );
-	//connect( InlineEditors::instance()->richTextItalic,    SIGNAL(activated()), this, SLOT(setItalic())    );
-	//connect( InlineEditors::instance()->richTextUnderline, SIGNAL(activated()), this, SLOT(setUnderline()) );
+	connect( InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    this, SLOT(setBold(bool)) );
+	connect( InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setFontItalic(bool)) );
+	connect( InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setFontUnderline(bool)) );
 	connect( InlineEditors::instance()->richTextLeft,      SIGNAL(activated()), this, SLOT(setLeft())      );
 	connect( InlineEditors::instance()->richTextCenter,    SIGNAL(activated()), this, SLOT(setCentered())  );
 	connect( InlineEditors::instance()->richTextRight,     SIGNAL(activated()), this, SLOT(setRight())     );
@@ -285,9 +281,9 @@ void HtmlEditor::cursorPositionChanged()
 	switch (textEdit()->alignment()) {
 		default:
 		case 1/*Qt::AlignLeft*/:     InlineEditors::instance()->richTextLeft->setChecked(true);      break;
-		case 4/*Qt::AlignCenter*/:   InlineEditors::instance()->richTextCenter->setChecked(true);    break;
 		case 2/*Qt::AlignRight*/:    InlineEditors::instance()->richTextRight->setChecked(true);     break;
-		case -8/*Qt::AlignJustify*/: InlineEditors::instance()->richTextJustified->setChecked(true); break;
+		case 4/*Qt::AlignHCenter*/:   InlineEditors::instance()->richTextCenter->setChecked(true);    break;
+		case 8/*Qt::AlignJustify*/: InlineEditors::instance()->richTextJustified->setChecked(true); break;
 	}
 }
 
@@ -336,14 +332,12 @@ void HtmlEditor::fontChanged(const QFont &font)
 			break;
 }*/
 
- // REMOVE: These functions are unused - it's now done by direct connection to textEdit
- //void HtmlEditor::setBold()      { textEdit()->setBold(      InlineEditors::instance()->richTextBold->isChecked()      ); }
- //void HtmlEditor::setItalic()    { textEdit()->setItalic(    InlineEditors::instance()->richTextItalic->isChecked()    ); }
- //void HtmlEditor::setUnderline() { textEdit()->setUnderline( InlineEditors::instance()->richTextUnderline->isChecked() ); }
 void HtmlEditor::setLeft()      { textEdit()->setAlignment(Qt::AlignLeft);    }
-void HtmlEditor::setCentered()  { textEdit()->setAlignment(Qt::AlignCenter);  }
 void HtmlEditor::setRight()     { textEdit()->setAlignment(Qt::AlignRight);   }
+void HtmlEditor::setCentered()  { textEdit()->setAlignment(Qt::AlignHCenter);  }
 void HtmlEditor::setBlock()     { textEdit()->setAlignment(Qt::AlignJustify); }
+
+void HtmlEditor::setBold(bool isChecked)      { textEdit()->setFontWeight(isChecked ? QFont::Bold : QFont::Normal); }
 
 HtmlEditor::~HtmlEditor()
 {

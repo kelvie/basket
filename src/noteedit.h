@@ -130,9 +130,7 @@ class HtmlEditor : public NoteEditor
 	void fontChanged(const QFont &font);
   protected slots:
 //	void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
-	//	void setBold();
-	//	void setItalic();
-	//	void setUnderline();
+    void setBold(bool isChecked);
 	void setLeft();
 	void setCentered();
 	void setRight();
