@@ -321,14 +321,14 @@ void FontSizeCombo::keyPressEvent(QKeyEvent *event)
 		KComboBox::keyPressEvent(event);
 }
 
-void FontSizeCombo::setFontSize(int size)
+void FontSizeCombo::setFontSize(qreal size)
 {
 	setCurrentText(QString::number(size));
 
 	// TODO: SEE KFontSizeAction::setFontSize( int size ) !!! for a more complete method!
 }
 
-int FontSizeCombo::fontSize()
+qreal FontSizeCombo::fontSize()
 {
 	bool ok = false;
 	int size = currentText().toInt(&ok);

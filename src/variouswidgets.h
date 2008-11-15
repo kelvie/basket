@@ -136,12 +136,12 @@ class FontSizeCombo : public KComboBox
   public:
 	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0);
 	~FontSizeCombo();
-	void setFontSize(int size);
-	int fontSize();
+	void setFontSize(qreal size);
+	qreal fontSize();
   protected:
 	void keyPressEvent(QKeyEvent *event);
   signals:
-	void sizeChanged(int size);
+	void sizeChanged(qreal size);
 	void escapePressed();
 	void returnPressed2();
   private slots:
