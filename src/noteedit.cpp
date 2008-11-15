@@ -225,7 +225,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	connect( textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()) );
 
 	connect( InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)) );
-	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(qreal)),            textEdit, SLOT(setFontPointSize(qreal)) );
+	connect( InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(int)),            textEdit, SLOT(setFontPointSize(int))         );
 	connect( InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&))   );
 
 	connect( InlineEditors::instance()->focusWidgetFilter, SIGNAL(escapePressed()),  textEdit, SLOT(setFocus()) );
