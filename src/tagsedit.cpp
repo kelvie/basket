@@ -48,7 +48,6 @@
 
 #include <kshortcutwidget.h>
 #include <QFontComboBox>
-//#include <Qt3Support>
 
 #include "kicondialog.h"
 #include "tag.h"

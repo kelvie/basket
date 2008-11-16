@@ -47,7 +47,7 @@
 #include <kstandarddirs.h>
 #include <kdebug.h>
 #include <qdatetime.h>
-#include <Qt3Support>
+#include <Q3MimeSourceFactory>
 
 
 #include "kgpgme.h"

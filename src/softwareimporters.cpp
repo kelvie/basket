@@ -29,7 +29,6 @@
 #include <kfiledialog.h>
 #include <q3ptrstack.h>
 #include <qlayout.h>
-#include <Qt3Support>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
 #include <QTextEdit>
@@ -43,6 +42,7 @@
 #include "bnpview.h"
 #include "xmlwork.h"
 #include "tools.h"
+#include <Q3VButtonGroup>
 
 /** class TreeImportDialog: */
 

@@ -43,9 +43,8 @@
 #include <KDialog>
 #include <kcmodule.h>
 #include <kdebug.h>
-#include <Qt3Support>
 #include <kcolorscheme.h>
-
+#include <Q3MimeSourceFactory>
 
 #include "linklabel.h"
 #include "variouswidgets.h"
