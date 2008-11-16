@@ -32,18 +32,18 @@
 #include <qfontinfo.h>
 #include <qobject.h>
 //Added by qt3to4:
-#include <Q3MemArray>
+#include <QVector>
 
 #include <QTextDocument>
 #include <QTime>
 
 #include "tools.h"
 
-Q3MemArray<QTime>  StopWatch::starts;
-Q3MemArray<double> StopWatch::totals;
-Q3MemArray<uint>   StopWatch::counts;
+QVector<QTime>  StopWatch::starts;
+QVector<double> StopWatch::totals;
+QVector<uint>   StopWatch::counts;
 
-void StopWatch::start(uint id)
+void StopWatch::start(int id)
 {
 	if (id >= starts.size()) {
 		totals.resize(id + 1);
@@ -57,7 +57,7 @@ void StopWatch::start(uint id)
 	starts[id] = QTime::currentTime();
 }
 
-void StopWatch::check(uint id)
+void StopWatch::check(int id)
 {
 	if (id >= starts.size())
 		return;

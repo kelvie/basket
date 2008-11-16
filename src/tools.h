@@ -1,5 +1,5 @@
 //Added by qt3to4:
-#include <Q3MemArray>
+#include <QVector>
 #include <QPixmap>
 /***************************************************************************
  *   Copyright (C) 2003 by Sébastien Laoût                                 *
@@ -31,12 +31,12 @@ class QMimeSource;
 class StopWatch
 {
   public:
-	static void start(uint id);
-	static void check(uint id);
+	static void start(int id);
+	static void check(int id);
   private:
-	static Q3MemArray<QTime>  starts;
-	static Q3MemArray<double> totals;
-	static Q3MemArray<uint>   counts;
+	static QVector<QTime>  starts;
+	static QVector<double> totals;
+	static QVector<uint>   counts;
 };
 
 /** Some useful functions for that application.
