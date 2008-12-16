@@ -29,7 +29,7 @@
 #include <q3listview.h>
 //Added by qt3to4:
 #include <Q3ValueList>
-#include <Q3PtrList>
+#include <QLinkedList>
 #include <QPixmap>
 #include <QHideEvent>
 #include <QEvent>
@@ -267,7 +267,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 		KAction       *m_actInsertLauncher;
 		KAction       *m_actImportIcon;
 		KAction       *m_actLoadFile;
-		Q3PtrList<KAction> m_insertActions;
+		QLinkedList<KAction*> m_insertActions;
 		// Basket actions :
 		KToggleAction *m_actShowFilter;
 		KAction       *m_actResetFilter;

@@ -27,7 +27,7 @@
 #include <kstandarddirs.h>
 #include <klocale.h>
 #include <kfiledialog.h>
-#include <q3ptrstack.h>
+#include <QStack>
 #include <qlayout.h>
 #include <qradiobutton.h>
 #include <kmessagebox.h>
@@ -538,7 +538,7 @@ void SoftwareImporters::importKnowIt()
 		QFile file(url.path());
 		QFileInfo info(url.path());
 		Basket* basket = 0;
-		Q3PtrStack<Basket> baskets;
+		QStack<Basket*> baskets;
 		QString text;
 		int hierarchy = 0;
 
@@ -576,9 +576,9 @@ void SoftwareImporters::importKnowIt()
 				if(line.startsWith("\\NewEntry") ||
 				   line.startsWith("\\CurrentEntry") || stream.atEnd())
 				{
-					while(level + 1 < baskets.count())
+					while(level + 1 < baskets.size()-baskets.count(0))
 						baskets.pop();
-					if(level + 1 > baskets.count())
+					if(level + 1 > baskets.size()-baskets.count(0))
 						baskets.push(basket);
 
 					if(!name.isEmpty())

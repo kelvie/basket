@@ -1670,8 +1670,8 @@ void BNPView::updateNotesActions()
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveOnBottom    ->setEnabled( !isLocked && oneOrSeveralSelected && !currentBasket()->isFreeLayout() );
 
-	for (KAction *action = m_insertActions.first(); action; action = m_insertActions.next())
-		action->setEnabled( !isLocked );
+	for (QLinkedList<KAction *>::const_iterator action = m_insertActions.constBegin(); action != m_insertActions.constEnd(); ++action)
+		(*action)->setEnabled( !isLocked );
 
 	// From the old Note::contextMenuEvent(...) :
 /*	if (useFile() || m_type == Link) {

@@ -29,7 +29,6 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QMoveEvent>
-#include <q3ptrlist.h>
 #include <qpoint.h>
 #include <qclipboard.h>
 #include <kaction.h>

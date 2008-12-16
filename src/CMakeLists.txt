@@ -92,7 +92,7 @@ set(kcm_basket_PART_SRCS kcm_basket.cpp)
 
 kde4_add_plugin(kcm_basket ${kcm_basket_PART_SRCS})
 
-target_link_libraries(kcm_basket ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} basketcommon)
+target_link_libraries(kcm_basket ${QT_QT3SUPPORT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} basketcommon)
 
 install(TARGETS kcm_basket DESTINATION ${PLUGIN_INSTALL_DIR})
 
@@ -103,7 +103,7 @@ set(basketpart_PART_SRCS basket_part.cpp)
 
 kde4_add_plugin(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 
-target_link_libraries(basketpart ${KDE4_KDECORE_LIBS} basketcommon kparts kdeui)
+target_link_libraries(basketpart ${KDE4_KDECORE_LIBS} basketcommon kparts kdeui ${QT_QT3SUPPORT_LIBRARY})
 
 install(TARGETS basketpart DESTINATION ${PLUGIN_INSTALL_DIR})
 
