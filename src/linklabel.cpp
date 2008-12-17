@@ -23,10 +23,10 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
-#include <Q3Frame>
+#include <QFrame>
 #include <QEvent>
 #include <QVBoxLayout>
-#include <Q3BoxLayout>
+#include <QBoxLayout>
 #include <kurl.h>
 #include <qlayout.h>
 #include <kiconloader.h>
@@ -35,7 +35,6 @@
 #include <qpushbutton.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <q3hgroupbox.h>
 #include <qpainter.h>
 #include <qstyle.h>
 #include <kapplication.h>
@@ -44,7 +43,7 @@
 #include <kcmodule.h>
 #include <kdebug.h>
 #include <kcolorscheme.h>
-#include <Q3MimeSourceFactory>
+#include <QGroupBox>
 
 #include "linklabel.h"
 #include "variouswidgets.h"
@@ -175,14 +174,14 @@ QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor)
 /** LinkLabel */
 
 LinkLabel::LinkLabel(int hAlign, int vAlign, QWidget *parent, const char *name, Qt::WFlags f)
- : Q3Frame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+ : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
 	initLabel(hAlign, vAlign);
 }
 
 LinkLabel::LinkLabel(const QString &title, const QString &icon, LinkLook *look, int hAlign, int vAlign,
                      QWidget *parent, const char *name, Qt::WFlags f)
- : Q3Frame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+ : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
 	initLabel(hAlign, vAlign);
 	setLink(title, icon, look);
@@ -190,7 +189,7 @@ LinkLabel::LinkLabel(const QString &title, const QString &icon, LinkLook *look, 
 
 void LinkLabel::initLabel(int hAlign, int vAlign)
 {
-	m_layout  = new Q3BoxLayout(this, Q3BoxLayout::LeftToRight);
+	m_layout  = new QBoxLayout(this, QBoxLayout::LeftToRight);
 	m_icon    = new QLabel(this);
 	m_title   = new QLabel(this);
 	m_spacer1 = new QSpacerItem(0, 0, QSizePolicy::Preferred/*Expanding*/, QSizePolicy::Preferred/*Expanding*/);
@@ -283,7 +282,7 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 
 	// And re-populate the widget with the appropriates things and order
 	bool addSpacers = hAlign == 1;
-	m_layout->setDirection(Q3BoxLayout::LeftToRight);
+	m_layout->setDirection(QBoxLayout::LeftToRight);
 	//m_title->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum/*Expanding*/, 0, 0, false) );
 	m_icon->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred/*Expanding*/, 0, 0, false) );
 	m_spacer1->changeSize( 0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred/*Expanding*/ );
@@ -341,7 +340,7 @@ void LinkLabel::setSelected(bool selected)
 
 void LinkLabel::setPaletteBackgroundColor(const QColor &color)
 {
-	Q3Frame::setPaletteBackgroundColor(color);
+	QFrame::setPaletteBackgroundColor(color);
 	m_title->setPaletteBackgroundColor(color);
 }
 
@@ -352,31 +351,6 @@ int LinkLabel::heightForWidth(int w) const
 	int titleH = (m_title->isShown())  ? m_title->heightForWidth(w - iconW) : 0; // Title height
 
 	return (titleH >= iconS) ? titleH : iconS; // No margin for the moment !
-}
-
-QString LinkLabel::toHtml(const QString &imageName)
-{
-	QString begin = "<font color=" + m_look->effectiveColor().name() + ">";
-	QString end   = "</font>";
-	if (m_look->italic()) {
-		begin += "<i>";
-		end.prepend("</i>");
-	}
-	if (m_look->bold()) {
-		begin += "<b>";
-		end.prepend("</b>");
-	}
-	if (m_look->underlineOutside()) {
-		begin += "<u>";
-		end.prepend("</u>");
-	}
-	if (m_icon->pixmap()) {
-		QPixmap icon(*m_icon->pixmap());
-		begin.prepend("<img src=" + imageName + " style=\"vertical-align: middle\"> ");
-		Q3MimeSourceFactory::defaultFactory()->setPixmap(imageName, icon);
-	} else
-		Q3MimeSourceFactory::defaultFactory()->setData(imageName, 0L);
-	return begin + Tools::textToHTMLWithoutP(m_title->text()) + end;
 }
 
 /** class LinkDisplay
