@@ -22,7 +22,7 @@
 #define BACKGROUNDMANAGER_H
 
 #include <qobject.h>
-#include <q3valuelist.h>
+#include <QList>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qcolor.h>
@@ -90,8 +90,8 @@ class BackgroundManager : private QObject
   Q_OBJECT
   private:
 	/// LIST OF IMAGES:
-	typedef Q3ValueList<BackgroundEntry*>       BackgroundsList;
-	typedef Q3ValueList<OpaqueBackgroundEntry*> OpaqueBackgroundsList;
+	typedef QList<BackgroundEntry*>       BackgroundsList;
+	typedef QList<OpaqueBackgroundEntry*> OpaqueBackgroundsList;
 
   public:
 	/// CONTRUCTOR AND DESTRUCTOR:
