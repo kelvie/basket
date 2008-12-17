@@ -85,7 +85,6 @@ target_link_libraries(basket
 
 install(TARGETS basket DESTINATION ${BIN_INSTALL_DIR})
 
-if(BUILD_KPARTS)
 ########### next target ###############
 
 set(kcm_basket_PART_SRCS kcm_basket.cpp)
@@ -96,6 +95,7 @@ target_link_libraries(kcm_basket ${QT_QT3SUPPORT_LIBRARY} ${KDE4_KDECORE_LIBS} $
 
 install(TARGETS kcm_basket DESTINATION ${PLUGIN_INSTALL_DIR})
 
+if(BUILD_KPARTS)
 
 ########### next target ###############
 
