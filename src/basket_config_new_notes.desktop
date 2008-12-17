@@ -5,7 +5,7 @@ Type=Service
 ServiceTypes=KCModule
 
 X-KDE-ModuleType=Library
-X-KDE-Library=kcm_basket.so
+X-KDE-Library=kcm_basket
 X-KDE-FactoryName=basket_config_new_notes
 X-KDE-HasReadOnlyMode=false
 X-KDE-ParentApp=basket
