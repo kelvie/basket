@@ -42,7 +42,7 @@
 #include "bnpview.h"
 #include "xmlwork.h"
 #include "tools.h"
-#include <Q3VButtonGroup>
+#include <QGroupBox>
 
 /** class TreeImportDialog: */
 
@@ -60,11 +60,19 @@ TreeImportDialog::TreeImportDialog(QWidget *parent)
 	setModal(true);
 	showButtonSeparator(false);
 
-	m_choices = new Q3VButtonGroup(i18n("How to Import the Notes?"), page);
-	new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
-	new QRadioButton(i18n("&First level notes in separate baskets"),                   m_choices);
-	new QRadioButton(i18n("&All notes in one basket"),                                 m_choices);
-	m_choices->setButton(0);
+	m_choices = new QGroupBox(i18n("How to Import the Notes?"), page);
+	m_choiceLayout = new QVBoxLayout();
+	m_choices->setLayout(m_choiceLayout);
+
+	m_hierarchy_choice = new QRadioButton(i18n("&Keep original hierarchy (all notes in separate baskets)"), m_choices);
+	m_separate_baskets_choice = new QRadioButton(i18n("&First level notes in separate baskets"),            m_choices);
+	m_one_basket_choice = new QRadioButton(i18n("&All notes in one basket"),                                m_choices);
+
+	m_hierarchy_choice->setChecked(true);
+	m_choiceLayout->addWidget(m_hierarchy_choice);
+	m_choiceLayout->addWidget(m_separate_baskets_choice);
+	m_choiceLayout->addWidget(m_one_basket_choice);
+
 	topLayout->addWidget(m_choices);
 	topLayout->addStretch(10);
 
@@ -77,7 +85,12 @@ TreeImportDialog::~TreeImportDialog()
 
 int TreeImportDialog::choice()
 {
-	return m_choices->selectedId();
+	if (m_hierarchy_choice->isChecked())
+		return 1;
+	else if (m_separate_baskets_choice->isChecked())
+		return 2;
+	else
+		return 3;
 }
 
 /** class TextFileImportDialog: */
@@ -96,23 +109,36 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 	setModal(true);
 	showButtonSeparator(false);
 
-	m_choices = new Q3VButtonGroup(i18n("Format of the Text File"), page);
-	new QRadioButton(i18n("Notes separated by an &empty line"), m_choices);
-	new QRadioButton(i18n("One &note per line"),                m_choices);
-	new QRadioButton(i18n("Notes begin with a &dash (-)"),      m_choices);
-	new QRadioButton(i18n("Notes begin with a &star (*)"),      m_choices);
+
+	m_choices = new QGroupBox(i18n("Format of the Text File"), page);
+	m_choiceLayout = new QVBoxLayout;
+	m_choices->setLayout(m_choiceLayout);
+
+	m_emptyline_choice = new QRadioButton(i18n("Notes separated by an &empty line"), m_choices);
+	m_newline_choice = new QRadioButton(i18n("One &note per line"),                  m_choices);
+	m_dash_choice = new QRadioButton(i18n("Notes begin with a &dash (-)"),           m_choices);
+	m_star_choice = new QRadioButton(i18n("Notes begin with a &star (*)"),           m_choices);
 	m_anotherSeparator = new QRadioButton(i18n("&Use another separator:"),           m_choices);
 
+	m_choiceLayout->addWidget(m_emptyline_choice);
+	m_choiceLayout->addWidget(m_newline_choice);
+	m_choiceLayout->addWidget(m_dash_choice);
+	m_choiceLayout->addWidget(m_star_choice);
+	m_choiceLayout->addWidget(m_anotherSeparator);
+
 	QWidget *indentedTextEdit = new QWidget(m_choices);
+	m_choiceLayout->addWidget(indentedTextEdit);
+
 	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
 	hLayout->addSpacing(20);
 	m_customSeparator = new QTextEdit(indentedTextEdit);
 	m_customSeparator->setTextFormat(Qt::PlainText);
 	hLayout->addWidget(m_customSeparator);
-	m_choices->insertChild(indentedTextEdit);
 
-	new QRadioButton(i18n("&All in one note"),                  m_choices);
-	m_choices->setButton(0);
+	m_all_in_one_choice = new QRadioButton(i18n("&All in one note"),                  m_choices);
+	m_choiceLayout->addWidget(m_all_in_one_choice);
+
+	m_emptyline_choice->setChecked(true);
 	topLayout->addWidget(m_choices);
 
 	connect( m_customSeparator, SIGNAL(textChanged()), this, SLOT(customSeparatorChanged()) );
@@ -126,15 +152,20 @@ TextFileImportDialog::~TextFileImportDialog()
 
 QString TextFileImportDialog::separator()
 {
-	switch (m_choices->selectedId()) {
-		default:
-		case 0: return "\n\n";
-		case 1: return "\n";
-		case 2: return "\n-";
-		case 3: return "\n*";
-		case 4: return m_customSeparator->text();
-		case 5: return "";
-	}
+	if (m_emptyline_choice->isChecked())
+		return "\n\n";
+	else if (m_newline_choice->isChecked())
+		return "\n";
+	else if (m_dash_choice->isChecked())
+		return "\n-";
+	else if (m_star_choice->isChecked())
+		return "\n*";
+	else if (m_anotherSeparator->isChecked())
+		return m_customSeparator->text();
+	else if (m_all_in_one_choice->isChecked())
+		return "";
+	else
+		return "\n\n";
 }
 
 void TextFileImportDialog::customSeparatorChanged()
@@ -350,6 +381,7 @@ void SoftwareImporters::importKNotes()
 			bool isRichText    = false;
 			QString title, body;
 			QString buf;
+			qDebug() << "Got here" << endl;
 			while (1) {
 				buf = stream.readLine();
 				if (buf.isNull()) // OEF
@@ -562,7 +594,7 @@ void SoftwareImporters::importKnowIt()
 		if(file.open(QIODevice::ReadOnly))
 		{
 			QTextStream stream(&file);
-			uint level = 0;
+			int level = 0;
 			QString name;
 			QString line;
 			QStringList links;

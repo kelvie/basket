@@ -25,7 +25,7 @@
 #include <KDialog>
 
 class QString;
-class Q3VButtonGroup;
+class QGroupBox;
 class QDomElement;
 class KTextEdit;
 class QRadioButton;
@@ -45,7 +45,11 @@ class TreeImportDialog : public KDialog
 	~TreeImportDialog();
 	int choice();
   private:
-	Q3VButtonGroup *m_choices;
+	QGroupBox *m_choices;
+	QVBoxLayout* m_choiceLayout;
+	QRadioButton *m_hierarchy_choice;
+	QRadioButton *m_separate_baskets_choice;
+	QRadioButton *m_one_basket_choice;
 };
 
 /** The dialog to ask how to import text files.
@@ -61,7 +65,13 @@ class TextFileImportDialog : public KDialog
   protected slots:
 	void customSeparatorChanged();
   private:
-	Q3VButtonGroup *m_choices;
+	QGroupBox *m_choices;
+	QVBoxLayout* m_choiceLayout;
+	QRadioButton  *m_emptyline_choice;
+	QRadioButton  *m_newline_choice;
+	QRadioButton  *m_dash_choice;
+	QRadioButton  *m_star_choice;
+	QRadioButton  *m_all_in_one_choice;
 	QRadioButton  *m_anotherSeparator;
 	QTextEdit     *m_customSeparator;
 };
