@@ -845,6 +845,7 @@ void InlineEditors::initToolBars(KActionCollection *ac)
 	richTextColor->setFixedWidth(richTextColor->sizeHint().height() * 2);
 	richTextColor->setColor(textColor);
 	action = ac->addAction("richtext_color");
+	action->setDefaultWidget(richTextColor);
 	action->setText(i18n("Color"));
 
 	KToggleAction *ta = NULL;
