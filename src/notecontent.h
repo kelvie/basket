@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <q3simplerichtext.h>
+#include <QTextDocument>
 #include <qpixmap.h>
 #include <qmovie.h>
 #include <qcolor.h>
@@ -45,7 +45,7 @@ class QRect;
 class QStringList;
 class QBuffer;
 
-class K3MultipleDrag;
+class QMimeData;
 
 class KFileItem;
 namespace KIO { class PreviewJob; }
@@ -90,7 +90,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual void exportToHTML(HTMLExporter *exporter, int indent)    = 0; /// << Export the note in an HTML file.
 	virtual QString cssClass()                                       = 0; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
-	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
+	virtual void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
 	virtual bool    loadFromFile(bool /*lazyLoad*/)     { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
 	virtual bool    finishLazyLoad()                    { return false; } /// << Load what was not loaded by loadFromFile() if it was lazy-loaded
 	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
@@ -110,7 +110,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	// Drag and Drop Content:
 	virtual void    serialize(QDataStream &/*stream*/)                 {} /// << Serialize the content in a QDragObject. If it consists of a file, it can be serialized for you.
 	virtual bool    shouldSerializeFile()           { return useFile(); } /// << @return true if the dragging process should serialize the filename (and move the file if cutting).
-	virtual void    addAlternateDragObjects(K3MultipleDrag*/*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
+	virtual void    addAlternateDragObjects(QMimeData */*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
 	virtual QPixmap feedbackPixmap(int width, int height)            = 0; /// << @return the pixmap to put under the cursor while dragging this object.
 	virtual bool    needSpaceForFeedbackPixmap()        { return false; } /// << @return true if a space must be inserted before and after the DND feedback pixmap.
 	// Content Edition:
@@ -170,7 +170,7 @@ class TextContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -187,7 +187,7 @@ class TextContent : public NoteContent
 	QString text() { return m_text; }     /// << @return the text note-content.
   protected:
 	QString          m_text;
-	Q3SimpleRichText *m_simpleRichText;
+	QTextDocument *m_simpleRichText;
 };
 
 /** Real implementation of rich text (HTML) notes:
@@ -213,7 +213,7 @@ class HtmlContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -231,7 +231,7 @@ class HtmlContent : public NoteContent
   protected:
 	QString          m_html;
 	QString          m_textEquivalent; //OPTIM_FILTER
-	Q3SimpleRichText *m_simpleRichText;
+	QTextDocument *m_simpleRichText;
 };
 
 /** Real implementation of image notes:
@@ -256,7 +256,7 @@ class ImageContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -305,7 +305,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
@@ -347,7 +347,7 @@ class FileContent : public QObject, public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	void    linkLookChanged();
@@ -438,7 +438,7 @@ class LinkContent : public QObject, public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
 	void    linkLookChanged();
@@ -506,7 +506,7 @@ class LauncherContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();
@@ -556,7 +556,7 @@ class ColorContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
 	QString editToolTipText();
@@ -565,7 +565,7 @@ class ColorContent : public NoteContent
 	void    serialize(QDataStream &stream);
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
-	void    addAlternateDragObjects(K3MultipleDrag *dragObject);
+	void    addAlternateDragObjects(QMimeData *dragObject);
 	// Content-Specific Methods:
 	void    setColor(const QColor &color); /// << Change the color note-content and relayout the note.
 	QColor  color() { return m_color; }    /// << @return the color note-content.
@@ -597,13 +597,13 @@ class UnknownContent : public NoteContent
 	void    exportToHTML(HTMLExporter *exporter, int indent);
 	QString cssClass();
 	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
+	void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	QString editToolTipText();
 	// Drag and Drop Content:
 	bool    shouldSerializeFile() { return false; }
-	void    addAlternateDragObjects(K3MultipleDrag *dragObject);
+	void    addAlternateDragObjects(QMimeData *dragObject);
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Open Content or File:

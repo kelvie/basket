@@ -2438,8 +2438,8 @@ void Basket::contentsMouseMoveEvent(QMouseEvent *event)
 		m_selectionStarted = false;
 		NoteSelection *selection = selectedNotes();
 		if (selection->firstStacked()) {
-			Q3DragObject *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/this); // d will be deleted by QT
-		/*bool shouldRemove = */d->drag();
+			QDrag *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/this); // d will be deleted by QT
+		/*bool shouldRemove = */d->exec();
 //		delete selection;
 
 		// Never delete because URL is dragged and the file must be available for the extern appliation
@@ -3178,9 +3178,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 		int hrt = rt.height();
 		painter2.fillRect(0, 0, visibleWidth(), visibleHeight(), brush);
 		blendBackground(painter2, QRect(0, 0, visibleWidth(), visibleHeight()), -1, -1, /*opaque=*/true);
-		QColorGroup cg = colorGroup();
-		cg.setColor(QColorGroup::Text, textColor());
-		rt.draw(&painter2, 0, (visibleHeight() - hrt) / 2, QRect(), cg);
+		QPalette pal = palette();
+		pal.setColor(QPalette::WindowText, textColor());
+		rt.draw(&painter2, 0, (visibleHeight() - hrt) / 2, QRect(), pal);
 		painter2.end();
 		painter->drawPixmap(0, 0, pixmap);
 		return; // TODO: Clip to the wanted rectangle
@@ -4254,10 +4254,10 @@ void Basket::doCopy(CopyMode copyMode)
 	NoteSelection *selection = selectedNotes();
 	int countCopied = countSelecteds();
 	if (selection->firstStacked()) {
-		Q3DragObject *d = NoteDrag::dragObject(selection, copyMode == CutToClipboard, /*source=*/0); // d will be deleted by QT
+		QDrag *d = NoteDrag::dragObject(selection, copyMode == CutToClipboard, /*source=*/0); // d will be deleted by QT
 //		/*bool shouldRemove = */d->drag();
 //		delete selection;
-		cb->setData(d, mode); // NoteMultipleDrag will be deleted by QT
+		cb->setMimeData(d->mimeData(), mode); // NoteMultipleDrag will be deleted by QT
 //		if (copyMode == CutToClipboard && !note->useFile()) // If useFile(), NoteDrag::dragObject() will delete it TODO
 //			note->slotDelete();
 
