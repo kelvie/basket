@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <q3dragobject.h>
+#include <QDrag>
 #include <qdom.h>
 #include <qpainter.h>
 #include <qstyle.h>

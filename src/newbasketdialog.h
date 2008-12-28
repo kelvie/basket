@@ -27,7 +27,7 @@
 
 class KIconButton;
 class QLineEdit;
-class Q3DragObject;
+class QMimeData;
 class Q3ListViewItem;
 class QComboBox;
 

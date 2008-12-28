@@ -39,7 +39,7 @@
 #include <q3whatsthis.h>
 #include <k3iconview.h>
 #include <kiconloader.h>
-#include <q3dragobject.h>
+#include <QDrag>
 #include <qfontdatabase.h>
 #include <kpushbutton.h>
 
@@ -196,7 +196,7 @@ class UndraggableKIconView : public KListWidget
 		this->setSelectionMode(QAbstractItemView::SingleSelection); 
 		this->setWrapping(false);
 	}
-	Q3DragObject* dragObject() { return 0; }
+	QDrag* dragObject() { return 0; }
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)

@@ -44,7 +44,7 @@
 //#include <kstringhandler.h>
 #include <kfilemetainfo.h>
 #include <qdatetime.h>
-#include <k3multipledrag.h>
+#include <QDrag>
 
 #include <qfileinfo.h>
 //#include <kio/kfileitem.h>
