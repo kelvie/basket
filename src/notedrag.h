@@ -65,10 +65,10 @@ class NoteDrag
   public:
 	static QPixmap feedbackPixmap(NoteSelection *noteList);
 	static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
-	static bool canDecode(QMimeSource *source);
-	static Note* decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes);
-	static Basket* basketOf(QMimeSource *source);
-	static Q3ValueList<Note*> notesOf(QMimeSource *source);
+	static bool canDecode(const QMimeData *source);
+	static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
+	static Basket* basketOf(const QMimeData *source);
+	static Q3ValueList<Note*> notesOf(QDragEnterEvent *source);
 	static void createAndEmptyCuttingTmpFolder();
 
 	static const char *NOTE_MIME_STRING;
@@ -83,8 +83,8 @@ class ExtendedTextDrag : public Q3TextDrag
 {
   Q_OBJECT
   public:
-	static bool decode(const QMimeSource *e, QString &str);
-	static bool decode(const QMimeSource *e, QString &str, QString &subtype);
+	static bool decode(const QMimeData *e, QString &str);
+	static bool decode(const QMimeData *e, QString &str, QString &subtype);
 };
 
 // Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!

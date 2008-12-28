@@ -431,10 +431,10 @@ QString Tools::fileNameForNewFile(const QString &wantedName, const QString &dest
 	return icon;
 }*/
 
-bool Tools::isAFileCut(QMimeSource *source)
+bool Tools::isAFileCut(const QMimeData *source)
 {
-	if (source->provides("application/x-kde-cutselection")) {
-		QByteArray array = source->encodedData("application/x-kde-cutselection");
+	if (source->hasFormat("application/x-kde-cutselection")) {
+		QByteArray array = source->data("application/x-kde-cutselection");
 		return !array.isEmpty() && QByteArray(array.data(), array.size() + 1).at(0) == '1';
 	} else
 		return false;

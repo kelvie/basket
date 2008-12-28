@@ -366,14 +366,14 @@ QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 	return QPixmap();
 }
 
-bool NoteDrag::canDecode(QMimeSource *source)
+bool NoteDrag::canDecode(const QMimeData *source)
 {
-	return source->provides(NOTE_MIME_STRING);
+	return source->hasFormat(NOTE_MIME_STRING);
 }
 
-Basket* NoteDrag::basketOf(QMimeSource *source)
+Basket* NoteDrag::basketOf(const QMimeData *source)
 {
-    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+    QByteArray srcData = source->data(NOTE_MIME_STRING);
 	QBuffer buffer(&srcData);
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
@@ -385,7 +385,7 @@ Basket* NoteDrag::basketOf(QMimeSource *source)
 		return 0;
 }
 
-Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
+Q3ValueList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
 {
     QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
 	QBuffer buffer(&srcData);
@@ -408,9 +408,9 @@ Q3ValueList<Note*> NoteDrag::notesOf(QMimeSource *source)
 		return Q3ValueList<Note*>();
 }
 
-Note* NoteDrag::decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes)
+Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes)
 {
-    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+    QByteArray srcData = source->data(NOTE_MIME_STRING);
 	QBuffer buffer(&srcData);
 	if (buffer.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&buffer);
@@ -545,21 +545,23 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFi
 
 /** ExtendedTextDrag */
 
-bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str)
+bool ExtendedTextDrag::decode(const QMimeData *e, QString &str)
 {
 	QString subtype("plain");
 	return decode(e, str, subtype);
 }
 
-bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QString &subtype)
+bool ExtendedTextDrag::decode(const QMimeData *e, QString &str, QString &subtype)
 {
 	// Get the string:
-	bool ok = Q3TextDrag::decode(e, str, subtype);
+	bool ok;
+	str = e->text();
+	ok = !str.isNull();
 
 	// Test if it was a UTF-16 string (from eg. Mozilla):
 	if (str.length() >= 2) {
 		if ((str[0] == 0xFF && str[1] == 0xFE) || (str[0] == 0xFE && str[1] == 0xFF)) {
-			QByteArray utf16 = e->encodedData(QString("text/" + subtype).local8Bit());
+			QByteArray utf16 = e->data(QString("text/" + subtype).local8Bit());
 			str = QTextCodec::codecForName("utf16")->toUnicode(utf16);
 			return true;
 		}
@@ -567,23 +569,23 @@ bool ExtendedTextDrag::decode(const QMimeSource *e, QString &str, QString &subty
 
 	// Test if it was empty (sometimes, from GNOME or Mozilla)
 	if (str.length() == 0 && subtype == "plain") {
-		if (e->provides("UTF8_STRING")) {
-			QByteArray utf8 = e->encodedData("UTF8_STRING");
+		if (e->hasFormat("UTF8_STRING")) {
+			QByteArray utf8 = e->data("UTF8_STRING");
 			str = QTextCodec::codecForName("utf8")->toUnicode(utf8);
 			return true;
 		}
-		if (e->provides("text/unicode")) { // FIXME: It's UTF-16 without order bytes!!!
-			QByteArray utf16 = e->encodedData("text/unicode");
+		if (e->hasFormat("text/unicode")) { // FIXME: It's UTF-16 without order bytes!!!
+			QByteArray utf16 = e->data("text/unicode");
 			str = QTextCodec::codecForName("utf16")->toUnicode(utf16);
 			return true;
 		}
-		if (e->provides("TEXT")) { // local encoding
-			QByteArray text = e->encodedData("TEXT");
+		if (e->hasFormat("TEXT")) { // local encoding
+			QByteArray text = e->data("TEXT");
 			str = QString(text);
 			return true;
 		}
-		if (e->provides("COMPOUND_TEXT")) { // local encoding
-			QByteArray text = e->encodedData("COMPOUND_TEXT");
+		if (e->hasFormat("COMPOUND_TEXT")) { // local encoding
+			QByteArray text = e->data("COMPOUND_TEXT");
 			str = QString(text);
 			return true;
 		}

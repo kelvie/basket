@@ -751,7 +751,8 @@ void KColorCombo2::keyPressEvent(QKeyEvent *event)
 	KKey key(event);
 
 	if (KStandardShortcut::copy().contains(key)) {
-		QMimeSource *mime = new K3ColorDrag(effectiveColor());
+		QMimeData *mime = new QMimeData;
+		mime->setColor(effectiveColor());
 		QApplication::clipboard()->setData(mime, QClipboard::Clipboard);
 	} else if (KStandardShortcut::paste().contains(key)) {
 		QColor color;

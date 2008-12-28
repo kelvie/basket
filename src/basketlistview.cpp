@@ -81,7 +81,7 @@ BasketListViewItem::~BasketListViewItem()
 {
 }
 
-bool BasketListViewItem::acceptDrop(const QMimeSource *) const
+bool BasketListViewItem::acceptDrop(const QMimeData *) const
 {
 	kDebug() << "accept";
 	return true;

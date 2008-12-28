@@ -44,7 +44,7 @@ class BasketListViewItem : public Q3ListViewItem
 		BasketListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, Basket *basket);
 		~BasketListViewItem();
 		///
-		bool acceptDrop(const QMimeSource *mime) const;
+		bool acceptDrop(const QMimeData *mime) const;
 		void dropped(QDropEvent *event);
 		Basket *basket() { return m_basket; }
 		void setup();
@@ -76,7 +76,7 @@ class BasketListViewItem : public Q3ListViewItem
     QPalette palette() const { return listView()->palette(); }
 		///
 //	QDragObject* dragObject();
-//	bool acceptDrop ( const QMimeSource * mime ) const;
+//	bool acceptDrop ( const QMimeData * mime ) const;
 	private:
 		Basket *m_basket;
 		int     m_width;

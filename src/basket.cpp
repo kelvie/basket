@@ -1878,7 +1878,7 @@ void Basket::clickedToInsert(QMouseEvent *event, Note *clicked, /*Note::Zone*/in
 {
 	Note *note;
 	if (event->button() == Qt::MidButton)
-		note = NoteFactory::dropNote(KApplication::clipboard()->data(QClipboard::Selection), this);
+		note = NoteFactory::dropNote(KApplication::clipboard()->mimeData(QClipboard::Selection), this);
 	else
 		note = NoteFactory::createNoteText("", this);
 
@@ -1900,7 +1900,7 @@ void Basket::contentsDragEnterEvent(QDragEnterEvent *event)
 {
 	m_isDuringDrag = true;
 	Global::bnpView->updateStatusBarHint();
-	if (NoteDrag::basketOf(event) == this)
+	if (NoteDrag::basketOf(event->mimeData()) == this)
 		m_draggedNotes = NoteDrag::notesOf(event);
 	event->accept();
 }
@@ -1968,15 +1968,15 @@ void Basket::contentsDropEvent(QDropEvent *event)
 	// Should, of course, not return 0:
 	Note *clicked = noteAt(event->pos().x(), event->pos().y());
 
-	if (NoteFactory::movingNotesInTheSameBasket(event, this, event->action()) && event->action() == QDropEvent::Move) {
+	if (NoteFactory::movingNotesInTheSameBasket(event->mimeData(), this, event->action()) && event->action() == QDropEvent::Move) {
 		m_doNotCloseEditor = true;
 	}
 
-	Note *note = NoteFactory::dropNote( event, this, true, event->action(), dynamic_cast<Note*>(event->source()) );
+	Note *note = NoteFactory::dropNote( event->mimeData(), this, true, event->action(), dynamic_cast<Note*>(event->source()) );
 
 	if (note) {
 		Note::Zone zone = (clicked ? clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()), /*toAdd=*/true ) : Note::None);
-		bool animateNewPosition = NoteFactory::movingNotesInTheSameBasket(event, this, event->action());
+		bool animateNewPosition = NoteFactory::movingNotesInTheSameBasket(event->mimeData(), this, event->action());
 		if (animateNewPosition) {
 			FOR_EACH_NOTE (n)
 				n->setOnTop(false);
@@ -2027,7 +2027,7 @@ void Basket::blindDrop(QDropEvent* event)
 		}
 		closeEditor();
 		unselectAll();
-		Note *note = NoteFactory::dropNote( event, this, true, event->action(),
+		Note *note = NoteFactory::dropNote( event->mimeData(), this, true, event->action(),
 											dynamic_cast<Note*>(event->source()) );
 		if (note) {
 			insertCreatedNote(note);
@@ -2100,7 +2100,7 @@ void Basket::pasteNote(QClipboard::Mode mode)
 		}
 		closeEditor();
 		unselectAll();
-		Note *note = NoteFactory::dropNote(KApplication::clipboard()->data(mode), this);
+		Note *note = NoteFactory::dropNote(KApplication::clipboard()->mimeData(mode), this);
 		if (note) {
 			insertCreatedNote(note);
 			//unselectAllBut(note);
