@@ -27,7 +27,6 @@
 #include <QTextStream>
 #include <Q3ValueList>
 #include <QPixmap>
-#include <k3urldrag.h>
 #include <kdeversion.h>
 #include <kapplication.h>
 #include <qdesktopwidget.h>
