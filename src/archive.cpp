@@ -237,9 +237,9 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, tempFolder, progress);
+	if (recursive) {
+		for (int i=0;i<item->childCount();i++){
+			saveBasketToArchive(qvariant_cast<BasketListViewItem *>(item->child(i)->data(0,Qt::DisplayRole))->basket(), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
 }
@@ -248,9 +248,9 @@ void Archive::listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &li
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			listUsedTags(child->basket(), recursive, list);
+	if (recursive) {
+		for (int i=0;i<item->childCount();i++){
+			listUsedTags(qvariant_cast<BasketListViewItem *>(item->child(i)->data(0,Qt::DisplayRole))->basket(), recursive, list);
 		}
 	}
 }
@@ -629,7 +629,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
 				// Append and load the basket in the tree:
 				Basket *basket = Global::bnpView->loadBasket(newFolderName);
 				BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
-				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
+				basketItem->setExpanded(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
 				QDomElement properties = XMLWork::getElement(element, "properties");
 				importBasketIcon(properties, extractionFolder); // Rename the icon fileName if necessary
 				basket->loadProperties(properties);

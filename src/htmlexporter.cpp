@@ -115,7 +115,7 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
 	exportedBasket = basket;
 
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	withBasketTree = (item->firstChild() != 0);
+	withBasketTree = (item->childCount() >= 0);
 
 	// Create and empty the files folder:
 	QString filesFolderPath = i18nc("HTML export folder (files)", "%1_files", filePath) + "/"; // eg.: "/home/seb/foo.html_files/"
@@ -370,9 +370,9 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 
 	// Recursively export child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			exportBasket(child->basket(), /*isSubBasket=*/true);
+	if (item->childCount() >=0) {
+		for (int i=0; i < item->childCount(); i++){
+			exportBasket((qvariant_cast<BasketListViewItem *>(item->child(i)->data(0, Qt::DisplayRole)))->basket(), /*isSubBasket=*/true);
 		}
 	}
 }
@@ -503,12 +503,12 @@ void HTMLExporter::writeBasketTree(Basket *currentBasket, Basket *basket, int in
 
 	// Write the sub-baskets lines & end the current one:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (item->firstChild() != 0) {
+	if (item->childCount() >= 0) {
 		stream <<
 			"\n" <<
 			spaces.fill(' ', indent) << " <ul>\n";
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling())
-			writeBasketTree(currentBasket, child->basket(), indent + 2);
+		for (int i=0;i<item->childCount();i++)
+			writeBasketTree(currentBasket, qvariant_cast<BasketListViewItem* >(item->child(i)->data(0,Qt::DisplayRole))->basket(), indent + 2);
 		stream <<
 			spaces.fill(' ', indent) << " </ul>\n" <<
 			spaces.fill(' ', indent) << "</li>\n";

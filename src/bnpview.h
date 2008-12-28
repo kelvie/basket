@@ -21,7 +21,7 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <k3listview.h>
+#include <QTreeWidget>
 #include <kxmlguiclient.h>
 #include <qtimer.h>
 #include <qclipboard.h>
@@ -37,6 +37,7 @@
 
 #include "global.h"
 #include "basket_export.h"
+#include "basketlistview.h"
 
  /// NEW:
 
@@ -84,16 +85,16 @@ class BASKET_EXPORT BNPView : public QSplitter
 		void setCurrentBasket(Basket *basket);
 		void removeBasket(Basket *basket);
 	/// For NewBasketDialog (and later some other classes):
-		Q3ListViewItem* firstListViewItem();
+		int topLevelItemCount();
 		///
-		BasketListViewItem* lastListViewItem();
-		int basketCount(Q3ListViewItem *parent = 0);
+		BasketListViewItem* topLevelItem(int i);
+		int basketCount(QTreeWidgetItem *parent = 0);
 		bool canFold();
 		bool canExpand();
 		void enableActions();
 
 	private:
-		QDomElement basketElement(Q3ListViewItem *item, QDomDocument &document, QDomElement &parentElement);
+		QDomElement basketElement(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement);
 	public slots:
 		void countsChanged(Basket *basket);
 		void notesStateChanged();
@@ -101,10 +102,10 @@ class BASKET_EXPORT BNPView : public QSplitter
 
 		void updateBasketListViewItem(Basket *basket);
 		void save();
-		void save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement);
-		void saveSubHierarchy(Q3ListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
+		void save(QTreeWidget* listView, QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
+		void saveSubHierarchy(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
 		void load();
-		void load(K3ListView *listView, Q3ListViewItem *item, const QDomElement &baskets);
+		void load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets);
 		void loadNewBasket(const QString &folderName, const QDomElement &properties, Basket *parent);
 		void goToPreviousBasket();
 		void goToNextBasket();
@@ -284,7 +285,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 
 	public:
 		Basket* loadBasket(const QString &folderName); // Public only for class Archive
-		BasketListViewItem* appendBasket(Basket *basket, Q3ListViewItem *parentItem); // Public only for class Archive
+		BasketListViewItem* appendBasket(Basket *basket, QTreeWidgetItem *parentItem); // Public only for class Archive
 
 		Basket* basketForFolderName(const QString &folderName);
 		Note* noteForFileName(const QString &fileName, Basket &basket, Note* note = 0);
@@ -326,11 +327,11 @@ class BASKET_EXPORT BNPView : public QSplitter
 		KMenu *m_lastOpenedTagsMenu;
 
 	private slots:
-		void slotPressed(Q3ListViewItem *item, const QPoint &/*pos*/ = QPoint(), int /*column*/ = 0);
-		void needSave(Q3ListViewItem*);
-		void slotContextMenu(K3ListView *listView, Q3ListViewItem *item, const QPoint &pos);
-		void slotMouseButtonPressed(int button, Q3ListViewItem *item, const QPoint &pos, int column);
-		void slotShowProperties(Q3ListViewItem *item, const QPoint&, int);
+		void slotPressed(QTreeWidgetItem *item, int column);
+		void needSave(QTreeWidgetItem*);
+		void slotContextMenu(const QPoint &pos);
+		void slotMouseButtonPressed(int button, QTreeWidgetItem *item, const QPoint &pos, int column);
+		void slotShowProperties(QTreeWidgetItem *item);
 		void initialize();
 
 	signals:
@@ -344,7 +345,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 		void leaveEvent(QEvent*);
 
 	private:
-		K3ListView    *m_tree;
+		BasketTreeListView *m_tree;
 		QStackedWidget *m_stack;
 		bool          m_loading;
 		bool          m_newBasketPopup;

@@ -79,7 +79,7 @@ class NoteDrag
   * with local encoding!
   * @author Sébastien Laoût
   */
-class ExtendedTextDrag : public Q3TextDrag
+class ExtendedTextDrag : public QDrag
 {
   Q_OBJECT
   public:
