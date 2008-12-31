@@ -105,8 +105,10 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_defaultProperties.icon.isEmpty() ? "basket" : m_defaultProperties.icon);
+
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
+
 	QToolTip::add(m_icon, i18n("Icon"));
 	m_name = new QLineEdit(/*i18n("Basket"), */page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
@@ -233,30 +235,34 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	topLayout->addLayout(layout);
 
 	m_basketsMap.clear();
+	int index;
 	m_basketsMap.insert(/*index=*/0, /*basket=*/0L);
+	index = 1;
 	for (int i=0;i<Global::bnpView->topLevelItemCount();i++){
-		populateBasketsList(Global::bnpView->topLevelItem(i), /*indent=*/1, /*index=*/1);
+		index = populateBasketsList(Global::bnpView->topLevelItem(i), /*indent=*/1, /*index=*/index);
 	}
 
 	connect( m_templates, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(slotOk())        );
 	connect( m_templates, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(returnPressed()) );
 
+	setMainWidget(page);
+
 	if (parentBasket) {
 		int index = 0;
 
-		for (QMap<int, Basket*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it)
-			if (it.data() == parentBasket) {
+		for (QMap<int, Basket*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it){
+			if (it.value() == parentBasket) {
 				index = it.key();
 				break;
 			}
+		}
+
 		if (index <= 0)
 			return;
 
 		if (m_createIn->currentItem() != index)
 			m_createIn->setCurrentItem(index);
 	}
-
-	setMainWidget(page);
 }
 
 void NewBasketDialog::returnPressed()
@@ -267,25 +273,20 @@ void NewBasketDialog::returnPressed()
 int NewBasketDialog::populateBasketsList(QTreeWidgetItem *item, int indent, int index)
 {
 	static const int ICON_SIZE = 16;
+	// Get the basket data:
+	Basket* basket = ((BasketListViewItem *)item)->basket();
+	QPixmap icon = KIconLoader::global()->loadIcon(
+			basket->icon(), KIconLoader::NoGroup, ICON_SIZE,
+			KIconLoader::DefaultState, QStringList(), 0L,
+			/*canReturnNull=*/false
+        );
+	icon = Tools::indentPixmap(icon, indent, 2 * ICON_SIZE / 3);
+	m_createIn->insertItem(icon, basket->basketName());
+	m_basketsMap.insert(index, basket);
+	++index;
 
-	BasketListViewItem* childItem;
 	for (int i=0;i<item->childCount(); i++){
-		childItem = qvariant_cast<BasketListViewItem*>(item->child(i)->data(0,Qt::DisplayRole));
-		// Get the basket data:
-		Basket *basket = childItem->basket();
-		QPixmap icon = KIconLoader::global()->loadIcon(
-            basket->icon(), KIconLoader::NoGroup, ICON_SIZE,
-            KIconLoader::DefaultState, QStringList(), 0L,
-            /*canReturnNull=*/false
-            ); 
-		icon = Tools::indentPixmap(icon, indent, 2 * ICON_SIZE / 3);
-
-		// Append item to the list:
-		m_createIn->insertItem(icon, basket->basketName());
-		m_basketsMap.insert(index, basket);
-		++index;
-
-		// Append childs of item to the list:
+		// Append children of item to the list:
 		index = populateBasketsList(item->child(i), indent + 1, index);
 	}
 
@@ -333,7 +334,8 @@ void NewBasketDialog::slotOk()
 		textColor       = m_defaultProperties.textColor;
 	}
 
-	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentItem()]);
+	BasketFactory::newBasket(m_icon->icon(), m_name->text(), backgroundImage, m_backgroundColor->color(), textColor, templateName, m_basketsMap[m_createIn->currentIndex()]);
+
 	if(Global::mainWindow()) Global::mainWindow()->show();
 
 }
