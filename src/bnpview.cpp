@@ -418,11 +418,8 @@ void BNPView::initialize()
 	/// Configure the List View Columns:
 	m_tree  = new BasketTreeListView(this);
 	m_tree->setHeaderLabel(i18n("Baskets"));
-	//m_tree->setColumnWidthMode(0, Q3ListView::Maximum);
-	//m_tree->setFullWidth(true);
 	m_tree->setSortingEnabled(false/*Disabled*/);
 	m_tree->setRootIsDecorated(true);
-	//m_tree->setTreeStepSize(16);
 	m_tree->setLineWidth(1);
 	m_tree->setMidLineWidth(0);
 	m_tree->setFocusPolicy(Qt::NoFocus);
@@ -430,10 +427,6 @@ void BNPView::initialize()
 	/// Configure the List View Drag and Drop:
 	m_tree->setDragEnabled(true);
 	m_tree->setAcceptDrops(true);
-	//m_tree->setItemsMovable(true);
-	//m_tree->setDragAutoScroll(true);
-	//m_tree->setDropVisualizer(true);
-	//m_tree->setDropHighlighter(true);
 
 	/// Configure the Splitter:
 	m_stack = new QStackedWidget(this);
@@ -453,7 +446,8 @@ void BNPView::initialize()
 	connect( m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),         this, SLOT(needSave(QTreeWidgetItem*))    );
 	connect( m_tree, SIGNAL(itemCollapsed(QTreeWidgetItem*)),        this, SLOT(needSave(QTreeWidgetItem*))    );
 	connect( m_tree, SIGNAL(contextMenuRequested(const QPoint&)),      this, SLOT(slotContextMenu(const QPoint &))      );
-	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)), this, SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
+	connect( m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)), this,
+			SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)) );
 	connect( m_tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*)) );
 
 	connect( m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()) );
@@ -1103,11 +1097,10 @@ Basket* BNPView::loadBasket(const QString &folderName)
 
 int BNPView::basketCount(QTreeWidgetItem *parent)
 {
-	int count = 0;
+	int count = 1;
 	if (parent == NULL)
 		return 0;
 
-	count += parent->childCount();
 	for (int i=0;i<parent->childCount();i++){
 		count += basketCount(parent->child(i));
 	}
@@ -1135,7 +1128,7 @@ BasketListViewItem* BNPView::appendBasket(Basket *basket, QTreeWidgetItem *paren
 {
 	BasketListViewItem *newBasketItem;
 	if (parentItem)
-		newBasketItem = new BasketListViewItem(parentItem, ((BasketListViewItem*)parentItem)->child(parentItem->childCount()-1), basket);
+		newBasketItem = new BasketListViewItem(parentItem, parentItem->child(parentItem->childCount()-1), basket);
 	else {
 		newBasketItem = new BasketListViewItem(m_tree, m_tree->topLevelItem(m_tree->topLevelItemCount()-1), basket);
 	}
@@ -1165,21 +1158,21 @@ void BNPView::goToPreviousBasket()
 		return;
 
 	BasketListViewItem *item     = listViewItemForBasket(currentBasket());
-	BasketListViewItem *toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemAbove(item));
+	BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemAbove(item);
 
 	while (toSwitch && !toSwitch->isShown()){
-		toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemAbove(toSwitch));
+		toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
 	}
 
 	if (!toSwitch) {
-		toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->topLevelItem(m_tree->topLevelItemCount()-1));
+		toSwitch = (BasketListViewItem *)m_tree->topLevelItem(m_tree->topLevelItemCount()-1);
 		while (toSwitch->childCount() >=0){
-			toSwitch = qvariant_cast<BasketListViewItem *>(toSwitch->child(toSwitch->childCount()-1));
+			toSwitch = (BasketListViewItem *)toSwitch->child(toSwitch->childCount()-1);
 		}
 	}
 
 	while (toSwitch && !toSwitch->isShown()){
-		toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemAbove(toSwitch));
+		toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
 	}
 
 	if (toSwitch)
@@ -1195,17 +1188,17 @@ void BNPView::goToNextBasket()
 		return;
 
 	BasketListViewItem *item     = listViewItemForBasket(currentBasket());
-	BasketListViewItem *toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemBelow(item));
+	BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemBelow(item);
 
 	while (toSwitch && !toSwitch->isShown()){
-		toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemBelow(toSwitch));
+		toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
 	}
 
 	if (!toSwitch)
-		toSwitch = qvariant_cast<BasketListViewItem*>(m_tree->child(0));
+		toSwitch = (BasketListViewItem*)m_tree->child(0);
 
 	while (toSwitch && !toSwitch->isShown()){
-		toSwitch = qvariant_cast<BasketListViewItem *>(m_tree->itemBelow(toSwitch));
+		toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
 	}
 
 	if (toSwitch)
@@ -1554,7 +1547,7 @@ void BNPView::updateBasketListViewItem(Basket *basket)
 		save();
 }
 
-void BNPView::needSave(QTreeWidgetItem*)
+void BNPView::needSave(QTreeWidgetItem *)
 {
 	if (!m_loading)
 		// A basket has been collapsed/expanded or a new one is select: this is not urgent:
@@ -1648,10 +1641,6 @@ void BNPView::notesStateChanged()
 		setSelectionStatus(
 				i18nc("e.g. '18 notes, 10 matches, 5 selected'", "%1, %2, %3",count, showns, selecteds));
 	}
-
-	// If we added a note that match the global filter, update the count number in the tree:
-	//if (isFilteringAllBaskets())
-	//	listViewItemForBasket(basket)->listView()->triggerUpdate();
 
 	if (currentBasket()->redirectEditActions()) {
 		m_actSelectAll         ->setEnabled( !currentBasket()->selectedAllTextInEditor() );

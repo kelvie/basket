@@ -150,9 +150,7 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	// Hobbies:
 	// *
 	m_templates = new SingleSelectionKIconView(page);
-	//m_templates->setItemsMovable(false);
 	m_templates->setSelectionMode(QAbstractItemView::SingleSelection);
-	//m_templates->setGridX(m_templates->maxItemWidth());
 	QListWidgetItem *lastTemplate = 0;
 	QPixmap icon(40, 53);
 

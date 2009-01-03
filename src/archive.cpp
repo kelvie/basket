@@ -239,7 +239,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive) {
 		for (int i=0;i<item->childCount();i++){
-			saveBasketToArchive(qvariant_cast<BasketListViewItem *>(item->child(i)->data(0,Qt::DisplayRole))->basket(), recursive, tar, backgrounds, tempFolder, progress);
+			saveBasketToArchive(((BasketListViewItem *)item->child(i))->basket(), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
 }
@@ -250,7 +250,7 @@ void Archive::listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &li
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (recursive) {
 		for (int i=0;i<item->childCount();i++){
-			listUsedTags(qvariant_cast<BasketListViewItem *>(item->child(i)->data(0,Qt::DisplayRole))->basket(), recursive, list);
+			listUsedTags(((BasketListViewItem *)item->child(i))->basket(), recursive, list);
 		}
 	}
 }

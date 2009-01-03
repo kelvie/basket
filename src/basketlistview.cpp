@@ -42,6 +42,7 @@
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
+#include <QStandardItemModel>
 
 /** class BasketListViewItem: */
 
@@ -50,7 +51,6 @@ BasketListViewItem::BasketListViewItem(QTreeWidget *parent, Basket *basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setFlags(flags() | Qt::ItemIsDropEnabled);
 }
 
 BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, Basket *basket)
@@ -58,7 +58,6 @@ BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, Basket *basket)
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setFlags(flags() | Qt::ItemIsDropEnabled);
 }
 
 BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, Basket *basket)
@@ -66,7 +65,6 @@ BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *aft
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setFlags(flags() | Qt::ItemIsDropEnabled);
 }
 
 BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket)
@@ -74,24 +72,10 @@ BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem 
 	, m_isUnderDrag(false)
 	, m_isAbbreviated(false)
 {
-	setFlags(flags() | Qt::ItemIsDropEnabled);
 }
 
 BasketListViewItem::~BasketListViewItem()
 {
-}
-
-bool BasketListViewItem::acceptDrop(const QMimeData *) const
-{
-	kDebug() << "accept";
-	return true;
-}
-
-void BasketListViewItem::dropped(QDropEvent *event)
-{
-	kDebug() << "Dropping into basket " << m_basket->name();
-	m_basket->contentsDropEvent(event);
-	//Global::bnpView->currentBasket()->contentsDropEvent(event); // FIXME
 }
 
 QString BasketListViewItem::escapedName(const QString &string)
@@ -127,9 +111,10 @@ void BasketListViewItem::setup()
 
 BasketListViewItem* BasketListViewItem::lastChild()
 {
-	if (childCount() <= 0)
+	int count = childCount();
+	if (count <= 0)
 		return 0;
-	return qvariant_cast<BasketListViewItem*>(child(childCount()-1));
+	return (BasketListViewItem*)(child(count-1));
 }
 
 QStringList BasketListViewItem::childNamesTree(int deep)
@@ -192,6 +177,10 @@ bool BasketListViewItem::isShown()
 bool BasketListViewItem::isCurrentBasket()
 {
 	return basket() == Global::bnpView->currentBasket();
+}
+
+bool BasketListViewItem::isUnderDrag(){
+	return m_isUnderDrag;
 }
 
 // TODO: Move this function from item.cpp to class Tools:
@@ -358,6 +347,10 @@ bool BasketListViewItem::isAbbreviated()
 	return m_isAbbreviated;
 }
 
+void BasketListViewItem::setAbbreviated(bool b){
+	m_isAbbreviated = b;
+}
+
 /** class BasketTreeListView: */
 
 BasketTreeListView::BasketTreeListView(QWidget *parent)
@@ -389,12 +382,12 @@ bool BasketTreeListView::event(QEvent *e)
 
 void BasketTreeListView::dragEnterEvent(QDragEnterEvent *event)
 {
-	if (event->provides("application/x-qlistviewitem")) {
+	if (event->provides("application/x-qabstractitemmodeldatalist")){
 		QTreeWidgetItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
 		while (*it) {
 			QTreeWidgetItem *item = *it;
 			if (item->childCount() <= 0) {
-				item->setDisabled(false);
+				item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
 				item->setExpanded(true);
 			}
 			++it;
@@ -411,10 +404,11 @@ void BasketTreeListView::removeExpands()
 	while (*it) {
 		QTreeWidgetItem *item = *it;
 		if (item->childCount() <= 0)
-			item->setDisabled(true);
+			item->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 		++it;
 	}
 }
+
 
 void BasketTreeListView::dragLeaveEvent(QDragLeaveEvent *event)
 {
@@ -429,7 +423,7 @@ void BasketTreeListView::dragLeaveEvent(QDragLeaveEvent *event)
 void BasketTreeListView::dropEvent(QDropEvent *event)
 {
 	kDebug() << "BasketTreeListView::dropEvent()";
-	if (event->provides("application/x-qlistviewitem"))
+	if (event->provides("application/x-qabstractitemmodeldatalist"))
 	{
 		QTreeWidget::dropEvent(event);
 	}
@@ -443,7 +437,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 		else {
 			kDebug() << "Forwarding failed: no bitem found";
 		}
-	}
+        }
 
 	m_autoOpenItem = 0;
 	m_autoOpenTimer.stop();
@@ -456,7 +450,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 {
 	kDebug() << "BasketTreeListView::dragMoveEvent";
-	if (event->provides("application/x-qlistviewitem"))
+	if (event->provides("application/x-qabstractitemmodeldatalist"))
 		QTreeWidget::dragMoveEvent(event);
 	else {
 		QTreeWidgetItem *item = itemAt(event->pos());
@@ -516,3 +510,7 @@ void BasketTreeListView::focusInEvent(QFocusEvent*)
 		basket->setFocus();
 }
 
+Qt::DropActions BasketTreeListView::supportedDropActions () const
+{
+	return Qt::MoveAction | Qt::IgnoreAction;
+}

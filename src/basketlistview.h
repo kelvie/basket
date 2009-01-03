@@ -31,6 +31,7 @@
 #include <QDragMoveEvent>
 #include <QFocusEvent>
 #include <QDragLeaveEvent>
+#include <QItemDelegate>
 
 class Basket;
 
@@ -39,24 +40,23 @@ class BasketListViewItem : public QTreeWidgetItem
 {
 	public:
 	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QTreeWidget    *parent, Basket *basket);
+		BasketListViewItem(QTreeWidget *parent, Basket *basket);
 		BasketListViewItem(QTreeWidgetItem *parent, Basket *basket);
 		BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, Basket *basket);
 		BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket);
 		~BasketListViewItem();
-		///
-		bool acceptDrop(const QMimeData *mime) const;
-		void dropped(QDropEvent *event);
+
 		Basket *basket() { return m_basket; }
 		void setup();
 		BasketListViewItem* lastChild();
-		QStringList childNamesTree(int deep);
+		QStringList childNamesTree(int deep = 0);
 		void moveChildsBaskets();
 		void ensureVisible();
 		bool isShown();
 		bool isCurrentBasket();
+		bool isUnderDrag();
 		QString escapedName(const QString &string);
-		///
+
 		QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
 		QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
 		bool haveChildsLoading();
@@ -68,10 +68,8 @@ class BasketListViewItem : public QTreeWidgetItem
 
 		void setUnderDrag(bool);
 		bool isAbbreviated();
+		void setAbbreviated(bool b);
 
-		///
-//	QDragObject* dragObject();
-//	bool acceptDrop ( const QMimeData * mime ) const;
 	private:
 		Basket *m_basket;
 		int     m_width;
@@ -93,6 +91,7 @@ class BasketTreeListView : public QTreeWidget
 		void dropEvent(QDropEvent *event);
 		void resizeEvent(QResizeEvent *event);
 		void contextMenuEvent(QContextMenuEvent *event);
+		Qt::DropActions supportedDropActions() const;
 	protected:
 		bool event(QEvent *e);
 		void focusInEvent(QFocusEvent*);
@@ -108,7 +107,6 @@ class BasketTreeListView : public QTreeWidget
 	private:
 		void setItemUnderDrag(BasketListViewItem* item);
 		BasketListViewItem* m_itemUnderDrag;
-
 };
 
 #endif // BASKETLISTVIEW_H

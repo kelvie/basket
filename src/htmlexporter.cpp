@@ -372,7 +372,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
 	if (item->childCount() >=0) {
 		for (int i=0; i < item->childCount(); i++){
-			exportBasket((qvariant_cast<BasketListViewItem *>(item->child(i)->data(0, Qt::DisplayRole)))->basket(), /*isSubBasket=*/true);
+			exportBasket(((BasketListViewItem *)item->child(i))->basket(), /*isSubBasket=*/true);
 		}
 	}
 }
@@ -508,7 +508,7 @@ void HTMLExporter::writeBasketTree(Basket *currentBasket, Basket *basket, int in
 			"\n" <<
 			spaces.fill(' ', indent) << " <ul>\n";
 		for (int i=0;i<item->childCount();i++)
-			writeBasketTree(currentBasket, qvariant_cast<BasketListViewItem* >(item->child(i)->data(0,Qt::DisplayRole))->basket(), indent + 2);
+			writeBasketTree(currentBasket, ((BasketListViewItem*)item->child(i))->basket(), indent + 2);
 		stream <<
 			spaces.fill(' ', indent) << " </ul>\n" <<
 			spaces.fill(' ', indent) << "</li>\n";
