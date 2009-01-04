@@ -930,7 +930,7 @@ void BNPView::slotContextMenu(const QPoint &pos)
 
 	KMenu *menu = popupMenu(menuName);
 	connect( menu, SIGNAL(aboutToHide()),  this, SLOT(aboutToHideNewBasketPopup()) );
-	menu->exec(pos);
+	menu->exec(m_tree->mapToGlobal(pos));
 }
 
 void BNPView::save()

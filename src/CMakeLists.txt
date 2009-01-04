@@ -116,7 +116,7 @@ install(FILES  basket_part.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 endif(BUILD_KPARTS)
 
 install(FILES  basket.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-install(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	basket_config_features.desktop  	basket_config_notes.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	DESTINATION ${SERVICES_INSTALL_DIR})
 install(FILES  basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
 
 kde4_install_icons(${ICON_INSTALL_DIR})
