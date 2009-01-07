@@ -1,6 +1,7 @@
 #include "basket_plugin.h"
+#include "global.h"
 
-#include <basket_part.h>
+#include "basket_part.h"
 
 #include <kontactinterfaces/core.h>
 #include <kontactinterfaces/plugin.h>
@@ -16,6 +17,7 @@ BasketPlugin::BasketPlugin( Kontact::Core *core, const QVariantList & )
   : Kontact::Plugin( core, core, "Basket" )
 {
   setComponentData( KontactPluginFactory::componentData() );
+  Global::basketConfig = KSharedConfig::openConfig("basketrc");
 }
 
 BasketPlugin::~BasketPlugin()
@@ -35,7 +37,7 @@ void BasketPlugin::readProperties( const KConfigGroup &config )
 {
   if ( part() )
   {
-    basketPart *myPart = static_cast<basketPart*>( part() );
+    BasketPart *myPart = static_cast<BasketPart*>( part() );
   }
 }
 
@@ -43,7 +45,7 @@ void BasketPlugin::saveProperties( KConfigGroup &config )
 {
   if ( part() )
   {
-    basketPart *myPart = static_cast<basketPart*>( part() );
+    BasketPart *myPart = static_cast<BasketPart*>( part() );
   }
 }
 
@@ -51,6 +53,5 @@ void BasketPlugin::showPart()
 {
   core()->selectPlugin( this );
 }
-
 
 #include "basket_plugin.moc"

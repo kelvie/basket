@@ -28,15 +28,18 @@
 #include <klocale.h>
 #include <kparts/genericfactory.h>
 #include <kparts/statusbarextension.h>
+#include <kdemacros.h>
 #include "aboutdata.h"
 #include "basketstatusbar.h"
 #include "bnpview.h"
 
-typedef KParts::GenericFactory< BasketPart > BasketFactory;
-K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory )
+//typedef KParts::GenericFactory< BasketPart > BasketFactory;
 
-BasketPart::BasketPart( QWidget *parentWidget,
-						QObject *parent, const QStringList & )
+//K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory );
+K_PLUGIN_FACTORY( BasketFactory, registerPlugin<BasketPart>();)
+K_EXPORT_PLUGIN( BasketFactory("basket", "basket") )
+
+BasketPart::BasketPart( QWidget *parentWidget, QObject *parent, const QList<QVariant> & )
 	: KParts::ReadWritePart(parent)
 {
   // we need an instance

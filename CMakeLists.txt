@@ -4,6 +4,10 @@ find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
 find_package(Gpgme)
 
+if (BUILD_KPARTS)
+find_package(KdepimLibs REQUIRED)
+endif (BUILD_KPARTS)
+
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 add_definitions(-DQT3_SUPPORT)
 

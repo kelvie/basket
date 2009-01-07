@@ -5,7 +5,7 @@ X-KDE-ServiceTypes=Kontact/Plugin,KPluginInfo
 
 X-KDE-Library=kontact_basketplugin
 X-KDE-KontactPluginVersion=7
-X-KDE-KontactPartLibraryName=basketpart
+X-KDE-KontactPartLibraryName=libbasketpart
 X-KDE-KontactPluginHasSummary=false
 
 X-KDE-PluginInfo-Name=kontact_basketplugin
