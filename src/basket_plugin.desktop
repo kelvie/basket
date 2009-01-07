@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Service
-Icon=
+Icon=basket
 X-KDE-ServiceTypes=Kontact/Plugin,KPluginInfo
 
 X-KDE-Library=kontact_basketplugin
