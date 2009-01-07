@@ -36,7 +36,7 @@
 #include <QVBoxLayout>
 #include <KOpenWithDialog>
 #include <klocale.h>
-#include <q3whatsthis.h>
+#include <QWhatsThis>
 #include <k3iconview.h>
 #include <kiconloader.h>
 #include <QDrag>
@@ -165,24 +165,16 @@ HelpLabel::HelpLabel(const QString &text, const QString &message, QWidget *paren
  : KUrlLabel(parent), m_message(message)
 {
 	setText(text);
-	connect( this, SIGNAL(leftClickedUrl()), this, SLOT(showMessage()) );
+	setWhatsThis(m_message);
+	connect( this, SIGNAL(leftClickedUrl()), this, SLOT(display()) );
 }
 
 HelpLabel::~HelpLabel()
 {
 }
 
-void HelpLabel::showMessage()
-{
-	Q3WhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
-}
-
-void HelpLabel::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Space)
-		showMessage();
-	else
-		KUrlLabel::keyPressEvent(event);
+void HelpLabel::display(){
+	QWhatsThis::showText(mapToGlobal( QPoint(width() / 2, height()) ), m_message);
 }
 
 /** class IconSizeDialog: */
