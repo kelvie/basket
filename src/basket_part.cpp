@@ -55,8 +55,10 @@ BasketPart::BasketPart( QWidget *parentWidget, QObject *parent, const QList<QVar
   // notify the part that this is our internal widget
 	setWidget(m_view);
 
+	setComponentData( BasketFactory::componentData() );
+
   // set our XML-UI resource file
-	setXMLFile("basket_part.rc");
+	setXMLFile("basket_part.rc", true);
 
   // we are read-write by default
 	setReadWrite(true);

@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="basket" >
+<gui name="basket" version="1.7">
  <MenuBar noMerge="1" >
   <Menu name="file" >
    <text>&amp;Basket</text>
@@ -226,4 +227,4 @@
   <Separator/>
   <Action name="edit_paste" />
  </Menu>
-</kpartgui>
+</gui>
