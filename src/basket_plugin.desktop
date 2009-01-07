@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Service
+Icon=
+X-KDE-ServiceTypes=Kontact/Plugin,KPluginInfo
+
+X-KDE-Library=kontact_basketplugin
+X-KDE-KontactPluginVersion=7
+X-KDE-KontactPartLibraryName=basketpart
+X-KDE-KontactPluginHasSummary=false
+
+X-KDE-PluginInfo-Name=kontact_basketplugin
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+Comment=BasKet NotePads -- a KDE note organization application
+Name=basket
