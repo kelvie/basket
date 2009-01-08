@@ -23,7 +23,7 @@
 
 #include <KDialog>
 #include <kcombobox.h>
-#include <q3listview.h>
+#include <QTreeWidget>
 #include <QList>
 #include <QHBoxLayout>
 //Added by qt3to4:
@@ -71,43 +71,43 @@ class TagCopy
 	bool isMultiState();
 };
 
-class TagListViewItem : public Q3ListViewItem
+class TagListViewItem : public QTreeWidgetItem 
 {
   public:
-	TagListViewItem(Q3ListView     *parent, TagCopy *tagCopy);
-	TagListViewItem(Q3ListViewItem *parent, TagCopy *tagCopy);
-	TagListViewItem(Q3ListView     *parent, Q3ListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, TagCopy *tagCopy);
-	TagListViewItem(Q3ListView     *parent, StateCopy *stateCopy);
-	TagListViewItem(Q3ListViewItem *parent, StateCopy *stateCopy);
-	TagListViewItem(Q3ListView     *parent, Q3ListViewItem *after, StateCopy *stateCopy);
-	TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidget *parent, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidgetItem *parent, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, TagCopy *tagCopy);
+	TagListViewItem(QTreeWidget *parent, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidgetItem *parent, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, StateCopy *stateCopy);
+	TagListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, StateCopy *stateCopy);
 	~TagListViewItem();
 	TagCopy*   tagCopy()   { return m_tagCopy;   }
 	StateCopy* stateCopy() { return m_stateCopy; }
 	bool isEmblemObligatory();
 	TagListViewItem* lastChild();
 	TagListViewItem* prevSibling();
+	TagListViewItem* nextSibling();
 	TagListViewItem* parent() const; // Reimplemented to cast the return value
-	int width(const QFontMetrics &fontMetrics, const Q3ListView *listView, int column) const;
+	int width(const QFontMetrics &fontMetrics, const QTreeWidget *listView, int column) const;
 	void setup();
-	void paintCell(QPainter *painter, const QPalette &palette, int column, int width, int align);
 
   private:
 	TagCopy   *m_tagCopy;
 	StateCopy *m_stateCopy;
 };
 
-class TagListView : public Q3ListView
+class TagListView : public QTreeWidget
 {
   Q_OBJECT
   public:
-	TagListView(QWidget *parent = 0, const char *name = 0, Qt::WFlags flags = 0);
+	TagListView(QWidget *parent = 0);
 	~TagListView();
 	void keyPressEvent(QKeyEvent *event);
-	void contentsMouseDoubleClickEvent(QMouseEvent *event);
-	void contentsMousePressEvent(QMouseEvent *event);
-	void contentsMouseReleaseEvent(QMouseEvent *event);
+	void mouseDoubleClickEvent(QMouseEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
 	TagListViewItem* currentItem() const; // Reimplemented to cast the return value
 	TagListViewItem* firstChild() const; // Reimplemented to cast the return value
 	TagListViewItem* lastItem() const; // Reimplemented to cast the return value
@@ -140,7 +140,7 @@ class TagsEditDialog : public KDialog
 	void removeShortcut();
 	void removeEmblem();
 	void modified();
-	void currentItemChanged(Q3ListViewItem *item);
+	void currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem* next=0);
 	void slotCancel();
 	void slotOk();
 	void selectUp();
