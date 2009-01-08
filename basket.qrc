@@ -3,5 +3,15 @@
 	<file>images/tag_export_help.png</file>
 	<file>images/tag_export_on_every_lines_help.png</file>
 	<file>images/insertion_help.png</file>
+	<file>images/cr16-action-likeback_bug.png</file>
+	<file>images/cr16-action-likeback_dislike.png</file>
+	<file>images/cr16-action-likeback_like.png</file>
+	<file>images/cr16-action-likeback_feature.png</file>
+	<file>images/cr16-app-basket.png</file>
+	<file>images/cr22-app-basket.png</file>
+	<file>images/cr32-app-basket.png</file>
+	<file>images/cr48-app-basket.png</file>
+	<file>images/cr64-app-basket.png</file>
+	<file>images/cr128-app-basket.png</file>
 </qresource>
 </RCC>

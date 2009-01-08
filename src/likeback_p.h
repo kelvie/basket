@@ -27,7 +27,7 @@
 #include "likeback.h"
 
 class QToolButton;
-class Q3TextEdit;
+class QTextEdit;
 class QCheckBox;
 class Q3ButtonGroup;
 class Kaction;
@@ -89,7 +89,7 @@ class LikeBackDialog : public KDialog
 	QString       m_windowPath;
 	QString       m_context;
 	Q3ButtonGroup *m_group;
-	Q3TextEdit    *m_comment;
+	QTextEdit    *m_comment;
 	QCheckBox    *m_showButtons;
 	QString introductionText();
   private slots:

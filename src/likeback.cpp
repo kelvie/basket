@@ -41,7 +41,7 @@
 #include <q3vgroupbox.h>
 #include <kguiitem.h>
 #include <q3popupmenu.h>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <KDialog>
@@ -419,16 +419,6 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 
 void LikeBack::showInformationMessage()
 {
-	// Load and register the images needed by the message:
-	QPixmap likeIcon    = KIcon("likeback_like").pixmap(32,32);
-	QPixmap dislikeIcon = KIcon("likeback_dislike").pixmap(32,32);
-	QPixmap bugIcon     = KIcon("likeback_bug").pixmap(32,32);
-	QPixmap featureIcon = KIcon("likeback_feature").pixmap(32,32);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
-
 	// Show a message reflecting the allowed types of comment:
 	Button buttons = d->buttons;
 	int nbButtons = (buttons & Like    ? 1 : 0) +
@@ -470,29 +460,24 @@ void LikeBack::showInformationMessage()
 			: "") +
 		"<p>" + i18np("Example:", "Examples:", nbButtons) + "</p>" +
 		(buttons & LikeBack::Like ?
-			"<p><img source=\"likeback_icon_like\"> &nbsp;" +
+			"<p><img source=\":icon/likeback_icon_like\"> &nbsp;" +
 				i18n("<b>I like</b> the new artwork. Very refreshing.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Dislike ?
-			"<p><img source=\"likeback_icon_dislike\"> &nbsp;" +
+			"<p><img source=\":icon/likeback_icon_dislike\"> &nbsp;" +
 				i18n("<b>I dislike</b> the welcome page of that assistant. Too time consuming.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Bug ?
-			"<p><img source=\"likeback_icon_bug\"> &nbsp;" +
+			"<p><img source=\":icon/likeback_icon_bug\"> &nbsp;" +
 				i18n("<b>The application has an improper behaviour</b> when clicking the Add button. Nothing happens.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Feature ?
-			"<p><img source=\"likeback_icon_feature\"> &nbsp;" +
+			"<p><img source=\":icon/likeback_icon_feature\"> &nbsp;" +
 				i18n("<b>I desire a new feature</b> allowing me to send my work by email.") + "</p>"
 			: "") +
 		"</tr></table>",
 		i18n("Help Improve the Application"));
 
-	// Reset the images from the factory:
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_like",    0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_dislike", 0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_bug",     0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_feature", 0L);
 }
 
 QString LikeBack::activeWindowPath()
@@ -739,7 +724,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	m_group->setButton(reason);
 
 	// The comment text box:
-	m_comment = new Q3TextEdit(box);
+	m_comment = new QTextEdit(box);
 	m_comment->setTabChangesFocus(true);
 	m_comment->setTextFormat(Qt::PlainText);
 	m_comment->setText(initialComment);
