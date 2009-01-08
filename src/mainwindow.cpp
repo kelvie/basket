@@ -22,7 +22,7 @@
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qcursor.h>
-#include <q3whatsthis.h>
+#include <QWhatsThis>
 #include <q3valuelist.h>
 #include <qregexp.h>
 #include <q3buttongroup.h>

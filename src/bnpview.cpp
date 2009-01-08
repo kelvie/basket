@@ -26,7 +26,7 @@
 #include <qpainter.h>
 #include <qimage.h>
 #include <qbitmap.h>
-#include <q3whatsthis.h>
+#include <QWhatsThis>
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <QShowEvent>
@@ -471,7 +471,7 @@ void BNPView::initialize()
 	setupActions();
 
 	/// What's This Help for the tree:
-	Q3WhatsThis::add(m_tree, i18n(
+	m_tree->setWhatsThis(i18n(
 			"<h2>Basket Tree</h2>"
 					"Here is the list of your baskets. "
 					"You can organize your data by putting them in different baskets. "

@@ -38,7 +38,7 @@
 #include <kconfig.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <q3whatsthis.h>
+#include <QWhatsThis>
 #include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <kapplication.h>
@@ -879,19 +879,19 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 		"<p>If checked, the application defined below will be used when opening that type of note.</p>"
 		"<p>Otherwise, the application you've configured in Konqueror will be used.</p>");
 
-	Q3WhatsThis::add(m_htmlUseProg,      whatsthis);
-	Q3WhatsThis::add(m_imageUseProg,     whatsthis);
-	Q3WhatsThis::add(m_animationUseProg, whatsthis);
-	Q3WhatsThis::add(m_soundUseProg,     whatsthis);
+	m_htmlUseProg->setWhatsThis(whatsthis);
+	m_imageUseProg->setWhatsThis(whatsthis);
+	m_animationUseProg->setWhatsThis(whatsthis);
+	m_soundUseProg->setWhatsThis(whatsthis);
 
 	whatsthis = i18n(
 		"<p>Define the application to use for opening that type of note instead of the "
 		"application configured in Konqueror.</p>");
 
-	Q3WhatsThis::add(m_htmlProg,      whatsthis);
-	Q3WhatsThis::add(m_imageProg,     whatsthis);
-	Q3WhatsThis::add(m_animationProg, whatsthis);
-	Q3WhatsThis::add(m_soundProg,     whatsthis);
+	m_htmlProg->setWhatsThis(whatsthis);
+	m_imageProg->setWhatsThis(whatsthis);
+	m_animationProg->setWhatsThis(whatsthis);
+	m_soundProg->setWhatsThis(whatsthis);
 
 	layout->addWidget(m_htmlUseProg);
 	layout->addItem(hLayH);
