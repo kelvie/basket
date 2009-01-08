@@ -403,7 +403,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addLayout(hLay);
 
 	// System Tray Icon:
-	Q3GroupBox *gbSys = new Q3GroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
+	QGroupBox *gbSys = new QGroupBox(i18n("System Tray Icon"), this);
 	layout->addWidget(gbSys);
 	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialog::spacingHint());
 
