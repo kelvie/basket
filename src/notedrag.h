@@ -22,7 +22,6 @@
 #define NOTEDRAG_H
 
 #include <qstring.h>
-#include <q3dragobject.h>
 #include <qdatastream.h>
 #include <qpixmap.h>
 #include <q3valuelist.h>
