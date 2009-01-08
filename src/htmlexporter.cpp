@@ -38,7 +38,7 @@
 #include <qpainter.h>
 //Added by qt3to4:
 #include <QTextStream>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <kprogressdialog.h>
 #include <QProgressBar>
@@ -264,7 +264,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
 		<< LinkLook::launcherLook->toCSS("launcher", basket->textColor())
 		<<
 		"   .unknown { margin: 1px 2px; border: 1px solid " << borderColor << "; -moz-border-radius: 4px; }\n";
-	Q3ValueList<State*> states = basket->usedStates();
+	QList<State*> states = basket->usedStates();
 	QString statesCss;
 	for (State::List::Iterator it = states.begin(); it != states.end(); ++it)
 		statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->Q3ScrollView::font());

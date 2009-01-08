@@ -24,7 +24,7 @@
 #include <qbuffer.h>
 //Added by qt3to4:
 #include <QTextStream>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <kdeversion.h>
 #include <kapplication.h>
@@ -72,8 +72,8 @@ QDrag* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *sour
 		// Then a list of pointers to all notes, and parent groups:
 		for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
 			stream << (quint64)(node->note);
-		Q3ValueList<Note*> groups = noteList->parentGroups();
-		for (Q3ValueList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
+		QList<Note*> groups = noteList->parentGroups();
+		for (QList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
 			stream << (quint64)(*it);
 		stream << (quint64)0;
 		// And finally the notes themselves:
@@ -175,7 +175,7 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, QDrag *multipleDrag)
 
 void NoteDrag::serializeImage(NoteSelection *noteList, QDrag *multipleDrag)
 {
-	Q3ValueList<QPixmap> pixmaps;
+	QList<QPixmap> pixmaps;
 	QPixmap pixmap;
 	for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked()) {
 		pixmap = node->note->content()->toPixmap();
@@ -185,12 +185,12 @@ void NoteDrag::serializeImage(NoteSelection *noteList, QDrag *multipleDrag)
 	if (!pixmaps.isEmpty()) {
 		QPixmap pixmapEquivalent;
 		if (pixmaps.count() == 1)
-			pixmapEquivalent = pixmaps[0];
+			pixmapEquivalent = pixmaps.first();
 		else {
 			// Search the total size:
 			int height = 0;
 			int width  = 0;
-			for (Q3ValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
+			for (QList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
 				height += (*it).height();
 				if ((*it).width() > width)
 					width = (*it).width();
@@ -200,7 +200,7 @@ void NoteDrag::serializeImage(NoteSelection *noteList, QDrag *multipleDrag)
 			pixmapEquivalent.fill(Qt::white);
 			QPainter painter(&pixmapEquivalent);
 			height = 0;
-			for (Q3ValueList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
+			for (QList<QPixmap>::iterator it = pixmaps.begin(); it != pixmaps.end(); ++it) {
 				painter.drawPixmap(0, height, *it);
 				height += (*it).height();
 			}
@@ -275,9 +275,9 @@ QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 	QColor textColor       = noteList->firstStacked()->note->basket()->textColor();
 	QColor backgroundColor = noteList->firstStacked()->note->basket()->backgroundColor().dark(NoteContent::FEEDBACK_DARKING);
 
-	Q3ValueList<QPixmap> pixmaps;
-	Q3ValueList<QColor>  backgrounds;
-	Q3ValueList<bool>    spaces;
+	QList<QPixmap> pixmaps;
+	QList<QColor>  backgrounds;
+	QList<bool>    spaces;
 	QPixmap pixmap;
 	int height = 0;
 	int width  = 0;
@@ -320,9 +320,9 @@ QPixmap NoteDrag::feedbackPixmap(NoteSelection *noteList)
 		QPainter painter(&result);
 		// Draw all the images:
 		height = MARGIN;
-		Q3ValueList<QPixmap>::iterator it;
-		Q3ValueList<QColor>::iterator  it2;
-		Q3ValueList<bool>::iterator    it3;
+		QList<QPixmap>::iterator it;
+		QList<QColor>::iterator  it2;
+		QList<bool>::iterator    it3;
 		int i = 0;
 		for (it = pixmaps.begin(), it2 = backgrounds.begin(), it3 = spaces.begin(); it != pixmaps.end(); ++it, ++it2, ++it3, ++i) {
 			if (i != 0 && (*it3)) {
@@ -383,7 +383,7 @@ Basket* NoteDrag::basketOf(const QMimeData *source)
 		return 0;
 }
 
-Q3ValueList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
+QList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
 {
     QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
 	QBuffer buffer(&srcData);
@@ -394,7 +394,7 @@ Q3ValueList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
 		stream >> (quint64&)basketPointer;
 		// Get the note list:
 		quint64          notePointer;
-		Q3ValueList<Note*> notes;
+		QList<Note*> notes;
 		do {
 			stream >> notePointer;
 			if (notePointer != 0)
@@ -403,7 +403,7 @@ Q3ValueList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
 		// Done:
 		return notes;
 	} else
-		return Q3ValueList<Note*>();
+		return QList<Note*>();
 }
 
 Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes)
@@ -418,7 +418,7 @@ Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, 
 		Basket *basket = (Basket*)basketPointer;
 		// Get the note list:
 		quint64          notePointer;
-		Q3ValueList<Note*> notes;
+		QList<Note*> notes;
 		do {
 			stream >> notePointer;
 			if (notePointer != 0)

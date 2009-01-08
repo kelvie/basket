@@ -31,7 +31,7 @@
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <QVBoxLayout>
 #include <KOpenWithDialog>
@@ -281,8 +281,8 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent)
 		insertItem(i18n("(Default)"));
 
 	QFontDatabase fontDB;
-	Q3ValueList<int> sizes = fontDB.standardSizes();
-	for (Q3ValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
+	QList<int> sizes = fontDB.standardSizes();
+	for (QList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
 		insertItem(QString::number(*it));
 
 //	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );

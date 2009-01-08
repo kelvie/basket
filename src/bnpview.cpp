@@ -30,7 +30,7 @@
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <QShowEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QHideEvent>
@@ -287,7 +287,7 @@ void BNPView::onFirstShow()
     int treeWidth = Settings::basketTreeWidth();
     if (treeWidth < 0)
       treeWidth = m_tree->fontMetrics().maxWidth() * 11;
-    Q3ValueList<int> splitterSizes;
+    QList<int> splitterSizes;
     splitterSizes.append(treeWidth);
     setSizes(splitterSizes);
 }
@@ -1499,7 +1499,7 @@ void BNPView::recomputeAllStyles()
 	}
 }
 
-void BNPView::removedStates(const Q3ValueList<State*> &deletedStates)
+void BNPView::removedStates(const QList<State*> &deletedStates)
 {
 	QTreeWidgetItemIterator it(m_tree);
 	while (*it) {
@@ -1691,7 +1691,7 @@ void BNPView::updateNotesActions()
 	m_actMoveNoteDown    ->setEnabled( !isLocked && oneOrSeveralSelected );
 	m_actMoveOnBottom    ->setEnabled( !isLocked && oneOrSeveralSelected && !currentBasket()->isFreeLayout() );
 
-	for (QLinkedList<KAction *>::const_iterator action = m_insertActions.constBegin(); action != m_insertActions.constEnd(); ++action)
+	for (QList<KAction *>::const_iterator action = m_insertActions.constBegin(); action != m_insertActions.constEnd(); ++action)
 		(*action)->setEnabled( !isLocked );
 
 	// From the old Note::contextMenuEvent(...) :
@@ -2628,7 +2628,7 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	currentBasket()->m_tagPopupNote = referenceNote;
 	bool enable = currentBasket()->countSelecteds() > 0;
 
-	Q3ValueList<Tag*>::iterator it;
+	QList<Tag*>::iterator it;
 	Tag *currentTag;
 	State *currentState;
 	int i = 10;

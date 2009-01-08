@@ -24,7 +24,7 @@
 #include <qstring.h>
 #include <qdatastream.h>
 #include <qpixmap.h>
-#include <q3valuelist.h>
+#include <QList>
 //Added by qt3to4:
 #include <QDrag>
 
@@ -67,7 +67,7 @@ class NoteDrag
 	static bool canDecode(const QMimeData *source);
 	static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
 	static Basket* basketOf(const QMimeData *source);
-	static Q3ValueList<Note*> notesOf(QDragEnterEvent *source);
+	static QList<Note*> notesOf(QDragEnterEvent *source);
 	static void createAndEmptyCuttingTmpFolder();
 
 	static const char *NOTE_MIME_STRING;

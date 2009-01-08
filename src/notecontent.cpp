@@ -29,7 +29,7 @@
 #include <qstringlist.h>
 #include <qbuffer.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QStringList>
 #include <QPixmap>
 #include <ktextedit.h>
 #include <kservice.h>
@@ -1938,7 +1938,7 @@ void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
 	if (file.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&file);
 		// Get the MIME types names:
-		Q3ValueList<QString> mimes;
+		QStringList mimes;
 		QString line;
 		do {
 			if (!stream.atEnd()) {
@@ -1957,7 +1957,7 @@ void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
 			array = new QByteArray(size);
 			stream.readRawBytes(array->data(), size);
 			// Creata and add the QDragObject:
-			dragObject->setData(mimes.at(i)->toAscii(), *array);
+			dragObject->setData(mimes.at(i).toAscii(), *array);
 			delete array; // FIXME: Should we?
 		}
 		file.close();

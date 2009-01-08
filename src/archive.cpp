@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <qstring.h>
-#include <qstringlist.h>
-#include <q3valuelist.h>
+#include <QStringList>
+#include <QList>
 #include <qmap.h>
 #include <qdir.h>
 //Added by qt3to4:
@@ -92,7 +92,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.remove(tempFolder + "baskets.xml");
 
 	// Save a Small tags.xml Document:
-	Q3ValueList<Tag*> tags;
+	QList<Tag*> tags;
 	listUsedTags(basket, withSubBaskets, tags);
 	Tag::saveTagsTo(tags, tempFolder + "tags.xml");
 	tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
@@ -244,7 +244,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 	}
 }
 
-void Archive::listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &list)
+void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);

@@ -24,7 +24,7 @@
 #include <qimage.h>
 #include <q3stylesheet.h>
 #include <qregexp.h>
-#include <q3valuestack.h>
+#include <QList>
 #include <qfileinfo.h>
 #include <qdir.h>
 #include <qmime.h>
@@ -48,7 +48,7 @@ void StopWatch::start(int id)
 	if (id >= starts.size()) {
 		totals.resize(id + 1);
 		counts.resize(id + 1);
-		for (uint i = starts.size(); i <= id; i++) {
+		for (int i = starts.size(); i <= id; i++) {
 			totals[i] = 0;
 			counts[i] = 0;
 		}
@@ -171,8 +171,8 @@ QString Tools::htmlToText(const QString &html)
 	QString tag, tag3;
 	// To manage lists:
 	int deep = 0;            // The deep of the current line in imbriqued lists
-	Q3ValueStack<bool> ul;    // true if current list is a <ul> one, false if it's an <ol> one
-	Q3ValueStack<int>  lines; // The line number if it is an <ol> list
+	QList<bool> ul;    // true if current list is a <ul> one, false if it's an <ol> one
+	QList<int>  lines; // The line number if it is an <ol> list
 	// We're removing every other tags, or replace them in the case of li:
 	while ( (pos = text.find("<"), pos) != -1 ) {
 		// What is the current tag?
@@ -181,16 +181,16 @@ QString Tools::htmlToText(const QString &html)
 		// Lists work:
 		if (tag == "ul") {
 			deep++;
-			ul.push(true);
-			lines.push(-1);
+			ul.push_back(true);
+			lines.push_back(-1);
 		} else if (tag == "ol") {
 			deep++;
-			ul.push(false);
-			lines.push(0);
+			ul.push_back(false);
+			lines.push_back(0);
 		} else if (tag3 == "/ul" || tag3 == "/ol") {
 			deep--;
-			ul.pop();
-			lines.pop();
+			ul.pop_back();
+			lines.pop_back();
 		}
 		// Where the tag closes?
 		pos2 = text.find(">");
@@ -205,9 +205,10 @@ QString Tools::htmlToText(const QString &html)
 					spaces += "  ";
 				// The bullet or number of the line:
 				QString bullet = "* ";
-				if (ul.top() == false) {
-					lines.push(lines.pop() + 1);
-					bullet = QString::number(lines.top()) + ". ";
+				if (ul.back() == false) {
+					lines.push_back(lines.back() + 1);
+					lines.pop_back();
+					bullet = QString::number(lines.back()) + ". ";
 				}
 				// Insertion:
 				text.insert(pos, spaces + bullet);

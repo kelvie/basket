@@ -24,7 +24,7 @@
 #include <qstring.h>
 
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <qdatetime.h>
 
@@ -176,13 +176,13 @@ class Note
 	void bufferizeSelectionPixmap();
 	inline void unbufferize()  { m_bufferedPixmap = QPixmap(); m_bufferedSelectionPixmap = QPixmap(); }
 	inline bool isBufferized() { return !m_bufferedPixmap.isNull(); }
-	void recomputeBlankRects(Q3ValueList<QRect> &blankAreas);
+	void recomputeBlankRects(QList<QRect> &blankAreas);
 	static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
     QPalette palette() const;
 
 /// VISIBLE AREAS COMPUTATION:
   private:
-	Q3ValueList<QRect> m_areas;
+	QList<QRect> m_areas;
 	bool              m_computedAreas;
 	bool              m_onTop;
 	void recomputeAreas();
@@ -283,7 +283,7 @@ class Note
 	bool stateForTagFromSelectedNotes(Tag *tag, State **state);
 	void   recomputeStyle();
 	void   recomputeAllStyles();
-	bool   removedStates(const Q3ValueList<State*> &deletedStates);
+	bool   removedStates(const QList<State*> &deletedStates);
 	QFont  font(); // Computed!
 	QColor backgroundColor(); // Computed!
 	QColor textColor(); // Computed!
@@ -308,9 +308,9 @@ class Note
 	void update();
 	void linkLookChanged();
 
-	void usedStates(Q3ValueList<State*> &states);
+	void usedStates(QList<State*> &states);
 
-	void listUsedTags(Q3ValueList<Tag*> &list);
+	void listUsedTags(QList<Tag*> &list);
 
 
 	Note* nextInStack();

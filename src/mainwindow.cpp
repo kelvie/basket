@@ -23,7 +23,7 @@
 #include <qtooltip.h>
 #include <qcursor.h>
 #include <QWhatsThis>
-#include <q3valuelist.h>
+#include <QList>
 #include <qregexp.h>
 #include <q3buttongroup.h>
 //Added by qt3to4:

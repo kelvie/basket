@@ -22,7 +22,7 @@
 
 #include <config.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 #ifdef HAVE_LIBGPGME
 
@@ -41,7 +41,7 @@ class KGpgKey
 		QString email;
 };
 
-typedef Q3ValueList< KGpgKey > KGpgKeyList;
+typedef QList< KGpgKey > KGpgKeyList;
 
 class KGpgMe
 {

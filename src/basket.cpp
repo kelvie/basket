@@ -37,7 +37,7 @@
 #include <QDropEvent>
 #include <QDragEnterEvent>
 #include <QHBoxLayout>
-#include <Q3ValueList>
+#include <QList>
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <QGridLayout>
@@ -183,9 +183,9 @@ int NoteSelection::count()
 	return count;
 }
 
-Q3ValueList<Note*> NoteSelection::parentGroups()
+QList<Note*> NoteSelection::parentGroups()
 {
-	Q3ValueList<Note*> groups;
+	QList<Note*> groups;
 
 	// For each note:
 	for (NoteSelection *node = firstStacked(); node; node = node->nextStacked())
@@ -326,7 +326,7 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 /*
  * Defined in note.cpp:
  */
-extern void substractRectOnAreas(const QRect &rectToSubstract, Q3ValueList<QRect> &areas, bool andRemove = true);
+extern void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove = true);
 
 void debugZone(int zone)
 {
@@ -1786,7 +1786,7 @@ void Basket::recomputeAllStyles()
 		note->recomputeAllStyles();
 }
 
-void Basket::removedStates(const Q3ValueList<State*> &deletedStates)
+void Basket::removedStates(const QList<State*> &deletedStates)
 {
 	bool modifiedBasket = false;
 
@@ -2845,7 +2845,7 @@ void Basket::tooltipEvent(QHelpEvent *event)
 	if (!note && isFreeLayout()) {
 		message = i18n("Insert note here\nRight click for more options");
 		QRect itRect;
-		for (Q3ValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+		for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 			itRect = QRect(0, 0, visibleWidth(), visibleHeight()).intersect(*it);
 			if (itRect.contains(contentPos)) {
 				rect = itRect;
@@ -3197,7 +3197,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	QPixmap  pixmap;
 	QPainter painter2;
 	QRect    rect;
-	for (Q3ValueList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+	for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
 		rect = clipRect.intersect(*it);
 		if (rect.width() > 0 && rect.height() > 0) {
 			// If there is an inserter to draw, draw the image off screen,
@@ -3349,7 +3349,7 @@ void Basket::updateNote(Note *note)
 
 void Basket::animateObjects()
 {
-	Q3ValueList<Note*>::iterator it;
+	QList<Note*>::iterator it;
 	for (it = m_animatedNotes.begin(); it != m_animatedNotes.end(); )
 //		if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
 //			updateNote(*it);
@@ -3431,7 +3431,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		menu.addAction(act);
 	} else {
 		menu.addTitle(tag->name());
-		Q3ValueList<State*>::iterator it;
+		QList<State*>::iterator it;
 		State *currentState;
 
 		int i = 10;
@@ -4696,9 +4696,9 @@ void Basket::deleteFiles()
 	Tools::deleteRecursively(fullPath());
 }
 
-Q3ValueList<State*> Basket::usedStates()
+QList<State*> Basket::usedStates()
 {
-	Q3ValueList<State*> states;
+	QList<State*> states;
 	FOR_EACH_NOTE (note)
 		note->usedStates(states);
 	return states;
@@ -4731,7 +4731,7 @@ QString Basket::saveGradientBackground(const QColor &color, const QFont &font, c
 	return fileName;
 }
 
-void Basket::listUsedTags(Q3ValueList<Tag*> &list)
+void Basket::listUsedTags(QList<Tag*> &list)
 {
 	if (!isLoaded()) {
 		load();
@@ -5209,7 +5209,7 @@ void Basket::watchedFileDeleted(const QString &fullPath)
 
 void Basket::updateModifiedNotes()
 {
-	for (Q3ValueList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
+	for (QList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
 		Note *note = noteForFullPath(*it);
 		if (note)
 			note->content()->loadFromFile(/*lazyLoad=*/false);

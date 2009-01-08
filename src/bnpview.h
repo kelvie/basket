@@ -26,10 +26,9 @@
 #include <qtimer.h>
 #include <qclipboard.h>
 #include <qsplitter.h>
-#include <q3listview.h>
+#include <QTreeWidget>
 //Added by qt3to4:
-#include <Q3ValueList>
-#include <QLinkedList>
+#include <QList>
 #include <QPixmap>
 #include <QHideEvent>
 #include <QEvent>
@@ -75,7 +74,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 		void setTreePlacement(bool onLeft);
 		void relayoutAllBaskets();
 		void recomputeAllStyles();
-		void removedStates(const Q3ValueList<State*> &deletedStates);
+		void removedStates(const QList<State*> &deletedStates);
 		void linkLookChanged();
 		void filterPlacementChanged(bool onTop);
 	/// MANAGE BASKETS:
@@ -268,7 +267,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 		KAction       *m_actInsertLauncher;
 		KAction       *m_actImportIcon;
 		KAction       *m_actLoadFile;
-		QLinkedList<KAction*> m_insertActions;
+		QList<KAction*> m_insertActions;
 		// Basket actions :
 		KToggleAction *m_actShowFilter;
 		KAction       *m_actResetFilter;
