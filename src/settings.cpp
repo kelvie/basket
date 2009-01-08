@@ -734,11 +734,19 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// View File Content:
 
-	Q3VButtonGroup *buttonGroup = new Q3VButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
+	QGroupBox* buttonGroup = new QGroupBox(i18n("View Content of Added Files for the Following Types"), this);
+	QVBoxLayout* buttonLayout = new QVBoxLayout;
 	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
+
+	buttonLayout->add(m_viewTextFileContent);
+	buttonLayout->add(m_viewHtmlFileContent);
+	buttonLayout->add(m_viewImageFileContent);
+	buttonLayout->add(m_viewSoundFileContent);
+	buttonGroup->setLayout(buttonLayout);
+
 	layout->addWidget(buttonGroup);
 	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );

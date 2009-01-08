@@ -42,7 +42,6 @@
 #include "systemtray.h"
 
 class Q3GroupBox;
-class Q3ButtonGroup;
 class KColorCombo;
 class KIntNumInput;
 class KGlobalAccel;
