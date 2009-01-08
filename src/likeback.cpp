@@ -663,7 +663,6 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	pageLayout->addWidget(introduction);
 
 	// The comment group:
-	m_group = new Q3ButtonGroup(0);//i18n("Send Application Developers a Comment About:"), page);
 	Q3VGroupBox *box = new Q3VGroupBox(i18n("Send Application Developers a Comment About:"), page);
 	pageLayout->addWidget(box);
 
@@ -678,10 +677,9 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *likeIcon = new QLabel(buttons);
 		likeIcon->setPixmap(likePixmap);
 		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *likeButton = new QRadioButton(i18n("Something you &like"), buttons);
+		likeButton = new QRadioButton(i18n("Something you &like"), buttons);
 		buttonsGrid->addWidget(likeIcon,   /*row=*/0, /*column=*/0);
 		buttonsGrid->addWidget(likeButton, /*row=*/0, /*column=*/1);
-		m_group->insert(likeButton, LikeBack::Like);
 	}
 	if (m_likeBack->buttons() & LikeBack::Dislike) {
 		QPixmap dislikePixmap = KIconLoader::global()->loadIcon(
@@ -691,10 +689,9 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *dislikeIcon = new QLabel(buttons);
 		dislikeIcon->setPixmap(dislikePixmap);
 		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *dislikeButton = new QRadioButton(i18n("Something you &dislike"), buttons);
+		dislikeButton = new QRadioButton(i18n("Something you &dislike"), buttons);
 		buttonsGrid->addWidget(dislikeIcon,   /*row=*/1, /*column=*/0);
 		buttonsGrid->addWidget(dislikeButton, /*row=*/1, /*column=*/1);
-		m_group->insert(dislikeButton, LikeBack::Dislike);
 	}
 	if (m_likeBack->buttons() & LikeBack::Bug) {
 		QPixmap bugPixmap = KIconLoader::global()->loadIcon(
@@ -704,10 +701,9 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *bugIcon = new QLabel(buttons);
 		bugIcon->setPixmap(bugPixmap);
 		bugIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *bugButton = new QRadioButton(i18n("An improper &behavior of this application"), buttons);
+		bugButton = new QRadioButton(i18n("An improper &behavior of this application"), buttons);
 		buttonsGrid->addWidget(bugIcon,   /*row=*/2, /*column=*/0);
 		buttonsGrid->addWidget(bugButton, /*row=*/2, /*column=*/1);
-		m_group->insert(bugButton, LikeBack::Bug);
 	}
 	if (m_likeBack->buttons() & LikeBack::Feature) {
 		QPixmap featurePixmap = KIconLoader::global()->loadIcon(
@@ -716,12 +712,10 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
 		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *featureButton = new QRadioButton(i18n("A new &feature you desire"), buttons);
+		featureButton = new QRadioButton(i18n("A new &feature you desire"), buttons);
 		buttonsGrid->addWidget(featureIcon,   /*row=*/3, /*column=*/0);
 		buttonsGrid->addWidget(featureButton, /*row=*/3, /*column=*/1);
-		m_group->insert(featureButton, LikeBack::Feature);
 	}
-	m_group->setButton(reason);
 
 	// The comment text box:
 	m_comment = new QTextEdit(box);
@@ -818,8 +812,7 @@ void LikeBackDialog::send()
 {
 	QString emailAddress = m_likeBack->emailAddress();
 
-	int reason = m_group->selectedId();
-	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
+	QString type = (likeButton->isChecked() ? "Like" : (dislikeButton->isChecked() ? "Dislike" : (bugButton->isChecked() ? "Bug" : "Feature")));
 	QString data =
 		"protocol=" + QUrl::toPercentEncoding("1.0")                              + '&' +
 		"type="     + QUrl::toPercentEncoding(type)                               + '&' +
