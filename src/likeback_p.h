@@ -88,7 +88,6 @@ class LikeBackDialog : public KDialog
 	LikeBack     *m_likeBack;
 	QString       m_windowPath;
 	QString       m_context;
-	QGroupBox *m_group;
 	QTextEdit    *m_comment;
 	QRadioButton *likeButton;
 	QRadioButton *dislikeButton;
