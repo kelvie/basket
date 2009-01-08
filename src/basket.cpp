@@ -31,7 +31,7 @@
 #include <QVBoxLayout>
 #include <QDragLeaveEvent>
 #include <QKeyEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QResizeEvent>
 #include <QLabel>
 #include <QDropEvent>
@@ -3106,9 +3106,9 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	{
 		if(!m_decryptBox)
 		{
-			m_decryptBox = new Q3Frame( this, "m_decryptBox" );
-			m_decryptBox->setFrameShape( Q3Frame::StyledPanel );
-			m_decryptBox->setFrameShadow( Q3Frame::Plain );
+			m_decryptBox = new QFrame( this, "m_decryptBox" );
+			m_decryptBox->setFrameShape( QFrame::StyledPanel );
+			m_decryptBox->setFrameShadow( QFrame::Plain );
 			m_decryptBox->setLineWidth( 1 );
 
 			QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
@@ -3797,7 +3797,7 @@ void Basket::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 	if (!isDuringEdit())
 		return;
 
-	Q3Frame    *editorQFrame = dynamic_cast<Q3Frame*>(m_editor->widget());
+	QFrame    *editorQFrame = dynamic_cast<QFrame*>(m_editor->widget());
 	KTextEdit *textEdit     = m_editor->textEdit();
 //	QLineEdit *lineEdit     = m_editor->lineEdit();
 	Note      *note         = m_editor->note();

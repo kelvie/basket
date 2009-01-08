@@ -42,7 +42,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QVBoxLayout>
-#include <Q3Frame>
+#include <QFrame>
 #include <QDropEvent>
 #include <QDragMoveEvent>
 #include <QPaintEvent>
@@ -315,7 +315,7 @@ class Basket : public Q3ScrollView
 	bool m_loadingLaunched;
 	bool m_locked;
 	bool m_shouldConvertPlainTextNotes;
-	Q3Frame* m_decryptBox;
+	QFrame* m_decryptBox;
 	QPushButton* m_button;
 	int m_encryptionType;
 	QString m_encryptionKey;
