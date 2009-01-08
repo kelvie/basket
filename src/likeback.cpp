@@ -72,34 +72,34 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	QIcon likeIconSet    = KIcon("likeback_like");
-	QIcon dislikeIconSet = KIcon("likeback_dislike");
-	QIcon bugIconSet     = KIcon("likeback_bug");
-	QIcon featureIconSet = KIcon("likeback_feature");
+	QIcon likeIconSet    = KIcon(":images/cr16-action-likeback_like.png");
+	QIcon dislikeIconSet = KIcon(":images/cr16-action-likeback_dislike.png");
+	QIcon bugIconSet     = KIcon(":images/cr16-action-likeback_bug.png");
+	QIcon featureIconSet = KIcon(":images/cr16-action-likeback_feature.png");
 
-	m_likeButton = new QToolButton(this, "likeback_like");
-	m_likeButton->setIconSet(likeIconSet);
+	m_likeButton = new QToolButton(this, ":images/cr16-action-likeback_like.png");
+	m_likeButton->setIcon(likeIconSet);
 	m_likeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you like"));
 	m_likeButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(clickedLike()) );
 	layout->add(m_likeButton);
 
-	m_dislikeButton = new QToolButton(this, "likeback_dislike");
-	m_dislikeButton->setIconSet(dislikeIconSet);
+	m_dislikeButton = new QToolButton(this, ":images/cr16-action-likeback_dislike.png");
+	m_dislikeButton->setIcon(dislikeIconSet);
 	m_dislikeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you dislike"));
 	m_dislikeButton->setAutoRaise(true);
 	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(clickedDislike()) );
 	layout->add(m_dislikeButton);
 
-	m_bugButton = new QToolButton(this, "likeback_bug");
-	m_bugButton->setIconSet(bugIconSet);
+	m_bugButton = new QToolButton(this, ":images/cr16-action-likeback_bug.png");
+	m_bugButton->setIcon(bugIconSet);
 	m_bugButton->setTextLabel("<p>" + i18n("Send application developers a comment about an improper behavior of the application"));
 	m_bugButton->setAutoRaise(true);
 	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(clickedBug()) );
 	layout->add(m_bugButton);
 
-	m_featureButton = new QToolButton(this, "likeback_feature");
-	m_featureButton->setIconSet(featureIconSet);
+	m_featureButton = new QToolButton(this, ":images/cr16-action-likeback_feature.png");
+	m_featureButton->setIcon(featureIconSet);
 	m_featureButton->setTextLabel("<p>" + i18n("Send application developers a comment about a new feature you desire"));
 	m_featureButton->setAutoRaise(true);
 	connect( m_featureButton, SIGNAL(clicked()), this, SLOT(clickedFeature()) );
@@ -460,19 +460,19 @@ void LikeBack::showInformationMessage()
 			: "") +
 		"<p>" + i18np("Example:", "Examples:", nbButtons) + "</p>" +
 		(buttons & LikeBack::Like ?
-			"<p><img source=\":icon/likeback_icon_like\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_like.png\"> &nbsp;" +
 				i18n("<b>I like</b> the new artwork. Very refreshing.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Dislike ?
-			"<p><img source=\":icon/likeback_icon_dislike\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_dislike.png\"> &nbsp;" +
 				i18n("<b>I dislike</b> the welcome page of that assistant. Too time consuming.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Bug ?
-			"<p><img source=\":icon/likeback_icon_bug\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_bug.png\"> &nbsp;" +
 				i18n("<b>The application has an improper behaviour</b> when clicking the Add button. Nothing happens.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Feature ?
-			"<p><img source=\":icon/likeback_icon_feature\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_feature.png\"> &nbsp;" +
 				i18n("<b>I desire a new feature</b> allowing me to send my work by email.") + "</p>"
 			: "") +
 		"</tr></table>",
@@ -672,7 +672,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = KIconLoader::global()->loadIcon(
-            "likeback_like", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_like.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
             );
 		QLabel *likeIcon = new QLabel(buttons);
@@ -685,7 +685,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	}
 	if (m_likeBack->buttons() & LikeBack::Dislike) {
 		QPixmap dislikePixmap = KIconLoader::global()->loadIcon(
-            "likeback_dislike", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_dislike.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
             );
 		QLabel *dislikeIcon = new QLabel(buttons);
@@ -698,7 +698,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	}
 	if (m_likeBack->buttons() & LikeBack::Bug) {
 		QPixmap bugPixmap = KIconLoader::global()->loadIcon(
-            "likeback_bug", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            ":images/cr16-action-likeback_bug.png", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, true
             );
 		QLabel *bugIcon = new QLabel(buttons);
@@ -711,7 +711,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	}
 	if (m_likeBack->buttons() & LikeBack::Feature) {
 		QPixmap featurePixmap = KIconLoader::global()->loadIcon(
-            "likeback_feature", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_feature.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true);
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
