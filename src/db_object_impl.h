@@ -22,6 +22,11 @@
 
 #include "basket_export.h"
 #include "db_object.h"
+#include <QByteArray>
+#include <QHash>
+#include <QString>
+
+
  
 // This implements the DatabaseObject
 class BASKET_EXPORT DatabaseObjectImpl : public DatabaseObject
