@@ -388,7 +388,7 @@ KAction* LikeBack::sendACommentAction(KActionCollection *parent)
 	d->action = parent->addAction("likeback_send_a_comment", this,
 				      SLOT(execCommentDialog()));
 	d->action->setText(i18n("&Send a Comment to Developers"));
-	d->action->setIcon(KIcon("mail_new"));
+	d->action->setIcon(KIcon("mail-message-new"));
     }
 
     return d->action;
