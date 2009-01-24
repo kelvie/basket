@@ -19,12 +19,11 @@
 #ifndef _BASKET_DATABASE_IMPL_H_
 #define _BASKET_DATABASE_IMPL_H_
 
-#include "basket_export.h"
 #include "db_object.h"
 #include "db.h"
 
 /// This implements the BasketDatabase
-class BASKET_EXPORT BasketDatabaseImpl : public BasketDatabase
+class BasketDatabaseImpl : public BasketDatabase
 {
 	public:
 	virtual DatabaseObject *getObject(QString hash) const;

@@ -29,7 +29,7 @@
 
  
 // This implements the DatabaseObject
-class BASKET_EXPORT DatabaseObjectImpl : public DatabaseObject
+class DatabaseObjectImpl : public DatabaseObject
 {
 	public:
 	virtual QString getProperty(QString name) const;
