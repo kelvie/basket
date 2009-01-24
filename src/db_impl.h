@@ -25,8 +25,8 @@
 /// This implements the BasketDatabase
 class BasketDatabaseImpl : public BasketDatabase
 {
-	public:
-	virtual DatabaseObject *getObject(QString hash) const;
+public:
+	virtual DatabaseObject getObject(QString hash) const;
 
 	// Returns the hash of the object
 	virtual QString addObject(DatabaseObject obj);
@@ -41,7 +41,7 @@ class BasketDatabaseImpl : public BasketDatabase
 	virtual void setRootObject(DatabaseObject obj);
 
 	protected:
-	virtual BasketDatabase() {};
+	virtual BasketDatabaseImpl();
 };
 
 
