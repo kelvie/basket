@@ -1,5 +1,5 @@
 /*  Copyright (C) 2009 Kelvie Wong <kelvie@ieee.org>
-                       Maranatha Luckanachai <maranatha.myrrh@gmail.com>
+              (C) 2009 Maranatha Luckanachai <maranatha.myrrh@gmail.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,31 +21,38 @@
 #define _BASKET_DATABASE_OBJECT_H_
 
 #include "basket_export.h"
-#include <QString>
-#include <QByteArray> 
 
+#include <QByteArray>
+#include <QHash>
+#include <QString>
+
+class DatabaseObjectPrivate;
+
+// This is the basic object that will be passed to and from the database.  Its
+// only members consist of raw data (in a QByteArray) and a set of properties
+// (with QString keys and values).  The point of this class is so that data
+// retrieval/storage may be changed in the future (i.e. buffered reads and what
+// not).  Perhaps in the future, we may return a QDatastream rather than a byte
+// array.
 class BASKET_EXPORT DatabaseObject
 {
-	public:
+public:
+    DatabaseObject();
+    virtual ~DatabaseObject();
 
-	// These get and set various properties (meta-data) for the database object
-	// Database objects all have a "type" property, and this property is either
-	// "basket", "note", or "list", that define the semantic meaning of what
-	// data() returns.
-	virtual QString getProperty(QString name) const = 0;
-    virtual void setProperty(QString name, QString value) = 0;
+    virtual QString getProperty(QString name) const;
 
-	// This will generally read the data as this function is called, and may
-	// block.
-	virtual QByteArray data() const = 0;
+    virtual void setProperty(QString name, QString value);
 
-	virtual void setData(QByteArray data) = 0;
-	
-	// The copy constructors; we will primarily be using copies of the
-	// DatabaseObject, rather than dynamically allocated pointers, so we have to
-	// keep the implementation memory friendly.
-	virtual DatabaseObject(const DatabaseObject &other) = 0;
-	virtual DatabaseObject &operator= (const DatabaseObject &rhs) const = 0;
+    virtual QByteArray data() const;
+
+    virtual void setData(QByteArray data);
+
+    DatabaseObject(const DatabaseObject &other);
+    DatabaseObject &operator=(const DatabaseObject &rhs);
+
+private:
+    DatabaseObjectPrivate *p;
 };
 
 #endif // _BASKET_DATABASE_OBJECT_H_

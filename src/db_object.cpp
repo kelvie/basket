@@ -1,4 +1,5 @@
 /*  Copyright (C) 2009 Maranatha Luckanachai <maranatha.myrrh@gmail.com>
+                  2009 Kelvie Wong <kelvie@ieee.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -16,36 +17,50 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "db_object_impl.h"
+#include "db_object.h"
+#include "db_object_p.h"
 
-virtual QString getProperty(QString name) const
+DatabaseObject::DatabaseObject()
+    : p(new DatabaseObjectPrivate)
 {
-    return m_props[name];
+
 }
 
-virtual void setProperty(QString name, QString value)
+DatabaseObject::~DatabaseObject()
 {
-    m_props[name] = value;
+    delete p;
 }
 
-virtual QByteArray data() const
+QString DatabaseObject::getProperty(QString name) const
 {
-    return m_data;
+    return p->props[name];
 }
 
-virtual void setData(QByteArray data)
+void DatabaseObject::setProperty(QString name, QString value)
 {
-    m_data = data;
+    p->props[name] = value;
 }
 
-DatabaseObjectImpl(const DatabaseObjectImpl &other)
+QByteArray DatabaseObject::data() const
 {
-    *this = other;
+    return p->data;
 }
 
-DatabaseObjectImpl &operator=(const DatabaseObjectImpl &rhs)
+void DatabaseObject::setData(QByteArray data)
 {
-    m_props = other.mprops;
-    m_data = other.data;
+    p->data = data;
+}
+
+DatabaseObject::DatabaseObject(const DatabaseObject &other)
+    : p(new DatabaseObjectPrivate(*other.p))
+{
+    // pass
+}
+
+DatabaseObject &DatabaseObject::operator=(const DatabaseObject &rhs)
+{
+    delete p;
+    p = new DatabaseObjectPrivate(*rhs.p);
+    return *this;
 }
 

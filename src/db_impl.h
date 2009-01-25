@@ -19,7 +19,6 @@
 #ifndef _BASKET_DATABASE_IMPL_H_
 #define _BASKET_DATABASE_IMPL_H_
 
-#include "db_object.h"
 #include "db.h"
 
 /// This implements the BasketDatabase

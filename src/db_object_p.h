@@ -1,5 +1,4 @@
 /*  Copyright (C) 2009 Kelvie Wong <kelvie@ieee.org>
-              (C) 2009 Maranatha Luckanachai <maranatha.myrrh@gmail.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -17,35 +16,19 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef _BASKET_DATABASE_OBJECT_IMPL_H_
-#define _BASKET_DATABASE_OBJECT_IMPL_H_
+#ifndef _BASKET_DATABASE_OBJECT_P_H_
+#define _BASKET_DATABASE_OBJECT_P_H_
 
-#include "basket_export.h"
-#include "db_object.h"
 #include <QByteArray>
 #include <QHash>
 #include <QString>
 
-
- 
-// This implements the DatabaseObject
-class DatabaseObjectImpl : public DatabaseObject
+// PIMPL class for DatabaseObject
+class DatabaseObjectPrivate
 {
-	public:
-	virtual QString getProperty(QString name) const;
-
-    virtual void setProperty(QString name, QString value);
-
-	virtual QByteArray data() const;
-
-	virtual void setData(QByteArray data);
-
-	DatabaseObjectImpl(const DatabaseObjectImpl &other);
-	DatabaseObjectImpl &operator=(const DatabaseObjectImpl &rhs);
-
-	private:
-	QHash<QString, QString> m_props;
-	QByteArray m_data;
+public:
+    QHash<QString, QString> props;
+    QByteArray data;
 };
 
-#endif // _BASKET_DATABASE_OBJECT_IMPL_H_
+#endif // _BASKET_DATABASE_OBJECT_P_H_
