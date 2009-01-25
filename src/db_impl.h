@@ -26,22 +26,27 @@
 class BasketDatabaseImpl : public BasketDatabase
 {
 public:
-	virtual DatabaseObject getObject(QString hash) const;
+    virtual DatabaseObject getObject(QString hash) const;
 
-	// Returns the hash of the object
-	virtual QString addObject(DatabaseObject obj);
+    // Returns the hash of the object
+    virtual QString addObject(DatabaseObject obj);
 
-	// Deletes the object with the hash `hash'
-	virtual void removeObject(QString hash);
+    // Deletes the object with the hash `hash'
+    virtual void removeObject(QString hash);
 
-	virtual bool hasObject(QString hash) const;
+    virtual bool hasObject(QString hash) const;
 
-	virtual DatabaseObject getRootObject() const;
+    virtual DatabaseObject getRootObject() const;
 
-	virtual void setRootObject(DatabaseObject obj);
+    virtual void setRootObject(DatabaseObject obj);
 
-	protected:
-	virtual BasketDatabaseImpl();
+    virtual ~BasketDatabaseImpl();
+protected:
+    BasketDatabaseImpl();
+    friend class BasketDatabaseFactory;
+
+private:
+    QHash<QString, QString> m_index;
 };
 
 
