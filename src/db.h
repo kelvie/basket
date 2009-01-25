@@ -53,7 +53,7 @@ class BASKET_EXPORT BasketDatabase
 	virtual DatabaseObject getRootObject() const = 0;
 
 	protected:
-	virtual BasketDatabase() {};
+        BasketDatabase() {};
 };
 
 
