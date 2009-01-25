@@ -4,46 +4,47 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGE
 ########### next target ###############
 
 set(basketcommon_LIB_SRCS
+    aboutdata.cpp
     archive.cpp
-    bnpview.cpp
-    settings.cpp
+    backgroundmanager.cpp
+    backup.cpp
     basket.cpp
-    basketproperties.cpp
-    linklabel.cpp
-    variouswidgets.cpp
-    xmlwork.cpp
-    keyboard.cpp
-    global.cpp
-    exporterdialog.cpp
-    htmlexporter.cpp
-    notefactory.cpp
-    softwareimporters.cpp
-    focusedwidgets.cpp
     basketfactory.cpp
-    tag.cpp
-    kcolorcombo2.cpp
-    newbasketdialog.cpp
-    tagsedit.cpp
+    basketlistview.cpp
+    basketproperties.cpp
+    basketstatusbar.cpp
+    bnpview.cpp
+    colorpicker.cpp
+    crashhandler.cpp
+    debugwindow.cpp
+    exporterdialog.cpp
+    filter.cpp
+    focusedwidgets.cpp
     formatimporter.cpp
+    global.cpp
+    htmlexporter.cpp
+    kcolorcombo2.cpp
+    keyboard.cpp
+    kgpgme.cpp
+    likeback.cpp
+    linklabel.cpp
+    newbasketdialog.cpp
     note.cpp
     notecontent.cpp
     notedrag.cpp
     noteedit.cpp
-    filter.cpp
-    tools.cpp
-    backgroundmanager.cpp
-    regiongrabber.cpp
-    kgpgme.cpp
-    likeback.cpp
-    crashhandler.cpp
+    notefactory.cpp
     password.cpp
-    colorpicker.cpp
-    basketlistview.cpp
-    debugwindow.cpp
+    regiongrabber.cpp
+    settings.cpp
+    softwareimporters.cpp
     systemtray.cpp
-    aboutdata.cpp
-    basketstatusbar.cpp
-    backup.cpp)
+    tag.cpp
+    tagsedit.cpp
+    tools.cpp
+    variouswidgets.cpp
+    xmlwork.cpp
+)
 
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
