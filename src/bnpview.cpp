@@ -590,7 +590,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("note_edit", this, SLOT(editNote()));
     a->setText(i18nc("Verb; not Menu", "&Edit..."));
-    a->setIcon(KIcon("edit"));
+    //a->setIcon(KIcon("edit"));
     a->setShortcut(KShortcut("Return"));
     m_actEditNote = a;
 
@@ -613,7 +613,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("note_group", this, SLOT(noteGroup()));
     a->setText(i18n("&Group"));
-    a->setIcon(KIcon("attach"));
+    a->setIcon(KIcon("mail-attachment"));
     a->setShortcut(KShortcut("Ctrl+G"));
     m_actGroup = a;
 
@@ -666,7 +666,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("insert_html");
     a->setText(i18n("&Text"));
-    a->setIcon(KIcon("html"));
+    a->setIcon(KIcon("text-html"));
     a->setShortcut(KShortcut("Insert"));
     m_actInsertHtml = a;
 
@@ -678,7 +678,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
-    a->setIcon(KIcon("image"));
+    a->setIcon(KIcon("image-png"));
     m_actInsertImage = a;
 
     a = ac->addAction("insert_color");
@@ -798,7 +798,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_properties", this, SLOT(propBasket()));
     a->setText(i18n("&Properties..."));
-    a->setIcon(KIcon("misc"));
+    a->setIcon(KIcon("document-properties"));
     a->setShortcut(KShortcut("F2"));
     m_actPropBasket = a;
 

@@ -512,7 +512,7 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 					<< new KAction(KIcon("edit-copy"),
 						       i18n("&Copy Here\tCtrl"),
 						       &menu)
-					<< new KAction(KIcon("www"),
+					<< new KAction(KIcon("insert-link"),
 						       i18n("&Link Here\tCtrl+Shift"),
 						       &menu);
 
@@ -520,7 +520,7 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 					menu.addAction(a);
 
 				menu.insertSeparator();
-				menu.addAction(KIcon("cancel"), i18n("C&ancel\tEscape"));
+				menu.addAction(KIcon("dialog-cancel"), i18n("C&ancel\tEscape"));
 				int id = actList.indexOf(menu.exec(QCursor::pos()));
 				switch (id) {
 					case 0: action = QDropEvent::Move; break;
