@@ -46,6 +46,7 @@ protected:
 
 private:
     QHash<QString, QString> m_index;
+    QString m_root;
 };
 
 
