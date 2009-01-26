@@ -40,7 +40,7 @@ public:
     DatabaseObject();
     virtual ~DatabaseObject();
 
-    virtual QString getProperty(QString name) const;
+    virtual QString property(QString name) const;
 
     virtual QHash<QString, QString> properties() const;
 

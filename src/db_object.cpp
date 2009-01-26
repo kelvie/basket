@@ -31,7 +31,7 @@ DatabaseObject::~DatabaseObject()
     delete p;
 }
 
-QString DatabaseObject::getProperty(QString name) const
+QString DatabaseObject::property(QString name) const
 {
     return p->props[name];
 }
