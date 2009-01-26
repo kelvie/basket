@@ -35,16 +35,16 @@ class BASKET_EXPORT BasketDatabase
     Q_DISABLE_COPY(BasketDatabase);
 
 public:
-    virtual DatabaseObject getObject(QString hash) const = 0;
+    virtual DatabaseObject getObject(QString key) const = 0;
 
-    // Returns the hash of the object
+    // Returns the key (string) of the object
     virtual QString addObject(DatabaseObject obj) = 0;
 
-    // Deletes the object with the hash `hash'
-    virtual void removeObject(QString hash);
+    // Deletes the object with the key `key'
+    virtual void removeObject(QString key);
 
-    // Returns true if there is an object with the hash 'hash' in the database
-    virtual bool hasObject(QString hash) const = 0;
+    // Returns true if there is an object with the key 'key' in the database
+    virtual bool hasObject(QString key) const = 0;
 
     // The root object is the object that is a list of all of the top level
     // baskets.

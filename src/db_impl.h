@@ -25,15 +25,15 @@
 class BasketDatabaseImpl : public BasketDatabase
 {
 public:
-    virtual DatabaseObject getObject(QString hash) const;
+    virtual DatabaseObject getObject(QString key) const;
 
     // Returns the hash of the object
     virtual QString addObject(DatabaseObject obj);
 
-    // Deletes the object with the hash `hash'
-    virtual void removeObject(QString hash);
+    // Deletes the object with the key 'key'
+    virtual void removeObject(QString key);
 
-    virtual bool hasObject(QString hash) const;
+    virtual bool hasObject(QString key) const;
 
     virtual DatabaseObject getRootObject() const;
 
