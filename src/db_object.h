@@ -42,6 +42,8 @@ public:
 
     virtual QString getProperty(QString name) const;
 
+    virtual QHash<QString, QString> properties() const;
+
     virtual void setProperty(QString name, QString value);
 
     virtual QByteArray data() const;

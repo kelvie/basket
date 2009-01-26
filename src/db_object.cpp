@@ -36,6 +36,11 @@ QString DatabaseObject::getProperty(QString name) const
     return p->props[name];
 }
 
+QHash<QString, QString> DatabaseObject::properties() const
+{
+    return p->props;
+}
+
 void DatabaseObject::setProperty(QString name, QString value)
 {
     p->props[name] = value;
