@@ -58,6 +58,8 @@
 #include "global.h"
 #include "bnpview.h"
 
+#include <kdebug.h>
+
 /** class StateCopy: */
 
 StateCopy::StateCopy(State *old/* = 0*/)
@@ -239,6 +241,14 @@ void TagListViewItem::setup()
 	//setHeight(height);
 
 	//repaint();
+
+	QBrush brush;
+
+	bool withIcon = m_stateCopy || (m_tagCopy && !m_tagCopy->isMultiState());
+	brush.setColor(isSelected() ? kapp->palette().color(QPalette::Highlight)  : 
+			(withIcon && state->backgroundColor().isValid() ? state->backgroundColor() : 
+			 treeWidget()->viewport()->palette().color(treeWidget()->viewport()->backgroundRole())));
+	setBackground(1, brush);
 }
 
 /** class TagListView: */
@@ -246,6 +256,7 @@ void TagListViewItem::setup()
 TagListView::TagListView(QWidget *parent)
  : QTreeWidget(parent)
 {
+	setItemDelegate(new TagListDelegate);
 }
 
 TagListView::~TagListView()
@@ -1254,3 +1265,9 @@ void TagsEditDialog::slotOk()
 	Global::bnpView->recomputeAllStyles();
 }
 
+void TagListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+		                     const QModelIndex &index) const {
+	TagListViewItem* thisItem  = qvariant_cast<TagListViewItem*>(index.data());
+	kDebug() << "Pointer is: " << thisItem << endl;
+	QItemDelegate::paint(painter,option,index);	
+}

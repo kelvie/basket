@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QItemDelegate>
 
 #include "tag.h"
 
@@ -73,6 +74,7 @@ class TagCopy
 
 class TagListViewItem : public QTreeWidgetItem 
 {
+  friend class TagListDelegate;
   public:
 	TagListViewItem(QTreeWidget *parent, TagCopy *tagCopy);
 	TagListViewItem(QTreeWidgetItem *parent, TagCopy *tagCopy);
@@ -97,6 +99,8 @@ class TagListViewItem : public QTreeWidgetItem
 	TagCopy   *m_tagCopy;
 	StateCopy *m_stateCopy;
 };
+
+Q_DECLARE_METATYPE(TagListViewItem*);
 
 class TagListView : public QTreeWidget
 {
@@ -187,6 +191,17 @@ class TagsEditDialog : public KDialog
 	State::List   m_addedStates;
 
 	bool m_loading;
+};
+
+
+class TagListDelegate : public QItemDelegate {
+	Q_OBJECT
+	
+	public:
+		TagListDelegate(QWidget *parent = 0) : QItemDelegate(parent) {}
+		void paint(QPainter *painter, const QStyleOptionViewItem &option,
+				              const QModelIndex &index) const;
+
 };
 
 #endif // TAGEDIT_H

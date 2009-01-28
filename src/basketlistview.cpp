@@ -107,6 +107,14 @@ void BasketListViewItem::setup()
         );
 
 	setIcon(/*column=*/0, icon);
+/*
+	QBrush brush;
+
+	bool withIcon = m_stateCopy || (m_tagCopy && !m_tagCopy->isMultiState());
+	State* state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
+	brush.setColor(isSelected() ? kapp->palette().color(QPalette::Highlight)  : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor() : viewport->palette().color(viewwport->backgroundRole())));
+	setBackground(brush);
+	*/
 }
 
 BasketListViewItem* BasketListViewItem::lastChild()
