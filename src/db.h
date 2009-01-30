@@ -25,11 +25,8 @@
 
 #include <QString>
 
-/// This is the abstract class for the database that will all
-// DatabaseObject obj(database->getObject("asdfads"));
-// QByteArray data = obj.data()
-// // do something with data
-
+/// This is the abstract class for the database object that will be used to
+/// access all baskets, notes, and their contents
 class BASKET_EXPORT BasketDatabase
 {
     Q_DISABLE_COPY(BasketDatabase);

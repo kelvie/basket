@@ -78,4 +78,4 @@ private: // members
 };
 
 
-#endif // _BASKET_DATABASE_H_
+#endif // _BASKET_DATABASE_IMPL_H_
