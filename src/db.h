@@ -35,13 +35,15 @@ class BASKET_EXPORT BasketDatabase
     Q_DISABLE_COPY(BasketDatabase);
 
 public:
+    virtual ~BasketDatabase() {};
+
     virtual DatabaseObject getObject(QString key) const = 0;
 
     // Returns the key (string) of the object
     virtual QString addObject(DatabaseObject obj) = 0;
 
     // Deletes the object with the key `key'
-    virtual void removeObject(QString key);
+    virtual void removeObject(QString key) = 0;
 
     // Returns true if there is an object with the key 'key' in the database
     virtual bool hasObject(QString key) const = 0;
