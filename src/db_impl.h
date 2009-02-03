@@ -70,7 +70,6 @@ private: // functions
     void changeRC(QString key, int d);
 
 private: // members
-    QHash<QString, QString> m_index;
     QDir m_dataDir;
     QDir m_objDir;
     QDir m_rcDir;
