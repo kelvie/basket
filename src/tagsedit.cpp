@@ -35,7 +35,6 @@
 #include <qcheckbox.h>
 #include <kpushbutton.h>
 #include <QGroupBox>
-#include <q3header.h>
 #include <QList>
 #include <klocale.h>
 #include <kstandarddirs.h>

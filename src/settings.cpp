@@ -22,7 +22,7 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qtabwidget.h>
-#include <q3groupbox.h>
+#include <QGroupBox>
 #include <qlabel.h>
 #include <qpushbutton.h>
 //Added by qt3to4:
@@ -37,7 +37,6 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <QWhatsThis>
-#include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
@@ -509,30 +508,40 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Appearance:
 
-	Q3GroupBox *appearanceBox = new Q3GroupBox(3, Qt::Vertical, i18n("Appearance"), this);
+	QGroupBox *appearanceBox = new QGroupBox(i18n("Appearance"), this);
+	QVBoxLayout* appearanceLayout = new QVBoxLayout;
+	appearanceBox->setLayout(appearanceLayout);
 	layout->addWidget(appearanceBox);
 
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
+	appearanceLayout->addWidget(m_playAnimations);
 	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_showNotesToolTip = new QCheckBox(i18n("&Show tooltips in baskets"), appearanceBox);
+	appearanceLayout->addWidget(m_showNotesToolTip);
 	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_bigNotes = new QCheckBox(i18n("&Big notes"), appearanceBox);
+	appearanceLayout->addWidget(m_bigNotes);
 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	// Behavior:
 
-	Q3GroupBox *behaviorBox = new Q3GroupBox(5, Qt::Vertical, i18n("Behavior"), this);
+	QGroupBox *behaviorBox = new QGroupBox(i18n("Behavior"), this);
+	QVBoxLayout* behaviorLayout = new QVBoxLayout;
+	behaviorBox->setLayout(behaviorLayout);
 	layout->addWidget(behaviorBox);
 
 	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
+	behaviorLayout->addWidget(m_autoBullet);
 	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), behaviorBox);
+	behaviorLayout->addWidget(m_confirmNoteDeletion);
 	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QWidget *widget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(widget);
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
@@ -552,6 +561,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 
 	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(m_groupOnInsertionLineWidget);
 	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
 	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
@@ -571,6 +581,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	connect(m_groupOnInsertionLine, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
 	widget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(widget);
 	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialog::spacingHint());
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
@@ -594,9 +605,12 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Protection:
 
-	Q3GroupBox *protectionBox = new Q3GroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
+	QGroupBox *protectionBox = new QGroupBox(i18n("Password Protection"), this);
+	QVBoxLayout* protectionLayout = new QVBoxLayout;
 	layout->addWidget(protectionBox);
+	protectionBox->setLayout(protectionLayout);
 	widget = new QWidget(protectionBox);
+	protectionLayout->addWidget(widget);
 
 	// Re-Lock timeout configuration
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
@@ -616,6 +630,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 #ifdef HAVE_LIBGPGME
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), protectionBox);
+	protectionLayout->addWidget(m_useGnuPGAgent);
 //	hLay->addWidget(m_useGnuPGAgent);
 	connect( m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 #endif
