@@ -21,7 +21,6 @@
 #include "ksystemtrayicon2.h"
 
 // To draw the systray screenshot image:
-#include <q3dockwindow.h>
 #include <qmovie.h>
 #include <qvariant.h>
 //Added by qt3to4:
