@@ -26,7 +26,7 @@
 #include <qpixmap.h>
 #include <qbitmap.h>
 #include <qpainter.h>
-#include <q3listbox.h>
+#include <QListWidget>
 //Added by qt3to4:
 #include <QDropEvent>
 #include <QPaintEvent>
@@ -676,7 +676,7 @@ void KColorCombo2::popup()
 	// The combo box is now shown pressed. Make it show not pressed again
 	// by causing its (invisible) list box to emit a 'selected' signal.
 	// Simulate an Enter to unpress it:
-	Q3ListBox *lb = listBox();
+	QListWidget *lb = listBox();
 	if (lb) {
 		lb->setCurrentItem(0);
 		QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
