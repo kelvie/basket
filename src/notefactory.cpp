@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <qstring.h>
+#include <QImage>
 //Added by qt3to4:
 #include <QTextStream>
 #include <QDropEvent>
@@ -300,8 +301,6 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 		return createNoteLink(url, parent);
 }
 
-#include <q3strlist.h>
-#include <qimage.h>
 
 bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, QDropEvent::Action action)
 {

@@ -25,7 +25,6 @@
 #include <QWhatsThis>
 #include <QList>
 #include <qregexp.h>
-#include <q3buttongroup.h>
 //Added by qt3to4:
 #include <QMoveEvent>
 #include <QResizeEvent>
