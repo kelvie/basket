@@ -45,7 +45,8 @@
 #include <qtooltip.h>
 #include <q3listview.h>
 #include <qcursor.h>
-#include <q3simplerichtext.h>
+#include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 #include <qpushbutton.h>
 #include <ktextedit.h>
 #include <qpoint.h>
@@ -73,7 +74,6 @@
 #include <kiconloader.h>
 #include <krun.h>
 
-#include <q3toolbar.h>
 #include <qclipboard.h>
 
 #include <kmessagebox.h>
@@ -3172,14 +3172,18 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
 	if (!m_loaded) {
 		QPixmap pixmap(visibleWidth(), visibleHeight()); // TODO: Clip it to asked size only!
 		QPainter painter2(&pixmap);
-		Q3SimpleRichText rt(QString("<center>%1</center>").arg(i18n("Loading...")), Q3ScrollView::font());
-		rt.setWidth(visibleWidth());
-		int hrt = rt.height();
+		QTextDocument rt;
+		rt.setHtml(QString("<center>%1</center>").arg(i18n("Loading...")));
+		rt.setTextWidth(visibleWidth());
+		int hrt = rt.size().height();
 		painter2.fillRect(0, 0, visibleWidth(), visibleHeight(), brush);
 		blendBackground(painter2, QRect(0, 0, visibleWidth(), visibleHeight()), -1, -1, /*opaque=*/true);
 		QPalette pal = palette();
 		pal.setColor(QPalette::WindowText, textColor());
-		rt.draw(&painter2, 0, (visibleHeight() - hrt) / 2, QRect(), pal);
+		painter2.translate(0, (visibleHeight() -hrt) / 2);
+		QAbstractTextDocumentLayout::PaintContext context;
+		context.palette = pal;
+		rt.documentLayout()->draw(&painter2, context);
 		painter2.end();
 		painter->drawPixmap(0, 0, pixmap);
 		return; // TODO: Clip to the wanted rectangle

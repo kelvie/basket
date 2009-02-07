@@ -40,7 +40,6 @@
 #include <QButtonGroup>
 #include <QGroupBox>
 #include <kguiitem.h>
-#include <q3popupmenu.h>
 #include <QTextEdit>
 #include <qlayout.h>
 #include <qlabel.h>
