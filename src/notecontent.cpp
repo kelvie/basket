@@ -22,7 +22,6 @@
 #include <qdir.h>
 #include <qdom.h>
 #include <qpainter.h>
-#include <q3stylesheet.h>
 #include <qfontmetrics.h>
 #include <qwidget.h>
 #include <qcursor.h>

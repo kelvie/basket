@@ -28,7 +28,6 @@
 #include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
-#include <q3stylesheet.h>
 #include <qdir.h>
 #include <kmimetype.h>
 #include <kmessagebox.h>

@@ -22,7 +22,6 @@
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qimage.h>
-#include <q3stylesheet.h>
 #include <qregexp.h>
 #include <QList>
 #include <qfileinfo.h>
