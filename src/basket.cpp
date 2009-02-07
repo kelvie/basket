@@ -63,7 +63,6 @@
 #include <klineedit.h>
 #include <ksavefile.h>
 #include <kdebug.h>
-#include <q3vbox.h>
 
 #include <KAuthorized>
 #include <KIO/CopyJob>

@@ -21,8 +21,6 @@
 #include <config.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qtabwidget.h>
 #include <q3groupbox.h>
 #include <qlabel.h>

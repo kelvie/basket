@@ -23,8 +23,6 @@
 #include <kfiledialog.h>
 #include <qcheckbox.h>
 #include <qdir.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
 //Added by qt3to4:

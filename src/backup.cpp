@@ -26,8 +26,6 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
