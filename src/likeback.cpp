@@ -37,7 +37,7 @@
 #include <kpushbutton.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
+#include <QButtonGroup>
 #include <QGroupBox>
 #include <kguiitem.h>
 #include <q3popupmenu.h>
