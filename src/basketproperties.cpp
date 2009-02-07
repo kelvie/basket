@@ -29,8 +29,9 @@
 #include <kshortcutwidget.h>
 #include <qlayout.h>
 #include <qlabel.h>
-#include <q3buttongroup.h>
-#include <qradiobutton.h>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QButtonGroup>
 #include <qstringlist.h>
 #include <klocale.h>
 #include <qstyle.h>
@@ -119,23 +120,39 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_backgroundImage->setMinimumHeight(75 + 2 * BUTTON_MARGIN);
 
 	// Disposition:
-	m_disposition = new Q3VButtonGroup(i18n("Disposition"), page);
-	QWidget *columnsWidget = new QWidget(m_disposition);
-	QHBoxLayout *dispoLayout = new QHBoxLayout(columnsWidget, /*margin=*/0, spacingHint());
-	QRadioButton *radio = new QRadioButton(i18n("Col&umns:"), columnsWidget);
-	m_columnCount = new KIntNumInput(m_basket->columnsCount(), columnsWidget);
+	m_disposition = new QGroupBox(i18n("Disposition"), page);
+	QButtonGroup* bg = new QButtonGroup(m_disposition);
+
+	QVBoxLayout* dispLayout = new QVBoxLayout;
+	m_disposition->setLayout(dispLayout);
+
+	columnForm = new QRadioButton(i18n("Col&umns:"), m_disposition);
+	dispLayout->addWidget(columnForm);
+	bg->addButton(columnForm);
+	
+	m_columnCount = new KIntNumInput(m_basket->columnsCount(), m_disposition);
 	m_columnCount->setRange(1, 20, /*step=*/1);
 	m_columnCount->setSliderEnabled(false);
 	m_columnCount->setValue(m_basket->columnsCount());
 	connect( m_columnCount, SIGNAL(valueChanged(int)), this, SLOT(selectColumnsLayout()) );
-	dispoLayout->addWidget(radio);
-	dispoLayout->addWidget(m_columnCount);
-	m_disposition->insert(radio);
-	new QRadioButton(i18n("&Free-form"), m_disposition);
-	QRadioButton *mindMap = new QRadioButton(i18n("&Mind map"), m_disposition); // TODO: "Learn more..."
+	dispLayout->addWidget(m_columnCount);
+
+	freeForm = new QRadioButton(i18n("&Free-form"), m_disposition);
+	dispLayout->addWidget(freeForm);
+	bg->addButton(freeForm);
+
+	mindMap = new QRadioButton(i18n("&Mind map"), m_disposition); // TODO: "Learn more..."
+	dispLayout->addWidget(mindMap);
+	bg->addButton(mindMap);
+	
 	int height = qMax(mindMap->sizeHint().height(), m_columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
 	mindMap->setMinimumSize(mindMap->sizeHint().width(), height); // Because the m_columnCount can be heigher, and make radio1 and radio2 more spaced than radio2 and radio3.
-	m_disposition->setButton(m_basket->isFreeLayout() ? (m_basket->isMindMap() ? 2 : 1) : 0);
+	if (!m_basket->isFreeLayout())
+		columnForm->setChecked(true);
+	else if (m_basket->isMindMap())
+		mindMap->setChecked(true);
+	else
+		freeForm->setChecked(true);
 	topLayout->addWidget(m_disposition);
 
 	mindMap->hide();
@@ -201,7 +218,16 @@ void BasketPropertiesDialog::polish()
 
 void BasketPropertiesDialog::applyChanges()
 {
-	m_basket->setDisposition(m_disposition->selectedId(), m_columnCount->value());
+	if (columnForm->isChecked()){
+		m_basket->setDisposition(0, m_columnCount->value());
+	}
+	else if(freeForm->isChecked()){
+		m_basket->setDisposition(1, m_columnCount->value());
+	}
+	else{
+		m_basket->setDisposition(2, m_columnCount->value());
+	}
+
 	if (m_showButton->isChecked()){
 		m_basket->setShortcut(m_shortcut->shortcut(), 0);
 	}
@@ -225,6 +251,6 @@ void BasketPropertiesDialog::capturedShortcut(const KShortcut &shortcut)
 
 void BasketPropertiesDialog::selectColumnsLayout()
 {
-	m_disposition->setButton(0);
+	columnForm->setChecked(true);
 }
 

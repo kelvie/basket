@@ -34,7 +34,6 @@ class QRadioButton;
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
-class Q3VButtonGroup;
 
 class Basket;
 class KColorCombo2;
@@ -63,7 +62,10 @@ class BasketPropertiesDialog : public KDialog
 	QComboBox     *m_backgroundImage;
 	KColorCombo2  *m_backgroundColor;
 	KColorCombo2  *m_textColor;
-	Q3VButtonGroup *m_disposition;
+	QGroupBox     *m_disposition;
+	QRadioButton  *columnForm;
+	QRadioButton  *mindMap;
+	QRadioButton  *freeForm;
 	KIntNumInput  *m_columnCount;
 	KShortcutWidget *m_shortcut;
 	QGroupBox *m_shortcutRole;
