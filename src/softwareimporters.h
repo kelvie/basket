@@ -30,6 +30,7 @@ class QDomElement;
 class KTextEdit;
 class QRadioButton;
 class QTextEdit;
+class QVBoxLayout;
 
 class Basket;
 class Note;

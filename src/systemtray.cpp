@@ -93,7 +93,7 @@ SystemTray::SystemTray(QWidget *parent)
     m_iconSize = QSize(geometry().width(), geometry().height());
     m_icon = loadIcon("basket");
     QImage lockedIconImage = m_icon.pixmap(m_iconSize).toImage();
-    QImage lockOverlay = loadIcon("lockoverlay").pixmap(m_iconSize).toImage();
+    QImage lockOverlay = loadIcon("object-locked").pixmap(m_iconSize).toImage();
     KIconEffect::overlay(lockedIconImage, lockOverlay);
     m_lockedIcon = QIcon(QPixmap::fromImage(lockedIconImage));
 
@@ -132,7 +132,7 @@ void SystemTray::updateDisplay()
                   bgImage.height()-fgImage.height() / 2);
 
         if (basket->isLocked()) {
-            QImage lockOverlay = loadIcon("lockoverlay").pixmap(m_iconSize).toImage();
+            QImage lockOverlay = loadIcon("object-locked").pixmap(m_iconSize).toImage();
             KIconEffect::overlay(bgImage, lockOverlay);
         }
 
@@ -166,7 +166,7 @@ SystemTray::SystemTray(QWidget *parent, const char *name)
 //	       and then reloaded instantly after at the right position.
 //	setPixmap(m_iconPixmap); // Load it the sooner as possible to avoid flicker
 	QImage  lockedIconImage   = m_iconPixmap.convertToImage();
-	QPixmap lockOverlayPixmap = loadIcon("lockoverlay");
+	QPixmap lockOverlayPixmap = loadIcon("object-locked");
 	QImage  lockOverlayImage  = lockOverlayPixmap.convertToImage();
 	KIconEffect::overlay(lockedIconImage, lockOverlayImage);
 	m_lockedIconPixmap.convertFromImage(lockedIconImage);
@@ -318,7 +318,7 @@ void SystemTray::updateToolTip()
 
 		QImage bgImage = bgPix.convertToImage(); // Probably 22x22
 		QImage fgImage = fgPix.convertToImage(); // Should be 16x16
-		QImage lockOverlayImage = loadIcon("lockoverlay").convertToImage();
+		QImage lockOverlayImage = loadIcon("object-locked").convertToImage();
 
 		KIconEffect::semiTransparent(bgImage);
 		copyImage(bgImage, fgImage, (bgImage.width() - fgImage.width()) / 2,
