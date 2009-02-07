@@ -45,7 +45,7 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <KDialog>
-#include <q3http.h>
+#include <QHttp>
 #include <kurl.h>
 #include <kinputdialog.h>
 #include <qvalidator.h>
@@ -822,13 +822,13 @@ void LikeBackDialog::send()
 		"context="  + QUrl::toPercentEncoding(m_context)                          + '&' +
 		"comment="  + QUrl::toPercentEncoding(m_comment->text())                  + '&' +
 		"email="    + QUrl::toPercentEncoding(emailAddress);
-	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
+	QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	kDebug() << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath();
 	kDebug() << data;
 	connect( http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)) );
 
-	Q3HttpRequestHeader header("POST", m_likeBack->remotePath());
+	QHttpRequestHeader header("POST", m_likeBack->remotePath());
 	header.setValue("Host", m_likeBack->hostName());
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
 	http->setHost(m_likeBack->hostName());

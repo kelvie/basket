@@ -102,7 +102,7 @@ bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
 bool    Settings::s_welcomeBasketsAdded  = false;
 QString Settings::s_dataFolder           = "";
-QDate   Settings::s_lastBackup           = QDate();
+QDate	Settings::s_lastBackup           = QDate();
 QPoint  Settings::s_mainWindowPosition   = QPoint();
 QSize   Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_showEmptyBasketInfo  = true;
@@ -154,7 +154,7 @@ void Settings::loadConfig()
 	setUsePassivePopup(      config.readEntry("usePassivePopup",      true)  );
 	setWelcomeBasketsAdded(  config.readEntry("welcomeBasketsAdded",  false) );
 	setDataFolder(           config.readEntry("dataFolder",           "")    );
-	setLastBackup(           config.readEntry("lastBackup", QDateTime()).date());
+	setLastBackup(           config.readEntry("lastBackup", QDate()));
 	setMainWindowPosition(   config.readEntry("position", QPoint())      );
 	setMainWindowSize(       config.readEntry( "size",     QSize())      );
 
@@ -240,7 +240,7 @@ void Settings::saveConfig()
 	config.writeEntry( "usePassivePopup",      usePassivePopup()      );
 	config.writeEntry( "welcomeBasketsAdded",  welcomeBasketsAdded()  );
 	config.writePathEntry("dataFolder",        dataFolder()           );
-	config.writeEntry( "lastBackup",           QDateTime(lastBackup()));
+	config.writeEntry( "lastBackup",           QDate(lastBackup()));
 	config.writeEntry( "position",             mainWindowPosition()   );
 	config.writeEntry( "size",                 mainWindowSize()       );
 

@@ -391,7 +391,7 @@ void BackupThread::run()
 	tar.addLocalDirectory(m_folderToBackup, backupMagicFolder);
 	// KArchive does not add hidden files. Basket description files (".basket") are hidden, we add them manually:
 	QDir dir(m_folderToBackup + "baskets/");
-	QStringList baskets = dir.entryList(QDir::Dirs);
+	QStringList baskets = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (QStringList::Iterator it = baskets.begin(); it != baskets.end(); ++it) {
 		tar.addLocalFile(
 			m_folderToBackup + "baskets/" + *it + "/.basket",
