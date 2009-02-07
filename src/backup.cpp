@@ -36,7 +36,7 @@
 #include <qdir.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
-#include <q3groupbox.h>
+#include <QGroupBox>
 #include <kdirselectdialog.h>
 #include <krun.h>
 #include <kconfig.h>

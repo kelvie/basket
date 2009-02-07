@@ -38,7 +38,7 @@
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
-#include <q3vgroupbox.h>
+#include <QGroupBox>
 #include <kguiitem.h>
 #include <q3popupmenu.h>
 #include <QTextEdit>
@@ -663,11 +663,14 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	pageLayout->addWidget(introduction);
 
 	// The comment group:
-	Q3VGroupBox *box = new Q3VGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	QGroupBox *box = new QGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	QVBoxLayout* boxLayout = new QVBoxLayout;
+	box->setLayout(boxLayout);
 	pageLayout->addWidget(box);
 
 	// The radio buttons:
 	QWidget *buttons = new QWidget(box);
+	boxLayout->addWidget(buttons);
 	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = KIconLoader::global()->loadIcon(
@@ -719,6 +722,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 
 	// The comment text box:
 	m_comment = new QTextEdit(box);
+	boxLayout->addWidget(m_comment);
 	m_comment->setTabChangesFocus(true);
 	m_comment->setTextFormat(Qt::PlainText);
 	m_comment->setText(initialComment);
