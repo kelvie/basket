@@ -43,7 +43,6 @@
 #include <QGridLayout>
 #include <kstyle.h>
 #include <qtooltip.h>
-#include <q3listview.h>
 #include <qcursor.h>
 #include <QTextDocument>
 #include <QAbstractTextDocumentLayout>
