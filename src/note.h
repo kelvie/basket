@@ -38,7 +38,6 @@ class HtmlExportData;
 class NoteSelection;
 
 class QPainter;
-class Q3SimpleRichText;
 
 /** Handle basket notes and groups!\n
   * After creation, the note is a group. You should create a NoteContent with this Note

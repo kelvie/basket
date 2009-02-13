@@ -180,11 +180,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 		painter.end();
 
 		// Associate source to image and show the dialog:
-		Q3MimeSourceFactory::defaultFactory()->setPixmap("systray_shot", finalShot);
+		QResource::registerResource(finalShot, "systray_shot");
 		KMessageBox::information(kapp->activeWindow(),
-			message + "<p><center><img source=\"systray_shot\"></center></p>",
+			message + "<p><center><img source=\":/systray_shot\"></center></p>",
 			i18n("Docking in System Tray"), "hideOnCloseInfo");
-		Q3MimeSourceFactory::defaultFactory()->setData("systray_shot", 0L);
+		QResource::unregisterResource(finalShot, "systray_shot");
 	} else {
 		KMessageBox::information(kapp->activeWindow(),
 			message,

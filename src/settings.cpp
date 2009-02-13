@@ -44,8 +44,6 @@
 #include <kstandarddirs.h>
 #include <kdebug.h>
 #include <qdatetime.h>
-#include <Q3MimeSourceFactory>
-
 
 #include "kgpgme.h"
 #include "basket.h"
@@ -546,15 +544,13 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	hLabel = new HelpLabel(
 		i18n("When does this apply?"),
 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
 		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +
 		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
 		     "representing an empty checkbox and a checked box.") + "</p>" +
-		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
+		"<p align='center'><img src=\":/images/tag_export_help.png\"></p>",
 		widget);
 	hLay->addWidget(m_exportTextTags);
 	hLay->addWidget(hLabel);
@@ -564,12 +560,10 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	behaviorLayout->addWidget(m_groupOnInsertionLineWidget);
 	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
-	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
 	HelpLabel *helpV = new HelpLabel(
 		i18n("How to group a new note?"),
 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
-		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
+		"<p align='center'><img src=\":/images/insertion_help.png\"></p>" +
 		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
 		"Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
 		"Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"),

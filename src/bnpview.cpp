@@ -2248,11 +2248,11 @@ void BNPView::showPassiveDroppedDelayed()
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
-	QPixmap contentsPixmap = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("_passivepopup_image_", contentsPixmap);
+	QImage contentsImage = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
+	QResource::registerResource(contentsImage.bits(), ":/images/passivepopup_image");
 	m_passivePopup->setView(
 		title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
-		(contentsPixmap.isNull() ? "" : "<img src=\"_passivepopup_image_\">"),
+		(contentsImage.isNull() ? "" : "<img src=\":/images/passivepopup_image\">"),
 		KIconLoader::global()->loadIcon(
 			currentBasket()->icon(), KIconLoader::NoGroup, 16,
 			KIconLoader::DefaultState, QStringList(), 0L, true

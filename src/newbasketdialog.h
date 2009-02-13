@@ -29,7 +29,6 @@
 class KIconButton;
 class QLineEdit;
 class QMimeData;
-class Q3ListViewItem;
 class QComboBox;
 
 class Basket;
