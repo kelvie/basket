@@ -507,12 +507,11 @@ void BasketTreeListView::resizeEvent(QResizeEvent *event)
 }
 
 /** We should NEVER get focus (because of QWidget::NoFocus focusPolicy())
- * but K3ListView can programatically give us the focus.
+ * but QTreeView can programatically give us the focus.
  * So we give it to the basket.
  */
 void BasketTreeListView::focusInEvent(QFocusEvent*)
 {
-	//K3ListView::focusInEvent(event);
 	Basket *basket = Global::bnpView->currentBasket();
 	if (basket)
 		basket->setFocus();
