@@ -569,25 +569,6 @@ bool LikeBack::isDevelopmentVersion(const QString &version)
 }
 
 /**
- * Code from KBugReport::slotConfigureEmail() in kdeui/kbugreport.cpp:
- */
-/*void LikeBack::beginFetchingEmail()
-{
-	if (m_process)
-		return;
-	m_process = new K3Process();
-	*m_process << QString::fromLatin1("kcmshell") << QString::fromLatin1("kcm_useraccount");
-	connect( m_process, SIGNAL(processExited(K3Process*)), SLOT(fetchUserEmail()) );
-	if (!m_process->start()) {
-		kDebug() << "Couldn't start kcmshell.." << endl;
-		delete m_process;
-		m_process = 0;
-		return;
-	}
-//	m_configureEmail->setEnabled(false);
-}*/
-
-/**
  * Code from KBugReport::slotSetFrom() in kdeui/kbugreport.cpp:
  */
 void LikeBack::fetchUserEmail()
