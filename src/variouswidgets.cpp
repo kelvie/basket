@@ -37,7 +37,6 @@
 #include <KOpenWithDialog>
 #include <klocale.h>
 #include <QWhatsThis>
-#include <k3iconview.h>
 #include <kiconloader.h>
 #include <QDrag>
 #include <qfontdatabase.h>

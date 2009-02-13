@@ -349,13 +349,10 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 	if ( !image.isNull() )
 		return createNoteImage(QPixmap::fromImage(image), parent);
 
-	// K3ColorDrag::decode() is buggy and can trheat strings like "#include <foo.h>" as a black color
-	// The correct "ideal" code:
-	/*QColor color;
-	if ( K3ColorDrag::decode(source, color) ) {
-	createNoteColor(color, parent);
-	return;
-}*/
+	if (source->hasColor()){
+		return createNoteColor(qvariant_cast<QColor>(source->colorData()), parent);
+	}
+	
 	// And then the hack (if provide color MIME type or a text that contains color), using createNote Color RegExp:
 	QString hack;
 	QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");

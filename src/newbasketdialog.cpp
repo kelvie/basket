@@ -23,7 +23,6 @@
 #include <QHBoxLayout>
 #include <QPixmap>
 #include <QVBoxLayout>
-#include <k3iconview.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <klocale.h>
@@ -198,14 +197,6 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 	if (defaultTemplate == "free")
 		m_templates->setCurrentItem(lastTemplate);
-
-/*	painter.begin(&icon);
-	painter.fillRect(0, 0, icon.width(), icon.height(), palette().color(QPalette::Base));
-	painter.setPen(palette().color(QPalette::Text));
-	painter.drawRect(0, 0, icon.width(), icon.height());
-	painter.drawRect(icon.width() * 2 / 5, icon.height() * 3 / 7, icon.width() / 5, icon.height() / 7);
-	painter.end();
-	lastTemplate = new K3IconViewItem(m_templates, lastTemplate, i18n("Mind map"), icon);*/
 
 	m_templates->setMinimumHeight(topLayout->minimumSize().width() * 9 / 16);
 
