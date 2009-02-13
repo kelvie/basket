@@ -23,7 +23,7 @@
 //Added by qt3to4:
 #include <QTextStream>
 #include <QDropEvent>
-#include <Q3MemArray>
+#include <QVector>
 #include <kurl.h>
 #include <qpixmap.h>
 #include <qcolor.h>
@@ -401,7 +401,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 	if (source->hasFormat("text/x-moz-url")) { // FOR MOZILLA
 		// Get the array and create a QChar array of 1/2 of the size
 		QByteArray mozilla = source->data("text/x-moz-url");
-		Q3MemArray<QChar> chars( mozilla.count() / 2 );
+		QVector<QChar> chars( mozilla.count() / 2 );
 		// A small debug work to know the value of each bytes
 		if (Global::debugWindow)
 			for (int i = 0; i < mozilla.count(); i++)

@@ -41,7 +41,6 @@
 #include "bnpview.h"
 #include "systemtray.h"
 
-class Q3GroupBox;
 class KColorCombo;
 class KIntNumInput;
 class KGlobalAccel;
