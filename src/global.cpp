@@ -31,6 +31,7 @@
 #include "global.h"
 #include "bnpview.h"
 #include "settings.h"
+#include "db_factory.h"
 
 /** Define initial values for global variables : */
 
@@ -95,3 +96,9 @@ KConfig* Global::config()
     //The correct solution is to go and replace all KConfig* with KSharedConfig::Ptr, but that seems awfully annoying to do right now
 	return Global::basketConfig.data();
 }
+
+BasketDatabase *Global::basketDatabase()
+{
+    return BasketDatabaseFactory::getDatabase();
+}
+

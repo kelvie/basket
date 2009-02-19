@@ -16,6 +16,7 @@ set(basketcommon_LIB_SRCS
     bnpview.cpp
     colorpicker.cpp
     crashhandler.cpp
+    db_factory.cpp
     db_impl.cpp
     db_object.cpp
     debugwindow.cpp

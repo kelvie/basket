@@ -33,6 +33,7 @@ class SystemTray;
 class BNPView;
 class KMainWindow;
 class KAboutData;
+class BasketDatabase;
 
 /** Handle all global variables of the application.
   * This file only declare classes : developer should include
@@ -66,6 +67,7 @@ class BASKET_EXPORT Global
 	static KMainWindow* mainWindow();
 	static KConfig* config();
 	static KAboutData* about() { return &basketAbout; };
+    static BasketDatabase* basketDatabase();
 };
 
 #endif // GLOBAL_H
