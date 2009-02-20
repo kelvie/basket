@@ -163,38 +163,38 @@ void NoteContent::setEdited()
 /** All the Content Classes:
  */
 
-NoteType::Id TextContent::type()      { return NoteType::Text;      }
-NoteType::Id HtmlContent::type()      { return NoteType::Html;      }
-NoteType::Id ImageContent::type()     { return NoteType::Image;     }
-NoteType::Id AnimationContent::type() { return NoteType::Animation; }
-NoteType::Id SoundContent::type()     { return NoteType::Sound;     }
-NoteType::Id FileContent::type()      { return NoteType::File;      }
-NoteType::Id LinkContent::type()      { return NoteType::Link;      }
-NoteType::Id LauncherContent::type()  { return NoteType::Launcher;  }
-NoteType::Id ColorContent::type()     { return NoteType::Color;     }
-NoteType::Id UnknownContent::type()   { return NoteType::Unknown;   }
+NoteType::Id TextContent::type() const      { return NoteType::Text;      }
+NoteType::Id HtmlContent::type() const      { return NoteType::Html;      }
+NoteType::Id ImageContent::type() const     { return NoteType::Image;     }
+NoteType::Id AnimationContent::type() const { return NoteType::Animation; }
+NoteType::Id SoundContent::type() const     { return NoteType::Sound;     }
+NoteType::Id FileContent::type() const      { return NoteType::File;      }
+NoteType::Id LinkContent::type() const      { return NoteType::Link;      }
+NoteType::Id LauncherContent::type() const  { return NoteType::Launcher;  }
+NoteType::Id ColorContent::type() const     { return NoteType::Color;     }
+NoteType::Id UnknownContent::type() const   { return NoteType::Unknown;   }
 
-QString TextContent::typeName()      { return i18n("Plain Text"); }
-QString HtmlContent::typeName()      { return i18n("Text");       }
-QString ImageContent::typeName()     { return i18n("Image");      }
-QString AnimationContent::typeName() { return i18n("Animation");  }
-QString SoundContent::typeName()     { return i18n("Sound");      }
-QString FileContent::typeName()      { return i18n("File");       }
-QString LinkContent::typeName()      { return i18n("Link");       }
-QString LauncherContent::typeName()  { return i18n("Launcher");   }
-QString ColorContent::typeName()     { return i18n("Color");      }
-QString UnknownContent::typeName()   { return i18n("Unknown");    }
+QString TextContent::typeName() const      { return i18n("Plain Text"); }
+QString HtmlContent::typeName() const      { return i18n("Text");       }
+QString ImageContent::typeName() const     { return i18n("Image");      }
+QString AnimationContent::typeName() const { return i18n("Animation");  }
+QString SoundContent::typeName() const     { return i18n("Sound");      }
+QString FileContent::typeName() const      { return i18n("File");       }
+QString LinkContent::typeName() const      { return i18n("Link");       }
+QString LauncherContent::typeName() const  { return i18n("Launcher");   }
+QString ColorContent::typeName() const     { return i18n("Color");      }
+QString UnknownContent::typeName() const   { return i18n("Unknown");    }
 
-QString TextContent::lowerTypeName()      { return "text";      }
-QString HtmlContent::lowerTypeName()      { return "html";      }
-QString ImageContent::lowerTypeName()     { return "image";     }
-QString AnimationContent::lowerTypeName() { return "animation"; }
-QString SoundContent::lowerTypeName()     { return "sound";     }
-QString FileContent::lowerTypeName()      { return "file";      }
-QString LinkContent::lowerTypeName()      { return "link";      }
-QString LauncherContent::lowerTypeName()  { return "launcher";  }
-QString ColorContent::lowerTypeName()     { return "color";     }
-QString UnknownContent::lowerTypeName()   { return "unknown";   }
+QString TextContent::lowerTypeName() const      { return "text";      }
+QString HtmlContent::lowerTypeName() const      { return "html";      }
+QString ImageContent::lowerTypeName() const     { return "image";     }
+QString AnimationContent::lowerTypeName() const { return "animation"; }
+QString SoundContent::lowerTypeName() const     { return "sound";     }
+QString FileContent::lowerTypeName() const      { return "file";      }
+QString LinkContent::lowerTypeName() const      { return "link";      }
+QString LauncherContent::lowerTypeName() const  { return "launcher";  }
+QString ColorContent::lowerTypeName() const     { return "color";     }
+QString UnknownContent::lowerTypeName() const   { return "unknown";   }
 
 QString NoteContent::toText(const QString &cuttedFullPath)
 {
@@ -280,38 +280,38 @@ void UnknownContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFu
 	*title = QString();
 }
 
-bool TextContent::useFile()      { return true;  }
-bool HtmlContent::useFile()      { return true;  }
-bool ImageContent::useFile()     { return true;  }
-bool AnimationContent::useFile() { return true;  }
-bool SoundContent::useFile()     { return true;  }
-bool FileContent::useFile()      { return true;  }
-bool LinkContent::useFile()      { return false; }
-bool LauncherContent::useFile()  { return true;  }
-bool ColorContent::useFile()     { return false; }
-bool UnknownContent::useFile()   { return true;  }
+bool TextContent::useFile() const      { return true;  }
+bool HtmlContent::useFile() const      { return true;  }
+bool ImageContent::useFile() const     { return true;  }
+bool AnimationContent::useFile() const { return true;  }
+bool SoundContent::useFile() const     { return true;  }
+bool FileContent::useFile() const      { return true;  }
+bool LinkContent::useFile() const      { return false; }
+bool LauncherContent::useFile() const  { return true;  }
+bool ColorContent::useFile() const     { return false; }
+bool UnknownContent::useFile() const   { return true;  }
 
-bool TextContent::canBeSavedAs()      { return true;  }
-bool HtmlContent::canBeSavedAs()      { return true;  }
-bool ImageContent::canBeSavedAs()     { return true;  }
-bool AnimationContent::canBeSavedAs() { return true;  }
-bool SoundContent::canBeSavedAs()     { return true;  }
-bool FileContent::canBeSavedAs()      { return true;  }
-bool LinkContent::canBeSavedAs()      { return true;  }
-bool LauncherContent::canBeSavedAs()  { return true;  }
-bool ColorContent::canBeSavedAs()     { return false; }
-bool UnknownContent::canBeSavedAs()   { return false; }
+bool TextContent::canBeSavedAs() const      { return true;  }
+bool HtmlContent::canBeSavedAs() const      { return true;  }
+bool ImageContent::canBeSavedAs() const     { return true;  }
+bool AnimationContent::canBeSavedAs() const { return true;  }
+bool SoundContent::canBeSavedAs() const     { return true;  }
+bool FileContent::canBeSavedAs() const      { return true;  }
+bool LinkContent::canBeSavedAs() const      { return true;  }
+bool LauncherContent::canBeSavedAs() const  { return true;  }
+bool ColorContent::canBeSavedAs() const     { return false; }
+bool UnknownContent::canBeSavedAs() const   { return false; }
 
-QString TextContent::saveAsFilters()      { return "text/plain";            }
-QString HtmlContent::saveAsFilters()      { return "text/html";             }
-QString ImageContent::saveAsFilters()     { return "image/png";             } // TODO: Offer more types
-QString AnimationContent::saveAsFilters() { return "image/gif";             } // TODO: MNG...
-QString SoundContent::saveAsFilters()     { return "audio/mp3 audio/ogg";           } // TODO: OGG...
-QString FileContent::saveAsFilters()      { return "*";                     } // TODO: Get MIME type of the url target
-QString LinkContent::saveAsFilters()      { return "*";                     } // TODO: idem File + If isDir(): return
-QString LauncherContent::saveAsFilters()  { return "application/x-desktop"; }
-QString ColorContent::saveAsFilters()     { return "";                      }
-QString UnknownContent::saveAsFilters()   { return "";                      }
+QString TextContent::saveAsFilters() const      { return "text/plain";            }
+QString HtmlContent::saveAsFilters() const      { return "text/html";             }
+QString ImageContent::saveAsFilters() const     { return "image/png";             } // TODO: Offer more types
+QString AnimationContent::saveAsFilters() const { return "image/gif";             } // TODO: MNG...
+QString SoundContent::saveAsFilters() const     { return "audio/mp3 audio/ogg";           } // TODO: OGG...
+QString FileContent::saveAsFilters() const      { return "*";                     } // TODO: Get MIME type of the url target
+QString LinkContent::saveAsFilters() const      { return "*";                     } // TODO: idem File + If isDir() const: return
+QString LauncherContent::saveAsFilters() const  { return "application/x-desktop"; }
+QString ColorContent::saveAsFilters() const     { return "";                      }
+QString UnknownContent::saveAsFilters() const   { return "";                      }
 
 bool TextContent::match(const FilterData &data)          { return (text().find(data.string, /*index=*/0, /*cs=*/false) != -1);         }
 bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.find(data.string, /*index=*/0, /*cs=*/false) != -1);     } //OPTIM_FILTER
@@ -324,27 +324,27 @@ bool LauncherContent::match(const FilterData &data)      { return (exec().find(d
 bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
 bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
 
-QString TextContent::editToolTipText()      { return i18n("Edit this plain text");             }
-QString HtmlContent::editToolTipText()      { return i18n("Edit this text");                   }
-QString ImageContent::editToolTipText()     { return i18n("Edit this image");                  }
-QString AnimationContent::editToolTipText() { return i18n("Edit this animation");              }
-QString SoundContent::editToolTipText()     { return i18n("Edit the file name of this sound"); }
-QString FileContent::editToolTipText()      { return i18n("Edit the name of this file");       }
-QString LinkContent::editToolTipText()      { return i18n("Edit this link");                   }
-QString LauncherContent::editToolTipText()  { return i18n("Edit this launcher");               }
-QString ColorContent::editToolTipText()     { return i18n("Edit this color");                  }
-QString UnknownContent::editToolTipText()   { return i18n("Edit this unknown object");         }
+QString TextContent::editToolTipText() const      { return i18n("Edit this plain text");             }
+QString HtmlContent::editToolTipText() const      { return i18n("Edit this text");                   }
+QString ImageContent::editToolTipText() const     { return i18n("Edit this image");                  }
+QString AnimationContent::editToolTipText() const { return i18n("Edit this animation");              }
+QString SoundContent::editToolTipText() const     { return i18n("Edit the file name of this sound"); }
+QString FileContent::editToolTipText() const      { return i18n("Edit the name of this file");       }
+QString LinkContent::editToolTipText() const      { return i18n("Edit this link");                   }
+QString LauncherContent::editToolTipText() const  { return i18n("Edit this launcher");               }
+QString ColorContent::editToolTipText() const     { return i18n("Edit this color");                  }
+QString UnknownContent::editToolTipText() const   { return i18n("Edit this unknown object");         }
 
-QString TextContent::cssClass()      { return "";         }
-QString HtmlContent::cssClass()      { return "";         }
-QString ImageContent::cssClass()     { return "";         }
-QString AnimationContent::cssClass() { return "";         }
-QString SoundContent::cssClass()     { return "sound";    }
-QString FileContent::cssClass()      { return "file";     }
-QString LinkContent::cssClass()      { return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network"); }
-QString LauncherContent::cssClass()  { return "launcher"; }
-QString ColorContent::cssClass()     { return ""     ;    }
-QString UnknownContent::cssClass()   { return "";         }
+QString TextContent::cssClass() const      { return "";         }
+QString HtmlContent::cssClass() const      { return "";         }
+QString ImageContent::cssClass() const     { return "";         }
+QString AnimationContent::cssClass() const { return "";         }
+QString SoundContent::cssClass() const     { return "sound";    }
+QString FileContent::cssClass() const      { return "file";     }
+QString LinkContent::cssClass() const      { return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network"); }
+QString LauncherContent::cssClass() const  { return "launcher"; }
+QString ColorContent::cssClass() const     { return ""     ;    }
+QString UnknownContent::cssClass() const   { return "";         }
 
 void TextContent::fontChanged()      { setText(text());                                          }
 void HtmlContent::fontChanged()      { setHtml(html());                                          }
