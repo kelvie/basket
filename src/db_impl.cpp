@@ -154,7 +154,12 @@ DatabaseObject BasketDatabaseImpl::getRootObject() const
 
 void BasketDatabaseImpl::setRootObject(DatabaseObject obj)
 {
+    QDir basketDir = Global::basketsFolder();
+    removeObject(m_root);
     m_root = addObject(obj);
+    QFile rootFile(basketDir.absoluteFilePath("root"));
+    rootFile.open(QFile::WriteOnly | QFile::Text);
+    rootFile.write(m_root.toAscii());
 }
 
 BasketDatabaseImpl::~BasketDatabaseImpl()
