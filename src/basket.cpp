@@ -2790,7 +2790,7 @@ void Basket::drawInserter(QPainter &painter, int xPainter, int yPainter)
 	rect.moveBy(-xPainter, -yPainter);
 	int lineY  = (m_inserterGroup && m_inserterTop ? 0 : 2);
 	int roundY = (m_inserterGroup && m_inserterTop ? 0 : 1);
-    
+
     KStatefulBrush statefulBrush(KColorScheme::View, KColorScheme::HoverColor);
     QColor dark = statefulBrush.brush(palette()).color();
 	QColor light = dark.lighter().lighter();
@@ -3421,7 +3421,7 @@ void Basket::popupEmblemMenu(Note *note, int emblemNumber)
 		KAction* act;
 		act = new KAction(KIcon("edit-delete"), i18n("&Remove"), &menu);
 		act->setData(1);
-		menu.addAction(act); 
+		menu.addAction(act);
 		act = new KAction( KIcon("configure"),  i18n("&Customize..."), &menu);
 		act->setData(2);
 		menu.addAction(act);
