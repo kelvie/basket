@@ -164,7 +164,7 @@ BasketDatabaseImpl::~BasketDatabaseImpl()
 
 void BasketDatabaseImpl::changeRC(QString key, int d)
 {
-    QFile rcFile(m_rcDir.absoluteFilePath("key"));
+    QFile rcFile(m_rcDir.absoluteFilePath(key));
     rcFile.open(QFile::ReadOnly | QFile::Text);
     int oldRC = QString::fromAscii(rcFile.readAll()).toInt();
     rcFile.close();
