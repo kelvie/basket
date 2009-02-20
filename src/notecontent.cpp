@@ -91,6 +91,19 @@ NoteContent::NoteContent(Note *parent, const QString &fileName)
 	setFileName(fileName);
 }
 
+QHash<QString, QString> NoteContent::properties() const
+{
+    return QHash<QString, QString>();
+}
+
+QByteArray NoteContent::data()
+{
+    if (useFile())
+        return fileName().toLocal8Bit();
+    else
+        return "";
+}
+
 void NoteContent::saveToNode(QDomDocument &doc, QDomElement &content)
 {
 	if (useFile()) {
@@ -568,7 +581,7 @@ bool TextContent::finishLazyLoad()
 
 bool TextContent::saveToFile()
 {
-	return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
+	return basket()->saveToFile(fullPath(), data());
 }
 
 QString TextContent::linkAt(const QPoint &pos)
@@ -676,7 +689,7 @@ bool HtmlContent::finishLazyLoad()
 
 bool HtmlContent::saveToFile()
 {
-	return basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
+	return basket()->saveToFile(fullPath(), data());
 }
 
 QString HtmlContent::linkAt(const QPoint &pos)
@@ -796,14 +809,19 @@ bool ImageContent::finishLazyLoad()
 	return false;
 }
 
-bool ImageContent::saveToFile()
+QByteArray ImageContent::data()
 {
 	QByteArray ba;
 	QBuffer buffer(&ba);
 
 	buffer.open(QIODevice::WriteOnly);
 	m_pixmap.save(&buffer, m_format);
-	return basket()->saveToFile(fullPath(), ba);
+    return ba;
+}
+
+bool ImageContent::saveToFile()
+{
+	return basket()->saveToFile(fullPath(), data());
 }
 
 

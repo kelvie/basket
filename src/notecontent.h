@@ -95,7 +95,9 @@ class NoteContent
 	virtual bool    finishLazyLoad()                    { return false; } /// << Load what was not loaded by loadFromFile() if it was lazy-loaded
 	virtual bool    saveToFile()                        { return false; } /// << Save the content to the file. The default implementation does nothing. @see fileName().
 	virtual QString linkAt(const QPoint &/*pos*/)          { return ""; } /// << @return the link anchor at position @p pos or "" if there is no link.
-	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
+	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. Calls properties();
+    virtual QHash<QString, QString> properties() const;                   /// << Returns any other metadata this NoteContent has.  This is called by saveToNode by default.  Returns an empty hash map by default.
+    virtual QByteArray data();                                            /// << The actual data stored.  For e.g. (html)text notes, images and such, this is the content of the note; for others, this is generally just the filename, if it uses a file.  The default implementation returns the filename if a file is used.
 	virtual void    fontChanged()                                    = 0; /// << If your content display textual data, called when the font have changed (from tags or basket font)
 	virtual void    linkLookChanged()                                  {} /// << If your content use LinkDisplay with preview enabled, reload the preview (can have changed size)
 	virtual QString editToolTipText() const                          = 0; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
