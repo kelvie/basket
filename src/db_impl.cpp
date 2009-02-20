@@ -31,7 +31,7 @@
 static inline QString getHash(QByteArray data)
 {
     return QString::fromAscii(QCryptographicHash::hash(data,
-                                                       QCryptographicHash::Sha1));
+                                                       QCryptographicHash::Sha1).toHex());
 }
 
 // Returns a text representation of the object -- this is just an XML
