@@ -950,15 +950,7 @@ void BNPView::save()
 
 	// Write to Disk:
 	Basket::safelySaveToFile(Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
-// 	QFile file(Global::basketsFolder() + "baskets.xml");
-// 	if (file.open(QIODevice::WriteOnly)) {
-// 		QTextStream stream(&file);
-// 		stream.setEncoding(QTextStream::UnicodeUTF8);
-// 		QString xml = document.toString();
-// 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-// 		stream << xml;
-// 		file.close();
-// 	}
+
 }
 
 void BNPView::save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement)
@@ -967,20 +959,7 @@ void BNPView::save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElemen
 	while (item) {
 //		Basket *basket = ((BasketListViewItem*)item)->basket();
 		QDomElement basketElement = this->basketElement(item, document, parentElement);
-/*
-		QDomElement basketElement = document.createElement("basket");
-		parentElement.appendChild(basketElement);
-		// Save Attributes:
-		basketElement.setAttribute("folderName", basket->folderName());
-		if (item->firstChild()) // If it can be expanded/folded:
-			basketElement.setAttribute("folded", XMLWork::trueOrFalse(!item->isOpen()));
-		if (((BasketListViewItem*)item)->isCurrentBasket())
-			basketElement.setAttribute("lastOpened", "true");
-		// Save Properties:
-		QDomElement properties = document.createElement("properties");
-		basketElement.appendChild(properties);
-		basket->saveProperties(document, properties);
-*/
+
 		// Save Child Basket:
 		if (item->firstChild())
 			save(item->firstChild(), document, basketElement);
