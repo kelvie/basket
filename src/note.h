@@ -141,6 +141,7 @@ class Note
 	NoteContent *m_content;
 	QDateTime    m_addedDate;
 	QDateTime    m_lastModificationDate;
+    QString m_dbKey;
   public:
 	inline Basket*      basket()  { return m_basket;  }
 	inline NoteContent* content() { return m_content; }
@@ -154,7 +155,8 @@ class Note
 	QString toText(const QString &cuttedFullPath);
 	bool saveAgain();
 	void deleteChilds();
-
+    QString dbKey() const { return m_dbKey; }
+    void setDBKey(const QString &key) { m_dbKey = key; }
   protected:
 	void setContent(NoteContent *content);
 	friend class NoteContent;

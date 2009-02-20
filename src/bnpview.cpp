@@ -58,6 +58,8 @@
 
 #include "bnpview.h"
 #include "basket.h"
+#include "db.h"
+#include "db_object.h"
 #include "tools.h"
 #include "settings.h"
 #include "debugwindow.h"
@@ -936,6 +938,22 @@ void BNPView::slotContextMenu(K3ListView */*listView*/, Q3ListViewItem *item, co
 	menu->exec(pos);
 }
 
+static inline void pruneDB(DatabaseObject obj)
+{
+    BasketDatabase *db = Global::basketDatabase();
+
+    // Get the list of child keys
+    QStringList keys = QString::fromAscii(obj.data()).split("\n");
+
+    foreach (QString key, keys) {
+        if (db->hasObject(key)) {
+            // Prune children
+            pruneDB(db->getObject(key));
+            db->removeObject(key);
+        }
+    }
+}
+
 void BNPView::save()
 {
 	DEBUG_WIN << "Basket Tree: Saving...";
@@ -951,6 +969,43 @@ void BNPView::save()
 	// Write to Disk:
 	Basket::safelySaveToFile(Global::basketsFolder() + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
 
+    // Save the entire basket tree in the database (as list objects)
+    BasketDatabase *db = Global::basketDatabase();
+    DatabaseObject obj;
+    obj.setProperty("type", "list");
+    obj.setData(save(m_tree->firstChild()).join("\n").toAscii());
+
+    // Remove all of the old list objects, and set the new root object
+    pruneDB(db->getRootObject());
+    db->setRootObject(obj);
+}
+
+QStringList BNPView::save(Q3ListViewItem *firstItem)
+{
+    BasketDatabase *db = Global::basketDatabase();
+    QStringList keys;
+    // This function recurses through the basket tree, and stores the basket
+    // heirarchy information in lists
+	Q3ListViewItem *item = firstItem;
+    while (item) {
+		Basket *basket = ((BasketListViewItem*)item)->basket();
+        DatabaseObject obj;
+        obj.setProperty("type", "list");
+        obj.setProperty("key", basket->dbKey());
+        if (item->firstChild()) // this means it can be expanded
+            obj.setProperty("folded", XMLWork::trueOrFalse(!item->isOpen()));
+        if (basket == currentBasket())
+            obj.setProperty("lastOpened", "true");
+        // Note that these lists don't save the properties of their baskets as
+        // they did previously.
+        if (item->firstChild())
+            obj.setData(save(item->firstChild()).join("\n").toAscii());
+
+        keys <<  db->addObject(obj);
+        
+        item = item->nextSibling();
+    }
+    return keys;
 }
 
 void BNPView::save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement)

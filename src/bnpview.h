@@ -101,6 +101,7 @@ class BASKET_EXPORT BNPView : public QSplitter
 
 		void updateBasketListViewItem(Basket *basket);
 		void save();
+		QStringList save(Q3ListViewItem *firstItem);
 		void save(Q3ListViewItem *firstItem, QDomDocument &document, QDomElement &parentElement);
 		void saveSubHierarchy(Q3ListViewItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
 		void load();

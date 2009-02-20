@@ -86,6 +86,8 @@
 #include <qdatetime.h>  // seed for rand()
 
 #include "basket.h"
+#include "db.h"
+#include "db_object.h"
 #include "note.h"
 #include "notedrag.h"
 #include "notefactory.h"
@@ -768,6 +770,64 @@ void Basket::loadNotes(const QDomElement &notes, Note *parent)
 	}
 }
 
+QStringList Basket::saveNotes(Note *parent)
+{
+    Note *note = (parent ? parent->firstChild() : firstNote());
+    BasketDatabase *db = Global::basketDatabase();
+
+    QStringList keys;
+
+    while (note) {
+        DatabaseObject obj;
+        obj.setProperty("type", note->isGroup() ? "group" : "note");
+        // Free Note Properties:
+        if (note->isFree()) {
+            obj.setProperty("x", QString::number(note->finalX()));
+            obj.setProperty("y", QString::number(note->finalY()));
+        }
+
+        // Resizeable Note Properties:
+        if (note->hasResizer())
+            obj.setProperty("width", QString::number(note->groupWidth()));
+        // Group Properties:
+        if (note->isGroup() && !note->isColumn())
+            obj.setProperty("folded", QString::number(note->isFolded()));
+        // Save Content:
+        if (note->content()) {
+            // Save Dates:
+            obj.setProperty("added", note->addedDate().toString(Qt::ISODate));
+            obj.setProperty("lastModification",
+                            note->lastModificationDate().toString(Qt::ISODate));
+            // Save Type
+            obj.setProperty("noteType", note->content()->lowerTypeName());
+            // Save Content
+            obj.setData(note->content()->data());
+            // Save other properties
+            QHash<QString, QString> props = note->content()->properties();
+            foreach (QString key, props.keys())
+                obj.setProperty(key, props[key]);
+            // Save Tags:
+            QStringList tags;
+            foreach (State* state, note->states())
+                tags << state->id();
+            tags.removeAll("");
+            obj.setProperty("tags", tags.join(";"));
+
+        } else // Save Child Notes:
+            obj.setData(saveNotes(note).join("\n").toAscii());
+
+        // Replace the old object with the new one in the database
+        db->removeObject(note->dbKey());
+        QString key = db->addObject(obj);
+        note->setDBKey(key);
+        keys << key;
+
+        // Go to the Next One:
+        note = note->next();
+    }
+    return keys;
+}
+
 void Basket::saveNotes(QDomDocument &document, QDomElement &element, Note *parent)
 {
 	Note *note = (parent ? parent->firstChild() : firstNote());
@@ -883,6 +943,29 @@ void Basket::saveProperties(QDomDocument &document, QDomElement &properties)
 	protection.setAttribute( "type", m_encryptionType );
 	protection.setAttribute( "key",  m_encryptionKey );
 }
+
+QHash<QString, QString> Basket::properties()
+{
+    QHash<QString, QString> props;
+    props["name"] = basketName();
+    props["icon"] = icon();
+    props["backgroundImage"] = backgroundImageName();
+    props["backgroundColor"] = backgroundColorSetting().isValid() ? backgroundColorSetting().name() : "";
+    props["textColor"] = textColorSetting().isValid() ? textColorSetting().name() : "";
+
+    props["free"] = XMLWork::trueOrFalse(isFreeLayout());
+    props["columnCount"] = QString::number(columnsCount());
+    props["mindMap"] = XMLWork::trueOrFalse(isMindMap());
+
+    QString actionStrings[] = { "show", "globalShow", "globalSwitch" };
+    props["shortcut-combo"] = m_action->shortcut().primary().toString();
+    props["shortcut-action"] = actionStrings[shortcutAction()];
+
+    props["protection-type"] = m_encryptionType;
+    props["protection-key"] =  m_encryptionKey;
+    return props;
+}
+
 
 void Basket::subscribeBackgroundImages()
 {
@@ -1100,6 +1183,7 @@ bool Basket::save()
 
 	DEBUG_WIN << "Basket[" + folderName() + "]: Saving...";
 
+
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basket");
 	QDomElement root = document.createElement("basket");
@@ -1122,6 +1206,27 @@ bool Basket::save()
 		return false;
 	}
 
+    // This is the database implementation of save();
+    BasketDatabase *db = Global::basketDatabase();
+
+    // We first save all of the notes
+    QStringList keys = saveNotes(NULL);
+
+    // Now we create and populate the DatabaseObject; its data is just the list
+    // of the hashes of its groups and notes.
+    DatabaseObject obj;
+    obj.setProperty("type", "basket");
+    obj.setData(keys.join("\n").toAscii());
+    QHash<QString, QString> props = this->properties();
+    foreach(QString key, props)
+        obj.setProperty(key, props[key]);
+
+    // And we replace the old object with the new object, and save our database
+    // key in m_dbKey
+    db->removeObject(m_dbKey);
+    m_dbKey = db->addObject(obj);
+
+    // Now we tell bnpview about what we did
 	Global::bnpView->setUnsavedStatus(false);
 	return true;
 }

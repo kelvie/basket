@@ -325,6 +325,8 @@ class Basket : public Q3ScrollView
         QTimer      m_inactivityAutoLockTimer;
         void enableActions();
 
+    QStringList saveNotes(Note *parent);
+
   private slots:
 	void loadNotes(const QDomElement &notes, Note *parent);
 	void saveNotes(QDomDocument &document, QDomElement &element, Note *parent);
@@ -514,6 +516,7 @@ public slots:
 	QString fullPathForFileName(const QString &fileName); // Full path of an [existing or not] note in this basket
 	static QString fullPathForFolderName(const QString &folderName);
   private:
+    QHash<QString, QString> properties();
 	QString m_basketName;
 	QString m_icon;
 	QString m_folderName;
@@ -691,6 +694,13 @@ public slots:
 	bool m_relayoutOnNextShow;
   public:
 	void aboutToBeActivated();
+
+/// STORAGE
+private:
+    QString m_dbKey;
+public:
+    QString dbKey() const { return m_dbKey; }
+
 };
 
 #endif // BASKET_H
