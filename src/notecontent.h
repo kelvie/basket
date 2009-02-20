@@ -68,27 +68,27 @@ namespace NoteType
  * It's a base class to represent those types: Text, Html, Image, Animation, Sound, File, Link, Launcher, Color, Unknown.
  * @author Sébastien Laoût
  */
-class NoteContent // TODO: Mark some methods as const!             and some (like typeName() as static!
+class NoteContent
 {
   public:
 	// Constructor and destructor:
 	NoteContent(Note *parent, const QString &fileName = "");              /// << Constructor. Inherited notes should call it to initialize the parent note.
 	virtual ~NoteContent()                                             {} /// << Virtual destructor. Reimplement it if you should destroy some data your custom types.
 	// Simple Abstract Generic Methods:
-	virtual NoteType::Id type()                                      = 0; /// << @return the internal number that identify that note type.
-	virtual QString typeName()                                       = 0; /// << @return the translated type name to display in the user interface.
-	virtual QString lowerTypeName()                                  = 0; /// << @return the type name in lowercase without space, for eg. saving.
+	virtual NoteType::Id type() const                                = 0; /// << @return the internal number that identify that note type.
+	virtual QString typeName() const                                 = 0; /// << @return the translated type name to display in the user interface.
+	virtual QString lowerTypeName() const                            = 0; /// << @return the type name in lowercase without space, for eg. saving.
 	virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
 	virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
 	virtual QPixmap toPixmap()                      { return QPixmap(); } /// << @return an image equivalent of the content.
 	virtual void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath); /// << Set the link to the content. By default, it set them to fullPath() if useFile().
-	virtual bool    useFile()                                        = 0; /// << @return true if it use a file to store the content.
-	virtual bool    canBeSavedAs()                                   = 0; /// << @return true if the content can be saved as a file by the user.
-	virtual QString saveAsFilters()                                  = 0; /// << @return the filters for the user to choose a file destination to save the note as.
+	virtual bool    useFile() const                                  = 0; /// << @return true if it use a file to store the content.
+	virtual bool    canBeSavedAs() const                             = 0; /// << @return true if the content can be saved as a file by the user.
+	virtual QString saveAsFilters() const                            = 0; /// << @return the filters for the user to choose a file destination to save the note as.
 	virtual bool    match(const FilterData &data)                    = 0; /// << @return true if the content match the filter criterias.
 	// Complexe Abstract Generic Methods:
 	virtual void exportToHTML(HTMLExporter *exporter, int indent)    = 0; /// << Export the note in an HTML file.
-	virtual QString cssClass()                                       = 0; /// << @return the CSS class of the note when exported to HTML
+	virtual QString cssClass() const                                 = 0; /// << @return the CSS class of the note when exported to HTML
 	virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
 	virtual void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
 	virtual bool    loadFromFile(bool /*lazyLoad*/)     { return false; } /// << Load the content from the file. The default implementation does nothing. @see fileName().
@@ -98,7 +98,7 @@ class NoteContent // TODO: Mark some methods as const!             and some (lik
 	virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
 	virtual void    fontChanged()                                    = 0; /// << If your content display textual data, called when the font have changed (from tags or basket font)
 	virtual void    linkLookChanged()                                  {} /// << If your content use LinkDisplay with preview enabled, reload the preview (can have changed size)
-	virtual QString editToolTipText()                                = 0; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
+	virtual QString editToolTipText() const                          = 0; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
 	virtual void    toolTipInfos(QStringList */*keys*/, QStringList */*values*/) {} /// << Get "key: value" couples to put in the tooltip for the note's content zone.
 	// Custom Zones:                                                      ///    Implement this if you want to store custom data.
 	virtual int     zoneAt(const QPoint &/*pos*/)           { return 0; } /// << If your note-type have custom zones, @return the zone at @p pos or 0 if it's not a custom zone!
@@ -157,18 +157,18 @@ class TextContent : public NoteContent
 	TextContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	~TextContent();
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
@@ -176,7 +176,7 @@ class TextContent : public NoteContent
 	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
 	// Open Content or File:
@@ -185,6 +185,7 @@ class TextContent : public NoteContent
 	// Content-Specific Methods:
 	void    setText(const QString &text, bool lazyLoad = false); /// << Change the text note-content and relayout the note.
 	QString text() { return m_text; }     /// << @return the text note-content.
+    QByteArray data() { return text().toLocal8Bit(); }
   protected:
 	QString          m_text;
 	Q3SimpleRichText *m_simpleRichText;
@@ -200,18 +201,18 @@ class HtmlContent : public NoteContent
 	HtmlContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	~HtmlContent();
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
@@ -219,7 +220,7 @@ class HtmlContent : public NoteContent
 	bool    saveToFile();
 	QString linkAt(const QPoint &pos);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
 	// Open Content or File:
@@ -228,6 +229,7 @@ class HtmlContent : public NoteContent
 	// Content-Specific Methods:
 	void    setHtml(const QString &html, bool lazyLoad = false); /// << Change the HTML note-content and relayout the note.
 	QString html() { return m_html; }     /// << @return the HTML note-content.
+    QByteArray data() { return html().toLocal8Bit(); }
   protected:
 	QString          m_html;
 	QString          m_textEquivalent; //OPTIM_FILTER
@@ -243,25 +245,25 @@ class ImageContent : public NoteContent
 	// Constructor and destructor:
 	ImageContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
 	QPixmap toPixmap();
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
 	bool    finishLazyLoad();
 	bool    saveToFile();
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	void    toolTipInfos(QStringList *keys, QStringList *values);
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
@@ -272,6 +274,7 @@ class ImageContent : public NoteContent
 	// Content-Specific Methods:
 	void    setPixmap(const QPixmap &pixmap); /// << Change the pixmap note-content and relayout the note.
 	QPixmap pixmap() { return m_pixmap; }     /// << @return the pixmap note-content.
+    QByteArray data();
   protected:
 	QPixmap  m_pixmap;
 	QByteArray m_format;
@@ -287,23 +290,23 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 	// Constructor and destructor:
 	AnimationContent(Note *parent, const QString &fileName, bool lazyLoad = false);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
 	QPixmap toPixmap();
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
 	bool    needSpaceForFeedbackPixmap() { return true; }
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool lazyLoad);
@@ -335,23 +338,23 @@ class FileContent : public QObject, public NoteContent
 	// Constructor and destructor:
 	FileContent(Note *parent, const QString &fileName);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
 	void    linkLookChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	void    toolTipInfos(QStringList *keys, QStringList *values);
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
@@ -388,17 +391,17 @@ class SoundContent : public FileContent // A sound is a file with just a bit dif
 	// Constructor and destructor:
 	SoundContent(Note *parent, const QString &fileName);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
-	QString editToolTipText();
+	QString editToolTipText() const;
 	// Complexe Generic Methods:
-	QString cssClass();
+	QString cssClass() const;
 	// Custom Zones:
 	QString zoneTip(int zone);
 	void    setHoveredZone(int oldZone, int newZone);
@@ -424,25 +427,25 @@ class LinkContent : public QObject, public NoteContent
 	LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon);
 	~LinkContent();
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
 	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
 	void    linkLookChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	void    toolTipInfos(QStringList *keys, QStringList *values);
 	// Drag and Drop Content:
 	void    serialize(QDataStream &stream);
@@ -493,23 +496,23 @@ class LauncherContent : public NoteContent
 	// Constructor and destructor:
 	LauncherContent(Note *parent, const QString &fileName);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
 	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	void    toolTipInfos(QStringList *keys, QStringList *values);
 	// Drag and Drop Content:
 	QPixmap feedbackPixmap(int width, int height);
@@ -543,23 +546,23 @@ class ColorContent : public NoteContent
 	// Constructor and destructor:
 	ColorContent(Note *parent, const QColor &color);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	void    saveToNode(QDomDocument &doc, QDomElement &content);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	void    toolTipInfos(QStringList *keys, QStringList *values);
 	// Drag and Drop Content:
 	void    serialize(QDataStream &stream);
@@ -583,24 +586,24 @@ class UnknownContent : public NoteContent
 	// Constructor and destructor:
 	UnknownContent(Note *parent, const QString &fileName);
 	// Simple Generic Methods:
-	NoteType::Id type();
-	QString typeName();
-	QString lowerTypeName();
+	NoteType::Id type() const;
+	QString typeName() const;
+	QString lowerTypeName() const;
 	QString toText(const QString &/*cuttedFullPath*/);
 	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
 	void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
-	bool    useFile();
-	bool    canBeSavedAs();
-	QString saveAsFilters();
+	bool    useFile() const;
+	bool    canBeSavedAs() const;
+	QString saveAsFilters() const;
 	bool    match(const FilterData &data);
 	// Complexe Generic Methods:
 	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass();
+	QString cssClass() const;
 	int     setWidthAndGetHeight(int width);
 	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
 	bool    loadFromFile(bool /*lazyLoad*/);
 	void    fontChanged();
-	QString editToolTipText();
+	QString editToolTipText() const;
 	// Drag and Drop Content:
 	bool    shouldSerializeFile() { return false; }
 	void    addAlternateDragObjects(K3MultipleDrag *dragObject);
