@@ -131,8 +131,8 @@ class NoteContent
 	virtual void setFileName(const QString &fileName); /// << Set the filename. Reimplement it if you eg. want to update the view when the filename is changed.
 	bool trySetFileName(const QString &fileName);      /// << Set the new filename and return true. Can fail and return false if a file with this fileName already exists.
 	QString  fullPath();                               /// << Get the absolute path of the file where this content is stored on disk.
-	QString  fileName() { return m_fileName; }         /// << Get the file name where this content is stored (relative to the basket folder). @see fullPath().
-	int      minWidth() { return m_minWidth; }         /// << Get the minimum width for this content.
+	QString  fileName() const { return m_fileName; }   /// << Get the file name where this content is stored (relative to the basket folder). @see fullPath().
+	int      minWidth() const { return m_minWidth; }    /// << Get the minimum width for this content.
 	Note    *note()     { return m_note;     }         /// << Get the note managing this content.
 	Basket  *basket();                                 /// << Get the basket containing the note managing this content.
   public:
