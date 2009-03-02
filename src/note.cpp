@@ -1614,22 +1614,22 @@ void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, boo
 		if (rect.intersects(rectToSubstract)) {
 			// Create the top rectangle:
 			if (rectToSubstract.top() > rect.top()) {
-				it = areas.insert(it,QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
+				areas.insert(it,QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
 				rect.setTop(rectToSubstract.top());
 			}
 			// Create the bottom rectangle:
 			if (rectToSubstract.bottom() < rect.bottom()) {
-				it = areas.insert(it, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
+				areas.insert(it, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
 				rect.setBottom(rectToSubstract.bottom());
 			}
 			// Create the left rectangle:
 			if (rectToSubstract.left() > rect.left()) {
-				it = areas.insert(it, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
+				areas.insert(it, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
 				rect.setLeft(rectToSubstract.left());
 			}
 			// Create the right rectangle:
 			if (rectToSubstract.right() < rect.right()) {
-				it = areas.insert(it, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
+				areas.insert(it, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
 				rect.setRight(rectToSubstract.right());
 			}
 			// Remove the rectangle if it's entirely contained:
