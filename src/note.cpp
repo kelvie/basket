@@ -1608,38 +1608,38 @@ void Note::setOnTop(bool onTop)
 
 void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove)
 {
-	for (QList<QRect>::iterator it = areas.begin(); it != areas.end();){
-		QRect& rect = *it;
-		// Split the rectangle if it intersects with rectToSubstract:
-		if (rect.intersects(rectToSubstract)) {
-			// Create the top rectangle:
-			if (rectToSubstract.top() > rect.top()) {
-				it = areas.insert(it,QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
-				rect.setTop(rectToSubstract.top());
-			}
-			// Create the bottom rectangle:
-			if (rectToSubstract.bottom() < rect.bottom()) {
-				it = areas.insert(it, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
-				rect.setBottom(rectToSubstract.bottom());
-			}
-			// Create the left rectangle:
-			if (rectToSubstract.left() > rect.left()) {
-				it = areas.insert(it, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
-				rect.setLeft(rectToSubstract.left());
-			}
-			// Create the right rectangle:
-			if (rectToSubstract.right() < rect.right()) {
-				it = areas.insert(it, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
-				rect.setRight(rectToSubstract.right());
-			}
-			// Remove the rectangle if it's entirely contained:
-			if (andRemove && rectToSubstract.contains(rect))
-				it = areas.erase(it);
-			else 
-				++it;
-		}
-		else
-			++it;	
+	for (int i=0; i < areas.size(); ) {
+            QRect &rect = areas[i];
+            // Split the rectangle if it intersects with rectToSubstract:
+            if (rect.intersects(rectToSubstract)) {
+                // Create the top rectangle:
+                if (rectToSubstract.top() > rect.top()) {
+                    areas.insert(i++, QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
+                    rect.setTop(rectToSubstract.top());
+                }
+                // Create the bottom rectangle:
+                if (rectToSubstract.bottom() < rect.bottom()) {
+                    areas.insert(i++, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
+                    rect.setBottom(rectToSubstract.bottom());
+                }
+                // Create the left rectangle:
+                if (rectToSubstract.left() > rect.left()) {
+                    areas.insert(i++, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
+                    rect.setLeft(rectToSubstract.left());
+                }
+                // Create the right rectangle:
+                if (rectToSubstract.right() < rect.right()) {
+                    areas.insert(i++, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
+                    rect.setRight(rectToSubstract.right());
+                }
+                // Remove the rectangle if it's entirely contained:
+                if (andRemove && rectToSubstract.contains(rect))
+                    areas.removeAt(i);
+                else 
+                    ++i;
+            }
+            else
+                ++i;
 	}
 }
 
