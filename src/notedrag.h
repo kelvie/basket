@@ -22,12 +22,11 @@
 #define NOTEDRAG_H
 
 #include <qstring.h>
-#include <q3dragobject.h>
 #include <qdatastream.h>
 #include <qpixmap.h>
-#include <q3valuelist.h>
+#include <QList>
 //Added by qt3to4:
-#include <k3multipledrag.h>
+#include <QDrag>
 
 class QDataStream;
 
@@ -38,11 +37,11 @@ class NoteSelection;
 /** Dragging/Copying/Cutting Scenario:
   * - User select some notes and cut them;
   * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see Basket::toSelectionTree()):
-  *   - This method create a new K3MultipleDrag object, create a stream,
+  *   - This method create a new QDrag object, create a stream,
   *   - And then browse all notes and call the virtual Note::serialize() with the stream as parameter for them to serialize theire content in the "native format".
   *   - This give the MIME type "application/x-basket-note" that will be used by the application to paste the notes exactly as they were.
   *   - Then the method try to set alterante formats for the dragged objects:
-  *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the K3MultipleDrag object
+  *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the QDrag object
   *   - It do the same with toHtml(), toImage() and toLink() to have those flavours as well, if possible...
   *   - If there is only ONE copied note, addAlternateDragObjects() is called on it, so that Unknown objects can be dragged "as is".
   *   - It's OK for the flavours. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
@@ -56,19 +55,19 @@ class NoteDrag
 {
   protected:
 	static void serializeNotes(     NoteSelection *noteList, QDataStream &stream,         bool cutting );
-	static void serializeText(      NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
-	static void serializeHtml(      NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
-	static void serializeImage(     NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
-	static void serializeLinks(     NoteSelection *noteList, K3MultipleDrag *multipleDrag, bool cutting );
-	static void setFeedbackPixmap(  NoteSelection *noteList, K3MultipleDrag *multipleDrag               );
+	static void serializeText(      NoteSelection *noteList, QDrag *multipleDrag               );
+	static void serializeHtml(      NoteSelection *noteList, QDrag *multipleDrag               );
+	static void serializeImage(     NoteSelection *noteList, QDrag *multipleDrag               );
+	static void serializeLinks(     NoteSelection *noteList, QDrag *multipleDrag, bool cutting );
+	static void setFeedbackPixmap(  NoteSelection *noteList, QDrag *multipleDrag               );
 	static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
   public:
 	static QPixmap feedbackPixmap(NoteSelection *noteList);
-	static Q3DragObject* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
-	static bool canDecode(QMimeSource *source);
-	static Note* decode(QMimeSource *source, Basket *parent, bool moveFiles, bool moveNotes);
-	static Basket* basketOf(QMimeSource *source);
-	static Q3ValueList<Note*> notesOf(QMimeSource *source);
+	static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
+	static bool canDecode(const QMimeData *source);
+	static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
+	static Basket* basketOf(const QMimeData *source);
+	static QList<Note*> notesOf(QDragEnterEvent *source);
 	static void createAndEmptyCuttingTmpFolder();
 
 	static const char *NOTE_MIME_STRING;
@@ -79,26 +78,12 @@ class NoteDrag
   * with local encoding!
   * @author Sébastien Laoût
   */
-class ExtendedTextDrag : public Q3TextDrag
+class ExtendedTextDrag : public QDrag
 {
   Q_OBJECT
   public:
-	static bool decode(const QMimeSource *e, QString &str);
-	static bool decode(const QMimeSource *e, QString &str, QString &subtype);
-};
-
-// Support KDE 3.3 and older PROTECTED K3URLDrag::encodedData()!
-
-#include <k3urldrag.h>
-class K3URLDrag2 : public K3URLDrag
-{
-  Q_OBJECT
-  public:
-	K3URLDrag2(const KUrl::List &urls) : K3URLDrag(urls) {}
-	QByteArray encodedData2(const char *mime) const
-	{
-		return encodedData(mime);
-	}
+	static bool decode(const QMimeData *e, QString &str);
+	static bool decode(const QMimeData *e, QString &str, QString &subtype);
 };
 
 #endif // NOTEDRAG_H

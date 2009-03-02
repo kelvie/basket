@@ -405,12 +405,12 @@ void LinkDisplay::setWidth(int width)
 
 /** Paint on @p painter
   *       in (@p x, @p y, @p width, @p height)
-  *       using @p colorGroup for the button drawing (if @p isHovered)
+  *       using @p palette for the button drawing (if @p isHovered)
   *       and the LinkLook color() for the text,
-  *       unless [the LinkLook !color.isValid() and it does not useLinkColor()] or [@p isDefaultColor is false]: in this case it will use @p colorGroup.text().
+  *       unless [the LinkLook !color.isValid() and it does not useLinkColor()] or [@p isDefaultColor is false]: in this case it will use @p palette's active text color.
   *       It will draw the button if @p isIconButtonHovered.
   */
-void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QColorGroup &colorGroup,
+void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QPalette &palette,
                         bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const
 {
 	int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
@@ -448,7 +448,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	} else if (isIconButtonHovered)
 		painter->setPen(m_look->effectiveHoverColor());
 	else if (!isDefaultColor || (!m_look->color().isValid() && !m_look->useLinkColor())) // If the color is FORCED or if the link color default to the text color:
-		painter->setPen(colorGroup.text());
+		painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
 	else
 		painter->setPen(m_look->effectiveColor());
 	// Draw the text:
@@ -457,14 +457,14 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
 	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_title);
 }
 
-QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QColorGroup &colorGroup, bool isDefaultColor)
+QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &palette, bool isDefaultColor)
 {
 	int theWidth  = qMin(width, maxWidth());
 	int theHeight = qMin(height, heightForWidth(theWidth));
 	QPixmap pixmap(theWidth, theHeight);
-	pixmap.fill(colorGroup.background());
+	pixmap.fill(palette.color(QPalette::Active, QPalette::Background));
 	QPainter painter(&pixmap);
-	paint(&painter, 0, 0, theWidth, theHeight, colorGroup, isDefaultColor,
+	paint(&painter, 0, 0, theWidth, theHeight, palette, isDefaultColor,
 	      /*isSelected=*/false, /*isHovered=*/false, /*isIconButtonHovered=*/false);
 	painter.end();
 	return pixmap;

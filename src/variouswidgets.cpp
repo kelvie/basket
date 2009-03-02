@@ -31,15 +31,14 @@
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <QVBoxLayout>
 #include <KOpenWithDialog>
 #include <klocale.h>
-#include <q3whatsthis.h>
-#include <k3iconview.h>
+#include <QWhatsThis>
 #include <kiconloader.h>
-#include <q3dragobject.h>
+#include <QDrag>
 #include <qfontdatabase.h>
 #include <kpushbutton.h>
 
@@ -165,24 +164,16 @@ HelpLabel::HelpLabel(const QString &text, const QString &message, QWidget *paren
  : KUrlLabel(parent), m_message(message)
 {
 	setText(text);
-	connect( this, SIGNAL(leftClickedUrl()), this, SLOT(showMessage()) );
+	setWhatsThis(m_message);
+	connect( this, SIGNAL(leftClickedUrl()), this, SLOT(display()) );
 }
 
 HelpLabel::~HelpLabel()
 {
 }
 
-void HelpLabel::showMessage()
-{
-	Q3WhatsThis::display(m_message, mapToGlobal( QPoint(width() / 2, height()) ));
-}
-
-void HelpLabel::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Space)
-		showMessage();
-	else
-		KUrlLabel::keyPressEvent(event);
+void HelpLabel::display(){
+	QWhatsThis::showText(mapToGlobal( QPoint(width() / 2, height()) ), m_message);
 }
 
 /** class IconSizeDialog: */
@@ -196,7 +187,7 @@ class UndraggableKIconView : public KListWidget
 		this->setSelectionMode(QAbstractItemView::SingleSelection); 
 		this->setWrapping(false);
 	}
-	Q3DragObject* dragObject() { return 0; }
+	QDrag* dragObject() { return 0; }
 };
 
 IconSizeDialog::IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent)
@@ -289,8 +280,8 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent)
 		insertItem(i18n("(Default)"));
 
 	QFontDatabase fontDB;
-	Q3ValueList<int> sizes = fontDB.standardSizes();
-	for (Q3ValueList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
+	QList<int> sizes = fontDB.standardSizes();
+	for (QList<int>::Iterator it = sizes.begin(); it != sizes.end(); ++it)
 		insertItem(QString::number(*it));
 
 //	connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );

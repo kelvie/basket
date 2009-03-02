@@ -21,10 +21,8 @@
 #include <config.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qtabwidget.h>
-#include <q3groupbox.h>
+#include <QGroupBox>
 #include <qlabel.h>
 #include <qpushbutton.h>
 //Added by qt3to4:
@@ -38,8 +36,7 @@
 #include <kconfig.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <q3whatsthis.h>
-#include <q3buttongroup.h>
+#include <QWhatsThis>
 #include <qradiobutton.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
@@ -47,8 +44,6 @@
 #include <kstandarddirs.h>
 #include <kdebug.h>
 #include <qdatetime.h>
-#include <Q3MimeSourceFactory>
-
 
 #include "kgpgme.h"
 #include "basket.h"
@@ -104,7 +99,7 @@ bool    Settings::s_startDocked          = false;
 int     Settings::s_basketTreeWidth      = -1;
 bool    Settings::s_welcomeBasketsAdded  = false;
 QString Settings::s_dataFolder           = "";
-QDate   Settings::s_lastBackup           = QDate();
+QDate	Settings::s_lastBackup           = QDate();
 QPoint  Settings::s_mainWindowPosition   = QPoint();
 QSize   Settings::s_mainWindowSize       = QSize();
 bool    Settings::s_showEmptyBasketInfo  = true;
@@ -156,7 +151,7 @@ void Settings::loadConfig()
 	setUsePassivePopup(      config.readEntry("usePassivePopup",      true)  );
 	setWelcomeBasketsAdded(  config.readEntry("welcomeBasketsAdded",  false) );
 	setDataFolder(           config.readEntry("dataFolder",           "")    );
-	setLastBackup(           config.readEntry("lastBackup", QDateTime()).date());
+	setLastBackup(           config.readEntry("lastBackup", QDate()));
 	setMainWindowPosition(   config.readEntry("position", QPoint())      );
 	setMainWindowSize(       config.readEntry( "size",     QSize())      );
 
@@ -242,7 +237,7 @@ void Settings::saveConfig()
 	config.writeEntry( "usePassivePopup",      usePassivePopup()      );
 	config.writeEntry( "welcomeBasketsAdded",  welcomeBasketsAdded()  );
 	config.writePathEntry("dataFolder",        dataFolder()           );
-	config.writeEntry( "lastBackup",           QDateTime(lastBackup()));
+	config.writeEntry( "lastBackup",           QDate(lastBackup()));
 	config.writeEntry( "position",             mainWindowPosition()   );
 	config.writeEntry( "size",                 mainWindowSize()       );
 
@@ -403,7 +398,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	layout->addLayout(hLay);
 
 	// System Tray Icon:
-	Q3GroupBox *gbSys = new Q3GroupBox(3, Qt::Vertical, i18n("System Tray Icon"), this);
+	QGroupBox *gbSys = new QGroupBox(i18n("System Tray Icon"), this);
 	layout->addWidget(gbSys);
 	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialog::spacingHint());
 
@@ -511,57 +506,64 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Appearance:
 
-	Q3GroupBox *appearanceBox = new Q3GroupBox(3, Qt::Vertical, i18n("Appearance"), this);
+	QGroupBox *appearanceBox = new QGroupBox(i18n("Appearance"), this);
+	QVBoxLayout* appearanceLayout = new QVBoxLayout;
+	appearanceBox->setLayout(appearanceLayout);
 	layout->addWidget(appearanceBox);
 
 	m_playAnimations = new QCheckBox(i18n("Ani&mate changes in baskets"), appearanceBox);
+	appearanceLayout->addWidget(m_playAnimations);
 	connect( m_playAnimations, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_showNotesToolTip = new QCheckBox(i18n("&Show tooltips in baskets"), appearanceBox);
+	appearanceLayout->addWidget(m_showNotesToolTip);
 	connect( m_showNotesToolTip, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_bigNotes = new QCheckBox(i18n("&Big notes"), appearanceBox);
+	appearanceLayout->addWidget(m_bigNotes);
 	connect( m_bigNotes, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	// Behavior:
 
-	Q3GroupBox *behaviorBox = new Q3GroupBox(5, Qt::Vertical, i18n("Behavior"), this);
+	QGroupBox *behaviorBox = new QGroupBox(i18n("Behavior"), this);
+	QVBoxLayout* behaviorLayout = new QVBoxLayout;
+	behaviorBox->setLayout(behaviorLayout);
 	layout->addWidget(behaviorBox);
 
 	m_autoBullet = new QCheckBox(i18n("&Transform lines starting with * or - to lists in text editors"), behaviorBox);
+	behaviorLayout->addWidget(m_autoBullet);
 	connect( m_autoBullet, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_confirmNoteDeletion = new QCheckBox(i18n("Ask confirmation before &deleting notes"), behaviorBox);
+	behaviorLayout->addWidget(m_confirmNoteDeletion);
 	connect( m_confirmNoteDeletion, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	QWidget *widget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(widget);
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
-	QPixmap pixmapHelp(KGlobal::dirs()->findResource("data", "basket/images/tag_export_help.png"));
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_tag_export.png", pixmapHelp);
 	hLabel = new HelpLabel(
 		i18n("When does this apply?"),
 		"<p>" + i18n("It does apply when you copy and paste, or drag and drop notes to a text editor.") + "</p>" +
 		"<p>" + i18n("If enabled, this property lets you paste the tags as textual equivalents.") + "<br>" +
 		i18n("For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, "
 		     "representing an empty checkbox and a checked box.") + "</p>" +
-		"<p align='center'><img src=\"__resource_help_tag_export.png\"></p>",
+		"<p align='center'><img src=\":/images/tag_export_help.png\"></p>",
 		widget);
 	hLay->addWidget(m_exportTextTags);
 	hLay->addWidget(hLabel);
 	hLay->addStretch();
 
 	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(m_groupOnInsertionLineWidget);
 	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
-	QPixmap pixmap(KGlobal::dirs()->findResource("data", "basket/images/insertion_help.png"));
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("__resource_help_insertion_line.png", pixmap);
 	HelpLabel *helpV = new HelpLabel(
 		i18n("How to group a new note?"),
 		i18n("<p>When this option is enabled, the insertion-line not only allows you to insert notes at the cursor position, but also allows you to group a new note with the one under the cursor:</p>") +
-		"<p align='center'><img src=\"__resource_help_insertion_line.png\"></p>" +
+		"<p align='center'><img src=\":/images/insertion_help.png\"></p>" +
 		i18n("<p>Place your mouse between notes, where you want to add a new one.<br>"
 		"Click on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note.<br>"
 		"Click on the <b>right</b> to <b>group</b> a note, with the one <b>below or above</b>, depending on where your mouse is.</p>"),
@@ -573,6 +575,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	connect(m_groupOnInsertionLine, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
 	widget = new QWidget(behaviorBox);
+	behaviorLayout->addWidget(widget);
 	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialog::spacingHint());
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
@@ -596,9 +599,12 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	// Protection:
 
-	Q3GroupBox *protectionBox = new Q3GroupBox(3, Qt::Vertical, i18n("Password Protection"), this);
+	QGroupBox *protectionBox = new QGroupBox(i18n("Password Protection"), this);
+	QVBoxLayout* protectionLayout = new QVBoxLayout;
 	layout->addWidget(protectionBox);
+	protectionBox->setLayout(protectionLayout);
 	widget = new QWidget(protectionBox);
+	protectionLayout->addWidget(widget);
 
 	// Re-Lock timeout configuration
 	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
@@ -618,6 +624,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 #ifdef HAVE_LIBGPGME
 	m_useGnuPGAgent = new QCheckBox(i18n("Use GnuPG agent for &private/public key protected baskets"), protectionBox);
+	protectionLayout->addWidget(m_useGnuPGAgent);
 //	hLay->addWidget(m_useGnuPGAgent);
 	connect( m_useGnuPGAgent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 #endif
@@ -734,11 +741,19 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// View File Content:
 
-	Q3VButtonGroup *buttonGroup = new Q3VButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
+	QGroupBox* buttonGroup = new QGroupBox(i18n("View Content of Added Files for the Following Types"), this);
+	QVBoxLayout* buttonLayout = new QVBoxLayout;
 	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
+
+	buttonLayout->add(m_viewTextFileContent);
+	buttonLayout->add(m_viewHtmlFileContent);
+	buttonLayout->add(m_viewImageFileContent);
+	buttonLayout->add(m_viewSoundFileContent);
+	buttonGroup->setLayout(buttonLayout);
+
 	layout->addWidget(buttonGroup);
 	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
@@ -879,19 +894,19 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 		"<p>If checked, the application defined below will be used when opening that type of note.</p>"
 		"<p>Otherwise, the application you've configured in Konqueror will be used.</p>");
 
-	Q3WhatsThis::add(m_htmlUseProg,      whatsthis);
-	Q3WhatsThis::add(m_imageUseProg,     whatsthis);
-	Q3WhatsThis::add(m_animationUseProg, whatsthis);
-	Q3WhatsThis::add(m_soundUseProg,     whatsthis);
+	m_htmlUseProg->setWhatsThis(whatsthis);
+	m_imageUseProg->setWhatsThis(whatsthis);
+	m_animationUseProg->setWhatsThis(whatsthis);
+	m_soundUseProg->setWhatsThis(whatsthis);
 
 	whatsthis = i18n(
 		"<p>Define the application to use for opening that type of note instead of the "
 		"application configured in Konqueror.</p>");
 
-	Q3WhatsThis::add(m_htmlProg,      whatsthis);
-	Q3WhatsThis::add(m_imageProg,     whatsthis);
-	Q3WhatsThis::add(m_animationProg, whatsthis);
-	Q3WhatsThis::add(m_soundProg,     whatsthis);
+	m_htmlProg->setWhatsThis(whatsthis);
+	m_imageProg->setWhatsThis(whatsthis);
+	m_animationProg->setWhatsThis(whatsthis);
+	m_soundProg->setWhatsThis(whatsthis);
 
 	layout->addWidget(m_htmlUseProg);
 	layout->addItem(hLayH);

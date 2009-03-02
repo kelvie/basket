@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <qstring.h>
-#include <qstringlist.h>
-#include <q3valuelist.h>
+#include <QStringList>
+#include <QList>
 #include <qmap.h>
 #include <qdir.h>
 //Added by qt3to4:
@@ -92,7 +92,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	dir.remove(tempFolder + "baskets.xml");
 
 	// Save a Small tags.xml Document:
-	Q3ValueList<Tag*> tags;
+	QList<Tag*> tags;
 	listUsedTags(basket, withSubBaskets, tags);
 	Tag::saveTagsTo(tags, tempFolder + "tags.xml");
 	tar.addLocalFile(tempFolder + "tags.xml", "tags.xml");
@@ -237,20 +237,20 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
 
 	// Recursively save child baskets:
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			saveBasketToArchive(child->basket(), recursive, tar, backgrounds, tempFolder, progress);
+	if (recursive) {
+		for (int i=0;i<item->childCount();i++){
+			saveBasketToArchive(((BasketListViewItem *)item->child(i))->basket(), recursive, tar, backgrounds, tempFolder, progress);
 		}
 	}
 }
 
-void Archive::listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &list)
+void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
 {
 	basket->listUsedTags(list);
 	BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
-	if (recursive && item->firstChild()) {
-		for (BasketListViewItem *child = (BasketListViewItem*) item->firstChild(); child; child = (BasketListViewItem*) child->nextSibling()) {
-			listUsedTags(child->basket(), recursive, list);
+	if (recursive) {
+		for (int i=0;i<item->childCount();i++){
+			listUsedTags(((BasketListViewItem *)item->child(i))->basket(), recursive, list);
 		}
 	}
 }
@@ -629,7 +629,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
 				// Append and load the basket in the tree:
 				Basket *basket = Global::bnpView->loadBasket(newFolderName);
 				BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
-				basketItem->setOpen(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
+				basketItem->setExpanded(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
 				QDomElement properties = XMLWork::getElement(element, "properties");
 				importBasketIcon(properties, extractionFolder); // Rename the icon fileName if necessary
 				basket->loadProperties(properties);

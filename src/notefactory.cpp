@@ -19,17 +19,15 @@
  ***************************************************************************/
 
 #include <qstring.h>
+#include <QImage>
 //Added by qt3to4:
 #include <QTextStream>
 #include <QDropEvent>
-#include <Q3MemArray>
+#include <QVector>
 #include <kurl.h>
 #include <qpixmap.h>
 #include <qcolor.h>
 #include <qregexp.h>
-#include <k3colordrag.h>
-#include <k3urldrag.h>
-#include <q3stylesheet.h>
 #include <qdir.h>
 #include <kmimetype.h>
 #include <kmessagebox.h>
@@ -302,10 +300,8 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 		return createNoteLink(url, parent);
 }
 
-#include <q3strlist.h>
-#include <qimage.h>
 
-bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropEvent::Action action)
+bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, QDropEvent::Action action)
 {
 	if (NoteDrag::canDecode(source))
 		return action == QDropEvent::Move && NoteDrag::basketOf(source) == parent;
@@ -313,12 +309,13 @@ bool NoteFactory::movingNotesInTheSameBasket(QMimeSource *source, Basket *parent
 		return false;
 }
 
-Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, QDropEvent::Action action, Note */*noteSource*/)
+Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDrop, QDropEvent::Action action, Note */*noteSource*/)
 {
 	Note *note = 0L;
 
+	QStringList formats = source->formats();
 	/* No data */
-	if (source->format(0) == 0L) {
+	if (formats.size() == 0) {
 		// TODO: add a parameter to say if it's from a clipboard paste, a selection paste, or a drop
 		//       To be able to say "The clipboard/selection/drop is empty".
 //		KMessageBox::error(parent, i18n("There is no data to insert."), i18n("No Data"));
@@ -328,9 +325,8 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	/* Debug */
 	if (Global::debugWindow) {
 		*Global::debugWindow << "<b>Drop :</b>";
-		for (int i = 0; source->format(i); ++i)
-			if ( *(source->format(i)) )
-				*Global::debugWindow << "\t[" + QString::number(i) + "] " + QString(source->format(i));
+		for (int i = 0; formats.size(); ++i)
+			*Global::debugWindow << "\t[" + QString::number(i) + "] " + formats[i];
 		switch (action) { // The source want that we:
 			case QDropEvent::Copy:       *Global::debugWindow << ">> Drop action: Copy";       break;
 			case QDropEvent::Move:       *Global::debugWindow << ">> Drop action: Move";       break;
@@ -349,32 +345,29 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 
 	/* Else : Drop object to note */
 
-	QPixmap pixmap;
-	if ( Q3ImageDrag::decode(source, pixmap) )
-		return createNoteImage(pixmap, parent);
+	QImage image = qvariant_cast<QImage>(source->imageData()) ;
+	if ( !image.isNull() )
+		return createNoteImage(QPixmap::fromImage(image), parent);
 
-	// K3ColorDrag::decode() is buggy and can trheat strings like "#include <foo.h>" as a black color
-#include <QTextDocument>
-	// The correct "ideal" code:
-	/*QColor color;
-	if ( K3ColorDrag::decode(source, color) ) {
-	createNoteColor(color, parent);
-	return;
-}*/
+	if (source->hasColor()){
+		return createNoteColor(qvariant_cast<QColor>(source->colorData()), parent);
+	}
+	
 	// And then the hack (if provide color MIME type or a text that contains color), using createNote Color RegExp:
 	QString hack;
 	QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");
-	if (source->provides("application/x-color") || (Q3TextDrag::decode(source, hack) && (exp.search(hack) != -1)) ) {
-		QColor color;
-		if (K3ColorDrag::decode(source, color))
+	hack = source->text();
+	if (source->hasFormat("application/x-color") || (!hack.isNull() && (exp.search(hack) != -1)) ) {
+		QColor color = qvariant_cast<QColor>(source->colorData()) ;
+		if (color.isValid())
 			return createNoteColor(color, parent);
 //			if ( (note = createNoteColor(color, parent)) )
 //				return note;
 //			// Theorically it should be returned. If not, continue by dropping other things
 	}
 
-	KUrl::List urls;
-	if ( K3URLDrag::decode(source, urls) ) {
+	KUrl::List urls = KUrl::List::fromMimeData(source);
+	if ( !urls.isEmpty() ){
 		// If it's a Paste, we should know if files should be copied (copy&paste) or moved (cut&paste):
 		if (!fromDrop && Tools::isAFileCut(source))
 			action = QDropEvent::Move;
@@ -402,10 +395,10 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	*
 	* Thanks to Dave Cridland for having said me that.
 	*/
-	if (source->provides("text/x-moz-url")) { // FOR MOZILLA
+	if (source->hasFormat("text/x-moz-url")) { // FOR MOZILLA
 		// Get the array and create a QChar array of 1/2 of the size
-		QByteArray mozilla = source->encodedData("text/x-moz-url");
-		Q3MemArray<QChar> chars( mozilla.count() / 2 );
+		QByteArray mozilla = source->data("text/x-moz-url");
+		QVector<QChar> chars( mozilla.count() / 2 );
 		// A small debug work to know the value of each bytes
 		if (Global::debugWindow)
 			for (int i = 0; i < mozilla.count(); i++)
@@ -432,7 +425,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 		}
 	}
 
-	if (source->provides("text/html")) {
+	if (source->hasFormat("text/html")) {
 		QString html;
 		QString subtype("html");
 		// If the text/html comes from Mozilla or GNOME it can be UTF-16 encoded: we need ExtendedTextDrag to check that
@@ -456,7 +449,7 @@ Note* NoteFactory::dropNote(QMimeSource *source, Basket *parent, bool fromDrop, 
 	return note;
 }
 
-Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, const QString &annotations*/)
+Note* NoteFactory::createNoteUnknown(const QMimeData *source, Basket *parent/*, const QString &annotations*/)
 {
 	// Save the MimeSource in a file: create and open the file:
 	QString fileName = createFileForNewNote(parent, "unknown");
@@ -466,25 +459,24 @@ Note* NoteFactory::createNoteUnknown(QMimeSource *source, Basket *parent/*, cons
 	QDataStream stream(&file);
 
 	// Echo MIME types:
-	for (int i = 0; source->format(i); ++i)
-		if ( *(source->format(i)) )
-			stream << QString(source->format(i)); // Output the '\0'-terminated format name string
+	QStringList formats = source->formats();
+	for (int i = 0; formats.size(); ++i)
+		stream << QString(formats[i]); // Output the '\0'-terminated format name string
 
 	// Echo end of MIME types list delimiter:
 	stream << "";
 
 	// Echo the length (in bytes) and then the data, and then same for next MIME type:
-	for (int i = 0; source->format(i); ++i)
-		if ( *(source->format(i)) ) {
-		QByteArray data = source->encodedData(source->format(i));
+	for (int i = 0; formats.size(); ++i){
+		QByteArray data = source->data(formats[i]);
 		stream << (quint32)data.count();
 		stream.writeRawBytes(data.data(), data.count());
-		}
-		file.close();
+	}
+	file.close();
 
-		Note *note = new Note(parent);
-		new UnknownContent(note, fileName);
-		return note;
+	Note *note = new Note(parent);
+	new UnknownContent(note, fileName);
+	return note;
 }
 
 Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action action, bool fromDrop)

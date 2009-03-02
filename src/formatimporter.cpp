@@ -45,7 +45,7 @@
 bool FormatImporter::shouldImportBaskets()
 {
 	// We should import if the application have not successfully loaded any basket...
-	if (Global::bnpView->firstListViewItem())
+	if (Global::bnpView->topLevelItemCount()>=0)
 		return false;
 
 	// ... And there is at least one folder in the save folder, with a ".basket" file inside that folder.

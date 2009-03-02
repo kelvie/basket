@@ -44,8 +44,7 @@ public:
     /**
      * Default constructor
      */
-    BasketPart(QWidget *parentWidget, 
-			   QObject *parent, const QStringList &);
+    BasketPart(QWidget *parentWidget, QObject *parent, const QList<QVariant> &);
 
     /**
      * Destructor

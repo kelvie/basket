@@ -37,15 +37,14 @@
 #include <kpushbutton.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
-#include <q3vgroupbox.h>
+#include <QButtonGroup>
+#include <QGroupBox>
 #include <kguiitem.h>
-#include <q3popupmenu.h>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <KDialog>
-#include <q3http.h>
+#include <QHttp>
 #include <kurl.h>
 #include <kinputdialog.h>
 #include <qvalidator.h>
@@ -72,34 +71,34 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	QIcon likeIconSet    = KIcon("likeback_like");
-	QIcon dislikeIconSet = KIcon("likeback_dislike");
-	QIcon bugIconSet     = KIcon("likeback_bug");
-	QIcon featureIconSet = KIcon("likeback_feature");
+	QIcon likeIconSet    = KIcon(":images/cr16-action-likeback_like.png");
+	QIcon dislikeIconSet = KIcon(":images/cr16-action-likeback_dislike.png");
+	QIcon bugIconSet     = KIcon(":images/cr16-action-likeback_bug.png");
+	QIcon featureIconSet = KIcon(":images/cr16-action-likeback_feature.png");
 
-	m_likeButton = new QToolButton(this, "likeback_like");
-	m_likeButton->setIconSet(likeIconSet);
+	m_likeButton = new QToolButton(this, ":images/cr16-action-likeback_like.png");
+	m_likeButton->setIcon(likeIconSet);
 	m_likeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you like"));
 	m_likeButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(clickedLike()) );
 	layout->add(m_likeButton);
 
-	m_dislikeButton = new QToolButton(this, "likeback_dislike");
-	m_dislikeButton->setIconSet(dislikeIconSet);
+	m_dislikeButton = new QToolButton(this, ":images/cr16-action-likeback_dislike.png");
+	m_dislikeButton->setIcon(dislikeIconSet);
 	m_dislikeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you dislike"));
 	m_dislikeButton->setAutoRaise(true);
 	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(clickedDislike()) );
 	layout->add(m_dislikeButton);
 
-	m_bugButton = new QToolButton(this, "likeback_bug");
-	m_bugButton->setIconSet(bugIconSet);
+	m_bugButton = new QToolButton(this, ":images/cr16-action-likeback_bug.png");
+	m_bugButton->setIcon(bugIconSet);
 	m_bugButton->setTextLabel("<p>" + i18n("Send application developers a comment about an improper behavior of the application"));
 	m_bugButton->setAutoRaise(true);
 	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(clickedBug()) );
 	layout->add(m_bugButton);
 
-	m_featureButton = new QToolButton(this, "likeback_feature");
-	m_featureButton->setIconSet(featureIconSet);
+	m_featureButton = new QToolButton(this, ":images/cr16-action-likeback_feature.png");
+	m_featureButton->setIcon(featureIconSet);
 	m_featureButton->setTextLabel("<p>" + i18n("Send application developers a comment about a new feature you desire"));
 	m_featureButton->setAutoRaise(true);
 	connect( m_featureButton, SIGNAL(clicked()), this, SLOT(clickedFeature()) );
@@ -419,16 +418,6 @@ void LikeBack::setUserWantsToShowBar(bool showBar)
 
 void LikeBack::showInformationMessage()
 {
-	// Load and register the images needed by the message:
-	QPixmap likeIcon    = KIcon("likeback_like").pixmap(32,32);
-	QPixmap dislikeIcon = KIcon("likeback_dislike").pixmap(32,32);
-	QPixmap bugIcon     = KIcon("likeback_bug").pixmap(32,32);
-	QPixmap featureIcon = KIcon("likeback_feature").pixmap(32,32);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_like",    likeIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_dislike", dislikeIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_bug",     bugIcon);
-	Q3MimeSourceFactory::defaultFactory()->setPixmap("likeback_icon_feature", featureIcon);
-
 	// Show a message reflecting the allowed types of comment:
 	Button buttons = d->buttons;
 	int nbButtons = (buttons & Like    ? 1 : 0) +
@@ -470,29 +459,24 @@ void LikeBack::showInformationMessage()
 			: "") +
 		"<p>" + i18np("Example:", "Examples:", nbButtons) + "</p>" +
 		(buttons & LikeBack::Like ?
-			"<p><img source=\"likeback_icon_like\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_like.png\"> &nbsp;" +
 				i18n("<b>I like</b> the new artwork. Very refreshing.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Dislike ?
-			"<p><img source=\"likeback_icon_dislike\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_dislike.png\"> &nbsp;" +
 				i18n("<b>I dislike</b> the welcome page of that assistant. Too time consuming.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Bug ?
-			"<p><img source=\"likeback_icon_bug\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_bug.png\"> &nbsp;" +
 				i18n("<b>The application has an improper behaviour</b> when clicking the Add button. Nothing happens.") + "</p>"
 			: "") +
 		(buttons & LikeBack::Feature ?
-			"<p><img source=\"likeback_icon_feature\"> &nbsp;" +
+			"<p><img source=\":images/cr16-action-likeback_feature.png\"> &nbsp;" +
 				i18n("<b>I desire a new feature</b> allowing me to send my work by email.") + "</p>"
 			: "") +
 		"</tr></table>",
 		i18n("Help Improve the Application"));
 
-	// Reset the images from the factory:
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_like",    0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_dislike", 0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_bug",     0L);
-	Q3MimeSourceFactory::defaultFactory()->setData("likeback_icon_feature", 0L);
 }
 
 QString LikeBack::activeWindowPath()
@@ -585,25 +569,6 @@ bool LikeBack::isDevelopmentVersion(const QString &version)
 }
 
 /**
- * Code from KBugReport::slotConfigureEmail() in kdeui/kbugreport.cpp:
- */
-/*void LikeBack::beginFetchingEmail()
-{
-	if (m_process)
-		return;
-	m_process = new K3Process();
-	*m_process << QString::fromLatin1("kcmshell") << QString::fromLatin1("kcm_useraccount");
-	connect( m_process, SIGNAL(processExited(K3Process*)), SLOT(fetchUserEmail()) );
-	if (!m_process->start()) {
-		kDebug() << "Couldn't start kcmshell.." << endl;
-		delete m_process;
-		m_process = 0;
-		return;
-	}
-//	m_configureEmail->setEnabled(false);
-}*/
-
-/**
  * Code from KBugReport::slotSetFrom() in kdeui/kbugreport.cpp:
  */
 void LikeBack::fetchUserEmail()
@@ -678,68 +643,66 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	pageLayout->addWidget(introduction);
 
 	// The comment group:
-	m_group = new Q3ButtonGroup(0);//i18n("Send Application Developers a Comment About:"), page);
-	Q3VGroupBox *box = new Q3VGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	QGroupBox *box = new QGroupBox(i18n("Send Application Developers a Comment About:"), page);
+	QVBoxLayout* boxLayout = new QVBoxLayout;
+	box->setLayout(boxLayout);
 	pageLayout->addWidget(box);
 
 	// The radio buttons:
 	QWidget *buttons = new QWidget(box);
+	boxLayout->addWidget(buttons);
 	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = KIconLoader::global()->loadIcon(
-            "likeback_like", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_like.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
             );
 		QLabel *likeIcon = new QLabel(buttons);
 		likeIcon->setPixmap(likePixmap);
 		likeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *likeButton = new QRadioButton(i18n("Something you &like"), buttons);
+		likeButton = new QRadioButton(i18n("Something you &like"), buttons);
 		buttonsGrid->addWidget(likeIcon,   /*row=*/0, /*column=*/0);
 		buttonsGrid->addWidget(likeButton, /*row=*/0, /*column=*/1);
-		m_group->insert(likeButton, LikeBack::Like);
 	}
 	if (m_likeBack->buttons() & LikeBack::Dislike) {
 		QPixmap dislikePixmap = KIconLoader::global()->loadIcon(
-            "likeback_dislike", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_dislike.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
             );
 		QLabel *dislikeIcon = new QLabel(buttons);
 		dislikeIcon->setPixmap(dislikePixmap);
 		dislikeIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *dislikeButton = new QRadioButton(i18n("Something you &dislike"), buttons);
+		dislikeButton = new QRadioButton(i18n("Something you &dislike"), buttons);
 		buttonsGrid->addWidget(dislikeIcon,   /*row=*/1, /*column=*/0);
 		buttonsGrid->addWidget(dislikeButton, /*row=*/1, /*column=*/1);
-		m_group->insert(dislikeButton, LikeBack::Dislike);
 	}
 	if (m_likeBack->buttons() & LikeBack::Bug) {
 		QPixmap bugPixmap = KIconLoader::global()->loadIcon(
-            "likeback_bug", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            ":images/cr16-action-likeback_bug.png", KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, true
             );
 		QLabel *bugIcon = new QLabel(buttons);
 		bugIcon->setPixmap(bugPixmap);
 		bugIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *bugButton = new QRadioButton(i18n("An improper &behavior of this application"), buttons);
+		bugButton = new QRadioButton(i18n("An improper &behavior of this application"), buttons);
 		buttonsGrid->addWidget(bugIcon,   /*row=*/2, /*column=*/0);
 		buttonsGrid->addWidget(bugButton, /*row=*/2, /*column=*/1);
-		m_group->insert(bugButton, LikeBack::Bug);
 	}
 	if (m_likeBack->buttons() & LikeBack::Feature) {
 		QPixmap featurePixmap = KIconLoader::global()->loadIcon(
-            "likeback_feature", KIconLoader::NoGroup, 16,
+            ":images/cr16-action-likeback_feature.png", KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true);
 		QLabel *featureIcon = new QLabel(buttons);
 		featureIcon->setPixmap(featurePixmap);
 		featureIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		QRadioButton *featureButton = new QRadioButton(i18n("A new &feature you desire"), buttons);
+		featureButton = new QRadioButton(i18n("A new &feature you desire"), buttons);
 		buttonsGrid->addWidget(featureIcon,   /*row=*/3, /*column=*/0);
 		buttonsGrid->addWidget(featureButton, /*row=*/3, /*column=*/1);
-		m_group->insert(featureButton, LikeBack::Feature);
 	}
-	m_group->setButton(reason);
 
 	// The comment text box:
-	m_comment = new Q3TextEdit(box);
+	m_comment = new QTextEdit(box);
+	boxLayout->addWidget(m_comment);
 	m_comment->setTabChangesFocus(true);
 	m_comment->setTextFormat(Qt::PlainText);
 	m_comment->setText(initialComment);
@@ -833,8 +796,7 @@ void LikeBackDialog::send()
 {
 	QString emailAddress = m_likeBack->emailAddress();
 
-	int reason = m_group->selectedId();
-	QString type = (reason == LikeBack::Like ? "Like" : (reason == LikeBack::Dislike ? "Dislike" : (reason == LikeBack::Bug ? "Bug" : "Feature")));
+	QString type = (likeButton->isChecked() ? "Like" : (dislikeButton->isChecked() ? "Dislike" : (bugButton->isChecked() ? "Bug" : "Feature")));
 	QString data =
 		"protocol=" + QUrl::toPercentEncoding("1.0")                              + '&' +
 		"type="     + QUrl::toPercentEncoding(type)                               + '&' +
@@ -844,13 +806,13 @@ void LikeBackDialog::send()
 		"context="  + QUrl::toPercentEncoding(m_context)                          + '&' +
 		"comment="  + QUrl::toPercentEncoding(m_comment->text())                  + '&' +
 		"email="    + QUrl::toPercentEncoding(emailAddress);
-	Q3Http *http = new Q3Http(m_likeBack->hostName(), m_likeBack->hostPort());
+	QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
 
 	kDebug() << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath();
 	kDebug() << data;
 	connect( http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)) );
 
-	Q3HttpRequestHeader header("POST", m_likeBack->remotePath());
+	QHttpRequestHeader header("POST", m_likeBack->remotePath());
 	header.setValue("Host", m_likeBack->hostName());
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
 	http->setHost(m_likeBack->hostName());

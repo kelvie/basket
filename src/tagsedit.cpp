@@ -35,7 +35,6 @@
 #include <qcheckbox.h>
 #include <kpushbutton.h>
 #include <QGroupBox>
-#include <q3header.h>
 #include <QList>
 #include <klocale.h>
 #include <kstandarddirs.h>
@@ -45,6 +44,7 @@
 #include <qaction.h>
 #include <kmessagebox.h>
 #include <qtimer.h>
+#include <QHeaderView>
 
 #include <kshortcutwidget.h>
 #include <QFontComboBox>
@@ -56,6 +56,8 @@
 #include "variouswidgets.h"
 #include "global.h"
 #include "bnpview.h"
+
+#include <kdebug.h>
 
 /** class StateCopy: */
 
@@ -106,52 +108,52 @@ bool TagCopy::isMultiState()
 
 /** class TagListViewItem: */
 
-TagListViewItem::TagListViewItem(Q3ListView *parent, TagCopy *tagCopy)
- : Q3ListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, TagCopy *tagCopy)
+ : QTreeWidgetItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListViewItem *parent, TagCopy *tagCopy)
- : Q3ListViewItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, TagCopy *tagCopy)
+ : QTreeWidgetItem(parent), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListView *parent, Q3ListViewItem *after, TagCopy *tagCopy)
- : Q3ListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, TagCopy *tagCopy)
+ : QTreeWidgetItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, TagCopy *tagCopy)
- : Q3ListViewItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, TagCopy *tagCopy)
+ : QTreeWidgetItem(parent, after), m_tagCopy(tagCopy), m_stateCopy(0)
 {
 	setText(0, tagCopy->newTag->name());
 }
 
 /* */
 
-TagListViewItem::TagListViewItem(Q3ListView *parent, StateCopy *stateCopy)
- : Q3ListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, StateCopy *stateCopy)
+ : QTreeWidgetItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListViewItem *parent, StateCopy *stateCopy)
- : Q3ListViewItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, StateCopy *stateCopy)
+ : QTreeWidgetItem(parent), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListView *parent, Q3ListViewItem *after, StateCopy *stateCopy)
- : Q3ListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, StateCopy *stateCopy)
+ : QTreeWidgetItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
 
-TagListViewItem::TagListViewItem(Q3ListViewItem *parent, Q3ListViewItem *after, StateCopy *stateCopy)
- : Q3ListViewItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
+TagListViewItem::TagListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, StateCopy *stateCopy)
+ : QTreeWidgetItem(parent, after), m_tagCopy(0), m_stateCopy(stateCopy)
 {
 	setText(0, stateCopy->newState->name());
 }
@@ -164,14 +166,9 @@ TagListViewItem::~TagListViewItem()
 
 TagListViewItem* TagListViewItem::lastChild()
 {
-	TagListViewItem *child = (TagListViewItem*)firstChild();
-	while (child) {
-		if (child->nextSibling())
-			child = (TagListViewItem*)(child->nextSibling());
-		else
-			return child;
-	}
-	return 0;
+	if (childCount() <=0)
+		return 0;
+	return (TagListViewItem *)child(childCount() - 1);
 }
 
 bool TagListViewItem::isEmblemObligatory()
@@ -182,26 +179,48 @@ bool TagListViewItem::isEmblemObligatory()
 TagListViewItem* TagListViewItem::prevSibling()
 {
 	TagListViewItem *item = this;
-	while (item) {
-		if (item->nextSibling() == this)
-			return item;
-		item = (TagListViewItem*)(item->itemAbove());
+	int idx = 0;
+	if (!parent()){
+		idx = treeWidget()->indexOfTopLevelItem(item);	
+		if (idx <= 0) return NULL;
+		return (TagListViewItem *)treeWidget()->topLevelItem(idx-1);
 	}
-	return 0;
+	else{
+		idx = parent()->indexOfChild(item);
+		if (idx <= 0) return NULL;
+		return (TagListViewItem *)parent()->child(idx-1);
+	}
 }
+
+TagListViewItem* TagListViewItem::nextSibling()
+{
+	TagListViewItem *item = this;
+	int idx = 0;
+	if (!parent()){
+		idx = treeWidget()->indexOfTopLevelItem(item);	
+		if (idx >= treeWidget()->topLevelItemCount()) return NULL;
+		return (TagListViewItem *)treeWidget()->topLevelItem(idx+1);
+	}
+	else{
+		idx = parent()->indexOfChild(item);
+		if (idx >= parent()->childCount()) return NULL;
+		return (TagListViewItem *)parent()->child(idx+1);
+	}
+}
+
 
 TagListViewItem* TagListViewItem::parent() const
 {
-	return (TagListViewItem*) Q3ListViewItem::parent();
+	return (TagListViewItem*) QTreeWidgetItem::parent();
 }
 
 // TODO: TagListViewItem::
 int TAG_ICON_SIZE = 16;
 int TAG_MARGIN = 1;
 
-int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const Q3ListView */*listView*/, int /* column */) const
+int TagListViewItem::width(const QFontMetrics &/* fontMetrics */, const QTreeWidget* /*listView*/, int /* column */) const
 {
-	return listView()->visibleWidth();
+	return treeWidget()->width();
 }
 
 void TagListViewItem::setup()
@@ -212,70 +231,31 @@ void TagListViewItem::setup()
 	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
 		text = i18nc("Tag name (shortcut)", "%1 (%2)",text, m_tagCopy->newTag->shortcut().toString());
 
-	QFont font = state->font(listView()->font());
+	QFont font = state->font(treeWidget()->font());
 
 	QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
 
-	widthChanged();
-	int height = TAG_MARGIN + qMax(TAG_ICON_SIZE, textRect.height()) + TAG_MARGIN;
-	setHeight(height);
+	//widthChanged();
+	//int height = TAG_MARGIN + qMax(TAG_ICON_SIZE, textRect.height()) + TAG_MARGIN;
+	//setHeight(height);
 
-	repaint();
-}
+	//repaint();
 
-void TagListViewItem::paintCell(QPainter *painter, const QColorGroup &/*colorGroup*/, int /*column*/, int width, int /*align*/)
-{
+	QBrush brush;
+
 	bool withIcon = m_stateCopy || (m_tagCopy && !m_tagCopy->isMultiState());
-	QString text = (m_tagCopy ? m_tagCopy->newTag->name() : m_stateCopy->newState->name());
-	State *state = (m_tagCopy ? m_tagCopy->stateCopies[0]->newState : m_stateCopy->newState);
-
-	if (m_tagCopy && !m_tagCopy->newTag->shortcut().isEmpty())
-		text = i18nc("Tag name (shortcut)", "%1 (%2)",text, m_tagCopy->newTag->shortcut().toString());
-
-	QFont font = (withIcon ? state->font(listView()->font()) : listView()->font());
-
-	QFontMetrics fontMetrics(font);
-	QRect textRect = fontMetrics.boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop, text);
-
-	QPixmap emblem = QPixmap();
-    if (withIcon)
-        emblem = KIconLoader::global()->loadIcon(
-            state->emblem(), KIconLoader::NoGroup, 16);
-
-	QWidget *viewport = listView()->viewport();
-	QColor backgroundColor = (isSelected() ? kapp->palette().color(QPalette::Highlight)
-	                                       : (withIcon && state->backgroundColor().isValid() ? state->backgroundColor()
-						  : viewport->palette().color(viewport->backgroundRole())));
-	QColor textColor = (isSelected() ? kapp->palette().color(QPalette::HighlightedText)
-	                                 : (withIcon && state->textColor().isValid() ? state->textColor()
-					    : viewport->palette().color(viewport->foregroundRole())));
-
-	// Bufferize the drawing of items (otherwize, resizing the splitter make the tree act like a Christmas Tree ;-D ):
-	QPixmap theBuffer(width, height());
-	theBuffer.fill(backgroundColor);
-	QPainter thePainter(&theBuffer);
-
-	if (withIcon)
-		thePainter.drawPixmap(TAG_MARGIN, (height() - emblem.height()) / 2, emblem);
-
-	int xText = TAG_MARGIN + (withIcon ? TAG_ICON_SIZE + TAG_MARGIN : 0);
-	thePainter.setPen(textColor);
-	thePainter.setFont(font);
-	int textWidth = width - xText;
-	if (thePainter.fontMetrics().width(text) > textWidth)
-        text = fontMetrics.elidedText(text, Qt::ElideRight, width );
-	thePainter.drawText(xText, 0, textWidth, height(), Qt::AlignLeft | Qt::AlignVCenter | Qt::TextShowMnemonic, text);
-
-	// Apply the buffer:
-	thePainter.end();
-	painter->drawPixmap(0, 0, theBuffer);
+	brush.setColor(isSelected() ? kapp->palette().color(QPalette::Highlight)  : 
+			(withIcon && state->backgroundColor().isValid() ? state->backgroundColor() : 
+			 treeWidget()->viewport()->palette().color(treeWidget()->viewport()->backgroundRole())));
+	setBackground(1, brush);
 }
 
 /** class TagListView: */
 
-TagListView::TagListView(QWidget *parent, const char *name, Qt::WFlags flags)
- : Q3ListView(parent, name, flags)
+TagListView::TagListView(QWidget *parent)
+ : QTreeWidget(parent)
 {
+	setItemDelegate(new TagListDelegate);
 }
 
 TagListView::~TagListView()
@@ -286,47 +266,51 @@ void TagListView::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete)
 		emit deletePressed();
-	else if (event->key() != Qt::Key_Left || (selectedItem() && selectedItem()->parent()))
+	else if (event->key() != Qt::Key_Left || (currentItem() && currentItem()->parent()))
 		// Do not allow to open/close first-level items
-		Q3ListView::keyPressEvent(event);
+		QTreeWidget::keyPressEvent(event);
 }
 
-void TagListView::contentsMouseDoubleClickEvent(QMouseEvent *event)
+void TagListView::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	// Ignore this event! Do not open/close first-level items!
 
 	// But trigger edit (change focus to name) when double-click an item:
-	if (itemAt(contentsToViewport(event->pos())) != 0)
+	if (itemAt(event->pos()) != 0)
 		emit doubleClickedItem();
 }
 
-void TagListView::contentsMousePressEvent(QMouseEvent *event)
+void TagListView::mousePressEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
-	if (itemAt(contentsToViewport(event->pos())) != 0)
-		Q3ListView::contentsMousePressEvent(event);
+	if (itemAt(event->pos()) != 0)
+		QTreeWidget::mousePressEvent(event);
 }
 
-void TagListView::contentsMouseReleaseEvent(QMouseEvent *event)
+void TagListView::mouseReleaseEvent(QMouseEvent *event)
 {
 	// When clicking on an empty space, QListView would unselect the current item! We forbid that!
-	if (itemAt(contentsToViewport(event->pos())) != 0)
-		Q3ListView::contentsMouseReleaseEvent(event);
+	if (itemAt(event->pos()) != 0)
+		QTreeWidget::mouseReleaseEvent(event);
 }
 
 TagListViewItem* TagListView::currentItem() const
 {
-	return (TagListViewItem*) Q3ListView::currentItem();
+	return (TagListViewItem*) QTreeWidget::currentItem();
 }
 
 TagListViewItem* TagListView::firstChild() const
 {
-	return (TagListViewItem*) Q3ListView::firstChild();
+	if (topLevelItemCount() <= 0)
+		return NULL;
+	return (TagListViewItem*)topLevelItem(0);
 }
 
 TagListViewItem* TagListView::lastItem() const
 {
-	return (TagListViewItem*) Q3ListView::lastItem();
+	if (topLevelItemCount() <=0)
+		return NULL;
+	return (TagListViewItem*)topLevelItem(topLevelItemCount()-1);
 }
 
 /** class TagsEditDialog: */
@@ -360,9 +344,9 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tags = new TagListView(mainWidget());
 	m_tags->header()->hide();
 	m_tags->setRootIsDecorated(false);
-	m_tags->addColumn("");
-	m_tags->setSorting(-1); // Sort column -1, so disabled sorting
-	m_tags->setResizeMode(Q3ListView::LastColumn);
+	//m_tags->addColumn("");
+	//m_tags->setSorting(-1); // Sort column -1, so disabled sorting
+	//m_tags->setResizeMode(QTreeWidget::LastColumn);
 
 	m_moveUp    = new KPushButton( KGuiItem("", "arrow-up"),   mainWidget() );
 	m_moveDown  = new KPushButton( KGuiItem("", "arrow-down"), mainWidget() );
@@ -406,7 +390,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_shortcut = new KShortcutWidget(tagWidget);
 	m_removeShortcut = new QPushButton(i18nc("Remove tag shortcut", "&Remove"), tagWidget);
 	QLabel *shortcutLabel = new QLabel(m_shortcut, i18n("S&hortcut:"), tagWidget);
-	connect( m_shortcut,       SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
+	connect( m_shortcut,       SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
 	connect( m_removeShortcut, SIGNAL(clicked()),                          this, SLOT(removeShortcut())                   );
 
 	m_inherit = new QCheckBox(i18n("&Inherited by new sibling notes"), tagWidget);
@@ -599,7 +583,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 			item = new TagListViewItem(m_tags, lastInsertedItem, *tagCopyIt);
 		else
 			item = new TagListViewItem(m_tags, *tagCopyIt);
-		item->setOpen(true);
+		item->setExpanded(true);
 		lastInsertedItem = item;
 		// Load
 		if ((*tagCopyIt)->isMultiState()) {
@@ -617,7 +601,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	// Connect Signals:
 	connect( m_tagName,         SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
-	connect( m_shortcut,        SIGNAL(capturedShortcut(const KShortcut&)), this, SLOT(modified()) );
+	connect( m_shortcut,        SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(modified()) );
 	connect( m_inherit,         SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 	connect( m_stateName,       SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_emblem,          SIGNAL(iconChanged(QString)),               this, SLOT(modified()) );
@@ -632,11 +616,12 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	connect( m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()) );
 	connect( m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()) );
 
-	connect( m_tags,            SIGNAL(currentChanged(Q3ListViewItem*)),     this, SLOT(currentItemChanged(Q3ListViewItem*)) );
+	connect( m_tags,            SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),     this, 
+			SLOT(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)) );
 	connect( m_tags,            SIGNAL(deletePressed()),                    this, SLOT(deleteTag())                        );
 	connect( m_tags,            SIGNAL(doubleClickedItem()),                this, SLOT(renameIt())                         );
 
-	Q3ListViewItem *firstItem = m_tags->firstChild();
+	QTreeWidgetItem *firstItem = m_tags->firstChild();
 	if (stateToEdit != 0) {
 		TagListViewItem *item = itemForState(stateToEdit);
 		if (item)
@@ -645,13 +630,13 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	// Select the first tag unless the first tag is a multi-state tag.
 	// In this case, select the first state, as it let customize the state AND the associated tag.
 	if (firstItem) {
-		if (firstItem->firstChild())
-			firstItem = firstItem->firstChild();
+		if (firstItem->childCount() > 0)
+			firstItem = firstItem->child(0);
 		firstItem->setSelected(true);
 		m_tags->setCurrentItem(firstItem);
 		currentItemChanged(firstItem);
 		if (stateToEdit == 0)
-			m_tags->ensureVisible(0, 0);
+			m_tags->scrollToItem(firstItem);
 		m_tags->setFocus();
 	} else {
 		m_moveUp->setEnabled(false);
@@ -715,9 +700,9 @@ void TagsEditDialog::resetTreeSizeHint()
 TagListViewItem* TagsEditDialog::itemForState(State *state)
 {
 	// Browse all tags:
-	Q3ListViewItemIterator it(m_tags);
-	while (it.current()) {
-		Q3ListViewItem *item = it.current();
+	QTreeWidgetItemIterator it(m_tags);
+	while (*it) {
+		QTreeWidgetItem *item = *it;
 
 		// Return if we found the tag item:
 		TagListViewItem *tagItem = (TagListViewItem*)item;
@@ -725,9 +710,9 @@ TagListViewItem* TagsEditDialog::itemForState(State *state)
 			return tagItem;
 
 		// Browser all sub-states:
-		Q3ListViewItemIterator it2(item);
-		while (it2.current()) {
-			Q3ListViewItem *subItem = it2.current();
+		QTreeWidgetItemIterator it2(item);
+		while (*it2) {
+			QTreeWidgetItem *subItem = *it2;
 
 			// Return if we found the state item:
 			TagListViewItem *stateItem = (TagListViewItem*)subItem;
@@ -776,12 +761,12 @@ void TagsEditDialog::newState()
 	TagListViewItem *tagItem = m_tags->currentItem();
 	if (tagItem->parent())
 		tagItem = ((TagListViewItem*)(tagItem->parent()));
-	tagItem->setOpen(true); // Show sub-states if we're adding them for the first time!
+	tagItem->setExpanded(true); // Show sub-states if we're adding them for the first time!
 
 	State *firstState = tagItem->tagCopy()->stateCopies[0]->newState;
 
 	// Add the first state to the "view". From now on, it's a multi-state tag:
-	if (tagItem->firstChild() == 0) {
+	if (tagItem->childCount() <= 0) {
 		firstState->setName( tagItem->tagCopy()->newTag->name() );
 		// Force emblem to exists for multi-state tags:
 		if (firstState->emblem().isEmpty())
@@ -812,10 +797,33 @@ void TagsEditDialog::moveUp()
 		return;
 
 	TagListViewItem *tagItem     = m_tags->currentItem();
-	TagListViewItem *prevTagItem = ((TagListViewItem*)( tagItem->prevSibling() ));
 
 	// Move in the list view:
-	prevTagItem->moveItem(tagItem);
+	int idx = 0;
+	QList<QTreeWidgetItem *> children;
+	if (tagItem->parent()){
+		TagListViewItem* parentItem = tagItem->parent();
+		idx = parentItem->indexOfChild(tagItem);
+		if (idx > 0){
+			tagItem = (TagListViewItem *)parentItem->takeChild(idx);
+			children = tagItem->takeChildren();
+			parentItem->insertChild(idx-1, tagItem);
+			tagItem->insertChildren(0,children);
+			tagItem->setExpanded(true);
+		}
+	}
+	else{
+		idx = m_tags->indexOfTopLevelItem(tagItem);
+		if (idx > 0){
+			tagItem = (TagListViewItem *)m_tags->takeTopLevelItem(idx);
+			children = tagItem->takeChildren();
+			m_tags->insertTopLevelItem(idx-1, tagItem);
+			tagItem->insertChildren(0,children);
+			tagItem->setExpanded(true);
+		}
+	}
+
+	m_tags->setCurrentItem(tagItem);
 
 	// Move in the value list:
 	if (tagItem->tagCopy()) {
@@ -851,9 +859,33 @@ void TagsEditDialog::moveDown()
 		return;
 
 	TagListViewItem *tagItem = m_tags->currentItem();
-
+	
 	// Move in the list view:
-	tagItem->moveItem(tagItem->nextSibling());
+	int idx = 0;
+	QList<QTreeWidgetItem *> children;
+	if (tagItem->parent()){
+		TagListViewItem* parentItem = tagItem->parent();
+		idx = parentItem->indexOfChild(tagItem);
+		if (idx < parentItem->childCount()-1){
+			children = tagItem->takeChildren();
+			tagItem = (TagListViewItem *)parentItem->takeChild(idx);
+			parentItem->insertChild(idx+1, tagItem);
+			tagItem->insertChildren(0,children);
+			tagItem->setExpanded(true);
+		}
+	}
+	else{
+		idx = m_tags->indexOfTopLevelItem(tagItem);
+		if (idx < m_tags->topLevelItemCount()-1){
+			children = tagItem->takeChildren();
+			tagItem = (TagListViewItem *)m_tags->takeTopLevelItem(idx);
+			m_tags->insertTopLevelItem(idx+1, tagItem);
+			tagItem->insertChildren(0,children);
+			tagItem->setExpanded(true);
+		}
+	}
+
+	m_tags->setCurrentItem(tagItem);
 
 	// Move in the value list:
 	if (tagItem->tagCopy()) {
@@ -966,7 +998,7 @@ void TagsEditDialog::deleteTag()
 		item = 0;
 		// Transform to single-state tag if needed:
 		if (parentItem->childCount() == 1) {
-			delete parentItem->firstChild();
+			delete parentItem->child(0);
 			m_tags->setCurrentItem(parentItem);
 		}
 	}
@@ -1038,7 +1070,7 @@ void TagsEditDialog::modified()
 	m_onEveryLines->setEnabled(!m_textEquivalent->text().isEmpty());
 }
 
-void TagsEditDialog::currentItemChanged(Q3ListViewItem *item)
+void TagsEditDialog::currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem* nextItem)
 {
 	if (item == 0)
 		return;
@@ -1083,15 +1115,20 @@ void TagsEditDialog::ensureCurrentItemVisible()
 
 	// Ensure the tag and the states (if available) to be visible, but if there is a looooot of states,
 	// ensure the tag is still visible, even if the last states are not...
-	int y = m_tags->itemPos(tagItem);
-	int height = tagItem->totalHeight();
-	int bottom = y + qMin(height, m_tags->visibleHeight());
-	int xMiddle = m_tags->contentsX() + m_tags->visibleWidth() / 2;
-	m_tags->ensureVisible( xMiddle, bottom, 0,0 );
-	m_tags->ensureVisible( xMiddle, y,      0,0 );
+	m_tags->scrollToItem( tagItem);
 
-	m_moveDown->setEnabled( tagItem->nextSibling() != 0 );
-	m_moveUp->setEnabled(   tagItem->prevSibling() != 0 );
+	int idx = 0;
+	
+	if (tagItem->parent()){
+		idx = ((QTreeWidgetItem *)tagItem->parent())->indexOfChild(tagItem);
+		m_moveDown->setEnabled( idx < ((QTreeWidgetItem *)tagItem->parent())->childCount());
+	}
+	else{
+		idx = m_tags->indexOfTopLevelItem(tagItem);
+		m_moveDown->setEnabled( idx < m_tags->topLevelItemCount());
+	}
+
+	m_moveUp->setEnabled(   idx > 0);
 }
 
 void TagsEditDialog::loadBlankState()
@@ -1227,3 +1264,9 @@ void TagsEditDialog::slotOk()
 	Global::bnpView->recomputeAllStyles();
 }
 
+void TagListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+		                     const QModelIndex &index) const {
+	TagListViewItem* thisItem  = qvariant_cast<TagListViewItem*>(index.data());
+	kDebug() << "Pointer is: " << thisItem << endl;
+	QItemDelegate::paint(painter,option,index);	
+}

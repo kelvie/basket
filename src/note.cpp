@@ -21,7 +21,7 @@
 #include <qpainter.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3ValueList>
+#include <QList>
 #include <qstyle.h>
 #include <kapplication.h>
 #include <kstyle.h>
@@ -287,7 +287,7 @@ void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers
 	// Only intersects with visible areas.
 	// If the note is not visible, the user don't think it will be selected while selecting the note(s) that hide this, so act like the user think:
 	bool intersects = false;
-	for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+	for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 		QRect &r = *it;
 		if (r.intersects(rect)) {
 			intersects = true;
@@ -1035,7 +1035,7 @@ Note* Note::noteAt(int x, int y)
 		if ((x >= right) && (x < right + RESIZER_WIDTH) && (y >= m_y) && (y < m_y + resizerHeight())) {
 			if ( ! m_computedAreas )
 				recomputeAreas();
-			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				if (rect.contains(x, y))
 					return this;
@@ -1047,7 +1047,7 @@ Note* Note::noteAt(int x, int y)
 		if ((x >= m_x) && (x < m_x + width()) && (y >= m_y) && (y < m_y + m_height)) {
 			if ( ! m_computedAreas )
 				recomputeAreas();
-			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				if (rect.contains(x, y))
 					return this;
@@ -1069,7 +1069,7 @@ Note* Note::noteAt(int x, int y)
 	} else if (matching() && y >= m_y && y < m_y + m_height && x >= m_x && x < m_x + m_width) {
 		if ( ! m_computedAreas )
 			recomputeAreas();
-		for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+		for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 			QRect &rect = *it;
 			if (rect.contains(x, y))
 				return this;
@@ -1606,39 +1606,40 @@ void Note::setOnTop(bool onTop)
 	}
 }
 
-void substractRectOnAreas(const QRect &rectToSubstract, Q3ValueList<QRect> &areas, bool andRemove)
+void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove)
 {
-	for (Q3ValueList<QRect>::iterator it = areas.begin(); it != areas.end(); ) {
-		QRect &rect = *it;
+	for (QList<QRect>::iterator it = areas.begin(); it != areas.end();){
+		QRect& rect = *it;
 		// Split the rectangle if it intersects with rectToSubstract:
 		if (rect.intersects(rectToSubstract)) {
 			// Create the top rectangle:
 			if (rectToSubstract.top() > rect.top()) {
-				areas.insert(it, QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
+				it = areas.insert(it,QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
 				rect.setTop(rectToSubstract.top());
 			}
 			// Create the bottom rectangle:
 			if (rectToSubstract.bottom() < rect.bottom()) {
-				areas.insert(it, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
+				it = areas.insert(it, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
 				rect.setBottom(rectToSubstract.bottom());
 			}
 			// Create the left rectangle:
 			if (rectToSubstract.left() > rect.left()) {
-				areas.insert(it, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
+				it = areas.insert(it, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
 				rect.setLeft(rectToSubstract.left());
 			}
 			// Create the right rectangle:
 			if (rectToSubstract.right() < rect.right()) {
-				areas.insert(it, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
+				it = areas.insert(it, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
 				rect.setRight(rectToSubstract.right());
 			}
 			// Remove the rectangle if it's entirely contained:
 			if (andRemove && rectToSubstract.contains(rect))
-				it = areas.remove(it);
-			else
+				it = areas.erase(it);
+			else 
 				++it;
-		} else
-			++it;
+		}
+		else
+			++it;	
 	}
 }
 
@@ -1796,7 +1797,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 				recomputeAreas();
 			if (m_areas.isEmpty())
 				return;
-			for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+			for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 				QRect &rect = *it;
 				painter->drawPixmap(rect.x(), rect.y(), pixmap, rect.x() - right, rect.y() - y(), rect.width(), rect.height());
 			}
@@ -2002,7 +2003,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
 void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 {
-	for (Q3ValueList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+	for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
 		QRect &rect = *it;
 		if (rect.x() >= x() + width()) // It's a rect of the resizer, don't draw it!
 			continue;
@@ -2143,12 +2144,12 @@ void Note::recomputeAllStyles()
 			child->recomputeAllStyles();
 }
 
-bool Note::removedStates(const Q3ValueList<State*> &deletedStates)
+bool Note::removedStates(const QList<State*> &deletedStates)
 {
 	bool modifiedBasket = false;
 
 	if (!states().isEmpty()) {
-		for (Q3ValueList<State*>::const_iterator it = deletedStates.begin(); it != deletedStates.end(); ++it)
+		for (QList<State*>::const_iterator it = deletedStates.begin(); it != deletedStates.end(); ++it)
 			if (hasState(*it)) {
 				removeState(*it);
 				modifiedBasket = true;
@@ -2367,7 +2368,7 @@ void Note::bufferizeSelectionPixmap()
 
 QRect Note::visibleRect()
 {
-	Q3ValueList<QRect> areas;
+	QList<QRect> areas;
 	areas.append(rect());
 
 	// When we are folding a parent group, if this note is bigger than the first real note of the group, cut the top of this:
@@ -2379,12 +2380,12 @@ QRect Note::visibleRect()
 	}
 
 	if (areas.count() > 0)
-		return areas[0];
+		return areas.first();
 	else
 		return QRect();
 }
 
-void Note::recomputeBlankRects(Q3ValueList<QRect> &blankAreas)
+void Note::recomputeBlankRects(QList<QRect> &blankAreas)
 {
 	if (!matching())
 		return;
@@ -2435,7 +2436,7 @@ Note* Note::noteForFullPath(const QString &path)
 	return 0;
 }
 
-void Note::listUsedTags(Q3ValueList<Tag*> &list)
+void Note::listUsedTags(QList<Tag*> &list)
 {
 	for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
 		Tag *tag = (*it)->parentTag();
@@ -2448,7 +2449,7 @@ void Note::listUsedTags(Q3ValueList<Tag*> &list)
 }
 
 
-void Note::usedStates(Q3ValueList<State*> &states)
+void Note::usedStates(QList<State*> &states)
 {
 	if (content())
 		for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it)

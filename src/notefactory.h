@@ -55,7 +55,7 @@ namespace NoteFactory
 	Note* createNoteFromText( const QString &content,  Basket *parent); // Find automatically the type from the text meaning  // TODO: Return Note::List?
 	Note* createNoteLauncher( const KUrl    &url,      Basket *parent);
 	Note* createNoteLauncher( const QString &command,  const QString &name, const QString &icon, Basket *parent);
-	Note* createNoteUnknown(  QMimeSource *source,     Basket *parent);
+	Note* createNoteUnknown(  const QMimeData *source,     Basket *parent);
 	/** Functions to create derived notes from a content */
 	Note* createNoteLinkOrLauncher( const KUrl &url,   Basket *parent);
 	Note* copyFileAndLoad(    const KUrl &url,         Basket *parent);
@@ -63,9 +63,9 @@ namespace NoteFactory
 	Note* loadFile(           const QString &fileName, Basket *parent); /// << Determine the content of the file (the file SHOULD exists) and return a note of the good type.
 	Note* loadFile(           const QString &fileName, NoteType::Id type, Basket *parent ); /// <<  Create a note of type @p type. The file is not obliged to exist.
 	/** Functions to create a new note from a drop or paste event */
-	Note* dropNote(QMimeSource *source, Basket *parent,
+	Note* dropNote(const QMimeData *source, Basket *parent,
 	               bool fromDrop = false, QDropEvent::Action action = QDropEvent::Copy, Note *noteSource = 0);
-	bool movingNotesInTheSameBasket(QMimeSource *source, Basket *parent, QDropEvent::Action action);
+	bool movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, QDropEvent::Action action);
 	Note* dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action action, bool fromDrop);
 	Note* decodeContent(QDataStream &stream, NoteType::Id type, Basket *parent); /// << Decode the @p stream to a note or return 0 if a general loadFile() is sufficient.
 	void consumeContent(QDataStream &stream, NoteType::Id type); /// << Decode the @p stream to a note or return 0 if a general loadFile() is sufficient.

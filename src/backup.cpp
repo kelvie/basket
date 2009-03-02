@@ -26,8 +26,6 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -38,7 +36,7 @@
 #include <qdir.h>
 #include <kapplication.h>
 #include <kaboutdata.h>
-#include <q3groupbox.h>
+#include <QGroupBox>
 #include <kdirselectdialog.h>
 #include <krun.h>
 #include <kconfig.h>
@@ -393,7 +391,7 @@ void BackupThread::run()
 	tar.addLocalDirectory(m_folderToBackup, backupMagicFolder);
 	// KArchive does not add hidden files. Basket description files (".basket") are hidden, we add them manually:
 	QDir dir(m_folderToBackup + "baskets/");
-	QStringList baskets = dir.entryList(QDir::Dirs);
+	QStringList baskets = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (QStringList::Iterator it = baskets.begin(); it != baskets.end(); ++it) {
 		tar.addLocalFile(
 			m_folderToBackup + "baskets/" + *it + "/.basket",

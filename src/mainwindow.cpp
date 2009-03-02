@@ -22,10 +22,9 @@
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qcursor.h>
-#include <q3whatsthis.h>
-#include <q3valuelist.h>
+#include <QWhatsThis>
+#include <QList>
 #include <qregexp.h>
-#include <q3buttongroup.h>
 //Added by qt3to4:
 #include <QMoveEvent>
 #include <QResizeEvent>

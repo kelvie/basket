@@ -28,15 +28,18 @@
 #include <klocale.h>
 #include <kparts/genericfactory.h>
 #include <kparts/statusbarextension.h>
+#include <kdemacros.h>
 #include "aboutdata.h"
 #include "basketstatusbar.h"
 #include "bnpview.h"
 
-typedef KParts::GenericFactory< BasketPart > BasketFactory;
-K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory )
+//typedef KParts::GenericFactory< BasketPart > BasketFactory;
 
-BasketPart::BasketPart( QWidget *parentWidget,
-						QObject *parent, const QStringList & )
+//K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory );
+K_PLUGIN_FACTORY( BasketFactory, registerPlugin<BasketPart>();)
+K_EXPORT_PLUGIN( BasketFactory("basket", "basket") )
+
+BasketPart::BasketPart( QWidget *parentWidget, QObject *parent, const QList<QVariant> & )
 	: KParts::ReadWritePart(parent)
 {
   // we need an instance
@@ -52,8 +55,10 @@ BasketPart::BasketPart( QWidget *parentWidget,
   // notify the part that this is our internal widget
 	setWidget(m_view);
 
+	setComponentData( BasketFactory::componentData() );
+
   // set our XML-UI resource file
-	setXMLFile("basket_part.rc");
+	setXMLFile("basket_part.rc", true);
 
   // we are read-write by default
 	setReadWrite(true);

@@ -26,7 +26,7 @@
 
 class QString;
 class QColor;
-class QMimeSource;
+class QMimeData;
 
 class StopWatch
 {
@@ -89,7 +89,7 @@ namespace Tools
 	/** @Return true if the source is from a file cutting in Konqueror.
 	  * @Return false if it was just a copy or if it was a drag.
 	  */
-	bool isAFileCut(QMimeSource *source);
+	bool isAFileCut(const QMimeData *source);
 
 	// Debug
 	void printChildren(QObject* parent);

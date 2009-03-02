@@ -104,10 +104,20 @@ set(basketpart_PART_SRCS basket_part.cpp)
 
 kde4_add_plugin(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 
-target_link_libraries(basketpart ${KDE4_KDECORE_LIBS} basketcommon kparts kdeui ${QT_QT3SUPPORT_LIBRARY})
+target_link_libraries(basketpart ${KDE4_KPARTS_LIBS} basketcommon kparts kdeui ${QT_QT3SUPPORT_LIBRARY})
 
 install(TARGETS basketpart DESTINATION ${PLUGIN_INSTALL_DIR})
 
+set(kontact_basket_PLUGIN_SRCS basket_plugin.cpp)
+
+kde4_add_plugin(kontact_basketplugin ${kontact_basket_PLUGIN_SRCS})
+
+qt4_add_dbus_interfaces(kontact_basket_PLUGIN_SRCS org.kde.basket.basket.xml)
+
+target_link_libraries(kontact_basketplugin ${KDE4_CORE_LIBS} kontactinterfaces basketcommon kparts kdeui ${KDE4_KPARTS_LIBS})
+
+install(TARGETS kontact_basketplugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES basket_plugin.desktop DESTINATION ${SERVICES_INSTALL_DIR}/kontact)
 
 ########### install files ###############
 
@@ -117,7 +127,7 @@ install(FILES  basket_part.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 endif(BUILD_KPARTS)
 
 install(FILES  basket.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-install(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	basket_config_features.desktop  	basket_config_notes.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES  basket_config_general.desktop  	basket_config_baskets.desktop  	basket_config_new_notes.desktop  	basket_config_notes_appearance.desktop  	basket_config_apps.desktop  	DESTINATION ${SERVICES_INSTALL_DIR})
 install(FILES  basketui.rc DESTINATION ${DATA_INSTALL_DIR}/basket)
 
 kde4_install_icons(${ICON_INSTALL_DIR})

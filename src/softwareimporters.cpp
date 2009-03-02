@@ -381,7 +381,6 @@ void SoftwareImporters::importKNotes()
 			bool isRichText    = false;
 			QString title, body;
 			QString buf;
-			qDebug() << "Got here" << endl;
 			while (1) {
 				buf = stream.readLine();
 				if (buf.isNull()) // OEF

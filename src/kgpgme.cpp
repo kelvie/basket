@@ -22,11 +22,11 @@
 
 #ifdef HAVE_LIBGPGME
 
+#include <QTreeWidget>
 #include <kapplication.h>
 #include <kmessagebox.h>
 #include <kpassworddialog.h>
 #include <kiconloader.h>
-#include <k3listview.h>
 #include <kdebug.h>
 #include <qcheckbox.h>
 #include <qlayout.h>
@@ -45,7 +45,7 @@
 class KGpgSelKey : public KDialog
 {
 	private:
-		K3ListView* keysListpr;
+		QTreeWidget* keysListpr;
 
 	public:
 
@@ -67,13 +67,12 @@ class KGpgSelKey : public KDialog
 			QPixmap keyPair = KIcon("kgpg_key2").pixmap(20, 20);
 
 			setMinimumSize(350,100);
-			keysListpr = new K3ListView(page);
+			keysListpr = new QTreeWidget(page);
 			keysListpr->setRootIsDecorated(true);
-			keysListpr->addColumn(i18n("Name"));
-			keysListpr->addColumn(i18n("Email"));
-			keysListpr->addColumn(i18n("ID"));
-			keysListpr->setShowSortIndicator(true);
-			keysListpr->setFullWidth(true);
+			keysListpr->setColumnCount(3);
+			QStringList headers;
+			headers << i18n("Name") << i18n("Email") << i18n("ID");
+			keysListpr->setHeaderLabels(headers);
 			keysListpr->setAllColumnsShowFocus(true);
 
 			labeltxt = new QLabel(i18n("Choose a secret key:"),page);
@@ -83,17 +82,19 @@ class KGpgSelKey : public KDialog
 
 			for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
 				QString name = gpg.checkForUtf8((*it).name);
-				K3ListViewItem *item = new
-					K3ListViewItem(keysListpr, name, (*it).email, (*it).id);
-				item->setPixmap(0,keyPair);
+				QStringList values;
+				values << name << (*it).email << (*it).id;
+				QTreeWidgetItem *item = new
+					QTreeWidgetItem(keysListpr, values, 3);
+				item->setIcon(0,keyPair);
 				if(preselected == (*it).id) {
-					keysListpr->setSelected(item, true);
+					item->setSelected(true);
 					keysListpr->setCurrentItem(item);
 				}
 			}
-			if(!keysListpr->selectedItem()) {
-				keysListpr->setSelected(keysListpr->firstChild(), true);
-				keysListpr->setCurrentItem(keysListpr->firstChild());
+			if(!keysListpr->currentItem() && keysListpr->topLevelItemCount()>0) {
+				keysListpr->topLevelItem(0)->setSelected(true);
+				keysListpr->setCurrentItem(keysListpr->topLevelItem(0));
 			}
 			vbox->addWidget(labeltxt);
 			vbox->addWidget(keysListpr);
@@ -101,7 +102,7 @@ class KGpgSelKey : public KDialog
 		};
 
 		QString key() {
-			Q3ListViewItem* item = keysListpr->selectedItem();
+			QTreeWidgetItem* item = keysListpr->currentItem();
 
 			if(item)
 				return item->text(2);

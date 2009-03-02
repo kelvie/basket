@@ -23,7 +23,7 @@
 
 #include <q3scrollview.h>
 #include <qtooltip.h>
-#include <q3valuelist.h>
+#include <QList>
 #include <qtimer.h>
 #include <qimage.h>
 #include <qdatetime.h>
@@ -42,7 +42,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QVBoxLayout>
-#include <Q3Frame>
+#include <QFrame>
 #include <QDropEvent>
 #include <QDragMoveEvent>
 #include <QPaintEvent>
@@ -118,7 +118,7 @@ class NoteSelection
 	void append(NoteSelection *node);
 	int count();
 
-	Q3ValueList<Note*> parentGroups();
+	QList<Note*> parentGroups();
 };
 
 /** This store all needed information when exporting to HTML
@@ -297,7 +297,7 @@ class Basket : public Q3ScrollView
 
 /// ANIMATIONS:
   private:
-	Q3ValueList<Note*> m_animatedNotes;
+	QList<Note*> m_animatedNotes;
 	QTimer            m_animationTimer;
 	int               m_deltaY;
 	QTime             m_lastFrameTime;
@@ -315,7 +315,7 @@ class Basket : public Q3ScrollView
 	bool m_loadingLaunched;
 	bool m_locked;
 	bool m_shouldConvertPlainTextNotes;
-	Q3Frame* m_decryptBox;
+	QFrame* m_decryptBox;
 	QPushButton* m_button;
 	int m_encryptionType;
 	QString m_encryptionKey;
@@ -432,7 +432,7 @@ public slots:
   public slots:
 	void activatedTagShortcut(Tag *tag);
 	void recomputeAllStyles();
-	void removedStates(const Q3ValueList<State*> &deletedStates);
+	void removedStates(const QList<State*> &deletedStates);
   private slots:
 	void toggledTagInMenu(QAction *act);
 	void toggledStateInMenu(QAction *act);
@@ -473,7 +473,7 @@ public slots:
 
 /// BLANK SPACES DRAWING:
   private:
-	Q3ValueList<QRect> m_blankAreas;
+	QList<QRect> m_blankAreas;
 	void recomputeBlankRects();
 	QWidget *m_cornerWidget;
 
@@ -592,13 +592,13 @@ public slots:
 /// DRAG AND DROP:
   private:
 	bool m_isDuringDrag;
-	Q3ValueList<Note*> m_draggedNotes;
+	QList<Note*> m_draggedNotes;
   public:
 	static void acceptDropEvent(QDropEvent *event, bool preCond = true);
 	void contentsDropEvent(QDropEvent *event);
 	void blindDrop(QDropEvent* event);
 	bool isDuringDrag() { return m_isDuringDrag; }
-	Q3ValueList<Note*> draggedNotes() { return m_draggedNotes; }
+	QList<Note*> draggedNotes() { return m_draggedNotes; }
   protected:
 	void contentsDragEnterEvent(QDragEnterEvent*);
 	void contentsDragMoveEvent(QDragMoveEvent *event);
@@ -610,11 +610,11 @@ public slots:
 
 /// EXPORTATION:
   public:
-	Q3ValueList<State*> usedStates();
+	QList<State*> usedStates();
 	static QString saveGradientBackground(const QColor &color, const QFont &font, const QString &folder);
 
   public:
-	void listUsedTags(Q3ValueList<Tag*> &list);
+	void listUsedTags(QList<Tag*> &list);
 
 /// MANAGE FOCUS:
   private:
@@ -663,7 +663,7 @@ public slots:
   private:
 	KDirWatch           *m_watcher;
 	QTimer               m_watcherTimer;
-	Q3ValueList<QString>  m_modifiedFiles;
+	QList<QString>  m_modifiedFiles;
   public:
 	void addWatchedFile(const QString &fullPath);
 	void removeWatchedFile(const QString &fullPath);

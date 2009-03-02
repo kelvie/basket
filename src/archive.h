@@ -21,7 +21,7 @@
 #ifndef ARCHIVE_H
 #define ARCHIVE_H
 
-#include <q3valuelist.h>
+#include <QList>
 #include <qmap.h>
 
 class Basket;
@@ -44,7 +44,7 @@ class Archive
   private:
 	// Convenient Methods for Saving:
 	static void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress);
-	static void listUsedTags(Basket *basket, bool recursive, Q3ValueList<Tag*> &list);
+	static void listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list);
 	// Convenient Methods for Loading:
 	static void renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates);
 	static void renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, QMap<QString, QString> &mergedStates);

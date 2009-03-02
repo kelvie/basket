@@ -22,7 +22,7 @@
 #define NOTEEDIT_H
 
 #include <KDialog>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <qlineedit.h>
 //Added by qt3to4:
 #include <QKeyEvent>

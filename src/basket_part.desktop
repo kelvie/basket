@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=basketPart
+Name=BasketPart
 Name[br]=Perzhbasket
 Name[ca]=Part per a basket
 Name[el]=Τμήμαbasket
@@ -16,6 +16,6 @@ Name[ta]=basketபாகம்
 Name[tr]=basket Bileşeni
 Name[ru]=Модуль basket
 MimeType=application/x-basket;
-ServiceTypes=KParts/ReadOnlyPart,KParts/ReadWritePart
-X-KDE-Library=libbasketpart
+X-KDE-ServiceTypes=KParts/ReadOnlyPart,KParts/ReadWritePart
+X-KDE-Library=basketpart
 Type=Service

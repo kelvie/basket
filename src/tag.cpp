@@ -27,7 +27,7 @@
 #include <qdir.h>
 //Added by qt3to4:
 #include <QTextStream>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <klocale.h>
 
@@ -432,7 +432,7 @@ void Tag::saveTags()
 	saveTagsTo(all, Global::savesFolder() + "tags.xml");
 }
 
-void Tag::saveTagsTo(Q3ValueList<Tag*> &list, const QString &fullPath)
+void Tag::saveTagsTo(QList<Tag*> &list, const QString &fullPath)
 {
 	// Create Document:
 	QDomDocument document(/*doctype=*/"basketTags");

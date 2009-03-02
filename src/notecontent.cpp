@@ -22,20 +22,20 @@
 #include <qdir.h>
 #include <qdom.h>
 #include <qpainter.h>
-#include <q3stylesheet.h>
 #include <qfontmetrics.h>
 #include <qwidget.h>
 #include <qcursor.h>
 #include <qstringlist.h>
 #include <qbuffer.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QStringList>
 #include <QPixmap>
 #include <ktextedit.h>
 #include <kservice.h>
 #include <kcolordialog.h>
 #include <kmessagebox.h>
 #include <klocale.h>
+#include <QAbstractTextDocumentLayout>
 
 #include <qbitmap.h>
 #include <kurifilter.h>
@@ -43,7 +43,7 @@
 //#include <kstringhandler.h>
 #include <kfilemetainfo.h>
 #include <qdatetime.h>
-#include <k3multipledrag.h>
+#include <QDrag>
 
 #include <qfileinfo.h>
 //#include <kio/kfileitem.h>
@@ -380,16 +380,20 @@ QPixmap TextContent::feedbackPixmap(int width, int height)
 
 QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
-	Q3SimpleRichText richText(html(), note()->font());
-	richText.setWidth(width);
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPixmap pixmap( qMin(width, richText.widthUsed()), qMin(height, richText.height()) );
+	QTextDocument richText;
+	richText.setHtml(html());
+	richText.setDefaultFont(note()->font());
+	richText.setTextWidth(width);
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::Text,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPixmap pixmap( qMin(width, (int)richText.idealWidth()), qMin(height, (int)richText.size().height()) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
 	painter.setPen(note()->textColor());
-	richText.draw(&painter, 0, 0, QRect(0, 0, pixmap.width(), pixmap.height()), colorGroup);
+	painter.translate(0,0);
+	richText.drawContents(&painter, QRect(0, 0, pixmap.width(), pixmap.height()));
 	painter.end();
 	return pixmap;
 }
@@ -439,10 +443,11 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
 
 QPixmap LinkContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::WindowText,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
 QPixmap ColorContent::feedbackPixmap(int width, int height)
@@ -452,45 +457,49 @@ QPixmap ColorContent::feedbackPixmap(int width, int height)
 	int rectHeight = (textRect.height() + 2)*3/2;
 	int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::WindowText,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
 	QPixmap pixmap( qMin(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), qMin(height, rectHeight) );
 	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	QPainter painter(&pixmap);
-	paint(&painter, pixmap.width(), pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
+	paint(&painter, pixmap.width(), pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
 	painter.end();
 	return pixmap;
 }
 
 QPixmap FileContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::WindowText,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
 QPixmap LauncherContent::feedbackPixmap(int width, int height)
 {
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-	return m_linkDisplay.feedbackPixmap(width, height, colorGroup, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::WindowText,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
 QPixmap UnknownContent::feedbackPixmap(int width, int height)
 {
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
 
-	QColorGroup colorGroup(basket()->colorGroup());
-	colorGroup.setColor(QColorGroup::Text,       note()->textColor());
-	colorGroup.setColor(QColorGroup::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+	QPalette palette;
+	palette = basket()->palette();
+	palette.setColor(QPalette::WindowText,       note()->textColor());
+	palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
 	QPixmap pixmap( qMin(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), qMin(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN) );
 	QPainter painter(&pixmap);
-	paint(&painter, pixmap.width() + 1, pixmap.height(), colorGroup, false, false, false); // We don't care of the three last boolean parameters.
+	paint(&painter, pixmap.width() + 1, pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
 	painter.setPen(note()->backgroundColor().dark(FEEDBACK_DARKING));
 	painter.drawPoint(0,                  0);
 	painter.drawPoint(pixmap.width() - 1, 0);
@@ -520,17 +529,18 @@ int TextContent::setWidthAndGetHeight(int width)
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->setWidth(width);
-		return m_simpleRichText->height();
+		m_simpleRichText->setTextWidth(width);
+		return m_simpleRichText->size().height();
 	} else
 		return 10; // Lazy loaded
 }
 
-void TextContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void TextContent::paint(QPainter *painter, int width, int height, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+		painter->translate(0,0);
+		m_simpleRichText->drawContents(painter, QRect(0, 0, width, height));
 	}
 }
 
@@ -554,13 +564,15 @@ bool TextContent::loadFromFile(bool lazyLoad)
 
 bool TextContent::finishLazyLoad()
 {
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+	int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
 	delete m_simpleRichText;
 	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new Q3SimpleRichText(html, note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-	int minWidth = m_simpleRichText->widthUsed();
-	m_simpleRichText->setWidth(width);
+	m_simpleRichText = new QTextDocument;
+	m_simpleRichText->setHtml(html);
+	m_simpleRichText->setDefaultFont(note()->font());
+	m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+	int minWidth = m_simpleRichText->idealWidth();
+	m_simpleRichText->setTextWidth(width);
 	contentChanged(minWidth + 1);
 
 	return true;
@@ -574,7 +586,7 @@ bool TextContent::saveToFile()
 QString TextContent::linkAt(const QPoint &pos)
 {
 	if (m_simpleRichText)
-		return m_simpleRichText->anchorAt(pos);
+		return m_simpleRichText->documentLayout()->anchorAt(pos);
 	else
 		return ""; // Lazy loaded
 }
@@ -629,17 +641,18 @@ int HtmlContent::setWidthAndGetHeight(int width)
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->setWidth(width);
-		return m_simpleRichText->height();
+		m_simpleRichText->setTextWidth(width);
+		return m_simpleRichText->size().height();
 	} else
 		return 10; // Lazy loaded
 }
 
-void HtmlContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void HtmlContent::paint(QPainter *painter, int width, int height, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	if (m_simpleRichText) {
 		width -= 1;
-		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
+		painter->translate(0,0);
+		m_simpleRichText->drawContents(painter, QRect(0, 0, width, height));
 	}
 }
 
@@ -663,12 +676,14 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 
 bool HtmlContent::finishLazyLoad()
 {
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
+	int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
 	delete m_simpleRichText;
-	m_simpleRichText = new Q3SimpleRichText(Tools::tagURLs(m_html), note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-	int minWidth = m_simpleRichText->widthUsed();
-	m_simpleRichText->setWidth(width);
+	m_simpleRichText = new QTextDocument;
+	m_simpleRichText->setHtml(Tools::tagURLs(m_html));
+	m_simpleRichText->setDefaultFont(note()->font());
+	m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+	int minWidth = m_simpleRichText->idealWidth();
+	m_simpleRichText->setTextWidth(width);
 	contentChanged(minWidth + 1);
 
 	return true;
@@ -682,7 +697,7 @@ bool HtmlContent::saveToFile()
 QString HtmlContent::linkAt(const QPoint &pos)
 {
 	if (m_simpleRichText)
-		return m_simpleRichText->anchorAt(pos);
+		return m_simpleRichText->documentLayout()->anchorAt(pos);
 	else
 		return ""; // Lazy loaded
 }
@@ -741,7 +756,7 @@ int ImageContent::setWidthAndGetHeight(int width)
 	}
 }
 
-void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	width -= 1;
 //	KPixmap pixmap = m_pixmap;
@@ -877,7 +892,7 @@ int AnimationContent::setWidthAndGetHeight(int /*width*/)
 	return  m_movie->currentPixmap().height()  ; // TODO!!!
 }
 
-void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QColorGroup &/*colorGroup*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	QPixmap frame = m_movie->currentPixmap();
 	if (width >= frame.width()) // Full size
@@ -970,9 +985,9 @@ int FileContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void FileContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void FileContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
 {
-	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+	m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
 bool FileContent::loadFromFile(bool /*lazyLoad*/)
@@ -1195,9 +1210,9 @@ int LinkContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void LinkContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void LinkContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
 {
-	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+	m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
 void LinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -1460,9 +1475,9 @@ int LauncherContent::setWidthAndGetHeight(int width)
 	return m_linkDisplay.height();
 }
 
-void LauncherContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered)
+void LauncherContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
 {
-	m_linkDisplay.paint(painter, 0, 0, width, height, colorGroup, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+	m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
 bool LauncherContent::loadFromFile(bool /*lazyLoad*/) // TODO: saveToFile() ?? Is it possible?
@@ -1580,7 +1595,7 @@ int ColorContent::setWidthAndGetHeight(int /*width*/) // We do not need width be
 	return rectHeight;
 }
 
-void ColorContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void ColorContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	// FIXME: Duplicate from setColor():
 	QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
@@ -1606,7 +1621,7 @@ void ColorContent::paint(QPainter *painter, int width, int height, const QColorG
 
 	// Draw the text:
 	painter->setFont(note()->font());
-	painter->setPen(colorGroup.text());
+	painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
 	painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignLeft | Qt::AlignVCenter, color().name());
 }
 
@@ -1810,18 +1825,9 @@ void ColorContent::setColor(const QColor &color)
 	contentChanged(rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN); // The second RECT_MARGIN is because textRect.width() is too short. I done a bug? Can't figure out.
 }
 
-void ColorContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
+void ColorContent::addAlternateDragObjects(QMimeData *dragObject)
 {
-	dragObject->addDragObject( new Q3ColorDrag(color()) );
-
-//	addDragObject(new K3ColorDrag( note->color(), 0 ));
-//	addDragObject(new QTextDrag( note->color().name(), 0 ));
-
-/*	// Creata and add the QDragObject:
-	storedDrag = new QStoredDrag("application/x-color");
-	storedDrag->setEncodedData(*array);
-	dragObject->addDragObject(storedDrag);
-	delete array;*/
+	dragObject->setColorData( color() );
 }
 
 void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
@@ -1870,29 +1876,29 @@ extern void drawGradient( QPainter *p, const QColor &colorTop, const QColor & co
 						  int x, int y, int w, int h,
 						  bool sunken, bool horz, bool flat  ); /*const*/
 
-void UnknownContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+void UnknownContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
 {
 	width -= 1;
-	painter->setPen(colorGroup.text());
+	painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
 
 	// FIXME: Duplicate from ColorContent::paint() and CommonColorSelector::drawColorRect:
 	// Fill with gradient:
-	drawGradient(painter, colorGroup.background(), colorGroup.background().dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+	drawGradient(painter, palette.color(QPalette::Active, QPalette::WindowText), palette.color(QPalette::Active, QPalette::WindowText).dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 	// Stroke:
-	QColor stroke = Tools::mixColor(colorGroup.background(), colorGroup.text());
+	QColor stroke = Tools::mixColor(palette.color(QPalette::Active, QPalette::Background), palette.color(QPalette::Active, QPalette::WindowText));
 	painter->setPen(stroke);
 	painter->drawLine(1,         0,          width - 2, 0);
 	painter->drawLine(0,         1,          0,         height - 2);
 	painter->drawLine(1,         height - 1, width - 2, height - 1);
 	painter->drawLine(width - 1, 1,          width - 1, height - 2);
 	// Round corners:
-	painter->setPen(Tools::mixColor(colorGroup.background(), stroke));
+	painter->setPen(Tools::mixColor(palette.color(QPalette::Active, QPalette::Background), stroke));
 	painter->drawPoint(1,         1);
 	painter->drawPoint(1,         height - 2);
 	painter->drawPoint(width - 2, height - 2);
 	painter->drawPoint(width - 2, 1);
 
-	painter->setPen(colorGroup.text());
+	painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
 	painter->drawText(DECORATION_MARGIN, DECORATION_MARGIN, width - 2*DECORATION_MARGIN, height - 2*DECORATION_MARGIN,
 	                  Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_mimeTypes);
 }
@@ -1925,13 +1931,13 @@ bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 	return true;
 }
 
-void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
+void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
 {
 	QFile file(fullPath());
 	if (file.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&file);
 		// Get the MIME types names:
-		Q3ValueList<QString> mimes;
+		QStringList mimes;
 		QString line;
 		do {
 			if (!stream.atEnd()) {
@@ -1943,7 +1949,6 @@ void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 		// Add the streams:
 		quint64     size; // TODO: It was quint32 in version 0.5.0 !
 		QByteArray  *array;
-		Q3StoredDrag *storedDrag;
 		for (int i = 0; i < mimes.count(); ++i) {
 			// Get the size:
 			stream >> size;
@@ -1951,9 +1956,7 @@ void UnknownContent::addAlternateDragObjects(K3MultipleDrag *dragObject)
 			array = new QByteArray(size);
 			stream.readRawBytes(array->data(), size);
 			// Creata and add the QDragObject:
-			storedDrag = new Q3StoredDrag(mimes.at(i)->toAscii());
-			storedDrag->setEncodedData(*array);
-			dragObject->addDragObject(storedDrag);
+			dragObject->setData(mimes.at(i).toAscii(), *array);
 			delete array; // FIXME: Should we?
 		}
 		file.close();
