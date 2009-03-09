@@ -1265,14 +1265,11 @@ void Basket::load()
 		return;
 	m_loadingLaunched = true;
 
-//	StopWatch::start(10);
-
 	DEBUG_WIN << "Basket[" + folderName() + "]: Loading...";
 	QDomDocument *doc = 0;
 	QString content;
 
-//	StopWatch::start(0);
-
+    // Load properties
 	if (loadFromFile(fullPath() + ".basket", &content)) {
 		doc = new QDomDocument("basket");
 		if ( ! doc->setContent(content) ) {
@@ -1307,19 +1304,12 @@ void Basket::load()
 	if (notes.isNull())
 		notes = XMLWork::getElement(docElem, "items");
 	m_watcher->stopScan();
-//	StopWatch::check(0);
 
-//	StopWatch::start(1);
+
+    // Load notes
 	m_finishLoadOnFirstShow = (Global::bnpView->currentBasket() != this);
 	loadNotes(notes, 0L);
-//	StopWatch::check(1);
-//	StopWatch::start(2);
-
 	m_watcher->startScan();
-	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
-	//END
-
-//	StopWatch::check(0);
 
 	signalCountsChanged();
 	if (isColumnsLayout()) {
@@ -1345,9 +1335,6 @@ void Basket::load()
 	else
 		m_loaded = true;
 	enableActions();
-//	StopWatch::check(2);
-
-//	StopWatch::check(10);
 }
 
 void Basket::filterAgain(bool andEnsureVisible/* = true*/)
@@ -1502,7 +1489,6 @@ Basket::Basket(QWidget *parent, const QString &folderName)
 {
     m_action = new KAction(this);
     connect(m_action, SLOT(triggered(bool)), this, SLOT(activatedShortcut()));
-    m_action->setObjectName("basket_activate_" + folderName);
     m_action->setGlobalShortcut(KShortcut());
     // We do this in the basket properties dialog (and keep it in sync with the
     // global one)
