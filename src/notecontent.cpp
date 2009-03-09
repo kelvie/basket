@@ -163,7 +163,6 @@ void NoteContent::setEdited()
 /** All the Content Classes:
  */
 
-NoteType::Id TextContent::type() const      { return NoteType::Text;      }
 NoteType::Id HtmlContent::type() const      { return NoteType::Html;      }
 NoteType::Id ImageContent::type() const     { return NoteType::Image;     }
 NoteType::Id AnimationContent::type() const { return NoteType::Animation; }
@@ -174,7 +173,6 @@ NoteType::Id LauncherContent::type() const  { return NoteType::Launcher;  }
 NoteType::Id ColorContent::type() const     { return NoteType::Color;     }
 NoteType::Id UnknownContent::type() const   { return NoteType::Unknown;   }
 
-QString TextContent::typeName() const      { return i18n("Plain Text"); }
 QString HtmlContent::typeName() const      { return i18n("Text");       }
 QString ImageContent::typeName() const     { return i18n("Image");      }
 QString AnimationContent::typeName() const { return i18n("Animation");  }
@@ -185,7 +183,6 @@ QString LauncherContent::typeName() const  { return i18n("Launcher");   }
 QString ColorContent::typeName() const     { return i18n("Color");      }
 QString UnknownContent::typeName() const   { return i18n("Unknown");    }
 
-QString TextContent::lowerTypeName() const      { return "text";      }
 QString HtmlContent::lowerTypeName() const      { return "html";      }
 QString ImageContent::lowerTypeName() const     { return "image";     }
 QString AnimationContent::lowerTypeName() const { return "animation"; }
@@ -201,7 +198,6 @@ QString NoteContent::toText(const QString &cuttedFullPath)
 	return (cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
 }
 
-QString TextContent::toText(const QString &/*cuttedFullPath*/)      { return text();                    }
 QString HtmlContent::toText(const QString &/*cuttedFullPath*/)      { return Tools::htmlToText(html()); }
 QString LinkContent::toText(const QString &/*cuttedFullPath*/)
 {
@@ -218,10 +214,6 @@ QString LinkContent::toText(const QString &/*cuttedFullPath*/)
 }
 QString ColorContent::toText(const QString &/*cuttedFullPath*/)     { return color().name();                }
 QString UnknownContent::toText(const QString &/*cuttedFullPath*/)   { return "";                            }
-
-// TODO: If imageName.isEmpty() return fullPath() because it's for external use, else return fileName() because it's to display in a tooltip
-QString TextContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
-{ return Tools::textToHTMLWithoutP(text());                                                       }
 
 QString HtmlContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
 { return Tools::htmlToParagraph(html());                                                          }
@@ -280,7 +272,6 @@ void UnknownContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFu
 	*title = QString();
 }
 
-bool TextContent::useFile() const      { return true;  }
 bool HtmlContent::useFile() const      { return true;  }
 bool ImageContent::useFile() const     { return true;  }
 bool AnimationContent::useFile() const { return true;  }
@@ -291,7 +282,6 @@ bool LauncherContent::useFile() const  { return true;  }
 bool ColorContent::useFile() const     { return false; }
 bool UnknownContent::useFile() const   { return true;  }
 
-bool TextContent::canBeSavedAs() const      { return true;  }
 bool HtmlContent::canBeSavedAs() const      { return true;  }
 bool ImageContent::canBeSavedAs() const     { return true;  }
 bool AnimationContent::canBeSavedAs() const { return true;  }
@@ -302,7 +292,6 @@ bool LauncherContent::canBeSavedAs() const  { return true;  }
 bool ColorContent::canBeSavedAs() const     { return false; }
 bool UnknownContent::canBeSavedAs() const   { return false; }
 
-QString TextContent::saveAsFilters() const      { return "text/plain";            }
 QString HtmlContent::saveAsFilters() const      { return "text/html";             }
 QString ImageContent::saveAsFilters() const     { return "image/png";             } // TODO: Offer more types
 QString AnimationContent::saveAsFilters() const { return "image/gif";             } // TODO: MNG...
@@ -313,7 +302,6 @@ QString LauncherContent::saveAsFilters() const  { return "application/x-desktop"
 QString ColorContent::saveAsFilters() const     { return "";                      }
 QString UnknownContent::saveAsFilters() const   { return "";                      }
 
-bool TextContent::match(const FilterData &data)          { return (text().find(data.string, /*index=*/0, /*cs=*/false) != -1);         }
 bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.find(data.string, /*index=*/0, /*cs=*/false) != -1);     } //OPTIM_FILTER
 bool ImageContent::match(const FilterData &/*data*/)     { return false;                                                               }
 bool AnimationContent::match(const FilterData &/*data*/) { return false;                                                               }
@@ -324,7 +312,6 @@ bool LauncherContent::match(const FilterData &data)      { return (exec().find(d
 bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
 bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
 
-QString TextContent::editToolTipText() const      { return i18n("Edit this plain text");             }
 QString HtmlContent::editToolTipText() const      { return i18n("Edit this text");                   }
 QString ImageContent::editToolTipText() const     { return i18n("Edit this image");                  }
 QString AnimationContent::editToolTipText() const { return i18n("Edit this animation");              }
@@ -335,7 +322,6 @@ QString LauncherContent::editToolTipText() const  { return i18n("Edit this launc
 QString ColorContent::editToolTipText() const     { return i18n("Edit this color");                  }
 QString UnknownContent::editToolTipText() const   { return i18n("Edit this unknown object");         }
 
-QString TextContent::cssClass() const      { return "";         }
 QString HtmlContent::cssClass() const      { return "";         }
 QString ImageContent::cssClass() const     { return "";         }
 QString AnimationContent::cssClass() const { return "";         }
@@ -346,7 +332,6 @@ QString LauncherContent::cssClass() const  { return "launcher"; }
 QString ColorContent::cssClass() const     { return ""     ;    }
 QString UnknownContent::cssClass() const   { return "";         }
 
-void TextContent::fontChanged()      { setText(text());                                          }
 void HtmlContent::fontChanged()      { setHtml(html());                                          }
 void ImageContent::fontChanged()     { setPixmap(pixmap());                                      }
 void AnimationContent::fontChanged() { updateMovie();                                            }
@@ -356,7 +341,6 @@ void LauncherContent::fontChanged()  { setLauncher(name(), icon(), exec());     
 void ColorContent::fontChanged()     { setColor(color());                                        }
 void UnknownContent::fontChanged()   { loadFromFile(/*lazyLoad=*/false);                         } // TODO: Optimize: setMimeTypes()
 
-//QString TextContent::customOpenCommand()      { return (Settings::isTextUseProg()      && ! Settings::textProg().isEmpty()      ? Settings::textProg()      : QString()); }
 QString HtmlContent::customOpenCommand()      { return (Settings::isHtmlUseProg()      && ! Settings::htmlProg().isEmpty()      ? Settings::htmlProg()      : QString()); }
 QString ImageContent::customOpenCommand()     { return (Settings::isImageUseProg()     && ! Settings::imageProg().isEmpty()     ? Settings::imageProg()     : QString()); }
 QString AnimationContent::customOpenCommand() { return (Settings::isAnimationUseProg() && ! Settings::animationProg().isEmpty() ? Settings::animationProg() : QString()); }
@@ -364,19 +348,6 @@ QString SoundContent::customOpenCommand()     { return (Settings::isSoundUseProg
 
 void LinkContent::serialize(QDataStream &stream)  { stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon(); }
 void ColorContent::serialize(QDataStream &stream) { stream << color();  }
-
-QPixmap TextContent::feedbackPixmap(int width, int height)
-{
-	QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
-	QPixmap pixmap( qMin(width, textRect.width()), qMin(height, textRect.height()) );
-	pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
-	QPainter painter(&pixmap);
-	painter.setPen(note()->textColor());
-	painter.setFont(note()->font());
-	painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
-	painter.end();
-	return pixmap;
-}
 
 QPixmap HtmlContent::feedbackPixmap(int width, int height)
 {
@@ -498,116 +469,6 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
 	painter.drawPoint(pixmap.width() - 1, pixmap.height() - 1);
 	painter.end();
 	return pixmap;
-}
-
-
-/** class TextContent:
- */
-
-TextContent::TextContent(Note *parent, const QString &fileName, bool lazyLoad)
- : NoteContent(parent, fileName), m_simpleRichText(0)
-{
-	basket()->addWatchedFile(fullPath());
-	loadFromFile(lazyLoad);
-}
-
-TextContent::~TextContent()
-{
-	delete m_simpleRichText;
-}
-
-int TextContent::setWidthAndGetHeight(int width)
-{
-	if (m_simpleRichText) {
-		width -= 1;
-		m_simpleRichText->setWidth(width);
-		return m_simpleRichText->height();
-	} else
-		return 10; // Lazy loaded
-}
-
-void TextContent::paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
-{
-	if (m_simpleRichText) {
-		width -= 1;
-		m_simpleRichText->draw(painter, 0, 0, QRect(0, 0, width, height), colorGroup);
-	}
-}
-
-bool TextContent::loadFromFile(bool lazyLoad)
-{
-	DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
-
-	QString content;
-	bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-
-	if (success)
-		setText(content, lazyLoad);
-	else {
-		kDebug() << "FAILED TO LOAD TextContent: " << fullPath();
-		setText("", lazyLoad);
-		if (!QFile::exists(fullPath()))
-			saveToFile(); // Reserve the fileName so no new note will have the same name!
-	}
-	return success;
-}
-
-bool TextContent::finishLazyLoad()
-{
-	int width = (m_simpleRichText ? m_simpleRichText->width() : 1);
-	delete m_simpleRichText;
-	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
-	m_simpleRichText = new Q3SimpleRichText(html, note()->font());
-	m_simpleRichText->setWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-	int minWidth = m_simpleRichText->widthUsed();
-	m_simpleRichText->setWidth(width);
-	contentChanged(minWidth + 1);
-
-	return true;
-}
-
-bool TextContent::saveToFile()
-{
-	return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
-}
-
-QString TextContent::linkAt(const QPoint &pos)
-{
-	if (m_simpleRichText)
-		return m_simpleRichText->anchorAt(pos);
-	else
-		return ""; // Lazy loaded
-}
-
-
-QString TextContent::messageWhenOpening(OpenMessage where)
-{
-	switch (where) {
-		case OpenOne:               return i18n("Opening plain text...");
-		case OpenSeveral:           return i18n("Opening plain texts...");
-		case OpenOneWith:           return i18n("Opening plain text with...");
-		case OpenSeveralWith:       return i18n("Opening plain texts with...");
-		case OpenOneWithDialog:     return i18n("Open plain text with:");
-		case OpenSeveralWithDialog: return i18n("Open plain texts with:");
-		default:                    return "";
-	}
-}
-
-void TextContent::setText(const QString &text, bool lazyLoad)
-{
-	m_text = text;
-	if (!lazyLoad)
-		finishLazyLoad();
-	else
-		contentChanged(10);
-}
-
-void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
-{
-	QString spaces;
-	QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-	               Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
-	exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class HtmlContent:
@@ -1971,8 +1832,7 @@ void UnknownContent::exportToHTML(HTMLExporter *exporter, int indent)
 
 void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent, bool lazyLoad)
 {
-	if        (lowerTypeName == "text")      new TextContent(      parent, content.text(), lazyLoad );
-	else if   (lowerTypeName == "html")      new HtmlContent(      parent, content.text(), lazyLoad );
+	if   (lowerTypeName == "html")      new HtmlContent(      parent, content.text(), lazyLoad );
 	else if   (lowerTypeName == "image")     new ImageContent(     parent, content.text(), lazyLoad );
 	else if   (lowerTypeName == "animation") new AnimationContent( parent, content.text(), lazyLoad );
 	else if   (lowerTypeName == "sound")     new SoundContent(     parent, content.text()           );

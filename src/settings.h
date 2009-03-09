@@ -134,7 +134,6 @@ class BASKET_EXPORT NewNotesPage : public KCModule
 
 	// Note Addition
 	QComboBox           *m_newNotesPlace;
-	QCheckBox           *m_viewTextFileContent;
 	QCheckBox           *m_viewHtmlFileContent;
 	QCheckBox           *m_viewImageFileContent;
 	QCheckBox           *m_viewSoundFileContent;
@@ -213,7 +212,6 @@ class BASKET_EXPORT Settings // FIXME: Distaptch new config events ?
 	static int     s_reLockTimeoutMinutes;
 	/** Note Addition */
 	static int     s_newNotesPlace;        // 0:OnTop ; 1:OnBottom ; 2:AtCurrentNote
-	static int     s_viewTextFileContent;
 	static int     s_viewHtmlFileContent;
 	static int     s_viewImageFileContent;
 	static int     s_viewSoundFileContent;
@@ -286,7 +284,6 @@ class BASKET_EXPORT Settings // FIXME: Distaptch new config events ?
 	static inline int     defIconSize()          { return s_defIconSize;          }
 	/** Note Addition */
 	static inline int     newNotesPlace()        { return s_newNotesPlace;        }
-	static inline int     viewTextFileContent()  { return s_viewTextFileContent;  }
 	static inline int     viewHtmlFileContent()  { return s_viewHtmlFileContent;  }
 	static inline int     viewImageFileContent() { return s_viewImageFileContent; }
 	static inline int     viewSoundFileContent() { return s_viewSoundFileContent; }
@@ -371,7 +368,6 @@ class BASKET_EXPORT Settings // FIXME: Distaptch new config events ?
 	static inline void setDefIconSize(int val)                  { s_defIconSize          = val;         }
 	// Note Addition
 	static inline void setNewNotesPlace(int val)                { s_newNotesPlace        = val;         }
-	static inline void setViewTextFileContent(bool view)        { s_viewTextFileContent  = view;        }
 	static inline void setViewHtmlFileContent(bool view)        { s_viewHtmlFileContent  = view;        }
 	static inline void setViewImageFileContent(bool view)       { s_viewImageFileContent = view;        }
 	static inline void setViewSoundFileContent(bool view)       { s_viewSoundFileContent = view;        }

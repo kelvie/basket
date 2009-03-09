@@ -402,15 +402,6 @@ void BNPView::setupGlobalShortcuts()
     a->setStatusTip(
 	i18n("Grab a screen zone as an image in the current basket without "
 	     "having to open the main window."));
-
-#if 0
-    a = ac->addAction("global_note_add_text", Global::bnpView,
-		      SLOT(addNoteText()));
-    a->setText(i18n("Insert plain text note"));
-    a->setStatusTip(
-	    i18n("Add a plain text note to the current basket without having to "
-		 "open the main window."));
-#endif
 }
 
 void BNPView::initialize()
@@ -656,14 +647,6 @@ void BNPView::setupActions()
     connect( insertEmptyMapper,  SIGNAL(mapped(int)), this, SLOT(insertEmpty(int))  );
     connect( insertWizardMapper, SIGNAL(mapped(int)), this, SLOT(insertWizard(int)) );
 
-#if 0
-    a = ac->addAction("insert_text");
-    a->setText(i18n("Plai&n Text"));
-    a->setIcon(KIcon("text"));
-    a->setShortcut(KShortcut("Ctrl+T"));
-    m_actInsertText = a;
-#endif
-
     a = ac->addAction("insert_html");
     a->setText(i18n("&Text"));
     a->setIcon(KIcon("html"));
@@ -706,13 +689,11 @@ void BNPView::setupActions()
     a->setIcon(KIcon("document-import"));
     m_actLoadFile = a;
 
-//	connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
     connect( m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
     connect( m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
     connect( m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
     connect( m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
     connect( m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-//	insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html    );
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image   );
     insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link    );
@@ -746,7 +727,6 @@ void BNPView::setupActions()
     //connect( m_actGrabScreenshot, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)) );
     //connect( m_colorPicker, SIGNAL(canceledPick()),             this, SLOT(colorPickingCanceled())     );
 
-//	m_insertActions.append( m_actInsertText     );
     m_insertActions.append( m_actInsertHtml     );
     m_insertActions.append( m_actInsertLink     );
     m_insertActions.append( m_actInsertImage    );
@@ -877,14 +857,6 @@ void BNPView::setupActions()
     a->setIcon(KIcon("go-next"));
     a->setShortcut(KShortcut("Alt+Right"));
     m_actExpandBasket = a;
-
-#if 0
-   // FOR_BETA_PURPOSE:
-    a = ac->addAction("beta_convert_texts", this, SLOT(convertTexts()));
-    a->setText(i18n("Convert text notes to rich text notes"));
-    a->setIcon(KIcon("run-build-file"));
-    m_convertTexts = a;
-#endif
 
     InlineEditors::instance()->initToolBars(actionCollection());
     /** Help : ****************************************************************/
@@ -1206,35 +1178,6 @@ void BNPView::closeAllEditors()
 		item->basket()->closeEditor();
 		++it;
 	}
-}
-
-bool BNPView::convertTexts()
-{
-	bool convertedNotes = false;
-	KProgressDialog dialog(
-			/*parent=*/0,
-			/*caption=*/i18n("Plain Text Notes Conversion"),
-			/*text=*/i18n("Converting plain text notes to rich text ones...")
-		);
-	dialog.setModal(true);
-	dialog.progressBar()->setRange(0, basketCount());
-	dialog.show(); //setMinimumDuration(50/*ms*/);
-
-	Q3ListViewItemIterator it(m_tree);
-	while (it.current()) {
-		BasketListViewItem *item = (BasketListViewItem*)(it.current());
-		if (item->basket()->convertTexts())
-			convertedNotes = true;
-
-		QProgressBar *pb = dialog.progressBar();
-		pb->setValue(pb->value() + 1);
-
-		if (dialog.wasCancelled())
-			break;
-		++it;
-	}
-
-	return convertedNotes;
 }
 
 void BNPView::toggleFilterAllBaskets(bool doFilter)
@@ -1738,39 +1681,6 @@ void BNPView::colorPickingCanceled()
 {
 	if (m_colorPickWasShown)
 		showMainWindow();
-}
-
-void BNPView::slotConvertTexts()
-{
-/*
-	int result = KMessageBox::questionYesNoCancel(
-		this,
-		i18n(
-			"<p>This will convert every text notes into rich text notes.<br>"
-			"The content of the notes will not change and you will be able to apply formating to those notes.</p>"
-			"<p>This process cannot be reverted back: you will not be able to convert the rich text notes to plain text ones later.</p>"
-			"<p>As a beta-tester, you are strongly encouraged to do the convert process because it is to test if plain text notes are still needed.<br>"
-			"If nobody complain about not having plain text notes anymore, then the final version is likely to not support plain text notes anymore.</p>"
-			"<p><b>Which basket notes do you want to convert?</b></p>"
-		),
-		i18n("Convert Text Notes"),
-		KGuiItem(i18n("Only in the Current Basket")),
-		KGuiItem(i18n("In Every Baskets"))
-	);
-	if (result == KMessageBox::Cancel)
-		return;
-*/
-
-	bool conversionsDone;
-//	if (result == KMessageBox::Yes)
-//		conversionsDone = currentBasket()->convertTexts();
-//	else
-		conversionsDone = convertTexts();
-
-	if (conversionsDone)
-		KMessageBox::information(this, i18n("The plain text notes have been converted to rich text."), i18n("Conversion Finished"));
-	else
-		KMessageBox::information(this, i18n("There are no plain text notes to convert."), i18n("Conversion Finished"));
 }
 
 KMenu* BNPView::popupMenu(const QString &menuName)
@@ -2307,7 +2217,6 @@ void BNPView::showPassiveLoading(Basket *basket)
 	m_passivePopup->show();
 }
 
-void BNPView::addNoteText()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Text);  }
 void BNPView::addNoteHtml()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Html);  }
 void BNPView::addNoteImage() { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Image); }
 void BNPView::addNoteLink()  { showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);  }

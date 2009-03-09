@@ -68,20 +68,14 @@
 
 /** Create notes from scratch (just a content) */
 
-Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool reallyPlainText/* = false*/)
+Note* NoteFactory::createNoteText(const QString &text, Basket *parent)
 {
-	Note *note = new Note(parent);
-	if (reallyPlainText) {
-		TextContent *content = new TextContent(note, createFileForNewNote(parent, "txt"));
-		content->setText(text);
-		content->saveToFile();
-	} else {
-		HtmlContent *content = new HtmlContent(note, createFileForNewNote(parent, "html"));
-		QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
-		content->setHtml(html);
-		content->saveToFile();
-	}
-	return note;
+    Note *note = new Note(parent);
+    HtmlContent *content = new HtmlContent(note, createFileForNewNote(parent, "html"));
+    QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
+    content->setHtml(html);
+    content->saveToFile();
+    return note;
 }
 
 Note* NoteFactory::createNoteHtml(const QString &html, Basket *parent)
@@ -604,11 +598,7 @@ void NoteFactory::consumeContent(QDataStream &stream, NoteType::Id type)
 
 Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, Basket *parent)
 {
-/*	if (type == NoteType::Text) {
-	QString text;
-	stream >> text;
-	return NoteFactory::createNoteText(text, parent);
-} else if (type == NoteType::Html) {
+/* if (type == NoteType::Html) {
 	QString html;
 	stream >> html;
 	return NoteFactory::createNoteHtml(html, parent);
@@ -753,7 +743,6 @@ Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, Basket *
 {
 	Note *note = new Note(parent);
 	switch (type) {
-		case NoteType::Text:      new TextContent(      note, fileName ); break;
 		case NoteType::Html:      new HtmlContent(      note, fileName ); break;
 		case NoteType::Image:     new ImageContent(     note, fileName ); break;
 		case NoteType::Animation: new AnimationContent( note, fileName ); break;
@@ -776,7 +765,6 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 /*	KMimeType::Ptr kMimeType = KMimeType::findByUrl(url);
 	if (Global::debugWindow)
 		*Global::debugWindow << "typeForURL: " + kMimeType->parentMimeType();//property("MimeType").toString();*/
-	bool viewText  = Settings::viewTextFileContent();
 	bool viewHTML  = Settings::viewHtmlFileContent();
 	bool viewImage = Settings::viewImageFileContent();
 	bool viewSound = Settings::viewSoundFileContent();
@@ -785,8 +773,7 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 	if (Global::debugWindow && !metaInfo.isValid())
 		*Global::debugWindow << "typeForURL: metaInfo is empty for " + url.prettyUrl();
 	if (metaInfo.isValid()) { // metaInfo is empty for GIF files on my machine !
-		if      (viewText  && maybeText(url))             return NoteType::Text;
-		else if (viewHTML  && (maybeHtml(url)))           return NoteType::Html;
+		if (viewHTML  && (maybeHtml(url) || maybeText(url)))           return NoteType::Html;
 		else if (viewImage && maybeAnimation(url))        return NoteType::Animation; // See Note::movieStatus(int)
 		else if (viewImage && maybeImageOrAnimation(url)) return NoteType::Image;     //  for more explanations
 		else if (viewSound && maybeSound(url))            return NoteType::Sound;
@@ -799,8 +786,7 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
 		*Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME type = " + mimeType;
 
 	if      (mimeType == "application/x-desktop")            return NoteType::Launcher;
-	else if (viewText  && mimeType.startsWith("text/plain")) return NoteType::Text;
-	else if (viewHTML  && mimeType.startsWith("text/html"))  return NoteType::Html;
+	else if (viewHTML  && (mimeType.startsWith("text/html") || mimeType.startsWith("text/plain")))  return NoteType::Html;
 	else if (viewImage && mimeType == "movie/x-mng")         return NoteType::Animation;
 	else if (viewImage && mimeType == "image/gif")           return NoteType::Animation;
 	else if (viewImage && mimeType.startsWith("image/"))     return NoteType::Image;
@@ -955,8 +941,6 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)
 {
 	QPixmap *pixmap;
 	switch (type) {
-		case NoteType::Text:
-			return NoteFactory::createNoteText("", parent, /*reallyPlainText=*/true);
 		case NoteType::Html:
 			return NoteFactory::createNoteHtml("", parent);
 		case NoteType::Image:

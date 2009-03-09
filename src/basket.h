@@ -314,7 +314,6 @@ class Basket : public Q3ScrollView
 	bool m_loaded;
 	bool m_loadingLaunched;
 	bool m_locked;
-	bool m_shouldConvertPlainTextNotes;
 	Q3Frame* m_decryptBox;
 	QPushButton* m_button;
 	int m_encryptionType;
@@ -647,8 +646,6 @@ public slots:
 /// REIMPLEMENTED:
   public:
 	void deleteFiles();
-	bool convertTexts();
-
 
   public:
 	void wheelEvent(QWheelEvent *event);

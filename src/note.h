@@ -45,7 +45,6 @@ class Q3SimpleRichText;
   * as constructor parameter to transform it to a note with content. eg:
   * @code
   * Note *note = new Note(basket);   // note is a group!
-  * new TextContent(note, fileName); // note is now a note with a text content!
   * new ColorContent(note, Qt::red); // Should never be done!!!!! the old Content should be deleted...
   * @endcode
   * @author Sébastien Laoût
@@ -330,8 +329,6 @@ class Note
 
 	int distanceOnLeftRight(Note *note, int side);
 	int distanceOnTopBottom(Note *note, int side);
-
-	bool convertTexts();
 
 	void debug();
 

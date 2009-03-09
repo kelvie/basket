@@ -102,18 +102,6 @@ class NoteEditor : public QObject
 	static NoteEditor* editNoteContent(NoteContent *noteContent, QWidget *parent);
 };
 
-class TextEditor : public NoteEditor
-{
-  Q_OBJECT
-  public:
-	TextEditor(TextContent *textContent, QWidget *parent);
-	~TextEditor();
-	void validate();
-	void autoSave(bool toFileToo);
-  protected:
-	TextContent *m_textContent;
-};
-
 class HtmlEditor : public NoteEditor
 {
   Q_OBJECT

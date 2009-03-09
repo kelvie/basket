@@ -76,7 +76,6 @@ int     Settings::s_defImageY            = 200;
 bool    Settings::s_enableReLockTimeout  = true;
 int     Settings::s_reLockTimeoutMinutes = 0;
 int     Settings::s_newNotesPlace        = 1;
-int     Settings::s_viewTextFileContent  = false;
 int     Settings::s_viewHtmlFileContent  = false;
 int     Settings::s_viewImageFileContent = false;
 int     Settings::s_viewSoundFileContent = false;
@@ -175,7 +174,6 @@ void Settings::loadConfig()
 
 	config = Global::config()->group("Note Addition");
 	setNewNotesPlace(        config.readEntry( "newNotesPlace",        1)             );
-	setViewTextFileContent(  config.readEntry("viewTextFileContent",  false)         );
 	setViewHtmlFileContent(  config.readEntry("viewHtmlFileContent",  false)         );
 	setViewImageFileContent( config.readEntry("viewImageFileContent", true)          );
 	setViewSoundFileContent( config.readEntry("viewSoundFileContent", true)          );
@@ -261,7 +259,6 @@ void Settings::saveConfig()
 
     config = Global::config()->group("Note Addition");
 	config.writeEntry( "newNotesPlace",        newNotesPlace()        );
-	config.writeEntry( "viewTextFileContent",  viewTextFileContent()  );
 	config.writeEntry( "viewHtmlFileContent",  viewHtmlFileContent()  );
 	config.writeEntry( "viewImageFileContent", viewImageFileContent() );
 	config.writeEntry( "viewSoundFileContent", viewSoundFileContent() );
@@ -735,12 +732,10 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 	// View File Content:
 
 	Q3VButtonGroup *buttonGroup = new Q3VButtonGroup(i18n("View Content of Added Files for the Following Types"), this);
-	m_viewTextFileContent  = new QCheckBox( i18n("&Plain text"),         buttonGroup );
 	m_viewHtmlFileContent  = new QCheckBox( i18n("&HTML page"),          buttonGroup );
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
 	layout->addWidget(buttonGroup);
-	connect( m_viewTextFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewHtmlFileContent,  SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewImageFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	connect( m_viewSoundFileContent, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
@@ -756,7 +751,6 @@ void NewNotesPage::load()
 	m_imgSizeX->setValue(Settings::defImageX());
 	m_imgSizeY->setValue(Settings::defImageY());
 
-	m_viewTextFileContent->setChecked(  Settings::viewTextFileContent()  );
 	m_viewHtmlFileContent->setChecked(  Settings::viewHtmlFileContent()  );
 	m_viewImageFileContent->setChecked( Settings::viewImageFileContent() );
 	m_viewSoundFileContent->setChecked( Settings::viewSoundFileContent() );
@@ -769,7 +763,6 @@ void NewNotesPage::save()
 	Settings::setDefImageX(m_imgSizeX->value());
 	Settings::setDefImageY(m_imgSizeY->value());
 
-	Settings::setViewTextFileContent(  m_viewTextFileContent->isChecked()  );
 	Settings::setViewHtmlFileContent(  m_viewHtmlFileContent->isChecked()  );
 	Settings::setViewImageFileContent( m_viewImageFileContent->isChecked() );
 	Settings::setViewSoundFileContent( m_viewSoundFileContent->isChecked() );

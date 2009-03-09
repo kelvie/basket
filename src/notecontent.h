@@ -61,7 +61,7 @@ class HtmlExporter;
   */
 namespace NoteType
 {
-	enum Id { Group = 255, Text = 1, Html, Image, Animation, Sound, File, Link, Launcher, Color, Unknown }; // Always positive
+	enum Id { Group = 255, Html = 1, Image, Animation, Sound, File, Link, Launcher, Color, Unknown }; // Always positive
 }
 
 /** Abstract base class for every content type of basket note.
@@ -145,50 +145,6 @@ class NoteContent
 	int      m_minWidth;
   public:
 	static const int FEEDBACK_DARKING;
-};
-
-/** Real implementation of plain text notes:
- * @author Sébastien Laoût
- */
-class TextContent : public NoteContent
-{
-  public:
-	// Constructor and destructor:
-	TextContent(Note *parent, const QString &fileName, bool lazyLoad = false);
-	~TextContent();
-	// Simple Generic Methods:
-	NoteType::Id type() const;
-	QString typeName() const;
-	QString lowerTypeName() const;
-	QString toText(const QString &/*cuttedFullPath*/);
-	QString toHtml(const QString &imageName, const QString &cuttedFullPath);
-	bool    useFile() const;
-	bool    canBeSavedAs() const;
-	QString saveAsFilters() const;
-	bool    match(const FilterData &data);
-	// Complexe Generic Methods:
-	void    exportToHTML(HTMLExporter *exporter, int indent);
-	QString cssClass() const;
-	int     setWidthAndGetHeight(int width);
-	void    paint(QPainter *painter, int width, int height, const QColorGroup &colorGroup, bool isDefaultColor, bool isSelected, bool isHovered);
-	bool    loadFromFile(bool lazyLoad);
-	bool    finishLazyLoad();
-	bool    saveToFile();
-	QString linkAt(const QPoint &pos);
-	void    fontChanged();
-	QString editToolTipText() const;
-	// Drag and Drop Content:
-	QPixmap feedbackPixmap(int width, int height);
-	// Open Content or File:
-	QString messageWhenOpening(OpenMessage where);
-//	QString customOpenCommand();
-	// Content-Specific Methods:
-	void    setText(const QString &text, bool lazyLoad = false); /// << Change the text note-content and relayout the note.
-	QString text() { return m_text; }     /// << @return the text note-content.
-    QByteArray data() { return text().toLocal8Bit(); }
-  protected:
-	QString          m_text;
-	Q3SimpleRichText *m_simpleRichText;
 };
 
 /** Real implementation of rich text (HTML) notes:
