@@ -74,10 +74,6 @@ Note* NoteEditor::note()
 
 NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *parent)
 {
-	TextContent *textContent = dynamic_cast<TextContent*>(noteContent);
-	if (textContent)
-		return new TextEditor(textContent, parent);
-
 	HtmlContent *htmlContent = dynamic_cast<HtmlContent*>(noteContent);
 	if (htmlContent)
 		return new HtmlEditor(htmlContent, parent);
@@ -127,78 +123,6 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 		if (lineEdit)
 			m_lineEdit = lineEdit;
 	}
-}
-
-/** class TextEditor: */
-
-TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
- : NoteEditor(textContent), m_textContent(textContent)
-{
-	FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
-	textEdit->setLineWidth(0);
-	textEdit->setMidLineWidth(0);
-	textEdit->setTextFormat(Qt::PlainText);
-	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
-	textEdit->setPaletteForegroundColor(note()->textColor());
-	textEdit->setFont(note()->font());
-	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-	if (Settings::spellCheckTextNotes())
-		textEdit->setCheckSpellingEnabled(true);
-	textEdit->setText(m_textContent->text());
-	textEdit->moveCursor(KTextEdit::MoveEnd, false); // FIXME: Sometimes, the cursor flicker at ends before being positionned where clicked (because kapp->processEvents() I think)
-	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
-	setInlineEditor(textEdit);
-	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
-	connect( textEdit, SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()) );
-
-	connect( textEdit, SIGNAL(cursorPositionChanged(int, int)), textContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
-	// In case it is a very big note, the top is displayed and Enter is pressed: the cursor is on bottom, we should enure it visible:
-	QTimer::singleShot( 0, textContent->note()->basket(), SLOT(editorCursorPositionChanged()) );
-}
-
-TextEditor::~TextEditor()
-{
-	delete widget(); // TODO: delete that in validate(), so we can remove one method
-}
-
-void TextEditor::autoSave(bool toFileToo)
-{
-	bool autoSpellCheck = true;
-	if (toFileToo) {
-		if (Settings::spellCheckTextNotes() != textEdit()->checkSpellingEnabled()) {
-			Settings::setSpellCheckTextNotes(textEdit()->checkSpellingEnabled());
-			Settings::saveConfig();
-		}
-
-		autoSpellCheck = textEdit()->checkSpellingEnabled();
-		textEdit()->setCheckSpellingEnabled(false);
-	}
-
-	m_textContent->setText(textEdit()->text());
-
-	if (toFileToo) {
-		m_textContent->saveToFile();
-		m_textContent->setEdited();
-		textEdit()->setCheckSpellingEnabled(autoSpellCheck);
-	}
-}
-
-void TextEditor::validate()
-{
-	if (Settings::spellCheckTextNotes() != textEdit()->checkSpellingEnabled()) {
-		Settings::setSpellCheckTextNotes(textEdit()->checkSpellingEnabled());
-		Settings::saveConfig();
-	}
-
-	textEdit()->setCheckSpellingEnabled(false);
-	if (textEdit()->text().isEmpty())
-		setEmpty();
-	m_textContent->setText(textEdit()->text());
-	m_textContent->saveToFile();
-	m_textContent->setEdited();
-
-//	delete widget();
 }
 
 /** class HtmlEditor: */

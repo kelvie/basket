@@ -731,8 +731,6 @@ void Basket::loadNotes(const QDomElement &notes, Note *parent)
 		if (e.tagName() == "note" || e.tagName() == "item") { // Keep compatible with 0.6.0 Alpha 1
 			note = new Note(this);      // Create the note...
 			NoteFactory__loadNode(XMLWork::getElement(e, "content"), e.attribute("type"), note, /*lazyLoad=*/m_finishLoadOnFirstShow); // ... Populate it with content...
-			if (e.attribute("type") == "text")
-				m_shouldConvertPlainTextNotes = true; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
 			appendNoteIn(note, parent); // ... And insert it.
 			// Load dates:
 			if (e.hasAttribute("added"))
@@ -1309,7 +1307,6 @@ void Basket::load()
 	if (notes.isNull())
 		notes = XMLWork::getElement(docElem, "items");
 	m_watcher->stopScan();
-	m_shouldConvertPlainTextNotes = false; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
 //	StopWatch::check(0);
 
 //	StopWatch::start(1);
@@ -1318,8 +1315,6 @@ void Basket::load()
 //	StopWatch::check(1);
 //	StopWatch::start(2);
 
-	if (m_shouldConvertPlainTextNotes)
-		convertTexts();
 	m_watcher->startScan();
 	//loadNotes(XMLWork::getElement(docElem, "notes"), 0L);
 	//END
@@ -4535,24 +4530,6 @@ Note* Basket::lastSelected()
 			last = tmp;
 	}
 	return last;
-}
-
-bool Basket::convertTexts()
-{
-	m_watcher->stopScan();
-	bool convertedNotes = false;
-
-	if (!isLoaded())
-		load();
-
-	FOR_EACH_NOTE (note)
-		if (note->convertTexts())
-			convertedNotes = true;
-
-	if (convertedNotes)
-		save();
-	m_watcher->startScan();
-	return convertedNotes;
 }
 
 void Basket::noteGroup()

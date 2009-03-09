@@ -97,7 +97,6 @@ class BASKET_EXPORT BNPView : public QSplitter
 	public slots:
 		void countsChanged(Basket *basket);
 		void notesStateChanged();
-		bool convertTexts();
 
 		void updateBasketListViewItem(Basket *basket);
 		void save();
@@ -152,10 +151,8 @@ class BASKET_EXPORT BNPView : public QSplitter
 		void slotColorFromScreenGlobal();
 		void colorPicked(const QColor &color);
 		void colorPickingCanceled();
-		void slotConvertTexts();
 
 		/** Global shortcuts */
-		void addNoteText();
 		void addNoteHtml();
 		void addNoteImage();
 		void addNoteLink();
@@ -277,7 +274,6 @@ class BASKET_EXPORT BNPView : public QSplitter
 		KAction       *m_actNextBasket;
 		KAction       *m_actFoldBasket;
 		KAction       *m_actExpandBasket;
-//		KAction       *m_convertTexts; // FOR_BETA_PURPOSE
 
 		void setupActions();
 		void setupGlobalShortcuts();
