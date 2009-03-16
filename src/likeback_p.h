@@ -23,6 +23,7 @@
 
 #include <KDialog>
 #include <qtimer.h>
+#include <QRadioButton>
 
 #include "likeback.h"
 
