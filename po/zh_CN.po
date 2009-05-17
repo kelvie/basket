@@ -9,7 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_CN\n"
-"POT-Creation-Date: 2007-01-13 15:57+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-17 22:39+0200\n"
 "PO-Revision-Date: 2007-02-25 16:46+0800\n"
 "Last-Translator: cao ting <ctqucl@gmail.com>\n"
 "Language-Team: 中文简体 <zh@li.org>\n"
@@ -18,71 +19,299 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: _translatorinfo.cpp:1
-msgid ""
-"_: NAME OF TRANSLATORS\n"
-"Your names"
-msgstr "cao ting"
+#. i18n: file: src/passwordlayout.ui:13
+#. i18n: ectx: property (windowTitle), widget (QWidget, PasswordLayout)
+#: build/src/ui_passwordlayout.h:108 rc.cpp:93 src/password.cpp:44
+#: src/settings.cpp:602
+msgid "Password Protection"
+msgstr "密码保护"
 
-#: _translatorinfo.cpp:3
-msgid ""
-"_: EMAIL OF TRANSLATORS\n"
-"Your emails"
-msgstr "ctqucl@gmail.com"
+#. i18n: file: src/passwordlayout.ui:28
+#. i18n: ectx: property (text), widget (QRadioButton, noPasswordRadioButton)
+#: build/src/ui_passwordlayout.h:110 rc.cpp:96
+msgid "&No protection"
+msgstr "未保护(&N)"
 
-#: aboutdata.cpp:27
+#. i18n: file: src/passwordlayout.ui:35
+#. i18n: ectx: property (text), widget (QRadioButton, passwordRadioButton)
+#: build/src/ui_passwordlayout.h:111 rc.cpp:99
+msgid "Protect basket with a &password"
+msgstr "密码保护basket(&k)"
+
+#. i18n: file: src/passwordlayout.ui:50
+#. i18n: ectx: property (text), widget (QRadioButton, publicPrivateRadioButton)
+#: build/src/ui_passwordlayout.h:112 rc.cpp:102
+msgid "Protect basket with private &key:"
+msgstr "保护basket的私钥(&k):"
+
+#: kontact_plugin/basket_plugin.cpp:40 src/bnpview.cpp:771
+msgid "&New Basket..."
+msgstr "新建Basket(&N)..."
+
+#. i18n: file: src/basket_part.rc:6
+#. i18n: ectx: Menu (file)
+#. i18n: file: src/basketui.rc:6
+#. i18n: ectx: Menu (basket)
+#. i18n: file: src/basket_part.rc:6
+#. i18n: ectx: Menu (file)
+#. i18n: file: src/basketui.rc:6
+#. i18n: ectx: Menu (basket)
+#: rc.cpp:3 rc.cpp:48
+msgid "&Basket"
+msgstr "&BasKet"
+
+#. i18n: file: src/basket_part.rc:11
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:158
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:11
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:165
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:11
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:158
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:11
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:165
+#. i18n: ectx: Menu
+#: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
+msgid "&Export"
+msgstr "导出(&E)"
+
+#. i18n: file: src/basket_part.rc:21
+#. i18n: ectx: Menu (fileimport)
+#. i18n: file: src/basket_part.rc:168
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:186
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:21
+#. i18n: ectx: Menu (fileimport)
+#. i18n: file: src/basketui.rc:175
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:193
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:21
+#. i18n: ectx: Menu (fileimport)
+#. i18n: file: src/basket_part.rc:168
+#. i18n: ectx: Menu
+#. i18n: file: src/basket_part.rc:186
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:21
+#. i18n: ectx: Menu (fileimport)
+#. i18n: file: src/basketui.rc:175
+#. i18n: ectx: Menu
+#. i18n: file: src/basketui.rc:193
+#. i18n: ectx: Menu
+#: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
+msgid "&Import"
+msgstr "载人(&I)"
+
+#. i18n: file: src/basket_part.rc:37
+#. i18n: ectx: Menu (edit)
+#. i18n: file: src/basketui.rc:40
+#. i18n: ectx: Menu (edit)
+#. i18n: file: src/basket_part.rc:37
+#. i18n: ectx: Menu (edit)
+#. i18n: file: src/basketui.rc:40
+#. i18n: ectx: Menu (edit)
+#: rc.cpp:12 rc.cpp:57 src/basket.cpp:4307
+msgid "&Edit"
+msgstr ""
+
+#. i18n: file: src/basket_part.rc:52
+#. i18n: ectx: Menu (go)
+#. i18n: file: src/basketui.rc:55
+#. i18n: ectx: Menu (go)
+#. i18n: file: src/basket_part.rc:52
+#. i18n: ectx: Menu (go)
+#. i18n: file: src/basketui.rc:55
+#. i18n: ectx: Menu (go)
+#: rc.cpp:15 rc.cpp:60
+msgid "&Go"
+msgstr "转到(&G)"
+
+#. i18n: file: src/basket_part.rc:59
+#. i18n: ectx: Menu (note)
+#. i18n: file: src/basketui.rc:62
+#. i18n: ectx: Menu (note)
+#. i18n: file: src/basket_part.rc:59
+#. i18n: ectx: Menu (note)
+#. i18n: file: src/basketui.rc:62
+#. i18n: ectx: Menu (note)
+#: rc.cpp:18 rc.cpp:63
+msgid "&Note"
+msgstr "贴示(&N)"
+
+#. i18n: file: src/basket_part.rc:74
+#. i18n: ectx: Menu (tags)
+#. i18n: file: src/basketui.rc:77
+#. i18n: ectx: Menu (tags)
+#. i18n: file: src/basket_part.rc:74
+#. i18n: ectx: Menu (tags)
+#. i18n: file: src/basketui.rc:77
+#. i18n: ectx: Menu (tags)
+#: rc.cpp:21 rc.cpp:66
+msgid "&Tags"
+msgstr "标记(&T)"
+
+#. i18n: file: src/basket_part.rc:77
+#. i18n: ectx: Menu (insert)
+#. i18n: file: src/basketui.rc:80
+#. i18n: ectx: Menu (insert)
+#. i18n: file: src/basket_part.rc:77
+#. i18n: ectx: Menu (insert)
+#. i18n: file: src/basketui.rc:80
+#. i18n: ectx: Menu (insert)
+#: rc.cpp:24 rc.cpp:69
+msgid "&Insert"
+msgstr ""
+
+#. i18n: file: src/basket_part.rc:92
+#. i18n: ectx: Menu (settings)
+#. i18n: file: src/basketui.rc:95
+#. i18n: ectx: Menu (settings)
+#. i18n: file: src/basket_part.rc:92
+#. i18n: ectx: Menu (settings)
+#. i18n: file: src/basketui.rc:95
+#. i18n: ectx: Menu (settings)
+#: rc.cpp:27 rc.cpp:72
+msgid "&Settings"
+msgstr ""
+
+#. i18n: file: src/basket_part.rc:103
+#. i18n: ectx: Menu (help)
+#. i18n: file: src/basketui.rc:106
+#. i18n: ectx: Menu (help)
+#. i18n: file: src/basket_part.rc:103
+#. i18n: ectx: Menu (help)
+#. i18n: file: src/basketui.rc:106
+#. i18n: ectx: Menu (help)
+#: rc.cpp:30 rc.cpp:75
+msgid "&Help"
+msgstr ""
+
+#. i18n: file: src/basket_part.rc:118
+#. i18n: ectx: ToolBar (mainToolBar)
+#. i18n: file: src/basketui.rc:121
+#. i18n: ectx: ToolBar (mainToolBar)
+#. i18n: file: src/basket_part.rc:118
+#. i18n: ectx: ToolBar (mainToolBar)
+#. i18n: file: src/basketui.rc:121
+#. i18n: ectx: ToolBar (mainToolBar)
+#: rc.cpp:33 rc.cpp:78
+#, fuzzy
+msgid "Main Toolbar"
+msgstr "文本排版工具栏"
+
+#. i18n: file: src/basket_part.rc:129
+#. i18n: ectx: ToolBar (richTextEditToolBar)
+#. i18n: file: src/basketui.rc:136
+#. i18n: ectx: ToolBar (richTextEditToolBar)
+#. i18n: file: src/basket_part.rc:129
+#. i18n: ectx: ToolBar (richTextEditToolBar)
+#. i18n: file: src/basketui.rc:136
+#. i18n: ectx: ToolBar (richTextEditToolBar)
+#: rc.cpp:36 rc.cpp:81
+msgid "Text Formating Toolbar"
+msgstr "文本排版工具栏"
+
+#: rc.cpp:103
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: rc.cpp:104
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#: src/aboutdata.cpp:25
 msgid ""
 "<p><b>Taking care of your ideas.</b></p><p>A note-taking application that "
 "makes it easy to record ideas as you think, and quickly find them later. "
 "Organizing your notes has never been so easy.</p>"
-msgstr "<p><b>抓住你的灵感.</b></p><p>一个用来记载想法的小贴士软件,可以帮助你便捷的记录和整理想法.</p>"
+msgstr ""
+"<p><b>抓住你的灵感.</b></p><p>一个用来记载想法的小贴士软件,可以帮助你便捷的记"
+"录和整理想法.</p>"
 
-#: aboutdata.cpp:34
+#: src/aboutdata.cpp:32
 msgid "BasKet Note Pads"
 msgstr "Basket贴示板"
 
-#: aboutdata.cpp:41
-msgid "Author, maintainer"
+#: src/aboutdata.cpp:34
+msgid "(c) 2003-2007, Sébastien Laoût"
+msgstr ""
+
+#: src/aboutdata.cpp:38
+msgid "Kelvie Wong"
+msgstr ""
+
+#: src/aboutdata.cpp:39
+#, fuzzy
+msgid "Maintainer"
 msgstr "创建者,维护者"
 
-#: aboutdata.cpp:45
+#: src/aboutdata.cpp:42
+msgid "Sébastien Laoût"
+msgstr ""
+
+#: src/aboutdata.cpp:43
+msgid "Original Author"
+msgstr ""
+
+#: src/aboutdata.cpp:46
+msgid "Petri Damstén"
+msgstr ""
+
+#: src/aboutdata.cpp:47
 msgid "Basket encryption, Kontact integration, KnowIt importer"
 msgstr "Basket 编码, Kontact 整合, KnowIt 输出"
 
-#: aboutdata.cpp:49
+#: src/aboutdata.cpp:50
+msgid "Alex Gontmakher"
+msgstr ""
+
+#: src/aboutdata.cpp:51
 msgid ""
 "Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, "
 "drop to basket name"
 msgstr ""
-"Baskets 自动锁定, 保存状态图标, HTML 导入导出, basket 名称 tip, "
-"basket 名称导入"
+"Baskets 自动锁定, 保存状态图标, HTML 导入导出, basket 名称 tip, basket 名称导"
+"入"
 
-#: aboutdata.cpp:53 basketproperties.cpp:61 newbasketdialog.cpp:103
+#: src/aboutdata.cpp:54
+msgid "Marco Martin"
+msgstr ""
+
+#: src/aboutdata.cpp:55 src/basketproperties.cpp:72
+#: src/newbasketdialog.cpp:111
 msgid "Icon"
 msgstr "图标"
 
-#: archive.cpp:54 bnpview.cpp:1750
+#: src/archive.cpp:58 src/bnpview.cpp:2100
 msgid "Save as Basket Archive"
 msgstr "保存为Basket文档"
 
-#: archive.cpp:54
+#: src/archive.cpp:58
 msgid "Saving as basket archive. Please wait..."
 msgstr "保存为basket文档.请稍等..."
 
-#: archive.cpp:258
+#: src/archive.cpp:272
 msgid "This file is not a basket archive."
 msgstr "不是一个正确的basket文档."
 
-#: archive.cpp:258 archive.cpp:289 archive.cpp:316 archive.cpp:324
-#: archive.cpp:334 archive.cpp:381
+#: src/archive.cpp:272 src/archive.cpp:303 src/archive.cpp:322
+#: src/archive.cpp:330 src/archive.cpp:340 src/archive.cpp:392
 msgid "Basket Archive Error"
 msgstr "文档已损坏"
 
-#: archive.cpp:289 archive.cpp:334 archive.cpp:381
+#: src/archive.cpp:303 src/archive.cpp:340 src/archive.cpp:392
 msgid "This file is corrupted. It can not be opened."
 msgstr "无法打开,文档已损坏."
 
-#: archive.cpp:311
+#: src/archive.cpp:317
 msgid ""
 "This file was created with a recent version of %1. It can be opened but not "
 "every information will be available to you. For instance, some notes may be "
@@ -91,256 +320,254 @@ msgid ""
 "original one."
 msgstr ""
 
-#: archive.cpp:322
+#: src/archive.cpp:328
 msgid ""
 "This file was created with a recent version of %1. Please upgrade to a newer "
 "version to be able to open that file."
 msgstr "这个文件由最近的%1版本所创建,你需要升级到更新的版本才能打开."
 
-#: backup.cpp:56
+#: src/backup.cpp:65
 msgid "Backup & Restore"
 msgstr "备份与还原"
 
-#: backup.cpp:65
+#: src/backup.cpp:78
 msgid "Save Folder"
 msgstr "保存文件夹"
 
-#: backup.cpp:66
+#: src/backup.cpp:81
 msgid "Your baskets are currently stored in that folder:<br><b>%1</b>"
 msgstr "你的basket里面已经存在了这样的目录:<br><b>%1</b>"
 
-#: backup.cpp:69
+#: src/backup.cpp:85
 msgid "&Move to Another Folder..."
 msgstr "移动到另一个目录(&d)"
 
-#: backup.cpp:70
+#: src/backup.cpp:86
 msgid "&Use Another Existing Folder..."
 msgstr "使用其它目录(&U)..."
 
-#: backup.cpp:71
+#: src/backup.cpp:87
 msgid "Why to do that?"
 msgstr "你要干什么?"
 
-#: backup.cpp:72
+#: src/backup.cpp:88
 msgid ""
 "<p>You can move the folder where %1 store your baskets to:</p><ul><li>Store "
 "your baskets in a visible place in your home folder, like ~/Notes or ~/"
 "Baskets, so you can manually backup them when you want.</li><li>Store your "
 "baskets on a server to share them between two computers.<br>In this case, "
-"mount the shared-folder to the local file system and ask %2 to use that "
-"mount point.<br>Warning: you should not run %3 at the same time on both "
+"mount the shared-folder to the local file system and ask %1 to use that "
+"mount point.<br>Warning: you should not run %1 at the same time on both "
 "computers, or you risk to loss data while the two applications are desynced."
 "</li></ul><p>Please remember that you should not change the content of that "
 "folder manually (eg. adding a file in a basket folder will not add that file "
 "to the basket).</p>"
 msgstr ""
 
-#: backup.cpp:89
+#: src/backup.cpp:103
 msgid "Backups"
 msgstr "备份"
 
-#: backup.cpp:92
+#: src/backup.cpp:109
 msgid "&Backup..."
 msgstr "备份中(&B)..."
 
-#: backup.cpp:93
+#: src/backup.cpp:110
 msgid "&Restore a Backup..."
 msgstr "备份与还原(&R)..."
 
-#: backup.cpp:113
+#: src/backup.cpp:130
 msgid "Last backup: never"
 msgstr "最近的备份:无"
 
-#: backup.cpp:115
-#, c-format
+#: src/backup.cpp:132
 msgid "Last backup: %1"
 msgstr "最近的备份:%1"
 
-#: backup.cpp:124
+#: src/backup.cpp:141
 msgid "Choose a Folder Where to Move Baskets"
 msgstr "选择你的Basket将要移动到的目录"
 
-#: backup.cpp:136
+#: src/backup.cpp:153
 msgid "The folder <b>%1</b> is not empty. Do you want to override it?"
 msgstr "目录<b>%1</b>非空. 确定覆盖么?"
 
-#: backup.cpp:137
+#: src/backup.cpp:154
 msgid "Override Folder?"
 msgstr "确定覆盖目录?"
 
-#: backup.cpp:138 backup.cpp:190 bnpview.cpp:1759 htmlexporter.cpp:68
+#: src/backup.cpp:155 src/backup.cpp:206 src/bnpview.cpp:2109
+#: src/htmlexporter.cpp:75
 msgid "&Override"
 msgstr "覆盖(&O)"
 
-#: backup.cpp:147
+#: src/backup.cpp:164
+#, fuzzy
 msgid ""
-"Your baskets have been successfuly moved to <b>%1</b>. %2 is going to be "
+"Your baskets have been successfully moved to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
 msgstr "你的basket成功移动到了<b>%1</b>. 更改后的设置将在%2被采用."
 
-#: backup.cpp:155
+#: src/backup.cpp:172
 msgid "Choose an Existing Folder to Store Baskets"
 msgstr "选择一个目录来保存Basket."
 
-#: backup.cpp:158
+#: src/backup.cpp:175
 msgid ""
 "Your basket save folder has been successfuly changed to <b>%1</b>. %2 is "
 "going to be restarted to take this change into account."
 msgstr "你的basket目录成功变更到了<b>%1</b>.更改后的设置将在%2被采用."
 
-#: backup.cpp:170
-msgid ""
+#: src/backup.cpp:187
+#, fuzzy
+msgid "Backup filename (without extension), %1 is the date"
+msgid_plural "Baskets_%1"
+msgstr[0] ""
 "_: Backup filename (without extension), %1 is the date\n"
 "Baskets_%1"
-msgstr ""
+msgstr[1] ""
 "_: Backup filename (without extension), %1 is the date\n"
 "Baskets_%1"
 
-#: backup.cpp:175 backup.cpp:230
+#: src/backup.cpp:191 src/backup.cpp:247
 msgid "Tar Archives Compressed by Gzip"
 msgstr "用Gzip压缩"
 
-#: backup.cpp:175 backup.cpp:230 bnpview.cpp:1747 bnpview.cpp:1785
-#: htmlexporter.cpp:53
+#: src/backup.cpp:191 src/backup.cpp:247 src/bnpview.cpp:2097
+#: src/bnpview.cpp:2135 src/htmlexporter.cpp:60
 msgid "All Files"
 msgstr "所有文件"
 
-#: backup.cpp:179 backup.cpp:200
+#: src/backup.cpp:195 src/backup.cpp:216
 msgid "Backup Baskets"
 msgstr "备份Basket"
 
-#: backup.cpp:187 bnpview.cpp:1756 htmlexporter.cpp:65
+#: src/backup.cpp:203 src/bnpview.cpp:2106 src/htmlexporter.cpp:72
 msgid "The file <b>%1</b> already exists. Do you really want to override it?"
 msgstr "文件<b>%1</b>已存在.是否覆盖?"
 
-#: backup.cpp:189 bnpview.cpp:1758 htmlexporter.cpp:67
+#: src/backup.cpp:205 src/bnpview.cpp:2108 src/htmlexporter.cpp:74
 msgid "Override File?"
 msgstr "覆盖文件?"
 
-#: backup.cpp:200
+#: src/backup.cpp:216
 msgid "Backing up baskets. Please wait..."
 msgstr "备份basket中. 请稍候..."
 
-#: backup.cpp:231 bnpview.cpp:1786
+#: src/backup.cpp:248 src/bnpview.cpp:2136
 msgid "Open Basket Archive"
 msgstr "打开basket文档"
 
-#: backup.cpp:242
+#: src/backup.cpp:259
 msgid "README.txt"
 msgstr "README.txt"
 
-#: backup.cpp:246
-#, c-format
+#: src/backup.cpp:263
 msgid ""
 "This is a safety copy of your baskets like they were before you started to "
 "restore the backup %1."
 msgstr "你正在编辑的是名为%1的basket安全拷贝."
 
-#: backup.cpp:247
+#: src/backup.cpp:264
 msgid ""
 "If the restoration was a success and you restored what you wanted to "
 "restore, you can remove this folder."
 msgstr "如果你已经成功从备份还原了文档.你可以删除此目录."
 
-#: backup.cpp:248
+#: src/backup.cpp:265
 msgid ""
 "If something went wrong during the restoration process, you can re-use this "
 "folder to store your baskets and nothing will be lost."
 msgstr "如果你还原备份文档失败.你可以继续使用当前目录里面的basket."
 
-#: backup.cpp:249
+#: src/backup.cpp:266
 msgid ""
 "Choose \"Basket\" -> \"Backup & Restore...\" -> \"Use Another Existing "
 "Folder...\" and select that folder."
-msgstr "选择 \"Basket\" -> \"备份与还原...\" -> \"使用另一个目录...\" 并选定目录."
+msgstr ""
+"选择 \"Basket\" -> \"备份与还原...\" -> \"使用另一个目录...\" 并选定目录."
 
-#: backup.cpp:254
+#: src/backup.cpp:271
 msgid "Restoring <b>%1</b>. Please wait..."
 msgstr "<b>%1</b>还原中.请稍等..."
 
-#: backup.cpp:255
+#: src/backup.cpp:272
 msgid ""
 "If something goes wrong during the restoration process, read the file <b>%1</"
 "b>."
-msgstr ""
-"如果你还原备份文档失败,请检查文件<b>%1</"
-"b>."
+msgstr "如果你还原备份文档失败,请检查文件<b>%1</b>."
 
-#: backup.cpp:257
+#: src/backup.cpp:274
 msgid "Restore Baskets"
 msgstr "还原Basket"
 
-#: backup.cpp:287
+#: src/backup.cpp:305
 msgid ""
 "This archive is either not a backup of baskets or is corrupted. It cannot be "
 "imported. Your old baskets have been preserved instead."
 msgstr ""
 
-#: backup.cpp:287
+#: src/backup.cpp:305
 msgid "Restore Error"
 msgstr "还原失败"
 
-#: backup.cpp:295
+#: src/backup.cpp:313
 msgid ""
 "Your backup has been successfuly restored to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
 msgstr ""
 
-#: backup.cpp:338
+#: src/backup.cpp:354
 msgid "Restart"
 msgstr "重启"
 
-#: backup.cpp:351
-msgid ""
-"_: Safety folder name before restoring a basket data archive\n"
-"Baskets Before Restoration"
-msgstr "还原前的Basket"
+#: src/backup.cpp:367
+#, fuzzy
+msgctxt "Safety folder name before restoring a basket data archive"
+msgid "Baskets Before Restoration"
+msgstr "&Basket树:"
 
-#: backup.cpp:356
-msgid ""
-"_: Safety folder name before restoring a basket data archive\n"
-"Baskets Before Restoration (%1)"
-msgstr "还原前的Basket (%1)"
+#: src/backup.cpp:372
+msgctxt "Safety folder name before restoring a basket data archive"
+msgid "Baskets Before Restoration (%1)"
+msgstr ""
 
-#: basket.cpp:523
+#: src/basket.cpp:536
 msgid "The new note does not match the filter and is hidden."
 msgstr "新建不进行检索的隐藏贴示."
 
-#: basket.cpp:524
+#: src/basket.cpp:537
 msgid "A new note does not match the filter and is hidden."
 msgstr "一个隐藏的贴示未被检索."
 
-#: basket.cpp:525
+#: src/basket.cpp:538
 msgid "Some new notes do not match the filter and are hidden."
 msgstr "一些隐藏的贴示未被检索."
 
-#: basket.cpp:526
+#: src/basket.cpp:539
 msgid "The new notes do not match the filter and are hidden."
 msgstr "隐藏贴示未被检索"
 
-#: basket.cpp:1542
-msgid ""
-"_: The verb (Group New Note)\n"
-"Group"
-msgstr "分组"
+#: src/basket.cpp:1607
+#, fuzzy
+msgid "Group"
+msgstr "分组(&G)"
 
-#: basket.cpp:1542
-msgid ""
-"_: The verb (Insert New Note)\n"
-"Insert"
-msgstr "插入"
+#: src/basket.cpp:1609
+msgid "Insert"
+msgstr ""
 
-#: basket.cpp:1968
+#: src/basket.cpp:2020
 msgid "Dropped to basket <i>%1</i>"
 msgstr "放置到basket<i>%1</i>"
 
-#: basket.cpp:2338
+#: src/basket.cpp:2398
 msgid ""
 "This message should never appear. If it does, this program is buggy! Please "
 "report the bug to the developer."
 msgstr "程序有bug!请向开发者提交bug."
 
-#: basket.cpp:2755 basket.cpp:2800 basket.cpp:2803
+#: src/basket.cpp:2830 src/basket.cpp:2875 src/basket.cpp:2878
 msgid ""
 "Insert note here\n"
 "Right click for more options"
@@ -348,48 +575,47 @@ msgstr ""
 "插入贴示到这里\n"
 "右键获取更多信息"
 
-#: basket.cpp:2773
+#: src/basket.cpp:2848
 msgid "Resize those columns"
 msgstr "调整列"
 
-#: basket.cpp:2775
+#: src/basket.cpp:2850
 msgid "Resize this group"
 msgstr "调整组"
 
-#: basket.cpp:2776
+#: src/basket.cpp:2851
 msgid "Resize this note"
 msgstr "调整贴示"
 
-#: basket.cpp:2777
+#: src/basket.cpp:2852
 msgid "Select or move this note"
 msgstr "选择/移动贴示"
 
-#: basket.cpp:2778
+#: src/basket.cpp:2853
 msgid "Select or move this group"
 msgstr "选择/移动组"
 
-#: basket.cpp:2779
+#: src/basket.cpp:2854
 msgid "Assign or remove tags from this note"
 msgstr "分配/移除贴示标记"
 
-#: basket.cpp:2781
-#, c-format
+#: src/basket.cpp:2856
 msgid "<b>Assigned Tags</b>: %1"
 msgstr "<b>分配的标记</b>: %1"
 
-#: basket.cpp:2788
+#: src/basket.cpp:2863
 msgid "%1, %2"
 msgstr "%1, %2"
 
-#: basket.cpp:2795
+#: src/basket.cpp:2870
 msgid "Expand this group"
 msgstr "展开组"
 
-#: basket.cpp:2796
+#: src/basket.cpp:2871
 msgid "Collapse this group"
 msgstr "折叠组"
 
-#: basket.cpp:2801
+#: src/basket.cpp:2876
 msgid ""
 "Group note with the one below\n"
 "Right click for more options"
@@ -397,7 +623,7 @@ msgstr ""
 "以下贴示全部组选\n"
 "右键获取更多信息."
 
-#: basket.cpp:2802
+#: src/basket.cpp:2877
 msgid ""
 "Group note with the one above\n"
 "Right click for more options"
@@ -405,227 +631,246 @@ msgstr ""
 "以上贴示全部组选\n"
 "右键获取更多信息."
 
-#: basket.cpp:2818
+#: src/basket.cpp:2893
 msgid "Added"
 msgstr "已添加"
 
-#: basket.cpp:2819
+#: src/basket.cpp:2894
 msgid "Last Modification"
 msgstr "最近的变更"
 
-#: basket.cpp:2827
-msgid ""
-"_: of the form 'key: value'\n"
-"<b>%1</b>: %2"
-msgstr "<b>%1</b>: %2"
+#: src/basket.cpp:2902
+#, fuzzy
+msgctxt "of the form 'key: value'"
+msgid "<b>%1</b>: %2"
+msgstr "%1: %2"
 
-#: basket.cpp:2830
+#: src/basket.cpp:2905
 msgid "Click on the right to group instead of insert"
 msgstr "右侧插入组"
 
-#: basket.cpp:2832
+#: src/basket.cpp:2907
 msgid "Click on the left to insert instead of group"
 msgstr "左侧插入组"
 
-#: basket.cpp:3026
+#: src/basket.cpp:3102
 msgid "&Unlock"
 msgstr "解锁(&U)"
 
-#: basket.cpp:3031
+#: src/basket.cpp:3107
 msgid "Password protected basket."
 msgstr "密码保护的basket."
 
-#: basket.cpp:3033
+#: src/basket.cpp:3109
 msgid "Press Unlock to access it."
 msgstr "点击解锁访问文件."
 
-#: basket.cpp:3035
-#, c-format
+#: src/basket.cpp:3111
 msgid "Encryption is not supported by<br/>this version of %1."
 msgstr "当前版本(%1)不支持加密."
 
-#: basket.cpp:3047
+#: src/basket.cpp:3123
 msgid ""
 "To make baskets stay unlocked, change the automatic<br>locking duration in "
 "the application settings."
 msgstr "请在程序设置内更改锁定期限<br>来关闭文档的自动锁定功能."
 
-#: basket.cpp:3082 basketstatusbar.cpp:83 bnpview.cpp:1293 bnpview.cpp:1957
+#: src/basket.cpp:3161 src/basketstatusbar.cpp:82 src/bnpview.cpp:1632
+#: src/bnpview.cpp:2320
 msgid "Loading..."
 msgstr "读取中..."
 
-#: basket.cpp:3325 basket.cpp:3346 bnpview.cpp:2261
+#: src/basket.cpp:3410 src/basket.cpp:3448
+#, fuzzy
+msgid "&Remove"
+msgstr "移除所有(&R)"
+
+#: src/basket.cpp:3413 src/basket.cpp:3454 src/bnpview.cpp:2673
 msgid "&Customize..."
 msgstr "设置(&C)..."
 
-#: basket.cpp:3327 basket.cpp:3348
+#: src/basket.cpp:3417 src/basket.cpp:3463
 msgid "&Filter by this Tag"
 msgstr "按标记检索(&F)"
 
-#: basket.cpp:3349
+#: src/basket.cpp:3469
 msgid "Filter by this &State"
 msgstr "按条件检索(&S)"
 
-#: basket.cpp:3429
+#: src/basket.cpp:3553
 msgid "Tags"
 msgstr "标记"
 
-#: basket.cpp:4065
-#, c-format
-msgid ""
-"_n: <qt>Do you really want to delete this note?</qt>\n"
-"<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
-msgstr "<qt>你确定删除这<b>%n</b>条贴示?</qt>"
+#: src/basket.cpp:4156
+#, fuzzy
+msgid "<qt>Do you really want to delete this note?</qt>"
+msgid_plural "<qt>Do you really want to delete these <b>%1</b> notes?</qt>"
+msgstr[0] "<qt>你确定要删除<b>%1</b>和它里面的所有内容?</qt>"
+msgstr[1] "<qt>你确定要删除<b>%1</b>和它里面的所有内容?</qt>"
 
-#: basket.cpp:4067
-msgid ""
-"_n: Delete Note\n"
-"Delete Notes"
-msgstr "删除贴示"
+#: src/basket.cpp:4159
+#, fuzzy
+msgid "Delete Note"
+msgid_plural "Delete Notes"
+msgstr[0] "删除状态"
+msgstr[1] "删除状态"
 
-#: basket.cpp:4165
-msgid ""
-"_n: Copied note to clipboard.\n"
-"Copied notes to clipboard."
-msgstr "复制贴示到剪贴板"
+#: src/basket.cpp:4257
+#, fuzzy
+msgid "Copied note to clipboard."
+msgid_plural "Copied notes to clipboard."
+msgstr[0] "复制贴示到剪贴板"
+msgstr[1] "复制贴示到剪贴板"
 
-#: basket.cpp:4166
-msgid ""
-"_n: Cut note to clipboard.\n"
-"Cut notes to clipboard."
-msgstr "复制到剪贴板"
+#: src/basket.cpp:4258
+#, fuzzy
+msgid "Cut note to clipboard."
+msgid_plural "Cut notes to clipboard."
+msgstr[0] "粘贴"
+msgstr[1] "粘贴"
 
-#: basket.cpp:4167
-msgid ""
-"_n: Copied note to selection.\n"
-"Copied notes to selection."
-msgstr "复制所选贴示."
+#: src/basket.cpp:4259
+#, fuzzy
+msgid "Copied note to selection."
+msgid_plural "Copied notes to selection."
+msgstr[0] "复制所选贴示."
+msgstr[1] "复制所选贴示."
 
-#: basket.cpp:4213 basket.cpp:4262
+#: src/basket.cpp:4305 src/basket.cpp:4354
 msgid "Unable to open this note."
 msgstr "无法打开贴示."
 
-#: basket.cpp:4237
+#: src/basket.cpp:4329
 msgid "You are not authorized to open this file."
 msgstr "你无权打开这个文档."
 
-#: basket.cpp:4279
+#: src/basket.cpp:4371
 msgid "Save to File"
 msgstr "保存到文档"
 
-#: basket.cpp:5219
+#: src/basket.cpp:5323
 msgid "Please enter the password for the following private key:"
 msgstr "请输入私钥密码:"
 
-#: basket.cpp:5221
+#: src/basket.cpp:5325
 msgid "Please enter the password for the basket <b>%1</b>:"
 msgstr "请输入basket <b>%1</b> 的密码:"
 
-#: basket.cpp:5266
+#: src/basket.cpp:5370
 msgid "Please assign a password to the basket <b>%1</b>:"
 msgstr "请设置basket <b>%1</b> 的密码:"
 
-#: basket.cpp:5328
-msgid "Insufficient Disk Space to Save Basket Data"
-msgstr "磁盘空间不足"
-
-#: basket.cpp:5329
-msgid "Wrong Basket File Permissions"
-msgstr "错误的文档权限"
-
-#: basket.cpp:5332
-msgid ""
-"Please remove files on the disk <b>%1</b> to let the application safely save "
-"your changes."
+#: src/basket.cpp:5425
+msgid "Error while saving"
 msgstr ""
 
-#: basket.cpp:5334
-msgid ""
-"File permissions are bad for <b>%1</b>. Please check that you have write "
-"access to it and the parent folders."
-msgstr ""
-
-#: basket.cpp:5370
+#: src/basket.cpp:5464
 msgid "Save Error"
 msgstr "保存错误"
 
-#: basketfactory.cpp:60
+#: src/basketfactory.cpp:63
 msgid "Sorry, but the folder creation for this new basket has failed."
 msgstr "新建basket目录失败."
 
-#: basketfactory.cpp:60 basketfactory.cpp:90 basketfactory.cpp:111
+#: src/basketfactory.cpp:63 src/basketfactory.cpp:93 src/basketfactory.cpp:114
 msgid "Basket Creation Failed"
 msgstr "Basket创建失败"
 
-#: basketfactory.cpp:90
+#: src/basketfactory.cpp:93
 msgid "Sorry, but the template copying for this new basket has failed."
 msgstr "拷贝模板失败."
 
-#: basketfactory.cpp:111
+#: src/basketfactory.cpp:114
 msgid "Sorry, but the template customization for this new basket has failed."
 msgstr "当前模板设置无效."
 
-#: basketlistview.cpp:338
+#: src/basketlistview.cpp:277
 msgid "%1+%2+"
 msgstr "%1+%2+"
 
-#: basketlistview.cpp:340
+#: src/basketlistview.cpp:279
 msgid "%1+"
 msgstr "%1+"
 
-#: basketlistview.cpp:343
+#: src/basketlistview.cpp:282
 msgid "%1+%2"
 msgstr "%1+%2"
 
-#: basketproperties.cpp:46
+#: src/basket_options.h:30
+#, fuzzy
+msgid "Show the debug window"
+msgstr "显示/隐藏主窗口"
+
+#: src/basket_options.h:33
+msgid "Custom folder to load and save baskets and other application data."
+msgstr ""
+
+#: src/basket_options.h:37
+msgid "Automatically hide the main window in the system tray on startup."
+msgstr ""
+
+#: src/basket_options.h:41
+msgid "On crash, use the standard KDE crash handler rather than send an email."
+msgstr ""
+
+#: src/basket_options.h:43
+#, fuzzy
+msgid "Open a basket archive or template."
+msgstr "打开basket文档"
+
+#: src/basketproperties.cpp:54
 msgid "Basket Properties"
 msgstr "Basket喜好设置"
 
-#: basketproperties.cpp:64 kgpgme.cpp:60 newbasketdialog.cpp:108
+#: src/basketproperties.cpp:75 src/kgpgme.cpp:74 src/newbasketdialog.cpp:116
 msgid "Name"
 msgstr "名称"
 
-#: basketproperties.cpp:76
+#: src/basketproperties.cpp:81 src/settings.cpp:509 src/tagsedit.cpp:1093
+msgid "Appearance"
+msgstr ""
+
+#: src/basketproperties.cpp:90
 msgid "Background &image:"
 msgstr "背景图像(&i)"
 
-#: basketproperties.cpp:77
+#: src/basketproperties.cpp:91
 msgid "&Background color:"
 msgstr "背景颜色(&B):"
 
-#: basketproperties.cpp:78
+#: src/basketproperties.cpp:92
 msgid "&Text color:"
 msgstr "文本颜色(&T):"
 
-#: basketproperties.cpp:87
+#: src/basketproperties.cpp:101
 msgid "(None)"
 msgstr "(无)"
 
-#: basketproperties.cpp:107
+#: src/basketproperties.cpp:123
 msgid "Disposition"
 msgstr "配置"
 
-#: basketproperties.cpp:110
+#: src/basketproperties.cpp:129
 msgid "Col&umns:"
 msgstr "列数(&u):"
 
-#: basketproperties.cpp:118
+#: src/basketproperties.cpp:140
 msgid "&Free-form"
 msgstr "自由形状(&F)"
 
-#: basketproperties.cpp:119
+#: src/basketproperties.cpp:144
 msgid "&Mind map"
 msgstr "思维脑图(&M)"
 
-#: basketproperties.cpp:128
+#: src/basketproperties.cpp:161
 msgid "&Keyboard Shortcut"
 msgstr "键盘快捷键(&K)"
 
-#: basketproperties.cpp:133
+#: src/basketproperties.cpp:169
 msgid "Learn some tips..."
 msgstr "学习一些技巧..."
 
-#: basketproperties.cpp:134
+#: src/basketproperties.cpp:170
 msgid ""
 "<p><strong>Easily Remember your Shortcuts</strong>:<br>With the first "
 "option, giving the basket a shortcut of the form <strong>Alt+Letter</strong> "
@@ -641,172 +886,182 @@ msgid ""
 "clipboard or the selection into the current basket from anywhere.</p>"
 msgstr ""
 
-#: basketproperties.cpp:149
+#: src/basketproperties.cpp:185
 msgid "S&how this basket"
 msgstr "显示这些basket"
 
-#: basketproperties.cpp:150
+#: src/basketproperties.cpp:186
 msgid "Show this basket (&global shortcut)"
 msgstr "显示basket(全局快捷方式)(&g)"
 
-#: basketproperties.cpp:151
+#: src/basketproperties.cpp:187
 msgid "S&witch to this basket (global shortcut)"
 msgstr "转到这个文档(全局快捷方式)(&w)"
 
-#: basketstatusbar.cpp:100
+#: src/basketstatusbar.cpp:99
 msgid "Shows if there are changes that have not yet been saved."
 msgstr "显示尚未保存的已更改文档."
 
-#: basketstatusbar.cpp:128
+#: src/basketstatusbar.cpp:129
 msgid "Ctrl+drop: copy, Shift+drop: move, Shift+Ctrl+drop: link."
 msgstr "Ctrl+drop: 复制, Shift+drop: 移动, Shift+Ctrl+drop: 链接."
 
-#: basketstatusbar.cpp:148
+#: src/basketstatusbar.cpp:149
 msgid "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>"
 msgstr "<p>basket被<b>锁定</b>.<br>点击解锁.</p>"
 
-#: basketstatusbar.cpp:153
+#: src/basketstatusbar.cpp:154
 msgid "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>"
 msgstr "<p>basket被<b>解锁</b>.<br>点击锁定.</p>"
 
-#: bnpview.cpp:175 bnpview.cpp:1128
+#: src/bnpview.cpp:206 src/bnpview.cpp:1461
 msgid "General"
 msgstr "主要"
 
-#: bnpview.cpp:231
+#: src/bnpview.cpp:309
 msgid "Show/hide main window"
 msgstr "显示/隐藏主窗口"
 
-#: bnpview.cpp:232
+#: src/bnpview.cpp:311
 msgid ""
 "Allows you to show main Window if it is hidden, and to hide it if it is "
 "shown."
 msgstr "隐藏/显示切换"
 
-#: bnpview.cpp:236
+#: src/bnpview.cpp:318
 msgid "Paste clipboard contents in current basket"
 msgstr "粘贴剪贴板内容到当前文档"
 
-#: bnpview.cpp:237
+#: src/bnpview.cpp:320
 msgid ""
 "Allows you to paste clipboard contents in the current basket without having "
 "to open the main window."
 msgstr "粘贴剪贴板内容"
 
-#: bnpview.cpp:240
+#: src/bnpview.cpp:328
 msgid "Show current basket name"
 msgstr "显示basket文件名"
 
-#: bnpview.cpp:241
+#: src/bnpview.cpp:329
 msgid "Allows you to know basket is current without opening the main window."
 msgstr "切换为主要."
 
-#: bnpview.cpp:244
+#: src/bnpview.cpp:335
 msgid "Paste selection in current basket"
 msgstr "粘贴到basket"
 
-#: bnpview.cpp:245
+#: src/bnpview.cpp:337
 msgid ""
 "Allows you to paste clipboard selection in the current basket without having "
 "to open the main window."
 msgstr "粘贴剪贴板选项"
 
-#: bnpview.cpp:248
+#: src/bnpview.cpp:343
 msgid "Create a new basket"
 msgstr "新建basket"
 
-#: bnpview.cpp:249
+#: src/bnpview.cpp:345
 msgid ""
 "Allows you to create a new basket without having to open the main window "
 "(you then can use the other global shortcuts to add a note, paste clipboard "
 "or paste selection in this new basket)."
 msgstr "新建basket"
 
-#: bnpview.cpp:252
+#: src/bnpview.cpp:352
 msgid "Go to previous basket"
 msgstr "转到上一个basket"
 
-#: bnpview.cpp:253
+#: src/bnpview.cpp:354
 msgid ""
 "Allows you to change current basket to the previous one without having to "
 "open the main window."
 msgstr "切换到上一个basket."
 
-#: bnpview.cpp:256
+#: src/bnpview.cpp:359
 msgid "Go to next basket"
 msgstr "转到下一个basket"
 
-#: bnpview.cpp:257
+#: src/bnpview.cpp:360
 msgid ""
 "Allows you to change current basket to the next one without having to open "
 "the main window."
 msgstr "切换到下一个basket"
 
-#: bnpview.cpp:264
+#: src/bnpview.cpp:365
 msgid "Insert text note"
 msgstr "插入文本贴示"
 
-#: bnpview.cpp:265
-msgid "Add a text note to the current basket without having to open the main window."
+#: src/bnpview.cpp:367
+msgid ""
+"Add a text note to the current basket without having to open the main window."
 msgstr "添加一个文本贴示到当前basket."
 
-#: bnpview.cpp:268 settings.cpp:576
+#: src/bnpview.cpp:373 src/settings.cpp:585
 msgid "Insert image note"
 msgstr "插入图片贴示"
 
-#: bnpview.cpp:269
+#: src/bnpview.cpp:375
 msgid ""
 "Add an image note to the current basket without having to open the main "
 "window."
 msgstr "添加一个图片贴示到当前basket."
 
-#: bnpview.cpp:272 settings.cpp:577
+#: src/bnpview.cpp:380 src/settings.cpp:586
 msgid "Insert link note"
 msgstr "插入链接贴示"
 
-#: bnpview.cpp:273
-msgid "Add a link note to the current basket without having to open the main window."
+#: src/bnpview.cpp:382
+msgid ""
+"Add a link note to the current basket without having to open the main window."
 msgstr "添加一个链接贴示到当前basket."
 
-#: bnpview.cpp:276 settings.cpp:579
+#: src/bnpview.cpp:387 src/settings.cpp:588
 msgid "Insert color note"
 msgstr "插入贴示"
 
-#: bnpview.cpp:277
+#: src/bnpview.cpp:389
 msgid ""
 "Add a color note to the current basket without having to open the main "
 "window."
 msgstr "添加一个新贴示到当前文档."
 
-#: bnpview.cpp:280
+#: src/bnpview.cpp:394
 msgid "Pick color from screen"
 msgstr "萃取颜色"
 
-#: bnpview.cpp:281
+#: src/bnpview.cpp:396
 msgid ""
 "Add a color note picked from one pixel on screen to the current basket "
 "without having to open the main window."
 msgstr "添加一个贴示到当前basket."
 
-#: bnpview.cpp:285 settings.cpp:580
+#: src/bnpview.cpp:401 src/settings.cpp:589
 msgid "Grab screen zone"
 msgstr "抓取屏幕范围"
 
-#: bnpview.cpp:286
+#: src/bnpview.cpp:403
 msgid ""
 "Grab a screen zone as an image in the current basket without having to open "
 "the main window."
 msgstr "抓取屏幕范围"
 
-#: bnpview.cpp:298
+#: src/bnpview.cpp:409
+#, fuzzy
+msgid "Insert plain text note"
+msgstr "插入文本贴示"
+
+#: src/bnpview.cpp:411
+#, fuzzy
+msgid ""
+"Add a plain text note to the current basket without having to open the main "
+"window."
+msgstr "添加一个文本贴示到当前basket."
+
+#: src/bnpview.cpp:420
 msgid "Baskets"
 msgstr "Basket"
 
-#: bnpview.cpp:346
-msgid "Please write in English or French."
-msgstr "请使用英语或法语."
-
-#: bnpview.cpp:355
+#: src/bnpview.cpp:475
 msgid ""
 "<h2>Basket Tree</h2>Here is the list of your baskets. You can organize your "
 "data by putting them in different baskets. You can group baskets by subject "
@@ -814,294 +1069,298 @@ msgid ""
 "clicking a basket to open it, or reorganize them using drag and drop."
 msgstr ""
 
-#: bnpview.cpp:366 bnpview.cpp:368
+#: src/bnpview.cpp:491 src/bnpview.cpp:498
 msgid "&Basket Archive..."
 msgstr "basket文档(&B)..."
 
-#: bnpview.cpp:371
+#: src/bnpview.cpp:504
 msgid "&Hide Window"
 msgstr "隐藏主窗体(&H)"
 
-#: bnpview.cpp:375
+#: src/bnpview.cpp:511
 msgid "&HTML Web Page..."
 msgstr "HTML网页(&H)..."
 
-#: bnpview.cpp:377
+#: src/bnpview.cpp:517
 msgid "K&Notes"
 msgstr "K&Notes"
 
-#: bnpview.cpp:379
+#: src/bnpview.cpp:522
 msgid "K&Jots"
 msgstr "K&Jots"
 
-#: bnpview.cpp:381
+#: src/bnpview.cpp:527
 msgid "&KnowIt..."
 msgstr "&KnowIt..."
 
-#: bnpview.cpp:383
+#: src/bnpview.cpp:532
 msgid "Tux&Cards..."
 msgstr "Tux&Cards..."
 
-#: bnpview.cpp:385
+#: src/bnpview.cpp:538
 msgid "&Sticky Notes"
 msgstr "贴上贴示(&S)"
 
-#: bnpview.cpp:387
+#: src/bnpview.cpp:543
 msgid "&Tomboy"
 msgstr "阿贴便签(&T)"
 
-#: bnpview.cpp:389
+#: src/bnpview.cpp:548
 msgid "Text &File..."
 msgstr "其它文档格式..."
 
-#: bnpview.cpp:392
+#: src/bnpview.cpp:553
 msgid "&Backup && Restore..."
 msgstr "备份与还原(&B)..."
 
-#: bnpview.cpp:397
+#: src/bnpview.cpp:559
 msgid "D&elete"
 msgstr "删除(&e)"
 
-#: bnpview.cpp:403
+#: src/bnpview.cpp:569
 msgid "Selects all notes"
 msgstr "选择全部贴示"
 
-#: bnpview.cpp:404
+#: src/bnpview.cpp:572
 msgid "U&nselect All"
 msgstr "全部取消(&n)"
 
-#: bnpview.cpp:406
+#: src/bnpview.cpp:574
 msgid "Unselects all selected notes"
 msgstr "取消所有选定的贴示"
 
-#: bnpview.cpp:407
+#: src/bnpview.cpp:578
 msgid "&Invert Selection"
 msgstr "插入所选(&I)"
 
-#: bnpview.cpp:410
+#: src/bnpview.cpp:583
 msgid "Inverts the current selection of notes"
 msgstr "插入当前选定的贴示"
 
-#: bnpview.cpp:412
-msgid ""
-"_: Verb; not Menu\n"
-"&Edit..."
-msgstr "编辑(&E)..."
+#: src/bnpview.cpp:587
+msgctxt "Verb; not Menu"
+msgid "&Edit..."
+msgstr ""
 
-#: bnpview.cpp:417
+#: src/bnpview.cpp:595
 msgid "&Open"
 msgstr "打开(&O)"
 
-#: bnpview.cpp:420
+#: src/bnpview.cpp:599
 msgid "Open &With..."
 msgstr "打开方式(&W)"
 
-#: bnpview.cpp:424
+#: src/bnpview.cpp:606
 msgid "&Save to File..."
 msgstr "保存到文档(&S)..."
 
-#: bnpview.cpp:427
+#: src/bnpview.cpp:610
 msgid "&Group"
 msgstr "分组(&G)"
 
-#: bnpview.cpp:429
+#: src/bnpview.cpp:616
 msgid "U&ngroup"
 msgstr "解除分组(&n)"
 
-#: bnpview.cpp:432
+#: src/bnpview.cpp:621
 msgid "Move on &Top"
 msgstr "置顶(&T)"
 
-#: bnpview.cpp:434
+#: src/bnpview.cpp:627
 msgid "Move &Up"
 msgstr "上移(&U)"
 
-#: bnpview.cpp:436
+#: src/bnpview.cpp:633
 msgid "Move &Down"
 msgstr "下移(&D)"
 
-#: bnpview.cpp:438
+#: src/bnpview.cpp:639
 msgid "Move on &Bottom"
 msgstr "置底(&B)"
 
-#: bnpview.cpp:454
+#: src/bnpview.cpp:656
+#, fuzzy
+msgid "Plai&n Text"
+msgstr "纯文本"
+
+#: src/bnpview.cpp:663
 msgid "&Text"
 msgstr "文字(&T)"
 
-#: bnpview.cpp:455
+#: src/bnpview.cpp:669
 msgid "&Link"
 msgstr "链接(&L)"
 
-#: bnpview.cpp:456
+#: src/bnpview.cpp:675
 msgid "&Image"
 msgstr "图片(&I)"
 
-#: bnpview.cpp:457
+#: src/bnpview.cpp:680
 msgid "&Color"
 msgstr "颜色(&C)"
 
-#: bnpview.cpp:458
+#: src/bnpview.cpp:685
 msgid "L&auncher"
 msgstr "运行程序(&a)"
 
-#: bnpview.cpp:460
+#: src/bnpview.cpp:690
 msgid "Import Launcher from &KDE Menu..."
 msgstr "从K菜单运行程序(&K)"
 
-#: bnpview.cpp:461
+#: src/bnpview.cpp:695
 msgid "Im&port Icon..."
 msgstr "载入图标(&p)..."
 
-#: bnpview.cpp:462
+#: src/bnpview.cpp:700
 msgid "Load From &File..."
 msgstr "从文档载入(&F)..."
 
-#: bnpview.cpp:485
+#: src/bnpview.cpp:727
 msgid "C&olor from Screen"
 msgstr "抓取屏幕颜色(&o)"
 
-#: bnpview.cpp:490
+#: src/bnpview.cpp:737
 msgid "Grab Screen &Zone"
 msgstr "抓取屏幕范围(&Z)"
 
-#: bnpview.cpp:520
-msgid "&New Basket..."
-msgstr "新建Basket(&N)..."
-
-#: bnpview.cpp:522
+#: src/bnpview.cpp:777
 msgid "New &Sub-Basket..."
 msgstr "新建子Basket(&S)..."
 
-#: bnpview.cpp:524
+#: src/bnpview.cpp:782
 msgid "New Si&bling Basket..."
 msgstr "新建兄弟Basket(&b)..."
 
-#: bnpview.cpp:527
+#: src/bnpview.cpp:785
 msgid "&New"
 msgstr "新建(&N)"
 
-#: bnpview.cpp:535
-msgid ""
-"_: Remove Basket\n"
-"&Remove"
-msgstr "移除(&R)"
+#: src/bnpview.cpp:795
+#, fuzzy
+msgid "&Properties..."
+msgstr "Basket喜好设置"
 
-#: bnpview.cpp:538
-msgid ""
-"_: Password protection\n"
-"Pass&word..."
-msgstr "设置密码保护(&w)..."
+#: src/bnpview.cpp:801
+#, fuzzy
+msgctxt "Remove Basket"
+msgid "&Remove"
+msgstr "移除所有(&R)"
 
-#: bnpview.cpp:540
-msgid ""
-"_: Lock Basket\n"
-"&Lock"
-msgstr "锁定(&L)"
+#: src/bnpview.cpp:807
+msgctxt "Password protection"
+msgid "Pass&word..."
+msgstr ""
 
-#: bnpview.cpp:550
+#: src/bnpview.cpp:812
+#, fuzzy
+msgctxt "Lock Basket"
+msgid "&Lock"
+msgstr "已锁定"
+
+#: src/bnpview.cpp:825
 msgid "&Filter"
 msgstr "检索(&F)"
 
-#: bnpview.cpp:554
-msgid "Filter all &Baskets"
-msgstr "检索全部Basket(&B)"
+#: src/bnpview.cpp:836
+msgid "&Search All"
+msgstr ""
 
-#: bnpview.cpp:558
+#: src/bnpview.cpp:845
 msgid "&Reset Filter"
 msgstr "重置检索(&R)"
 
-#: bnpview.cpp:563
+#: src/bnpview.cpp:853
 msgid "&Previous Basket"
 msgstr "上一个Basket(&P)"
 
-#: bnpview.cpp:565
+#: src/bnpview.cpp:859
 msgid "&Next Basket"
 msgstr "下一个Basket(&N)"
 
-#: bnpview.cpp:567
+#: src/bnpview.cpp:865
 msgid "&Fold Basket"
 msgstr "折叠Basket(&F)"
 
-#: bnpview.cpp:569
+#: src/bnpview.cpp:871
 msgid "&Expand Basket"
 msgstr "展开Basket(&E)"
 
-#: bnpview.cpp:579
-msgid "Configure &Global Shortcuts..."
-msgstr "设置全局快捷方式(&G)..."
+#: src/bnpview.cpp:879
+#, fuzzy
+msgid "Convert text notes to rich text notes"
+msgstr "转换纯文本贴示为..."
 
-#: bnpview.cpp:583
+#: src/bnpview.cpp:888
 msgid "&Welcome Baskets"
 msgstr "欢迎使用Basket(&W)"
 
-#: bnpview.cpp:907
+#: src/bnpview.cpp:1242
 msgid "Plain Text Notes Conversion"
 msgstr "纯文本贴示转换"
 
-#: bnpview.cpp:908
+#: src/bnpview.cpp:1243
 msgid "Converting plain text notes to rich text ones..."
 msgstr "转换纯文本贴示为..."
 
-#: bnpview.cpp:1291
+#: src/bnpview.cpp:1630
 msgid "Locked"
 msgstr "已锁定"
 
-#: bnpview.cpp:1295
+#: src/bnpview.cpp:1634
 msgid "No notes"
 msgstr "无贴示"
 
-#: bnpview.cpp:1297
-#, c-format
-msgid ""
-"_n: %n note\n"
-"%n notes"
-msgstr "%n条贴示"
+#: src/bnpview.cpp:1636
+#, fuzzy
+msgid "%1 note"
+msgid_plural "%1 notes"
+msgstr[0] "无贴示"
+msgstr[1] "无贴示"
 
-#: bnpview.cpp:1298
-#, c-format
-msgid ""
-"_n: %n selected\n"
-"%n selected"
-msgstr "%n条已选定"
+#: src/bnpview.cpp:1637
+msgid "%1 selected"
+msgid_plural "%1 selected"
+msgstr[0] ""
+msgstr[1] ""
 
-#: bnpview.cpp:1299
+#: src/bnpview.cpp:1638
 msgid "all matches"
 msgstr "所有符合"
 
-#: bnpview.cpp:1299
+#: src/bnpview.cpp:1638
 msgid "no filter"
 msgstr "无符合"
 
-#: bnpview.cpp:1301
-#, c-format
-msgid ""
-"_n: %n match\n"
-"%n matches"
-msgstr "%n条符合"
+#: src/bnpview.cpp:1640
+#, fuzzy
+msgid "%1 match"
+msgid_plural "%1 matches"
+msgstr[0] "所有符合"
+msgstr[1] "所有符合"
 
-#: bnpview.cpp:1303
-msgid ""
-"_: e.g. '18 notes, 10 matches, 5 selected'\n"
-"%1, %2, %3"
-msgstr "%1, %2, %3"
+#: src/bnpview.cpp:1642
+#, fuzzy
+msgctxt "e.g. '18 notes, 10 matches, 5 selected'"
+msgid "%1, %2, %3"
+msgstr "%1, %2"
 
-#: bnpview.cpp:1420
+#: src/bnpview.cpp:1755
 msgid "Picked color to basket <i>%1</i>"
 msgstr "放置到basket <i>%1</i>"
 
-#: bnpview.cpp:1457
+#: src/bnpview.cpp:1792
 msgid "The plain text notes have been converted to rich text."
 msgstr "这条纯文本贴示已经转换完成."
 
-#: bnpview.cpp:1457 bnpview.cpp:1459
+#: src/bnpview.cpp:1792 src/bnpview.cpp:1794
 msgid "Conversion Finished"
 msgstr "转换完成"
 
-#: bnpview.cpp:1459
+#: src/bnpview.cpp:1794
 msgid "There are no plain text notes to convert."
 msgstr "没有待转换的纯文本贴示."
 
-#: bnpview.cpp:1484
+#: src/bnpview.cpp:1820
 msgid ""
 "<p><b>The file basketui.rc seems to not exist or is too old.<br>%1 cannot "
 "run without it and will stop.</b></p><p>Please check your installation of %2."
@@ -1112,89 +1371,78 @@ msgid ""
 "it, try to remove the file %5basketui.rc</p>"
 msgstr ""
 
-#: bnpview.cpp:1495
+#: src/bnpview.cpp:1831
 msgid "Ressource not Found"
 msgstr "文件源不存在"
 
-#: bnpview.cpp:1518 bnpview.cpp:1527
+#: src/bnpview.cpp:1855 src/bnpview.cpp:1864
 msgid "Cannot add note."
 msgstr "无法添加贴示"
 
-#: bnpview.cpp:1589
+#: src/bnpview.cpp:1926
 msgid "Grabbed screen zone to basket <i>%1</i>"
 msgstr "抓取屏幕到basket<i>%1</i>"
 
-#: bnpview.cpp:1637
-msgid "Delete Basket"
-msgstr "删除Basket"
-
-#: bnpview.cpp:1640
-msgid "Delete Only that Basket"
-msgstr "只删除这个Basket"
-
-#: bnpview.cpp:1641
-msgid "Delete Note & Children"
-msgstr "删除贴示和内容"
-
-#: bnpview.cpp:1649 bnpview.cpp:1655
-msgid "<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
+#: src/bnpview.cpp:2008
+msgid ""
+"<qt>Do you really want to remove the basket <b>%1</b> and its contents?</qt>"
 msgstr "<qt>你确定要删除<b>%1</b>和它里面的所有内容?</qt>"
 
-#: bnpview.cpp:1657
+#: src/bnpview.cpp:2010
 msgid "Remove Basket"
 msgstr "移除Basket"
 
-#: bnpview.cpp:1659
+#: src/bnpview.cpp:2012
 msgid "&Remove Basket"
 msgstr "移除Basket(&R)"
 
-#: bnpview.cpp:1670
+#: src/bnpview.cpp:2023
 msgid ""
 "<qt><b>%1</b> have the following children baskets.<br>Do you want to remove "
 "them too?</qt>"
 msgstr "<qt><b>%1</b> 有子basket.<br>你要同时删除这些么?</qt>"
 
-#: bnpview.cpp:1673
+#: src/bnpview.cpp:2026
 msgid "Remove Children Baskets"
 msgstr "移除子Basket"
 
-#: bnpview.cpp:1675
+#: src/bnpview.cpp:2028
 msgid "&Remove Children Baskets"
 msgstr "移除子Basket(&R)"
 
-#: bnpview.cpp:1747 bnpview.cpp:1785
+#: src/bnpview.cpp:2097 src/bnpview.cpp:2135
 msgid "Basket Archives"
 msgstr "Basket文档设置"
 
-#: bnpview.cpp:1869
+#: src/bnpview.cpp:2219
 msgid "Clipboard content pasted to basket <i>%1</i>"
 msgstr "粘贴所选内容到basket <i>%1</i>"
 
-#: bnpview.cpp:1877
+#: src/bnpview.cpp:2227
 msgid "Selection pasted to basket <i>%1</i>"
 msgstr "粘贴所选到basket <i>%1</i>"
 
-#: bnpview.cpp:1889
+#: src/bnpview.cpp:2239
 msgid "No note was added."
 msgstr "未添加贴示."
 
-#: bnpview.cpp:1916
+#: src/bnpview.cpp:2270
 msgid "Basket <i>%1</i> is locked"
 msgstr "文档 <i>%1</i> 被锁定"
 
-#: bnpview.cpp:1941
+#: src/bnpview.cpp:2299
 msgid "(Locked)"
 msgstr "(已锁定)"
 
-#: bnpview.cpp:2259
+#: src/bnpview.cpp:2665
 msgid "&Assign new Tag..."
 msgstr "分配新标记(&A)..."
 
-#: bnpview.cpp:2260
+#: src/bnpview.cpp:2669
 msgid "&Remove All"
 msgstr "移除所有(&R)"
 
-#: crashhandler.cpp:80
+#: src/crashhandler.cpp:82
 msgid ""
 "%1 has crashed! We're sorry about this.\n"
 "\n"
@@ -1205,13 +1453,13 @@ msgid ""
 "Many thanks."
 msgstr ""
 
-#: crashhandler.cpp:87
+#: src/crashhandler.cpp:89
 msgid ""
 "The information below is to help the developers identify the problem, please "
 "do not modify it."
 msgstr ""
 
-#: crashhandler.cpp:206
+#: src/crashhandler.cpp:208
 msgid ""
 "%1 has crashed! We're sorry about this.\n"
 "\n"
@@ -1219,75 +1467,64 @@ msgid ""
 "the problem. Please check your distribution's software repository."
 msgstr ""
 
-#: debugwindow.cpp:34
+#: src/debugwindow.cpp:37
 msgid "Debug Window"
 msgstr "窗体调整"
 
-#: exporterdialog.cpp:37
+#: src/exporterdialog.cpp:46
 msgid "Export Basket to HTML"
 msgstr "输出Basket为HTML"
 
-#: exporterdialog.cpp:46
+#: src/exporterdialog.cpp:57
 msgid "HTML Page Filename"
 msgstr "HTML文件名"
 
-#: exporterdialog.cpp:49
+#: src/exporterdialog.cpp:60
 msgid "&Filename:"
 msgstr "文件名(&F):"
 
-#: exporterdialog.cpp:52
+#: src/exporterdialog.cpp:63
 msgid "&Embed linked local files"
 msgstr "嵌入本地文件链接(&E)"
 
-#: exporterdialog.cpp:53
+#: src/exporterdialog.cpp:64
 msgid "Embed &linked local folders"
 msgstr "嵌入本地目录链接(&l)"
 
-#: exporterdialog.cpp:54
+#: src/exporterdialog.cpp:65
 msgid "Erase &previous files in target folder"
 msgstr "从目录中移除先前的文件(&p)"
 
-#: exporterdialog.cpp:55
+#: src/exporterdialog.cpp:66
 msgid "For&mat for impression"
 msgstr "排版(&m)"
 
-#: filter.cpp:60
+#: src/filter.cpp:64
 msgid "Reset Filter"
 msgstr "设置检索"
 
-#: filter.cpp:64
+#: src/filter.cpp:68
 msgid "&Filter: "
 msgstr "检索(&F):"
 
-#: filter.cpp:66
+#: src/filter.cpp:70
 msgid "T&ag: "
 msgstr "标记(&a):"
 
-#: filter.cpp:69
-msgid "Filter all Baskets"
+#: src/filter.cpp:73
+#, fuzzy
+msgid "Filter All Baskets"
 msgstr "检索全部Bakset"
 
-#: filter.cpp:149
+#: src/filter.cpp:153
 msgid "(Not tagged)"
 msgstr "(未被标记)"
 
-#: filter.cpp:150
+#: src/filter.cpp:154
 msgid "(Tagged)"
 msgstr "(已标记)"
 
-#: focusedwidgets.cpp:195
-msgid "Auto Spell Check"
-msgstr "拼写检查"
-
-#: focusedwidgets.cpp:195
-msgid "Check Spelling..."
-msgstr "检查拼写..."
-
-#: focusedwidgets.cpp:198
-msgid "Allow Tabulations"
-msgstr "允许列表"
-
-#: formatimporter.cpp:132
+#: src/formatimporter.cpp:137
 msgid ""
 "<p>Folder mirroring is not possible anymore (see <a href='http://basket.kde."
 "org/'>basket.kde.org</a> for more information).</p><p>The folder <b>%1</b> "
@@ -1296,398 +1533,376 @@ msgid ""
 "modify the other anymore as they are now separate entities.</p>"
 msgstr ""
 
-#: formatimporter.cpp:134
+#: src/formatimporter.cpp:139
 msgid "Folder Mirror Import"
 msgstr "镜像目录导入"
 
-#: htmlexporter.cpp:53
+#: src/htmlexporter.cpp:60
 msgid "HTML Documents"
 msgstr "HTML文档"
 
-#: htmlexporter.cpp:57 htmlexporter.cpp:79
+#: src/htmlexporter.cpp:64 src/htmlexporter.cpp:86
 msgid "Export to HTML"
 msgstr "导出到HTML"
 
-#: htmlexporter.cpp:79
+#: src/htmlexporter.cpp:86
 msgid "Exporting to HTML. Please wait..."
 msgstr "导出为HTML.请稍等..."
 
-#: htmlexporter.cpp:114 htmlexporter.cpp:139 htmlexporter.cpp:148
-msgid ""
-"_: HTML export folder (files)\n"
-"%1_files"
+#: src/htmlexporter.cpp:121 src/htmlexporter.cpp:144 src/htmlexporter.cpp:153
+msgctxt "HTML export folder (files)"
+msgid "%1_files"
 msgstr ""
 
-#: htmlexporter.cpp:120 htmlexporter.cpp:153
-msgid ""
-"_: HTML export folder (icons)\n"
-"icons"
+#: src/htmlexporter.cpp:127 src/htmlexporter.cpp:158
+#, fuzzy
+msgctxt "HTML export folder (icons)"
+msgid "icons"
 msgstr "图标"
 
-#: htmlexporter.cpp:121 htmlexporter.cpp:154
-msgid ""
-"_: HTML export folder (images)\n"
-"images"
+#: src/htmlexporter.cpp:128 src/htmlexporter.cpp:159
+#, fuzzy
+msgctxt "HTML export folder (images)"
+msgid "images"
 msgstr "图片"
 
-#: htmlexporter.cpp:122 htmlexporter.cpp:151
-msgid ""
-"_: HTML export folder (baskets)\n"
-"baskets"
-msgstr "basket"
+#: src/htmlexporter.cpp:129 src/htmlexporter.cpp:156
+#, fuzzy
+msgctxt "HTML export folder (baskets)"
+msgid "baskets"
+msgstr "Basket"
 
-#: htmlexporter.cpp:143 htmlexporter.cpp:149 htmlexporter.cpp:150
-msgid ""
-"_: HTML export folder (data)\n"
-"data"
-msgstr "数据"
-
-#: htmlexporter.cpp:319
-msgid "Made with %1, a KDE tool to take notes and keep information at hand."
+#: src/htmlexporter.cpp:148 src/htmlexporter.cpp:154 src/htmlexporter.cpp:155
+msgctxt "HTML export folder (data)"
+msgid "data"
 msgstr ""
 
-#: kcolorcombo2.cpp:126 kcolorcombo2.cpp:602 kcolorcombo2.cpp:624
-#: tagsedit.cpp:470 variouswidgets.cpp:269
+#: src/htmlexporter.cpp:324
+msgid ""
+"Made with <a href=\"http://basket.kde.org/\">%1</a> %2, a KDE tool to take "
+"notes and keep information at hand."
+msgstr ""
+
+#: src/kcolorcombo2.cpp:130 src/kcolorcombo2.cpp:609 src/kcolorcombo2.cpp:631
+#: src/tagsedit.cpp:486 src/variouswidgets.cpp:280
 msgid "(Default)"
 msgstr "(默认)"
 
-#: kcolorcombo2.cpp:138
+#: src/kcolorcombo2.cpp:142
 msgid "Other..."
 msgstr "其它..."
 
-#: kgpgme.cpp:49
+#: src/kgpgme.cpp:59
 msgid "Private Key List"
 msgstr "私钥列表"
 
-#: kgpgme.cpp:61
+#: src/kgpgme.cpp:74
 msgid "Email"
 msgstr "Email"
 
-#: kgpgme.cpp:62
+#: src/kgpgme.cpp:74
 msgid "ID"
 msgstr "ID"
 
-#: kgpgme.cpp:67
+#: src/kgpgme.cpp:78
 msgid "Choose a secret key:"
 msgstr "选择一个密钥:"
 
-#: kgpgme.cpp:228
+#: src/kgpgme.cpp:241
 msgid "Key listing unexpectedly truncated."
 msgstr ""
 
-#: kgpgme.cpp:264
+#: src/kgpgme.cpp:277
 msgid "That public key is not meant for encryption"
 msgstr "解码的公钥不正确"
 
-#: kgpgme.cpp:307
+#: src/kgpgme.cpp:320
 msgid "Unsupported algorithm"
 msgstr "不支持的规则"
 
-#: kgpgme.cpp:410
+#: src/kgpgme.cpp:423
 msgid "Wrong password."
 msgstr "错误的密码."
 
-#: kicondialog.cpp:84 kicondialog.cpp:94
-msgid "Select Icon"
-msgstr "选择图标"
+#: src/kgpgme.cpp:438
+#, fuzzy
+msgid "Please enter a new password:"
+msgstr "密码保护basket(&k)"
 
-#: kicondialog.cpp:121
-msgid "&Browse..."
-msgstr "浏览(&B)..."
+#: src/ksystemtrayicon2.cpp:83 src/notecontent.cpp:182
+#, fuzzy
+msgid "File"
+msgstr "文件(&F)"
 
-#: kicondialog.cpp:133
-msgid "(All Icons)"
-msgstr "(所有图标)"
+#: src/ksystemtrayicon2.cpp:140
+msgid ""
+"<p>Closing the main window will keep %1 running in the system tray. Use "
+"<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
+msgstr ""
 
-#: kicondialog.cpp:134
-msgid "(Recent)"
-msgstr "(最近)"
+#: src/ksystemtrayicon2.cpp:186 src/ksystemtrayicon2.cpp:191
+msgid "Docking in System Tray"
+msgstr "放到系统托盘"
 
-#: kicondialog.cpp:135
-msgid "Actions"
-msgstr "启动器"
-
-#: kicondialog.cpp:136
-msgid "Applications"
-msgstr "应用程序"
-
-#: kicondialog.cpp:137
-msgid "Devices"
-msgstr "设备"
-
-#: kicondialog.cpp:138
-msgid "Filesystem"
-msgstr "文件系统"
-
-#: kicondialog.cpp:139
-msgid "File Types"
-msgstr "文件类型"
-
-#: kicondialog.cpp:356
-msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
-msgstr "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
-
-#: likeback.cpp:74
+#: src/likeback.cpp:81
 msgid "Send application developers a comment about something you like"
 msgstr ""
 
-#: likeback.cpp:81
+#: src/likeback.cpp:88
 msgid "Send application developers a comment about something you dislike"
 msgstr ""
 
-#: likeback.cpp:88
+#: src/likeback.cpp:95
 msgid ""
 "Send application developers a comment about an improper behavior of the "
 "application"
 msgstr ""
 
-#: likeback.cpp:95
+#: src/likeback.cpp:102
 msgid "Send application developers a comment about a new feature you desire"
 msgstr ""
 
-#: likeback.cpp:380
+#: src/likeback.cpp:389
 msgid "&Send a Comment to Developers"
 msgstr "发送建议给开发者"
 
-#: likeback.cpp:431
-#, c-format
+#: src/likeback.cpp:429
 msgid "Welcome to this testing version of %1."
 msgstr "欢迎使用测试版 %1"
 
-#: likeback.cpp:432
-#, c-format
+#: src/likeback.cpp:430
 msgid "Welcome to %1."
 msgstr "欢迎使用 %1"
 
-#: likeback.cpp:434
+#: src/likeback.cpp:432
 msgid "To help us improve it, your comments are important."
 msgstr "您的建议将有助于我们程序的改善."
 
-#: likeback.cpp:437
+#: src/likeback.cpp:435
 msgid ""
 "Each time you have a great or frustrating experience, please click the "
 "appropriate face below the window title-bar, briefly describe what you like "
 "or dislike and click Send."
 msgstr ""
 
-#: likeback.cpp:441
+#: src/likeback.cpp:439
 msgid ""
 "Each time you have a great experience, please click the smiling face below "
 "the window title-bar, briefly describe what you like and click Send."
 msgstr ""
 
-#: likeback.cpp:445
+#: src/likeback.cpp:443
 msgid ""
 "Each time you have a frustrating experience, please click the frowning face "
 "below the window title-bar, briefly describe what you dislike and click Send."
 msgstr ""
 
-#: likeback.cpp:454
+#: src/likeback.cpp:452
 msgid ""
 "Follow the same principle to quickly report a bug: just click the broken-"
 "object icon in the top-right corner of the window, describe it and click "
 "Send."
 msgstr ""
 
-#: likeback.cpp:457
+#: src/likeback.cpp:455
 msgid ""
 "Each time you discover a bug in the application, please click the broken-"
 "object icon below the window title-bar, briefly describe the mis-behaviour "
 "and click Send."
 msgstr ""
 
-#: likeback.cpp:462
-msgid ""
-"_n: Example:\n"
-"Examples:"
-msgstr "示例:"
+#: src/likeback.cpp:460
+#, fuzzy
+msgid "Example:"
+msgid_plural "Examples:"
+msgstr[0] "示例"
+msgstr[1] "示例"
 
-#: likeback.cpp:465
+#: src/likeback.cpp:463
 msgid "<b>I like</b> the new artwork. Very refreshing."
 msgstr ""
 
-#: likeback.cpp:469
-msgid "<b>I dislike</b> the welcome page of that assistant. Too time consuming."
+#: src/likeback.cpp:467
+msgid ""
+"<b>I dislike</b> the welcome page of that assistant. Too time consuming."
 msgstr ""
 
-#: likeback.cpp:473
+#: src/likeback.cpp:471
 msgid ""
 "<b>The application has an improper behaviour</b> when clicking the Add "
 "button. Nothing happens."
 msgstr ""
 
-#: likeback.cpp:477
+#: src/likeback.cpp:475
 msgid "<b>I desire a new feature</b> allowing me to send my work by email."
 msgstr ""
 
-#: likeback.cpp:480
+#: src/likeback.cpp:478
 msgid "Help Improve the Application"
 msgstr "帮助改善程序"
 
-#: likeback.cpp:557
+#: src/likeback.cpp:550
 msgid "Email Address"
 msgstr "Email地址"
 
-#: likeback.cpp:558
+#: src/likeback.cpp:551
 msgid "Please provide your email address."
 msgstr "请提交你的Email地址."
 
-#: likeback.cpp:559
+#: src/likeback.cpp:552
 msgid ""
 "It will only be used to contact you back if more information is needed about "
 "your comments, ask you how to reproduce the bugs you report, send bug "
 "corrections for you to test, etc."
 msgstr ""
 
-#: likeback.cpp:560
+#: src/likeback.cpp:553
 msgid ""
 "The email address is optional. If you do not provide any, your comments will "
 "be sent anonymously."
 msgstr ""
 
-#: likeback.cpp:633
+#: src/likeback.cpp:612
 msgid "Send a Comment to Developers"
 msgstr "发送建议给开发者"
 
-#. i18n("Send Application Developers a Comment About:"), page);
-#: likeback.cpp:663
+#: src/likeback.cpp:646
 msgid "Send Application Developers a Comment About:"
 msgstr "建议内容:"
 
-#: likeback.cpp:674
+#: src/likeback.cpp:663
 msgid "Something you &like"
 msgstr "你喜欢的功能(&l)"
 
-#: likeback.cpp:684
+#: src/likeback.cpp:675
 msgid "Something you &dislike"
 msgstr "你讨厌的功能(&d)"
 
-#: likeback.cpp:694
+#: src/likeback.cpp:687
 msgid "An improper &behavior of this application"
 msgstr "程序bug"
 
-#: likeback.cpp:704
+#: src/likeback.cpp:698
 msgid "A new &feature you desire"
 msgstr "一个新的灵感"
 
-#: likeback.cpp:717
+#: src/likeback.cpp:710
 msgid "Show comment buttons below &window titlebars"
 msgstr "在窗口的标题栏显示提交按钮(&w)"
 
-#: likeback.cpp:722
+#: src/likeback.cpp:715
 msgid "&Send Comment"
 msgstr "发送意见(&S)"
 
-#: likeback.cpp:726
+#: src/likeback.cpp:719
 msgid "&Email Address..."
 msgstr "Email地址(&E)..."
 
-#: likeback.cpp:743
-#, c-format
+#: src/likeback.cpp:736
 msgid "Please provide a brief description of your opinion of %1."
 msgstr ""
 
-#: likeback.cpp:756
+#: src/likeback.cpp:749
 msgid "Please write in English."
 msgstr "请使用英语."
 
-#: likeback.cpp:762
+#: src/likeback.cpp:755
 msgid "You may be able to use an <a href=\"%1\">online translation tool</a>."
 msgstr ""
 
-#: likeback.cpp:768
+#: src/likeback.cpp:760
 msgid ""
 "To make the comments you send more useful in improving this application, try "
 "to send the same amount of positive and negative comments."
 msgstr ""
 
-#: likeback.cpp:771
+#: src/likeback.cpp:763
 msgid "Do <b>not</b> ask for new features: your requests will be ignored."
 msgstr ""
 
-#: likeback.cpp:839
+#: src/likeback.cpp:830
 msgid "<p>Error while trying to send the report.</p><p>Please retry later.</p>"
 msgstr "<p>发送报告失败.</p><p>请稍后再试.</p>"
 
-#: likeback.cpp:839
+#: src/likeback.cpp:830
 msgid "Transfer Error"
 msgstr "传输错误"
 
-#: likeback.cpp:843
+#: src/likeback.cpp:834
 msgid ""
 "<p>Your comment has been sent successfully. It will help improve the "
 "application.</p><p>Thanks for your time.</p>"
 msgstr ""
 
-#: likeback.cpp:844
+#: src/likeback.cpp:835
 msgid "Comment Sent"
 msgstr "意见发送"
 
-#: linklabel.cpp:564
+#: src/linklabel.cpp:553
 msgid "I&talic"
 msgstr "斜体(&I)"
 
-#: linklabel.cpp:567
+#: src/linklabel.cpp:556
 msgid "&Bold"
 msgstr "粗体(&B)"
 
-#: linklabel.cpp:574
+#: src/linklabel.cpp:563
 msgid "Always"
 msgstr "设为默认"
 
-#: linklabel.cpp:575
+#: src/linklabel.cpp:564
 msgid "Never"
 msgstr "从不"
 
-#: linklabel.cpp:576
+#: src/linklabel.cpp:565
 msgid "On mouse hovering"
 msgstr "鼠标悬停时"
 
-#: linklabel.cpp:577
+#: src/linklabel.cpp:566
 msgid "When mouse is outside"
 msgstr "鼠标越界"
 
-#: linklabel.cpp:578
+#: src/linklabel.cpp:567
 msgid "&Underline:"
 msgstr "下划线(&U)"
 
-#: linklabel.cpp:583
+#: src/linklabel.cpp:572
 msgid "Colo&r:"
 msgstr "颜色(&r)"
 
-#: linklabel.cpp:588
+#: src/linklabel.cpp:577
 msgid "&Mouse hover color:"
 msgstr "鼠标悬停颜色:(&M):"
 
-#: linklabel.cpp:595
+#: src/linklabel.cpp:584
 msgid "&Icon size:"
 msgstr "图标尺寸(&I):"
 
-#: linklabel.cpp:600
+#: src/linklabel.cpp:589
 msgid "None"
 msgstr "无"
 
-#: linklabel.cpp:601
+#: src/linklabel.cpp:590
 msgid "Icon size"
 msgstr "图标尺寸"
 
-#: linklabel.cpp:602
+#: src/linklabel.cpp:591
 msgid "Twice the icon size"
 msgstr "两倍大小"
 
-#: linklabel.cpp:603
+#: src/linklabel.cpp:592
 msgid "Three times the icon size"
 msgstr "三倍大小"
 
-#: linklabel.cpp:604
+#: src/linklabel.cpp:593
 msgid "&Preview:"
 msgstr "预览(&p)"
 
-#: linklabel.cpp:606
+#: src/linklabel.cpp:595
 msgid "You disabled preview but still see images?"
 msgstr "明明关闭了预览仍然显示图像?"
 
-#: linklabel.cpp:607
+#: src/linklabel.cpp:596
 msgid ""
 "<p>This is normal because there are several type of notes.<br>This setting "
 "only applies to file and local link notes.<br>The images you see are image "
@@ -1702,78 +1917,74 @@ msgid ""
 "the \"View Content of Added Files for the Following Types\" group.</p>"
 msgstr ""
 
-#: linklabel.cpp:623
+#: src/linklabel.cpp:612
 msgid "Example"
 msgstr "示例"
 
-#: mainwindow.cpp:136
+#: src/mainwindow.cpp:142
 msgid "Minimize"
 msgstr "最小化"
 
-#: mainwindow.cpp:301
-msgid "Basket"
-msgstr "Basket"
-
-#: mainwindow.cpp:310
+#: src/mainwindow.cpp:323
 msgid "<p>Do you really want to quit %1?</p>"
 msgstr "<p>你确定要退出%1？</p>"
 
-#: mainwindow.cpp:312
+#: src/mainwindow.cpp:325
 msgid ""
 "<p>Notice that you do not have to quit the application before ending your "
 "KDE session. If you end your session while the application is still running, "
 "the application will be reloaded the next time you log in.</p>"
 msgstr ""
 
-#: mainwindow.cpp:315
+#: src/mainwindow.cpp:329
 msgid "Quit Confirm"
 msgstr "确认退出"
 
-#: newbasketdialog.cpp:88
+#: src/newbasketdialog.cpp:90
 msgid "New Basket"
 msgstr "新Basket"
 
-#: newbasketdialog.cpp:113
+#: src/newbasketdialog.cpp:121
 msgid "Background color"
 msgstr "背景颜色"
 
-#: newbasketdialog.cpp:120
+#: src/newbasketdialog.cpp:128
 msgid "&Manage Templates..."
 msgstr "管理模板(&M)..."
 
-#: newbasketdialog.cpp:155 newbasketdialog.cpp:302
+#: src/newbasketdialog.cpp:161 src/newbasketdialog.cpp:306
 msgid "One column"
 msgstr "一列"
 
-#: newbasketdialog.cpp:166 newbasketdialog.cpp:304
+#: src/newbasketdialog.cpp:172 src/newbasketdialog.cpp:308
 msgid "Two columns"
 msgstr "两列"
 
-#: newbasketdialog.cpp:178 newbasketdialog.cpp:306
+#: src/newbasketdialog.cpp:184 src/newbasketdialog.cpp:310
 msgid "Three columns"
 msgstr "三列"
 
-#: newbasketdialog.cpp:190
+#: src/newbasketdialog.cpp:196
 msgid "Free"
 msgstr "Free"
 
-#: newbasketdialog.cpp:205
+#: src/newbasketdialog.cpp:203
 msgid "&Template:"
 msgstr "模板(&T):"
 
-#: newbasketdialog.cpp:214
+#: src/newbasketdialog.cpp:212
 msgid "(Baskets)"
 msgstr "(Basket)"
 
-#: newbasketdialog.cpp:215
+#: src/newbasketdialog.cpp:213
 msgid "C&reate in:"
 msgstr "创建到(&C):"
 
-#: newbasketdialog.cpp:216
+#: src/newbasketdialog.cpp:214
 msgid "How is it useful?"
 msgstr "这样可以么?"
 
-#: newbasketdialog.cpp:217
+#: src/newbasketdialog.cpp:215
 msgid ""
 "<p>Creating baskets inside of other baskets to form a hierarchy allows you "
 "to be more organized by eg.:</p><ul><li>Grouping baskets by themes or topics;"
@@ -1782,459 +1993,493 @@ msgid ""
 "group of baskets to export together (to eg. email them to people).</li></ul>"
 msgstr ""
 
-#: newbasketdialog.cpp:308
+#: src/newbasketdialog.cpp:312
 msgid "Free-form"
 msgstr "自由形状"
 
-#: newbasketdialog.cpp:310
+#: src/newbasketdialog.cpp:314
 msgid "Mind map"
 msgstr "思维脑图"
 
-#: note.cpp:2818
-msgid "(Image)"
-msgstr "(图片)"
-
-#: notecontent.cpp:173
+#: src/notecontent.cpp:177
 msgid "Plain Text"
 msgstr "纯文本"
 
-#: notecontent.cpp:174
+#: src/notecontent.cpp:178
 msgid "Text"
 msgstr "文本"
 
-#: notecontent.cpp:175
+#: src/notecontent.cpp:179
 msgid "Image"
 msgstr "图片"
 
-#: notecontent.cpp:176
+#: src/notecontent.cpp:180
 msgid "Animation"
 msgstr "媒体"
 
-#: notecontent.cpp:177
+#: src/notecontent.cpp:181
 msgid "Sound"
 msgstr "声音"
 
-#: notecontent.cpp:179
+#: src/notecontent.cpp:183
 msgid "Link"
 msgstr "链接"
 
-#: notecontent.cpp:180
+#: src/notecontent.cpp:184
 msgid "Launcher"
 msgstr "运行"
 
-#: notecontent.cpp:181 noteedit.cpp:817
+#: src/notecontent.cpp:185 src/noteedit.cpp:845
 msgid "Color"
 msgstr "颜色"
 
-#: notecontent.cpp:182
+#: src/notecontent.cpp:186
 msgid "Unknown"
 msgstr "未知的"
 
-#: notecontent.cpp:323
+#: src/notecontent.cpp:327
 msgid "Edit this plain text"
 msgstr "编辑纯文本"
 
-#: notecontent.cpp:324
+#: src/notecontent.cpp:328
 msgid "Edit this text"
 msgstr "编辑文本"
 
-#: notecontent.cpp:325
+#: src/notecontent.cpp:329
 msgid "Edit this image"
 msgstr "编辑图片"
 
-#: notecontent.cpp:326
+#: src/notecontent.cpp:330
 msgid "Edit this animation"
 msgstr "编辑媒体"
 
-#: notecontent.cpp:327
+#: src/notecontent.cpp:331
 msgid "Edit the file name of this sound"
 msgstr "更改声音文件名"
 
-#: notecontent.cpp:328
+#: src/notecontent.cpp:332
 msgid "Edit the name of this file"
 msgstr "更改文件名"
 
-#: notecontent.cpp:329
+#: src/notecontent.cpp:333
 msgid "Edit this link"
 msgstr "更改链接"
 
-#: notecontent.cpp:330
+#: src/notecontent.cpp:334
 msgid "Edit this launcher"
 msgstr "编辑运行程序"
 
-#: notecontent.cpp:331
+#: src/notecontent.cpp:335
 msgid "Edit this color"
 msgstr "更改颜色"
 
-#: notecontent.cpp:332
+#: src/notecontent.cpp:336
 msgid "Edit this unknown object"
 msgstr "编辑未知的对象"
 
-#: notecontent.cpp:558
+#: src/notecontent.cpp:598
 msgid "Opening plain text..."
 msgstr "打开纯文本文件..."
 
-#: notecontent.cpp:559
+#: src/notecontent.cpp:599
 msgid "Opening plain texts..."
 msgstr "打开纯文本文件(多个)..."
 
-#: notecontent.cpp:560
+#: src/notecontent.cpp:600
 msgid "Opening plain text with..."
 msgstr "用...打开纯文本文件"
 
-#: notecontent.cpp:561
+#: src/notecontent.cpp:601
 msgid "Opening plain texts with..."
 msgstr "用...打开纯文本文件(多个)"
 
-#: notecontent.cpp:562
+#: src/notecontent.cpp:602
 msgid "Open plain text with:"
 msgstr "打开纯文本:"
 
-#: notecontent.cpp:563
+#: src/notecontent.cpp:603
 msgid "Open plain texts with:"
 msgstr "打开纯文本(多个):"
 
-#: notecontent.cpp:649
+#: src/notecontent.cpp:709
 msgid "Opening text..."
 msgstr ""
 
-#: notecontent.cpp:650
+#: src/notecontent.cpp:710
 msgid "Opening texts..."
 msgstr ""
 
-#: notecontent.cpp:651
+#: src/notecontent.cpp:711
 msgid "Opening text with..."
 msgstr ""
 
-#: notecontent.cpp:652
+#: src/notecontent.cpp:712
 msgid "Opening texts with..."
 msgstr ""
 
-#: notecontent.cpp:653
+#: src/notecontent.cpp:713
 msgid "Open text with:"
 msgstr "打开文本贴示(多个):"
 
-#: notecontent.cpp:654
+#: src/notecontent.cpp:714
 msgid "Open texts with:"
 msgstr "打开多文本贴示:"
 
-#: notecontent.cpp:762 notecontent.cpp:973
+#: src/notecontent.cpp:827 src/notecontent.cpp:1005
 msgid "Size"
 msgstr "尺寸"
 
-#: notecontent.cpp:763 variouswidgets.cpp:147
+#: src/notecontent.cpp:828 src/variouswidgets.cpp:157
 msgid "%1 by %2 pixels"
 msgstr "%1 X %2 像素"
 
-#: notecontent.cpp:769
+#: src/notecontent.cpp:834
 msgid "Opening image..."
 msgstr ""
 
-#: notecontent.cpp:770
+#: src/notecontent.cpp:835
 msgid "Opening images..."
 msgstr ""
 
-#: notecontent.cpp:771
+#: src/notecontent.cpp:836
 msgid "Opening image with..."
 msgstr ""
 
-#: notecontent.cpp:772
+#: src/notecontent.cpp:837
 msgid "Opening images with..."
 msgstr ""
 
-#: notecontent.cpp:773
+#: src/notecontent.cpp:838
 msgid "Open image with:"
 msgstr ""
 
-#: notecontent.cpp:774
+#: src/notecontent.cpp:839
 msgid "Open images with:"
 msgstr ""
 
-#: notecontent.cpp:798
+#: src/notecontent.cpp:863
 msgid "Click for full size view"
 msgstr "点击完整视图"
 
-#: notecontent.cpp:862
+#: src/notecontent.cpp:934
 msgid "Opening animation..."
 msgstr ""
 
-#: notecontent.cpp:863
+#: src/notecontent.cpp:935
 msgid "Opening animations..."
 msgstr ""
 
-#: notecontent.cpp:864
+#: src/notecontent.cpp:936
 msgid "Opening animation with..."
 msgstr ""
 
-#: notecontent.cpp:865
+#: src/notecontent.cpp:937
 msgid "Opening animations with..."
 msgstr ""
 
-#: notecontent.cpp:866
+#: src/notecontent.cpp:938
 msgid "Open animation with:"
 msgstr "打开媒体文件:"
 
-#: notecontent.cpp:867
+#: src/notecontent.cpp:939
 msgid "Open animations with:"
 msgstr "打开媒体文件:"
 
-#: notecontent.cpp:978
+#: src/notecontent.cpp:1010
 msgid "Type"
 msgstr "格式"
 
-#: notecontent.cpp:1016
+#: src/notecontent.cpp:1053
 msgid "Open this file"
 msgstr "打开这个文件"
 
-#: notecontent.cpp:1035
+#: src/notecontent.cpp:1072
 msgid "Opening file..."
 msgstr ""
 
-#: notecontent.cpp:1036
+#: src/notecontent.cpp:1073
 msgid "Opening files..."
 msgstr ""
 
-#: notecontent.cpp:1037
+#: src/notecontent.cpp:1074
 msgid "Opening file with..."
 msgstr ""
 
-#: notecontent.cpp:1038
+#: src/notecontent.cpp:1075
 msgid "Opening files with..."
 msgstr ""
 
-#: notecontent.cpp:1039
+#: src/notecontent.cpp:1076
 msgid "Open file with:"
 msgstr ""
 
-#: notecontent.cpp:1040
+#: src/notecontent.cpp:1077
 msgid "Open files with:"
 msgstr ""
 
-#: notecontent.cpp:1111
+#: src/notecontent.cpp:1156
 msgid "Open this sound"
 msgstr "打开这个声音"
 
-#: notecontent.cpp:1148
+#: src/notecontent.cpp:1183
 msgid "Opening sound..."
 msgstr ""
 
-#: notecontent.cpp:1149
+#: src/notecontent.cpp:1184
 msgid "Opening sounds..."
 msgstr ""
 
-#: notecontent.cpp:1150
+#: src/notecontent.cpp:1185
 msgid "Opening sound with..."
 msgstr ""
 
-#: notecontent.cpp:1151
+#: src/notecontent.cpp:1186
 msgid "Opening sounds with..."
 msgstr ""
 
-#: notecontent.cpp:1152
+#: src/notecontent.cpp:1187
 msgid "Open sound with:"
 msgstr "打开声音:"
 
-#: notecontent.cpp:1153
+#: src/notecontent.cpp:1188
 msgid "Open sounds with:"
 msgstr "打开声音(多个):"
 
-#: notecontent.cpp:1191
+#: src/notecontent.cpp:1231
 msgid "Target"
 msgstr "确定目标"
 
-#: notecontent.cpp:1214
+#: src/notecontent.cpp:1254
 msgid "Open this link"
 msgstr "打开这个链接"
 
-#: notecontent.cpp:1240
+#: src/notecontent.cpp:1280
 msgid "Link have no URL to open."
 msgstr "链接缺乏地址"
 
-#: notecontent.cpp:1243
+#: src/notecontent.cpp:1283
 msgid "Opening link target..."
 msgstr ""
 
-#: notecontent.cpp:1244
+#: src/notecontent.cpp:1284
 msgid "Opening link targets..."
 msgstr ""
 
-#: notecontent.cpp:1245
+#: src/notecontent.cpp:1285
 msgid "Opening link target with..."
 msgstr ""
 
-#: notecontent.cpp:1246
+#: src/notecontent.cpp:1286
 msgid "Opening link targets with..."
 msgstr ""
 
-#: notecontent.cpp:1247
+#: src/notecontent.cpp:1287
 msgid "Open link target with:"
 msgstr "打开目标链接:"
 
-#: notecontent.cpp:1248
+#: src/notecontent.cpp:1288
 msgid "Open link targets with:"
 msgstr "打开目标链接(多个):"
 
-#: notecontent.cpp:1379
+#: src/notecontent.cpp:1498
 msgid "%1 <i>(run in terminal)</i>"
 msgstr "%1 <i>(终端运行)</i>"
 
-#: notecontent.cpp:1382
+#: src/notecontent.cpp:1501
 msgid "Comment"
 msgstr "注解"
 
-#: notecontent.cpp:1386
+#: src/notecontent.cpp:1505
 msgid "Command"
 msgstr "命令"
 
-#: notecontent.cpp:1409
+#: src/notecontent.cpp:1528
 msgid "Launch this application"
 msgstr "运行程序"
 
-#: notecontent.cpp:1430
+#: src/notecontent.cpp:1549
 msgid "The launcher have no command to run."
 msgstr "缺乏运行的命令"
 
-#: notecontent.cpp:1433
+#: src/notecontent.cpp:1552
 msgid "Launching application..."
 msgstr "运行程序..."
 
-#: notecontent.cpp:1434
+#: src/notecontent.cpp:1553
 msgid "Launching applications..."
 msgstr "运行程序(多个)..."
 
-#: notecontent.cpp:1521
-msgid ""
-"_: RGB Colorspace: Red/Green/Blue\n"
-"RGB"
-msgstr "RGB"
+#: src/notecontent.cpp:1640
+msgctxt "RGB Colorspace: Red/Green/Blue"
+msgid "RGB"
+msgstr ""
 
-#: notecontent.cpp:1522
+#: src/notecontent.cpp:1641
 msgid "<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,"
 msgstr "<i>红</i>: %1, <i>绿</i>: %2, <i>蓝</i>: %3,"
 
-#: notecontent.cpp:1524
-msgid ""
-"_: HSV Colorspace: Hue/Saturation/Value\n"
-"HSV"
-msgstr "色彩模式(HSV)"
+#: src/notecontent.cpp:1643
+msgctxt "HSV Colorspace: Hue/Saturation/Value"
+msgid "HSV"
+msgstr ""
 
-#: notecontent.cpp:1525
+#: src/notecontent.cpp:1644
 msgid "<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,"
 msgstr "<i>色彩</i>: %1, <i>饱和度</i>: %2, <i>值</i>: %3,"
 
-#: notecontent.cpp:1678
+#: src/notecontent.cpp:1797
 msgid "CSS Color Name"
 msgstr "CSS 颜色名"
 
-#: notecontent.cpp:1688
+#: src/notecontent.cpp:1807
 msgid "CSS Extended Color Name"
 msgstr "CSS Extended 颜色名"
 
-#: notecontent.cpp:1694
+#: src/notecontent.cpp:1813
 msgid "Is Web Color"
 msgstr "网页色彩模式"
 
-#: noteedit.cpp:381
+#: src/notecontent.cpp:1814
+msgid "Yes"
+msgstr ""
+
+#: src/notecontent.cpp:1814
+#, fuzzy
+msgid "No"
+msgstr "无"
+
+#: src/noteedit.cpp:378
 msgid ""
 "Images can not be edited here at the moment (the next version of BasKet Note "
 "Pads will include an image editor).\n"
 "Do you want to open it with an application that understand it?"
 msgstr ""
 
-#: noteedit.cpp:383
+#: src/noteedit.cpp:380
 msgid "Edit Image Note"
 msgstr "编辑图片"
 
-#: noteedit.cpp:397
+#: src/noteedit.cpp:394
 msgid ""
 "This animated image can not be edited here.\n"
 "Do you want to open it with an application that understands it?"
 msgstr ""
 
-#: noteedit.cpp:399
+#: src/noteedit.cpp:396
 msgid "Edit Animation Note"
 msgstr "编辑媒体"
 
-#: noteedit.cpp:476
+#: src/noteedit.cpp:477
 msgid "Edit Color Note"
 msgstr "编辑颜色"
 
-#: noteedit.cpp:499
+#: src/noteedit.cpp:500
 msgid ""
 "The type of this note is unknown and can not be edited here.\n"
 "You however can drag or copy the note into an application that understands "
 "it."
 msgstr ""
 
-#: noteedit.cpp:501
+#: src/noteedit.cpp:502
 msgid "Edit Unknown Note"
 msgstr "编辑未知的贴示"
 
-#: noteedit.cpp:530
+#: src/noteedit.cpp:535
 msgid "Edit Link Note"
 msgstr "编辑链接"
 
-#: noteedit.cpp:542 noteedit.cpp:555
+#: src/noteedit.cpp:550 src/noteedit.cpp:565
 msgid "Auto"
 msgstr "自动"
 
-#: noteedit.cpp:551 noteedit.cpp:704
+#: src/noteedit.cpp:559 src/noteedit.cpp:722
 msgid "&Icon:"
 msgstr "图标(&I):"
 
-#: noteedit.cpp:575
+#: src/noteedit.cpp:585
 msgid "Ta&rget:"
 msgstr "确定目标(&r)"
 
-#: noteedit.cpp:576
+#: src/noteedit.cpp:586
 msgid "&Title:"
 msgstr "标题(&T):"
 
-#: noteedit.cpp:689
+#: src/noteedit.cpp:701
 msgid "Edit Launcher Note"
 msgstr "编辑运行程序"
 
-#: noteedit.cpp:698
+#: src/noteedit.cpp:716
 msgid "Choose a command to run:"
 msgstr "选择要运行的命令:"
 
-#: noteedit.cpp:707
+#: src/noteedit.cpp:725
 msgid "&Guess"
 msgstr "推测(&G)"
 
-#: noteedit.cpp:723
+#: src/noteedit.cpp:741
 msgid "Comman&d:"
 msgstr "命令(&d):"
 
-#: noteedit.cpp:724 tagsedit.cpp:379
+#: src/noteedit.cpp:742 src/tagsedit.cpp:388
 msgid "&Name:"
 msgstr "Name(&N):"
 
-#: noteedit.cpp:819 tagsedit.cpp:437
+#: src/noteedit.cpp:829
+#, fuzzy
+msgid "Font"
+msgstr "字体(&F):"
+
+#: src/noteedit.cpp:836
+#, fuzzy
+msgid "Font Size"
+msgstr "图标尺寸"
+
+#: src/noteedit.cpp:850 src/tagsedit.cpp:451
 msgid "Bold"
 msgstr "粗体"
 
-#: noteedit.cpp:821 tagsedit.cpp:443
+#: src/noteedit.cpp:857 src/tagsedit.cpp:465
+#, fuzzy
+msgid "Italic"
+msgstr "斜体(&I)"
+
+#: src/noteedit.cpp:864 src/tagsedit.cpp:458
 msgid "Underline"
 msgstr "下划线"
 
-#: noteedit.cpp:826
+#: src/noteedit.cpp:872
+msgid "Superscript"
+msgstr ""
+
+#: src/noteedit.cpp:878
+msgid "Subscript"
+msgstr ""
+
+#: src/noteedit.cpp:885
 msgid "Align Left"
 msgstr "靠左对齐"
 
-#: noteedit.cpp:827
+#: src/noteedit.cpp:891
 msgid "Centered"
 msgstr "居中"
 
-#: noteedit.cpp:828
+#: src/noteedit.cpp:897
 msgid "Align Right"
 msgstr "靠右对齐"
 
-#: noteedit.cpp:829
+#: src/noteedit.cpp:903
 msgid "Justified"
 msgstr "两边对齐"
 
-#: notefactory.cpp:445
+#: src/noteedit.cpp:915
+msgid "Undo"
+msgstr ""
+
+#: src/noteedit.cpp:921
+msgid "Redo"
+msgstr ""
+
+#: src/notefactory.cpp:443
 msgid ""
 "<p>%1 doesn't support the data you've dropped.<br>It however created a "
 "generic note, allowing you to drag or copy it to an application that "
@@ -2243,177 +2488,81 @@ msgid ""
 "Drop Database</a>.</p>"
 msgstr ""
 
-#: notefactory.cpp:449
+#: src/notefactory.cpp:447
 msgid "Unsupported MIME Type(s)"
 msgstr "不支持的MIME格式"
 
-#: notefactory.cpp:503
+#: src/notefactory.cpp:502
 msgid "&Move Here\tShift"
 msgstr "移动到这里(&M)\tShift"
 
-#: notefactory.cpp:504
+#: src/notefactory.cpp:505
 msgid "&Copy Here\tCtrl"
 msgstr "复制这里(&C)\tCtrl"
 
-#: notefactory.cpp:505
+#: src/notefactory.cpp:508
 msgid "&Link Here\tCtrl+Shift"
 msgstr "链接这里(&L)\tCtrl+Shift"
 
-#: notefactory.cpp:507
+#: src/notefactory.cpp:515
 msgid "C&ancel\tEscape"
 msgstr "取消(&a)\tEscape"
 
-#: notefactory.cpp:991
+#: src/notefactory.cpp:994
 msgid "Import Icon as Image"
 msgstr "把图标作为图片载入"
 
-#: notefactory.cpp:991
+#: src/notefactory.cpp:994
 msgid "Choose the size of the icon to import as an image:"
 msgstr "选择将图标设置成图片的尺寸:"
 
-#: notefactory.cpp:1004
+#: src/notefactory.cpp:1008
 msgid "Load File Content into a Note"
 msgstr "将文件内容载人贴示"
 
-#. i18n: file passwordlayout.ui line 16
-#: password.cpp:36 rc.cpp:105 settings.cpp:593
-#, no-c-format
-msgid "Password Protection"
-msgstr "密码保护"
-
-#: password.cpp:53
+#: src/password.cpp:65
 msgid "No private key selected."
 msgstr "未选择私钥."
 
-#. i18n: file basket_part.rc line 5
-#: rc.cpp:3 rc.cpp:48
-#, no-c-format
-msgid "&Basket"
-msgstr "&BasKet"
+#: src/regiongrabber.cpp:105
+msgid ""
+"Select a region using the mouse. To take the snapshot, press the Enter key. "
+"Press Esc to quit."
+msgstr ""
 
-#. i18n: file basket_part.rc line 10
-#: rc.cpp:6 rc.cpp:39 rc.cpp:51 rc.cpp:84
-#, no-c-format
-msgid "&Export"
-msgstr "导出(&E)"
-
-#. i18n: file basket_part.rc line 20
-#: rc.cpp:9 rc.cpp:42 rc.cpp:45 rc.cpp:54 rc.cpp:87 rc.cpp:90
-#, no-c-format
-msgid "&Import"
-msgstr "载人(&I)"
-
-#. i18n: file basket_part.rc line 51
-#: rc.cpp:15 rc.cpp:60
-#, no-c-format
-msgid "&Go"
-msgstr "转到(&G)"
-
-#. i18n: file basket_part.rc line 58
-#: rc.cpp:18 rc.cpp:63
-#, no-c-format
-msgid "&Note"
-msgstr "贴示(&N)"
-
-#. i18n: file basket_part.rc line 73
-#: rc.cpp:21 rc.cpp:66
-#, no-c-format
-msgid "&Tags"
-msgstr "标记(&T)"
-
-#. i18n: file basket_part.rc line 127
-#: rc.cpp:36 rc.cpp:81
-#, no-c-format
-msgid "Text Formating Toolbar"
-msgstr "文本排版工具栏"
-
-#. i18n: file kicondialogui.ui line 31
-#: rc.cpp:93
-#, no-c-format
-msgid "KIconDialogUI"
-msgstr "KIconDialogUI"
-
-#. i18n: file kicondialogui.ui line 105
-#: rc.cpp:96
-#, no-c-format
-msgid "Fi&lter:"
-msgstr "检索(&l):"
-
-#. i18n: file kicondialogui.ui line 160
-#: rc.cpp:102
-#, no-c-format
-msgid "Alt+O"
-msgstr "Alt+O"
-
-#. i18n: file passwordlayout.ui line 44
-#: rc.cpp:109
-#, no-c-format
-msgid "&No protection"
-msgstr "未保护(&N)"
-
-#. i18n: file passwordlayout.ui line 47
-#: rc.cpp:112
-#, no-c-format
-msgid "Alt+N"
-msgstr "Alt+N"
-
-#. i18n: file passwordlayout.ui line 55
-#: rc.cpp:115
-#, no-c-format
-msgid "Protect basket with a &password"
-msgstr "密码保护basket(&k)"
-
-#. i18n: file passwordlayout.ui line 58
-#: rc.cpp:118
-#, no-c-format
-msgid "Alt+P"
-msgstr "Alt+P"
-
-#. i18n: file passwordlayout.ui line 82
-#: rc.cpp:121
-#, no-c-format
-msgid "Protect basket with private &key:"
-msgstr "保护basket的私钥(&k):"
-
-#. i18n: file passwordlayout.ui line 85
-#: rc.cpp:124
-#, no-c-format
-msgid "Alt+K"
-msgstr "Alt+K"
-
-#: settings.cpp:367
+#: src/settings.cpp:367
 msgid "On left"
 msgstr "靠左"
 
-#: settings.cpp:368
+#: src/settings.cpp:368
 msgid "On right"
 msgstr "靠右"
 
-#: settings.cpp:369
+#: src/settings.cpp:369
 msgid "&Basket tree position:"
 msgstr "&Basket树:"
 
-#: settings.cpp:376 settings.cpp:691
+#: src/settings.cpp:376 src/settings.cpp:704
 msgid "On top"
 msgstr "置顶"
 
-#: settings.cpp:377 settings.cpp:692
+#: src/settings.cpp:377 src/settings.cpp:705
 msgid "On bottom"
 msgstr "置底"
 
-#: settings.cpp:378
+#: src/settings.cpp:378
 msgid "&Filter bar position:"
 msgstr "检索吧位置(&F):"
 
-#: settings.cpp:385
+#: src/settings.cpp:385
 msgid "&Use balloons to report results of global actions"
 msgstr "递归执行全局设定(&U)."
 
-#: settings.cpp:388
+#: src/settings.cpp:388
 msgid "What are global actions?"
 msgstr "应用到全部么?"
 
-#: settings.cpp:389
+#: src/settings.cpp:389
 msgid ""
 "You can configure global shortcuts to do some actions without having to show "
 "the main window. For instance, you can paste the clipboard content, take a "
@@ -2422,108 +2571,111 @@ msgid ""
 "middle mouse button on that icon to paste the current selection."
 msgstr ""
 
-#: settings.cpp:392
+#: src/settings.cpp:392
 msgid ""
 "When doing so, %1 pops up a little balloon message to inform you the action "
 "has been successfully done. You can disable that balloon."
 msgstr ""
 
-#: settings.cpp:393
+#: src/settings.cpp:393
 msgid ""
 "Note that those messages are smart enough to not appear if the main window "
 "is visible. This is because you already see the result of your actions in "
 "the main window."
 msgstr ""
 
-#: settings.cpp:402
+#: src/settings.cpp:401
 msgid "System Tray Icon"
 msgstr "托盘图标"
 
-#: settings.cpp:407
+#: src/settings.cpp:406
 msgid "&Dock in system tray"
 msgstr "放到系统托盘(&D)"
 
-#: settings.cpp:416
+#: src/settings.cpp:415
 msgid "&Show current basket icon in system tray icon"
 msgstr "在托盘上显示当前basket图标(&S)"
 
-#: settings.cpp:426
+#: src/settings.cpp:425
 msgid "&Hide main window when mouse leaves it for"
 msgstr "鼠标离开后隐藏主窗体(&H)"
 
-#: settings.cpp:428 settings.cpp:439
+#: src/settings.cpp:428 src/settings.cpp:440
 msgid " tenths of seconds"
 msgstr "秒"
 
-#: settings.cpp:437
+#: src/settings.cpp:437
 msgid "Show &main window when mouse hovers over the system tray icon for"
 msgstr "鼠标移动到托盘图标时显示主窗体(&m)"
 
-#: settings.cpp:511
+#: src/settings.cpp:514
 msgid "Ani&mate changes in baskets"
 msgstr ""
 
-#: settings.cpp:514
+#: src/settings.cpp:518
 msgid "&Show tooltips in baskets"
 msgstr "显示技巧提示工具"
 
-#: settings.cpp:517
+#: src/settings.cpp:522
 msgid "&Big notes"
 msgstr "大量的贴示(&B)"
 
-#: settings.cpp:522
+#: src/settings.cpp:528
 msgid "Behavior"
 msgstr "行为"
 
-#: settings.cpp:525
+#: src/settings.cpp:533
 msgid "&Transform lines starting with * or - to lists in text editors"
 msgstr ""
 
-#: settings.cpp:528
+#: src/settings.cpp:537
 msgid "Ask confirmation before &deleting notes"
 msgstr "删除贴示前确认(&D)"
 
-#: settings.cpp:533
+#: src/settings.cpp:544
 msgid "&Export tags in texts"
 msgstr "导出标记到文本(&E)"
 
-#: settings.cpp:539 tagsedit.cpp:485
+#: src/settings.cpp:548
 msgid "When does this apply?"
 msgstr "适用的情况?"
 
-#: settings.cpp:540 tagsedit.cpp:486
+#: src/settings.cpp:549
 msgid ""
 "It does apply when you copy and paste, or drag and drop notes to a text "
 "editor."
 msgstr "当你把一个贴示通过复制粘贴或拖动到文本编辑器时可以使用。"
 
-#: settings.cpp:541
-msgid "If enabled, this property lets you paste the tags as textual equivalents."
+#: src/settings.cpp:550
+msgid ""
+"If enabled, this property lets you paste the tags as textual equivalents."
 msgstr "如果开启，将会把你的同义标记转换成其相对应的内容."
 
-#: settings.cpp:542 tagsedit.cpp:488
+#: src/settings.cpp:551 src/tagsedit.cpp:502
 msgid ""
 "For instance, a list of notes with the <b>To Do</b> and <b>Done</b> tags are "
 "exported as lines preceded by <b>[ ]</b> or <b>[x]</b>, representing an "
 "empty checkbox and a checked box."
 msgstr ""
 
-#: settings.cpp:552
+#: src/settings.cpp:562
 msgid "&Group a new note when clicking on the right of the insertion line"
 msgstr "当点击一行的右侧时对新建贴示进行分组."
 
-#: settings.cpp:556
+#: src/settings.cpp:564
 msgid "How to group a new note?"
 msgstr "如何对新的贴示进行分组?"
 
-#: settings.cpp:557
+#: src/settings.cpp:565
 msgid ""
 "<p>When this option is enabled, the insertion-line not only allows you to "
 "insert notes at the cursor position, but also allows you to group a new note "
 "with the one under the cursor:</p>"
-msgstr "<p>当开启这个选项后,插入行将不允许你在光标位置粘贴贴示,但是你依然可以在光标下内容使用新建分组功能:</p>"
+msgstr ""
+"<p>当开启这个选项后,插入行将不允许你在光标位置粘贴贴示,但是你依然可以在光标下"
+"内容使用新建分组功能:</p>"
 
-#: settings.cpp:559
+#: src/settings.cpp:567
 msgid ""
 "<p>Place your mouse between notes, where you want to add a new one.<br>Click "
 "on the <b>left</b> of the insertion-line middle-mark to <b>insert</b> a note."
@@ -2531,185 +2683,184 @@ msgid ""
 "or above</b>, depending on where your mouse is.</p>"
 msgstr ""
 
-#: settings.cpp:574
+#: src/settings.cpp:583
 msgid "Do nothing"
 msgstr "不操作"
 
-#: settings.cpp:575
+#: src/settings.cpp:584
 msgid "Paste clipboard"
 msgstr "粘贴"
 
-#: settings.cpp:578
+#: src/settings.cpp:587
 msgid "Insert launcher note"
 msgstr "插入运行程序贴示"
 
-#: settings.cpp:581
+#: src/settings.cpp:590
 msgid "Insert color from screen"
 msgstr "从屏幕插入颜色"
 
-#: settings.cpp:582
+#: src/settings.cpp:591
 msgid "Load note from file"
 msgstr "从文档读取贴士"
 
-#: settings.cpp:583
+#: src/settings.cpp:592
 msgid "Import Launcher from KDE Menu"
 msgstr "从K菜单载人运行程序"
 
-#: settings.cpp:584
+#: src/settings.cpp:593
 msgid "Import icon"
 msgstr "载人图标"
 
-#: settings.cpp:585
+#: src/settings.cpp:594
 msgid "&Shift+middle-click anywhere:"
 msgstr "&Shift+点击鼠标中键:"
 
-#: settings.cpp:588
+#: src/settings.cpp:597
 msgid "at cursor position"
 msgstr "光标位置"
 
-#: settings.cpp:599
+#: src/settings.cpp:611
 msgid "A&utomatically lock protected baskets when closed for"
 msgstr "关闭文档后自动锁定保护(&u)"
 
-#: settings.cpp:603
+#: src/settings.cpp:615
 msgid " minutes"
 msgstr "分钟"
 
-#: settings.cpp:614
+#: src/settings.cpp:626
 msgid "Use GnuPG agent for &private/public key protected baskets"
 msgstr "使用GnuPG密钥来保护文档(&p)"
 
-#: settings.cpp:690
+#: src/settings.cpp:703
 msgid "&Place of new notes:"
 msgstr "新建贴示(&P):"
 
-#: settings.cpp:693
+#: src/settings.cpp:706
 msgid "At current note"
 msgstr "当前贴示"
 
-#: settings.cpp:710
+#: src/settings.cpp:723
 msgid "&New images size:"
 msgstr "新图片尺寸(&N):"
 
-#: settings.cpp:718
+#: src/settings.cpp:731
 msgid "&by"
 msgstr ""
 
-#: settings.cpp:721
+#: src/settings.cpp:734
 msgid "pixels"
 msgstr "像素"
 
-#: settings.cpp:723
+#: src/settings.cpp:736
 msgid "&Visualize..."
 msgstr "预览(&V)..."
 
-#: settings.cpp:731
+#: src/settings.cpp:744
 msgid "View Content of Added Files for the Following Types"
 msgstr "显示已添加文件的类型"
 
-#: settings.cpp:732
+#: src/settings.cpp:746
 msgid "&Plain text"
 msgstr "纯文本(&P)"
 
-#: settings.cpp:733
+#: src/settings.cpp:747
 msgid "&HTML page"
 msgstr "&HTML页面"
 
-#: settings.cpp:734
+#: src/settings.cpp:748
 msgid "&Image or animation"
 msgstr "图片或媒体(&I)"
 
-#: settings.cpp:735
+#: src/settings.cpp:749
 msgid "&Sound"
 msgstr "声音(&S)"
 
-#: settings.cpp:794
+#: src/settings.cpp:815
 msgid "Conference audio record"
 msgstr "录音"
 
-#: settings.cpp:795
+#: src/settings.cpp:816
 msgid "Annual report"
 msgstr "统计报告"
 
-#: settings.cpp:796
+#: src/settings.cpp:817
 msgid "Home folder"
 msgstr "Home目录"
 
-#: settings.cpp:798
-#, c-format
+#: src/settings.cpp:819
 msgid "Launch %1"
 msgstr "运行%1"
 
-#: settings.cpp:799
+#: src/settings.cpp:820
 msgid "&Sounds"
 msgstr "多个声音(&S)"
 
-#: settings.cpp:800
+#: src/settings.cpp:821
 msgid "&Files"
 msgstr "文件(&F)"
 
-#: settings.cpp:801
+#: src/settings.cpp:822
 msgid "&Local Links"
 msgstr "本地链接(&L)"
 
-#: settings.cpp:802
+#: src/settings.cpp:823
 msgid "&Network Links"
 msgstr "网络链接(&N)"
 
-#: settings.cpp:803
+#: src/settings.cpp:824
 msgid "Launc&hers"
 msgstr "执行程序"
 
-#: settings.cpp:840
+#: src/settings.cpp:861
 msgid "Open &text notes with a custom application:"
 msgstr "用自定义程序打开文本贴示(&t):"
 
-#: settings.cpp:841
+#: src/settings.cpp:862
 msgid "Open text notes with:"
 msgstr "打开文本贴示(多个):"
 
-#: settings.cpp:848
+#: src/settings.cpp:869
 msgid "Open &image notes with a custom application:"
 msgstr "使用自定义程序打开贴示(&i):"
 
-#: settings.cpp:849
+#: src/settings.cpp:870
 msgid "Open image notes with:"
 msgstr "使用自定义程序打开图像贴示:"
 
-#: settings.cpp:856
+#: src/settings.cpp:877
 msgid "Open a&nimation notes with a custom application:"
 msgstr "使用自定义程序打开媒体贴示(&n):"
 
-#: settings.cpp:857
+#: src/settings.cpp:878
 msgid "Open animation notes with:"
 msgstr "使用自定义程序打开媒体贴示(&n):"
 
-#: settings.cpp:864
+#: src/settings.cpp:885
 msgid "Open so&und notes with a custom application:"
 msgstr "使用自定义程序打开声音贴示(&u);"
 
-#: settings.cpp:865
+#: src/settings.cpp:886
 msgid "Open sound notes with:"
 msgstr "打开声音贴示(&w):"
 
-#: settings.cpp:873
+#: src/settings.cpp:894
 msgid ""
 "<p>If checked, the application defined below will be used when opening that "
 "type of note.</p><p>Otherwise, the application you've configured in "
 "Konqueror will be used.</p>"
 msgstr ""
 
-#: settings.cpp:882
+#: src/settings.cpp:903
 msgid ""
 "<p>Define the application to use for opening that type of note instead of "
 "the application configured in Konqueror.</p>"
 msgstr ""
 
-#: settings.cpp:903
+#: src/settings.cpp:924
 msgid "How to change the application used to open Web links?"
 msgstr "如何改变打开网页链接的程序?"
 
-#: settings.cpp:904
+#: src/settings.cpp:925
 msgid ""
 "<p>When opening Web links, they are opened in different applications, "
 "depending on the content of the link (a Web page, an image, a PDF "
@@ -2727,11 +2878,11 @@ msgid ""
 "second help link.</p>"
 msgstr ""
 
-#: settings.cpp:922
+#: src/settings.cpp:943
 msgid "How to change the applications used to open files and links?"
 msgstr "如何改变打开文件和链接的程序?"
 
-#: settings.cpp:923
+#: src/settings.cpp:944
 msgid ""
 "<p>Here is how to set the application to be used for each type of file. This "
 "also applies to Web links if you choose not to open them systematically in a "
@@ -2748,434 +2899,437 @@ msgid ""
 "same for the type \"application -> xhtml+xml\".</li></ul>"
 msgstr ""
 
-#: softwareimporters.cpp:45
+#: src/softwareimporters.cpp:56
 msgid "Import Hierarchy"
 msgstr "重要级别"
 
-#: softwareimporters.cpp:51
+#: src/softwareimporters.cpp:63
 msgid "How to Import the Notes?"
 msgstr ""
 
-#: softwareimporters.cpp:52
+#: src/softwareimporters.cpp:67
 msgid "&Keep original hierarchy (all notes in separate baskets)"
 msgstr ""
 
-#: softwareimporters.cpp:53
+#: src/softwareimporters.cpp:68
 msgid "&First level notes in separate baskets"
 msgstr "Basket内的第一级贴示(&F)"
 
-#: softwareimporters.cpp:54
+#: src/softwareimporters.cpp:69
 msgid "&All notes in one basket"
 msgstr "选择整个文档(&A)"
 
-#: softwareimporters.cpp:74
+#: src/softwareimporters.cpp:105
 msgid "Import Text File"
 msgstr "载入文本文件"
 
-#: softwareimporters.cpp:80
+#: src/softwareimporters.cpp:113
 msgid "Format of the Text File"
 msgstr "文本类型"
 
-#: softwareimporters.cpp:81
+#: src/softwareimporters.cpp:117
 msgid "Notes separated by an &empty line"
 msgstr "使用空行来分开贴示(&e)."
 
-#: softwareimporters.cpp:82
+#: src/softwareimporters.cpp:118
 msgid "One &note per line"
 msgstr "一条贴示一行(&n)."
 
-#: softwareimporters.cpp:83
+#: src/softwareimporters.cpp:119
 msgid "Notes begin with a &dash (-)"
 msgstr "用(-)号来标注贴示头(&d)."
 
-#: softwareimporters.cpp:84
+#: src/softwareimporters.cpp:120
 msgid "Notes begin with a &star (*)"
 msgstr "用(*)号来标注贴示头(&s)."
 
-#: softwareimporters.cpp:85
+#: src/softwareimporters.cpp:121
 msgid "&Use another separator:"
 msgstr "使用其它板块(&U):"
 
-#: softwareimporters.cpp:95
+#: src/softwareimporters.cpp:138
 msgid "&All in one note"
 msgstr "选择整个贴示(&A)"
 
-#: softwareimporters.cpp:237
+#: src/softwareimporters.cpp:287
 msgid "From KJots"
 msgstr "源自KJots"
 
-#: softwareimporters.cpp:325
+#: src/softwareimporters.cpp:375
 msgid "From KNotes"
 msgstr "源自KNotes"
 
-#: softwareimporters.cpp:396
+#: src/softwareimporters.cpp:446
 msgid "From Sticky Notes"
 msgstr "源自附着的贴示"
 
-#: softwareimporters.cpp:446
+#: src/softwareimporters.cpp:496
 msgid "From Tomboy"
 msgstr "源自阿贴便签"
 
-#: softwareimporters.cpp:494
-#, c-format
-msgid ""
-"_: From TextFile.txt\n"
-"From %1"
-msgstr "源自%1"
-
-#: softwareimporters.cpp:643
-msgid "Can not import that file. It is either corrupted or not a TuxCards file."
+#: src/softwareimporters.cpp:545
+msgctxt "From TextFile.txt"
+msgid "From %1"
 msgstr ""
 
-#: softwareimporters.cpp:643
+#: src/softwareimporters.cpp:694
+msgid ""
+"Can not import that file. It is either corrupted or not a TuxCards file."
+msgstr ""
+
+#: src/softwareimporters.cpp:694
 msgid "Bad File Format"
 msgstr "损坏的文件类型"
 
-#: softwareimporters.cpp:671
+#: src/softwareimporters.cpp:722
 msgid ""
 "A note is encrypted. The importer does not yet support encrypted notes. "
 "Please remove the encryption with TuxCards and re-import the file."
 msgstr ""
 
-#: softwareimporters.cpp:671
+#: src/softwareimporters.cpp:722
 msgid "Encrypted Notes not Supported Yet"
 msgstr "目前尚不支持加密贴示"
 
-#: softwareimporters.cpp:673
+#: src/softwareimporters.cpp:724
 msgid ""
 "<font color='red'><b>Encrypted note.</b><br>The importer do not support "
 "encrypted notes yet. Please remove the encryption with TuxCards and re-"
 "import the file.</font>"
 msgstr ""
 
-#: systemtray.cpp:140
-msgid ""
-"<p>Closing the main window will keep %1 running in the system tray. Use "
-"<b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
-msgstr ""
+#: src/systemtray.cpp:145
+#, fuzzy
+msgid " (Locked)"
+msgstr "(已锁定)"
 
-#: systemtray.cpp:186 systemtray.cpp:191
-msgid "Docking in System Tray"
-msgstr "放到系统托盘"
-
-#: systemtray.cpp:237
+#: src/systemtray.cpp:192
 msgid "Pasted selection to basket <i>%1</i>"
 msgstr "粘贴所选到basket <i>%1</i>"
 
-#: systemtray.cpp:272
+#: src/systemtray.cpp:227
 msgid "&Minimize"
 msgstr "最小化(&M)"
 
-#: systemtray.cpp:274
+#: src/systemtray.cpp:229
 msgid "&Restore"
 msgstr "还原(&R)"
 
-#: systemtray.cpp:434
+#: src/systemtray.cpp:342
 msgid "%1 (Locked)"
 msgstr "%1 (已锁定)"
 
-#: tag.cpp:80
+#: src/tag.cpp:84
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: tag.cpp:544
+#: src/tag.cpp:554
 msgid "To Do"
 msgstr "To Do"
 
-#: tag.cpp:544
+#: src/tag.cpp:554
 msgid "Unchecked"
 msgstr "不检查"
 
-#: tag.cpp:544
+#: src/tag.cpp:554
 msgid "Done"
 msgstr "完成"
 
-#: tag.cpp:545
+#: src/tag.cpp:555
 msgid "Progress"
 msgstr "计划"
 
-#: tag.cpp:545
-#, c-format
+#: src/tag.cpp:555
 msgid "0 %"
 msgstr "0 %"
 
-#: tag.cpp:545
-#, c-format
+#: src/tag.cpp:555
 msgid "25 %"
 msgstr "25 %"
 
-#: tag.cpp:546
-#, c-format
+#: src/tag.cpp:556
 msgid "50 %"
 msgstr "50 %"
 
-#: tag.cpp:546
-#, c-format
+#: src/tag.cpp:556
 msgid "75 %"
 msgstr "75 %"
 
-#: tag.cpp:546
-#, c-format
+#: src/tag.cpp:556
 msgid "100 %"
 msgstr "100 %"
 
-#: tag.cpp:599
+#: src/tag.cpp:609
 msgid "Priority"
 msgstr "优先级"
 
-#: tag.cpp:599
+#: src/tag.cpp:609
 msgid "Low"
 msgstr "低"
 
-#: tag.cpp:599
+#: src/tag.cpp:609
 msgid "Medium"
 msgstr "适中"
 
-#: tag.cpp:600
+#: src/tag.cpp:610
 msgid "High"
 msgstr "高"
 
-#: tag.cpp:600
+#: src/tag.cpp:610
 msgid "Preference"
 msgstr "喜好设定"
 
-#: tag.cpp:600
+#: src/tag.cpp:610
 msgid "Bad"
 msgstr "垃圾"
 
-#: tag.cpp:601
+#: src/tag.cpp:611
 msgid "Good"
 msgstr "很好"
 
-#: tag.cpp:601
+#: src/tag.cpp:611
 msgid "Excellent"
 msgstr "非常之好"
 
-#: tag.cpp:601
+#: src/tag.cpp:611
 msgid "Highlight"
 msgstr "高亮显示"
 
-#: tag.cpp:667
+#: src/tag.cpp:677
 msgid "Important"
 msgstr "重要"
 
-#: tag.cpp:667
+#: src/tag.cpp:677
 msgid "Very Important"
 msgstr "非常重要"
 
-#: tag.cpp:668
+#: src/tag.cpp:677
+#, fuzzy
+msgid "Information"
+msgstr "媒体"
+
+#: src/tag.cpp:678
 msgid "Idea"
 msgstr "想法"
 
-#: tag.cpp:668
-msgid ""
-"_: The initial of 'Idea'\n"
-"I."
-msgstr "I."
+#: src/tag.cpp:678
+msgctxt "The initial of 'Idea'"
+msgid "I."
+msgstr ""
 
-#: tag.cpp:668
+#: src/tag.cpp:678
 msgid "Title"
 msgstr "标题"
 
-#: tag.cpp:669
+#: src/tag.cpp:679
 msgid "Code"
 msgstr "代码"
 
-#: tag.cpp:669
+#: src/tag.cpp:679
 msgid "Work"
 msgstr "任务"
 
-#: tag.cpp:669
-msgid ""
-"_: The initial of 'Work'\n"
-"W."
-msgstr "W."
+#: src/tag.cpp:679
+msgctxt "The initial of 'Work'"
+msgid "W."
+msgstr ""
 
-#: tag.cpp:687
+#: src/tag.cpp:697
 msgid "Personal"
 msgstr "个性化设置"
 
-#: tag.cpp:687
-msgid ""
-"_: The initial of 'Personal'\n"
-"P."
-msgstr "P."
+#: src/tag.cpp:697
+msgctxt "The initial of 'Personal'"
+msgid "P."
+msgstr ""
 
-#: tag.cpp:687
+#: src/tag.cpp:697
 msgid "Funny"
 msgstr "很有趣"
 
-#: tagsedit.cpp:207 tagsedit.cpp:227
-msgid ""
-"_: Tag name (shortcut)\n"
-"%1 (%2)"
-msgstr "%1 (%2)"
+#: src/tagsedit.cpp:232
+#, fuzzy
+msgctxt "Tag name (shortcut)"
+msgid "%1 (%2)"
+msgstr "%1, %2"
 
-#: tagsedit.cpp:325
+#: src/tagsedit.cpp:323
 msgid "Customize Tags"
 msgstr "调整标记"
 
-#: tagsedit.cpp:333
+#: src/tagsedit.cpp:338
 msgid "Ne&w Tag"
 msgstr "新标记(&e)"
 
-#: tagsedit.cpp:334
+#: src/tagsedit.cpp:339
 msgid "New St&ate"
 msgstr "新状态(&t)"
 
-#: tagsedit.cpp:350
+#: src/tagsedit.cpp:355
 msgid "Move Up (Ctrl+Shift+Up)"
 msgstr "上移(Ctrl+Shift+Up)"
 
-#: tagsedit.cpp:351
+#: src/tagsedit.cpp:356
 msgid "Move Down (Ctrl+Shift+Down)"
 msgstr "下移(Ctrl+Shift+Down)"
 
-#: tagsedit.cpp:375
+#: src/tagsedit.cpp:357
+#, fuzzy
+msgid "Delete"
+msgstr "删除(&e)"
+
+#: src/tagsedit.cpp:380
 msgid "Tag"
 msgstr "标记"
 
-#: tagsedit.cpp:382
-msgid ""
-"_: Remove tag shortcut\n"
-"&Remove"
-msgstr "删除(&R)"
+#: src/tagsedit.cpp:391
+#, fuzzy
+msgctxt "Remove tag shortcut"
+msgid "&Remove"
+msgstr "移除所有(&R)"
 
-#: tagsedit.cpp:383
+#: src/tagsedit.cpp:392
 msgid "S&hortcut:"
 msgstr "快捷方式(&h):"
 
-#: tagsedit.cpp:387
+#: src/tagsedit.cpp:396
 msgid "&Inherited by new sibling notes"
 msgstr "继承自兄弟贴示(&I)"
 
-#: tagsedit.cpp:398 tagsedit.cpp:1026 tagsedit.cpp:1042
+#: src/tagsedit.cpp:407 src/tagsedit.cpp:1086 src/tagsedit.cpp:1102
 msgid "State"
 msgstr "状态"
 
-#: tagsedit.cpp:402
+#: src/tagsedit.cpp:415
 msgid "Na&me:"
 msgstr "名称(&a):"
 
-#: tagsedit.cpp:409
-msgid ""
-"_: Remove tag emblem\n"
-"Remo&ve"
-msgstr "删除(&e)"
+#: src/tagsedit.cpp:422
+#, fuzzy
+msgctxt "Remove tag emblem"
+msgid "Remo&ve"
+msgstr "移除所有(&R)"
 
-#: tagsedit.cpp:410
+#: src/tagsedit.cpp:423
 msgid "&Emblem:"
 msgstr "标志(&E):"
 
-#: tagsedit.cpp:426
+#: src/tagsedit.cpp:439
 msgid "&Background:"
 msgstr "背景(&B):"
 
-#: tagsedit.cpp:455
+#: src/tagsedit.cpp:471
 msgid "Strike Through"
 msgstr "全部改变"
 
-#: tagsedit.cpp:457
+#: src/tagsedit.cpp:473
 msgid "&Text:"
 msgstr "文本(&T)"
 
-#: tagsedit.cpp:467
+#: src/tagsedit.cpp:483
 msgid "Co&lor:"
 msgstr "颜色(&l)"
 
-#: tagsedit.cpp:471
+#: src/tagsedit.cpp:487
 msgid "&Font:"
 msgstr "字体(&F):"
 
-#: tagsedit.cpp:474
+#: src/tagsedit.cpp:490
 msgid "&Size:"
 msgstr "尺寸(&S):"
 
-#: tagsedit.cpp:477
+#: src/tagsedit.cpp:493
 msgid "Te&xt equivalent:"
 msgstr "同义文本(&x):"
 
-#: tagsedit.cpp:487
-msgid ""
-"If filled, this property lets you paste this tag or this state as textual "
-"equivalent."
-msgstr "如果选中,它将根据你的同义标记来替换成对应的内容."
+#: src/tagsedit.cpp:499
+msgid "What is this for?"
+msgstr ""
 
-#: tagsedit.cpp:496
+#: src/tagsedit.cpp:500
+#, fuzzy
+msgid ""
+"When you copy and paste or drag and drop notes to a text editor, this text "
+"will be inserted as a textual equivalent of the tag."
+msgstr "当你把一个贴示通过复制粘贴或拖动到文本编辑器时可以使用。"
+
+#: src/tagsedit.cpp:510
 msgid "On ever&y line"
 msgstr "上划线(&y)"
 
-#: tagsedit.cpp:501
-msgid "What does it mean?"
+#: src/tagsedit.cpp:513
+#, fuzzy
+msgid "What does this mean?"
 msgstr "它有什么用?"
 
-#: tagsedit.cpp:502
+#: src/tagsedit.cpp:514
 msgid ""
 "When a note has several lines, you can choose to export the tag or the state "
 "on the first line or on every line of the note."
 msgstr ""
 
-#: tagsedit.cpp:504
+#: src/tagsedit.cpp:516
 msgid ""
 "In the example above, the tag of the top note is only exported on the first "
 "line, while the tag of the bottom note is exported on every line of the note."
 msgstr ""
 
-#: tagsedit.cpp:901
-msgid "Deleting the tag will remove it from every note it is currently assigned to."
+#: src/tagsedit.cpp:961
+msgid ""
+"Deleting the tag will remove it from every note it is currently assigned to."
 msgstr ""
 
-#: tagsedit.cpp:902
+#: src/tagsedit.cpp:962
 msgid "Confirm Delete Tag"
 msgstr "确认删除标记"
 
-#: tagsedit.cpp:903
+#: src/tagsedit.cpp:963
 msgid "Delete Tag"
 msgstr "删除标记"
 
-#: tagsedit.cpp:908
+#: src/tagsedit.cpp:968
 msgid ""
 "Deleting the state will remove the tag from every note the state is "
 "currently assigned to."
 msgstr ""
 
-#: tagsedit.cpp:909
+#: src/tagsedit.cpp:969
 msgid "Confirm Delete State"
 msgstr "确认删除状态"
 
-#: tagsedit.cpp:910
+#: src/tagsedit.cpp:970
 msgid "Delete State"
 msgstr "删除状态"
 
-#: variouswidgets.cpp:47
+#: src/variouswidgets.cpp:57
 msgid "..."
 msgstr "..."
 
-#: variouswidgets.cpp:84 variouswidgets.cpp:199
+#: src/variouswidgets.cpp:94 src/variouswidgets.cpp:212
 msgid "16 by 16 pixels"
 msgstr "16X16 像素"
 
-#: variouswidgets.cpp:85 variouswidgets.cpp:200
+#: src/variouswidgets.cpp:95 src/variouswidgets.cpp:213
 msgid "22 by 22 pixels"
 msgstr "22X22 像素"
 
-#: variouswidgets.cpp:86 variouswidgets.cpp:201
+#: src/variouswidgets.cpp:96 src/variouswidgets.cpp:214
 msgid "32 by 32 pixels"
 msgstr "32X32 像素"
 
-#: variouswidgets.cpp:87 variouswidgets.cpp:202
+#: src/variouswidgets.cpp:97 src/variouswidgets.cpp:215
 msgid "48 by 48 pixels"
 msgstr "48X48 像素"
 
-#: variouswidgets.cpp:88 variouswidgets.cpp:203
+#: src/variouswidgets.cpp:98 src/variouswidgets.cpp:216
 msgid "64 by 64 pixels"
 msgstr "64X64 像素"
 
-#: variouswidgets.cpp:89 variouswidgets.cpp:204
+#: src/variouswidgets.cpp:99 src/variouswidgets.cpp:217
 msgid "128 by 128 pixels"
 msgstr "128X128 像素"
 
-#: variouswidgets.cpp:129
+#: src/variouswidgets.cpp:139
 msgid ""
 "Resize the window to select the image size\n"
 "and close it or press Escape to accept changes."
@@ -3183,3 +3337,254 @@ msgstr ""
 "调整窗口到选择图片大小\n"
 "关闭退出后会自动保存改变."
 
+#~ msgid ""
+#~ "_: NAME OF TRANSLATORS\n"
+#~ "Your names"
+#~ msgstr "cao ting"
+
+#~ msgid ""
+#~ "_: EMAIL OF TRANSLATORS\n"
+#~ "Your emails"
+#~ msgstr "ctqucl@gmail.com"
+
+#~ msgid ""
+#~ "_: Safety folder name before restoring a basket data archive\n"
+#~ "Baskets Before Restoration"
+#~ msgstr "还原前的Basket"
+
+#~ msgid ""
+#~ "_: Safety folder name before restoring a basket data archive\n"
+#~ "Baskets Before Restoration (%1)"
+#~ msgstr "还原前的Basket (%1)"
+
+#~ msgid ""
+#~ "_: The verb (Group New Note)\n"
+#~ "Group"
+#~ msgstr "分组"
+
+#~ msgid ""
+#~ "_: The verb (Insert New Note)\n"
+#~ "Insert"
+#~ msgstr "插入"
+
+#~ msgid ""
+#~ "_: of the form 'key: value'\n"
+#~ "<b>%1</b>: %2"
+#~ msgstr "<b>%1</b>: %2"
+
+#~ msgid ""
+#~ "_n: <qt>Do you really want to delete this note?</qt>\n"
+#~ "<qt>Do you really want to delete those <b>%n</b> notes?</qt>"
+#~ msgstr "<qt>你确定删除这<b>%n</b>条贴示?</qt>"
+
+#~ msgid ""
+#~ "_n: Delete Note\n"
+#~ "Delete Notes"
+#~ msgstr "删除贴示"
+
+#~ msgid ""
+#~ "_n: Cut note to clipboard.\n"
+#~ "Cut notes to clipboard."
+#~ msgstr "复制到剪贴板"
+
+#~ msgid "Insufficient Disk Space to Save Basket Data"
+#~ msgstr "磁盘空间不足"
+
+#~ msgid "Wrong Basket File Permissions"
+#~ msgstr "错误的文档权限"
+
+#~ msgid "Please write in English or French."
+#~ msgstr "请使用英语或法语."
+
+#~ msgid ""
+#~ "_: Verb; not Menu\n"
+#~ "&Edit..."
+#~ msgstr "编辑(&E)..."
+
+#~ msgid ""
+#~ "_: Remove Basket\n"
+#~ "&Remove"
+#~ msgstr "移除(&R)"
+
+#~ msgid ""
+#~ "_: Password protection\n"
+#~ "Pass&word..."
+#~ msgstr "设置密码保护(&w)..."
+
+#~ msgid ""
+#~ "_: Lock Basket\n"
+#~ "&Lock"
+#~ msgstr "锁定(&L)"
+
+#~ msgid "Filter all &Baskets"
+#~ msgstr "检索全部Basket(&B)"
+
+#~ msgid "Configure &Global Shortcuts..."
+#~ msgstr "设置全局快捷方式(&G)..."
+
+#~ msgid ""
+#~ "_n: %n note\n"
+#~ "%n notes"
+#~ msgstr "%n条贴示"
+
+#~ msgid ""
+#~ "_n: %n selected\n"
+#~ "%n selected"
+#~ msgstr "%n条已选定"
+
+#~ msgid ""
+#~ "_n: %n match\n"
+#~ "%n matches"
+#~ msgstr "%n条符合"
+
+#~ msgid ""
+#~ "_: e.g. '18 notes, 10 matches, 5 selected'\n"
+#~ "%1, %2, %3"
+#~ msgstr "%1, %2, %3"
+
+#~ msgid "Delete Basket"
+#~ msgstr "删除Basket"
+
+#~ msgid "Delete Only that Basket"
+#~ msgstr "只删除这个Basket"
+
+#~ msgid "Delete Note & Children"
+#~ msgstr "删除贴示和内容"
+
+#~ msgid "Auto Spell Check"
+#~ msgstr "拼写检查"
+
+#~ msgid "Check Spelling..."
+#~ msgstr "检查拼写..."
+
+#~ msgid "Allow Tabulations"
+#~ msgstr "允许列表"
+
+#~ msgid ""
+#~ "_: HTML export folder (icons)\n"
+#~ "icons"
+#~ msgstr "图标"
+
+#~ msgid ""
+#~ "_: HTML export folder (images)\n"
+#~ "images"
+#~ msgstr "图片"
+
+#~ msgid ""
+#~ "_: HTML export folder (baskets)\n"
+#~ "baskets"
+#~ msgstr "basket"
+
+#~ msgid ""
+#~ "_: HTML export folder (data)\n"
+#~ "data"
+#~ msgstr "数据"
+
+#~ msgid "Select Icon"
+#~ msgstr "选择图标"
+
+#~ msgid "&Browse..."
+#~ msgstr "浏览(&B)..."
+
+#~ msgid "(All Icons)"
+#~ msgstr "(所有图标)"
+
+#~ msgid "(Recent)"
+#~ msgstr "(最近)"
+
+#~ msgid "Actions"
+#~ msgstr "启动器"
+
+#~ msgid "Applications"
+#~ msgstr "应用程序"
+
+#~ msgid "Devices"
+#~ msgstr "设备"
+
+#~ msgid "Filesystem"
+#~ msgstr "文件系统"
+
+#~ msgid "File Types"
+#~ msgstr "文件类型"
+
+#~ msgid "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
+#~ msgstr "*.png *.xpm *.svg *.svgz|Icon Files (*.png *.xpm *.svg *.svgz)"
+
+#~ msgid ""
+#~ "_n: Example:\n"
+#~ "Examples:"
+#~ msgstr "示例:"
+
+#~ msgid "Basket"
+#~ msgstr "Basket"
+
+#~ msgid "(Image)"
+#~ msgstr "(图片)"
+
+#~ msgid ""
+#~ "_: RGB Colorspace: Red/Green/Blue\n"
+#~ "RGB"
+#~ msgstr "RGB"
+
+#~ msgid ""
+#~ "_: HSV Colorspace: Hue/Saturation/Value\n"
+#~ "HSV"
+#~ msgstr "色彩模式(HSV)"
+
+#~ msgid "KIconDialogUI"
+#~ msgstr "KIconDialogUI"
+
+#~ msgid "Fi&lter:"
+#~ msgstr "检索(&l):"
+
+#~ msgid "Alt+O"
+#~ msgstr "Alt+O"
+
+#~ msgid "Alt+N"
+#~ msgstr "Alt+N"
+
+#~ msgid "Alt+P"
+#~ msgstr "Alt+P"
+
+#~ msgid "Alt+K"
+#~ msgstr "Alt+K"
+
+#~ msgid ""
+#~ "_: From TextFile.txt\n"
+#~ "From %1"
+#~ msgstr "源自%1"
+
+#~ msgid ""
+#~ "_: The initial of 'Idea'\n"
+#~ "I."
+#~ msgstr "I."
+
+#~ msgid ""
+#~ "_: The initial of 'Work'\n"
+#~ "W."
+#~ msgstr "W."
+
+#~ msgid ""
+#~ "_: The initial of 'Personal'\n"
+#~ "P."
+#~ msgstr "P."
+
+#~ msgid ""
+#~ "_: Tag name (shortcut)\n"
+#~ "%1 (%2)"
+#~ msgstr "%1 (%2)"
+
+#~ msgid ""
+#~ "_: Remove tag shortcut\n"
+#~ "&Remove"
+#~ msgstr "删除(&R)"
+
+#~ msgid ""
+#~ "_: Remove tag emblem\n"
+#~ "Remo&ve"
+#~ msgstr "删除(&e)"
+
+#~ msgid ""
+#~ "If filled, this property lets you paste this tag or this state as textual "
+#~ "equivalent."
+#~ msgstr "如果选中,它将根据你的同义标记来替换成对应的内容."
