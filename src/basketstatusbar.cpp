@@ -59,8 +59,10 @@ void BasketStatusBar::addWidget(QWidget * widget, int stretch, bool permanent)
 {
 	if(m_extension)
 		m_extension->addStatusBarItem(widget, stretch, permanent);
+	else if (permanent)
+		m_bar->addPermanentWidget(widget, stretch);
 	else
-		m_bar->addWidget(widget, stretch, permanent);
+		m_bar->addWidget(widget, stretch);
 }
 
 void BasketStatusBar::setupStatusBar()
@@ -72,8 +74,12 @@ void BasketStatusBar::setupStatusBar()
 	if(lst.count() == 0)
 	{
 		m_basketStatus = new QLabel(parent);
-		m_basketStatus->setSizePolicy( QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored, 0, 0, false) );
-		addWidget( m_basketStatus, 1, false ); // Fit all extra space and is hiddable
+		QSizePolicy policy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+		policy.setHorizontalStretch(0);
+		policy.setVerticalStretch(0);
+		policy.setHeightForWidth(false);
+		m_basketStatus->setSizePolicy(policy);
+		addWidget( m_basketStatus, 1, false); // Fit all extra space and is hiddable
 	}
 	else
         m_basketStatus = static_cast<QLabel*>(lst.at(0));
@@ -95,8 +101,8 @@ void BasketStatusBar::setupStatusBar()
 	m_savedStatus->clear();
 	//m_savedStatus->setPixmap(m_savedStatusIconSet.pixmap(QIconSet::Small, QIconSet::Disabled));
 	//m_savedStatus->setEnabled(false);
-	addWidget( m_savedStatus, 0, true );
-	QToolTip::add(m_savedStatus, "<p>" + i18n("Shows if there are changes that have not yet been saved."));
+	addWidget( m_savedStatus, 0, true);
+	m_savedStatus->setToolTip("<p>" + i18n("Shows if there are changes that have not yet been saved."));
 
 
 }
@@ -104,7 +110,7 @@ void BasketStatusBar::setupStatusBar()
 void BasketStatusBar::postStatusbarMessage(const QString& text)
 {
 	if(statusBar())
-		statusBar()->message(text, 2000);
+		statusBar()->showMessage(text, 2000);
 }
 
 void BasketStatusBar::setStatusText(const QString &txt)
@@ -145,12 +151,12 @@ void BasketStatusBar::setLockStatus(bool isLocked)
 
 	if (isLocked) {
 		m_lockStatus->setPixmap(SmallIcon("encrypted.png"));
-		QToolTip::add(m_lockStatus, i18n(
+		m_lockStatus->setToolTip(i18n(
 				"<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>").replace(" ", "&nbsp;") );
 //		QToolTip::add(m_lockStatus, i18n("This basket is locked.\nClick to unlock it."));
 	} else {
 		m_lockStatus->clear();
-		QToolTip::add(m_lockStatus, i18n(
+		m_lockStatus->setToolTip(i18n(
 				"<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>").replace(" ", "&nbsp;") );
 //		QToolTip::add(m_lockStatus, i18n("This basket is unlocked.\nClick to lock it."));
 	}

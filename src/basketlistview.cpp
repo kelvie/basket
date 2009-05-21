@@ -244,12 +244,13 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
 
 	// Apply the curved rectangle as the mask of the gradient:
 	gradient.setMask(curvedRectangle);
-	QImage resultImage = gradient.convertToImage();
-	resultImage.setAlphaBuffer(true);
+	QImage resultImage = gradient.toImage();
+
+	//resultImage.setAlphaBuffer(true);
+	resultImage.convertToFormat(QImage::Format_ARGB32);
 
 	// Scale down the image smoothly to get anti-aliasing:
-	QPixmap pmScaled;
-	pmScaled.convertFromImage(resultImage.smoothScale(width, height));
+	QPixmap pmScaled = QPixmap::fromImage(resultImage.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
 	// Draw the text, and return the result:
 	QPainter painter(&pmScaled);
@@ -465,11 +466,11 @@ void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 		BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
 		if (m_autoOpenItem != item) {
 			m_autoOpenItem = item;
-			m_autoOpenTimer.start(1700, /*singleShot=*/true);
+			m_autoOpenTimer.setSingleShot(true);
+			m_autoOpenTimer.start(1700);
 		}
 		if (item) {
-			event->acceptAction(true);
-			event->accept(true);
+			event->accept();
 		}
 		setItemUnderDrag(bitem);
 

@@ -47,7 +47,7 @@ class BasketPropertiesDialog : public KDialog
   public:
 	BasketPropertiesDialog(Basket *basket, QWidget *parent = 0);
 	~BasketPropertiesDialog();
-	void polish();
+	void ensurePolished();
 
   public slots:
 	void applyChanges();

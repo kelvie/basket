@@ -46,7 +46,7 @@ QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 
 QDomElement XMLWork::getElement(const QDomElement &startElement, const QString &elementPath)
 {
-	QStringList elements = QStringList::split("/", elementPath, false);
+	QStringList elements = elementPath.split("/");
 	QDomNode n = startElement.firstChild();
 	for (int i = 0; i < elements.count(); ++i) {               	// For each elements
 		while ( ! n.isNull() ) {                                        // Browse their  sub elements

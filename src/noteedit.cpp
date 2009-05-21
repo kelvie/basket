@@ -137,16 +137,21 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 	FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
-	textEdit->setTextFormat(Qt::PlainText);
-	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
-	textEdit->setPaletteForegroundColor(note()->textColor());
+	QPalette palette;
+	palette.setColor(textEdit->backgroundRole(), note()->backgroundColor());
+	palette.setColor(textEdit->foregroundRole(), note()->textColor());
+	textEdit->setPalette(palette);
+
 	textEdit->setFont(note()->font());
 	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	if (Settings::spellCheckTextNotes())
 		textEdit->setCheckSpellingEnabled(true);
-	textEdit->setText(m_textContent->text());
-	textEdit->moveCursor(KTextEdit::MoveEnd, false); // FIXME: Sometimes, the cursor flicker at ends before being positionned where clicked (because kapp->processEvents() I think)
+	textEdit->setPlainText(m_textContent->text());
+
+	// Not sure if the following comment is still true
+	// FIXME: Sometimes, the cursor flicker at ends before being positionned where clicked (because kapp->processEvents() I think)
+	textEdit->moveCursor(QTextCursor::End);
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 	connect( textEdit, SIGNAL(escapePressed()), this, SIGNAL(askValidation())            );
@@ -175,7 +180,7 @@ void TextEditor::autoSave(bool toFileToo)
 		textEdit()->setCheckSpellingEnabled(false);
 	}
 
-	m_textContent->setText(textEdit()->text());
+	m_textContent->setText(textEdit()->toPlainText());
 
 	if (toFileToo) {
 		m_textContent->saveToFile();
@@ -192,9 +197,9 @@ void TextEditor::validate()
 	}
 
 	textEdit()->setCheckSpellingEnabled(false);
-	if (textEdit()->text().isEmpty())
+	if (textEdit()->document()->isEmpty())
 		setEmpty();
-	m_textContent->setText(textEdit()->text());
+	m_textContent->setText(textEdit()->toPlainText());
 	m_textContent->saveToFile();
 	m_textContent->setEdited();
 
@@ -209,15 +214,17 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 	FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
 	textEdit->setLineWidth(0);
 	textEdit->setMidLineWidth(0);
-	textEdit->setTextFormat(Qt::RichText);
 	textEdit->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll :
                                 QTextEdit::AutoNone);
-	textEdit->setPaletteBackgroundColor(note()->backgroundColor());
-	textEdit->setPaletteForegroundColor(note()->textColor());
-	textEdit->setFont(note()->font());
+
+	QPalette palette;
+	palette.setColor(textEdit->backgroundRole(), note()->backgroundColor());
+	palette.setColor(textEdit->foregroundRole(), note()->textColor());
+	textEdit->setPalette(palette);
+
 	textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	textEdit->setText(m_htmlContent->html());
-	textEdit->moveCursor(KTextEdit::MoveEnd, false);
+	textEdit->setHtml(m_htmlContent->html());
+	textEdit->moveCursor(QTextCursor::End);
 	textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
 	setInlineEditor(textEdit);
 
@@ -267,12 +274,12 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
 
 void HtmlEditor::cursorPositionChanged()
 {
-	InlineEditors::instance()->richTextFont->setCurrentFont(  textEdit()->currentFont().family() );
-	if (InlineEditors::instance()->richTextColor->color() != textEdit()->color())
-		InlineEditors::instance()->richTextColor->setColor(   textEdit()->color()                );
-	InlineEditors::instance()->richTextBold->setChecked(      textEdit()->bold()                 );
-	InlineEditors::instance()->richTextItalic->setChecked(    textEdit()->italic()               );
-	InlineEditors::instance()->richTextUnderline->setChecked( textEdit()->underline()            );
+	InlineEditors::instance()->richTextFont->setCurrentFont(textEdit()->currentFont().family());
+	if (InlineEditors::instance()->richTextColor->color() != textEdit()->textColor())
+		InlineEditors::instance()->richTextColor->setColor(textEdit()->textColor());
+	InlineEditors::instance()->richTextBold->setChecked((textEdit()->fontWeight() >= QFont::Bold));
+	InlineEditors::instance()->richTextItalic->setChecked(textEdit()->fontItalic());
+	InlineEditors::instance()->richTextUnderline->setChecked(textEdit()->fontUnderline());
 
 	switch (textEdit()->alignment()) {
 		default:
@@ -289,8 +296,8 @@ void HtmlEditor::textChanged()
 	// When I start typing in a textEdit, the undo&redo actions are not enabled until I click
 	// or move the cursor - probably, the signal undoAvailable() is not emitted.
 	// So, I had to intervene and do that manually.
-	InlineEditors::instance()->richTextUndo->setEnabled(textEdit()->isUndoAvailable());
-	InlineEditors::instance()->richTextRedo->setEnabled(textEdit()->isRedoAvailable());
+	InlineEditors::instance()->richTextUndo->setEnabled(textEdit()->document()->isUndoAvailable());
+	InlineEditors::instance()->richTextRedo->setEnabled(textEdit()->document()->isRedoAvailable());
 }
 
 void HtmlEditor::fontChanged(const QFont &font)
@@ -317,14 +324,14 @@ void HtmlEditor::fontChanged(const QFont &font)
 
 	NoteHtmlEditor::buttonToggled(int id) :
 		case 106:
-			if (isOn && m_toolbar->isButtonOn(107))
+			if (isChecked && m_toolbar->isButtonOn(107))
 				m_toolbar->setButton(107, false);
-			m_text->setVerticalAlignment(isOn ? KTextEdit::AlignSuperScript : KTextEdit::AlignNormal);
+			m_text->setVerticalAlignment(isChecked ? KTextEdit::AlignSuperScript : KTextEdit::AlignNormal);
 			break;
 		case 107:
-			if (isOn && m_toolbar->isButtonOn(106))
+			if (isChecked && m_toolbar->isButtonOn(106))
 				m_toolbar->setButton(106, false);
-			m_text->setVerticalAlignment(isOn ? KTextEdit::AlignSubScript   : KTextEdit::AlignNormal);
+			m_text->setVerticalAlignment(isChecked ? KTextEdit::AlignSubScript   : KTextEdit::AlignNormal);
 			break;
 }*/
 
@@ -342,7 +349,7 @@ HtmlEditor::~HtmlEditor()
 
 void HtmlEditor::autoSave(bool toFileToo)
 {
-	m_htmlContent->setHtml(textEdit()->text());
+	m_htmlContent->setHtml(textEdit()->toHtml());
 	if (toFileToo) {
 		m_htmlContent->saveToFile();
 	m_htmlContent->setEdited();
@@ -351,9 +358,9 @@ void HtmlEditor::autoSave(bool toFileToo)
 
 void HtmlEditor::validate()
 {
-	if (Tools::htmlToText(textEdit()->text()).isEmpty())
+	if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
 		setEmpty();
-	m_htmlContent->setHtml(textEdit()->text());
+	m_htmlContent->setHtml(textEdit()->toHtml());
 	m_htmlContent->saveToFile();
 	m_htmlContent->setEdited();
 
@@ -408,10 +415,12 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 {
 	KLineEdit *lineEdit = new KLineEdit(parent);
 	FocusWidgetFilter *filter = new FocusWidgetFilter(lineEdit);
-	lineEdit->setLineWidth(0);
-	lineEdit->setMidLineWidth(0);
-	lineEdit->setPaletteBackgroundColor(note()->backgroundColor());
-	lineEdit->setPaletteForegroundColor(note()->textColor());
+
+	QPalette palette;
+	palette.setColor(lineEdit->backgroundRole(), note()->backgroundColor());
+	palette.setColor(lineEdit->foregroundRole(), note()->textColor());
+	lineEdit->setPalette(palette);
+
 	lineEdit->setFont(note()->font());
 	lineEdit->setText(m_fileContent->fileName());
 	lineEdit->selectAll();
@@ -542,21 +551,24 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 
 	QWidget     *page   = new QWidget(this);
 	setMainWidget(page);
-	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	//QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *layout = new QGridLayout(page);
 
 	QWidget *wid1 = new QWidget(page);
-	QHBoxLayout *titleLay = new QHBoxLayout(wid1, /*margin=*/0, spacingHint());
+	QHBoxLayout *titleLay = new QHBoxLayout(wid1);
 	m_title = new DebuggedLineEdit(m_noteContent->title(), wid1);
 	m_autoTitle = new QPushButton(i18n("Auto"), wid1);
-	m_autoTitle->setToggleButton(true);
-	m_autoTitle->setOn(m_noteContent->autoTitle());
+	m_autoTitle->setCheckable(true);
+	m_autoTitle->setChecked(m_noteContent->autoTitle());
 	titleLay->addWidget(m_title);
 	titleLay->addWidget(m_autoTitle);
 
 	QWidget *wid = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid);
 	m_icon = new KIconButton(wid);
-	QLabel *label3 = new QLabel(m_icon, i18n("&Icon:"), page);
+	QLabel *label3 = new QLabel(page);
+	label3->setText(i18n("&Icon:"));
+	label3->setBuddy(m_icon);
 
 	m_url = new KUrlRequester(KUrl(""), wid);
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
@@ -572,8 +584,8 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	else
 		m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
 	/* Auto button: */
-	m_autoIcon->setToggleButton(true);
-	m_autoIcon->setOn(m_noteContent->autoIcon());
+	m_autoIcon->setCheckable(true);
+	m_autoIcon->setChecked(m_noteContent->autoIcon());
 	hLay->addWidget(m_icon);
 	hLay->addWidget(m_autoIcon);
 	hLay->addStretch();
@@ -582,8 +594,14 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	m_title->setMinimumWidth(m_title->fontMetrics().maxWidth()*20);
 
 	//m_url->setShowLocalProtocol(true);
-	QLabel      *label1 = new QLabel(m_url,   i18n("Ta&rget:"),    page);
-	QLabel      *label2 = new QLabel(m_title, i18n("&Title:"),  page);
+	QLabel *label1 = new QLabel(page);
+	label1->setText(i18n("Ta&rget:"));
+	label1->setBuddy(m_url);
+
+	QLabel *label2 = new QLabel(page);
+	label2->setText(i18n("&Title:"));
+	label2->setBuddy(m_title);
+
 	layout->addWidget(label1,  0, 0, Qt::AlignVCenter);
 	layout->addWidget(label2,  1, 0, Qt::AlignVCenter);
 	layout->addWidget(label3,  2, 0, Qt::AlignVCenter);
@@ -599,7 +617,10 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 	connect( m_autoIcon,  SIGNAL(clicked()), this, SLOT(guessIcon())  );
 
 	QWidget *stretchWidget = new QWidget(page);
-	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/255)); // Make it fill ALL vertical space
+	QSizePolicy policy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	policy.setHorizontalStretch(1);
+	policy.setVerticalStretch(255);
+	stretchWidget->setSizePolicy(policy); // Make it fill ALL vertical space
 	layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 
 
@@ -613,9 +634,9 @@ LinkEditDialog::~LinkEditDialog()
 {
 }
 
-void LinkEditDialog::polish()
+void LinkEditDialog::ensurePolished()
 {
-	KDialog::polish();
+	KDialog::ensurePolished();
 	if (m_url->lineEdit()->text().isEmpty()) {
 		m_url->setFocus();
 		m_url->lineEdit()->end(false);
@@ -633,11 +654,11 @@ void LinkEditDialog::urlChanged(const QString&)
 //	guessIcon();
 	// Optimization (filter only once):
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
-	if (m_autoIcon->isOn())
+	if (m_autoIcon->isChecked())
 		m_icon->setIcon(NoteFactory::iconForURL(filteredURL));
-	if (m_autoTitle->isOn()) {
+	if (m_autoTitle->isChecked()) {
 		m_title->setText(NoteFactory::titleForURL(filteredURL));
-		m_autoTitle->setOn(true); // Because the setText() will disable it!
+		m_autoTitle->setChecked(true); // Because the setText() will disable it!
 	}
 }
 
@@ -646,17 +667,17 @@ void LinkEditDialog::doNotAutoTitle(const QString&)
 	if (m_isAutoModified)
 		m_isAutoModified = false;
 	else
-		m_autoTitle->setOn(false);
+		m_autoTitle->setChecked(false);
 }
 
 void LinkEditDialog::doNotAutoIcon(QString)
 {
-	m_autoIcon->setOn(false);
+	m_autoIcon->setChecked(false);
 }
 
 void LinkEditDialog::guessIcon()
 {
-	if (m_autoIcon->isOn()) {
+	if (m_autoIcon->isChecked()) {
 		KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 		m_icon->setIcon(NoteFactory::iconForURL(filteredURL));
 	}
@@ -664,17 +685,17 @@ void LinkEditDialog::guessIcon()
 
 void LinkEditDialog::guessTitle()
 {
-	if (m_autoTitle->isOn()) {
+	if (m_autoTitle->isChecked()) {
 		KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
 		m_title->setText(NoteFactory::titleForURL(filteredURL));
-		m_autoTitle->setOn(true); // Because the setText() will disable it!
+		m_autoTitle->setChecked(true); // Because the setText() will disable it!
 	}
 }
 
 void LinkEditDialog::slotOk()
 {
 	KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->url()));//KURIFilter::self()->filteredURI(KUrl(m_url->url()));
-	m_noteContent->setLink(filteredURL, m_title->text(), m_icon->icon(), m_autoTitle->isOn(), m_autoIcon->isOn());
+	m_noteContent->setLink(filteredURL, m_title->text(), m_icon->icon(), m_autoTitle->isChecked(), m_autoIcon->isChecked());
 	m_noteContent->setEdited();
 
 	/* Change icon size if link look have changed */
@@ -709,7 +730,8 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	QWidget     *page   = new QWidget(this);
 	setMainWidget(page);
 
-	QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	//QGridLayout *layout = new QGridLayout(page, /*nRows=*/4, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *layout = new QGridLayout(page);
 
 	KService service(contentNote->fullPath());
 
@@ -717,9 +739,13 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	m_name    = new QLineEdit(service.name(), page);
 
 	QWidget *wid = new QWidget(page);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid);
 	m_icon = new KIconButton(wid);
-	QLabel *label = new QLabel(m_icon, i18n("&Icon:"), page);
+
+	QLabel *label = new QLabel(page);
+	label->setText(i18n("&Icon:"));
+	label->setBuddy(m_icon);
+
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Application);
 	m_icon->setIconSize(LinkLook::launcherLook->iconSize());
 	QPushButton *guessButton = new QPushButton(i18n("&Guess"), wid);
@@ -738,8 +764,14 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 
 	m_command->lineEdit()->setMinimumWidth(m_command->lineEdit()->fontMetrics().maxWidth()*20);
 
-	QLabel *label1 = new QLabel(m_command->lineEdit(), i18n("Comman&d:"), page);
-	QLabel *label2 = new QLabel(m_name,                i18n("&Name:"),    page);
+	QLabel *label1 = new QLabel(page);
+	label1->setText(i18n("Comman&d:"));
+	label1->setBuddy(m_command->lineEdit());
+
+	QLabel *label2 = new QLabel(page);
+	label2->setText(i18n("&Name:"));
+	label2->setBuddy(m_name);
+
 	layout->addWidget(label1,    0, 0, Qt::AlignVCenter);
 	layout->addWidget(label2,    1, 0, Qt::AlignVCenter);
 	layout->addWidget(label,     2, 0, Qt::AlignVCenter);
@@ -748,7 +780,12 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
 	layout->addWidget(wid,       2, 1, Qt::AlignVCenter);
 
 	QWidget *stretchWidget = new QWidget(page);
-	stretchWidget->setSizePolicy(QSizePolicy(/*hor=*/QSizePolicy::Fixed, /*ver=*/QSizePolicy::Expanding, /*hStretch=*/1, /*vStretch=*/255)); // Make it fill ALL vertical space
+
+	QSizePolicy policy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	policy.setHorizontalStretch(1);
+	policy.setVerticalStretch(255);
+	stretchWidget->setSizePolicy(policy); // Make it fill ALL vertical space
+
 	layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 
 	connect( guessButton, SIGNAL(clicked()), this, SLOT(guessIcon()) );
@@ -758,9 +795,9 @@ LauncherEditDialog::~LauncherEditDialog()
 {
 }
 
-void LauncherEditDialog::polish()
+void LauncherEditDialog::ensurePolished()
 {
-	KDialog::polish();
+	KDialog::ensurePolished();
 	if (m_command->runCommand().isEmpty()) {
 		m_command->lineEdit()->setFocus();
 		m_command->lineEdit()->end(false);

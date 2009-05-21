@@ -50,35 +50,39 @@
 FilterBar::FilterBar(QWidget *parent)
  : QWidget(parent)/*, m_blinkTimer(this), m_blinkedTimes(0)*/
 {
-	QHBoxLayout *hBox  = new QHBoxLayout(this, /*margin*/0, /*spacing*/0);
+	QHBoxLayout *hBox  = new QHBoxLayout(this);
 
 	// Create every widgets:
 	// (Aaron Seigo says we don't need to worry about the 
 	//	"Toolbar group" stuff anymore.)
 	
-	QIcon resetIconSet = KIcon("dialog-close", KIconLoader::global());
-	QIcon inAllIconSet = KIcon("edit-find", KIconLoader::global());
+	QIcon resetIcon = KIcon("dialog-close", KIconLoader::global());
+	QIcon inAllIcon = KIcon("edit-find", KIconLoader::global());
 
 	m_resetButton        = new QToolButton(this);
-	m_resetButton->setIconSet(resetIconSet);
-	m_resetButton->setTextLabel(i18n("Reset Filter"));//, /*groupText=*/"", this, SLOT(reset()), 0);
+	m_resetButton->setIcon(resetIcon);
+	m_resetButton->setText(i18n("Reset Filter"));//, /*groupText=*/"", this, SLOT(reset()), 0);
 	m_resetButton->setAutoRaise(true);
 			//new KToolBarButton("locationbar_erase", /*id=*/1230, this, /*name=*/0, i18n("Reset Filter"));
 	m_lineEdit = new KLineEdit(this);
-	QLabel *label        = new QLabel(m_lineEdit, i18n("&Filter: "), this);
+	QLabel *label = new QLabel(this);
+	label->setText(i18n("&Filter: "));
+	label->setBuddy(m_lineEdit);
 	m_tagsBox = new KComboBox(this);
-	QLabel *label2       = new QLabel(m_tagsBox, i18n("T&ag: "), this);
+	QLabel *label2 = new QLabel(this);
+	label2->setText(i18n("T&ag: "));
+	label2->setBuddy(m_tagsBox);
 	m_inAllBasketsButton = new QToolButton(this);
-	m_inAllBasketsButton->setIconSet(inAllIconSet);
-	m_inAllBasketsButton->setTextLabel(i18n("Filter All Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
+	m_inAllBasketsButton->setIcon(inAllIcon);
+	m_inAllBasketsButton->setText(i18n("Filter All Baskets"));//, /*groupText=*/"", this, SLOT(inAllBaskets()), 0);
 	m_inAllBasketsButton->setAutoRaise(true);
 
 	// Configure the Tags combobox:
 	repopulateTagsCombo();
 
-	// Configure the Serach in all Baskets button:
-	m_inAllBasketsButton->setToggleButton(true);
-//	m_inAllBasketsButton->setOn(true);
+	// Configure the Search in all Baskets button:
+	m_inAllBasketsButton->setCheckable(true);
+//	m_inAllBasketsButton->setChecked(true);
 //	Global::bnpView->toggleFilterAllBaskets(true);
 
 //	m_lineEdit->setMaximumWidth(150);
@@ -118,7 +122,7 @@ FilterBar::~FilterBar()
 
 void FilterBar::setFilterAll(bool filterAll)
 {
-	m_inAllBasketsButton->setOn(filterAll);
+	m_inAllBasketsButton->setChecked(filterAll);
 }
 
 void FilterBar::setFilterData(const FilterData &data)
@@ -135,7 +139,7 @@ void FilterBar::setFilterData(const FilterData &data)
 		case FilterData::StateFilter:        filterState(data.state); return;
 	}
 
-	if (m_tagsBox->currentItem() != index) {
+	if (m_tagsBox->currentIndex() != index) {
 		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}
@@ -149,9 +153,9 @@ void FilterBar::repopulateTagsCombo()
 	m_tagsMap.clear();
 	m_statesMap.clear();
 
-	m_tagsBox->insertItem("",                   0);
-	m_tagsBox->insertItem(i18n("(Not tagged)"), 1);
-	m_tagsBox->insertItem(i18n("(Tagged)"),     2);
+	m_tagsBox->addItem("");
+	m_tagsBox->addItem(i18n("(Not tagged)"));
+	m_tagsBox->addItem(i18n("(Tagged)"));
 
 	int index = 3;
 	Tag     *tag;
@@ -174,7 +178,7 @@ void FilterBar::repopulateTagsCombo()
             icon, KIconLoader::Desktop, ICON_SIZE, KIconLoader::DefaultState,
             QStringList(), 0L, /*canReturnNull=*/true
             );
-		m_tagsBox->insertItem(emblem, text, index);
+		m_tagsBox->insertItem(index, emblem, text);
 		// Update the mapping:
 		m_tagsMap.insert(index, tag);
 		++index;
@@ -193,7 +197,7 @@ void FilterBar::repopulateTagsCombo()
 				// Indent the emblem to show the hierarchy relation:
 				if (!emblem.isNull())
 					emblem = Tools::indentPixmap(emblem, /*depth=*/1, /*deltaX=*/2 * ICON_SIZE / 3);
-				m_tagsBox->insertItem(emblem, text, index);
+				m_tagsBox->insertItem(index, emblem, text);
 				// Update the mapping:
 				m_statesMap.insert(index, state);
 				++index;
@@ -207,8 +211,8 @@ void FilterBar::reset()
 	m_lineEdit->setText(""); // m_data->isFiltering will be set to false;
 	m_lineEdit->clearFocus();
 	changeFilter();
-	if (m_tagsBox->currentItem() != 0) {
-		m_tagsBox->setCurrentItem(0);
+	if (m_tagsBox->currentIndex() != 0) {
+		m_tagsBox->setCurrentIndex(0);
 		tagChanged(0);
 	}
 	hide();
@@ -220,14 +224,14 @@ void FilterBar::filterTag(Tag *tag)
 	int index = 0;
 
 	for (QMap<int, Tag*>::Iterator it = m_tagsMap.begin(); it != m_tagsMap.end(); ++it)
-		if (it.data() == tag) {
+		if (it.value() == tag) {
 			index = it.key();
 			break;
 		}
 	if (index <= 0)
 		return;
 
-	if (m_tagsBox->currentItem() != index) {
+	if (m_tagsBox->currentIndex() != index) {
 		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}
@@ -238,14 +242,14 @@ void FilterBar::filterState(State *state)
 	int index = 0;
 
 	for (QMap<int, State*>::Iterator it = m_statesMap.begin(); it != m_statesMap.end(); ++it)
-		if (it.data() == state) {
+		if (it.value() == state) {
 			index = it.key();
 			break;
 		}
 	if (index <= 0)
 		return;
 
-	if (m_tagsBox->currentItem() != index) {
+	if (m_tagsBox->currentIndex() != index) {
 		m_tagsBox->setCurrentIndex(index);
 		tagChanged(index);
 	}

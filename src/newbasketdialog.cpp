@@ -96,10 +96,11 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
 
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
 
 	// Icon, Name and Background Color:
-	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
+	QHBoxLayout *nameLayout = new QHBoxLayout;
+	//QHBoxLayout *nameLayout = new QHBoxLayout(this);
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
@@ -108,23 +109,23 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
 
-	QToolTip::add(m_icon, i18n("Icon"));
+	m_icon->setToolTip(i18n("Icon"));
 	m_name = new QLineEdit(/*i18n("Basket"), */page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
 	connect( m_name, SIGNAL(textChanged(const QString&)), this, SLOT(nameChanged(const QString&)) );
 	enableButtonOk(false);
-	QToolTip::add(m_name, i18n("Name"));
+	m_name->setToolTip(i18n("Name"));
 	m_backgroundColor = new KColorCombo2(QColor(), palette().color(QPalette::Base), page);
 	m_backgroundColor->setColor(QColor());
 	m_backgroundColor->setFixedSize(m_backgroundColor->sizeHint());
 	m_backgroundColor->setColor(m_defaultProperties.backgroundColor);
-	QToolTip::add(m_backgroundColor, i18n("Background color"));
+	m_backgroundColor->setToolTip(i18n("Background color"));
 	nameLayout->addWidget(m_icon);
 	nameLayout->addWidget(m_name);
 	nameLayout->addWidget(m_backgroundColor);
 	topLayout->addLayout(nameLayout);
 
-	QHBoxLayout *layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout;
 	KPushButton *button = new KPushButton( KGuiItem(i18n("&Manage Templates..."), "configure"), page );
 	connect( button, SIGNAL(clicked()), this, SLOT(manageTemplates()) );
 	button->hide();
@@ -200,17 +201,21 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 
 	m_templates->setMinimumHeight(topLayout->minimumSize().width() * 9 / 16);
 
-	QLabel *label = new QLabel(m_templates, i18n("&Template:"), page);
+	QLabel *label = new QLabel(page);
+	label->setText(i18n("&Template:"));
+	label->setBuddy(m_templates);
 	layout->addWidget(label, /*stretch=*/0, Qt::AlignBottom);
 	layout->addStretch();
 	layout->addWidget(button, /*stretch=*/0, Qt::AlignBottom);
 	topLayout->addLayout(layout);
 	topLayout->addWidget(m_templates);
 
-	layout = new QHBoxLayout(/*parent=*/0, /*margin=*/0, spacingHint());
+	layout = new QHBoxLayout;
 	m_createIn = new QComboBox(page);
-	m_createIn->insertItem(i18n("(Baskets)"));
-	label = new QLabel(m_createIn, i18n("C&reate in:"), page);
+	m_createIn->addItem(i18n("(Baskets)"));
+	label = new QLabel(page);
+	label->setText(i18n("C&reate in:"));
+	label->setBuddy(m_createIn);
 	HelpLabel *helpLabel = new HelpLabel(i18n("How is it useful?"), i18n(
 		"<p>Creating baskets inside of other baskets to form a hierarchy allows you to be more organized by eg.:</p><ul>"
 		"<li>Grouping baskets by themes or topics;</li>"
@@ -249,8 +254,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
 		if (index <= 0)
 			return;
 
-		if (m_createIn->currentItem() != index)
-			m_createIn->setCurrentItem(index);
+		if (m_createIn->currentIndex() != index)
+			m_createIn->setCurrentIndex(index);
 	}
 }
 
@@ -270,7 +275,7 @@ int NewBasketDialog::populateBasketsList(QTreeWidgetItem *item, int indent, int 
 			/*canReturnNull=*/false
         );
 	icon = Tools::indentPixmap(icon, indent, 2 * ICON_SIZE / 3);
-	m_createIn->insertItem(icon, basket->basketName());
+	m_createIn->addItem(icon, basket->basketName());
 	m_basketsMap.insert(index, basket);
 	++index;
 
@@ -286,9 +291,9 @@ NewBasketDialog::~NewBasketDialog()
 {
 }
 
-void NewBasketDialog::polish()
+void NewBasketDialog::ensurePolished()
 {
-	KDialog::polish();
+	KDialog::ensurePolished();
 	m_name->setFocus();
 }
 

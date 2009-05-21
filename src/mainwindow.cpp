@@ -114,8 +114,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 	setAutoSaveSettings(/*groupName=*/QString::fromLatin1("MainWindow"), /*saveWindowSize=*//*FIXME:false:Why was it false??*/true);
 
-//	m_actShowToolbar->setChecked(   toolBar()->isShown()   );
-	m_actShowStatusbar->setChecked( statusBar()->isShown() );
+//	m_actShowToolbar->setChecked(   toolBar()->isVisible()   );
+	m_actShowStatusbar->setChecked( statusBar()->isVisible() );
 	connect( m_baskets,      SIGNAL(setWindowCaption(const QString &)), this, SLOT(setCaption(const QString &)));
 
 //	InlineEditors::instance()->richTextToolBar();
@@ -228,7 +228,7 @@ void MainWindow::showShortcutsSettingsDialog()
 	//actionCollection()->writeSettings();
 }
 
-void MainWindow::polish()
+void MainWindow::ensurePolished()
 {
 	bool shouldSave = false;
 
@@ -250,7 +250,7 @@ void MainWindow::polish()
 		//resize(Settings::mainWindowSize());
 	}
 
-	KXmlGuiWindow::polish();
+	KXmlGuiWindow::ensurePolished();
 
 	if (shouldSave) {
 //		kDebug() << "Main Window Position: Save size and position in show(x="

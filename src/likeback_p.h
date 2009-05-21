@@ -97,7 +97,7 @@ class LikeBackDialog : public KDialog
 	QCheckBox    *m_showButtons;
 	QString introductionText();
   private slots:
-	void polish();
+	void ensurePolished();
 	void slotDefault();
 	void slotOk();
 	void changeButtonBarVisible();

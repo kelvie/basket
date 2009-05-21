@@ -59,20 +59,22 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	showButtonSeparator(false);
 
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
 
 	// Icon and Name:
-	QHBoxLayout *nameLayout = new QHBoxLayout(0, marginHint()*2/3, spacingHint());
+	QHBoxLayout *nameLayout = new QHBoxLayout(0);
+	int margin = marginHint()*2/3;
+	nameLayout->setContentsMargins(margin, margin, margin, margin);
 	m_icon = new KIconButton(page);
 	m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
 	m_icon->setIconSize(16);
 	m_icon->setIcon(m_basket->icon());
 	int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
 	m_icon->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_icon, i18n("Icon"));
+	m_icon->setToolTip(i18n("Icon"));
 	m_name = new QLineEdit(m_basket->basketName(), page);
 	m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
-	QToolTip::add(m_name, i18n("Name"));
+	m_name->setToolTip(i18n("Name"));
 	nameLayout->addWidget(m_icon);
 	nameLayout->addWidget(m_name);
 	topLayout->addLayout(nameLayout);
@@ -83,13 +85,26 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	appearance->setLayout(appearanceLayout);
 	QWidget *appearanceWidget = new QWidget;
 	appearanceLayout->addWidget(appearanceWidget);
-	QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+
+	//QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *grid = new QGridLayout(appearanceWidget);
+
 	m_backgroundImage = new QComboBox(appearanceWidget);
 	m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceWidget);
 	m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceWidget);
-		QLabel *label1 = new QLabel(m_backgroundImage, i18n("Background &image:"), appearanceWidget);
-	QLabel *label2 = new QLabel(m_backgroundColor, i18n("&Background color:"), appearanceWidget);
-	QLabel *label3 = new QLabel(m_textColor,       i18n("&Text color:"),       appearanceWidget);
+
+	QLabel *label1 = new QLabel(appearanceWidget);
+	label1->setBuddy(m_backgroundImage);
+	label1->setText(i18n("Background &image:"));
+
+	QLabel *label2 = new QLabel(appearanceWidget);
+	label2->setBuddy(m_backgroundColor);
+	label2->setText(i18n("&Background color:"));
+
+	QLabel *label3 = new QLabel(appearanceWidget);
+	label3->setBuddy(m_textColor);
+	label3->setText(i18n("&Text color:"));
+
 	grid->addWidget(label1,            0, 0, Qt::AlignVCenter);
 	grid->addWidget(label2,            1, 0, Qt::AlignVCenter);
 	grid->addWidget(label3,            2, 0, Qt::AlignVCenter);
@@ -98,7 +113,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	grid->addWidget(m_textColor,       2, 1, Qt::AlignVCenter);
 	topLayout->addWidget(appearance);
 
-	m_backgroundImage->insertItem(i18n("(None)"), 0);
+	m_backgroundImage->addItem(i18n("(None)"));
 	m_backgroundImagesMap.insert(0, "");
 	m_backgroundImage->setIconSize ( QSize(100,75));
 	QStringList backgrounds = Global::backgroundManager->imageNames();
@@ -107,10 +122,10 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 		QPixmap *preview = Global::backgroundManager->preview(*it);
 		if (preview) {
 			m_backgroundImagesMap.insert(index, *it);
-			m_backgroundImage->insertItem(*it,index);
+			m_backgroundImage->insertItem(index, *it);
 			m_backgroundImage->setItemData(index,*preview,Qt::DecorationRole);
 			if (m_basket->backgroundImageName() == *it)
-				m_backgroundImage->setCurrentItem(index);
+				m_backgroundImage->setCurrentIndex(index);
 			index++;
 		}
 	}
@@ -163,7 +178,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
 	m_shortcutRole->setLayout(m_shortcutRoleLayout);
 	QWidget *shortcutWidget = new QWidget;
 	m_shortcutRoleLayout->addWidget(shortcutWidget);
-	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget, /*margin=*/0, spacingHint());
+	QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget);
 	m_shortcut = new KShortcutWidget(shortcutWidget);
 	m_shortcut->setShortcut(m_basket->shortcut());
 	HelpLabel *helpLabel = new HelpLabel(i18n("Learn some tips..."), i18n(
@@ -210,9 +225,9 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 {
 }
 
-void BasketPropertiesDialog::polish()
+void BasketPropertiesDialog::ensurePolished()
 {
-	KDialog::polish();
+	ensurePolished();
 	m_name->setFocus();
 }
 
@@ -239,7 +254,7 @@ void BasketPropertiesDialog::applyChanges()
 	}
 
 	// Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
-	m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentItem()], m_backgroundColor->color(), m_textColor->color());
+	m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[m_backgroundImage->currentIndex()], m_backgroundColor->color(), m_textColor->color());
 	m_basket->save();
 }
 

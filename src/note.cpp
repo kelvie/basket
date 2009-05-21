@@ -124,7 +124,7 @@ QString Note::toText(const QString &cuttedFullPath)
 			return text;
 		if (otherLines.isEmpty())
 			return firstLine + text;
-		QStringList lines = QStringList::split('\n', text, /*allowEmptyEntries=*/true);
+		QStringList lines = text.split('\n');
 		QString result = firstLine + lines[0] + (lines.count() > 1 ? "\n" : "");
 		for (int i = 1/*Skip the first line*/; i < lines.count(); ++i)
 			result += otherLines + lines[i] + (i < lines.count() - 1 ? "\n" : "");
@@ -695,7 +695,7 @@ QRect Note::zoneRect(Note::Zone zone, const QPoint &pos)
 		                                       height() - 2*INSERTION_HEIGHT);
 		case Note::Custom0:
 		case Note::Content:       rect = content()->zoneRect(zone, pos - QPoint(contentX(), NOTE_MARGIN));
-		                          rect.moveBy(contentX(), NOTE_MARGIN);
+		                          rect.translate(contentX(), NOTE_MARGIN);
 		                          return rect.intersect(  QRect(contentX(), INSERTION_HEIGHT, width() - contentX(), height() - 2*INSERTION_HEIGHT)  ); // Only IN contentRect
 		case Note::GroupExpander: return QRect(NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT);
 		case Note::Resizer:       right = rightLimit();
@@ -1264,22 +1264,22 @@ void drawGradient( QPainter *p, const QColor &colorTop, const QColor & colorBott
 
 		int h1, h2, s1, s2, v1, v2;
 		if ( !sunken ) {
-			topgrad.hsv( &h1, &s1, &v1 );
-			botgrad.hsv( &h2, &s2, &v2 );
+			topgrad.getHsv( &h1, &s1, &v1 );
+			botgrad.getHsv( &h2, &s2, &v2 );
 		} else {
-			botgrad.hsv( &h1, &s1, &v1 );
-			topgrad.hsv( &h2, &s2, &v2 );
+			botgrad.getHsv( &h1, &s1, &v1 );
+			topgrad.getHsv( &h2, &s2, &v2 );
 		}
 
 		if ( ng > 1 ) {
 			for ( int j =0; j < ng; j++ ) {
-				p->setPen( QColor( h1 + ((h2-h1)*j)/(ng-1),
+				p->setPen( QColor::fromHsv( h1 + ((h2-h1)*j)/(ng-1),
 						   s1 + ((s2-s1)*j)/(ng-1),
-						   v1 + ((v2-v1)*j)/(ng-1),  QColor::Hsv ) );
+						   v1 + ((v2-v1)*j)/(ng-1)) );
 				DRAWLINE;
 			}
 		} else if ( ng == 1 ) {
-			p->setPen( QColor((h1+h2)/2, (s1+s2)/2, (v1+v2)/2, QColor::Hsv) );
+			p->setPen( QColor::fromHsv((h1+h2)/2, (s1+s2)/2, (v1+v2)/2) );
 			DRAWLINE;
 		}
 	}
@@ -1316,19 +1316,19 @@ QColor expanderBackground(int height, int y, const QColor &foreground)
 	int h1, h2, s1, s2, v1, v2;
 	int ng;
 	if (y <= (height-2)/2) {
-		light.hsv( &h1, &s1, &v1 );
-		dark.hsv(  &h2, &s2, &v2 );
+		light.getHsv( &h1, &s1, &v1 );
+		dark.getHsv(  &h2, &s2, &v2 );
 		ng = (height-2)/2;
 		y -= 1;
 	} else {
-		dark.hsv( &h1, &s1, &v1 );
-		foreground.hsv(  &h2, &s2, &v2 );
+		dark.getHsv( &h1, &s1, &v1 );
+		foreground.getHsv(  &h2, &s2, &v2 );
 		ng = (height-2)-(height-2)/2;
 		y -= 1 + (height-2)/2;
 	}
-	return QColor( h1 + ((h2-h1)*y)/(ng-1),
-	               s1 + ((s2-s1)*y)/(ng-1),
-	               v1 + ((v2-v1)*y)/(ng-1), QColor::Hsv );
+	return QColor::fromHsv( h1 + ((h2-h1)*y)/(ng-1),
+	                        s1 + ((s2-s1)*y)/(ng-1),
+	                        v1 + ((v2-v1)*y)/(ng-1) );
 }
 
 void Note::drawHandle(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground)
@@ -1766,7 +1766,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 			// Draw selection rect:
 			if (basket()->isSelecting() && resizerRect.intersects(basket()->selectionRect())) {
 				QRect selectionRect = basket()->selectionRect();
-				selectionRect.moveBy(-right, -y());
+				selectionRect.translate(-right, -y());
 				QRect selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
 				if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
 					QColor insideColor = basket()->selectionRectInsideColor();
@@ -1779,7 +1779,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 					} else
 						drawGradient( &painter2, darkInsideColor, insideColor, 0, 0, RESIZER_WIDTH, resizerHeight(), /*sunken=*/false, /*horz=*/false, /*flat=*/false  );
 						painter2.setClipping(false);
-						selectionRectInside.moveBy(right, y());
+						selectionRectInside.translate(right, y());
 						basket()->blendBackground(painter2, selectionRectInside, right, y(), false);
 				}
 				painter2.setPen(palette().color(QPalette::Highlight).darker());
@@ -1821,7 +1821,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	}
 
 	/** Initialise buffer painter: */
-	m_bufferedPixmap.resize(width(), height());
+	m_bufferedPixmap = QPixmap(width(), height());
 	QPainter painter2(&m_bufferedPixmap);
 
 	/** Initialise colors: */
@@ -1939,7 +1939,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	if (isFocused()) {
 		QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1,
 						width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
-		
+
 		// TODO: make this look right/better
 		QStyleOptionFocusRect opt;
 		opt.initFrom(m_basket);
@@ -1957,22 +1957,22 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
                 (*it)->emblem(), KIconLoader::NoGroup, 16,
                 KIconLoader::DefaultState, QStringList(), 0L, false
                 );
-                                                                                                                                                       
+
 			painter2.drawPixmap(xIcon, yIcon, stateEmblem);
 			xIcon += NOTE_MARGIN + EMBLEM_SIZE;
 		}
 	}
 
 	// Determine the colors (for the richText drawing) and the text color (for the tags arrow too):
-	QColorGroup cg(basket()->colorGroup());
-	cg.setColor(QColorGroup::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
-	cg.setColor(QColorGroup::Background, bgColor);
+	QPalette notePalette(basket()->palette());
+	notePalette.setColor(QPalette::Text,       (m_computedState.textColor().isValid() ? m_computedState.textColor() : basket()->textColor()) );
+	notePalette.setColor(QPalette::Background, bgColor);
 	if (isSelected())
-		cg.setColor(QColorGroup::Text, palette().color(QPalette::HighlightedText));
+		notePalette.setColor(QPalette::Text, palette().color(QPalette::HighlightedText));
 
 	// Draw the Tags Arrow:
 	if (hovered) {
-		QColor textColor = cg.color(QColorGroup::Text);
+		QColor textColor = notePalette.color(QPalette::Text);
 		QColor light     = Tools::mixColor(textColor, bgColor);
 		QColor mid       = Tools::mixColor(textColor, light);
 		painter2.setPen(light);//QPen(basket()->colorGroup().dark().light(150)));
@@ -1982,7 +1982,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 		painter2.setPen(textColor);//QPen(basket()->colorGroup().foreground()));
 		painter2.drawPoint(xIcon + 2, yIcon + 8);
 	} else if (m_haveInvisibleTags) {
-		painter2.setPen(cg.color(QColorGroup::Text)/*QPen(basket()->colorGroup().foreground())*/);
+		painter2.setPen(notePalette.color(QPalette::Text)/*QPen(basket()->colorGroup().foreground())*/);
 		painter2.drawPoint(xIcon,     yIcon + 7);
 		painter2.drawPoint(xIcon + 2, yIcon + 7);
 		painter2.drawPoint(xIcon + 4, yIcon + 7);
@@ -1993,7 +1993,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 	if (basket()->editedNote() != this || basket()->editedNote()->content()->type() != NoteType::Html) {
 		painter2.translate(contentX(), NOTE_MARGIN);
 		painter2.setFont( m_computedState.font(painter2.font()) );
-		m_content->paint(&painter2, width() - contentX() - NOTE_MARGIN, height() - 2*NOTE_MARGIN, cg, !m_computedState.textColor().isValid(), isSelected(), hovered);
+		m_content->paint(&painter2, width() - contentX() - NOTE_MARGIN, height() - 2*NOTE_MARGIN, notePalette, !m_computedState.textColor().isValid(), isSelected(), hovered);
 	}
 
 	// Draw on screen:
@@ -2020,14 +2020,14 @@ void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 			// Draw selection rect:
 			if (basket()->isSelecting() && rect.intersects(basket()->selectionRect())) {
 				QRect selectionRect = basket()->selectionRect();
-				selectionRect.moveBy(-rect.x(), -rect.y());
+				selectionRect.translate(-rect.x(), -rect.y());
 
 				QRect selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
 				if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
 					bufferizeSelectionPixmap();
-					selectionRectInside.moveBy(rect.x(), rect.y());
+					selectionRectInside.translate(rect.x(), rect.y());
 					QRect rectToPaint = rect.intersect(selectionRectInside);
-					rectToPaint.moveBy(-x(), -y());
+					rectToPaint.translate(-x(), -y());
 					painter3.drawPixmap(rectToPaint.topLeft() + QPoint(x(), y()) - rect.topLeft(), m_bufferedSelectionPixmap, rectToPaint);
 					//blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, &m_selectedBackgroundPixmap);
 				}
@@ -2089,7 +2089,7 @@ void Note::addState(State *state, bool orReplace)
 				if (orReplace) {
 					itStates = m_states.insert(itStates, state);
 					++itStates;
-					m_states.remove(itStates);
+					m_states.erase(itStates);
 					recomputeStyle();
 				}
 			} else {
@@ -2173,7 +2173,7 @@ void Note::removeState(State *state)
 {
 	for (State::List::iterator it = m_states.begin(); it != m_states.end(); ++it)
 		if (*it == state) {
-			m_states.remove(it);
+			m_states.erase(it);
 			recomputeStyle();
 			return;
 		}
@@ -2183,7 +2183,7 @@ void Note::removeTag(Tag *tag)
 {
 	for (State::List::iterator it = m_states.begin(); it != m_states.end(); ++it)
 		if ((*it)->parentTag() == tag) {
-			m_states.remove(it);
+			m_states.erase(it);
 			recomputeStyle();
 			return;
 		}

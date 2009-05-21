@@ -313,16 +313,16 @@ QString LauncherContent::saveAsFilters() const  { return "application/x-desktop"
 QString ColorContent::saveAsFilters() const     { return "";                      }
 QString UnknownContent::saveAsFilters() const   { return "";                      }
 
-bool TextContent::match(const FilterData &data)          { return (text().find(data.string, /*index=*/0, /*cs=*/false) != -1);         }
-bool HtmlContent::match(const FilterData &data)          { return (m_textEquivalent/*toText("")*/.find(data.string, /*index=*/0, /*cs=*/false) != -1);     } //OPTIM_FILTER
-bool ImageContent::match(const FilterData &/*data*/)     { return false;                                                               }
-bool AnimationContent::match(const FilterData &/*data*/) { return false;                                                               }
-bool SoundContent::match(const FilterData &data)         { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
-bool FileContent::match(const FilterData &data)          { return (fileName().find(data.string, /*index=*/0, /*cs=*/false) != -1);     }
-bool LinkContent::match(const FilterData &data)          { return (title().find(data.string, 0, false) != -1 || url().prettyUrl().find(data.string, 0, false) != -1); }
-bool LauncherContent::match(const FilterData &data)      { return (exec().find(data.string, 0, false) != -1 || name().find(data.string, 0, false) != -1); }
-bool ColorContent::match(const FilterData &data)         { return (color().name().find(data.string, /*index=*/0, /*cs=*/false) != -1); }
-bool UnknownContent::match(const FilterData &data)       { return (mimeTypes().find(data.string, /*index=*/0, /*cs=*/false) != -1);    }
+bool TextContent::match(const FilterData &data)          { return text().contains(data.string); }
+bool HtmlContent::match(const FilterData &data)          { return m_textEquivalent/*toText("")*/.contains(data.string); } //OPTIM_FILTER
+bool ImageContent::match(const FilterData &/*data*/)     { return false; }
+bool AnimationContent::match(const FilterData &/*data*/) { return false; }
+bool SoundContent::match(const FilterData &data)         { return fileName().contains(data.string); }
+bool FileContent::match(const FilterData &data)          { return fileName().contains(data.string); }
+bool LinkContent::match(const FilterData &data)          { return title().contains(data.string) || url().prettyUrl().contains(data.string); }
+bool LauncherContent::match(const FilterData &data)      { return exec().contains(data.string) || name().contains(data.string); }
+bool ColorContent::match(const FilterData &data)         { return color().name().contains(data.string); }
+bool UnknownContent::match(const FilterData &data)       { return mimeTypes().contains(data.string); }
 
 QString TextContent::editToolTipText() const      { return i18n("Edit this plain text");             }
 QString HtmlContent::editToolTipText() const      { return i18n("Edit this text");                   }
@@ -411,10 +411,10 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
 		} else
 			return m_pixmap;
 	} else { // Scalled down
-		QImage imageToScale = m_pixmap.convertToImage();
+		QImage imageToScale = m_pixmap.toImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale.scaled(width, height,
-                                                      Qt::ScaleMin));
+		pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height,
+                                                      Qt::KeepAspectRatio));
 		if (pmScaled.hasAlpha()) {
 			QPixmap opaque(pmScaled.width(), pmScaled.height());
 			opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
@@ -433,10 +433,10 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
 	if (width >= pixmap.width() && height >= pixmap.height()) // Full size
 		return pixmap;
 	else { // Scalled down
-		QImage imageToScale = pixmap.convertToImage();
+		QImage imageToScale = pixmap.toImage();
 		QPixmap pmScaled;
-		pmScaled.convertFromImage(imageToScale.scaled(width, height,
-                                                      Qt::ScaleMin));
+		pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height,
+                                                      Qt::KeepAspectRatio));
 		return pmScaled;
 	}
 }
@@ -802,7 +802,7 @@ bool ImageContent::finishLazyLoad()
 
 	kDebug() << "FAILED TO LOAD ImageContent: " << fullPath();
 	m_format = "PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
-	m_pixmap.resize(1, 1); // Create a 1x1 pixels image instead of an undefined one.
+	m_pixmap = QPixmap(1, 1); // Create a 1x1 pixels image instead of an undefined one.
 	m_pixmap.fill();
 	m_pixmap.setMask(m_pixmap.createHeuristicMask());
 	setPixmap(m_pixmap);
@@ -1329,13 +1329,13 @@ void LinkContent::removePreview(const KFileItem*)
 // QHttp slots for getting link title
 void LinkContent::httpReadyRead()
 {
-	Q_ULONG bytesAvailable = m_http->bytesAvailable();
+	unsigned long bytesAvailable = m_http->bytesAvailable();
 	if(bytesAvailable <= 0)
 		return;
 	
 	char* buf = new char[bytesAvailable+1];
 	
-	Q_LONG bytes_read = m_http->read(buf, bytesAvailable);
+	long bytes_read = m_http->read(buf, bytesAvailable);
 	if(bytes_read > 0) {
 	
 		// m_httpBuff will keep data if title is not found in initial read
@@ -1347,11 +1347,13 @@ void LinkContent::httpReadyRead()
 		}
 
 		// todo: this should probably strip odd html tags like &nbsp; etc
-		QRegExp reg("<title>[\\s]*(&nbsp;)?([^<]+)[\\s]*</title>", false);
+		QRegExp reg("<title>[\\s]*(&nbsp;)?([^<]+)[\\s]*</title>", Qt::CaseInsensitive);
 		reg.setMinimal(TRUE);
 		int offset = 0;
 		//kDebug() << *m_httpBuff << " bytes: " << bytes_read;
-		if((offset = reg.search(*m_httpBuff)) >= 0) {
+
+		//FIXME: that check doesn't seem to make any sense
+		if((offset = reg.indexIn(*m_httpBuff)) >= 0) {
 			m_title = reg.cap(2);
 			m_autoTitle = false;
 			setEdited();
@@ -1953,8 +1955,9 @@ void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
 			// Get the size:
 			stream >> size;
 			// Allocate memory to retreive size bytes and store them:
-			array = new QByteArray(size);
-			stream.readRawBytes(array->data(), size);
+			array = new QByteArray;
+			array->resize(size);
+			stream.readRawData(array->data(), size);
 			// Creata and add the QDragObject:
 			dragObject->setData(mimes.at(i).toAscii(), *array);
 			delete array; // FIXME: Should we?

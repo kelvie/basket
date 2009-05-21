@@ -39,7 +39,7 @@ class DebugWindow : public QWidget  {
   Q_OBJECT
   public:
 	/** Construtor and destructor */
-	DebugWindow(QWidget *parent = 0, const char *name = 0);
+	DebugWindow(QWidget *parent = 0);
 	~DebugWindow();
 	/** Methods to post a message to the debug window */
 	void postMessage(const QString msg);

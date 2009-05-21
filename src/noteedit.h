@@ -215,7 +215,7 @@ class LinkEditDialog : public KDialog
   public:
 	LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
 	~LinkEditDialog();
-	void polish();
+	void ensurePolished();
 
   protected slots:
 	void slotOk();
@@ -244,7 +244,7 @@ class LauncherEditDialog : public KDialog
   public:
 	LauncherEditDialog(LauncherContent *contentNote, QWidget *parent = 0);
 	~LauncherEditDialog();
-	void polish();
+	void ensurePolished();
   protected slots:
 	void slotOk();
 	void guessIcon();

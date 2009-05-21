@@ -173,15 +173,15 @@ QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor)
 
 /** LinkLabel */
 
-LinkLabel::LinkLabel(int hAlign, int vAlign, QWidget *parent, const char *name, Qt::WFlags f)
- : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+LinkLabel::LinkLabel(int hAlign, int vAlign, QWidget *parent, Qt::WFlags f)
+ : QFrame(parent, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
 	initLabel(hAlign, vAlign);
 }
 
 LinkLabel::LinkLabel(const QString &title, const QString &icon, LinkLook *look, int hAlign, int vAlign,
-                     QWidget *parent, const char *name, Qt::WFlags f)
- : QFrame(parent, name, f), m_isSelected(false), m_isHovered(false), m_look(0)
+                     QWidget *parent, Qt::WFlags f)
+ : QFrame(parent, f), m_isSelected(false), m_isHovered(false), m_look(0)
 {
 	initLabel(hAlign, vAlign);
 	setLink(title, icon, look);
@@ -189,7 +189,7 @@ LinkLabel::LinkLabel(const QString &title, const QString &icon, LinkLook *look, 
 
 void LinkLabel::initLabel(int hAlign, int vAlign)
 {
-	m_layout  = new QBoxLayout(this, QBoxLayout::LeftToRight);
+	m_layout  = new QBoxLayout(QBoxLayout::LeftToRight, this);
 	m_icon    = new QLabel(this);
 	m_title   = new QLabel(this);
 	m_spacer1 = new QSpacerItem(0, 0, QSizePolicy::Preferred/*Expanding*/, QSizePolicy::Preferred/*Expanding*/);
@@ -239,9 +239,16 @@ void LinkLabel::setLook(LinkLook *look) // FIXME: called externaly (so, without 
 	font.setUnderline(look->underlineOutside());
 	font.setItalic(look->italic());
 	m_title->setFont(font);
-	m_title->setPaletteForegroundColor( m_isSelected ? KApplication::palette().active().highlightedText() : look->effectiveColor() );
+	QPalette palette;
+	if (m_isSelected)
+                palette.setColor(m_title->foregroundRole(), KApplication::palette().color(QPalette::Text));
+	else
+                palette.setColor(m_title->foregroundRole(), look->effectiveColor());
 
-	m_icon->setShown( m_icon->pixmap() && ! m_icon->pixmap()->isNull() );
+        m_title->setPalette(palette);
+
+
+	m_icon->setVisible( m_icon->pixmap() && ! m_icon->pixmap()->isNull() );
 
 	setAlign(m_hAlign, m_vAlign);
 }
@@ -255,8 +262,7 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 		return;
 
 	// Define alignment flags :
-	//FIXME TODO: Use directly flags !
-	int hFlag, vFlag, wBreak;
+	Qt::Alignment hFlag, vFlag;
 	switch (hAlign) {
 		default:
 		case 0: hFlag = Qt::AlignLeft;    break;
@@ -269,27 +275,29 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 		case 1: vFlag = Qt::AlignVCenter; break;
 		case 2: vFlag = Qt::AlignBottom;  break;
 	}
-	wBreak = Qt::TextWordWrap * (hAlign != 1);
 
 	// Clear the widget :
 	m_layout->removeItem(m_spacer1);
-	m_layout->remove(m_icon);
-	m_layout->remove(m_title);
+	m_layout->removeWidget(m_icon);
+	m_layout->removeWidget(m_title);
 	m_layout->removeItem(m_spacer2);
 
 	// Otherwise, minimumSize will be incoherent (last size ? )
-	m_layout->setResizeMode(QLayout::Minimum);
+	m_layout->setSizeConstraint(QLayout::SetMinimumSize);
 
 	// And re-populate the widget with the appropriates things and order
-	bool addSpacers = hAlign == 1;
+	bool addSpacers = (hAlign == 1);
 	m_layout->setDirection(QBoxLayout::LeftToRight);
 	//m_title->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum/*Expanding*/, 0, 0, false) );
-	m_icon->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred/*Expanding*/, 0, 0, false) );
-	m_spacer1->changeSize( 0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred/*Expanding*/ );
-	m_spacer2->changeSize( 0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred/*Expanding*/ );
+	m_icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+	m_spacer1->changeSize(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	m_spacer2->changeSize(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	m_icon->setAlignment( hFlag | vFlag );
-	m_title->setAlignment( hFlag | vFlag | wBreak );
+	m_title->setAlignment( hFlag | vFlag );
+	if (hAlign)
+		m_title->setWordWrap(true);
+
 	if ( (addSpacers && (vAlign != 0)) ||
 	   (m_title->text().isEmpty() && hAlign == 2) )
 		m_layout->addItem(m_spacer1);
@@ -308,8 +316,12 @@ void LinkLabel::setAlign(int hAlign, int vAlign)
 void LinkLabel::enterEvent(QEvent*)
 {
 	m_isHovered = true;
-	if ( ! m_isSelected )
-		m_title->setPaletteForegroundColor(m_look->effectiveHoverColor());
+
+	if (!m_isSelected) {
+	        QPalette palette;
+                palette.setColor(m_title->foregroundRole(), m_look->effectiveHoverColor());
+        	m_title->setPalette(palette);
+	}
 
 	QFont font = m_title->font();
 	font.setUnderline(m_look->underlineInside());
@@ -319,8 +331,12 @@ void LinkLabel::enterEvent(QEvent*)
 void LinkLabel::leaveEvent(QEvent*)
 {
 	m_isHovered = false;
-	if ( ! m_isSelected )
-		m_title->setPaletteForegroundColor(m_look->effectiveColor());
+
+	if (!m_isSelected) {
+	        QPalette palette;
+                palette.setColor(m_title->foregroundRole(), m_look->effectiveColor());
+        	m_title->setPalette(palette);
+	}
 
 	QFont font = m_title->font();
 	font.setUnderline(m_look->underlineOutside());
@@ -330,25 +346,34 @@ void LinkLabel::leaveEvent(QEvent*)
 void LinkLabel::setSelected(bool selected)
 {
 	m_isSelected = selected;
+	QPalette palette;
+
 	if (selected)
-		m_title->setPaletteForegroundColor(KApplication::palette().active().highlightedText());
+                palette.setColor(m_title->foregroundRole(), KApplication::palette().color(QPalette::HighlightedText));
 	else if (m_isHovered)
-		m_title->setPaletteForegroundColor(m_look->effectiveHoverColor());
+                palette.setColor(m_title->foregroundRole(), m_look->effectiveHoverColor());
 	else
-		m_title->setPaletteForegroundColor(m_look->effectiveColor());
+                palette.setColor(m_title->foregroundRole(), m_look->effectiveColor());
+
+	m_title->setPalette(palette);
 }
 
 void LinkLabel::setPaletteBackgroundColor(const QColor &color)
 {
-	QFrame::setPaletteBackgroundColor(color);
-	m_title->setPaletteBackgroundColor(color);
+	QPalette framePalette;
+	framePalette.setColor(QFrame::foregroundRole(), color);
+	QFrame::setPalette(framePalette);
+
+	QPalette titlePalette;
+	titlePalette.setColor(m_title->foregroundRole(), color);
+	m_title->setPalette(titlePalette);
 }
 
 int LinkLabel::heightForWidth(int w) const
 {
-	int iconS  = (m_icon->isShown())   ? m_look->iconSize()                 : 0; // Icon size
+	int iconS  = (m_icon->isVisible()) ? m_look->iconSize()                 : 0; // Icon size
 	int iconW  = iconS;                                                          // Icon width to remove to w
-	int titleH = (m_title->isShown())  ? m_title->heightForWidth(w - iconW) : 0; // Title height
+	int titleH = (m_title->isVisible()) ? m_title->heightForWidth(w - iconW) : 0; // Title height
 
 	return (titleH >= iconS) ? titleH : iconS; // No margin for the moment !
 }
@@ -544,11 +569,11 @@ QString LinkDisplay::toHtml(HTMLExporter *exporter, const KUrl &url, const QStri
 /** LinkLookEditWidget **/
 
 LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, const QString exIcon,
-                                       QWidget *parent, const char *name, Qt::WFlags fl)
- : QWidget(parent, name, fl)
+                                       QWidget *parent, Qt::WFlags fl)
+ : QWidget(parent, fl)
 {
 	QLabel      *label;
-	QVBoxLayout *layout = new QVBoxLayout(this, KDialog::marginHint(), KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	m_italic = new QCheckBox(i18n("I&talic"), this);
 	layout->addWidget(m_italic);
@@ -556,41 +581,52 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 	m_bold = new QCheckBox(i18n("&Bold"), this);
 	layout->addWidget(m_bold);
 
-	QGridLayout *gl = new QGridLayout(layout, /*rows=*//*(look->canPreview() ? 5 : 4)*/5, /*columns=*//*3*/4);
+	QGridLayout *gl = new QGridLayout;
+	layout->addLayout(gl);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
-	m_underlining = new QComboBox(false, this);
-	m_underlining->insertItem(i18n("Always"));
-	m_underlining->insertItem(i18n("Never"));
-	m_underlining->insertItem(i18n("On mouse hovering"));
-	m_underlining->insertItem(i18n("When mouse is outside"));
-	label = new QLabel(m_underlining, i18n("&Underline:"), this);
-	gl->addWidget(label,         0, 0);
+	m_underlining = new QComboBox(this);
+	m_underlining->addItem(i18n("Always"));
+	m_underlining->addItem(i18n("Never"));
+	m_underlining->addItem(i18n("On mouse hovering"));
+	m_underlining->addItem(i18n("When mouse is outside"));
+	label = new QLabel(this);
+	label->setText(i18n("&Underline:"));
+	label->setBuddy(m_underlining);
+	gl->addWidget(label, 0, 0);
 	gl->addWidget(m_underlining, 0, 1);
 
 	m_color = new KColorCombo2(QRgb(), this);
-	label = new QLabel(m_color, i18n("Colo&r:"), this);
+	label = new QLabel(this);
+	label->setText(i18n("Colo&r:"));
+	label->setBuddy(m_color);
 	gl->addWidget(label,   1, 0);
 	gl->addWidget(m_color, 1, 1);
 
 	m_hoverColor = new KColorCombo2(QRgb(), this);
-	label = new QLabel(m_hoverColor, i18n("&Mouse hover color:"), this);
+	label = new QLabel(this);
+	label->setText(i18n("&Mouse hover color:"));
+	label->setBuddy(m_hoverColor);
 	gl->addWidget(label,        2, 0);
 	gl->addWidget(m_hoverColor, 2, 1);
 
-	QHBoxLayout *icoLay = new QHBoxLayout(/*parent=*/0L, /*margin=*/0, KDialog::spacingHint());
-	m_iconSize = new IconSizeCombo(false, this);
+	QHBoxLayout *icoLay = new QHBoxLayout(0);
+	m_iconSize = new IconSizeCombo(this);
 	icoLay->addWidget(m_iconSize);
-	label = new QLabel(m_iconSize, i18n("&Icon size:"), this);
+	label = new QLabel(this);
+	label->setText(i18n("&Icon size:"));
+	label->setBuddy(m_iconSize);
 	gl->addWidget(label,  3, 0);
 	gl->addItem(  icoLay, 3, 1);
 
-	m_preview = new QComboBox(false, this);
-	m_preview->insertItem(i18n("None"));
-	m_preview->insertItem(i18n("Icon size"));
-	m_preview->insertItem(i18n("Twice the icon size"));
-	m_preview->insertItem(i18n("Three times the icon size"));
-	m_label = new QLabel(m_preview, i18n("&Preview:"), this);
+	m_preview = new QComboBox(this);
+	m_preview->addItem(i18n("None"));
+	m_preview->addItem(i18n("Icon size"));
+	m_preview->addItem(i18n("Twice the icon size"));
+	m_preview->addItem(i18n("Three times the icon size"));
+	m_label = new QLabel(this);
+	m_label->setText(i18n("&Preview:"));
+	m_label->setBuddy(m_preview);
 	m_hLabel = new HelpLabel(
 		i18n("You disabled preview but still see images?"),
 		i18n("<p>This is normal because there are several type of notes.<br>"
@@ -607,7 +643,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
 		this);
 	gl->addWidget(m_label,   4, 0);
 	gl->addWidget(m_preview, 4, 1);
-	gl->addMultiCellWidget(m_hLabel, /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/1, /*toCol*/2);
+	gl->addWidget(m_hLabel, 5, 1, 1, 2);
 
 	QGroupBox *gb = new QGroupBox(i18n("Example"), this);
 	QHBoxLayout* gbLayout = new QHBoxLayout;
@@ -645,8 +681,8 @@ void LinkLookEditWidget::set(LinkLook *look)
 
 	m_italic->setChecked(look->italic());
 	m_bold->setChecked(look->bold());
-	m_underlining->setCurrentItem(look->underlining());
-	m_preview->setCurrentItem(look->preview());
+	m_underlining->setCurrentIndex(look->underlining());
+	m_preview->setCurrentIndex(look->preview());
 	m_color->setDefaultColor(m_look->defaultColor());
 	m_color->setColor(m_look->color());
 	m_hoverColor->setDefaultColor(m_look->defaultHoverColor());
@@ -680,8 +716,8 @@ void LinkLookEditWidget::saveChanges()
 
 void LinkLookEditWidget::saveToLook(LinkLook *look)
 {
-	look->setLook( m_italic->isOn(), m_bold->isOn(), m_underlining->currentItem(),
+	look->setLook( m_italic->isChecked(), m_bold->isChecked(), m_underlining->currentIndex(),
 	               m_color->color(), m_hoverColor->color(),
-	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentItem() : LinkLook::None) );
+	               m_iconSize->iconSize(), (look->canPreview() ? m_preview->currentIndex() : LinkLook::None) );
 }
 

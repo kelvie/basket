@@ -331,7 +331,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	setMainWidget(new QWidget(this));
 
-	QHBoxLayout *layout = new QHBoxLayout(mainWidget(), /*margin=*/0, spacingHint());
+	QHBoxLayout *layout = new QHBoxLayout(mainWidget());
 
 	/* Left part: */
 
@@ -352,20 +352,20 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_moveDown  = new KPushButton( KGuiItem("", "arrow-down"), mainWidget() );
 	m_deleteTag = new KPushButton( KGuiItem("", "edit-delete"), mainWidget() );
 
-	QToolTip::add( m_moveUp,    i18n("Move Up (Ctrl+Shift+Up)")     );
-	QToolTip::add( m_moveDown,  i18n("Move Down (Ctrl+Shift+Down)") );
-	QToolTip::add( m_deleteTag, i18n("Delete")                      );
+	m_moveUp->setToolTip(i18n("Move Up (Ctrl+Shift+Up)"));
+	m_moveDown->setToolTip(i18n("Move Down (Ctrl+Shift+Down)"));
+	m_deleteTag->setToolTip(i18n("Delete"));
 
 	connect( m_moveUp,    SIGNAL(clicked()), this, SLOT(moveUp())    );
 	connect( m_moveDown,  SIGNAL(clicked()), this, SLOT(moveDown())  );
 	connect( m_deleteTag, SIGNAL(clicked()), this, SLOT(deleteTag()) );
 
-	QHBoxLayout *topLeftLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *topLeftLayout = new QHBoxLayout;
 	topLeftLayout->addWidget(m_moveUp);
 	topLeftLayout->addWidget(m_moveDown);
 	topLeftLayout->addWidget(m_deleteTag);
 
-	QVBoxLayout *leftLayout = new QVBoxLayout(0, /*margin=*/0, spacingHint());
+	QVBoxLayout *leftLayout = new QVBoxLayout;
 	leftLayout->addWidget(newTag);
 	leftLayout->addWidget(newState);
 	leftLayout->addWidget(m_tags);
@@ -385,24 +385,26 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_tagBoxLayout->addWidget(tagWidget);
 
 	m_tagName = new QLineEdit(tagWidget);
-	QLabel *tagNameLabel = new QLabel(m_tagName, i18n("&Name:"), tagWidget);
+	QLabel *tagNameLabel = new QLabel(i18n("&Name:"),tagWidget);
+	tagNameLabel->setBuddy(m_tagName);
 
 	m_shortcut = new KShortcutWidget(tagWidget);
 	m_removeShortcut = new QPushButton(i18nc("Remove tag shortcut", "&Remove"), tagWidget);
-	QLabel *shortcutLabel = new QLabel(m_shortcut, i18n("S&hortcut:"), tagWidget);
-	connect( m_shortcut,       SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
+	QLabel *shortcutLabel = new QLabel(i18n("S&hortcut:"),tagWidget);
+	shortcutLabel->setBuddy(m_shortcut);
+	//connect( m_shortcut,       SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)) );
 	connect( m_removeShortcut, SIGNAL(clicked()),                          this, SLOT(removeShortcut())                   );
 
 	m_inherit = new QCheckBox(i18n("&Inherited by new sibling notes"), tagWidget);
 
-	QGridLayout *tagGrid = new QGridLayout(tagWidget, /*rows=*/3, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
-	tagGrid->addWidget(tagNameLabel,     0, 0);
-	tagGrid->addMultiCellWidget(m_tagName, /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/3);
-	tagGrid->addWidget(shortcutLabel,    1, 0);
-	tagGrid->addWidget(m_shortcut,       1, 1);
+	QGridLayout *tagGrid = new QGridLayout(tagWidget);
+	tagGrid->addWidget(tagNameLabel, 0, 0);
+	tagGrid->addWidget(m_tagName, 0, 1, 1, 3);
+	tagGrid->addWidget(shortcutLabel, 1, 0);
+	tagGrid->addWidget(m_shortcut, 1, 1);
 	tagGrid->addWidget(m_removeShortcut, 1, 2);
-	tagGrid->addMultiCellWidget(m_inherit, /*fromRow=*/2, /*toRow=*/2, /*fromCol=*/0, /*toCol=*/3);
-	tagGrid->setColStretch(/*col=*/3, /*stretch=*/255);
+	tagGrid->addWidget(m_inherit, 2, 0, 1, 4);
+	tagGrid->setColumnStretch(/*col=*/3, /*stretch=*/255);
 
 	m_stateBox           = new QGroupBox(i18n("State"), rightWidget);
 	m_stateBoxLayout = new QHBoxLayout;
@@ -412,7 +414,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_stateBoxLayout->addWidget(stateWidget);
 
 	m_stateName = new QLineEdit(stateWidget);
-	m_stateNameLabel = new QLabel(m_stateName, i18n("Na&me:"), stateWidget);
+	m_stateNameLabel = new QLabel(i18n("Na&me:"),stateWidget);
+	m_stateNameLabel->setBuddy(m_stateName);
 
 	QWidget *emblemWidget = new QWidget(stateWidget);
 	m_emblem = new KIconButton(emblemWidget);
@@ -420,7 +423,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_emblem->setIconSize(16);
 	m_emblem->setIcon("edit-delete");
 	m_removeEmblem = new QPushButton(i18nc("Remove tag emblem", "Remo&ve"), emblemWidget);
-	QLabel *emblemLabel = new QLabel(m_emblem, i18n("&Emblem:"), stateWidget);
+	QLabel *emblemLabel = new QLabel(i18n("&Emblem:"),stateWidget);
+	emblemLabel->setBuddy(m_emblem);
 	connect( m_removeEmblem, SIGNAL(clicked()), this, SLOT(removeEmblem()) ); // m_emblem.resetIcon() is not a slot!
 
 	// Make the icon button and the remove button the same height:
@@ -430,49 +434,51 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	m_removeEmblem->setFixedHeight(height);
 	m_emblem->resetIcon();
 
-	QHBoxLayout *emblemLayout = new QHBoxLayout(emblemWidget, /*margin=*/0, spacingHint());
+	QHBoxLayout *emblemLayout = new QHBoxLayout(emblemWidget);
 	emblemLayout->addWidget(m_emblem);
 	emblemLayout->addWidget(m_removeEmblem);
 	emblemLayout->addStretch();
 
 	m_backgroundColor = new KColorCombo2(QColor(), palette().color(QPalette::Base), stateWidget);
-	QLabel *backgroundColorLabel = new QLabel(m_backgroundColor, i18n("&Background:"), stateWidget);
+	QLabel *backgroundColorLabel = new QLabel(i18n("&Background:"),stateWidget);
+	backgroundColorLabel->setBuddy(m_backgroundColor);
 
-	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *backgroundColorLayout = new QHBoxLayout(0);
 	backgroundColorLayout->addWidget(m_backgroundColor);
 	backgroundColorLayout->addStretch();
 
 	//QIcon boldIconSet = KIconLoader::global()->loadIconSet("format-text-bold", KIconLoader::Small);
 	KIcon boldIconSet("format-text-bold", KIconLoader::global());
 	m_bold = new QPushButton(boldIconSet, "", stateWidget);
-	m_bold->setToggleButton(true);
+	m_bold->setCheckable(true);
 	int size = qMax(m_bold->sizeHint().width(), m_bold->sizeHint().height());
 	m_bold->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_bold, i18n("Bold"));
+	m_bold->setToolTip(i18n("Bold"));
 
 	//QIcon underlineIconSet = KIconLoader::global()->loadIconSet("format-text-underline", KIconLoader::Small);
 	KIcon underlineIconSet("format-text-underline", KIconLoader::global());
 	m_underline = new QPushButton(underlineIconSet, "", stateWidget);
-	m_underline->setToggleButton(true);
+	m_underline->setCheckable(true);
 	m_underline->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_underline, i18n("Underline"));
+	m_underline->setToolTip(i18n("Underline"));
 
 	//QIcon italicIconSet = KIconLoader::global()->loadIconSet("format-text-italic", KIconLoader::Small);
 	KIcon italicIconSet("format-text-italic", KIconLoader::global());
 	m_italic = new QPushButton(italicIconSet, "", stateWidget);
-	m_italic->setToggleButton(true);
+	m_italic->setCheckable(true);
 	m_italic->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_italic, i18n("Italic"));
+	m_italic->setToolTip(i18n("Italic"));
 
 	KIcon strikeIconSet("format-text-strikethrough", KIconLoader::global());
 	m_strike = new QPushButton(strikeIconSet, "", stateWidget);
-	m_strike->setToggleButton(true);
+	m_strike->setCheckable(true);
 	m_strike->setFixedSize(size, size); // Make it square!
-	QToolTip::add(m_strike, i18n("Strike Through"));
+	m_strike->setToolTip(i18n("Strike Through"));
 
-	QLabel *textLabel = new QLabel(m_bold, i18n("&Text:"), stateWidget);
+	QLabel *textLabel = new QLabel(i18n("&Text:"),stateWidget);
+	textLabel->setBuddy(m_bold);
 
-	QHBoxLayout *textLayout = new QHBoxLayout(0, /*margin=*/0, spacingHint());
+	QHBoxLayout *textLayout = new QHBoxLayout;
 	textLayout->addWidget(m_bold);
 	textLayout->addWidget(m_underline);
 	textLayout->addWidget(m_italic);
@@ -480,17 +486,21 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 	textLayout->addStretch();
 
 	m_textColor = new KColorCombo2(QColor(), palette().color(QPalette::Text), stateWidget);
-	QLabel *textColorLabel = new QLabel(m_textColor, i18n("Co&lor:"), stateWidget);
+	QLabel *textColorLabel = new QLabel(i18n("Co&lor:"),stateWidget);
+	textColorLabel->setBuddy(m_textColor);
 
 	m_font = new QFontComboBox(stateWidget);
-	m_font->insertItem(i18n("(Default)"), 0);
-	QLabel *fontLabel = new QLabel(m_font, i18n("&Font:"), stateWidget);
+	m_font->addItem(i18n("(Default)"), 0);
+	QLabel *fontLabel = new QLabel(i18n("&Font:"),stateWidget);
+	fontLabel->setBuddy(m_font);
 
 	m_fontSize = new FontSizeCombo(/*rw=*/true, /*withDefault=*/true, stateWidget);
-	QLabel *fontSizeLabel = new QLabel(m_fontSize, i18n("&Size:"), stateWidget);
+	QLabel *fontSizeLabel = new QLabel(i18n("&Size:"),stateWidget);
+	fontSizeLabel->setBuddy(m_fontSize);
 
 	m_textEquivalent = new QLineEdit(stateWidget);
-	QLabel *textEquivalentLabel = new QLabel(m_textEquivalent, i18n("Te&xt equivalent:"), stateWidget);
+	QLabel *textEquivalentLabel = new QLabel(i18n("Te&xt equivalent:"),stateWidget);
+	textEquivalentLabel->setBuddy(m_textEquivalent);
 	QFont font = m_textEquivalent->font();
 	font.setFamily("monospace");
 	m_textEquivalent->setFont(font);
@@ -503,7 +513,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		     "representing an empty checkbox and a checked box.") + "</p>" +
 		"<p align='center'><img src=\":images/tag_export_help.png\"></p>",
 		stateWidget);
-	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	QHBoxLayout *textEquivalentHelpLayout = new QHBoxLayout;
 	textEquivalentHelpLayout->addWidget(textEquivalentHelp);
 	textEquivalentHelpLayout->addStretch(255);
 
@@ -515,39 +525,39 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 		"<p align='center'><img src=\":images/tag_export_on_every_lines_help.png\"></p>" +
 		"<p>" + i18n("In the example above, the tag of the top note is only exported on the first line, while the tag of the bottom note is exported on every line of the note."),
 		stateWidget);
-	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout((QWidget*)0, /*border=*/0, spacingHint());
+	QHBoxLayout *onEveryLinesHelpLayout = new QHBoxLayout;
 	onEveryLinesHelpLayout->addWidget(onEveryLinesHelp);
 	onEveryLinesHelpLayout->addStretch(255);
 
-	QGridLayout *textEquivalentGrid = new QGridLayout(0, /*rows=*/2, /*cols=*/4, /*border=*/0, /*spacing=*/spacingHint());
+	QGridLayout *textEquivalentGrid = new QGridLayout;
 	textEquivalentGrid->addWidget(textEquivalentLabel,      0, 0);
 	textEquivalentGrid->addWidget(m_textEquivalent,         0, 1);
 	textEquivalentGrid->addLayout(textEquivalentHelpLayout, 0, 2);
 	textEquivalentGrid->addWidget(m_onEveryLines,           1, 1);
 	textEquivalentGrid->addLayout(onEveryLinesHelpLayout,   1, 2);
-	textEquivalentGrid->setColStretch(/*col=*/3, /*stretch=*/255);
+	textEquivalentGrid->setColumnStretch(/*col=*/3, /*stretch=*/255);
 
 	KSeparator *separator = new KSeparator(Qt::Horizontal, stateWidget);
 
-	QGridLayout *stateGrid = new QGridLayout(stateWidget, /*rows=*/6, /*cols=*/7, /*border=*/0, /*spacing=*/spacingHint());
-	stateGrid->addWidget(m_stateNameLabel,     0, 0);
-	stateGrid->addMultiCellWidget(m_stateName,            /*fromRow=*/0, /*toRow=*/0, /*fromCol=*/1, /*toCol=*/6);
-	stateGrid->addWidget(emblemLabel,          1, 0);
-	stateGrid->addMultiCellWidget(emblemWidget,           /*fromRow=*/1, /*toRow=*/1, /*fromCol=*/1, /*toCol=*/6);
+	QGridLayout *stateGrid = new QGridLayout(stateWidget);
+	stateGrid->addWidget(m_stateNameLabel, 0, 0);
+	stateGrid->addWidget(m_stateName, 0, 1, 1, 6);
+	stateGrid->addWidget(emblemLabel, 1, 0);
+	stateGrid->addWidget(emblemWidget, 1, 1, 1, 6);
 	stateGrid->addWidget(backgroundColorLabel, 1, 5);
-	stateGrid->addMultiCellLayout(backgroundColorLayout,  /*fromRow=*/1, /*toRow=*/1, /*fromCol=*/6, /*toCol=*/6);
-	stateGrid->addWidget(textLabel,            2, 0);
-	stateGrid->addMultiCellLayout(textLayout,             /*fromRow=*/2, /*toRow=*/2, /*fromCol=*/1, /*toCol=*/4);
-	stateGrid->addWidget(textColorLabel,       2, 5);
-	stateGrid->addWidget(m_textColor,          2, 6);
-	stateGrid->addWidget(fontLabel,            3, 0);
-	stateGrid->addMultiCellWidget(m_font,                 /*fromRow=*/3, /*toRow=*/3, /*fromCol=*/1, /*toCol=*/4);
-	stateGrid->addWidget(fontSizeLabel,        3, 5);
-	stateGrid->addWidget(m_fontSize,           3, 6);
-	stateGrid->addMultiCellWidget(separator,              /*fromRow=*/4, /*toRow=*/4, /*fromCol=*/0, /*toCol=*/6);
-	stateGrid->addMultiCellLayout(textEquivalentGrid,     /*fromRow=*/5, /*toRow=*/5, /*fromCol=*/0, /*toCol=*/6);
+	stateGrid->addLayout(backgroundColorLayout, 1, 6, 1, 1);
+	stateGrid->addWidget(textLabel, 2, 0);
+	stateGrid->addLayout(textLayout, 2, 1, 1, 4);
+	stateGrid->addWidget(textColorLabel, 2, 5);
+	stateGrid->addWidget(m_textColor, 2, 6);
+	stateGrid->addWidget(fontLabel, 3, 0);
+	stateGrid->addWidget(m_font, 3, 1, 1, 4);
+	stateGrid->addWidget(fontSizeLabel, 3, 5);
+	stateGrid->addWidget(m_fontSize, 3, 6);
+	stateGrid->addWidget(separator, 4, 0, 1, 7);
+	stateGrid->addLayout(textEquivalentGrid, 5, 0, 1, 7);
 
-	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget, /*margin=*/0, spacingHint());
+	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
 	rightLayout->addWidget(m_tagBox);
 	rightLayout->addWidget(m_stateBox);
 	rightLayout->addStretch();
@@ -649,31 +659,31 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
 	// Some keyboard shortcuts:       // Ctrl+arrows instead of Alt+arrows (same as Go menu in the main window) because Alt+Down is for combo boxes
 	QAction *selectAbove = new QAction(this);
-	selectAbove->setAccel(QString("Ctrl+Up"));
+	selectAbove->setShortcut(Qt::CTRL + Qt::Key_Up);
 	connect( selectAbove, SIGNAL(activated()), this, SLOT(selectUp()) );
 
 	QAction *selectBelow = new QAction(this);
-	selectBelow->setAccel(QString("Ctrl+Down"));
+	selectBelow->setShortcut(Qt::CTRL + Qt::Key_Down);
 	connect( selectBelow, SIGNAL(activated()), this, SLOT(selectDown()) );
 
 	QAction *selectLeft = new QAction(this);
-	selectLeft->setAccel(QString("Ctrl+Left"));
+	selectLeft->setShortcut(Qt::CTRL + Qt::Key_Left);
 	connect( selectLeft, SIGNAL(activated()), this, SLOT(selectLeft()) );
 
 	QAction *selectRight = new QAction(this);
-	selectRight->setAccel(QString("Ctrl+Right"));
+	selectRight->setShortcut(Qt::CTRL + Qt::Key_Right);
 	connect( selectRight, SIGNAL(activated()), this, SLOT(selectRight()) );
 
 	QAction *moveAbove = new QAction(this);
-	moveAbove->setAccel(QString("Ctrl+Shift+Up"));
+	moveAbove->setShortcut(Qt::CTRL + Qt::Key_Up);
 	connect( moveAbove, SIGNAL(activated()), this, SLOT(moveUp()) );
 
 	QAction *moveBelow = new QAction(this);
-	moveBelow->setAccel(QString("Ctrl+Shift+Down"));
+	moveBelow->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_Down);
 	connect( moveBelow, SIGNAL(activated()), this, SLOT(moveDown()) );
 
 	QAction *rename = new QAction(this);
-	rename->setAccel(QString("F2"));
+	rename->setShortcut(Qt::Key_F2);
 	connect( rename, SIGNAL(activated()), this, SLOT(renameIt()) );
 
 	m_tags->setMinimumSize(
@@ -827,8 +837,8 @@ void TagsEditDialog::moveUp()
 
 	// Move in the value list:
 	if (tagItem->tagCopy()) {
-		int pos = m_tagCopies.findIndex(tagItem->tagCopy());
-		m_tagCopies.remove(tagItem->tagCopy());
+		int pos = m_tagCopies.indexOf(tagItem->tagCopy());
+		m_tagCopies.removeAll(tagItem->tagCopy());
 		int i = 0;
 		for (TagCopy::List::iterator it = m_tagCopies.begin(); it != m_tagCopies.end(); ++it, ++i)
 			if (i == pos - 1) {
@@ -837,8 +847,8 @@ void TagsEditDialog::moveUp()
 			}
 	} else {
 		StateCopy::List &stateCopies = ((TagListViewItem*)( tagItem->parent() ))->tagCopy()->stateCopies;
-		int pos = stateCopies.findIndex(tagItem->stateCopy());
-		stateCopies.remove(tagItem->stateCopy());
+		int pos = stateCopies.indexOf(tagItem->stateCopy());
+		stateCopies.removeAll(tagItem->stateCopy());
 		int i = 0;
 		for (StateCopy::List::iterator it = stateCopies.begin(); it != stateCopies.end(); ++it, ++i)
 			if (i == pos - 1) {
@@ -889,8 +899,8 @@ void TagsEditDialog::moveDown()
 
 	// Move in the value list:
 	if (tagItem->tagCopy()) {
-		uint pos = m_tagCopies.findIndex(tagItem->tagCopy());
-		m_tagCopies.remove(tagItem->tagCopy());
+		uint pos = m_tagCopies.indexOf(tagItem->tagCopy());
+		m_tagCopies.removeAll(tagItem->tagCopy());
 		if (pos == (uint)m_tagCopies.count() - 1) // Insert at end: iterator does not go there
 			m_tagCopies.append(tagItem->tagCopy());
 		else {
@@ -903,8 +913,8 @@ void TagsEditDialog::moveDown()
 		}
 	} else {
 		StateCopy::List &stateCopies = ((TagListViewItem*)( tagItem->parent() ))->tagCopy()->stateCopies;
-		uint pos = stateCopies.findIndex(tagItem->stateCopy());
-		stateCopies.remove(tagItem->stateCopy());
+		uint pos = stateCopies.indexOf(tagItem->stateCopy());
+		stateCopies.removeAll(tagItem->stateCopy());
 		if (pos == (uint)stateCopies.count() - 1) // Insert at end: iterator does not go there
 			stateCopies.append(tagItem->stateCopy());
 		else {
@@ -978,22 +988,22 @@ void TagsEditDialog::deleteTag()
 			StateCopy *stateCopy = *stateCopyIt;
 			if (stateCopy->oldState) {
 				m_deletedStates.append(stateCopy->oldState);
-				m_addedStates.remove(stateCopy->oldState);
+				m_addedStates.removeAll(stateCopy->oldState);
 			}
-			m_addedStates.remove(stateCopy->newState);
+			m_addedStates.removeAll(stateCopy->newState);
 		}
-		m_tagCopies.remove(item->tagCopy());
+		m_tagCopies.removeAll(item->tagCopy());
 		// Remove the new tag, to avoid keyboard-shortcut clashes:
 		delete item->tagCopy()->newTag;
 	} else {
 		TagListViewItem *parentItem = item->parent();
 		// Remove the state:
-		parentItem->tagCopy()->stateCopies.remove(item->stateCopy());
+		parentItem->tagCopy()->stateCopies.removeAll(item->stateCopy());
 		if (item->stateCopy()->oldState) {
 			m_deletedStates.append(item->stateCopy()->oldState);
-			m_addedStates.remove(item->stateCopy()->oldState);
+			m_addedStates.removeAll(item->stateCopy()->oldState);
 		}
-		m_addedStates.remove(item->stateCopy()->newState);
+		m_addedStates.removeAll(item->stateCopy()->newState);
 		delete item;
 		item = 0;
 		// Transform to single-state tag if needed:
@@ -1025,12 +1035,12 @@ void TagsEditDialog::renameIt()
 void TagsEditDialog::capturedShortcut(const KShortcut &shortcut)
 {
 	// TODO: Validate it!
-	m_shortcut->setShortcut(shortcut);
+	//m_shortcut->setShortcut(shortcut);
 }
 
 void TagsEditDialog::removeShortcut()
 {
-	m_shortcut->setShortcut(KShortcut());
+	//m_shortcut->setShortcut(KShortcut());
 	modified();
 }
 
@@ -1137,13 +1147,13 @@ void TagsEditDialog::loadBlankState()
 	m_emblem->resetIcon();
 	m_removeEmblem->setEnabled(false);
 	m_backgroundColor->setColor(QColor());
-	m_bold->setOn(false);
-	m_underline->setOn(false);
-	m_italic->setOn(false);
-	m_strike->setOn(false);
+	m_bold->setChecked(false);
+	m_underline->setChecked(false);
+	m_italic->setChecked(false);
+	m_strike->setChecked(false);
 	m_textColor->setColor(QColor());
-	m_font->setCurrentItem(0);
-	m_fontSize->setCurrentItem(0);
+	m_font->setCurrentIndex(0);
+	m_fontSize->setCurrentIndex(0);
 	m_textEquivalent->setText("");
 	m_onEveryLines->setChecked(false);
 }
@@ -1157,23 +1167,23 @@ void TagsEditDialog::loadStateFrom(State *state)
 		m_emblem->setIcon(state->emblem());
 	m_removeEmblem->setEnabled(!state->emblem().isEmpty() && !m_tags->currentItem()->isEmblemObligatory());
 	m_backgroundColor->setColor(state->backgroundColor());
-	m_bold->setOn(state->bold());
-	m_underline->setOn(state->underline());
-	m_italic->setOn(state->italic());
-	m_strike->setOn(state->strikeOut());
+	m_bold->setChecked(state->bold());
+	m_underline->setChecked(state->underline());
+	m_italic->setChecked(state->italic());
+	m_strike->setChecked(state->strikeOut());
 	m_textColor->setColor(state->textColor());
 	m_textEquivalent->setText(state->textEquivalent());
 	m_onEveryLines->setChecked(state->onAllTextLines());
 
 	if (state->fontName().isEmpty())
-		m_font->setCurrentItem(0);
+		m_font->setCurrentIndex(0);
 	else
 		m_font->setCurrentFont(state->fontName());
 
 	if (state->fontSize() == -1)
-		m_fontSize->setCurrentItem(0);
+		m_fontSize->setCurrentIndex(0);
 	else
-		m_fontSize->setCurrentText(QString::number(state->fontSize()));
+		m_fontSize->setItemText(m_fontSize->currentIndex(), QString::number(state->fontSize()));
 }
 
 void TagsEditDialog::loadTagFrom(Tag *tag)
@@ -1189,15 +1199,15 @@ void TagsEditDialog::saveStateTo(State *state)
 	state->setName(m_stateName->text());
 	state->setEmblem(m_emblem->icon());
 	state->setBackgroundColor(m_backgroundColor->color());
-	state->setBold(m_bold->isOn());
-	state->setUnderline(m_underline->isOn());
-	state->setItalic(m_italic->isOn());
-	state->setStrikeOut(m_strike->isOn());
+	state->setBold(m_bold->isChecked());
+	state->setUnderline(m_underline->isChecked());
+	state->setItalic(m_italic->isChecked());
+	state->setStrikeOut(m_strike->isChecked());
 	state->setTextColor(m_textColor->color());
 	state->setTextEquivalent(m_textEquivalent->text());
 	state->setOnAllTextLines(m_onEveryLines->isChecked());
 
-	if (m_font->currentItem() == 0)
+	if (m_font->currentIndex() == 0)
 		state->setFontName("");
 	else
 		state->setFontName(m_font->currentFont().family());

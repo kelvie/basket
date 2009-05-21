@@ -167,7 +167,7 @@ void NoteDrag::serializeHtml(NoteSelection *noteList, QDrag *multipleDrag)
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setHtml(htmlEquivalent);
 		// But also QTextEdit flavour, to be able to paste several notes to a text edit:
-		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).local8Bit();
+		QByteArray byteArray = ("<!--StartFragment--><p>" + htmlEquivalent).toLocal8Bit();
 		mimeData->setData("application/x-qrichtext", byteArray);
 		multipleDrag->setMimeData(mimeData);
 	}
@@ -196,7 +196,7 @@ void NoteDrag::serializeImage(NoteSelection *noteList, QDrag *multipleDrag)
 					width = (*it).width();
 			}
 			// Create the image by painting all image into one big image:
-			pixmapEquivalent.resize(width, height);
+			pixmapEquivalent = QPixmap(width, height);
 			pixmapEquivalent.fill(Qt::white);
 			QPainter painter(&pixmapEquivalent);
 			height = 0;
@@ -206,7 +206,7 @@ void NoteDrag::serializeImage(NoteSelection *noteList, QDrag *multipleDrag)
 			}
 		}
 		QMimeData *mimeData = new QMimeData;
-		mimeData->setImageData(pixmapEquivalent.convertToImage());
+		mimeData->setImageData(pixmapEquivalent.toImage());
 		multipleDrag->setMimeData(mimeData);
 	}
 }
@@ -240,13 +240,19 @@ void NoteDrag::serializeLinks(NoteSelection *noteList, QDrag *multipleDrag, bool
 		xMozUrl = note->title() + "\n" + note->url().prettyUrl();*/
 		QByteArray baMozUrl;
 		QTextStream stream(baMozUrl, QIODevice::WriteOnly);
-		stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
+
+		// It's UTF16 (aka UCS2), but with the first two order bytes
+		//stream.setEncoding(QTextStream::RawUnicode); // It's UTF16 (aka UCS2), but with the first two order bytes
+		//FIXME: find out if this is really equivalent, as http://doc.trolltech.com/4.5/qtextstream-qt3.html pretends
+		stream.setCodec("UTF-16");
+
 		stream << xMozUrl;
 
 		mimeData->setData("text/x-moz-url", baMozUrl);
 
 		if (cutting) {
-			QByteArray  arrayCut(2);
+			QByteArray arrayCut;
+			arrayCut.resize(2);
 			arrayCut[0] = '1';
 			arrayCut[1] = 0;
 			mimeData->setData("application/x-kde-cutselection", arrayCut);
@@ -559,7 +565,7 @@ bool ExtendedTextDrag::decode(const QMimeData *e, QString &str, QString &subtype
 	// Test if it was a UTF-16 string (from eg. Mozilla):
 	if (str.length() >= 2) {
 		if ((str[0] == 0xFF && str[1] == 0xFE) || (str[0] == 0xFE && str[1] == 0xFF)) {
-			QByteArray utf16 = e->data(QString("text/" + subtype).local8Bit());
+			QByteArray utf16 = e->data(QString("text/" + subtype).toLocal8Bit());
 			str = QTextCodec::codecForName("utf16")->toUnicode(utf16);
 			return true;
 		}

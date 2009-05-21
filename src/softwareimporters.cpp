@@ -50,7 +50,7 @@ TreeImportDialog::TreeImportDialog(QWidget *parent)
      : KDialog(parent)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
 
 	// KDialog options
 	setCaption(i18n("Import Hierarchy"));
@@ -99,7 +99,7 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
      : KDialog(parent)
 {
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *topLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *topLayout = new QVBoxLayout(page);
 
 	// KDialog options
 	setCaption(i18n("Import Text File"));
@@ -129,10 +129,9 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 	QWidget *indentedTextEdit = new QWidget(m_choices);
 	m_choiceLayout->addWidget(indentedTextEdit);
 
-	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit);
 	hLayout->addSpacing(20);
 	m_customSeparator = new QTextEdit(indentedTextEdit);
-	m_customSeparator->setTextFormat(Qt::PlainText);
 	hLayout->addWidget(m_customSeparator);
 
 	m_all_in_one_choice = new QRadioButton(i18n("&All in one note"),                  m_choices);
@@ -161,7 +160,7 @@ QString TextFileImportDialog::separator()
 	else if (m_star_choice->isChecked())
 		return "\n*";
 	else if (m_anotherSeparator->isChecked())
-		return m_customSeparator->text();
+		return m_customSeparator->toPlainText();
 	else if (m_all_in_one_choice->isChecked())
 		return "";
 	else
@@ -170,7 +169,7 @@ QString TextFileImportDialog::separator()
 
 void TextFileImportDialog::customSeparatorChanged()
 {
-	if (!m_anotherSeparator->isOn())
+	if (!m_anotherSeparator->isChecked())
 		m_anotherSeparator->toggle();
 }
 
@@ -182,7 +181,7 @@ QString SoftwareImporters::fromICS(const QString &ics)
 
 	// Remove escaped '\' characters and append the text to the body
 	int pos = 0;
-	while ( (pos = result.find('\\', pos)) != -1 ) {
+	while ( (pos = result.indexOf('\\', pos)) != -1 ) {
 		if (pos == result.length() - 1) // End of string
 			break;
 		if (result[pos+1] == 'n') {
@@ -203,7 +202,7 @@ QString SoftwareImporters::fromICS(const QString &ics)
 QString SoftwareImporters::fromTomboy(QString tomboy)
 {
 	// The first line is the note title, and we already have it, so we remove it (yes, that's pretty stupid to duplicate it in the content...):
-	tomboy = tomboy.mid(tomboy.find("\n")).trimmed();
+	tomboy = tomboy.mid(tomboy.indexOf("\n")).trimmed();
 
 	// Font styles and decorations:
 	tomboy.replace("<bold>",           "<b>");
@@ -291,14 +290,13 @@ void SoftwareImporters::importKJots()
 		QFile file(dirPath + *it);
 		if (file.open(QIODevice::ReadOnly)) {
 			QTextStream stream(&file);
-			stream.setEncoding(QTextStream::Locale);
 			QString buf = stream.readLine();
 
 			// IT IS A NOTEBOOK FILE, AT THE VERION 0.6.x and older:
 			if ( !buf.isNull() && buf.left(9) == "\\NewEntry") {
 
 				// First create a basket for it:
-				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.name()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
+				BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.fileName()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
 				Basket *basket = Global::bnpView->currentBasket();
 				basket->load();
 
@@ -314,7 +312,7 @@ void SoftwareImporters::importKJots()
 					} else if (buf.left(3) != "\\ID") { // Don't care of the ID
 						// Remove escaped '\' characters and append the text to the body
 						int pos = 0;
-						while ( (pos = buf.find('\\', pos)) != -1 )
+						while ( (pos = buf.indexOf('\\', pos)) != -1 )
 							if (buf[++pos] == '\\')
 								buf.remove(pos, 1);
 						body.append(buf + "\n");
@@ -369,7 +367,7 @@ void SoftwareImporters::importKNotes()
 		QFile file(dirPath + *it);
 		if (file.open(QIODevice::ReadOnly)) {
 			QTextStream stream(&file);
-			stream.setEncoding(QTextStream::UnicodeUTF8);
+			stream.setCodec("UTF-8");
 
 			// First create a basket for it:
 			BasketFactory::newBasket(/*icon=*/"knotes", /*name=*/i18n("From KNotes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
@@ -429,7 +427,7 @@ void SoftwareImporters::importStickyNotes()
 
 	QStringList list = dir.entryList();
 	for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) { // For each folder
-		if ( (*it).contains("gnome", false) ) {
+		if ( (*it).contains("gnome", Qt::CaseInsensitive) ) {
 			QString fullPath = QDir::home().absolutePath() + "/" + (*it) + "/stickynotes_applet";
 			if (dir.exists(fullPath))
 				founds += fullPath;
@@ -466,9 +464,9 @@ QString loadUtf8FileToString(const QString &fileName)
 	QFile file(fileName);
 	if (file.open(QIODevice::ReadOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 		QString text;
-		text = stream.read();
+		text = stream.readAll();
 		file.close();
 		return text;
 	} else
@@ -507,9 +505,9 @@ void SoftwareImporters::importTomboy()
 
 		// Isolate "<note-content version="0.1">CONTENT</note-content>"!
 		QString xml = loadUtf8FileToString(dirPath + *it);
-		xml = xml.mid(xml.find("<note-content "));
-		xml = xml.mid(xml.find(">") + 1);
-		xml = xml.mid(0, xml.find("</note-content>"));
+		xml = xml.mid(xml.indexOf("<note-content "));
+		xml = xml.mid(xml.indexOf(">") + 1);
+		xml = xml.mid(0, xml.indexOf("</note-content>"));
 
 		if (!title.isEmpty() && !/*content*/xml.isEmpty())
 			insertTitledNote(basket, title, fromTomboy(xml/*content*/), Qt::RichText);
@@ -523,22 +521,21 @@ void SoftwareImporters::importTextFile()
 {
 	QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportTextFile"),  "*|All files");
 	if (fileName.isEmpty())
-		return;    
+		return;
 
 	TextFileImportDialog dialog;
 	if (dialog.exec() == QDialog::Rejected)
 		return;
 	QString separator = dialog.separator();
 
-    
+
 	QFile file(fileName);
 	if (file.open(QIODevice::ReadOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Locale);
-		QString content = stream.read();
+		QString content = stream.readAll();
 		QStringList list = (separator.isEmpty()
 			? QStringList(content)
-			: QStringList::split(separator, content, /*allowEmptyEntries=*/false)
+			: content.split(separator)
 		);
 
 		// First create a basket for it:
@@ -599,7 +596,7 @@ void SoftwareImporters::importKnowIt()
 			QStringList links;
 			QStringList descriptions;
 
-			stream.setEncoding(QTextStream::UnicodeUTF8);
+			stream.setCodec("UTF-8");
 			while(1)
 			{
 				line = stream.readLine();
@@ -649,8 +646,8 @@ void SoftwareImporters::importKnowIt()
 					if(stream.atEnd())
 						break;
 
-					int i = line.find("Entry") + 6;
-					int n = line.find(' ', i);
+					int i = line.indexOf("Entry") + 6;
+					int n = line.indexOf(' ', i);
 					level = line.mid(i, n - i).toInt();
 					name = line.mid(n+1);
 					text = "";

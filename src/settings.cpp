@@ -354,34 +354,43 @@ void Settings::setAutoBullet(bool yes)
 GeneralPage::GeneralPage(QWidget * parent, const char * name)
  : KCModule(KComponentData(name),parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	QHBoxLayout *hLay;
 	QLabel      *label;
 	HelpLabel   *hLabel;
 
-	QGridLayout *gl = new QGridLayout(layout, /*nRows=*/3, /*nCols=*/3);
+	QGridLayout *gl = new QGridLayout;
+	layout->addLayout(gl);
 	gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
 	// Basket Tree Position:
 	m_treeOnLeft = new QComboBox(this);
-	m_treeOnLeft->insertItem(i18n("On left"));
-	m_treeOnLeft->insertItem(i18n("On right"));
-	label = new QLabel(m_treeOnLeft, i18n("&Basket tree position:"), this);
-	gl->addWidget(label,        0, 0);
+	m_treeOnLeft->addItem(i18n("On left"));
+	m_treeOnLeft->addItem(i18n("On right"));
+
+	label = new QLabel(this);
+	label->setText(i18n("&Basket tree position:"));
+	label->setBuddy(m_treeOnLeft);
+
+	gl->addWidget(label, 0, 0);
 	gl->addWidget(m_treeOnLeft, 0, 1);
 	connect( m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	// Filter Bar Position:
 	m_filterOnTop = new QComboBox(this);
-	m_filterOnTop->insertItem(i18n("On top"));
-	m_filterOnTop->insertItem(i18n("On bottom"));
-	label = new QLabel(m_filterOnTop, i18n("&Filter bar position:"), this);
+	m_filterOnTop->addItem(i18n("On top"));
+	m_filterOnTop->addItem(i18n("On bottom"));
+
+	label = new QLabel(this);
+	label->setText(i18n("&Filter bar position:"));
+	label->setBuddy(m_filterOnTop);
+
 	gl->addWidget(label,         1, 0);
 	gl->addWidget(m_filterOnTop, 1, 1);
 	connect( m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()) );
 
 	// Use Baloons to Report Results of Global Actions:
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout(0);
 	m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
 	connect( m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 	hLabel = new HelpLabel(
@@ -400,7 +409,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	// System Tray Icon:
 	QGroupBox *gbSys = new QGroupBox(i18n("System Tray Icon"), this);
 	layout->addWidget(gbSys);
-	QVBoxLayout *sysLay = new QVBoxLayout(gbSys, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *sysLay = new QVBoxLayout(gbSys);
 
 	// Dock in System Tray:
 	m_useSystray = new QCheckBox(i18n("&Dock in system tray"), gbSys);
@@ -408,7 +417,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	connect( m_useSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
 	m_systray = new QWidget(gbSys);
-	QVBoxLayout *subSysLay = new QVBoxLayout(m_systray, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *subSysLay = new QVBoxLayout(m_systray);
 	sysLay->addWidget(m_systray);
 
 	// Show Current Basket Icon in System Tray Icon:
@@ -416,7 +425,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 	subSysLay->addWidget(m_showIconInSystray);
 	connect(m_showIconInSystray, SIGNAL(stateChanged(int)), this, SLOT(changed()));
 
-	QGridLayout *gs = new QGridLayout(0, /*nRows=*/2, /*nCols=*/3);
+	QGridLayout *gs = new QGridLayout;
 	subSysLay->addLayout(gs);
 	gs->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
@@ -454,8 +463,8 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
 
 void GeneralPage::load()
 {
-	m_treeOnLeft->setCurrentItem( (int)!Settings::treeOnLeft() );
-	m_filterOnTop->setCurrentItem( (int)!Settings::filterOnTop() );
+	m_treeOnLeft->setCurrentIndex( (int)!Settings::treeOnLeft() );
+	m_filterOnTop->setCurrentIndex( (int)!Settings::filterOnTop() );
 
 	m_usePassivePopup->setChecked(Settings::usePassivePopup());
 
@@ -477,8 +486,8 @@ void GeneralPage::load()
 
 void GeneralPage::save()
 {
-	Settings::setTreeOnLeft(           ! m_treeOnLeft->currentItem()    );
-	Settings::setFilterOnTop(          ! m_filterOnTop->currentItem()   );
+	Settings::setTreeOnLeft(           ! m_treeOnLeft->currentIndex()    );
+	Settings::setFilterOnTop(          ! m_filterOnTop->currentIndex()   );
 
 	Settings::setUsePassivePopup(      m_usePassivePopup->isChecked()   );
 
@@ -500,7 +509,7 @@ void GeneralPage::defaults()
 BasketsPage::BasketsPage(QWidget * parent, const char * name)
  : KCModule(KComponentData(name),parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	QHBoxLayout *hLay;
 	HelpLabel   *hLabel;
 
@@ -540,7 +549,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	QWidget *widget = new QWidget(behaviorBox);
 	behaviorLayout->addWidget(widget);
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout(widget);
 	m_exportTextTags = new QCheckBox(i18n("&Export tags in texts"), widget);
 	connect( m_exportTextTags, SIGNAL(stateChanged(int)), this, SLOT(changed()) );
 
@@ -558,7 +567,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	m_groupOnInsertionLineWidget = new QWidget(behaviorBox);
 	behaviorLayout->addWidget(m_groupOnInsertionLineWidget);
-	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayV = new QHBoxLayout(m_groupOnInsertionLineWidget);
 	m_groupOnInsertionLine = new QCheckBox(i18n("&Group a new note when clicking on the right of the insertion line"), m_groupOnInsertionLineWidget);
 	HelpLabel *helpV = new HelpLabel(
 		i18n("How to group a new note?"),
@@ -576,22 +585,26 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 
 	widget = new QWidget(behaviorBox);
 	behaviorLayout->addWidget(widget);
-	QGridLayout *ga = new QGridLayout(widget, /*nRows=*/3, /*nCols=*/4, /*margin=*/0, KDialog::spacingHint());
+	QGridLayout *ga = new QGridLayout(widget);
 	ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
 	m_middleAction = new QComboBox(widget);
-	m_middleAction->insertItem( i18n("Do nothing")                    );
-	m_middleAction->insertItem( i18n("Paste clipboard")               );
-	m_middleAction->insertItem( i18n("Insert image note")             );
-	m_middleAction->insertItem( i18n("Insert link note")              );
-	m_middleAction->insertItem( i18n("Insert launcher note")          );
-	m_middleAction->insertItem( i18n("Insert color note")             );
-	m_middleAction->insertItem( i18n("Grab screen zone")              );
-	m_middleAction->insertItem( i18n("Insert color from screen")      );
-	m_middleAction->insertItem( i18n("Load note from file")           );
-	m_middleAction->insertItem( i18n("Import Launcher from KDE Menu") );
-	m_middleAction->insertItem( i18n("Import icon")                   );
-	QLabel *labelM = new QLabel(m_middleAction, i18n("&Shift+middle-click anywhere:"), widget);
+	m_middleAction->addItem( i18n("Do nothing")                    );
+	m_middleAction->addItem( i18n("Paste clipboard")               );
+	m_middleAction->addItem( i18n("Insert image note")             );
+	m_middleAction->addItem( i18n("Insert link note")              );
+	m_middleAction->addItem( i18n("Insert launcher note")          );
+	m_middleAction->addItem( i18n("Insert color note")             );
+	m_middleAction->addItem( i18n("Grab screen zone")              );
+	m_middleAction->addItem( i18n("Insert color from screen")      );
+	m_middleAction->addItem( i18n("Load note from file")           );
+	m_middleAction->addItem( i18n("Import Launcher from KDE Menu") );
+	m_middleAction->addItem( i18n("Import icon")                   );
+
+	QLabel *labelM = new QLabel(widget);
+	labelM->setText(i18n("&Shift+middle-click anywhere:"));
+	labelM->setBuddy(m_middleAction);
+
 	ga->addWidget(labelM,                                          0, 0);
 	ga->addWidget(m_middleAction,                                  0, 1);
 	ga->addWidget(new QLabel(i18n("at cursor position"), widget),  0, 2);
@@ -607,7 +620,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
 	protectionLayout->addWidget(widget);
 
 	// Re-Lock timeout configuration
-	hLay = new QHBoxLayout(widget, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout(widget);
 	m_enableReLockTimeoutMinutes = new QCheckBox(i18n("A&utomatically lock protected baskets when closed for"), widget);
 	hLay->addWidget(m_enableReLockTimeoutMinutes);
 	m_reLockTimeoutMinutes = new KIntNumInput(widget);
@@ -644,7 +657,7 @@ void BasketsPage::load()
 	m_exportTextTags->setChecked(Settings::exportTextTags());
 
 	m_groupOnInsertionLine->setChecked(Settings::groupOnInsertionLine());
-	m_middleAction->setCurrentItem(Settings::middleAction());
+	m_middleAction->setCurrentIndex(Settings::middleAction());
 
 	// The correctness of this code depends on the default of enableReLockTimeout
 	// being true - otherwise, the reLockTimeoutMinutes widget is not disabled properly.
@@ -673,7 +686,7 @@ void BasketsPage::save()
 	Settings::setExportTextTags(       m_exportTextTags->isChecked()       );
 
 	Settings::setGroupOnInsertionLine( m_groupOnInsertionLine->isChecked() );
-	Settings::setMiddleAction(         m_middleAction->currentItem()       );
+	Settings::setMiddleAction(         m_middleAction->currentIndex()       );
 
 	Settings::setEnableReLockTimeout(  m_enableReLockTimeoutMinutes->isChecked());
 	Settings::setReLockTimeoutMinutes(m_reLockTimeoutMinutes->value());
@@ -692,18 +705,22 @@ void BasketsPage::defaults()
 NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
  : KCModule(KComponentData(name), parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	QHBoxLayout *hLay;
 	QLabel      *label;
 
 	// Place of New Notes:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout;
 	m_newNotesPlace = new QComboBox(this);
-	label = new QLabel(m_newNotesPlace, i18n("&Place of new notes:"), this);
-	m_newNotesPlace->insertItem(i18n("On top"));
-	m_newNotesPlace->insertItem(i18n("On bottom"));
-	m_newNotesPlace->insertItem(i18n("At current note"));
+
+	label = new QLabel(this);
+	label->setText(i18n("&Place of new notes:"));
+	label->setBuddy(m_newNotesPlace);
+
+	m_newNotesPlace->addItem(i18n("On top"));
+	m_newNotesPlace->addItem(i18n("On bottom"));
+	m_newNotesPlace->addItem(i18n("At current note"));
 	hLay->addWidget(label);
 	hLay->addWidget(m_newNotesPlace);
 	hLay->addStretch();
@@ -714,21 +731,30 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 	// New Images Size:
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	hLay = new QHBoxLayout;
 	m_imgSizeX = new KIntNumInput(this);
 	m_imgSizeX->setMinimum(1);
 	m_imgSizeX->setMaximum(4096);
 	m_imgSizeX->setReferencePoint(100);
 	connect( m_imgSizeX, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
-	label = new QLabel(m_imgSizeX, i18n("&New images size:"), this);
+
+	label = new QLabel(this);
+	label->setText(i18n("&New images size:"));
+	label->setBuddy(m_imgSizeX);
+
 	hLay->addWidget(label);
 	hLay->addWidget(m_imgSizeX);
+
 	m_imgSizeY = new KIntNumInput(this);
 	m_imgSizeY->setMinimum(1);
 	m_imgSizeY->setMaximum(4096);
 	m_imgSizeY->setReferencePoint(100);
 	connect( m_imgSizeY, SIGNAL(valueChanged(int)), this, SLOT(changed()) );
-	label = new QLabel(m_imgSizeY, i18n("&by"), this);
+
+	label = new QLabel(this);
+	label->setText(i18n("&by"));
+	label->setBuddy(m_imgSizeY);
+
 	hLay->addWidget(label);
 	hLay->addWidget(m_imgSizeY);
 	label = new QLabel(i18n("pixels"), this);
@@ -748,10 +774,10 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 	m_viewImageFileContent = new QCheckBox( i18n("&Image or animation"), buttonGroup );
 	m_viewSoundFileContent = new QCheckBox( i18n("&Sound"),              buttonGroup );
 
-	buttonLayout->add(m_viewTextFileContent);
-	buttonLayout->add(m_viewHtmlFileContent);
-	buttonLayout->add(m_viewImageFileContent);
-	buttonLayout->add(m_viewSoundFileContent);
+	buttonLayout->addWidget(m_viewTextFileContent);
+	buttonLayout->addWidget(m_viewHtmlFileContent);
+	buttonLayout->addWidget(m_viewImageFileContent);
+	buttonLayout->addWidget(m_viewSoundFileContent);
 	buttonGroup->setLayout(buttonLayout);
 
 	layout->addWidget(buttonGroup);
@@ -766,7 +792,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
 
 void NewNotesPage::load()
 {
-	m_newNotesPlace->setCurrentItem(Settings::newNotesPlace());
+	m_newNotesPlace->setCurrentIndex(Settings::newNotesPlace());
 
 	m_imgSizeX->setValue(Settings::defImageX());
 	m_imgSizeY->setValue(Settings::defImageY());
@@ -779,7 +805,7 @@ void NewNotesPage::load()
 
 void NewNotesPage::save()
 {
-	Settings::setNewNotesPlace(m_newNotesPlace->currentItem());
+	Settings::setNewNotesPlace(m_newNotesPlace->currentIndex());
 
 	Settings::setDefImageX(m_imgSizeX->value());
 	Settings::setDefImageY(m_imgSizeY->value());
@@ -808,7 +834,7 @@ void NewNotesPage::visualize()
 NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
  : KCModule(KComponentData(name),parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	QTabWidget *tabs = new QTabWidget(this);
 	layout->addWidget(tabs);
 
@@ -856,11 +882,11 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
  : KCModule(KComponentData(name),parent)
 {
 	/* Applications page */
-	QVBoxLayout *layout = new QVBoxLayout(this, /*margin=*/0, KDialog::spacingHint());
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	m_htmlUseProg  = new QCheckBox(i18n("Open &text notes with a custom application:"), this);
 	m_htmlProg     = new RunCommandRequester("", i18n("Open text notes with:"), this);
-	QHBoxLayout *hLayH = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayH = new QHBoxLayout;
 	hLayH->insertSpacing(-1, 20);
 	hLayH->addWidget(m_htmlProg);
 	connect(m_htmlUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -868,7 +894,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_imageUseProg = new QCheckBox(i18n("Open &image notes with a custom application:"), this);
 	m_imageProg    = new RunCommandRequester("", i18n("Open image notes with:"), this);
-	QHBoxLayout *hLayI = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayI = new QHBoxLayout;
 	hLayI->insertSpacing(-1, 20);
 	hLayI->addWidget(m_imageProg);
 	connect(m_imageUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -876,7 +902,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_animationUseProg = new QCheckBox(i18n("Open a&nimation notes with a custom application:"), this);
 	m_animationProg    = new RunCommandRequester("", i18n("Open animation notes with:"), this);
-	QHBoxLayout *hLayA = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayA = new QHBoxLayout;
 	hLayA->insertSpacing(-1, 20);
 	hLayA->addWidget(m_animationProg);
 	connect(m_animationUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -884,7 +910,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	m_soundUseProg = new QCheckBox(i18n("Open so&und notes with a custom application:"), this);
 	m_soundProg    = new RunCommandRequester("", i18n("Open sound notes with:"), this);
-	QHBoxLayout *hLayS = new QHBoxLayout(0L, /*margin=*/0, KDialog::spacingHint());
+	QHBoxLayout *hLayS = new QHBoxLayout;
 	hLayS->insertSpacing(-1, 20);
 	hLayS->addWidget(m_soundProg);
 	connect(m_soundUseProg, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -919,7 +945,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 
 	layout->addSpacing(KDialog::spacingHint());
 
-	QHBoxLayout *hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	QHBoxLayout *hLay = new QHBoxLayout;
 	HelpLabel *hl1 = new HelpLabel(
 		i18n("How to change the application used to open Web links?"),
 		i18n("<p>When opening Web links, they are opened in different applications, depending on the content of the link "
@@ -938,7 +964,7 @@ ApplicationsPage::ApplicationsPage(QWidget * parent, const char * name)
 	hLay->addStretch();
 	layout->addLayout(hLay);
 
-	hLay = new QHBoxLayout(0L, /*margin=*/0, /*spacing=*/0);
+	hLay = new QHBoxLayout;
 	HelpLabel *hl2 = new HelpLabel(
 		i18n("How to change the applications used to open files and links?"),
 		i18n("<p>Here is how to set the application to be used for each type of file. "

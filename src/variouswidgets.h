@@ -44,7 +44,7 @@ class RunCommandRequester : public QWidget
 {
   Q_OBJECT
   public:
-	RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent = 0, const char *name = 0);
+	RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent = 0);
 	~RunCommandRequester();
 	QString runCommand();
 	void setRunCommand(const QString &runCommand);
@@ -63,7 +63,7 @@ class IconSizeCombo : public QComboBox
 {
   Q_OBJECT
   public:
-	IconSizeCombo(bool rw, QWidget *parent = 0, const char *name = 0);
+	IconSizeCombo(QWidget *parent = 0);
 	~IconSizeCombo();
 	int iconSize();
 	void setSize(int size);

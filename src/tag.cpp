@@ -700,7 +700,7 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
 	QFile file(fullPath);
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
 		file.close();

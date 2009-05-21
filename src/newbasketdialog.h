@@ -80,7 +80,7 @@ class NewBasketDialog : public KDialog
   public:
 	NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
 	~NewBasketDialog();
-	void polish();
+	void ensurePolished();
   protected slots:
 	void slotOk();
 	void returnPressed();
