@@ -144,12 +144,12 @@ class DecoratedBasket : public QWidget
 {
   Q_OBJECT
   public:
-	DecoratedBasket(QWidget *parent, const QString &folderName, const char *name = 0, Qt::WFlags fl = 0);
+	DecoratedBasket(QWidget *parent, const QString &folderName, Qt::WFlags fl = 0);
 	~DecoratedBasket();
 	void setFilterBarPosition(bool onTop);
 	void resetFilter();
-	void setFilterBarShown(bool show, bool switchFocus = true);
-	bool isFilterBarShown()        { return m_filter->isShown();    }
+	void setFilterBarVisible(bool show, bool switchFocus = true);
+	bool isFilterBarVisible()        { return m_filter->isVisible();    }
 	const FilterData& filterData() { return m_filter->filterData(); }
 	FilterBar* filterBar()         { return m_filter;               }
 	Basket*    basket()            { return m_basket;               }
@@ -347,10 +347,10 @@ public slots:
 	bool loadFromFile(const QString &fullPath, QString* string, bool isLocalEncoding = false);
 	bool loadFromFile(const QString &fullPath, QByteArray* array);
 	bool saveToFile(const QString& fullPath, const QByteArray& array);
-	bool saveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	bool saveToFile(const QString& fullPath, const QByteArray& array, unsigned long length);
 	bool saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
 	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array);
-	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array, Q_ULONG length);
+	static bool safelySaveToFile(const QString& fullPath, const QByteArray& array, unsigned long length);
 	static bool safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding = false);
 	bool setProtection(int type, QString key);
 	int  encryptionType()  { return m_encryptionType;  };

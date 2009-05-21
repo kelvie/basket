@@ -52,12 +52,16 @@ ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name
 	KVBox *page  = new KVBox(this);
 	QWidget     *wid  = new QWidget(page);
     setMainWidget(wid);
-	QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	//QHBoxLayout *hLay = new QHBoxLayout(wid, /*margin=*/0, spacingHint());
+	QHBoxLayout *hLay = new QHBoxLayout(wid);
 	m_url = new KUrlRequester(KUrl(""), wid);
-	m_url->setCaption(i18n("HTML Page Filename"));
+	m_url->setWindowTitle(i18n("HTML Page Filename"));
 	m_url->setFilter("text/html");
 	m_url->fileDialog()->setOperationMode(KFileDialog::Saving);
-	hLay->addWidget( new QLabel(m_url, i18n("&Filename:"), wid) );
+	QLabel *fileLabel = new QLabel(wid);
+	fileLabel->setText(i18n("&Filename:"));
+	fileLabel->setBuddy(m_url);
+	hLay->addWidget( fileLabel );
 	hLay->addWidget( m_url );
 
 	m_embedLinkedFiles    = new QCheckBox(i18n("&Embed linked local files"),              page);
@@ -93,7 +97,7 @@ void ExporterDialog::show()
 	KDialog::show();
 
 	QString lineEditText = m_url->lineEdit()->text();
-	int selectionStart = lineEditText.findRev("/") + 1;
+	int selectionStart = lineEditText.lastIndexOf("/") + 1;
 	m_url->lineEdit()->setSelection(selectionStart, lineEditText.length() - selectionStart - QString(".html").length());
 }
 

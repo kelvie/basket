@@ -92,7 +92,7 @@ QString Tools::htmlToParagraph(const QString &html)
 
 	// Remove the <html> start tag, all the <head> and the <body> start
 	// Because <body> can contain style="..." parameter, we transform it to <span>
-	int pos = result.find("<body");
+	int pos = result.indexOf("<body");
 	if (pos != -1) {
 		result = "<span" + result.mid(pos + 5);
 		startedBySpan = true;
@@ -100,7 +100,7 @@ QString Tools::htmlToParagraph(const QString &html)
 
 	// Remove the ending "</p>\n</body></html>", each tag can be separated by space characters (%s)
 	// "</p>" can be omitted (eg. if the HTML doesn't contain paragraph but tables), as well as "</body>" (optinal)
-	pos = result.find(QRegExp("(?:(?:</p>[\\s\\n\\r\\t]*)*</body>[\\s\\n\\r\\t]*)*</html>", false)); // Case unsensitive
+	pos = result.indexOf(QRegExp("(?:(?:</p>[\\s\\n\\r\\t]*)*</body>[\\s\\n\\r\\t]*)*</html>", Qt::CaseInsensitive));
 	if (pos != -1)
 		result = result.left(pos);
 
@@ -119,12 +119,12 @@ QString Tools::tagURLs(const QString &text)
 	QString richText(text);
 	int urlPos = 0;
 	int urlLen;
-	if((urlPos = urlEx.search(richText, urlPos)) >= 0)
+	if((urlPos = urlEx.indexIn(richText, urlPos)) >= 0)
 		urlPos+=urlEx.matchedLength();
 	else
 		urlPos=0;
 	urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
-	while ((urlPos = urlEx.search(richText, urlPos)) >= 0) {
+	while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
 		urlLen = urlEx.matchedLength();
 		QString href = richText.mid(urlPos, urlLen);
 		// Qt doesn't support (?<=pattern) so we do it here
@@ -173,7 +173,7 @@ QString Tools::htmlToText(const QString &html)
 	QList<bool> ul;    // true if current list is a <ul> one, false if it's an <ol> one
 	QList<int>  lines; // The line number if it is an <ol> list
 	// We're removing every other tags, or replace them in the case of li:
-	while ( (pos = text.find("<"), pos) != -1 ) {
+	while ( (pos = text.indexOf("<"), pos) != -1 ) {
 		// What is the current tag?
 		tag  = text.mid(pos + 1, 2);
 		tag3 = text.mid(pos + 1, 3);
@@ -192,7 +192,7 @@ QString Tools::htmlToText(const QString &html)
 			lines.pop_back();
 		}
 		// Where the tag closes?
-		pos2 = text.find(">");
+		pos2 = text.indexOf(">");
 		if (pos2 != -1) {
 			// Remove the tag:
 			text.remove(pos, pos2 - pos + 1);
@@ -236,14 +236,14 @@ QString Tools::cssFontDefinition(const QFont &font, bool onlyFontFamily)
 
 	// Then, try to match the font name with a standard CSS font family:
 	QString genericFont = "";
-	if (definition.contains("serif", false) || definition.contains("roman", false))
+	if (definition.contains("serif", Qt::CaseInsensitive) || definition.contains("roman", Qt::CaseInsensitive))
 		genericFont = "serif";
 	// No "else if" because "sans serif" must be counted as "sans". So, the order between "serif" and "sans" is important
-	if (definition.contains("sans", false) || definition.contains("arial", false) || definition.contains("helvetica", false))
+	if (definition.contains("sans", Qt::CaseInsensitive) || definition.contains("arial", Qt::CaseInsensitive) || definition.contains("helvetica", Qt::CaseInsensitive))
 		genericFont = "sans-serif";
-	if (definition.contains("mono",       false) || definition.contains("courier", false) ||
-	    definition.contains("typewriter", false) || definition.contains("console", false) ||
-	    definition.contains("terminal",   false) || definition.contains("news",    false))
+	if (definition.contains("mono", Qt::CaseInsensitive) || definition.contains("courier", Qt::CaseInsensitive) ||
+	    definition.contains("typewriter", Qt::CaseInsensitive) || definition.contains("console", Qt::CaseInsensitive) ||
+	    definition.contains("terminal", Qt::CaseInsensitive) || definition.contains("news", Qt::CaseInsensitive))
 		genericFont = "monospace";
 
 	// Eventually add the generic font family to the definition:
@@ -325,9 +325,10 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
 	int indent = depth * deltaX;
 
 	// Create the images:
-	QImage resultImage(indent + source.width(), source.height(), 32);
-	QImage sourceImage = source.convertToImage();
-	resultImage.setAlphaBuffer(true);
+	QImage resultImage(indent + source.width(), source.height(), QImage::Format_ARGB32);
+	resultImage.setNumColors(32);
+
+	QImage sourceImage = source.toImage();
 
 	// Clear the indent part (the left part) by making it fully transparent:
 	uint *p;
@@ -349,8 +350,7 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
 	}
 
 	// And return the result:
-	QPixmap result;
-	result.convertFromImage(resultImage);
+	QPixmap result = QPixmap::fromImage(resultImage);
 	return result;
 }
 
@@ -391,7 +391,7 @@ QString Tools::fileNameForNewFile(const QString &wantedName, const QString &dest
 
 	// Find the file extension, if it exists : Split fileName in fileName and extension
 	// Example : fileName == "note5-3.txt" => fileName = "note5-3" and extension = ".txt"
-	int extIndex = fileName.findRev('.');
+	int extIndex = fileName.lastIndexOf('.');
 	if (extIndex != -1 && extIndex != int(fileName.length()-1))  { // Extension found and fileName do not ends with '.' !
 		extension = fileName.mid(extIndex);
 		fileName.truncate(extIndex);
@@ -399,7 +399,7 @@ QString Tools::fileNameForNewFile(const QString &wantedName, const QString &dest
 
 	// Find the file number, if it exists : Split fileName in fileName and number
 	// Example : fileName == "note5-3" => fileName = "note5" and number = 3
-	int extNumber = fileName.findRev('-');
+	int extNumber = fileName.lastIndexOf('-');
 	if (extNumber != -1 && extNumber != int(fileName.length()-1))  { // Number found and fileName do not ends with '-' !
 		bool isANumber;
 		int  theNumber = fileName.mid(extNumber + 1).toInt(&isANumber);
@@ -446,7 +446,7 @@ void Tools::printChildren(QObject* parent)
     QObject * obj;
     for(int i = 0 ; i < objs.size() ; i++) {
         obj = objs.at(i);
-        kDebug() << k_funcinfo << obj->className() << ": " << obj->name() << endl;
+        kDebug() << k_funcinfo << obj->metaObject()->className() << ": " << obj->objectName() << endl;
     }
 
 }

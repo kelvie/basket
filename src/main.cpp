@@ -71,7 +71,8 @@ int main(int argc, char *argv[])
 	/* Main Window */
 	MainWindow* win = new MainWindow();
 	Global::bnpView->handleCommandLine();
-	app.setMainWidget(win);
+	app.setActiveWindow(win);
+
 //	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
 //		win->show();
 

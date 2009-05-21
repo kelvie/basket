@@ -81,7 +81,10 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	folderGroupLayout->addWidget(new QLabel("<qt><nobr>" + i18n("Your baskets are currently stored in that folder:<br><b>%1</b>",savesFolder), folderGroup));
 	QWidget *folderWidget = new QWidget;
 	folderGroupLayout->addWidget(folderWidget);
-	QHBoxLayout *folderLayout = new QHBoxLayout(folderWidget, 0, spacingHint());
+
+	QHBoxLayout *folderLayout = new QHBoxLayout(folderWidget);
+        folderLayout->setContentsMargins(0, 0, 0, 0);
+
 	QPushButton *moveFolder = new QPushButton(i18n("&Move to Another Folder..."),      folderWidget);
 	QPushButton *useFolder  = new QPushButton(i18n("&Use Another Existing Folder..."), folderWidget);
 	HelpLabel *helpLabel = new HelpLabel(i18n("Why to do that?"), i18n(
@@ -105,7 +108,10 @@ BackupDialog::BackupDialog(QWidget *parent, const char *name)
 	backupGroup->setLayout(backupGroupLayout);
 	QWidget *backupWidget = new QWidget;
 	backupGroupLayout->addWidget(backupWidget);
-	QHBoxLayout *backupLayout = new QHBoxLayout(backupWidget, 0, spacingHint());
+
+	QHBoxLayout *backupLayout = new QHBoxLayout(backupWidget);
+        backupLayout->setContentsMargins(0, 0, 0, 0);
+
 	QPushButton *backupButton  = new QPushButton(i18n("&Backup..."),           backupWidget);
 	QPushButton *restoreButton = new QPushButton(i18n("&Restore a Backup..."), backupWidget);
 	m_lastBackup = new QLabel("", backupWidget);
@@ -225,7 +231,7 @@ void BackupDialog::backup()
 
 	BackupThread thread(destination, Global::savesFolder());
 	thread.start();
-	while (thread.running()) {
+	while (thread.isRunning()) {
 		progress->setValue(progress->value()+1); // Or else, the animation is not played!
 		kapp->processEvents();
 		usleep(300); // Not too long because if the backup process is finished, we wait for nothing
@@ -284,7 +290,7 @@ void BackupDialog::restore()
 	// Uncompress:
 	RestoreThread thread(path, Global::savesFolder());
 	thread.start();
-	while (thread.running()) {
+	while (thread.isRunning()) {
 		progress->setValue(progress->value()+1); // Or else, the animation is not played!
 		kapp->processEvents();
 		usleep(300); // Not too long because if the restore process is finished, we wait for nothing

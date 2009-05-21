@@ -9,10 +9,6 @@ find_package(KdepimLibs REQUIRED)
 endif (BUILD_KPARTS)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
-add_definitions(-DQT3_SUPPORT)
-
-# fix these warnings after we get it to compile
-#add_definitions(-DQT3_SUPPORT_WARNINGS)
 
 include(KDE4Defaults)
 

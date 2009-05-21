@@ -67,9 +67,9 @@ static bool copyImage(QImage &dest, QImage &src, int x, int y)
 	// However, we do have to specifically ensure that setAlphaBuffer is set
 	// to false
 
-	large_src.setAlphaBuffer(false);
+	//large_src.setAlphaBuffer(false);
 	large_src.fill(0); // All transparent pixels
-	large_src.setAlphaBuffer(true);
+	//large_src.setAlphaBuffer(true);
 
 	int w = src.width();
 	int h = src.height();
@@ -149,6 +149,7 @@ void SystemTray::updateDisplay()
 }
 
 #ifdef USE_OLD_SYSTRAY
+#define QT3_SUPPORT // No need to port that old stuff
 SystemTray::SystemTray(QWidget *parent, const char *name)
  : KSystemTray2(parent, name != 0 ? name : "SystemTray"), m_showTimer(0), m_autoShowTimer(0)
 {
@@ -368,4 +369,5 @@ void SystemTray::leaveEvent(QEvent*)
 	m_autoShowTimer->stop();
 }
 
+#undef QT3_SUPPORT
 #endif // USE_OLD_SYSTRAY

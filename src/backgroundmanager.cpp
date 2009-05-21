@@ -312,9 +312,8 @@ QPixmap* BackgroundManager::preview(const QString &image)
 	// And create the resulting pixmap:
 	QPixmap *result = new QPixmap(width, height);
 	result->fill(PREVIEW_BG);
-	QImage imageToScale = entry->pixmap->convertToImage();
-	QPixmap pmScaled;
-	pmScaled.convertFromImage(imageToScale.smoothScale(width, height));
+	QImage imageToScale = entry->pixmap->toImage();
+	QPixmap pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPainter painter(result);
 	painter.drawPixmap(0, 0, pmScaled);
 	painter.end();
@@ -357,8 +356,10 @@ void BackgroundManager::requestDelayedGarbage()
 {
 	static const int DELAY = 60/*seconds*/;
 
-	if (!m_garbageTimer.isActive())
-		m_garbageTimer.start(DELAY * 1000/*ms*/, /*singleShot=*/true);
+	if (!m_garbageTimer.isActive()) {
+		m_garbageTimer.setSingleShot(true);
+		m_garbageTimer.start(DELAY * 1000/*ms*/);
+	}
 }
 
 void BackgroundManager::doGarbage()
@@ -385,7 +386,7 @@ void BackgroundManager::doGarbage()
 ///			kDebug() << " [Deleted entry]";
 			delete entry->pixmap;
 			entry->pixmap = 0;
-			it = m_opaqueBackgroundsList.remove(it);
+			it = m_opaqueBackgroundsList.erase(it);
 		} else
 			++it;
 ///		kDebug();

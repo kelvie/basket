@@ -138,9 +138,9 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 	previewBasket->doHoverEffects();
 	// End and save our splandid painting:
 	painter.end();
-	QImage previewImage = previewPixmap.convertToImage();
+	QImage previewImage = previewPixmap.toImage();
 	const int PREVIEW_SIZE = 256;
-	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, Qt::ScaleMin);
+	previewImage = previewImage.scaled(PREVIEW_SIZE, PREVIEW_SIZE, Qt::KeepAspectRatio);
 	previewImage.save(tempFolder + "preview.png", "PNG");
 
 	// Finaly Save to the Real Destination file:
@@ -149,7 +149,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 		ulong previewSize = QFile(tempFolder + "preview.png").size();
 		ulong archiveSize = QFile(tempDestination).size();
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+		stream.setCodec("ISO-8859-1");
 		stream << "BasKetNP:archive\n"
 		       << "version:0.6.1\n"
 //		       << "read-compatible:0.6.1\n"
@@ -158,9 +158,9 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
 
 		stream.flush();
 		// Copy the Preview File:
-		const Q_ULONG BUFFER_SIZE = 1024;
+		const unsigned long BUFFER_SIZE = 1024;
 		char *buffer = new char[BUFFER_SIZE];
-		Q_LONG sizeRead;
+		long sizeRead;
 		QFile previewFile(tempFolder + "preview.png");
 		if (previewFile.open(QIODevice::ReadOnly)) {
 			while ((sizeRead = previewFile.read(buffer, BUFFER_SIZE)) > 0)
@@ -266,7 +266,7 @@ void Archive::open(const QString &path)
 	QFile file(path);
 	if (file.open(QIODevice::ReadOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::Latin1);
+		stream.setCodec("ISO-8859-1");
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive") {
 			KMessageBox::error(0, i18n("This file is not a basket archive."), i18n("Basket Archive Error"));
@@ -280,7 +280,7 @@ void Archive::open(const QString &path)
 		while (!stream.atEnd()) {
 			// Get Key/Value Pair From the Line to Read:
 			line = stream.readLine();
-			int index = line.find(':');
+			int index = line.indexOf(':');
 			QString key;
 			QString value;
 			if (index >= 0) {
@@ -293,9 +293,9 @@ void Archive::open(const QString &path)
 			if (key == "version") {
 				version = value;
 			} else if (key == "read-compatible") {
-				readCompatibleVersions = QStringList::split(value, ";");
+				readCompatibleVersions = value.split(";");
 			} else if (key == "write-compatible") {
-				writeCompatibleVersions = QStringList::split(value, ";");
+				writeCompatibleVersions = value.split(";");
 			} else if (key == "preview*") {
 				bool ok;
 				qint64 size = value.toULong(&ok);
@@ -444,7 +444,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
 						if (emblem.isNull()) {
 							// Of the emblem path was eg. "/home/seb/emblem.png", it was exported as "tag-emblems/_home_seb_emblem.png".
 							// So we need to copy that image to "~/.kde/share/apps/basket/tag-emblems/emblem.png":
-							int slashIndex = emblemName.findRev("/");
+							int slashIndex = emblemName.lastIndexOf('/');
 							QString emblemFileName = (slashIndex < 0 ? emblemName : emblemName.right(slashIndex - 2));
 							QString source      = extractionFolder + "tag-emblems/" + emblemName.replace('/', '_');
 							QString destination = Global::savesFolder() + "tag-emblems/" + emblemFileName;
@@ -565,7 +565,7 @@ void Archive::importBasketIcon(QDomElement properties, const QString &extraction
 			FormatImporter copier; // Only used to copy files synchronously
 			// Of the icon path was eg. "/home/seb/icon.png", it was exported as "basket-icons/_home_seb_icon.png".
 			// So we need to copy that image to "~/.kde/share/apps/basket/basket-icons/icon.png":
-			int slashIndex = iconName.findRev("/");
+			int slashIndex = iconName.lastIndexOf('/');
 			QString iconFileName = (slashIndex < 0 ? iconName : iconName.right(slashIndex - 2));
 			QString source       = extractionFolder + "basket-icons/" + iconName.replace('/', '_');
 			QString destination = Global::savesFolder() + "basket-icons/" + iconFileName;
@@ -591,7 +591,7 @@ void Archive::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedS
 			} else if (element.tagName() == "note") {
 				QString tags = XMLWork::getElementText(element, "tags");
 				if (!tags.isEmpty()) {
-					QStringList tagNames = QStringList::split(";", tags);
+					QStringList tagNames = tags.split(";");
 					for (QStringList::Iterator it = tagNames.begin(); it != tagNames.end(); ++it) {
 						QString &tag = *it;
 						if (mergedStates.contains(tag)) {

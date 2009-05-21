@@ -75,7 +75,7 @@ class KGpgSelKey : public KDialog
 			keysListpr->setHeaderLabels(headers);
 			keysListpr->setAllColumnsShowFocus(true);
 
-			labeltxt = new QLabel(i18n("Choose a secret key:"),page);
+			labeltxt = new QLabel(i18n("Choose a secret key:"), page);
 			vbox = new QVBoxLayout(page);
 
 			KGpgKeyList list = gpg.keys(true);
@@ -164,25 +164,25 @@ QString KGpgMe::checkForUtf8(QString txt)
 	if(txt.isEmpty())
 		return QString::null;
 
-	for(s = txt.ascii(); *s && !(*s & 0x80); s++)
+	for(s = txt.toAscii(); *s && !(*s & 0x80); s++)
 		;
-	if (*s && !strchr (txt.ascii(), 0xc3) && (txt.find("\\x")==-1))
+	if (*s && !strchr (txt.toAscii(), 0xc3) && (txt.indexOf("\\x")==-1))
 		return txt;
 
 	// The string is not in UTF-8
-	//if (strchr (txt.ascii(), 0xc3)) return (txt+" +++");
-	if (txt.find("\\x")==-1)
-		return QString::fromUtf8(txt.ascii());
-	//        if (!strchr (txt.ascii(), 0xc3) || (txt.find("\\x")!=-1)) {
-	for(int idx = 0 ; (idx = txt.find( "\\x", idx )) >= 0 ; ++idx) {
+	//if (strchr (txt.toAscii(), 0xc3)) return (txt+" +++");
+	if (txt.indexOf("\\x")==-1)
+		return QString::fromUtf8(txt.toAscii());
+	//        if (!strchr (txt.toAscii(), 0xc3) || (txt.indexOf("\\x")!=-1)) {
+	for(int idx = 0 ; (idx = txt.indexOf( "\\x", idx )) >= 0 ; ++idx) {
 		char str[2] = "x";
 		str[0] = (char)QString(txt.mid(idx + 2, 2)).toShort(0, 16);
 		txt.replace(idx, 4, str);
 	}
-	if (!strchr (txt.ascii(), 0xc3))
-		return QString::fromUtf8(txt.ascii());
+	if (!strchr (txt.toAscii(), 0xc3))
+		return QString::fromUtf8(txt.toAscii());
 	else
-		return QString::fromUtf8(QString::fromUtf8(txt.ascii()).ascii());
+		return QString::fromUtf8(QString::fromUtf8(txt.toAscii()).toAscii());
 	// perform Utf8 twice, or some keys display badly
 	return txt;
 }
@@ -244,7 +244,7 @@ KGpgKeyList KGpgMe::keys(bool privateKeys /* = false */) const
 	return keys;
 }
 
-bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
+bool KGpgMe::encrypt(const QByteArray& inBuffer, unsigned long length,
 					 QByteArray* outBuffer, QString keyid /* = QString::null */)
 {
 	gpgme_error_t err = 0;
@@ -263,7 +263,7 @@ bool KGpgMe::encrypt(const QByteArray& inBuffer, Q_ULONG length,
 					key = NULL;
 				}
 				else {
-					err = gpgme_get_key(m_ctx, keyid.ascii(), &keys[0], 0);
+					err = gpgme_get_key(m_ctx, keyid.toAscii(), &keys[0], 0);
 					key = keys;
 				}
 
@@ -372,7 +372,7 @@ bool KGpgMe::isGnuPGAgentAvailable()
 {
 	QString agent_info = getenv("GPG_AGENT_INFO");
 
-	if (agent_info.find(':') > 0)
+	if (agent_info.indexOf(':') > 0)
 		return true;
 	return false;
 }
@@ -386,7 +386,7 @@ void KGpgMe::setPassphraseCb()
 
 	if(m_useGnuPGAgent)
 	{
-		if (agent_info.find(':'))
+		if (agent_info.indexOf(':'))
 			agent = true;
 		if(agent_info.startsWith("disable:"))
 			setenv("GPG_AGENT_INFO", agent_info.mid(8).toAscii(), 1);

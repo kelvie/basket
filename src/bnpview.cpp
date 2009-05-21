@@ -237,7 +237,7 @@ void BNPView::addWelcomeBaskets()
 	QStringList possiblePaths;
 	if (QString(KGlobal::locale()->encoding()) == QString("UTF-8")) { // Welcome baskets are encoded in UTF-8. If the system is not, then use the English version:
 		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + KGlobal::locale()->language() + ".baskets"));
-		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + QStringList::split("_", KGlobal::locale()->language())[0] + ".baskets"));
+		possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_" + KGlobal::locale()->language().split("_")[0] + ".baskets"));
 	}
 	possiblePaths.append(KGlobal::dirs()->findResource("data", "basket/welcome/Welcome_en_US.baskets"));
 
@@ -433,10 +433,10 @@ void BNPView::initialize()
 
 	setOpaqueResize(true);
 
-	setCollapsible(m_tree,  true);
-	setCollapsible(m_stack, false);
-	setResizeMode(m_tree,  QSplitter::KeepSize);
-	setResizeMode(m_stack, QSplitter::Stretch);
+	setCollapsible(indexOf(m_tree),  true);
+	setCollapsible(indexOf(m_stack), false);
+	setStretchFactor(indexOf(m_tree), 0);
+	setStretchFactor(indexOf(m_stack), 1);
 
 	/// Configure the List View Signals:
 	connect( m_tree, SIGNAL(itemActivated(QTreeWidgetItem*, int)), this, SLOT(slotPressed(QTreeWidgetItem*, int)) );
@@ -1194,8 +1194,10 @@ void BNPView::goToNextBasket()
 		toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
 	}
 
-	if (!toSwitch)
-		toSwitch = (BasketListViewItem*)m_tree->child(0);
+	if (!toSwitch) {
+		//toSwitch = (BasketListViewItem*)m_tree->child(0);
+		toSwitch = (BasketListViewItem*)m_tree->itemAt(0, 0);
+	}
 
 	while (toSwitch && !toSwitch->isShown()){
 		toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
@@ -1844,7 +1846,7 @@ void BNPView::showHideFilterBar(bool show, bool switchFocus)
 //		m_actShowFilter->setChecked(show);
 	m_actShowFilter->setChecked(show);
 
-	currentDecoratedBasket()->setFilterBarShown(show, switchFocus);
+	currentDecoratedBasket()->setFilterBarVisible(show, switchFocus);
 	if (!show)
 		currentDecoratedBasket()->resetFilter();
 }
@@ -2248,7 +2250,7 @@ void BNPView::showPassiveDroppedDelayed()
 
 	delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
 	m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
-	QImage contentsImage = NoteDrag::feedbackPixmap(m_passiveDroppedSelection);
+	QImage contentsImage = NoteDrag::feedbackPixmap(m_passiveDroppedSelection).toImage();
 	QResource::registerResource(contentsImage.bits(), ":/images/passivepopup_image");
 	m_passivePopup->setView(
 		title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
@@ -2402,7 +2404,7 @@ void BNPView::hideOnEscape()
 
 bool BNPView::isPart()
 {
-	return (strcmp(name(), "BNPViewPart") == 0);
+	return objectName() == "BNPViewPart";
 }
 
 bool BNPView::isMainWindowActive()
@@ -2545,8 +2547,10 @@ void BNPView::timeoutTryHide()
 
 	if (kapp->widgetAt(QCursor::pos()) != 0L)
 		m_hideTimer->stop();
-	else if ( ! m_hideTimer->isActive() ) // Start only one time
-		m_hideTimer->start(Settings::timeToHideOnMouseOut() * 100, true);
+	else if ( ! m_hideTimer->isActive() ) { // Start only one time
+		m_hideTimer->setSingleShot(true);
+		m_hideTimer->start(Settings::timeToHideOnMouseOut() * 100);
+	}
 
 	// If a sub-dialog is oppened, we musn't hide the main window:
 	if (kapp->activeWindow() != 0L && kapp->activeWindow() != Global::mainWindow())
@@ -2658,11 +2662,11 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	    ++i;
 	}
 
+	menu.addSeparator();
+
 	// I don't like how this is implemented; but I can't think of a better way
 	// to do this, so I will have to leave it for now
-	menu.insertSeparator();
-	KAction *act;
-	act = new KAction(i18n("&Assign new Tag..."), &menu);
+	KAction *act =  new KAction(i18n("&Assign new Tag..."), &menu);
 	act->setData(1);
 	menu.addAction(act);
 
@@ -2674,9 +2678,9 @@ void BNPView::populateTagsMenu(KMenu &menu, Note *referenceNote)
 	act->setData(3);
 	menu.addAction(act);
 
-	menu.setItemEnabled(1, enable);
+	act->setEnabled(enable);
 	if (!currentBasket()->selectedNotesHaveTags())
-		menu.setItemEnabled(2, false);
+		act->setEnabled(false);
 
 	connect( &menu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)) );
 	connect( &menu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering())      );

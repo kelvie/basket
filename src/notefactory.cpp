@@ -129,7 +129,7 @@ QStringList NoteFactory::textToURLList(const QString &text)
 	QStringList list;
 
 	// Split lines:
-	QStringList texts = QStringList::split('\n', text);
+	QStringList texts = text.split('\n');
 
 	// For each lines:
 	QStringList::iterator it;
@@ -147,7 +147,7 @@ QStringList NoteFactory::textToURLList(const QString &text)
 		/* Search for mail address ("*@*.*" ; "*" can contain '_', '-', or '.') and add protocol to it */
 		QString mailExpString = "[\\w-\\.]+@[\\w-\\.]+\\.[\\w]+";
 		QRegExp mailExp("^"+mailExpString+"$");
-		if (mailExp.search(ltext) != -1) {
+		if (mailExp.exactMatch(ltext)) {
 			ltext.insert(0, "mailto:");
 			(*it).insert(0, "mailto:");
 		}
@@ -158,7 +158,7 @@ QStringList NoteFactory::textToURLList(const QString &text)
 		/* Search for mail address like "Name <address@provider.net>" */
 		QRegExp namedMailExp("^([\\w\\s]+)\\s<("+mailExpString+")>$");
 		//namedMailExp.setCaseSensitive(true); // For the name to be keeped with uppercases // DOESN'T WORK !
-		if (namedMailExp.search(ltext) != -1) {
+		if (namedMailExp.exactMatch(ltext)) {
 			QString name    = namedMailExp.cap(1);
 			QString address = "mailto:" + namedMailExp.cap(2);
 			// Threat it NOW, as it's an exception (it have a title):
@@ -198,7 +198,7 @@ Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
 {
 	/* Search for a color (#RGB , #RRGGBB , #RRRGGGBBB , #RRRRGGGGBBBB) and create a color note */
 	QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");
-	if ( exp.search(text) != -1 )
+	if (exp.exactMatch(text))
 		return createNoteColor(QColor(text), parent);
 
 	/* Try to convert the text as a URL or a list of URLs */
@@ -274,7 +274,7 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 	QFile file(fullPath);
 	if ( file.open(QIODevice::WriteOnly) ) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 		stream << content;
 		file.close();
 		return fileName;
@@ -301,15 +301,15 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 }
 
 
-bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, QDropEvent::Action action)
+bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, Qt::DropAction action)
 {
 	if (NoteDrag::canDecode(source))
-		return action == QDropEvent::Move && NoteDrag::basketOf(source) == parent;
+		return action == Qt::MoveAction && NoteDrag::basketOf(source) == parent;
 	else
 		return false;
 }
 
-Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDrop, QDropEvent::Action action, Note */*noteSource*/)
+Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDrop, Qt::DropAction action, Note */*noteSource*/)
 {
 	Note *note = 0L;
 
@@ -328,17 +328,16 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 		for (int i = 0; formats.size(); ++i)
 			*Global::debugWindow << "\t[" + QString::number(i) + "] " + formats[i];
 		switch (action) { // The source want that we:
-			case QDropEvent::Copy:       *Global::debugWindow << ">> Drop action: Copy";       break;
-			case QDropEvent::Move:       *Global::debugWindow << ">> Drop action: Move";       break;
-			case QDropEvent::Link:       *Global::debugWindow << ">> Drop action: Link";       break;
-			case QDropEvent::Private:    *Global::debugWindow << ">> Drop action: Private";    break; // What is it? (Copy?)
+			case Qt::CopyAction:       *Global::debugWindow << ">> Drop action: Copy";       break;
+			case Qt::MoveAction:       *Global::debugWindow << ">> Drop action: Move";       break;
+			case Qt::LinkAction:       *Global::debugWindow << ">> Drop action: Link";       break;
 			default:                     *Global::debugWindow << ">> Drop action: Unknown";           //  supported by Qt!
 		}
 	}
 
 	/* Copy or move a Note */
 	if (NoteDrag::canDecode(source)) {
-		bool moveFiles = fromDrop && action == QDropEvent::Move;
+		bool moveFiles = fromDrop && action == Qt::MoveAction;
 		bool moveNotes = moveFiles;
 		return NoteDrag::decode(source, parent, moveFiles, moveNotes); // Filename will be kept
 	}
@@ -357,7 +356,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 	QString hack;
 	QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");
 	hack = source->text();
-	if (source->hasFormat("application/x-color") || (!hack.isNull() && (exp.search(hack) != -1)) ) {
+	if (source->hasFormat("application/x-color") || (!hack.isNull() && exp.exactMatch(hack)) ) {
 		QColor color = qvariant_cast<QColor>(source->colorData()) ;
 		if (color.isValid())
 			return createNoteColor(color, parent);
@@ -370,7 +369,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
 	if ( !urls.isEmpty() ){
 		// If it's a Paste, we should know if files should be copied (copy&paste) or moved (cut&paste):
 		if (!fromDrop && Tools::isAFileCut(source))
-			action = QDropEvent::Move;
+			action = Qt::MoveAction;
 		return dropURLs(urls, parent, action, fromDrop);
 	}
 
@@ -470,7 +469,7 @@ Note* NoteFactory::createNoteUnknown(const QMimeData *source, Basket *parent/*, 
 	for (int i = 0; formats.size(); ++i){
 		QByteArray data = source->data(formats[i]);
 		stream << (quint32)data.count();
-		stream.writeRawBytes(data.data(), data.count());
+		stream.writeRawData(data.data(), data.count());
 	}
 	file.close();
 
@@ -479,7 +478,7 @@ Note* NoteFactory::createNoteUnknown(const QMimeData *source, Basket *parent/*, 
 	return note;
 }
 
-Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action action, bool fromDrop)
+Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop)
 {
 	int  shouldAsk    = 0; // shouldAsk==0: don't ask ; shouldAsk==1: ask for "file" ; shouldAsk>=2: ask for "files"
 	bool shiftPressed = Keyboard::shiftPressed();
@@ -511,13 +510,13 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 				foreach (QAction *a, actList)
 					menu.addAction(a);
 
-				menu.insertSeparator();
+				menu.addSeparator();
 				menu.addAction(KIcon("dialog-cancel"), i18n("C&ancel\tEscape"));
 				int id = actList.indexOf(menu.exec(QCursor::pos()));
 				switch (id) {
-					case 0: action = QDropEvent::Move; break;
-					case 1: action = QDropEvent::Copy; break;
-					case 2: action = QDropEvent::Link; break;
+					case 0: action = Qt::MoveAction; break;
+					case 1: action = Qt::CopyAction; break;
+					case 2: action = Qt::LinkAction; break;
 					default: return 0;
 				}
 				modified = true;
@@ -550,17 +549,17 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action 
 	Note *lastInserted = 0;
 	for (KUrl::List::iterator it = urls.begin(); it != urls.end(); ++it) {
 		if ( ((*it).protocol() == "mailto") ||
-					  (action == QDropEvent::Link)    )
+					  (action == Qt::LinkAction)    )
 			note = createNoteLinkOrLauncher(*it, parent);
 		else if (!(*it).isLocalFile()) {
-			if ( action != QDropEvent::Link && (maybeImageOrAnimation(*it)/* || maybeSound(*it)*/) )
+			if ( action != Qt::LinkAction && (maybeImageOrAnimation(*it)/* || maybeSound(*it)*/) )
 				note = copyFileAndLoad(*it, parent);
 			else
 				note = createNoteLinkOrLauncher(*it, parent);
 		} else {
-			if (action == QDropEvent::Copy)
+			if (action == Qt::CopyAction)
 				note = copyFileAndLoad(*it, parent);
-			else if (action == QDropEvent::Move)
+			else if (action == Qt::MoveAction)
 				note = moveFileAndLoad(*it, parent);
 			else
 				note = createNoteLinkOrLauncher(*it, parent);
@@ -920,14 +919,14 @@ QString NoteFactory::iconForCommand(const QString &command)
 	QString icon;
 
 	// 1. Use first word as icon (typically the program without argument)
-	icon = QStringList::split(' ', command).first();
+	icon = command.split(' ').first();
 	// 2. If the command is a full path, take only the program file name
-	icon = icon.mid(icon.findRev('/') + 1); // strip path if given [But it doesn't care of such
+	icon = icon.mid(icon.lastIndexOf('/') + 1); // strip path if given [But it doesn't care of such
 	                                                   // "myprogram /my/path/argument" -> return "argument". Would
 	                                                   // must first strip first word and then strip path... Useful ??
 	// 3. Use characters before any '-' (e.g. use "gimp" icon if run command is "gimp-1.3")
 	if ( ! isIconExist(icon) )
-		icon = QStringList::split('-', icon).first();
+		icon = icon.split('-').first();
 	// 4. If the icon still not findable, use a generic icon
 	if ( ! isIconExist(icon) )
 		icon = "exec";

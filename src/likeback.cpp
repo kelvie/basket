@@ -66,7 +66,7 @@
 /****************************************/
 
 LikeBackBar::LikeBackBar(LikeBack *likeBack)
- : QWidget(0, "LikeBackBar", Qt::WX11BypassWM | Qt::WStyle_NoBorder | Qt::WNoAutoErase | Qt::WStyle_StaysOnTop | Qt::WStyle_NoBorder | Qt::WGroupLeader)
+ : QWidget(0, Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
  , m_likeBack(likeBack)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -76,33 +76,33 @@ LikeBackBar::LikeBackBar(LikeBack *likeBack)
 	QIcon bugIconSet     = KIcon(":images/cr16-action-likeback_bug.png");
 	QIcon featureIconSet = KIcon(":images/cr16-action-likeback_feature.png");
 
-	m_likeButton = new QToolButton(this, ":images/cr16-action-likeback_like.png");
+	m_likeButton = new QToolButton(this);
 	m_likeButton->setIcon(likeIconSet);
-	m_likeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you like"));
+	m_likeButton->setText("<p>" + i18n("Send application developers a comment about something you like"));
 	m_likeButton->setAutoRaise(true);
 	connect( m_likeButton, SIGNAL(clicked()), this, SLOT(clickedLike()) );
-	layout->add(m_likeButton);
+	layout->addWidget(m_likeButton);
 
-	m_dislikeButton = new QToolButton(this, ":images/cr16-action-likeback_dislike.png");
+	m_dislikeButton = new QToolButton(this);
 	m_dislikeButton->setIcon(dislikeIconSet);
-	m_dislikeButton->setTextLabel("<p>" + i18n("Send application developers a comment about something you dislike"));
+	m_dislikeButton->setText("<p>" + i18n("Send application developers a comment about something you dislike"));
 	m_dislikeButton->setAutoRaise(true);
 	connect( m_dislikeButton, SIGNAL(clicked()), this, SLOT(clickedDislike()) );
-	layout->add(m_dislikeButton);
+	layout->addWidget(m_dislikeButton);
 
-	m_bugButton = new QToolButton(this, ":images/cr16-action-likeback_bug.png");
+	m_bugButton = new QToolButton(this);
 	m_bugButton->setIcon(bugIconSet);
-	m_bugButton->setTextLabel("<p>" + i18n("Send application developers a comment about an improper behavior of the application"));
+	m_bugButton->setText("<p>" + i18n("Send application developers a comment about an improper behavior of the application"));
 	m_bugButton->setAutoRaise(true);
 	connect( m_bugButton, SIGNAL(clicked()), this, SLOT(clickedBug()) );
-	layout->add(m_bugButton);
+	layout->addWidget(m_bugButton);
 
-	m_featureButton = new QToolButton(this, ":images/cr16-action-likeback_feature.png");
+	m_featureButton = new QToolButton(this);
 	m_featureButton->setIcon(featureIconSet);
-	m_featureButton->setTextLabel("<p>" + i18n("Send application developers a comment about a new feature you desire"));
+	m_featureButton->setText("<p>" + i18n("Send application developers a comment about a new feature you desire"));
 	m_featureButton->setAutoRaise(true);
 	connect( m_featureButton, SIGNAL(clicked()), this, SLOT(clickedFeature()) );
-	layout->add(m_featureButton);
+	layout->addWidget(m_featureButton);
 
 	connect( &m_timer, SIGNAL(timeout()), this, SLOT(autoMove()) );
 
@@ -142,8 +142,8 @@ void LikeBackBar::autoMove()
 		move(window->mapToGlobal(QPoint(0, 0)).x() + window->width() - width(), window->mapToGlobal(QPoint(0, 0)).y() + 1);
 
 		if (window != lastWindow && m_likeBack->windowNamesListing() != LikeBack::NoListing) {
-			if (qstricmp(window->name(), "") == 0 || qstricmp(window->name(), "unnamed") == 0) {
-				kDebug() << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->className() << " ======" << LikeBack::activeWindowPath();
+			if (window->objectName().isEmpty() || window->objectName() == "unnamed") {
+				kDebug() << "===== LikeBack ===== UNNAMED ACTIVE WINDOW OF TYPE " << window->metaObject()->className() << " ======" << LikeBack::activeWindowPath();
 			} else if (m_likeBack->windowNamesListing() == LikeBack::AllWindows) {
 				kDebug() << "LikeBack: Active Window: " << LikeBack::activeWindowPath();
 			}
@@ -152,9 +152,9 @@ void LikeBackBar::autoMove()
 	}
 
 	// Show or hide the bar accordingly:
-	if (shouldShow && !isShown()) {
+	if (shouldShow && !isVisible()) {
 		show();
-	} else if (!shouldShow && isShown()) {
+	} else if (!shouldShow && isVisible()) {
 		hide();
 	}
 }
@@ -485,10 +485,10 @@ QString LikeBack::activeWindowPath()
 	QStringList windowNames;
 	QWidget *window = kapp->activeWindow();
 	while (window) {
-		QString name = window->name();
+		QString name = window->objectName();
 		// Append the class name to the window name if it is unnamed:
 		if (name == "unnamed")
-			name += QString(":") + window->className();
+			name += QString(":") + window->metaObject()->className();
 		windowNames.append(name);
 		window = dynamic_cast<QWidget*>(window->parent());
 	}
@@ -561,11 +561,7 @@ void LikeBack::askEmailAddress()
 // FIXME: Should be moved to KAboutData? Cigogne will also need it.
 bool LikeBack::isDevelopmentVersion(const QString &version)
 {
-	return version.find("alpha", /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       version.find("beta",  /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       version.find("rc",    /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       version.find("svn",   /*index=*/0, /*caseSensitive=*/false) != -1 ||
-	       version.find("cvs",   /*index=*/0, /*caseSensitive=*/false) != -1;
+	return version.contains(QRegExp(".*(alpha|beta|rc|svn|cvs).*", Qt::CaseInsensitive));
 }
 
 /**
@@ -635,7 +631,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 		m_windowPath = LikeBack::activeWindowPath();
 
 	QWidget *page = new QWidget(this);
-	QVBoxLayout *pageLayout = new QVBoxLayout(page, /*margin=*/0, spacingHint());
+	QVBoxLayout *pageLayout = new QVBoxLayout(page);
 
 	// The introduction message:
 	QLabel *introduction = new QLabel(introductionText(), page);
@@ -651,7 +647,8 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	// The radio buttons:
 	QWidget *buttons = new QWidget(box);
 	boxLayout->addWidget(buttons);
-	QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
+	//QGridLayout *buttonsGrid = new QGridLayout(buttons, /*nbRows=*/4, /*nbColumns=*/2, /*margin=*/0, spacingHint());
+	QGridLayout *buttonsGrid = new QGridLayout(buttons);
 	if (m_likeBack->buttons() & LikeBack::Like) {
 		QPixmap likePixmap = KIconLoader::global()->loadIcon(
             ":images/cr16-action-likeback_like.png", KIconLoader::NoGroup, 16,
@@ -704,8 +701,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	m_comment = new QTextEdit(box);
 	boxLayout->addWidget(m_comment);
 	m_comment->setTabChangesFocus(true);
-	m_comment->setTextFormat(Qt::PlainText);
-	m_comment->setText(initialComment);
+	m_comment->setPlainText(initialComment);
 
 	m_showButtons = new QCheckBox(i18n("Show comment buttons below &window titlebars"), page);
 	m_showButtons->setChecked(m_likeBack->userWantsToShowBar());
@@ -721,7 +717,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 	resize(QSize(kapp->desktop()->width() * 1 / 2, kapp->desktop()->height() * 3 / 5).expandedTo(sizeHint()));
 
 	QAction *sendShortcut = new QAction(this);
-	sendShortcut->setAccel(QString("Ctrl+Return"));
+	sendShortcut->setShortcut(Qt::CTRL + Qt::Key_Return);
 	connect( sendShortcut, SIGNAL(activated()), button(Ok), SLOT(animateClick()) );
 
 	setMainWidget(page);
@@ -765,9 +761,9 @@ QString LikeBackDialog::introductionText()
 	return text;
 }
 
-void LikeBackDialog::polish()
+void LikeBackDialog::ensurePolished()
 {
-	KDialog::polish();
+	KDialog::ensurePolished();
 	m_comment->setFocus();
 }
 
@@ -789,7 +785,7 @@ void LikeBackDialog::changeButtonBarVisible()
 void LikeBackDialog::commentChanged()
 {
 	QPushButton *sendButton = button(Ok);
-	sendButton->setEnabled(!m_comment->text().isEmpty());
+	sendButton->setEnabled(!m_comment->document()->isEmpty());
 }
 
 void LikeBackDialog::send()
@@ -804,7 +800,7 @@ void LikeBackDialog::send()
 		"locale="   + QUrl::toPercentEncoding(KGlobal::locale()->language())      + '&' +
 		"window="   + QUrl::toPercentEncoding(m_windowPath)                       + '&' +
 		"context="  + QUrl::toPercentEncoding(m_context)                          + '&' +
-		"comment="  + QUrl::toPercentEncoding(m_comment->text())                  + '&' +
+		"comment="  + QUrl::toPercentEncoding(m_comment->toPlainText())           + '&' +
 		"email="    + QUrl::toPercentEncoding(emailAddress);
 	QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
 
@@ -816,7 +812,7 @@ void LikeBackDialog::send()
 	header.setValue("Host", m_likeBack->hostName());
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
 	http->setHost(m_likeBack->hostName());
-	http->request(header, data.utf8());
+	http->request(header, data.toUtf8());
 
 	m_comment->setEnabled(false);
 }

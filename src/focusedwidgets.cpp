@@ -68,7 +68,7 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 
     if (m_disableUpdatesOnKeyPress) {
         setUpdatesEnabled(true);
-        if (!text().isEmpty())
+        if (!document()->isEmpty())
             ensureCursorVisible();
     }
 }

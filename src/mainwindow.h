@@ -89,7 +89,7 @@ class MainWindow : public KXmlGuiWindow
 	virtual void moveEvent(QMoveEvent*);
 
   public:
-	void polish();
+	void ensurePolished();
 
   private:
 	// Settings actions :

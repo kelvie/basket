@@ -137,7 +137,7 @@
 
             QByteArray gdb;
             gdb  = "gdb --nw -n --batch -x ";
-            gdb += temp.name().toLatin1();
+            gdb += temp.fileName().toLatin1();
             gdb += " basket ";
             gdb += QByteArray().setNum( ::getppid() );
 
@@ -153,7 +153,7 @@
             bool useful = true;
             const QString fileCommandOutput = runCommand( "file `which basket`" );
 
-            if( fileCommandOutput.find( "not stripped", false ) == -1 )
+            if( fileCommandOutput.indexOf("not stripped") == -1 )
                 subject += "[___stripped]"; //same length as below
             else
                 subject += "[NOTstripped]";
@@ -170,7 +170,7 @@
                 }
                 subject += QString("[frames: %1]").arg( totalFrames, 3 /*padding*/ );
 
-                if( bt.find( QRegExp(" at \\w*\\.cpp:\\d+\n") ) >= 0 )
+                if( bt.indexOf( QRegExp(" at \\w*\\.cpp:\\d+\n") ) != -1 )
                     subject += "[line numbers]";
             }
             else

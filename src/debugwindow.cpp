@@ -30,11 +30,11 @@
 #include "global.h"
 #include "debugwindow.h"
 
-DebugWindow::DebugWindow(QWidget *parent, const char *name )
- : QWidget(parent, name != 0 ? name : "DebugWindow")
+DebugWindow::DebugWindow(QWidget *parent)
+ : QWidget(parent)
 {
 	Global::debugWindow = this;
-	setCaption(i18n("Debug Window"));
+	setWindowTitle(i18n("Debug Window"));
 
 	layout      = new QVBoxLayout(this);
 	textBrowser = new QTextBrowser(this);

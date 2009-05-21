@@ -119,8 +119,7 @@ void FormatImporter::importBaskets()
 	if (list.count() > 2) // Pass "." and ".."
 		for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) // For each folder
 			if (*it != "." && *it != ".." && dir.exists(Global::savesFolder() + *it + "/.basket")) // If it can be a basket folder
-				if ( baskets.find((*it) + "/") == baskets.end() &&
-				     baskets.find(*it)         == baskets.end()    ) // And if it is not already in the imported baskets list
+				if (! (baskets.contains((*it) + "/")) && baskets.contains(*it) ) // And if it is not already in the imported baskets list
 					baskets.append(*it);
 
 	kDebug() << "Import Baskets: Found " << baskets.count() << " baskets to import.";
@@ -142,7 +141,7 @@ void FormatImporter::importBaskets()
 			QString newFolderName = folderName;
 			if (newFolderName.endsWith("/"))
 				newFolderName = newFolderName.left(newFolderName.length() - 1);
-			newFolderName = newFolderName.mid(newFolderName.findRev('/') + 1);
+			newFolderName = newFolderName.mid(newFolderName.lastIndexOf('/') + 1);
 			newFolderName = Tools::fileNameForNewFile(newFolderName, Global::basketsFolder());
 			FormatImporter f;
 			f.copyFolder(folderName, Global::basketsFolder() + newFolderName);
@@ -166,7 +165,7 @@ void FormatImporter::importBaskets()
 	QFile file(Global::basketsFolder() + "baskets.xml");
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 		QString xml = document.toString();
 		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		stream << xml;
@@ -270,7 +269,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 				QFile file(launcherFullPath);
 				if (file.open(QIODevice::WriteOnly)) {
 					QTextStream stream(&file);
-					stream.setEncoding(QTextStream::UnicodeUTF8);
+					stream.setCodec("UTF-8");
 					stream << launcherContent;
 					file.close();
 				}
@@ -296,7 +295,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
 	QFile file(Global::basketsFolder() + folderName + "/.basket");
 	if (file.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec("UTF-8");
 //		QString xml = document->toString();
 //		stream << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 //		stream << xml;

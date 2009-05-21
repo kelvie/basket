@@ -81,7 +81,7 @@ QString Global::openNoteIcon() // FIXME: Now an edit icon
 
 KMainWindow* Global::mainWindow()
 {
-	QWidget* res = kapp->mainWidget();
+	QWidget* res = kapp->activeWindow();
 
 	if(res && res->inherits("KMainWindow"))
 	{

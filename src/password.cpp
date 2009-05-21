@@ -41,7 +41,7 @@ PasswordDlg::PasswordDlg(QWidget *parent)
      , w(0)
 {
 	// KDialog options
-	setCaption(i18n("Password Protection"));
+	setWindowTitle(i18n("Password Protection"));
 	setButtons(Ok | Cancel);
 	setDefaultButton(Ok);
 	setModal(true);
@@ -72,7 +72,7 @@ QString PasswordDlg::key() const
 	QString s = w->keyCombo->currentText();
 	if(s.length() < 16)
 		return "";
-	int n = s.findRev(' ');
+	int n = s.lastIndexOf(' ');
 	if(n < 0)
 		return "";
 	return s.mid(n+1);
@@ -93,9 +93,9 @@ void PasswordDlg::setKey(const QString& key)
 {
 	for(int i = 0; i < w->keyCombo->count(); ++i)
 	{
-		if(w->keyCombo->text(i).find(key) >= 0)
+		if(w->keyCombo->itemText(i).contains(key))
 		{
-			w->keyCombo->setCurrentItem(i);
+			w->keyCombo->setCurrentIndex(i);
 			return;
 		}
 	}
@@ -123,7 +123,7 @@ Password::Password(QWidget *parent)
 	for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
 		QString name = gpg.checkForUtf8((*it).name);
 
-		keyCombo->insertItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
+		keyCombo->addItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
 	}
 	publicPrivateRadioButton->setEnabled(keyCombo->count() > 0);
 	keyCombo->setEnabled(keyCombo->count() > 0);

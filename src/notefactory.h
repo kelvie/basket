@@ -64,9 +64,9 @@ namespace NoteFactory
 	Note* loadFile(           const QString &fileName, NoteType::Id type, Basket *parent ); /// <<  Create a note of type @p type. The file is not obliged to exist.
 	/** Functions to create a new note from a drop or paste event */
 	Note* dropNote(const QMimeData *source, Basket *parent,
-	               bool fromDrop = false, QDropEvent::Action action = QDropEvent::Copy, Note *noteSource = 0);
-	bool movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, QDropEvent::Action action);
-	Note* dropURLs(KUrl::List urls, Basket *parent, QDropEvent::Action action, bool fromDrop);
+	               bool fromDrop = false, Qt::DropAction action = Qt::CopyAction, Note *noteSource = 0);
+	bool movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, Qt::DropAction action);
+	Note* dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop);
 	Note* decodeContent(QDataStream &stream, NoteType::Id type, Basket *parent); /// << Decode the @p stream to a note or return 0 if a general loadFile() is sufficient.
 	void consumeContent(QDataStream &stream, NoteType::Id type); /// << Decode the @p stream to a note or return 0 if a general loadFile() is sufficient.
 	/** Functions to create a note file but not load it in a note object */

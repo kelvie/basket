@@ -40,7 +40,7 @@
 DesktopColorPicker::DesktopColorPicker()
  : QDesktopWidget()
 {
-	setName("DesktopColorPicker");
+	setObjectName("DesktopColorPicker");
 	m_gettingColorFromScreen = false;
 }
 
@@ -65,7 +65,7 @@ void DesktopColorPicker::pickColor()
 void DesktopColorPicker::slotDelayedPick()
 {
 	grabKeyboard();
-	grabMouse(Qt::crossCursor);
+	grabMouse(Qt::CrossCursor);
 }
 
 /* Validate the color

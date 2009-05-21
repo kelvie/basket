@@ -57,7 +57,7 @@ class KGpgMe
 		bool saving() const { return m_saving; };
 		void clearCache();
 
-		bool encrypt(const QByteArray& inBuffer, Q_ULONG length,
+		bool encrypt(const QByteArray& inBuffer, unsigned long length,
 					 QByteArray* outBuffer, QString keyid = QString::null);
 		bool decrypt(const QByteArray& inBuffer, QByteArray* outBuffer);
 
