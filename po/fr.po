@@ -6,18 +6,19 @@
 #
 # Sébastien Laoût <slaout@linux62.org>, 2004, 2005, 2006, 2007.
 # Yann Verley <yann.verley@free.fr>, 2007.
+# Guillaume Martres <smarter@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: basket_fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-17 22:39+0200\n"
-"PO-Revision-Date: 2007-02-26 23:10+0100\n"
-"Last-Translator: Yann Verley <yann.verley@free.fr>\n"
-"Language-Team:  <fr@li.org>\n"
+"PO-Revision-Date: 2009-05-22 18:49+0200\n"
+"Last-Translator: Guillaume Martres <smarter@ubuntu.com>\n"
+"Language-Team: Français <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 0.3\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
 #. i18n: file: src/passwordlayout.ui:13
@@ -119,7 +120,7 @@ msgstr "&Importer"
 #. i18n: ectx: Menu (edit)
 #: rc.cpp:12 rc.cpp:57 src/basket.cpp:4307
 msgid "&Edit"
-msgstr ""
+msgstr "&Éditer"
 
 #. i18n: file: src/basket_part.rc:52
 #. i18n: ectx: Menu (go)
@@ -167,7 +168,7 @@ msgstr "&Marques"
 #. i18n: ectx: Menu (insert)
 #: rc.cpp:24 rc.cpp:69
 msgid "&Insert"
-msgstr ""
+msgstr "&Insérer"
 
 #. i18n: file: src/basket_part.rc:92
 #. i18n: ectx: Menu (settings)
@@ -179,7 +180,7 @@ msgstr ""
 #. i18n: ectx: Menu (settings)
 #: rc.cpp:27 rc.cpp:72
 msgid "&Settings"
-msgstr ""
+msgstr "&Paramètres"
 
 #. i18n: file: src/basket_part.rc:103
 #. i18n: ectx: Menu (help)
@@ -191,7 +192,7 @@ msgstr ""
 #. i18n: ectx: Menu (help)
 #: rc.cpp:30 rc.cpp:75
 msgid "&Help"
-msgstr ""
+msgstr "&Aide"
 
 #. i18n: file: src/basket_part.rc:118
 #. i18n: ectx: ToolBar (mainToolBar)
@@ -202,9 +203,8 @@ msgstr ""
 #. i18n: file: src/basketui.rc:121
 #. i18n: ectx: ToolBar (mainToolBar)
 #: rc.cpp:33 rc.cpp:78
-#, fuzzy
 msgid "Main Toolbar"
-msgstr "Mise en forme de texte"
+msgstr "Barre principale"
 
 #. i18n: file: src/basket_part.rc:129
 #. i18n: ectx: ToolBar (richTextEditToolBar)
@@ -221,12 +221,12 @@ msgstr "Mise en forme de texte"
 #: rc.cpp:103
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "Guillaume Martres"
 
 #: rc.cpp:104
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "smarter@ubuntu.com"
 
 #: src/aboutdata.cpp:25
 msgid ""
@@ -252,9 +252,8 @@ msgid "Kelvie Wong"
 msgstr ""
 
 #: src/aboutdata.cpp:39
-#, fuzzy
 msgid "Maintainer"
-msgstr "Auteur, mainteneur"
+msgstr "Mainteneur"
 
 #: src/aboutdata.cpp:42
 msgid "Sébastien Laoût"
@@ -262,7 +261,7 @@ msgstr ""
 
 #: src/aboutdata.cpp:43
 msgid "Original Author"
-msgstr ""
+msgstr "Auteur originel"
 
 #: src/aboutdata.cpp:46
 msgid "Petri Damstén"
@@ -363,7 +362,6 @@ msgid "Why to do that?"
 msgstr "Pourquoi faire cela ?"
 
 #: src/backup.cpp:88
-#, fuzzy
 msgid ""
 "<p>You can move the folder where %1 store your baskets to:</p><ul><li>Store "
 "your baskets in a visible place in your home folder, like ~/Notes or ~/"
@@ -377,12 +375,12 @@ msgid ""
 "to the basket).</p>"
 msgstr ""
 "<p>Vous pouvez déplacer le dossier dans lequel %1 stocke vos paniers pour :</"
-"p><ul><li>Stocker vos paniers dans endroit visible de votre dossier "
-"personnel, comme ~/Notes or ~/Paniers, afin de pouvoir les sauvegarder "
+"p><ul><li>Stocker vos paniers dans un endroit visible de votre dossier "
+"personnel, comme ~/Notes ou ~/Paniers, afin de pouvoir les sauvegarder "
 "manuellement lorsque vous le souhaitez.</li><li>Stocker vos paniers sur un "
 "serveur pour les partager entre deux ordinateurs.<br>Dans ce cas, montez le "
-"dossier partagé dans le système de fichier local et demandez à %2 d'utiliser "
-"ce point de montage.<br>Attention : vous ne devez pas lancer %3 en même "
+"dossier partagé dans le système de fichier local et demandez à %1 d'utiliser "
+"ce point de montage.<br>Attention : vous ne devez pas lancer %1 en même "
 "temps sur les deux ordinateurs, ou vous risquez de perdre des données "
 "lorsque que les deux applications seront désynchronisées.</li></"
 "ul><p>Veuillez noter que vous ne devez pas changer le contenu de ce dossier "
@@ -427,7 +425,6 @@ msgid "&Override"
 msgstr "Écras&er"
 
 #: src/backup.cpp:164
-#, fuzzy
 msgid ""
 "Your baskets have been successfully moved to <b>%1</b>. %2 is going to be "
 "restarted to take this change into account."
@@ -448,10 +445,9 @@ msgstr ""
 "va être redémarré pour prendre en compte ces changements."
 
 #: src/backup.cpp:187
-#, fuzzy
 msgid "Backup filename (without extension), %1 is the date"
 msgid_plural "Baskets_%1"
-msgstr[0] "Paniers_%1"
+msgstr[0] "Fichier de sauvegarde (sans l'extension), %1 est la date"
 msgstr[1] "Paniers_%1"
 
 #: src/backup.cpp:191 src/backup.cpp:247
@@ -562,10 +558,9 @@ msgid "Restart"
 msgstr "Redémarrage"
 
 #: src/backup.cpp:367
-#, fuzzy
 msgctxt "Safety folder name before restoring a basket data archive"
 msgid "Baskets Before Restoration"
-msgstr "&Position de l'arborescence des paniers :"
+msgstr "Panier avant restauration"
 
 #: src/backup.cpp:372
 msgctxt "Safety folder name before restoring a basket data archive"
@@ -590,9 +585,8 @@ msgid "The new notes do not match the filter and are hidden."
 msgstr "Les nouvelles notes ne correspondent pas au filtre et sont cachées."
 
 #: src/basket.cpp:1607
-#, fuzzy
 msgid "Group"
-msgstr "&Grouper"
+msgstr "Grouper"
 
 #: src/basket.cpp:1609
 msgid "Insert"
@@ -683,10 +677,9 @@ msgid "Last Modification"
 msgstr "Dernière modification"
 
 #: src/basket.cpp:2902
-#, fuzzy
 msgctxt "of the form 'key: value'"
 msgid "<b>%1</b>: %2"
-msgstr "%1 : %2"
+msgstr "<b>%1</b> : %2"
 
 #: src/basket.cpp:2905
 msgid "Click on the right to group instead of insert"
@@ -726,9 +719,8 @@ msgid "Loading..."
 msgstr "Chargement..."
 
 #: src/basket.cpp:3410 src/basket.cpp:3448
-#, fuzzy
 msgid "&Remove"
-msgstr "&Tout supprimer"
+msgstr "Supp&rimer"
 
 #: src/basket.cpp:3413 src/basket.cpp:3454 src/bnpview.cpp:2673
 msgid "&Customize..."
@@ -747,51 +739,36 @@ msgid "Tags"
 msgstr "Marques"
 
 #: src/basket.cpp:4156
-#, fuzzy
 msgid "<qt>Do you really want to delete this note?</qt>"
 msgid_plural "<qt>Do you really want to delete these <b>%1</b> notes?</qt>"
-msgstr[0] ""
-"<qt>Voulez-vous réellement supprimer le panier <b>%1</b> et son contenu ?</"
-"qt>"
+msgstr[0] "<qt>Voulez-vous vraiment supprimer cette note?</qt>"
 msgstr[1] ""
 "<qt>Voulez-vous réellement supprimer le panier <b>%1</b> et son contenu ?</"
 "qt>"
 
 #: src/basket.cpp:4159
-#, fuzzy
 msgid "Delete Note"
 msgid_plural "Delete Notes"
-msgstr[0] "Supprimer l'état"
+msgstr[0] "Supprimer la note"
 msgstr[1] "Supprimer l'état"
 
 #: src/basket.cpp:4257
-#, fuzzy
 msgid "Copied note to clipboard."
 msgid_plural "Copied notes to clipboard."
-msgstr[0] ""
-"Note copiée dans le presse-papiers.\n"
-"Notes copiées dans le presse-papiers."
-msgstr[1] ""
-"Note copiée dans le presse-papiers.\n"
-"Notes copiées dans le presse-papiers."
+msgstr[0] "Note copiée dans le presse-papier."
+msgstr[1] "Notes copiées dans le presse-papiers."
 
 #: src/basket.cpp:4258
-#, fuzzy
 msgid "Cut note to clipboard."
 msgid_plural "Cut notes to clipboard."
-msgstr[0] "Coller le presse-papiers"
-msgstr[1] "Coller le presse-papiers"
+msgstr[0] "Déplacer la note dans le presse-papiers"
+msgstr[1] "Déplacer les notes dans le presse-papiers"
 
 #: src/basket.cpp:4259
-#, fuzzy
 msgid "Copied note to selection."
 msgid_plural "Copied notes to selection."
-msgstr[0] ""
-"Note copiée dans la sélection.\n"
-"Notes copiées dans la sélection."
-msgstr[1] ""
-"Note copiée dans la sélection.\n"
-"Notes copiées dans la sélection."
+msgstr[0] "Note copiée dans la sélection."
+msgstr[1] "Notes copiées dans la sélection."
 
 #: src/basket.cpp:4305 src/basket.cpp:4354
 msgid "Unable to open this note."
@@ -855,9 +832,8 @@ msgid "%1+%2"
 msgstr "%1+%2"
 
 #: src/basket_options.h:30
-#, fuzzy
 msgid "Show the debug window"
-msgstr "Montrer / cacher la fenêtre principale"
+msgstr "Montrer la fenêtre de débogguage"
 
 #: src/basket_options.h:33
 msgid "Custom folder to load and save baskets and other application data."
@@ -872,9 +848,8 @@ msgid "On crash, use the standard KDE crash handler rather than send an email."
 msgstr ""
 
 #: src/basket_options.h:43
-#, fuzzy
 msgid "Open a basket archive or template."
-msgstr "Ouvrir une archive de paniers"
+msgstr "Ouvrir une archive de paniers ou un modèle."
 
 #: src/basketproperties.cpp:54
 msgid "Basket Properties"
@@ -1147,17 +1122,16 @@ msgstr ""
 "avoir à ouvrir la fenêtre principale."
 
 #: src/bnpview.cpp:409
-#, fuzzy
 msgid "Insert plain text note"
 msgstr "Insérer une note texte"
 
 #: src/bnpview.cpp:411
-#, fuzzy
 msgid ""
 "Add a plain text note to the current basket without having to open the main "
 "window."
 msgstr ""
-"Ajouter un texte au panier courant sans avoir à ouvrir la fenêtre principale."
+"Ajouter une note texte au panier courant sans avoir à ouvrir la fenêtre "
+"principale."
 
 #: src/bnpview.cpp:420
 msgid "Baskets"
@@ -1286,9 +1260,8 @@ msgid "Move on &Bottom"
 msgstr "Déplacer en &bas"
 
 #: src/bnpview.cpp:656
-#, fuzzy
 msgid "Plai&n Text"
-msgstr "Texte brut"
+msgstr "Texte simple"
 
 #: src/bnpview.cpp:663
 msgid "&Text"
@@ -1343,15 +1316,13 @@ msgid "&New"
 msgstr "&Nouveau"
 
 #: src/bnpview.cpp:795
-#, fuzzy
 msgid "&Properties..."
-msgstr "Propriétés du panier"
+msgstr "&Propriétés..."
 
 #: src/bnpview.cpp:801
-#, fuzzy
 msgctxt "Remove Basket"
 msgid "&Remove"
-msgstr "&Tout supprimer"
+msgstr "Supp&rimer"
 
 #: src/bnpview.cpp:807
 msgctxt "Password protection"
@@ -1359,10 +1330,9 @@ msgid "Pass&word..."
 msgstr ""
 
 #: src/bnpview.cpp:812
-#, fuzzy
 msgctxt "Lock Basket"
 msgid "&Lock"
-msgstr "Verrouillé"
+msgstr "&Verrouillé"
 
 #: src/bnpview.cpp:825
 msgid "&Filter"
@@ -1393,10 +1363,9 @@ msgid "&Expand Basket"
 msgstr "&Développer ce panier"
 
 #: src/bnpview.cpp:879
-#, fuzzy
 msgid "Convert text notes to rich text notes"
 msgstr ""
-"Conversion des notes au format texte brut en notes au format texte enrichi..."
+"Conversion de notes au format texte simple en notes au format texte enrichi"
 
 #: src/bnpview.cpp:888
 msgid "&Welcome Baskets"
@@ -1420,11 +1389,10 @@ msgid "No notes"
 msgstr "Pas de note"
 
 #: src/bnpview.cpp:1636
-#, fuzzy
 msgid "%1 note"
 msgid_plural "%1 notes"
-msgstr[0] "Pas de note"
-msgstr[1] "Pas de note"
+msgstr[0] "%1 note"
+msgstr[1] "%1 notes"
 
 #: src/bnpview.cpp:1637
 msgid "%1 selected"
@@ -1441,17 +1409,15 @@ msgid "no filter"
 msgstr "pas de filtre"
 
 #: src/bnpview.cpp:1640
-#, fuzzy
 msgid "%1 match"
 msgid_plural "%1 matches"
-msgstr[0] "toutes correspondent"
-msgstr[1] "toutes correspondent"
+msgstr[0] "%1 correspondance"
+msgstr[1] "%1 correspondances"
 
 #: src/bnpview.cpp:1642
-#, fuzzy
 msgctxt "e.g. '18 notes, 10 matches, 5 selected'"
 msgid "%1, %2, %3"
-msgstr "%1, %2"
+msgstr "%1, %2, %3"
 
 #: src/bnpview.cpp:1755
 msgid "Picked color to basket <i>%1</i>"
@@ -1651,7 +1617,6 @@ msgid "T&ag: "
 msgstr "Marqu&e : "
 
 #: src/filter.cpp:73
-#, fuzzy
 msgid "Filter All Baskets"
 msgstr "Filtrer tous les paniers"
 
@@ -1700,22 +1665,19 @@ msgid "%1_files"
 msgstr ""
 
 #: src/htmlexporter.cpp:127 src/htmlexporter.cpp:158
-#, fuzzy
 msgctxt "HTML export folder (icons)"
 msgid "icons"
-msgstr "Icône"
+msgstr "Icônes"
 
 #: src/htmlexporter.cpp:128 src/htmlexporter.cpp:159
-#, fuzzy
 msgctxt "HTML export folder (images)"
 msgid "images"
-msgstr "Image"
+msgstr "Images"
 
 #: src/htmlexporter.cpp:129 src/htmlexporter.cpp:156
-#, fuzzy
 msgctxt "HTML export folder (baskets)"
 msgid "baskets"
-msgstr "Paniers"
+msgstr "paniers"
 
 #: src/htmlexporter.cpp:148 src/htmlexporter.cpp:154 src/htmlexporter.cpp:155
 msgctxt "HTML export folder (data)"
@@ -1723,12 +1685,12 @@ msgid "data"
 msgstr ""
 
 #: src/htmlexporter.cpp:324
-#, fuzzy
 msgid ""
 "Made with <a href=\"http://basket.kde.org/\">%1</a> %2, a KDE tool to take "
 "notes and keep information at hand."
 msgstr ""
-"Fait avec %1, un outil KDE pour prendre des notes et garder ses informations "
+"Fait avec <a href=\"http://basket.kde.org/\">%1</a> %2, un outil KDE pour "
+"prendre des notes et garder ses informations "
 "sous la main."
 
 #: src/kcolorcombo2.cpp:130 src/kcolorcombo2.cpp:609 src/kcolorcombo2.cpp:631
@@ -1773,14 +1735,12 @@ msgid "Wrong password."
 msgstr "Mauvais mot de passe."
 
 #: src/kgpgme.cpp:438
-#, fuzzy
 msgid "Please enter a new password:"
-msgstr "Protéger par &mot de passe"
+msgstr "Veuillez entrer un nouveau mot de passe :"
 
 #: src/ksystemtrayicon2.cpp:83 src/notecontent.cpp:182
-#, fuzzy
 msgid "File"
-msgstr "&Fichiers"
+msgstr "Fichier"
 
 #: src/ksystemtrayicon2.cpp:140
 msgid ""
@@ -1887,10 +1847,9 @@ msgstr ""
 "rapidement et cliquez sur Envoyer."
 
 #: src/likeback.cpp:460
-#, fuzzy
 msgid "Example:"
 msgid_plural "Examples:"
-msgstr[0] "Exemple"
+msgstr[0] "Exemple :"
 msgstr[1] "Exemple"
 
 #: src/likeback.cpp:463
@@ -2568,7 +2527,6 @@ msgid "Yes"
 msgstr ""
 
 #: src/notecontent.cpp:1814
-#, fuzzy
 msgid "No"
 msgstr "Aucun"
 
@@ -2657,23 +2615,20 @@ msgid "&Name:"
 msgstr "&Nom :"
 
 #: src/noteedit.cpp:829
-#, fuzzy
 msgid "Font"
-msgstr "&Police :"
+msgstr "Police"
 
 #: src/noteedit.cpp:836
-#, fuzzy
 msgid "Font Size"
-msgstr "De la taille de l'icône"
+msgstr "Taille de police"
 
 #: src/noteedit.cpp:850 src/tagsedit.cpp:451
 msgid "Bold"
 msgstr "Gras"
 
 #: src/noteedit.cpp:857 src/tagsedit.cpp:465
-#, fuzzy
 msgid "Italic"
-msgstr "I&talique"
+msgstr "Italique"
 
 #: src/noteedit.cpp:864 src/tagsedit.cpp:458
 msgid "Underline"
@@ -3316,7 +3271,6 @@ msgstr ""
 "réimporter le fichier.</font>"
 
 #: src/systemtray.cpp:145
-#, fuzzy
 msgid " (Locked)"
 msgstr "(Verrouillé)"
 
@@ -3421,9 +3375,8 @@ msgid "Very Important"
 msgstr "Très important"
 
 #: src/tag.cpp:677
-#, fuzzy
 msgid "Information"
-msgstr "Animation"
+msgstr "Information"
 
 #: src/tag.cpp:678
 msgid "Idea"
@@ -3465,10 +3418,9 @@ msgid "Funny"
 msgstr "Amusant"
 
 #: src/tagsedit.cpp:232
-#, fuzzy
 msgctxt "Tag name (shortcut)"
 msgid "%1 (%2)"
-msgstr "%1, %2"
+msgstr "%1 (%2)"
 
 #: src/tagsedit.cpp:323
 msgid "Customize Tags"
@@ -3491,19 +3443,17 @@ msgid "Move Down (Ctrl+Shift+Down)"
 msgstr "Déplacer en dessous (Ctrl+Maj+Bas)"
 
 #: src/tagsedit.cpp:357
-#, fuzzy
 msgid "Delete"
-msgstr "Suppri&mer"
+msgstr "Supprimer"
 
 #: src/tagsedit.cpp:380
 msgid "Tag"
 msgstr "Marque"
 
 #: src/tagsedit.cpp:391
-#, fuzzy
 msgctxt "Remove tag shortcut"
 msgid "&Remove"
-msgstr "&Tout supprimer"
+msgstr "Supp&rimer"
 
 #: src/tagsedit.cpp:392
 msgid "S&hortcut:"
@@ -3522,10 +3472,9 @@ msgid "Na&me:"
 msgstr "&Nom :"
 
 #: src/tagsedit.cpp:422
-#, fuzzy
 msgctxt "Remove tag emblem"
 msgid "Remo&ve"
-msgstr "&Tout supprimer"
+msgstr "Supp&rimer"
 
 #: src/tagsedit.cpp:423
 msgid "&Emblem:"
@@ -3564,20 +3513,19 @@ msgid "What is this for?"
 msgstr ""
 
 #: src/tagsedit.cpp:500
-#, fuzzy
 msgid ""
 "When you copy and paste or drag and drop notes to a text editor, this text "
 "will be inserted as a textual equivalent of the tag."
 msgstr ""
-"Cela s'applique lorsque vous copiez / collez, ou glissez / déposez des notes "
-"dans un éditeur de texte."
+"Quand vous copiez-collez ou glissez-déposez des notes dans un éditeur de "
+"texte, ce texte sera "
+"inséré comme équivalent textuel de la marque."
 
 #: src/tagsedit.cpp:510
 msgid "On ever&y line"
 msgstr "Sur cha&que ligne"
 
 #: src/tagsedit.cpp:513
-#, fuzzy
 msgid "What does this mean?"
 msgstr "Qu'est-ce que cela signifie ?"
 
