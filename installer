@@ -58,7 +58,7 @@ echo ""
 echo ""
 echo "                             What do you want to do?"
 echo ""
-echo "  1/ Install BasKet Note Pads system wide (you will need the root password)"
+echo "  1/ Install BasKet Note Pads system wide (you will need root access)"
 echo "  2/ Install BasKet Note Pads in your user folder"
 #echo "  3/ Uninstall BasKet Note Pads (you should not: it is so fantastic ;-) )"
 echo ""
@@ -157,7 +157,7 @@ if [ "_$SYS_WIDE" == "_n" ]; then
   # First make the bin folder to not copy basket file to bin file if bin/ doesn't exist
   make install
 else
-  echo "            Please now enter the root password in order to install "
+  echo "            Please now enter the password in order to install "
   echo "                        BasKet Note Pads on the system."
   echo ""
   echo 'Installing in "'$prefix'"...'
