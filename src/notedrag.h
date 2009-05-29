@@ -27,6 +27,7 @@
 #include <QList>
 //Added by qt3to4:
 #include <QDrag>
+#include <QDragEnterEvent>
 
 class QDataStream;
 
