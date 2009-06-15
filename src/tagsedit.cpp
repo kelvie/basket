@@ -1034,6 +1034,7 @@ void TagsEditDialog::renameIt()
 
 void TagsEditDialog::capturedShortcut(const KShortcut &shortcut)
 {
+	Q_UNUSED(shortcut);
 	// TODO: Validate it!
 	//m_shortcut->setShortcut(shortcut);
 }
@@ -1082,6 +1083,7 @@ void TagsEditDialog::modified()
 
 void TagsEditDialog::currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem* nextItem)
 {
+	Q_UNUSED(nextItem);
 	if (item == 0)
 		return;
 
