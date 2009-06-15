@@ -14,8 +14,6 @@ include(KDE4Defaults)
 
 include(MacroLibrary)
 
-include(ConvenienceLibs.cmake)
-
 #include(ManualStuff.cmake)
 
 IF(GPGME_FOUND)

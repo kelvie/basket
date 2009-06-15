@@ -1,3 +1,0 @@
-
-#former libtool convenience libraries:
-
