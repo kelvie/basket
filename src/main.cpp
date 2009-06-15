@@ -60,7 +60,6 @@ int main(int argc, char *argv[])
 	KCmdLineArgs::addCmdLineOptions(opts);
 
 	KUniqueApplication::addCmdLineOptions();
-	//KUniqueApplication app;
 	Application app;
 
 	// Initialize the config file
@@ -72,9 +71,6 @@ int main(int argc, char *argv[])
 	MainWindow* win = new MainWindow();
 	Global::bnpView->handleCommandLine();
 	app.setActiveWindow(win);
-
-//	if (!(Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")))
-//		win->show();
 
 	if (Settings::useSystray()) {
 		// The user wanted to not show the window (but it is already hidden by default, so we do nothing):
@@ -97,6 +93,5 @@ int main(int argc, char *argv[])
 
 	/* Go */
 	int result = app.exec();
-	//return result;
 	exit(result); // Do not clean up memory to not crash while deleting the KApplication, or do not hang up on KDE exit
 }
