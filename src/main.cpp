@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
 	// KCmdLineArgs::init will modify argv[0] so we remember it:
 	const char *argv0 = (argc >= 1 ? argv[0] : "");
 
-    KCmdLineOptions opts;
-    setupCmdLineOptions(&opts);
+	KCmdLineOptions opts;
+	setupCmdLineOptions(&opts);
 
 	KCmdLineArgs::init(argc, argv, Global::about());
 	KCmdLineArgs::addCmdLineOptions(opts);
