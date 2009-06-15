@@ -43,4 +43,3 @@ add_subdirectory(welcome)
 add_subdirectory(backgrounds)
 add_subdirectory(images)
 
-message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}: skipped subdir $(TOPSUBDIRS)")
