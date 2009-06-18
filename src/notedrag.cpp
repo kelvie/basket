@@ -18,17 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qdir.h>
-#include <qpainter.h>
-#include <qtextcodec.h>
-#include <qbuffer.h>
-//Added by qt3to4:
+#include <QDir>
+#include <QPainter>
+#include <QTextCodec>
+#include <QBuffer>
 #include <QTextStream>
 #include <QList>
 #include <QPixmap>
 #include <kdeversion.h>
-#include <kapplication.h>
-#include <qdesktopwidget.h>
+#include <KDE/KApplication>
+#include <QDesktopWidget>
 
 #include "basket.h"
 #include "notedrag.h"

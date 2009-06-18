@@ -21,13 +21,13 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <qstring.h>
-#include <qcolor.h>
-#include <qfont.h>
+#include <QString>
+#include <QColor>
+#include <QFont>
 #include <QList>
 
-#include <kaction.h>
-#include <kshortcut.h>
+#include <KDE/KAction>
+#include <KDE/KShortcut>
 
 class QPainter;
 

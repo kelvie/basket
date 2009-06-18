@@ -21,8 +21,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <kuniqueapplication.h>
-#include <qstring.h>
+#include <KDE/KUniqueApplication>
+#include <QString>
 
 /**
  * @author Sébastien Laoût <slaout@linux62.org>

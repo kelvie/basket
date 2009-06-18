@@ -21,13 +21,12 @@
 /// NEW:
 
 #include <QStackedWidget>
-#include <qregexp.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-#include <qimage.h>
-#include <qbitmap.h>
+#include <QRegExp>
+#include <QPixmap>
+#include <QPainter>
+#include <QImage>
+#include <QBitmap>
 #include <QWhatsThis>
-//Added by qt3to4:
 #include <QResizeEvent>
 #include <QShowEvent>
 #include <QList>
@@ -35,25 +34,30 @@
 #include <QEvent>
 #include <QHideEvent>
 #include <kmenu.h>
-#include <qsignalmapper.h>
-#include <qdir.h>
-#include <kicontheme.h>
-#include <kiconloader.h>
-#include <klocale.h>
-#include <kstringhandler.h>
-#include <kmessagebox.h>
-#include <kfiledialog.h>
-#include <kprogressdialog.h>
-#include <kstandarddirs.h>
-#include <kaboutdata.h>
-#include <kwindowsystem.h>
-#include <kpassivepopup.h>
-#include <kxmlguifactory.h>
-#include <kcmdlineargs.h>
-#include <kglobalaccel.h>
-#include <kapplication.h>
-#include <KShortcutsDialog>
-#include <kdebug.h>
+#include <QSignalMapper>
+#include <QDir>
+#include <KDE/KIconTheme>
+#include <KDE/KIconLoader>
+#include <KDE/KLocale>
+#include <KDE/KStringHandler>
+#include <KDE/KMessageBox>
+#include <KDE/KFileDialog>
+#include <KDE/KProgressDialog>
+#include <KDE/KStandardDirs>
+#include <KDE/KAboutData>
+#include <KDE/KWindowSystem>
+#include <KDE/KPassivePopup>
+#include <KDE/KXMLGUIFactory>
+#include <KDE/KCmdLineArgs>
+#include <KDE/KGlobalAccel>
+#include <KDE/KApplication>
+#include <KDE/KShortcutsDialog>
+#include <KDE/KDebug>
+#include <KDE/KAction>
+#include <KDE/KActionMenu>
+#include <KDE/KActionCollection>
+#include <KDE/KStandardShortcut>
+#include <KDE/KToggleAction>
 #include <cstdlib>
 
 #include "bnpview.h"
@@ -83,11 +87,6 @@
 #include "notefactory.h"
 #include "notecontent.h"
 
-#include <KAction>
-#include <KActionMenu>
-#include <KActionCollection>
-#include <KStandardShortcut>
-#include <KToggleAction>
 
 #include "bnpviewadaptor.h"
 /** class BNPView: */

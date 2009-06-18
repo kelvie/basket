@@ -26,7 +26,7 @@
 #include <QPixmap>
 
 // KDE
-#include <KIconEffect>
+#include <KDE/KIconEffect>
 
 // Local
 #include "basket.h"

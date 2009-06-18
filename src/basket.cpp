@@ -19,10 +19,9 @@
  ***************************************************************************/
 
 #include <QDrag>
-#include <qdom.h>
-#include <qpainter.h>
-#include <qstyle.h>
-//Added by qt3to4:
+#include <QtXml>
+#include <QPainter>
+#include <QStyle>
 #include <QWheelEvent>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
@@ -41,47 +40,47 @@
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <QGridLayout>
-#include <kstyle.h>
-#include <qtooltip.h>
-#include <qcursor.h>
+#include <KDE/KStyle>
+#include <QToolTip>
+#include <QCursor>
 #include <QTextDocument>
 #include <QAbstractTextDocumentLayout>
-#include <qpushbutton.h>
-#include <ktextedit.h>
-#include <qpoint.h>
-#include <qstringlist.h>
-#include <kapplication.h>
-#include <KColorScheme> // for KStatefulBrush
-#include <KOpenWithDialog>
-#include <kservice.h>
-#include <klocale.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <kfiledialog.h>
-#include <kaboutdata.h>
-#include <klineedit.h>
-#include <ksavefile.h>
-#include <kdebug.h>
+#include <QPushButton>
+#include <KDE/KTextEdit>
+#include <QPoint>
+#include <QStringList>
+#include <KDE/KApplication>
+#include <KDE/KColorScheme> // for KStatefulBrush
+#include <KDE/KOpenWithDialog>
+#include <KDE/KService>
+#include <KDE/KLocale>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <KFileDialog>
+#include <KDE/KAboutData>
+#include <KDE/KLineEdit>
+#include <KDE/KSaveFile>
+#include <KDE/KDebug>
 
 #include <KAuthorized>
 #include <KIO/CopyJob>
 
 #include <unistd.h> // For sleep()
 
-#include <kmenu.h>
-#include <kiconloader.h>
-#include <krun.h>
+#include <KDE/KMenu>
+#include <KDE/KIconLoader>
+#include <KDE/KRun>
 
-#include <qclipboard.h>
+#include <QClipboard>
 
-#include <kmessagebox.h>
-#include <qinputdialog.h>
+#include <KDE/KMessageBox>
+#include <QInputDialog>
 
-#include <qlayout.h>
+#include <QLayout>
 
 #include <stdlib.h>     // rand() function
-#include <qdatetime.h>  // seed for rand()
+#include <QDateTime>  // seed for rand()
 
 #include "basket.h"
 #include "note.h"

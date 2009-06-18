@@ -22,7 +22,7 @@
 #define ARCHIVE_H
 
 #include <QList>
-#include <qmap.h>
+#include <QMap>
 
 class Basket;
 class Tag;

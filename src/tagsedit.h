@@ -22,11 +22,10 @@
 #define TAGEDIT_H
 
 #include <KDialog>
-#include <kcombobox.h>
+#include <KDE/KComboBox>
 #include <QTreeWidget>
 #include <QList>
 #include <QHBoxLayout>
-//Added by qt3to4:
 #include <QLabel>
 #include <QMouseEvent>
 #include <QKeyEvent>

@@ -21,8 +21,7 @@
 #ifndef COLORPICKER_H
 #define COLORPICKER_H
 
-#include <qdesktopwidget.h>
-//Added by qt3to4:
+#include <QDesktopWidget>
 #include <QKeyEvent>
 #include <QMouseEvent>
 

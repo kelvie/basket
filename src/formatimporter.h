@@ -21,9 +21,8 @@
 #ifndef FORMATIMPORTER_H
 #define FORMATIMPORTER_H
 
-#include <qobject.h>
-//#include <qwidget.h>
-#include <qdom.h>
+#include <QObject>
+#include <QtXml>
 
 namespace KIO
 {

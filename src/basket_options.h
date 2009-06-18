@@ -21,8 +21,8 @@
 #ifndef BASKET_OPTIONS_H
 #define BASKET_OPTIONS_H
 
-#include <KCmdLineArgs>
-#include <KLocalizedString>
+#include <KDE/KCmdLineArgs>
+#include <KDE/KLocalizedString>
 
 void setupCmdLineOptions(KCmdLineOptions *opts)
 {

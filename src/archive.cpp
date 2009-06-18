@@ -18,23 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qstring.h>
+#include <QString>
 #include <QStringList>
 #include <QList>
-#include <qmap.h>
-#include <qdir.h>
-//Added by qt3to4:
+#include <QMap>
+#include <QDir>
 #include <QTextStream>
-#include <ktar.h>
-#include <qdom.h>
-#include <kmessagebox.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-#include <kstandarddirs.h>
-#include <kapplication.h>
-#include <kiconloader.h>
-#include <kprogressdialog.h>
-#include <kmainwindow.h>
+#include <KDE/KTar>
+#include <QtXml>
+#include <KDE/KMessageBox>
+#include <QPixmap>
+#include <QPainter>
+#include <KDE/KStandardDirs>
+#include <KDE/KApplication>
+#include <KDE/KIconLoader>
+#include <KDE/KProgressDialog>
+#include <KDE/KMainWindow>
 
 #include <QProgressBar>
 #include "kdebug.h"

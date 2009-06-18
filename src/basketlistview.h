@@ -22,8 +22,7 @@
 #define BASKETLISTVIEW_H
 
 #include <QTreeWidget>
-#include <qtimer.h>
-//Added by qt3to4:
+#include <QTimer>
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QDragEnterEvent>

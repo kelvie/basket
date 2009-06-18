@@ -1,6 +1,3 @@
-//Added by qt3to4:
-#include <QVector>
-#include <QPixmap>
 /***************************************************************************
  *   Copyright (C) 2003 by Sébastien Laoût                                 *
  *   slaout@linux62.org                                                    *
@@ -23,6 +20,9 @@
 
 #ifndef TOOLS_H
 #define TOOLS_H
+
+#include <QVector>
+#include <QPixmap>
 
 class QString;
 class QColor;

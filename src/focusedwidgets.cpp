@@ -20,7 +20,7 @@
 
 #include <QWheelEvent>
 #include <QKeyEvent>
-#include <klocale.h>
+#include <KDE/KLocale>
 
 #include "focusedwidgets.h"
 #include "bnpview.h"

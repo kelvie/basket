@@ -18,20 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qpainter.h>
-//Added by qt3to4:
+#include <QPainter>
 #include <QPixmap>
 #include <QList>
-#include <qstyle.h>
-#include <kapplication.h>
-#include <kstyle.h>
-#include <qcursor.h>
-#include <kiconloader.h>
+#include <QStyle>
+#include <KDE/KApplication>
+#include <KDE/KStyle>
+#include <QCursor>
+#include <KDE/KIconLoader>
 
-#include <kglobal.h>
-#include <klocale.h>
-#include <kurifilter.h>
-#include <qfile.h>
+#include <KDE/KGlobal>
+#include <KDE/KLocale>
+#include <KDE/KUriFilter>
+#include <QFile>
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
@@ -47,7 +46,7 @@
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
 
-#include <KDebug>
+#include <KDE/KDebug>
 #include <QImage>
 #include <qimageblitz/qimageblitz.h>
 

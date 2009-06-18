@@ -21,9 +21,9 @@
 #ifndef BASKETPROPERTIES_H
 #define BASKETPROPERTIES_H
 
-#include <KDialog>
-#include <qmap.h>
-#include <qstring.h>
+#include <KDE/KDialog>
+#include <QMap>
+#include <QString>
 
 class KIconButton;
 class QLineEdit;

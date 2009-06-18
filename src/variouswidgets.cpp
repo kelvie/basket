@@ -18,29 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qsizegrip.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qsizepolicy.h>
+#include <QLayout>
+#include <QLineEdit>
+#include <QLabel>
+#include <QSizeGrip>
+#include <QPushButton>
+#include <QString>
+#include <QSizePolicy>
 
 #include <KListWidget>
 
-//Added by qt3to4:
 #include <QHBoxLayout>
 #include <QResizeEvent>
 #include <QList>
 #include <QKeyEvent>
 #include <QVBoxLayout>
-#include <KOpenWithDialog>
-#include <klocale.h>
+#include <KDE/KOpenWithDialog>
+#include <KDE/KLocale>
 #include <QWhatsThis>
-#include <kiconloader.h>
+#include <KDE/KIconLoader>
 #include <QDrag>
-#include <qfontdatabase.h>
-#include <kpushbutton.h>
+#include <QFontDatabase>
+#include <KDE/KPushButton>
 
 #include "variouswidgets.h"
 

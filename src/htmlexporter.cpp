@@ -27,25 +27,23 @@
 #include "config.h"
 #include "tag.h"
 
-#include <kapplication.h>
-#include <kglobal.h>
-#include <kconfig.h>
-#include <kiconloader.h>
-#include <kfiledialog.h>
-#include <kmessagebox.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qpainter.h>
-//Added by qt3to4:
+#include <KDE/KApplication>
+#include <KDE/KGlobal>
+#include <KDE/KConfig>
+#include <KDE/KIconLoader>
+#include <KDE/KFileDialog>
+#include <KDE/KMessageBox>
+#include <QDir>
+#include <QFile>
+#include <QPainter>
 #include <QTextStream>
 #include <QList>
 #include <QPixmap>
-#include <kprogressdialog.h>
+#include <KDE/KProgressDialog>
 #include <QProgressBar>
-#include "kdebug.h"
-#include <kcolorscheme.h>
-#include <kio/copyjob.h>
-#include <kio/jobclasses.h>
+#include <KDE/KDebug>
+#include <KDE/KColorScheme>
+#include <KDE/KIO/CopyJob>
 
 HTMLExporter::HTMLExporter(Basket *basket)
 {

@@ -18,19 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kurlrequester.h>
-#include <klineedit.h>
-#include <kfiledialog.h>
-#include <qcheckbox.h>
-#include <qdir.h>
-#include <qlayout.h>
-#include <qlabel.h>
-//Added by qt3to4:
+#include <KDE/KUrlRequester>
+#include <KDE/KLineEdit>
+#include <KDE/KFileDialog>
+#include <QCheckBox>
+#include <QDir>
+#include <QLayout>
+#include <QLabel>
 #include <QHBoxLayout>
-#include <klocale.h>
-#include <kconfig.h>
-
-#include <KVBox>
+#include <KDE/KLocale>
+#include <KDE/KConfig>
+#include <KDE/KVBox>
 
 #include "exporterdialog.h"
 #include "basket.h"

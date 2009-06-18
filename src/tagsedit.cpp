@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qtooltip.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-//Added by qt3to4:
+#include <QToolTip>
+#include <QLabel>
+#include <QLineEdit>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QGridLayout>
@@ -29,27 +28,27 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QVBoxLayout>
-#include <qlayout.h>
-#include <kiconloader.h>
-#include <kapplication.h>
-#include <qcheckbox.h>
-#include <kpushbutton.h>
+#include <QLayout>
+#include <KDE/KIconLoader>
+#include <KDE/KApplication>
+#include <QCheckBox>
+#include <KDE/KPushButton>
 #include <QGroupBox>
 #include <QList>
-#include <klocale.h>
-#include <kstandarddirs.h>
-#include <kseparator.h>
-#include <kstringhandler.h>
-#include <qpainter.h>
-#include <qaction.h>
-#include <kmessagebox.h>
-#include <qtimer.h>
+#include <KDE/KLocale>
+#include <KDE/KStandardDirs>
+#include <KDE/KSeparator>
+#include <KDE/KStringHandler>
+#include <QPainter>
+#include <QAction>
+#include <KDE/KMessageBox>
+#include <QTimer>
 #include <QHeaderView>
 
 #include <kshortcutwidget.h>
 #include <QFontComboBox>
 
-#include "kicondialog.h"
+#include "KDE/KIconDialog"
 #include "tag.h"
 #include "tagsedit.h"
 #include "kcolorcombo2.h"
@@ -57,7 +56,7 @@
 #include "global.h"
 #include "bnpview.h"
 
-#include <kdebug.h>
+#include <KDE/KDebug>
 
 /** class StateCopy: */
 

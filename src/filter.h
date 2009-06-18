@@ -21,8 +21,8 @@
 #ifndef FILTER_H
 #define FILTER_H
 
-#include <qwidget.h>
-#include <qmap.h>
+#include <QWidget>
+#include <QMap>
 
 #include "focusedwidgets.h"
 

@@ -18,48 +18,44 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.         *
  ***************************************************************************/
 
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kconfig.h>
-#include <kaction.h>
-#include <kicon.h>
-#include <kaboutdata.h>
-#include <klocale.h>
-#include <kdebug.h>
-#include <kmessagebox.h>
-#include <qlayout.h>
-#include <qtoolbutton.h>
-//Added by qt3to4:
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KConfig>
+#include <KDE/KAction>
+#include <KDE/KIcon>
+#include <KDE/KLocale>
+#include <KDE/KDebug>
+#include <KDE/KMessageBox>
+#include <QLayout>
+#include <QToolButton>
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
 #include <QVBoxLayout>
-#include <kpushbutton.h>
-#include <qcheckbox.h>
-#include <qradiobutton.h>
+#include <KDE/KPushButton>
+#include <QCheckBox>
+#include <QRadioButton>
 #include <QButtonGroup>
 #include <QGroupBox>
-#include <kguiitem.h>
+#include <KDE/KGuiItem>
 #include <QTextEdit>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <KDialog>
+#include <QLayout>
+#include <QLabel>
+#include <KDE/KDialog>
 #include <QHttp>
-#include <kurl.h>
-#include <kinputdialog.h>
-#include <qvalidator.h>
-#include <qaction.h>
-#include <kdebug.h>
+#include <KDE/KUrl>
+#include <KDE/KInputDialog>
+#include <QValidator>
+#include <QAction>
 
 #include <pwd.h>
 
-#include <kglobal.h>
+#include <KDE/KGlobal>
 
 #include "likeback.h"
 #include "likeback_p.h"
-#include <kaction.h>
-#include <kactioncollection.h>
-#include <kuser.h>
+#include <KDE/KActionCollection>
+#include <KDE/KUser>
 #include <QDesktopWidget>
 /****************************************/
 /********** class LikeBackBar: **********/

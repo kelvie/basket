@@ -21,7 +21,7 @@
 // This must be first
 #include <config.h>
 #include "settings.h"
-#include <kcmodule.h>
+#include <KDE/KCModule>
 
 //----------------------------
 // KCM stuff

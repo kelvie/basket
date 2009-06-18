@@ -22,10 +22,9 @@
 #include <QTextBrowser>
 #include <QString>
 #include <QEvent>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QVBoxLayout>
-#include <klocale.h>
+#include <KDE/KLocale>
 
 #include "global.h"
 #include "debugwindow.h"

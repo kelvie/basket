@@ -18,56 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qtabwidget.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qcursor.h>
+#include <QTabWidget>
+#include <QLayout>
+#include <QToolTip>
+#include <QCursor>
 #include <QWhatsThis>
 #include <QList>
-#include <qregexp.h>
-//Added by qt3to4:
+#include <QRegExp>
 #include <QMoveEvent>
 #include <QResizeEvent>
-#include <kstringhandler.h>
+#include <KDE/KStringHandler>
 
-#include <ksqueezedtextlabel.h>
-#include <qpoint.h>
-#include <qpixmap.h>
-#include <qinputdialog.h>
-#include <kmenu.h>
-#include <kiconloader.h>
-#include <kiconeffect.h>
-#include <qicon.h>
-#include <kaction.h>
-#include <kapplication.h>
-#include <klocale.h>
-#include <kmenubar.h>
-#include <kedittoolbar.h>
-#include <kdebug.h>
-#include <qsignalmapper.h>
-#include <qstringlist.h>
+#include <KDE/KSqueezedTextLabel>
+#include <QPoint>
+#include <QPixmap>
+#include <QInputDialog>
+#include <KDE/KMenu>
+#include <KDE/KIconLoader>
+#include <KDE/KIconEffect>
+#include <QIcon>
+#include <KDE/KAction>
+#include <KDE/KApplication>
+#include <KDE/KLocale>
+#include <KDE/KMenuBar>
+#include <KDE/KEditToolBar>
+#include <KDE/KDebug>
+#include <QSignalMapper>
+#include <QStringList>
 
-#include <qpainter.h>
-#include <qstyle.h>
-#include <kstandarddirs.h>
-#include <qdir.h>
-#include <qstringlist.h>
-#include <kmessagebox.h>
-#include <kstatusbar.h>
-#include <qtimer.h>
-#include <qaction.h>
+#include <QPainter>
+#include <QStyle>
+#include <KStandardDirs>
+#include <QDir>
+#include <QStringList>
+#include <KMessageBox>
+#include <KStatusBar>
+#include <QTimer>
+#include <QAction>
 #include <kstdaccel.h>
-#include <kglobalaccel.h>
-#include <kpassivepopup.h>
-#include <kconfig.h>
-#include <kcolordialog.h>
-#include <kaboutdata.h>
+#include <KDE/KGlobalAccel>
+#include <KDE/KPassivePopup>
+#include <KDE/KConfig>
+#include <KDE/KColorDialog>
+#include <KDE/KAboutData>
 
 #include <kdeversion.h>
-#include <qdesktopwidget.h>
-#include <kwindowsystem.h>
+#include <QDesktopWidget>
+#include <KDE/KWindowSystem>
 
-#include <kprogressdialog.h>
+#include <KDE/KProgressDialog>
 
 #include "mainwindow.h"
 #include "basket.h"
@@ -76,7 +75,6 @@
 #include "noteedit.h"
 #include "settings.h"
 #include "global.h"
-//#include "addbasketwizard.h"
 #include "newbasketdialog.h"
 #include "basketfactory.h"
 #include "xmlwork.h"
@@ -92,12 +90,12 @@
 #include "bnpview.h"
 #include "systemtray.h"
 #include "basketstatusbar.h"
-#include <ksettings/dialog.h>
-#include <kcmultidialog.h>
+#include <KDE/KSettings/Dialog>
+#include <KDE/KCMultiDialog>
 
-#include <KShortcutsDialog>
-#include <KActionCollection>
-#include <KToggleAction>
+#include <KDE/KShortcutsDialog>
+#include <KDE/KActionCollection>
+#include <KDE/KToggleAction>
 
 /** Container */
 

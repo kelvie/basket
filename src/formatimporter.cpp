@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qdom.h>
-//Added by qt3to4:
+#include <QString>
+#include <QStringList>
+#include <QDir>
+#include <QFileInfo>
+#include <QtXml>
 #include <QTextStream>
-#include <kmessagebox.h>
-#include <klocale.h>
-#include <kapplication.h>
+#include <KDE/KMessageBox>
+#include <KDE/KLocale>
+#include <KIO/CopyJob>
+#include <KDE/KApplication>
+#include "KDE/KDebug"
 
 #include "formatimporter.h"
 #include "notecontent.h"
@@ -38,9 +39,7 @@
 #include "xmlwork.h"
 #include "tools.h"
 
-#include "kdebug.h"
 
-#include <KIO/CopyJob>
 
 bool FormatImporter::shouldImportBaskets()
 {

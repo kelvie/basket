@@ -19,31 +19,31 @@
  ***************************************************************************/
 
 #include <config.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qtabwidget.h>
+#include <QLayout>
+#include <QLineEdit>
+#include <QTabWidget>
 #include <QGroupBox>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
 #include <QVBoxLayout>
-#include <knuminput.h>
-#include <kcolorcombo.h>
-#include <kiconloader.h>
-#include <kconfig.h>
-#include <kglobal.h>
-#include <klocale.h>
+#include <KDE/KNumInput>
+#include <KDE/KColorCombo>
+#include <KDE/KIconLoader>
+#include <KDE/KConfig>
+#include <KDE/KGlobal>
+#include <KDE/KLocale>
 #include <QWhatsThis>
-#include <qradiobutton.h>
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kmimetype.h>
-#include <kstandarddirs.h>
-#include <kdebug.h>
-#include <qdatetime.h>
+#include <QRadioButton>
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KMimeType>
+#include <KDE/KStandardDirs>
+#include <KDE/KDebug>
+#include <QDateTime>
 
 #include "kgpgme.h"
 #include "basket.h"

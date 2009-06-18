@@ -18,34 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qstring.h>
+#include <QString>
 #include <QImage>
-//Added by qt3to4:
 #include <QTextStream>
 #include <QDropEvent>
 #include <QVector>
-#include <kurl.h>
-#include <qpixmap.h>
-#include <qcolor.h>
-#include <qregexp.h>
-#include <qdir.h>
-#include <kmimetype.h>
-#include <kmessagebox.h>
-#include <klocale.h>
-#include <kdesktopfile.h>
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <qfile.h>
-#include <kfilemetainfo.h>
-#include <kio/jobclasses.h>
-#include <qtextcodec.h>
-#include <KOpenWithDialog>
-#include <kfiledialog.h>
-#include <kiconloader.h>
-#include <qfileinfo.h>
-#include <kmenu.h>
-#include <kstandarddirs.h>
-#include <kurifilter.h>
+#include <KDE/KUrl>
+#include <QPixmap>
+#include <QColor>
+#include <QRegExp>
+#include <QDir>
+#include <KDE/KMimeType>
+#include <KDE/KMessageBox>
+#include <KDE/KLocale>
+#include <KDE/KDesktopFile>
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <QFile>
+#include <KDE/KFileMetaInfo>
+#include <QTextCodec>
+#include <KDE/KOpenWithDialog>
+#include <KDE/KFileDialog>
+#include <KDE/KIconLoader>
+#include <QFileInfo>
+#include <KDE/KMenu>
+#include <KDE/KStandardDirs>
+#include <KDE/KUriFilter>
 
 #include "basket.h"
 #include "note.h"
@@ -57,12 +55,12 @@
 #include "keyboard.h"
 #include "variouswidgets.h"
 #include "tools.h"
-#include "kicondialog.h"
+#include "KDE/KIconDialog"
 
 #include "debugwindow.h"
 
 #include <QBitmap>
-#include <KIO/CopyJob>
+#include <KDE/KIO/CopyJob>
 
 /** Create notes from scratch (just a content) */
 

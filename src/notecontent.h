@@ -21,13 +21,13 @@
 #ifndef NOTECONTENT_H
 #define NOTECONTENT_H
 
-#include <qobject.h>
-#include <qstring.h>
+#include <QObject>
+#include <QString>
 #include <QTextDocument>
-#include <qpixmap.h>
-#include <qmovie.h>
-#include <qcolor.h>
-#include <kurl.h>
+#include <QPixmap>
+#include <QMovie>
+#include <QColor>
+#include <KDE/KUrl>
 #include <QHttp>
 
 #include "linklabel.h"

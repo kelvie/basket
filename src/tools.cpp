@@ -18,20 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kdebug.h>
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qregexp.h>
+#include <KDE/KDebug>
+#include <QString>
+#include <QPixmap>
+#include <QImage>
+#include <QRegExp>
 #include <QList>
-#include <qfileinfo.h>
-#include <qdir.h>
-#include <qmime.h>
-#include <qfont.h>
-#include <qfontinfo.h>
-#include <qobject.h>
-//Added by qt3to4:
-#include <QVector>
+#include <QFileInfo>
+#include <QDir>
+#include <QMimeData>
+#include <QFont>
+#include <QFontInfo>
+#include <QObject>
 
 #include <QTextDocument>
 #include <QTime>

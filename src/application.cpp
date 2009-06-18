@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kcmdlineargs.h>
-#include <qstring.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <qtimer.h>
+#include <KDE/KCmdLineArgs>
+#include <QString>
+#include <QFile>
+#include <QFileInfo>
+#include <QTimer>
 
 #include "application.h"
 #include "global.h"

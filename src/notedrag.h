@@ -21,11 +21,10 @@
 #ifndef NOTEDRAG_H
 #define NOTEDRAG_H
 
-#include <qstring.h>
-#include <qdatastream.h>
-#include <qpixmap.h>
+#include <QString>
+#include <QDataStream>
+#include <QPixmap>
 #include <QList>
-//Added by qt3to4:
 #include <QDrag>
 #include <QDragEnterEvent>
 

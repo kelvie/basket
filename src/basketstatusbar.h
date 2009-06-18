@@ -20,9 +20,8 @@
 #ifndef BASKETSTATUSBAR_H
 #define BASKETSTATUSBAR_H
 
-#include <qobject.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QObject>
+#include <QPixmap>
 #include <QLabel>
 
 #include "basket_export.h"

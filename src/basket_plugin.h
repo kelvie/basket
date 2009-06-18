@@ -2,7 +2,7 @@
 #define BASKET_PLUGIN_H
 
 #include <kontactinterfaces/plugin.h>
-#include <kparts/part.h>
+#include <KDE/KParts/Part>
 
 class BasketPlugin : public Kontact::Plugin
 {

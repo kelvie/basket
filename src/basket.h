@@ -22,13 +22,12 @@
 #define BASKET_H
 
 #include <q3scrollview.h>
-#include <qtooltip.h>
+#include <QToolTip>
 #include <QList>
-#include <qtimer.h>
-#include <qimage.h>
-#include <qdatetime.h>
-#include <qclipboard.h>
-//Added by qt3to4:
+#include <QTimer>
+#include <QImage>
+#include <QDateTime>
+#include <QClipboard>
 #include <QResizeEvent>
 #include <QContextMenuEvent>
 #include <QWheelEvent>
@@ -46,10 +45,10 @@
 #include <QDropEvent>
 #include <QDragMoveEvent>
 #include <QPaintEvent>
-#include <kshortcut.h>
-#include <kdirwatch.h>
-#include <kaction.h>
-#include <kio/job.h>
+#include <KDE/KShortcut>
+#include <KDE/KDirWatch>
+#include <KDE/KAction>
+#include <KDE/KIO/Job>
 #include <KDialog>
 
 #include "filter.h"

@@ -24,7 +24,7 @@
 #include <KDialog>
 #include <QListWidget>
 #include <QTreeWidgetItem>
-#include <qmap.h>
+#include <QMap>
 
 class KIconButton;
 class QLineEdit;

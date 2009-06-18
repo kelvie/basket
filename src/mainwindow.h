@@ -21,21 +21,20 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include <kmainwindow.h>
-#include <qtabbar.h>
-#include <qtabwidget.h>
-#include <qlabel.h>
-//Added by qt3to4:
+#include <KDE/KMainWindow>
+#include <QTabBar>
+#include <QTabWidget>
+#include <QLabel>
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QMoveEvent>
-#include <qpoint.h>
-#include <qclipboard.h>
-#include <kaction.h>
-#include <qpixmap.h>
-#include <qdesktopwidget.h>
-#include <qtimer.h>
-#include <qsplitter.h>
+#include <QPoint>
+#include <QClipboard>
+#include <KDE/KAction>
+#include <QPixmap>
+#include <QDesktopWidget>
+#include <QTimer>
+#include <QSplitter>
 #include <KXmlGuiWindow>
 
 class QWidget;

@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qstring.h>
-#include <qdom.h>
-#include <qstringlist.h>
-#include <qfile.h>
+#include <QString>
+#include <QtXml>
+#include <QStringList>
+#include <QFile>
 
 #include "xmlwork.h"
 

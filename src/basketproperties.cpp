@@ -18,27 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QLineEdit>
+#include <QComboBox>
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
 #include <QVBoxLayout>
-#include <knuminput.h>
+#include <KDE/KNumInput>
 #include <kshortcutwidget.h>
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QLayout>
+#include <QLabel>
 #include <QRadioButton>
 #include <QGroupBox>
 #include <QButtonGroup>
-#include <qstringlist.h>
-#include <klocale.h>
-#include <qstyle.h>
-#include <kapplication.h>
-#include <kiconloader.h>
+#include <QStringList>
+#include <KDE/KLocale>
+#include <QStyle>
+#include <KDE/KApplication>
+#include <KDE/KIconLoader>
+#include "KDE/KIconDialog"
 
-#include "kicondialog.h"
 #include "basketproperties.h"
 #include "basket.h"
 #include "kcolorcombo2.h"

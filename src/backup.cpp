@@ -26,24 +26,23 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
+#include <QLayout>
+#include <QLabel>
+#include <QPushButton>
 #include <QTextStream>
 #include <QHBoxLayout>
-#include <klocale.h>
-#include <qdir.h>
-#include <kapplication.h>
-#include <kaboutdata.h>
+#include <KDE/KLocale>
+#include <QDir>
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
 #include <QGroupBox>
-#include <kdirselectdialog.h>
-#include <krun.h>
-#include <kconfig.h>
-#include <ktar.h>
-#include <kfiledialog.h>
-#include <kprogressdialog.h>
-#include <kmessagebox.h>
+#include <KDE/KDirSelectDialog>
+#include <KDE/KRun>
+#include <KDE/KConfig>
+#include <KDE/KTar>
+#include <KDE/KFileDialog>
+#include <KDE/KProgressDialog>
+#include <KDE/KMessageBox>
 #include <QProgressBar>
 #include <unistd.h> // usleep()
 

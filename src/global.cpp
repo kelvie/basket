@@ -18,15 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kglobal.h>
-#include <kstandarddirs.h>
-#include <qstring.h>
-#include <kaction.h>
-#include <kapplication.h>
-#include <kmainwindow.h>
-#include <qdir.h>
-#include <kdebug.h>
-#include <kconfig.h>
+#include <KDE/KGlobal>
+#include <KDE/KStandardDirs>
+#include <QString>
+#include <KDE/KAction>
+#include <KDE/KApplication>
+#include <KDE/KMainWindow>
+#include <QDir>
+#include <KDE/KDebug>
+#include <KDE/KConfig>
 
 #include "global.h"
 #include "bnpview.h"

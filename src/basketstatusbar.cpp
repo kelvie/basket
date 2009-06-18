@@ -18,19 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kparts/statusbarextension.h>
-#include <kstatusbar.h>
-#include <klocale.h>
-#include <kdebug.h>
-#include <qlabel.h>
-#include <qobject.h>
+#include <KParts/StatusBarExtension>
+#include <KDE/KStatusBar>
+#include <KDE/KLocale>
+#include <KDE/KDebug>
+#include <QLabel>
+#include <QObject>
 #include "basketstatusbar.h"
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"
 #include "tools.h"
-#include <kiconloader.h>
-#include <qtooltip.h>
+#include <KDE/KIconLoader>
+#include <QToolTip>
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)
         : m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0), m_savedStatus(0)

@@ -20,7 +20,7 @@
 #ifndef ABOUTDATA_H
 #define ABOUTDATA_H
 
-#include <kaboutdata.h>
+#include <KDE/KAboutData>
 #include <basket_export.h>
 
 /**

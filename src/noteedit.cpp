@@ -18,28 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-//Added by qt3to4:
+#include <QLabel>
+#include <QLayout>
+#include <QLineEdit>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QGridLayout>
-#include <klineedit.h>
-#include <kurlrequester.h>
-#include <kcolordialog.h>
-#include <kservice.h>
-#include <kconfig.h>
-#include <kmessagebox.h>
-#include <klocale.h>
-#include <kmainwindow.h>
-#include <ktoolbar.h>
-#include <kaction.h>
-#include <kurifilter.h>
-#include <kdebug.h>
-#include <kstandardaction.h>
+#include <KDE/KLineEdit>
+#include <KDE/KUrlRequester>
+#include <KDE/KColorDialog>
+#include <KDE/KService>
+#include <KDE/KConfig>
+#include <KDE/KMessageBox>
+#include <KDE/KLocale>
+#include <KDE/KMainWindow>
+#include <KDE/KToolBar>
+#include <KDE/KAction>
+#include <KDE/KUriFilter>
+#include <KDE/KDebug>
+#include <KDE/KStandardAction>
 
-#include "kicondialog.h"
+#include "KDE/KIconDialog"
 #include "noteedit.h"
 #include "notecontent.h"
 // Use Tools::
@@ -51,9 +50,9 @@
 #include "variouswidgets.h"
 #include "focusedwidgets.h"
 
-#include <KActionCollection>
-#include <KToggleAction>
-#include <KDesktopFile>
+#include <KDE/KActionCollection>
+#include <KDE/KToggleAction>
+#include <KDE/KDesktopFile>
 
 /** class NoteEditor: */
 

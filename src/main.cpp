@@ -20,17 +20,17 @@
 
 #include <stdlib.h>
 
-#include <kcmdlineargs.h>
-#include <kaboutdata.h>
-#include <kiconloader.h>
-#include <qpixmap.h>
-#include <klocale.h>
-#include <kglobalaccel.h>
-#include <kmessagebox.h>
-#include <kstandarddirs.h>
-#include <kdebug.h>
-#include <qfile.h>
-#include <qfileinfo.h>
+#include <KDE/KCmdLineArgs>
+#include <KDE/KAboutData>
+#include <KDE/KIconLoader>
+#include <QPixmap>
+#include <KDE/KLocale>
+#include <KDE/KGlobalAccel>
+#include <KDE/KMessageBox>
+#include <KDE/KStandardDirs>
+#include <KDE/KDebug>
+#include <QFile>
+#include <QFileInfo>
 
 #include <kconfig.h> // TMP IN ALPHA 1
 

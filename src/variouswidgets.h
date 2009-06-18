@@ -22,13 +22,12 @@
 #define VARIOUSWIDGETS_H
 
 #include <QWidget>
-//Added by qt3to4:
 #include <QResizeEvent>
 #include <QKeyEvent>
-#include <kcombobox.h>
+#include <KDE/KComboBox>
 #include <QDialog>
-#include <kurllabel.h>
-#include <qstring.h>
+#include <KDE/KUrlLabel>
+#include <QString>
 #include <KDialog>
 
 class QLineEdit;

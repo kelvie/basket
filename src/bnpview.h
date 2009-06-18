@@ -22,12 +22,11 @@
 #define BNPVIEW_H
 
 #include <QTreeWidget>
-#include <kxmlguiclient.h>
-#include <qtimer.h>
-#include <qclipboard.h>
-#include <qsplitter.h>
+#include <KDE/KXMLGUIClient>
+#include <QTimer>
+#include <QClipboard>
+#include <QSplitter>
 #include <QTreeWidget>
-//Added by qt3to4:
 #include <QList>
 #include <QPixmap>
 #include <QHideEvent>

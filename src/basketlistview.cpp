@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 #include "basketlistview.h"
-#include <qregexp.h>
-//Added by qt3to4:
+#include <QRegExp>
 #include <QDragLeaveEvent>
 #include <QPixmap>
 #include <QDragEnterEvent>
@@ -28,14 +27,14 @@
 #include <QDropEvent>
 #include <QResizeEvent>
 #include <QFocusEvent>
-#include <kiconloader.h>
-#include <klocale.h>
-#include <kstringhandler.h>
-#include <qpainter.h>
-#include <qbitmap.h>
-#include <qpixmapcache.h>
-#include <qtooltip.h>
-#include <kdebug.h>
+#include <KDE/KIconLoader>
+#include <KDE/KLocale>
+#include <KDE/KStringHandler>
+#include <QPainter>
+#include <QBitmap>
+#include <QPixmapCache>
+#include <QToolTip>
+#include <KDE/KDebug>
 #include "global.h"
 #include "bnpview.h"
 #include "basket.h"

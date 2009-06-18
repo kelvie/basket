@@ -18,37 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qdir.h>
-#include <qdom.h>
-#include <qpainter.h>
-#include <qfontmetrics.h>
-#include <qwidget.h>
-#include <qcursor.h>
-#include <qstringlist.h>
-#include <qbuffer.h>
-//Added by qt3to4:
+#include <QFile>
+#include <QDir>
+#include <QtXml>
+#include <QPainter>
+#include <QFontMetrics>
+#include <QWidget>
+#include <QCursor>
+#include <QBuffer>
 #include <QStringList>
 #include <QPixmap>
-#include <ktextedit.h>
-#include <kservice.h>
-#include <kcolordialog.h>
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <KDE/KTextEdit>
+#include <KDE/KService>
+#include <KDE/KColorDialog>
+#include <KDE/KMessageBox>
+#include <KDE/KLocale>
 #include <QAbstractTextDocumentLayout>
 
-#include <qbitmap.h>
-#include <kurifilter.h>
-#include <qregexp.h>
-//#include <kstringhandler.h>
-#include <kfilemetainfo.h>
-#include <qdatetime.h>
+#include <QBitmap>
+#include <KDE/KUriFilter>
+#include <QRegExp>
+#include <KDE/KFileMetaInfo>
+#include <QDateTime>
 #include <QDrag>
 
-#include <qfileinfo.h>
-//#include <kio/kfileitem.h>
-#include <kfileitem.h>
-#include <kio/previewjob.h>
+#include <QFileInfo>
+#include <KDE/KFileItem>
+#include <KDE/KIO/PreviewJob>
 #include <kio/global.h>
 
 #include "notecontent.h"
@@ -69,15 +65,8 @@
 #include "htmlexporter.h"
 
 #include "config.h"
-#define WITHOUT_ARTS
-#ifndef WITHOUT_ARTS
-#include <arts/kplayobject.h>
-#include <arts/kplayobjectfactory.h>
-#include <arts/kartsserver.h>
-#include <arts/kartsdispatcher.h>
-#endif
 
-#include <KDebug>
+#include <KDE/KDebug>
 
 /** class NoteContent:
  */

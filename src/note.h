@@ -21,12 +21,11 @@
 #ifndef NOTE_H
 #define NOTE_H
 
-#include <qstring.h>
+#include <QString>
 
-//Added by qt3to4:
 #include <QList>
 #include <QPixmap>
-#include <qdatetime.h>
+#include <QDateTime>
 
 #include "notecontent.h"
 #include "tag.h"

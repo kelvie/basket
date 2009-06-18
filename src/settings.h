@@ -21,20 +21,19 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <qstring.h>
-//Added by qt3to4:
+#include <QString>
 #include <QLabel>
 #include <KDialog>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qtooltip.h>
-#include <qcolor.h>
-#include <qpoint.h>
-#include <qsize.h>
-#include <kcmodule.h>
-#include <kaction.h>
-#include <kmainwindow.h>
-#include <qdatetime.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QToolTip>
+#include <QColor>
+#include <QPoint>
+#include <QSize>
+#include <KDE/KCModule>
+#include <KDE/KAction>
+#include <KDE/KMainWindow>
+#include <QDateTime>
 
 #include "basket_export.h"
 #include "global.h"

@@ -21,8 +21,7 @@
 #ifndef SOFTWAREIMPORTERS_H
 #define SOFTWAREIMPORTERS_H
 
-#include <qnamespace.h>
-#include <KDialog>
+#include <KDE/KDialog>
 
 class QString;
 class QGroupBox;

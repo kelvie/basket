@@ -20,14 +20,14 @@
 
 #include "basket_part.h"
 
-#include <kcomponentdata.h>
-#include <kaction.h>
-#include <kstandardaction.h>
-#include <kfiledialog.h>
-#include <kglobal.h>
-#include <klocale.h>
-#include <kparts/genericfactory.h>
-#include <kparts/statusbarextension.h>
+#include <KDE/KComponentData>
+#include <KDE/KAction>
+#include <KDE/KStandardAction>
+#include <KDE/KFileDialog>
+#include <KDE/KGlobal>
+#include <KDE/KLocale>
+#include <KDE/KParts/GenericFactory>
+#include <KDE/KParts/StatusBarExtension>
 #include <kdemacros.h>
 #include "aboutdata.h"
 #include "basketstatusbar.h"

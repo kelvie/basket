@@ -21,8 +21,8 @@
 #ifndef _BASKETPART_H_
 #define _BASKETPART_H_
 
-#include <kparts/part.h>
-#include <kparts/factory.h>
+#include <KDE/KParts/Part>
+#include <KDE/KParts/Factory>
 
 class QWidget;
 class QPainter;

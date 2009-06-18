@@ -21,7 +21,7 @@
 #ifndef LIKEBACK_H
 #define LIKEBACK_H
 
-#include <qobject.h>
+#include <QObject>
 
 class KConfig;
 class KAboutData;

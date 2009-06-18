@@ -21,14 +21,13 @@
 #ifndef FOCUSEDWIDGETS_H
 #define FOCUSEDWIDGETS_H
 
-#include <ktextedit.h>
-#include <kcolorcombo.h>
+#include <KDE/KTextEdit>
+#include <KDE/KColorCombo>
 #include <QFontComboBox>
-#include <kcombobox.h>
-#include <klineedit.h>
-#include <kapplication.h>
-#include <qclipboard.h>
-//Added by qt3to4:
+#include <KComboBox>
+#include <KDE/KLineEdit>
+#include <KDE/KApplication>
+#include <QClipboard>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QWheelEvent>

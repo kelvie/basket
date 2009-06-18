@@ -21,8 +21,8 @@
 #ifndef LIKEBACK_PRIVATE_H
 #define LIKEBACK_PRIVATE_H
 
-#include <KDialog>
-#include <qtimer.h>
+#include <KDE/KDialog>
+#include <QTimer>
 #include <QRadioButton>
 
 #include "likeback.h"

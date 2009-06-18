@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qlabel.h>
-//Added by qt3to4:
+#include <QLabel>
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPixmap>
@@ -27,22 +26,21 @@
 #include <QEvent>
 #include <QVBoxLayout>
 #include <QBoxLayout>
-#include <kurl.h>
-#include <qlayout.h>
-#include <kiconloader.h>
-#include <qcursor.h>
-#include <klocale.h>
-#include <qpushbutton.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qpainter.h>
-#include <qstyle.h>
-#include <kapplication.h>
-#include <kaboutdata.h>
+#include <KDE/KUrl>
+#include <QLayout>
+#include <KDE/KIconLoader>
+#include <QCursor>
+#include <KDE/KLocale>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QPainter>
+#include <QStyle>
+#include <KDE/KApplication>
 #include <KDialog>
-#include <kcmodule.h>
-#include <kdebug.h>
-#include <kcolorscheme.h>
+#include <KDE/KCModule>
+#include <KDE/KDebug>
+#include <KDE/KColorScheme>
 #include <QGroupBox>
 
 #include "linklabel.h"

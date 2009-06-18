@@ -18,15 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kurl.h>
-#include <kglobal.h>
-#include <kstandarddirs.h>
-#include <kconfig.h>
-#include <kconfiggroup.h>
-#include <qpainter.h>
-#include <qdir.h>
-#include <qimage.h>
-//Added by qt3to4:
+#include <KDE/KUrl>
+#include <KDE/KGlobal>
+#include <KDE/KStandardDirs>
+#include <KDE/KConfig>
+#include <KDE/KConfigGroup>
+#include <QPainter>
+#include <QDir>
+#include <QImage>
 #include <QPixmap>
 
 #include "backgroundmanager.h"

@@ -6,10 +6,10 @@
 #include <kontactinterfaces/core.h>
 #include <kontactinterfaces/plugin.h>
 
-#include <kactioncollection.h>
-#include <kgenericfactory.h>
-#include <kicon.h>
-#include <kparts/componentfactory.h>
+#include <KDE/KActionCollection>
+#include <KDE/KGenericFactory>
+#include <KDE/KIcon>
+#include <KDE/KParts/ComponentFactory>
 
 EXPORT_KONTACT_PLUGIN(BasketPlugin, basket)
 

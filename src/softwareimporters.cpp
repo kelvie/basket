@@ -18,19 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qstring.h>
-#include <qdir.h>
-//Added by qt3to4:
+#include <QString>
+#include <QDir>
 #include <QTextStream>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <kstandarddirs.h>
-#include <klocale.h>
-#include <kfiledialog.h>
+#include <KDE/KStandardDirs>
+#include <KDE/KLocale>
+#include <KDE/KFileDialog>
 #include <QStack>
-#include <qlayout.h>
-#include <qradiobutton.h>
-#include <kmessagebox.h>
+#include <QLayout>
+#include <QRadioButton>
+#include <KDE/KMessageBox>
 #include <QTextEdit>
 #include <QDomDocument>
 

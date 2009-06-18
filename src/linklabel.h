@@ -22,7 +22,6 @@
 #define LINKLABEL_H
 
 #include <QFrame>
-//Added by qt3to4:
 #include <QBoxLayout>
 #include <QPixmap>
 #include <QLabel>

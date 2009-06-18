@@ -19,11 +19,10 @@
  ***************************************************************************/
 
 #include "colorpicker.h"
-#include "qtimer.h"
-//Added by qt3to4:
+#include "QTimer"
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <kcolordialog.h>
+#include <KDE/KColorDialog>
 
 /// ///
 

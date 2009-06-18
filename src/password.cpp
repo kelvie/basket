@@ -22,15 +22,14 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <qlayout.h>
-#include <qtoolbutton.h>
+#include <QLayout>
+#include <QToolButton>
 #include <QGroupBox>
-#include <qradiobutton.h>
-//Added by qt3to4:
+#include <QRadioButton>
 #include <QHBoxLayout>
-#include <klocale.h>
-#include <kiconloader.h>
-#include <kmessagebox.h>
+#include <KDE/KLocale>
+#include <KDE/KIconLoader>
+#include <KDE/KMessageBox>
 
 
 #include "basket.h"

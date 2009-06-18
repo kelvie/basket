@@ -18,20 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kapplication.h>
-#include <kstyle.h>
-#include <kiconloader.h>
-#include <qpainter.h>
-#include <qfont.h>
-#include <qdom.h>
-#include <qdir.h>
-//Added by qt3to4:
+#include <KDE/KApplication>
+#include <KDE/KStyle>
+#include <KDE/KIconLoader>
+#include <QPainter>
+#include <QFont>
+#include <QtXml>
+#include <QDir>
 #include <QTextStream>
 #include <QList>
 #include <QPixmap>
-#include <klocale.h>
-
-#include <kactioncollection.h>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
 
 #include "tag.h"
 #include "xmlwork.h"

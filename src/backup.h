@@ -22,9 +22,8 @@
 #define BACKUP_H
 
 #include <KDialog>
-#include <qapplication.h>
-#include <qthread.h>
-//Added by qt3to4:
+#include <QApplication>
+#include <QThread>
 #include <QLabel>
 
 #include "basket_export.h"

@@ -21,7 +21,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <qstring.h>
+#include <QString>
 
 #include "aboutdata.h"
 #include "basket_export.h"

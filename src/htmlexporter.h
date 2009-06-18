@@ -21,7 +21,7 @@
 #ifndef HTMLEXPORTER_H
 #define HTMLEXPORTER_H
 
-#include <qstring.h>
+#include <QString>
 #include <QTextStream>
 
 class QProgressBar;
