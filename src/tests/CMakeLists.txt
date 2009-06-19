@@ -10,3 +10,4 @@ macro(basket_standalone_unit_test _testname)
     target_link_libraries(${_testname} basketcommon ${KDE4_KDEUI_LIBS} ${QT_QTTEST_LIBRARY})
 endmacro(basket_standalone_unit_test)
 
+basket_standalone_unit_test(notetest)
