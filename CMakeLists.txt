@@ -14,8 +14,6 @@ include(KDE4Defaults)
 
 include(MacroLibrary)
 
-#include(ManualStuff.cmake)
-
 IF(GPGME_FOUND)
   SET(HAVE_LIBGPGME 1)
   ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64)
@@ -28,8 +26,6 @@ ENDIF(GPGME_FOUND)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-
-#include(ConfigureChecks.cmake)
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
