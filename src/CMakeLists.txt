@@ -1,5 +1,5 @@
-
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES} ${GPGME_INCLUDES})
+add_subdirectory(tests)
 
 ########### next target ###############
 
