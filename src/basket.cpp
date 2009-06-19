@@ -3076,6 +3076,11 @@ void Basket::inactivityAutoLockTimeout()
 	lock();
 }
 
+void Basket::drawContents(QPainter *painter)
+{
+	drawContents(painter, 0, 0, 0, 0);
+}
+
 void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight)
 {
 	// Start the load the first time the basket is shown:

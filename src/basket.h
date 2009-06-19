@@ -202,6 +202,7 @@ class Basket : public Q3ScrollView
 	bool   m_canDrag;
   public:
 	void viewportResizeEvent(QResizeEvent *);
+	void drawContents(QPainter *painter);
 	void drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight);
 	void enterEvent(QEvent *);
 	void leaveEvent(QEvent *);
