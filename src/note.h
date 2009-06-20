@@ -27,8 +27,10 @@
 #include <QPixmap>
 #include <QDateTime>
 
+#include "basket_export.h"
 #include "notecontent.h"
 #include "tag.h"
+
 
 class Basket;
 class FilterData;
@@ -48,11 +50,11 @@ class QPainter;
   * @endcode
   * @author Sébastien Laoût
   */
-class Note
+class BASKET_EXPORT Note
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
 public:
-    Note(Basket *parent);
+    Note(Basket *parent = 0);
     ~Note();
 
 /// DOUBLY LINKED LIST:
