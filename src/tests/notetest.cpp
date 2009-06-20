@@ -18,30 +18,33 @@
  */
 
 #include <QObject>
+#include <QtTest/QtTest>
 #include <qtest_kde.h>
 
 #include "note.h"
+#include "basket.h"
 
 class NoteTest: public QObject
 {
 Q_OBJECT
 public Q_SLOTS:
-	void testCreation();
+    void testCreation();
 };
 
 QTEST_KDEMAIN(NoteTest, NoGUI)
 
 void NoteTest::testCreation()
 {
-	Note* n = new Note(0);
-	QCOMPARE(n->basket(), 0);
-	QCOMPARE(n->next(), 0);
-	QCOMPARE(n->prev(), 0);
-	QCOMPARE(n->x(), 0);
-	QCOMPARE(n->y(), -1);
-	QCOMPARE(n->width(), -1);
-	QCOMPARE(n->height(), -1);
-	delete n;
+    Note* n = new Note(0);
+    QVERIFY(n->basket() == 0);
+    QVERIFY(n->next() == 0);
+    QVERIFY(n->prev() == 0);
+    QCOMPARE(n->x(), 0);
+    QCOMPARE(n->y(), -1);
+    QCOMPARE(n->width(), -1);
+    QCOMPARE(n->height(), -1);
+    delete n;
 }
 
 #include "notetest.moc"
+/* vim: set et sts=4 sw=4 ts=8 tw=0 : */
