@@ -27,7 +27,7 @@
 class NoteTest: public QObject
 {
 Q_OBJECT
-public Q_SLOTS:
+private Q_SLOTS:
     void testCreation();
 };
 
