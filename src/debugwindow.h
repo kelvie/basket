@@ -35,21 +35,22 @@ class QCloseEvent;
   *@author Sébastien Laoût
   */
 
-class DebugWindow : public QWidget  {
-  Q_OBJECT
-  public:
-	/** Construtor and destructor */
-	DebugWindow(QWidget *parent = 0);
-	~DebugWindow();
-	/** Methods to post a message to the debug window */
-	void postMessage(const QString msg);
-	DebugWindow& operator<<(const QString msg);
-	void insertHLine();
-  protected:
-	virtual void closeEvent(QCloseEvent *event);
-  private:
-	QVBoxLayout  *layout;
-	QTextBrowser *textBrowser;
+class DebugWindow : public QWidget
+{
+    Q_OBJECT
+public:
+    /** Construtor and destructor */
+    DebugWindow(QWidget *parent = 0);
+    ~DebugWindow();
+    /** Methods to post a message to the debug window */
+    void postMessage(const QString msg);
+    DebugWindow& operator<<(const QString msg);
+    void insertHLine();
+protected:
+    virtual void closeEvent(QCloseEvent *event);
+private:
+    QVBoxLayout  *layout;
+    QTextBrowser *textBrowser;
 };
 
 #define DEBUG_WIN if (Global::debugWindow) *Global::debugWindow

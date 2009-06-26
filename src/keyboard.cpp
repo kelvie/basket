@@ -34,15 +34,15 @@
 void Keyboard::pressedKeys(bool &shiftPressed, bool &controlPressed)
 {
 #if defined Q_WS_X11 && ! defined K_WS_QTONLY
-	Window root;
-	Window child;
-	int root_x, root_y, win_x, win_y;
-	uint keybstate;
-	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
-	               &root_x, &root_y, &win_x, &win_y, &keybstate );
+    Window root;
+    Window child;
+    int root_x, root_y, win_x, win_y;
+    uint keybstate;
+    XQueryPointer(QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
+                  &root_x, &root_y, &win_x, &win_y, &keybstate);
 
-	shiftPressed   = keybstate & ShiftMask;
-	controlPressed = keybstate & ControlMask;
+    shiftPressed   = keybstate & ShiftMask;
+    controlPressed = keybstate & ControlMask;
 #endif
 }
 
@@ -51,16 +51,16 @@ void Keyboard::pressedKeys(bool &shiftPressed, bool &controlPressed)
 bool Keyboard::shiftPressed()
 {
 #if defined Q_WS_X11 && ! defined K_WS_QTONLY
-	Window root;
-	Window child;
-	int root_x, root_y, win_x, win_y;
-	uint keybstate;
-	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
-	               &root_x, &root_y, &win_x, &win_y, &keybstate );
+    Window root;
+    Window child;
+    int root_x, root_y, win_x, win_y;
+    uint keybstate;
+    XQueryPointer(QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
+                  &root_x, &root_y, &win_x, &win_y, &keybstate);
 
-	return (keybstate & ShiftMask) != 0;
+    return (keybstate & ShiftMask) != 0;
 #else
-	return false;
+    return false;
 #endif
 }
 
@@ -69,16 +69,16 @@ bool Keyboard::shiftPressed()
 bool Keyboard::controlPressed()
 {
 #if defined Q_WS_X11 && ! defined K_WS_QTONLY
-	Window root;
-	Window child;
-	int root_x, root_y, win_x, win_y;
-	uint keybstate;
-	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
-	               &root_x, &root_y, &win_x, &win_y, &keybstate );
+    Window root;
+    Window child;
+    int root_x, root_y, win_x, win_y;
+    uint keybstate;
+    XQueryPointer(QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
+                  &root_x, &root_y, &win_x, &win_y, &keybstate);
 
-	return (keybstate & ControlMask) != 0;
+    return (keybstate & ControlMask) != 0;
 #else
-	return false;
+    return false;
 #endif
 }
 
@@ -87,16 +87,16 @@ bool Keyboard::controlPressed()
 bool Keyboard::altPressed()
 {
 #if defined Q_WS_X11 && ! defined K_WS_QTONLY
-	Window root;
-	Window child;
-	int root_x, root_y, win_x, win_y;
-	uint keybstate;
-	XQueryPointer( QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
-	               &root_x, &root_y, &win_x, &win_y, &keybstate );
+    Window root;
+    Window child;
+    int root_x, root_y, win_x, win_y;
+    uint keybstate;
+    XQueryPointer(QX11Info::display(), QX11Info::appRootWindow(), &root, &child,
+                  &root_x, &root_y, &win_x, &win_y, &keybstate);
 
-	return (keybstate & Mod1Mask) != 0;
+    return (keybstate & Mod1Mask) != 0;
 #else
-	return false;
+    return false;
 #endif
 }
 

@@ -41,15 +41,17 @@ class KColorCombo2;
   */
 class SingleSelectionKIconView : public QListWidget
 {
-  Q_OBJECT
-  public:
-	SingleSelectionKIconView(QWidget *parent = 0);
-	QMimeData* dragObject();
-	QListWidgetItem* selectedItem() { return m_lastSelected; }
-  private slots:
-	void slotSelectionChanged(QListWidgetItem *cur);
-  private:
-	QListWidgetItem *m_lastSelected;
+    Q_OBJECT
+public:
+    SingleSelectionKIconView(QWidget *parent = 0);
+    QMimeData* dragObject();
+    QListWidgetItem* selectedItem() {
+        return m_lastSelected;
+    }
+private slots:
+    void slotSelectionChanged(QListWidgetItem *cur);
+private:
+    QListWidgetItem *m_lastSelected;
 };
 
 /** Struct to store default properties of a new basket.
@@ -59,16 +61,15 @@ class SingleSelectionKIconView : public QListWidget
   * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
   * @author Sébastien Laoût
   */
-struct NewBasketDefaultProperties
-{
-	QString icon;
-	QString backgroundImage;
-	QColor  backgroundColor;
-	QColor  textColor;
-	bool    freeLayout;
-	int     columnCount;
+struct NewBasketDefaultProperties {
+    QString icon;
+    QString backgroundImage;
+    QColor  backgroundColor;
+    QColor  textColor;
+    bool    freeLayout;
+    int     columnCount;
 
-	NewBasketDefaultProperties();
+    NewBasketDefaultProperties();
 };
 
 /** The dialog to create a new basket from a template.
@@ -76,25 +77,25 @@ struct NewBasketDefaultProperties
   */
 class NewBasketDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
-	~NewBasketDialog();
-	void ensurePolished();
-  protected slots:
-	void slotOk();
-	void returnPressed();
-	void manageTemplates();
-	void nameChanged(const QString &newName);
-  private:
-	int populateBasketsList(QTreeWidgetItem *item, int indent, int index);
-	NewBasketDefaultProperties  m_defaultProperties;
-	KIconButton                *m_icon;
-	QLineEdit                  *m_name;
-	KColorCombo2               *m_backgroundColor;
-	QListWidget                 *m_templates;
-	QComboBox                  *m_createIn;
-	QMap<int, Basket*>          m_basketsMap;
+    Q_OBJECT
+public:
+    NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
+    ~NewBasketDialog();
+    void ensurePolished();
+protected slots:
+    void slotOk();
+    void returnPressed();
+    void manageTemplates();
+    void nameChanged(const QString &newName);
+private:
+    int populateBasketsList(QTreeWidgetItem *item, int indent, int index);
+    NewBasketDefaultProperties  m_defaultProperties;
+    KIconButton                *m_icon;
+    QLineEdit                  *m_name;
+    KColorCombo2               *m_backgroundColor;
+    QListWidget                 *m_templates;
+    QComboBox                  *m_createIn;
+    QMap<int, Basket*>          m_basketsMap;
 };
 
 #endif // NEWBASKETDIALOG_H

@@ -43,37 +43,37 @@ class KColorCombo2;
   */
 class BasketPropertiesDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	BasketPropertiesDialog(Basket *basket, QWidget *parent = 0);
-	~BasketPropertiesDialog();
-	void ensurePolished();
+    Q_OBJECT
+public:
+    BasketPropertiesDialog(Basket *basket, QWidget *parent = 0);
+    ~BasketPropertiesDialog();
+    void ensurePolished();
 
-  public slots:
-	void applyChanges();
+public slots:
+    void applyChanges();
 
-  protected slots:
-	void capturedShortcut(const KShortcut &shortcut);
-	void selectColumnsLayout();
-  private:
-	Basket        *m_basket;
-	KIconButton   *m_icon;
-	QLineEdit     *m_name;
-	QComboBox     *m_backgroundImage;
-	KColorCombo2  *m_backgroundColor;
-	KColorCombo2  *m_textColor;
-	QGroupBox     *m_disposition;
-	QRadioButton  *columnForm;
-	QRadioButton  *mindMap;
-	QRadioButton  *freeForm;
-	KIntNumInput  *m_columnCount;
-	KShortcutWidget *m_shortcut;
-	QGroupBox *m_shortcutRole;
-	QVBoxLayout *m_shortcutRoleLayout;
-	QRadioButton * m_showButton;
-	QRadioButton * m_globalButton;
-	QRadioButton * m_switchButton;
-	QMap<int, QString> m_backgroundImagesMap;
+protected slots:
+    void capturedShortcut(const KShortcut &shortcut);
+    void selectColumnsLayout();
+private:
+    Basket        *m_basket;
+    KIconButton   *m_icon;
+    QLineEdit     *m_name;
+    QComboBox     *m_backgroundImage;
+    KColorCombo2  *m_backgroundColor;
+    KColorCombo2  *m_textColor;
+    QGroupBox     *m_disposition;
+    QRadioButton  *columnForm;
+    QRadioButton  *mindMap;
+    QRadioButton  *freeForm;
+    KIntNumInput  *m_columnCount;
+    KShortcutWidget *m_shortcut;
+    QGroupBox *m_shortcutRole;
+    QVBoxLayout *m_shortcutRoleLayout;
+    QRadioButton * m_showButton;
+    QRadioButton * m_globalButton;
+    QRadioButton * m_switchButton;
+    QMap<int, QString> m_backgroundImagesMap;
 };
 
 #endif // BASKETPROPERTIES_H

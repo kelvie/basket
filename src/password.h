@@ -28,34 +28,34 @@
 #include <KDialog>
 
 /**
-	@author Petri Damsten <damu@iki.fi>
+    @author Petri Damsten <damu@iki.fi>
 */
 class Password : public QWidget, public Ui::PasswordLayout
 {
-	Q_OBJECT
-	public:
-		Password(QWidget *parent=0);
-		~Password();
+    Q_OBJECT
+public:
+    Password(QWidget *parent = 0);
+    ~Password();
 };
 
 class PasswordDlg : public KDialog
 {
-	Q_OBJECT
-	public:
-		PasswordDlg(QWidget *parent=0);
-		~PasswordDlg();
+    Q_OBJECT
+public:
+    PasswordDlg(QWidget *parent = 0);
+    ~PasswordDlg();
 
-		QString key() const;
-		int type() const;
-		void setKey(const QString& key);
-		void setType(int type);
+    QString key() const;
+    int type() const;
+    void setKey(const QString& key);
+    void setType(int type);
 
-		/** Reimplemented from {K,Q}Dialog
-		 */
-		void accept();
+    /** Reimplemented from {K,Q}Dialog
+     */
+    void accept();
 
-	private:
-		Password* w;
+private:
+    Password* w;
 };
 
 #endif // HAVE_LIBGPGME

@@ -40,17 +40,17 @@ class Note;
   */
 class TreeImportDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	TreeImportDialog(QWidget *parent = 0);
-	~TreeImportDialog();
-	int choice();
-  private:
-	QGroupBox *m_choices;
-	QVBoxLayout* m_choiceLayout;
-	QRadioButton *m_hierarchy_choice;
-	QRadioButton *m_separate_baskets_choice;
-	QRadioButton *m_one_basket_choice;
+    Q_OBJECT
+public:
+    TreeImportDialog(QWidget *parent = 0);
+    ~TreeImportDialog();
+    int choice();
+private:
+    QGroupBox *m_choices;
+    QVBoxLayout* m_choiceLayout;
+    QRadioButton *m_hierarchy_choice;
+    QRadioButton *m_separate_baskets_choice;
+    QRadioButton *m_one_basket_choice;
 };
 
 /** The dialog to ask how to import text files.
@@ -58,23 +58,23 @@ class TreeImportDialog : public KDialog
   */
 class TextFileImportDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	TextFileImportDialog(QWidget *parent = 0);
-	~TextFileImportDialog();
-	QString separator();
-  protected slots:
-	void customSeparatorChanged();
-  private:
-	QGroupBox *m_choices;
-	QVBoxLayout* m_choiceLayout;
-	QRadioButton  *m_emptyline_choice;
-	QRadioButton  *m_newline_choice;
-	QRadioButton  *m_dash_choice;
-	QRadioButton  *m_star_choice;
-	QRadioButton  *m_all_in_one_choice;
-	QRadioButton  *m_anotherSeparator;
-	QTextEdit     *m_customSeparator;
+    Q_OBJECT
+public:
+    TextFileImportDialog(QWidget *parent = 0);
+    ~TextFileImportDialog();
+    QString separator();
+protected slots:
+    void customSeparatorChanged();
+private:
+    QGroupBox *m_choices;
+    QVBoxLayout* m_choiceLayout;
+    QRadioButton  *m_emptyline_choice;
+    QRadioButton  *m_newline_choice;
+    QRadioButton  *m_dash_choice;
+    QRadioButton  *m_star_choice;
+    QRadioButton  *m_all_in_one_choice;
+    QRadioButton  *m_anotherSeparator;
+    QTextEdit     *m_customSeparator;
 };
 
 /** Functions that import data from other softwares.
@@ -82,23 +82,23 @@ class TextFileImportDialog : public KDialog
   */
 namespace SoftwareImporters
 {
-	// Useful methods to design importers:
-	QString fromICS(const QString &ics);
-	QString fromTomboy(QString tomboy);
-	Note* insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
-	void finishImport(Basket *basket);
+// Useful methods to design importers:
+QString fromICS(const QString &ics);
+QString fromTomboy(QString tomboy);
+Note* insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
+void finishImport(Basket *basket);
 
-	// The importers in themselves:
-	void importKNotes();
-	void importKJots();
-	void importKnowIt();
-	void importTuxCards();
-	void importStickyNotes();
-	void importTomboy();
-	void importTextFile();
+// The importers in themselves:
+void importKNotes();
+void importKJots();
+void importKnowIt();
+void importTuxCards();
+void importStickyNotes();
+void importTomboy();
+void importTextFile();
 
-	//
-	void importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy);
+//
+void importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy);
 }
 
 #endif // SOFTWAREIMPORTERS_H

@@ -11,13 +11,13 @@
 #include <kicon.h>
 #include <kparts/componentfactory.h>
 
-EXPORT_KONTACT_PLUGIN( BasketPlugin, basket )
+EXPORT_KONTACT_PLUGIN(BasketPlugin, basket)
 
-BasketPlugin::BasketPlugin( Kontact::Core *core, const QVariantList & )
-  : Kontact::Plugin( core, core, "Basket" )
+BasketPlugin::BasketPlugin(Kontact::Core *core, const QVariantList &)
+        : Kontact::Plugin(core, core, "Basket")
 {
-  setComponentData( KontactPluginFactory::componentData() );
-  Global::basketConfig = KSharedConfig::openConfig("basketrc");
+    setComponentData(KontactPluginFactory::componentData());
+    Global::basketConfig = KSharedConfig::openConfig("basketrc");
 }
 
 BasketPlugin::~BasketPlugin()
@@ -26,32 +26,30 @@ BasketPlugin::~BasketPlugin()
 
 KParts::ReadOnlyPart *BasketPlugin::createPart()
 {
-  KParts::ReadOnlyPart *part = loadPart();
+    KParts::ReadOnlyPart *part = loadPart();
 
-  connect( part, SIGNAL(showPart()), this, SLOT(showPart()) );
+    connect(part, SIGNAL(showPart()), this, SLOT(showPart()));
 
-  return part;
+    return part;
 }
 
-void BasketPlugin::readProperties( const KConfigGroup &config )
+void BasketPlugin::readProperties(const KConfigGroup &config)
 {
-  if ( part() )
-  {
-    BasketPart *myPart = static_cast<BasketPart*>( part() );
-  }
+    if (part()) {
+        BasketPart *myPart = static_cast<BasketPart*>(part());
+    }
 }
 
-void BasketPlugin::saveProperties( KConfigGroup &config )
+void BasketPlugin::saveProperties(KConfigGroup &config)
 {
-  if ( part() )
-  {
-    BasketPart *myPart = static_cast<BasketPart*>( part() );
-  }
+    if (part()) {
+        BasketPart *myPart = static_cast<BasketPart*>(part());
+    }
 }
 
 void BasketPlugin::showPart()
 {
-  core()->selectPlugin( this );
+    core()->selectPlugin(this);
 }
 
 #include "basket_plugin.moc"

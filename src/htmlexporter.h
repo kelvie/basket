@@ -34,46 +34,46 @@ class Note;
  */
 class HTMLExporter
 {
-  public:
-	HTMLExporter(Basket *basket);
-	~HTMLExporter();
-  private:
-	void prepareExport(Basket *basket, const QString &fullPath);
-	void exportBasket(Basket *basket, bool isSubBasket);
-	void exportNote(Note *note, int indent);
-	void writeBasketTree(Basket *currentBasket);
-	void writeBasketTree(Basket *currentBasket, Basket *basket, int indent);
+public:
+    HTMLExporter(Basket *basket);
+    ~HTMLExporter();
+private:
+    void prepareExport(Basket *basket, const QString &fullPath);
+    void exportBasket(Basket *basket, bool isSubBasket);
+    void exportNote(Note *note, int indent);
+    void writeBasketTree(Basket *currentBasket);
+    void writeBasketTree(Basket *currentBasket, Basket *basket, int indent);
 
-  public:
-	QString copyIcon(const QString &iconName, int size);
-	QString copyFile(const QString &srcPath, bool createIt);
+public:
+    QString copyIcon(const QString &iconName, int size);
+    QString copyFile(const QString &srcPath, bool createIt);
 
-  public:
-	// Absolute path of the file name the user choosen:
-	QString filePath;          // eg.: "/home/seb/foo.html"
-	QString fileName;          // eg.: "foo.html"
+public:
+    // Absolute path of the file name the user choosen:
+    QString filePath;          // eg.: "/home/seb/foo.html"
+    QString fileName;          // eg.: "foo.html"
 
-	// Absolute & relative paths for the current basket to be exported:
-	QString basketFilePath;    // eg.: "/home/seb/foo.html" or "/home/seb/foo.html_files/baskets/basketN.html"
-	QString filesFolderPath;   // eg.: "/home/seb/foo.html_files/"
-	QString filesFolderName;   // eg.: "foo.html_files/" or "../"
-	QString iconsFolderPath;   // eg.: "/home/seb/foo.html_files/icons/"
-	QString iconsFolderName;   // eg.: "foo.html_files/icons/" or "../icons/"
-	QString imagesFolderPath;  // eg.: "/home/seb/foo.html_files/images/"
-	QString imagesFolderName;  // eg.: "foo.html_files/images/" or "../images/"
-	QString dataFolderPath;    // eg.: "/home/seb/foo.html_files/data/" or "/home/seb/foo.html_files/baskets/basketN-data/"
-	QString dataFolderName;    // eg.: "foo.html_files/data/" or "basketN-data/"
-	QString basketsFolderPath; // eg.: "/home/seb/foo.html_files/baskets/"
-	QString basketsFolderName; // eg.: "foo.html_files/baskets/" or ""
+    // Absolute & relative paths for the current basket to be exported:
+    QString basketFilePath;    // eg.: "/home/seb/foo.html" or "/home/seb/foo.html_files/baskets/basketN.html"
+    QString filesFolderPath;   // eg.: "/home/seb/foo.html_files/"
+    QString filesFolderName;   // eg.: "foo.html_files/" or "../"
+    QString iconsFolderPath;   // eg.: "/home/seb/foo.html_files/icons/"
+    QString iconsFolderName;   // eg.: "foo.html_files/icons/" or "../icons/"
+    QString imagesFolderPath;  // eg.: "/home/seb/foo.html_files/images/"
+    QString imagesFolderName;  // eg.: "foo.html_files/images/" or "../images/"
+    QString dataFolderPath;    // eg.: "/home/seb/foo.html_files/data/" or "/home/seb/foo.html_files/baskets/basketN-data/"
+    QString dataFolderName;    // eg.: "foo.html_files/data/" or "basketN-data/"
+    QString basketsFolderPath; // eg.: "/home/seb/foo.html_files/baskets/"
+    QString basketsFolderName; // eg.: "foo.html_files/baskets/" or ""
 
-	// Various properties of the currently exporting basket:
-	QString backgroundColorName;
+    // Various properties of the currently exporting basket:
+    QString backgroundColorName;
 
-	// Variables used by every export methods:
-	QTextStream stream;
-	Basket *exportedBasket;
-	bool withBasketTree;
-	QProgressBar *progress;
+    // Variables used by every export methods:
+    QTextStream stream;
+    Basket *exportedBasket;
+    bool withBasketTree;
+    QProgressBar *progress;
 };
 
 #endif // HTMLEXPORTER_H

@@ -42,18 +42,20 @@ class Basket;
   */
 class RunCommandRequester : public QWidget
 {
-  Q_OBJECT
-  public:
-	RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent = 0);
-	~RunCommandRequester();
-	QString runCommand();
-	void setRunCommand(const QString &runCommand);
-	QLineEdit *lineEdit() { return m_runCommand; }
-  private slots:
-	void slotSelCommand();
-  private:
-	QLineEdit *m_runCommand;
-	QString    m_message;
+    Q_OBJECT
+public:
+    RunCommandRequester(const QString &runCommand, const QString &message, QWidget *parent = 0);
+    ~RunCommandRequester();
+    QString runCommand();
+    void setRunCommand(const QString &runCommand);
+    QLineEdit *lineEdit() {
+        return m_runCommand;
+    }
+private slots:
+    void slotSelCommand();
+private:
+    QLineEdit *m_runCommand;
+    QString    m_message;
 };
 
 /** QComboBox to ask icon size
@@ -61,12 +63,12 @@ class RunCommandRequester : public QWidget
   */
 class IconSizeCombo : public QComboBox
 {
-  Q_OBJECT
-  public:
-	IconSizeCombo(QWidget *parent = 0);
-	~IconSizeCombo();
-	int iconSize();
-	void setSize(int size);
+    Q_OBJECT
+public:
+    IconSizeCombo(QWidget *parent = 0);
+    ~IconSizeCombo();
+    int iconSize();
+    void setSize(int size);
 };
 
 /** A window that the user resize to graphically choose a new image size
@@ -75,13 +77,13 @@ class IconSizeCombo : public QComboBox
   */
 class ViewSizeDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-	ViewSizeDialog(QWidget *parent, int w, int h);
-	~ViewSizeDialog();
-  private:
-	virtual void resizeEvent(QResizeEvent *);
-	QWidget *m_sizeGrip;
+    Q_OBJECT
+public:
+    ViewSizeDialog(QWidget *parent, int w, int h);
+    ~ViewSizeDialog();
+private:
+    virtual void resizeEvent(QResizeEvent *);
+    QWidget *m_sizeGrip;
 };
 
 /** A label displaying a link that, once clicked, offer a What's This messageBox to help users.
@@ -89,16 +91,20 @@ class ViewSizeDialog : public QDialog
   */
 class HelpLabel : public KUrlLabel
 {
-  Q_OBJECT
-  public:
-	HelpLabel(const QString &text, const QString &message, QWidget *parent);
-	~HelpLabel();
-	QString message()                       { return m_message;    }
-  public slots:
-	void setMessage(const QString &message) { m_message = message; }
-  	void display();
-  private:
-	QString m_message;
+    Q_OBJECT
+public:
+    HelpLabel(const QString &text, const QString &message, QWidget *parent);
+    ~HelpLabel();
+    QString message()                       {
+        return m_message;
+    }
+public slots:
+    void setMessage(const QString &message) {
+        m_message = message;
+    }
+    void display();
+private:
+    QString m_message;
 };
 
 /** A dialog to choose the size of an icon.
@@ -106,23 +112,25 @@ class HelpLabel : public KUrlLabel
   */
 class IconSizeDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent);
-	~IconSizeDialog();
-	int iconSize() { return m_iconSize; } /// << @return the choosen icon size (16, 32, ...) or -1 if canceled!
-  protected slots:
-	void slotCancel();
-	void slotSelectionChanged();
-	void choose(QListWidgetItem*);
-  private:
-	QListWidgetItem *m_size16;
-	QListWidgetItem *m_size22;
-	QListWidgetItem *m_size32;
-	QListWidgetItem *m_size48;
-	QListWidgetItem *m_size64;
-	QListWidgetItem *m_size128;
-	int m_iconSize;
+    Q_OBJECT
+public:
+    IconSizeDialog(const QString &caption, const QString &message, const QString &icon, int iconSize, QWidget *parent);
+    ~IconSizeDialog();
+    int iconSize() {
+        return m_iconSize;
+    } /// << @return the choosen icon size (16, 32, ...) or -1 if canceled!
+protected slots:
+    void slotCancel();
+    void slotSelectionChanged();
+    void choose(QListWidgetItem*);
+private:
+    QListWidgetItem *m_size16;
+    QListWidgetItem *m_size22;
+    QListWidgetItem *m_size32;
+    QListWidgetItem *m_size48;
+    QListWidgetItem *m_size64;
+    QListWidgetItem *m_size128;
+    int m_iconSize;
 };
 
 /**
@@ -130,22 +138,22 @@ class IconSizeDialog : public KDialog
  */
 class FontSizeCombo : public KComboBox
 {
-  Q_OBJECT
-  public:
-	FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0);
-	~FontSizeCombo();
-	void setFontSize(qreal size);
-	qreal fontSize();
-  protected:
-	void keyPressEvent(QKeyEvent *event);
-  signals:
-	void sizeChanged(qreal size);
-	void escapePressed();
-	void returnPressed2();
-  private slots:
-	void textChangedInCombo(const QString &text);
-  private:
-	bool m_withDefault;
+    Q_OBJECT
+public:
+    FontSizeCombo(bool rw, bool withDefault, QWidget *parent = 0);
+    ~FontSizeCombo();
+    void setFontSize(qreal size);
+    qreal fontSize();
+protected:
+    void keyPressEvent(QKeyEvent *event);
+signals:
+    void sizeChanged(qreal size);
+    void escapePressed();
+    void returnPressed2();
+private slots:
+    void textChangedInCombo(const QString &text);
+private:
+    bool m_withDefault;
 };
 
 #endif // VARIOUSWIDGETS_H

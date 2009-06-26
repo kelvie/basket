@@ -35,75 +35,75 @@ class Kaction;
 
 class LikeBackPrivate
 {
-  public:
-	LikeBackPrivate();
-	~LikeBackPrivate();
-	LikeBackBar             *bar;
-	KConfig                 *config;
-	const KAboutData        *aboutData;
-	LikeBack::Button         buttons;
-	QString                  hostName;
-	QString                  remotePath;
-	quint16                 hostPort;
-	QStringList              acceptedLocales;
-	QString                  acceptedLanguagesMessage;
-	LikeBack::WindowListing  windowListing;
-	bool                     showBarByDefault;
-	bool                     showBar;
-	int                      disabledCount;
-	QString                  fetchedEmail;
-	KAction                 *action;
+public:
+    LikeBackPrivate();
+    ~LikeBackPrivate();
+    LikeBackBar             *bar;
+    KConfig                 *config;
+    const KAboutData        *aboutData;
+    LikeBack::Button         buttons;
+    QString                  hostName;
+    QString                  remotePath;
+    quint16                 hostPort;
+    QStringList              acceptedLocales;
+    QString                  acceptedLanguagesMessage;
+    LikeBack::WindowListing  windowListing;
+    bool                     showBarByDefault;
+    bool                     showBar;
+    int                      disabledCount;
+    QString                  fetchedEmail;
+    KAction                 *action;
 };
 
 class LikeBackBar : public QWidget
 {
-  Q_OBJECT
-  public:
-	LikeBackBar(LikeBack *likeBack);
-	~LikeBackBar();
-  public slots:
-	void startTimer();
-	void stopTimer();
-  private slots:
-	void autoMove();
-	void clickedLike();
-	void clickedDislike();
-	void clickedBug();
-	void clickedFeature();
-  private:
-	LikeBack    *m_likeBack;
-	QTimer       m_timer;
-	QToolButton *m_likeButton;
-	QToolButton *m_dislikeButton;
-	QToolButton *m_bugButton;
-	QToolButton *m_featureButton;
+    Q_OBJECT
+public:
+    LikeBackBar(LikeBack *likeBack);
+    ~LikeBackBar();
+public slots:
+    void startTimer();
+    void stopTimer();
+private slots:
+    void autoMove();
+    void clickedLike();
+    void clickedDislike();
+    void clickedBug();
+    void clickedFeature();
+private:
+    LikeBack    *m_likeBack;
+    QTimer       m_timer;
+    QToolButton *m_likeButton;
+    QToolButton *m_dislikeButton;
+    QToolButton *m_bugButton;
+    QToolButton *m_featureButton;
 };
 
 class LikeBackDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack);
-	~LikeBackDialog();
-  private:
-	LikeBack     *m_likeBack;
-	QString       m_windowPath;
-	QString       m_context;
-	QTextEdit    *m_comment;
-	QRadioButton *likeButton;
-	QRadioButton *dislikeButton;
-	QRadioButton *bugButton;
-	QRadioButton *featureButton;
-	QCheckBox    *m_showButtons;
-	QString introductionText();
-  private slots:
-	void ensurePolished();
-	void slotDefault();
-	void slotOk();
-	void changeButtonBarVisible();
-	void commentChanged();
-	void send();
-	void requestFinished(int id, bool error);
+    Q_OBJECT
+public:
+    LikeBackDialog(LikeBack::Button reason, const QString &initialComment, const QString &windowPath, const QString &context, LikeBack *likeBack);
+    ~LikeBackDialog();
+private:
+    LikeBack     *m_likeBack;
+    QString       m_windowPath;
+    QString       m_context;
+    QTextEdit    *m_comment;
+    QRadioButton *likeButton;
+    QRadioButton *dislikeButton;
+    QRadioButton *bugButton;
+    QRadioButton *featureButton;
+    QCheckBox    *m_showButtons;
+    QString introductionText();
+private slots:
+    void ensurePolished();
+    void slotDefault();
+    void slotOk();
+    void changeButtonBarVisible();
+    void commentChanged();
+    void send();
+    void requestFinished(int id, bool error);
 };
 
 #endif // LIKEBACK_PRIVATE_H

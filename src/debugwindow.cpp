@@ -31,45 +31,45 @@
 #include "debugwindow.h"
 
 DebugWindow::DebugWindow(QWidget *parent)
- : QWidget(parent)
+        : QWidget(parent)
 {
-	Global::debugWindow = this;
-	setWindowTitle(i18n("Debug Window"));
+    Global::debugWindow = this;
+    setWindowTitle(i18n("Debug Window"));
 
-	layout      = new QVBoxLayout(this);
-	textBrowser = new QTextBrowser(this);
+    layout      = new QVBoxLayout(this);
+    textBrowser = new QTextBrowser(this);
 
-	textBrowser->setWordWrapMode(QTextOption::NoWrap);
+    textBrowser->setWordWrapMode(QTextOption::NoWrap);
 
-	layout->addWidget(textBrowser);
-	textBrowser->show();
+    layout->addWidget(textBrowser);
+    textBrowser->show();
 }
 
 DebugWindow::~DebugWindow()
 {
-	delete textBrowser;
-	delete layout;
+    delete textBrowser;
+    delete layout;
 }
 
 void DebugWindow::postMessage(const QString msg)
 {
-	textBrowser->append(msg);
+    textBrowser->append(msg);
 }
 
 DebugWindow& DebugWindow::operator<<(const QString msg)
 {
-	textBrowser->append(msg);
-	return *this;
+    textBrowser->append(msg);
+    return *this;
 }
 
 void DebugWindow::insertHLine()
 {
-	textBrowser->append("<hr>");
+    textBrowser->append("<hr>");
 }
 
 void DebugWindow::closeEvent(QCloseEvent *event)
 {
-	Global::debugWindow = 0L;
-	QWidget::closeEvent(event);
+    Global::debugWindow = 0L;
+    QWidget::closeEvent(event);
 }
 

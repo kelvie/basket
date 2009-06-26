@@ -28,10 +28,10 @@
   */
 namespace Keyboard
 {
-	void pressedKeys(bool &shiftPressed, bool &controlPressed);
-	bool shiftPressed();
-	bool controlPressed();
-	bool altPressed();
+void pressedKeys(bool &shiftPressed, bool &controlPressed);
+bool shiftPressed();
+bool controlPressed();
+bool altPressed();
 }
 
 #endif // KEYBOARD_H

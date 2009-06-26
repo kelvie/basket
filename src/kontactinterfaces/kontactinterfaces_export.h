@@ -27,10 +27,10 @@
 
 #ifndef KONTACTINTERFACES_EXPORT
 # if defined(MAKE_KONTACTINTERFACES_LIB)
-   /* We are building this library */
+/* We are building this library */
 #  define KONTACTINTERFACES_EXPORT KDE_EXPORT
 # else
-   /* We are using this library */
+/* We are using this library */
 #  define KONTACTINTERFACES_EXPORT KDE_IMPORT
 # endif
 #endif

@@ -36,18 +36,20 @@ class State;
   */
 class FilterData
 {
-  public:
-	// Useful Enum for tagFilterType:
-	enum TagFilterType { DontCareTagsFilter = 0, NotTaggedFilter, TaggedFilter, TagFilter, StateFilter };
-	// Constructor and Destructor:
-	FilterData()  { isFiltering = false; tagFilterType = DontCareTagsFilter; tag = 0; state = 0; }
-	~FilterData() {}
-	// Filter data:
-	QString  string;
-	int      tagFilterType;
-	Tag     *tag;
-	State   *state;
-	bool     isFiltering;
+public:
+    // Useful Enum for tagFilterType:
+    enum TagFilterType { DontCareTagsFilter = 0, NotTaggedFilter, TaggedFilter, TagFilter, StateFilter };
+    // Constructor and Destructor:
+    FilterData()  {
+        isFiltering = false; tagFilterType = DontCareTagsFilter; tag = 0; state = 0;
+    }
+    ~FilterData() {}
+    // Filter data:
+    QString  string;
+    int      tagFilterType;
+    Tag     *tag;
+    State   *state;
+    bool     isFiltering;
 };
 
 /** A QWidget that allow user to enter terms to filter in a Basket.
@@ -55,37 +57,39 @@ class FilterData
   */
 class FilterBar : public QWidget
 {
-  Q_OBJECT
-  public:
-	FilterBar(QWidget *parent = 0);
-	~FilterBar();
-	const FilterData& filterData();
-  signals:
-	void newFilter(const FilterData &data);
-  public slots:
-	void repopulateTagsCombo();
-	void reset();
-	void inAllBaskets();
-	void setEditFocus();
-	void filterTag(Tag *tag);
-	void filterState(State *state);
-	void setFilterAll(bool filterAll);
-	void setFilterData(const FilterData &data);
-  public:
-	bool hasEditFocus();
-	KLineEdit* lineEdit() { return m_lineEdit; }
-  private slots:
-	void changeFilter();
-	void tagChanged(int index);
-  private:
-	FilterData      *m_data;
-	KLineEdit *m_lineEdit;
-	QToolButton     *m_resetButton;
-	KComboBox *m_tagsBox;
-	QToolButton     *m_inAllBasketsButton;
+    Q_OBJECT
+public:
+    FilterBar(QWidget *parent = 0);
+    ~FilterBar();
+    const FilterData& filterData();
+signals:
+    void newFilter(const FilterData &data);
+public slots:
+    void repopulateTagsCombo();
+    void reset();
+    void inAllBaskets();
+    void setEditFocus();
+    void filterTag(Tag *tag);
+    void filterState(State *state);
+    void setFilterAll(bool filterAll);
+    void setFilterData(const FilterData &data);
+public:
+    bool hasEditFocus();
+    KLineEdit* lineEdit() {
+        return m_lineEdit;
+    }
+private slots:
+    void changeFilter();
+    void tagChanged(int index);
+private:
+    FilterData      *m_data;
+    KLineEdit *m_lineEdit;
+    QToolButton     *m_resetButton;
+    KComboBox *m_tagsBox;
+    QToolButton     *m_inAllBasketsButton;
 
-	QMap<int, Tag*>   m_tagsMap;
-	QMap<int, State*> m_statesMap;
+    QMap<int, Tag*>   m_tagsMap;
+    QMap<int, State*> m_statesMap;
 };
 
 #endif // FILTER_H

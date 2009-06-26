@@ -30,16 +30,16 @@ class QDomElement;
   */
 namespace XMLWork
 {
-	// Manage XML files :
-	QDomDocument* openFile(const QString &name, const QString &filePath);
-	// Manage XML trees :
-	QDomElement   getElement(const QDomElement &startElement, const QString &elementPath);
-	QString       getElementText(const QDomElement &startElement, const QString &elementPath, const QString &defaultTxt = "");
-	void          addElement(QDomDocument &document, QDomElement &parent, const QString &name, const QString &text);
-	QString       innerXml(QDomElement &element);
-	// Not directly related to XML :
-	bool          trueOrFalse(const QString &value, bool defaultValue = true);
-	QString       trueOrFalse(bool value);
+// Manage XML files :
+QDomDocument* openFile(const QString &name, const QString &filePath);
+// Manage XML trees :
+QDomElement   getElement(const QDomElement &startElement, const QString &elementPath);
+QString       getElementText(const QDomElement &startElement, const QString &elementPath, const QString &defaultTxt = "");
+void          addElement(QDomDocument &document, QDomElement &parent, const QString &name, const QString &text);
+QString       innerXml(QDomElement &element);
+// Not directly related to XML :
+bool          trueOrFalse(const QString &value, bool defaultValue = true);
+QString       trueOrFalse(bool value);
 }
 
 #endif // XMLWORKXMLWORK_H

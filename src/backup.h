@@ -34,18 +34,18 @@
  */
 class BackupDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	BackupDialog(QWidget *parent = 0, const char *name = 0);
-	~BackupDialog();
-  private slots:
-	void moveToAnotherFolder();
-	void useAnotherExistingFolder();
-	void backup();
-	void restore();
-	void populateLastBackup();
-  private:
-	QLabel *m_lastBackup;
+    Q_OBJECT
+public:
+    BackupDialog(QWidget *parent = 0, const char *name = 0);
+    ~BackupDialog();
+private slots:
+    void moveToAnotherFolder();
+    void useAnotherExistingFolder();
+    void backup();
+    void restore();
+    void populateLastBackup();
+private:
+    QLabel *m_lastBackup;
 };
 
 /**
@@ -53,37 +53,39 @@ class BackupDialog : public KDialog
  */
 class BASKET_EXPORT Backup
 {
-  public:
-	static void figureOutBinaryPath(const char *argv0, QApplication &app);
-	static void setFolderAndRestart(const QString &folder, const QString &message);
-	static QString newSafetyFolder();
+public:
+    static void figureOutBinaryPath(const char *argv0, QApplication &app);
+    static void setFolderAndRestart(const QString &folder, const QString &message);
+    static QString newSafetyFolder();
 
-  private:
-	static QString binaryPath;
+private:
+    static QString binaryPath;
 };
 
 class BackupThread : public QThread
 {
-  public:
-	BackupThread(const QString &tarFile, const QString &folderToBackup);
-  protected:
-	virtual void run();
-  private:
-	QString m_tarFile;
-	QString m_folderToBackup;
+public:
+    BackupThread(const QString &tarFile, const QString &folderToBackup);
+protected:
+    virtual void run();
+private:
+    QString m_tarFile;
+    QString m_folderToBackup;
 };
 
 class RestoreThread : public QThread
 {
-  public:
-	RestoreThread(const QString &tarFile, const QString &destFolder);
-	inline bool success() { return m_success; }
-  protected:
-	virtual void run();
-  private:
-	QString m_tarFile;
-	QString m_destFolder;
-	bool m_success;
+public:
+    RestoreThread(const QString &tarFile, const QString &destFolder);
+    inline bool success() {
+        return m_success;
+    }
+protected:
+    virtual void run();
+private:
+    QString m_tarFile;
+    QString m_destFolder;
+    bool m_success;
 };
 
 #endif // BACKUP_H

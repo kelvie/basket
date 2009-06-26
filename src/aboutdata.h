@@ -24,13 +24,13 @@
 #include <basket_export.h>
 
 /**
-	@author Sébastien Laoût <slaout@linux62.org>
+    @author Sébastien Laoût <slaout@linux62.org>
 */
 
 class BASKET_EXPORT AboutData : public KAboutData
 {
-  public:
-	AboutData();
+public:
+    AboutData();
 };
 
 #endif

@@ -36,8 +36,8 @@
 
 FocusedTextEdit::FocusedTextEdit(bool disableUpdatesOnKeyPress,
                                  QWidget *parent)
- : KTextEdit(parent),
-   m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
+        : KTextEdit(parent),
+        m_disableUpdatesOnKeyPress(disableUpdatesOnKeyPress)
 {
     // pass
 }
@@ -60,9 +60,9 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 
     // Workaround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
     if (event->key() == Qt::Key_Home
-        || event->key() == Qt::Key_End
-        || event->key() == Qt::Key_PageUp
-        || event->key() == Qt::Key_PageDown)
+            || event->key() == Qt::Key_End
+            || event->key() == Qt::Key_PageUp
+            || event->key() == Qt::Key_PageDown)
         emit cursorPositionChanged();
 
 
@@ -79,7 +79,7 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
     // wheel event onto the basket.
     QScrollBar *sb = verticalScrollBar();
     if ((event->delta() > 0 && sb->value() > sb->minimum())
-        || (event->delta() < 0 && sb->value() < sb->maximum()))
+            || (event->delta() < 0 && sb->value() < sb->maximum()))
         KTextEdit::wheelEvent(event);
     else
         Global::bnpView->currentBasket()->wheelEvent(event);
@@ -87,23 +87,22 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
 
 void FocusedTextEdit::enterEvent(QEvent *event)
 {
-	emit mouseEntered();
-	KTextEdit::enterEvent(event);
+    emit mouseEntered();
+    KTextEdit::enterEvent(event);
 }
 
 /** class FocusWidgetFilter */
 FocusWidgetFilter::FocusWidgetFilter(QWidget *parent)
-  : QObject(parent)
+        : QObject(parent)
 {
     if (parent)
-	parent->installEventFilter(this);
+        parent->installEventFilter(this);
 }
 
 bool FocusWidgetFilter::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
-    case QEvent::KeyPress:
-    {
+    case QEvent::KeyPress: {
         QKeyEvent *ke = static_cast<QKeyEvent*>(e);
         switch (ke->key()) {
         case Qt::Key_Return:
@@ -117,9 +116,9 @@ bool FocusWidgetFilter::eventFilter(QObject *, QEvent *e)
         };
     }
     case QEvent::Enter:
-	emit mouseEntered();
-	// pass through
+        emit mouseEntered();
+        // pass through
     default:
-	return false;
+        return false;
     };
 }

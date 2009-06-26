@@ -37,19 +37,19 @@ class KMenu;
 
 class FocusedTextEdit : public KTextEdit
 {
-  Q_OBJECT
-  public:
-	FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0);
-	~FocusedTextEdit();
-  protected:
-	void keyPressEvent(QKeyEvent *event);
-	void wheelEvent(QWheelEvent *event);
-	void enterEvent(QEvent *event);
-  signals:
-	void escapePressed();
-	void mouseEntered();
-  private:
-	bool m_disableUpdatesOnKeyPress;
+    Q_OBJECT
+public:
+    FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0);
+    ~FocusedTextEdit();
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void enterEvent(QEvent *event);
+signals:
+    void escapePressed();
+    void mouseEntered();
+private:
+    bool m_disableUpdatesOnKeyPress;
 };
 
 
@@ -73,7 +73,7 @@ public:
     /** Constructor
      * @param watched The widget to install the event filter on; also becomes
      * the parent of this object. */
-    FocusWidgetFilter(QWidget *watched=0);
+    FocusWidgetFilter(QWidget *watched = 0);
     ~FocusWidgetFilter() {}
 
 protected:

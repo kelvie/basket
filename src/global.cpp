@@ -45,53 +45,64 @@ AboutData          Global::basketAbout;
 
 void Global::setCustomSavesFolder(const QString &folder)
 {
-	s_customSavesFolder = folder;
+    s_customSavesFolder = folder;
 }
 
 QString Global::savesFolder()
 {
-	static QString *folder = 0L; // Memorize the folder to do not have to re-compute it each time it's needed
+    static QString *folder = 0L; // Memorize the folder to do not have to re-compute it each time it's needed
 
-	if (folder == 0L) {          // Initialize it if not yet done
-		if (!s_customSavesFolder.isEmpty()) { // Passed by command line (for development & debug purpose)
-			QDir dir;
-			dir.mkdir(s_customSavesFolder);
-			folder = new QString(s_customSavesFolder.endsWith("/") ? s_customSavesFolder : s_customSavesFolder + "/");
-		} else if (!Settings::dataFolder().isEmpty()) { // Set by config option (in Basket -> Backup & Restore)
-			QDir dir;
-			dir.mkdir(s_customSavesFolder);
-			folder = new QString(Settings::dataFolder().endsWith("/") ? Settings::dataFolder() : Settings::dataFolder() + "/");
-		} else { // The default path (should be that for most computers)
-			folder = new QString(KGlobal::dirs()->saveLocation("data", "basket/"));
-		}
-	}
+    if (folder == 0L) {          // Initialize it if not yet done
+        if (!s_customSavesFolder.isEmpty()) { // Passed by command line (for development & debug purpose)
+            QDir dir;
+            dir.mkdir(s_customSavesFolder);
+            folder = new QString(s_customSavesFolder.endsWith("/") ? s_customSavesFolder : s_customSavesFolder + "/");
+        } else if (!Settings::dataFolder().isEmpty()) { // Set by config option (in Basket -> Backup & Restore)
+            QDir dir;
+            dir.mkdir(s_customSavesFolder);
+            folder = new QString(Settings::dataFolder().endsWith("/") ? Settings::dataFolder() : Settings::dataFolder() + "/");
+        } else { // The default path (should be that for most computers)
+            folder = new QString(KGlobal::dirs()->saveLocation("data", "basket/"));
+        }
+    }
 
-	return *folder;
+    return *folder;
 }
 
-QString Global::basketsFolder()     { return savesFolder() + "baskets/";     }
-QString Global::backgroundsFolder() { return savesFolder() + "backgrounds/"; }
-QString Global::templatesFolder()   { return savesFolder() + "templates/";   }
-QString Global::tempCutFolder()     { return savesFolder() + "temp-cut/";    }
+QString Global::basketsFolder()
+{
+    return savesFolder() + "baskets/";
+}
+QString Global::backgroundsFolder()
+{
+    return savesFolder() + "backgrounds/";
+}
+QString Global::templatesFolder()
+{
+    return savesFolder() + "templates/";
+}
+QString Global::tempCutFolder()
+{
+    return savesFolder() + "temp-cut/";
+}
 
 QString Global::openNoteIcon() // FIXME: Now an edit icon
 {
-	return QVariant(Global::bnpView->m_actEditNote->icon()).toString();
+    return QVariant(Global::bnpView->m_actEditNote->icon()).toString();
 }
 
 KMainWindow* Global::mainWindow()
 {
-	QWidget* res = kapp->activeWindow();
+    QWidget* res = kapp->activeWindow();
 
-	if(res && res->inherits("KMainWindow"))
-	{
-		return static_cast<KMainWindow*>(res);
-	}
-	return 0;
+    if (res && res->inherits("KMainWindow")) {
+        return static_cast<KMainWindow*>(res);
+    }
+    return 0;
 }
 
 KConfig* Global::config()
 {
     //The correct solution is to go and replace all KConfig* with KSharedConfig::Ptr, but that seems awfully annoying to do right now
-	return Global::basketConfig.data();
+    return Global::basketConfig.data();
 }

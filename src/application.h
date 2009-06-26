@@ -29,10 +29,10 @@
  */
 class Application : public KUniqueApplication
 {
-  public:
-	Application();
-	~Application();
-	int newInstance();
+public:
+    Application();
+    ~Application();
+    int newInstance();
 };
 
 #endif // APPLICATION_H

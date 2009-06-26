@@ -44,10 +44,10 @@
 //#define OUTPUT_GIMP_PALETTE
 
 #ifdef DEBUG_COLOR_ARRAY
-  #include <iomanip>
+#include <iomanip>
 #endif
 #ifdef OUTPUT_GIMP_PALETTE
-  #include <iomanip>
+#include <iomanip>
 #endif
 
 
@@ -58,12 +58,12 @@ const int KColorPopup::FRAME_WIDTH = 1;
 
 
 KColorPopup::KColorPopup(KColorCombo2 *parent)
- : QWidget(/*parent=*/0, /*name=*/0, Qt::WType_Popup | WNoAutoErase),
-   m_selector(parent)
+        : QWidget(/*parent=*/0, /*name=*/0, Qt::WType_Popup | WNoAutoErase),
+        m_selector(parent)
 {
-	hide();
-	setMouseTracking(true);
-	//resize(20, 20);
+    hide();
+    setMouseTracking(true);
+    //resize(20, 20);
 }
 
 KColorPopup::~KColorPopup()
@@ -74,238 +74,238 @@ KColorPopup::~KColorPopup()
 
 void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
 {
-	int  columnCount = m_selector->columnCount();
-	int  rowCount    = m_selector->rowCount();
-	int  colorHeight = m_selector->colorRectHeight();
-	int  colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
-	bool haveDefault = m_selector->defaultColor().isValid();
+    int  columnCount = m_selector->columnCount();
+    int  rowCount    = m_selector->rowCount();
+    int  colorHeight = m_selector->colorRectHeight();
+    int  colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
+    bool haveDefault = m_selector->defaultColor().isValid();
 
-	int width  = 2 + MARGIN + (colorWidth  + MARGIN) * columnCount;
-	int height = 2 + MARGIN + (colorHeight + MARGIN) * rowCount + (colorHeight + MARGIN);
+    int width  = 2 + MARGIN + (colorWidth  + MARGIN) * columnCount;
+    int height = 2 + MARGIN + (colorHeight + MARGIN) * rowCount + (colorHeight + MARGIN);
 
-	resize(width, height);
+    resize(width, height);
 
-	// Initialize the pixmap:
-	m_pixmap.resize(width, height);
-	QPainter painter(&m_pixmap);
-	painter.fillRect(0, 0, width, height, palette().color(QPalette::Base));
-	painter.setPen(palette().color(QPalette::Text));
-	painter.drawRect(0, 0, width, height);
+    // Initialize the pixmap:
+    m_pixmap.resize(width, height);
+    QPainter painter(&m_pixmap);
+    painter.fillRect(0, 0, width, height, palette().color(QPalette::Base));
+    painter.setPen(palette().color(QPalette::Text));
+    painter.drawRect(0, 0, width, height);
 
-	// Needed to draw:
-	int x, y;
-	QRect selectionRect;
+    // Needed to draw:
+    int x, y;
+    QRect selectionRect;
 
-	// Draw the color array:
-	for (int i = 0; i < columnCount; ++i) {
-		for (int j = 0; j < rowCount; ++j) {
-			x = 1 + MARGIN + (colorWidth  + MARGIN) * i;
-			y = 1 + MARGIN + (colorHeight + MARGIN) * j;
-			if (i == m_selectedColumn && j == m_selectedRow) {
-				selectionRect = QRect(x - 2, y - 2, colorWidth + 4, colorHeight + 4);
-				painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
-			}
-			m_selector->drawColorRect(painter, x, y, m_selector->colorAt(i, j), /*isDefault=*/false, colorWidth, colorHeight);
-		}
-	}
+    // Draw the color array:
+    for (int i = 0; i < columnCount; ++i) {
+        for (int j = 0; j < rowCount; ++j) {
+            x = 1 + MARGIN + (colorWidth  + MARGIN) * i;
+            y = 1 + MARGIN + (colorHeight + MARGIN) * j;
+            if (i == m_selectedColumn && j == m_selectedRow) {
+                selectionRect = QRect(x - 2, y - 2, colorWidth + 4, colorHeight + 4);
+                painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
+            }
+            m_selector->drawColorRect(painter, x, y, m_selector->colorAt(i, j), /*isDefault=*/false, colorWidth, colorHeight);
+        }
+    }
 
-	m_columnOther = (haveDefault ? columnCount / 2 : 0); // "(Default)" is allowed, paint "Other..." on the right
-	int defaultCellWidth = (colorWidth  + MARGIN) * m_columnOther;
-	int otherCellWidth   = (colorWidth  + MARGIN) * (columnCount - m_columnOther);
+    m_columnOther = (haveDefault ? columnCount / 2 : 0); // "(Default)" is allowed, paint "Other..." on the right
+    int defaultCellWidth = (colorWidth  + MARGIN) * m_columnOther;
+    int otherCellWidth   = (colorWidth  + MARGIN) * (columnCount - m_columnOther);
 
-	// Draw the "(Default)" and "Other..." colors:
-	y = height - (colorHeight + MARGIN) - 1;
-	QColor textColor;
-	if (m_selector->defaultColor().isValid()) {
-		x = 1 + MARGIN;
-		if (m_selectedColumn < m_columnOther && rowCount == m_selectedRow) {
-			selectionRect = QRect(x - 2, y - 2, defaultCellWidth, colorHeight + 4);
-			painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
-			textColor = palette().color(QPalette::HighlightedText);
-		} else
-			textColor = palette().color(QPalette::Text);
-		m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
-		painter.setFont(m_selector->font());
-		painter.setPen(textColor);
-		painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("(Default)"));
-	}
-	x = 1 + MARGIN + m_columnOther * (colorWidth + MARGIN);
-	if (m_selectedColumn >= m_columnOther && rowCount == m_selectedRow) {
-		selectionRect = QRect(x - 2, y - 2, otherCellWidth, colorHeight + 4);
-		painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
-		textColor = palette().color(QPalette::HighlightedText);
-	} else
-		textColor = palette().color(QPalette::Text);
-	m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
-	painter.setFont(m_selector->font());
-	painter.setPen(textColor);
-	painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("Other..."));
+    // Draw the "(Default)" and "Other..." colors:
+    y = height - (colorHeight + MARGIN) - 1;
+    QColor textColor;
+    if (m_selector->defaultColor().isValid()) {
+        x = 1 + MARGIN;
+        if (m_selectedColumn < m_columnOther && rowCount == m_selectedRow) {
+            selectionRect = QRect(x - 2, y - 2, defaultCellWidth, colorHeight + 4);
+            painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
+            textColor = palette().color(QPalette::HighlightedText);
+        } else
+            textColor = palette().color(QPalette::Text);
+        m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
+        painter.setFont(m_selector->font());
+        painter.setPen(textColor);
+        painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("(Default)"));
+    }
+    x = 1 + MARGIN + m_columnOther * (colorWidth + MARGIN);
+    if (m_selectedColumn >= m_columnOther && rowCount == m_selectedRow) {
+        selectionRect = QRect(x - 2, y - 2, otherCellWidth, colorHeight + 4);
+        painter.fillRect(selectionRect, palette().color(QPalette::Highlight));
+        textColor = palette().color(QPalette::HighlightedText);
+    } else
+        textColor = palette().color(QPalette::Text);
+    m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
+    painter.setFont(m_selector->font());
+    painter.setPen(textColor);
+    painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("Other..."));
 
-//	QPoint pos = mapFromGlobal(QCursor::pos());
-//	painter.drawRect(pos.x(), pos.y(), 5000, 5000);
+//  QPoint pos = mapFromGlobal(QCursor::pos());
+//  painter.drawRect(pos.x(), pos.y(), 5000, 5000);
 }
 
 void KColorPopup::updateCell(int column, int row)
 {
-	int  colorHeight = m_selector->colorRectHeight();
-	int  colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
+    int  colorHeight = m_selector->colorRectHeight();
+    int  colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
 
-	int x      = 1 + MARGIN + - 2 + column * (colorWidth  + MARGIN);
-	int y      = 1 + MARGIN + - 2 + row    * (colorHeight + MARGIN);
-	int width  = colorWidth  + MARGIN;
-	int height = colorHeight + MARGIN;
+    int x      = 1 + MARGIN + - 2 + column * (colorWidth  + MARGIN);
+    int y      = 1 + MARGIN + - 2 + row    * (colorHeight + MARGIN);
+    int width  = colorWidth  + MARGIN;
+    int height = colorHeight + MARGIN;
 
-	if (row == m_selector->rowCount()) {
-		if (m_selectedColumn < m_columnOther) // The "(Default)" cell:
-			width = (colorWidth  + MARGIN) * m_columnOther;
-		else // The "Other..." cell:
-			width = (colorWidth  + MARGIN) * (m_selector->columnCount() - m_columnOther);
-	}
+    if (row == m_selector->rowCount()) {
+        if (m_selectedColumn < m_columnOther) // The "(Default)" cell:
+            width = (colorWidth  + MARGIN) * m_columnOther;
+        else // The "Other..." cell:
+            width = (colorWidth  + MARGIN) * (m_selector->columnCount() - m_columnOther);
+    }
 
-	update(x, y, width, height);
+    update(x, y, width, height);
 }
 
 void KColorPopup::doSelection()
 {
-	m_otherColor = QColor();
+    m_otherColor = QColor();
 
-	// If the selected color is not the default one, try to find it in the array:
-	if (m_selector->color().isValid()) {
-		bool isInArray = false;
-		for (int column = 0; column < m_selector->columnCount(); ++column)
-			for (int row = 0; row < m_selector->rowCount(); ++row)
-				if (m_selector->color() == m_selector->colorAt(column, row)) {
-					m_selectedColumn = column;
-					m_selectedRow    = row;
-					isInArray        = true;
-				}
-		// If not found in array, it's another one:
-		if (!isInArray) {
-			m_selectedColumn = m_columnOther;
-			m_selectedRow    = m_selector->rowCount();
-			m_otherColor     = m_selector->color();
-		}
-	// If it's the default one:
-	} else {
-		m_selectedColumn = 0;
-		m_selectedRow    = m_selector->rowCount();
-	}
+    // If the selected color is not the default one, try to find it in the array:
+    if (m_selector->color().isValid()) {
+        bool isInArray = false;
+        for (int column = 0; column < m_selector->columnCount(); ++column)
+            for (int row = 0; row < m_selector->rowCount(); ++row)
+                if (m_selector->color() == m_selector->colorAt(column, row)) {
+                    m_selectedColumn = column;
+                    m_selectedRow    = row;
+                    isInArray        = true;
+                }
+        // If not found in array, it's another one:
+        if (!isInArray) {
+            m_selectedColumn = m_columnOther;
+            m_selectedRow    = m_selector->rowCount();
+            m_otherColor     = m_selector->color();
+        }
+        // If it's the default one:
+    } else {
+        m_selectedColumn = 0;
+        m_selectedRow    = m_selector->rowCount();
+    }
 }
 
 void KColorPopup::validate()
 {
-	hide();
-	close();
+    hide();
+    close();
 
-	if (m_selectedRow != m_selector->rowCount()) // A normal row:
-		m_selector->setColor(m_selector->colorAt(m_selectedColumn, m_selectedRow));
-	else if (m_selectedColumn < m_columnOther) // The default color:
-		m_selector->setColor(QColor());
-	else { // The user want to choose one:
-		QColor color = m_selector->effectiveColor();
-		if (KColorDialog::getColor(color, this) == QDialog::Accepted)
-			m_selector->setColor(color);
-	}
+    if (m_selectedRow != m_selector->rowCount()) // A normal row:
+        m_selector->setColor(m_selector->colorAt(m_selectedColumn, m_selectedRow));
+    else if (m_selectedColumn < m_columnOther) // The default color:
+        m_selector->setColor(QColor());
+    else { // The user want to choose one:
+        QColor color = m_selector->effectiveColor();
+        if (KColorDialog::getColor(color, this) == QDialog::Accepted)
+            m_selector->setColor(color);
+    }
 }
 
 void KColorPopup::mousePressEvent(QMouseEvent *event)
 {
-	int x = event->pos().x();
-	int y = event->pos().y();
-	if (x < 0 || y < 0 || x >= width() || y >= height()) {
-		hide();
-		close();
-	} else
-		validate();
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (x < 0 || y < 0 || x >= width() || y >= height()) {
+        hide();
+        close();
+    } else
+        validate();
 
-	event->accept();
+    event->accept();
 }
 
 void KColorPopup::paintEvent(QPaintEvent *event)
 {
-	QPainter painter(this);
-	painter.drawPixmap(0, 0, m_pixmap);
-	painter.setPen(Qt::black);
-	painter.drawRect(event->rect());
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, m_pixmap);
+    painter.setPen(Qt::black);
+    painter.drawRect(event->rect());
 }
 
 void KColorPopup::mouseMoveEvent(QMouseEvent *event)
 {
-	int x = event->pos().x();
-	int y = event->pos().y();
-	if (x < FRAME_WIDTH + 2 || y < FRAME_WIDTH + 2 || x > width() - 2 - 2*FRAME_WIDTH || y > height() - 2 - 2*FRAME_WIDTH)
-		return;
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (x < FRAME_WIDTH + 2 || y < FRAME_WIDTH + 2 || x > width() - 2 - 2*FRAME_WIDTH || y > height() - 2 - 2*FRAME_WIDTH)
+        return;
 
-	int colorHeight = m_selector->colorRectHeight();
-	int colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
+    int colorHeight = m_selector->colorRectHeight();
+    int colorWidth  = m_selector->colorRectWidthForHeight(colorHeight);
 
-// 	int oldSelectedColumn = m_selectedColumn;
-// 	int oldSelectedRow    = m_selectedRow;
-	m_selectedColumn = (x - FRAME_WIDTH - MARGIN + 2) / (colorWidth  + MARGIN);
-	m_selectedRow    = (y - FRAME_WIDTH - MARGIN + 2) / (colorHeight + MARGIN);
+//  int oldSelectedColumn = m_selectedColumn;
+//  int oldSelectedRow    = m_selectedRow;
+    m_selectedColumn = (x - FRAME_WIDTH - MARGIN + 2) / (colorWidth  + MARGIN);
+    m_selectedRow    = (y - FRAME_WIDTH - MARGIN + 2) / (colorHeight + MARGIN);
 
-	relayout();
-	update();
+    relayout();
+    update();
 }
 
 void KColorPopup::keyPressEvent(QKeyEvent *event)
 {
-	int column      = m_selectedColumn;
-	int row         = m_selectedRow;
-	int columnCount = m_selector->columnCount();
-	int rowCount    = m_selector->rowCount();
+    int column      = m_selectedColumn;
+    int row         = m_selectedRow;
+    int columnCount = m_selector->columnCount();
+    int rowCount    = m_selector->rowCount();
 
-	switch (event->key()) {
-		case Qt::Key_Right:
-			if (m_selectedRow != rowCount) // A normal row:
-				column = (column + 1) % columnCount;
-			else {
-				// The last row, if there are two choices, switch. Else, do nothing:
-				if (m_selector->defaultColor().isValid())
-					column = (m_selectedColumn < m_columnOther ? m_columnOther : 0);
-			}
-			break;
-		case Qt::Key_Left:
-			if (m_selectedRow != rowCount) { // A normal row:
-				column = (column - 1);
-				if (column < 0)
-					column = columnCount - 1;
-			} else {
-				// The last row, if there are two choices, switch. Else, do nothing:
-				if (m_selector->defaultColor().isValid())
-					column = (m_selectedColumn < m_columnOther ? m_columnOther : 0);
-			}
-			break;
-		case Qt::Key_Up:       row    = (row    - 1); if (row < 0)    row    = rowCount;        break;
-		case Qt::Key_Down:     row    = (row    + 1) % (rowCount+1);          break;
-		case Qt::Key_PageDown: row += 10; if (row > rowCount) row = rowCount; break;
-		case Qt::Key_PageUp:   row -= 10; if (row < 0)        row = 0;        break;
-		case Qt::Key_Home:     row = 0;        column = 0;                    break;
-		case Qt::Key_End:      row = rowCount; column = columnCount - 1;      break;
-		case Qt::Key_Return:
-			validate();
-			break;
-		default:
-			QWidget::keyPressEvent(event);
-	}
+    switch (event->key()) {
+    case Qt::Key_Right:
+        if (m_selectedRow != rowCount) // A normal row:
+            column = (column + 1) % columnCount;
+        else {
+            // The last row, if there are two choices, switch. Else, do nothing:
+            if (m_selector->defaultColor().isValid())
+                column = (m_selectedColumn < m_columnOther ? m_columnOther : 0);
+        }
+        break;
+    case Qt::Key_Left:
+        if (m_selectedRow != rowCount) { // A normal row:
+            column = (column - 1);
+            if (column < 0)
+                column = columnCount - 1;
+        } else {
+            // The last row, if there are two choices, switch. Else, do nothing:
+            if (m_selector->defaultColor().isValid())
+                column = (m_selectedColumn < m_columnOther ? m_columnOther : 0);
+        }
+        break;
+    case Qt::Key_Up:       row    = (row    - 1); if (row < 0)    row    = rowCount;        break;
+    case Qt::Key_Down:     row    = (row    + 1) % (rowCount+1);          break;
+    case Qt::Key_PageDown: row += 10; if (row > rowCount) row = rowCount; break;
+    case Qt::Key_PageUp:   row -= 10; if (row < 0)        row = 0;        break;
+    case Qt::Key_Home:     row = 0;        column = 0;                    break;
+    case Qt::Key_End:      row = rowCount; column = columnCount - 1;      break;
+    case Qt::Key_Return:
+        validate();
+        break;
+    default:
+        QWidget::keyPressEvent(event);
+    }
 
-	if (row != m_selectedRow || column != m_selectedColumn) {
-		m_selectedRow    = row;
-		m_selectedColumn = column;
-		relayout();
-		update();
-	}
+    if (row != m_selectedRow || column != m_selectedColumn) {
+        m_selectedRow    = row;
+        m_selectedColumn = column;
+        relayout();
+        update();
+    }
 }
 
 /** Helper function: */
 
 QColor Tool_mixColors(const QColor &color1, const QColor &color2)
 {
-	QColor mixedColor;
-	mixedColor.setRgb( (color1.red()   + color2.red())   / 2,
-	                   (color1.green() + color2.green()) / 2,
-	                   (color1.blue()  + color2.blue())  / 2 );
-	return mixedColor;
+    QColor mixedColor;
+    mixedColor.setRgb((color1.red()   + color2.red())   / 2,
+                      (color1.green() + color2.green()) / 2,
+                      (color1.blue()  + color2.blue())  / 2);
+    return mixedColor;
 }
 
 /** class KColorCombo2Private */
@@ -323,458 +323,458 @@ class KColorCombo2::KColorCombo2Private
  */
 
 KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent, const char *name)
- : QComboBox(/*editable=*/false, parent, name),
-   m_color(color), m_defaultColor(defaultColor)
+        : QComboBox(/*editable=*/false, parent, name),
+        m_color(color), m_defaultColor(defaultColor)
 {
-	init();
+    init();
 }
 
 KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent, const char *name)
- : QComboBox(/*editable=*/false, parent, name),
-   m_color(color), m_defaultColor()
+        : QComboBox(/*editable=*/false, parent, name),
+        m_color(color), m_defaultColor()
 {
-	init();
+    init();
 }
 
 void KColorCombo2::init()
 {
-	m_discardNextMousePress = false;
-	m_colorArray            = 0;
-	d                       = new KColorCombo2Private();
+    m_discardNextMousePress = false;
+    m_colorArray            = 0;
+    d                       = new KColorCombo2Private();
 
-	setDefaultColor(m_defaultColor);
-	insertItem("", /*index=*/0);
-	updateComboBox(); // It need an item of index 0 to exists, so we created it.
-	setAcceptDrops(true);
+    setDefaultColor(m_defaultColor);
+    insertItem("", /*index=*/0);
+    updateComboBox(); // It need an item of index 0 to exists, so we created it.
+    setAcceptDrops(true);
 
-	m_popup = new KColorPopup(this);
-	m_popup->installEventFilter(this);
+    m_popup = new KColorPopup(this);
+    m_popup->installEventFilter(this);
 
-	// By default, the array is filled with setRainbowPreset().
-	// But we allocate it on demand (the later as possible) to avoid performances issues if the developer set another array.
-	// However, to keep columnCount() rowCount() const, we define theme here:
-	m_columnCount = 13;
-	m_rowCount    = 9;
+    // By default, the array is filled with setRainbowPreset().
+    // But we allocate it on demand (the later as possible) to avoid performances issues if the developer set another array.
+    // However, to keep columnCount() rowCount() const, we define theme here:
+    m_columnCount = 13;
+    m_rowCount    = 9;
 }
 
 KColorCombo2::~KColorCombo2()
 {
-	deleteColorArray();
+    deleteColorArray();
 }
 
 void KColorCombo2::setColor(const QColor &color)
 {
-	// Do nothing if the color should be set to the default one and there is no such default color allowed:
-	if (!color.isValid() && !m_defaultColor.isValid()) {
-		// kdebug << this::FUNCTION << "Trying to assign the default color (an invalid one) whereas no such default color is allowed";
-		return;
-	}
+    // Do nothing if the color should be set to the default one and there is no such default color allowed:
+    if (!color.isValid() && !m_defaultColor.isValid()) {
+        // kdebug << this::FUNCTION << "Trying to assign the default color (an invalid one) whereas no such default color is allowed";
+        return;
+    }
 
-	if (m_color != color) {
-		m_color = color;
-		updateComboBox();
-		emit changed(color);
-	}
+    if (m_color != color) {
+        m_color = color;
+        updateComboBox();
+        emit changed(color);
+    }
 }
 
 QColor KColorCombo2::color() const
 {
-	return m_color;
+    return m_color;
 }
 
 QColor KColorCombo2::effectiveColor() const
 {
-	if (m_color.isValid())
-		return m_color;
-	else
-		return m_defaultColor;
+    if (m_color.isValid())
+        return m_color;
+    else
+        return m_defaultColor;
 }
 
 void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int darkRowCount, bool withGray)
 {
-	// At least one row and one column:
-	if (colorColumnCount < 1 - (withGray ? 1 : 0))
-		colorColumnCount = 1 - (withGray ? 1 : 0);
-	if (lightRowCount < 0)
-		lightRowCount = 0;
-	if (darkRowCount < 0)
-		darkRowCount = 0;
+    // At least one row and one column:
+    if (colorColumnCount < 1 - (withGray ? 1 : 0))
+        colorColumnCount = 1 - (withGray ? 1 : 0);
+    if (lightRowCount < 0)
+        lightRowCount = 0;
+    if (darkRowCount < 0)
+        darkRowCount = 0;
 
-	// Create the array:
-	int  columnCount = colorColumnCount + (withGray ? 1 : 0);
-	int  rowCount    = lightRowCount + 1 + darkRowCount;
-	newColorArray(columnCount, rowCount);
+    // Create the array:
+    int  columnCount = colorColumnCount + (withGray ? 1 : 0);
+    int  rowCount    = lightRowCount + 1 + darkRowCount;
+    newColorArray(columnCount, rowCount);
 
-	// Fill the array:
-	for (int i = 0; i < colorColumnCount; ++i) {
-		int hue = i * 360 / colorColumnCount;
-		// With light colors:
-		for (int j = 1; j <= lightRowCount; ++j) { // Start to 1 because we don't want a row full of white!
-			int saturation = j * 255 / (lightRowCount + 1);
-			setColorAt(i, j - 1, QColor(hue, saturation, 255, QColor::Hsv));
-		}
-		// With pure colors:
-		setColorAt(i, lightRowCount, QColor(hue, 255, 255, QColor::Hsv));
-		// With dark colors:
-		for (int j = 1; j <= darkRowCount; ++j) {
-			int value = 255 - j * 255 / (darkRowCount + 1);
-			setColorAt(i, lightRowCount + j, QColor(hue, 255, value, QColor::Hsv));
-		}
-	}
+    // Fill the array:
+    for (int i = 0; i < colorColumnCount; ++i) {
+        int hue = i * 360 / colorColumnCount;
+        // With light colors:
+        for (int j = 1; j <= lightRowCount; ++j) { // Start to 1 because we don't want a row full of white!
+            int saturation = j * 255 / (lightRowCount + 1);
+            setColorAt(i, j - 1, QColor(hue, saturation, 255, QColor::Hsv));
+        }
+        // With pure colors:
+        setColorAt(i, lightRowCount, QColor(hue, 255, 255, QColor::Hsv));
+        // With dark colors:
+        for (int j = 1; j <= darkRowCount; ++j) {
+            int value = 255 - j * 255 / (darkRowCount + 1);
+            setColorAt(i, lightRowCount + j, QColor(hue, 255, value, QColor::Hsv));
+        }
+    }
 
-	// Fill the gray column:
-	if (withGray) {
-		for (int i = 0; i < rowCount; ++i) {
-			int gray = ( rowCount == 1  ?  128  :  255 - (i * 255 / (rowCount - 1)) );
-			setColorAt(columnCount-1, i, QColor(gray, gray, gray));
-		}
-	}
+    // Fill the gray column:
+    if (withGray) {
+        for (int i = 0; i < rowCount; ++i) {
+            int gray = (rowCount == 1  ?  128  :  255 - (i * 255 / (rowCount - 1)));
+            setColorAt(columnCount - 1, i, QColor(gray, gray, gray));
+        }
+    }
 
 #ifdef DEBUG_COLOR_ARRAY
-	kDebug() << "KColorCombo2::setColorPreset";
-	for (int j = 0; j < rowCount; ++j) {
-		for (int i = 0; i < columnCount; ++i) {
-			int h, s, v;
-			m_colorArray[i][j].getHsv(h, s, v);
-			kDebug() << QString("(%1,%2,%3)").arg(h, 3).arg(s, 3).arg(v, 3);
-			//kDebug() << colorArray[i][j].name() << " ";
-		}
-		kDebug();
-	}
+    kDebug() << "KColorCombo2::setColorPreset";
+    for (int j = 0; j < rowCount; ++j) {
+        for (int i = 0; i < columnCount; ++i) {
+            int h, s, v;
+            m_colorArray[i][j].getHsv(h, s, v);
+            kDebug() << QString("(%1,%2,%3)").arg(h, 3).arg(s, 3).arg(v, 3);
+            //kDebug() << colorArray[i][j].name() << " ";
+        }
+        kDebug();
+    }
 #endif
 #ifdef OUTPUT_GIMP_PALETTE
-	kDebug() << "GIMP Palette";
-	for (int j = 0; j < rowCount; ++j) {
-		for (int i = 0; i < columnCount; ++i) {
-			kDebug() << QString("(%1,%2,%3)")
-                .arg(m_colorArray[i][j].red(), 3)
-                .arg(m_colorArray[i][j].green(), 3)
-                .arg(m_colorArray[i][j].blue(), 3);
-		}
-	}
+    kDebug() << "GIMP Palette";
+    for (int j = 0; j < rowCount; ++j) {
+        for (int i = 0; i < columnCount; ++i) {
+            kDebug() << QString("(%1,%2,%3)")
+            .arg(m_colorArray[i][j].red(), 3)
+            .arg(m_colorArray[i][j].green(), 3)
+            .arg(m_colorArray[i][j].blue(), 3);
+        }
+    }
 #endif
 }
 
 int KColorCombo2::columnCount() const
 {
-	return m_columnCount;
+    return m_columnCount;
 }
 
 int KColorCombo2::rowCount() const
 {
-	return m_rowCount;
+    return m_rowCount;
 }
 
 QColor KColorCombo2::colorAt(int column, int row)/* const*/
 {
-	if (!m_colorArray)
-		setRainbowPreset();
+    if (!m_colorArray)
+        setRainbowPreset();
 
-	if (column < 0 || row < 0 || column >= m_columnCount || row >= m_rowCount)
-		return QColor();
+    if (column < 0 || row < 0 || column >= m_columnCount || row >= m_rowCount)
+        return QColor();
 
-	return m_colorArray[column][row];
+    return m_colorArray[column][row];
 }
 
 QColor KColorCombo2::defaultColor() const
 {
-	return m_defaultColor;
+    return m_defaultColor;
 }
 
 void KColorCombo2::newColorArray(int columnCount, int rowCount)
 {
-	if (columnCount <= 0 || rowCount <= 0) {
-		// kdebug << this::FUNCTION << "Trying to create an empty new color array (with %d columns and %d rows)";
-		return;
-	}
+    if (columnCount <= 0 || rowCount <= 0) {
+        // kdebug << this::FUNCTION << "Trying to create an empty new color array (with %d columns and %d rows)";
+        return;
+    }
 
-	// Delete any previous array (if any):
-	deleteColorArray();
+    // Delete any previous array (if any):
+    deleteColorArray();
 
-	// Create a new array of the wanted dimentions:
-	m_columnCount = columnCount;
-	m_rowCount    = rowCount;
-	m_colorArray  = new QColor* [columnCount];
-	for (int i = 0; i < columnCount; ++i)
-		m_colorArray[i] = new QColor[rowCount];
+    // Create a new array of the wanted dimentions:
+    m_columnCount = columnCount;
+    m_rowCount    = rowCount;
+    m_colorArray  = new QColor* [columnCount];
+    for (int i = 0; i < columnCount; ++i)
+        m_colorArray[i] = new QColor[rowCount];
 
-	m_popup->relayout();
+    m_popup->relayout();
 }
 
 void KColorCombo2::setColorAt(int column, int row, const QColor &color)
 {
-	if (!m_colorArray)
-		setRainbowPreset();
+    if (!m_colorArray)
+        setRainbowPreset();
 
-	if (column < 0 || row < 0 || column >= m_columnCount || row >= m_rowCount) {
-		// kdebug << this::FUNCTION << "Trying to set a color at an invalid index (at column %d and row %d, whereas the array have %d columns and %d rows)";
-		return;
-	}
+    if (column < 0 || row < 0 || column >= m_columnCount || row >= m_rowCount) {
+        // kdebug << this::FUNCTION << "Trying to set a color at an invalid index (at column %d and row %d, whereas the array have %d columns and %d rows)";
+        return;
+    }
 
-	m_colorArray[column][row] = color;
+    m_colorArray[column][row] = color;
 }
 
 void KColorCombo2::setDefaultColor(const QColor &color)
 {
-	m_defaultColor = color;
-	if (!m_defaultColor.isValid() && !m_color.isValid())
-		m_color = Qt::white; // FIXME: Use the first one.
+    m_defaultColor = color;
+    if (!m_defaultColor.isValid() && !m_color.isValid())
+        m_color = Qt::white; // FIXME: Use the first one.
 }
 
 QPixmap KColorCombo2::colorRectPixmap(const QColor &color, bool isDefault, int width, int height)
 {
-	// Prepare to draw:
-	QPixmap  pixmap(width, height);
-	QBitmap  mask(width, height);
-	QPainter painter(&pixmap);
-	QPainter maskPainter(&mask);
+    // Prepare to draw:
+    QPixmap  pixmap(width, height);
+    QBitmap  mask(width, height);
+    QPainter painter(&pixmap);
+    QPainter maskPainter(&mask);
 
-	// Draw pixmap:
-	drawColorRect(painter, 0, 0, color, isDefault, width, height);
+    // Draw pixmap:
+    drawColorRect(painter, 0, 0, color, isDefault, width, height);
 
-	// Draw mask (make the four corners transparent):
-	maskPainter.fillRect(0, 0, width, height, Qt::color1); // opaque
-	maskPainter.setPen(Qt::color0); // transparent
-	maskPainter.drawPoint(0,         0);
-	maskPainter.drawPoint(0,         height - 1);
-	maskPainter.drawPoint(width - 1, height - 1);
-	maskPainter.drawPoint(width - 1, 0);
+    // Draw mask (make the four corners transparent):
+    maskPainter.fillRect(0, 0, width, height, Qt::color1); // opaque
+    maskPainter.setPen(Qt::color0); // transparent
+    maskPainter.drawPoint(0,         0);
+    maskPainter.drawPoint(0,         height - 1);
+    maskPainter.drawPoint(width - 1, height - 1);
+    maskPainter.drawPoint(width - 1, 0);
 
-	// Finish:
-	painter.end();
-	maskPainter.end();
-	pixmap.setMask(mask);
-	return pixmap;
+    // Finish:
+    painter.end();
+    maskPainter.end();
+    pixmap.setMask(mask);
+    return pixmap;
 }
 
 void KColorCombo2::drawColorRect(QPainter &painter, int x, int y, const QColor &color, bool isDefault, int width, int height)
 {
-	// Fill:
-	if (color.isValid())
-		painter.fillRect(x /*+ 1*/, y /*+ 1*/, width /*- 2*/, height /*- 2*/, color);
-	else {
-		// If it's an invalid color, it's for the "Other..." entry: draw a rainbow.
-		// If it wasn't for the "Other..." entry, the programmer made a fault, so (s)he will be informed about that visually.
-		for (int i = 0; i < width-2; ++i) {
-			int hue = i * 360 / (width-2);
-			for (int j = 0; j < height-2; ++j) {
-				int saturation = 255 - (j * 255 / (height-2));
-				painter.setPen( QColor(hue, saturation, /*value=*/255, QColor::Hsv) );
-				painter.drawPoint(x + i + 1, y + j + 1);
-			}
-		}
-	}
+    // Fill:
+    if (color.isValid())
+        painter.fillRect(x /*+ 1*/, y /*+ 1*/, width /*- 2*/, height /*- 2*/, color);
+    else {
+        // If it's an invalid color, it's for the "Other..." entry: draw a rainbow.
+        // If it wasn't for the "Other..." entry, the programmer made a fault, so (s)he will be informed about that visually.
+        for (int i = 0; i < width - 2; ++i) {
+            int hue = i * 360 / (width - 2);
+            for (int j = 0; j < height - 2; ++j) {
+                int saturation = 255 - (j * 255 / (height - 2));
+                painter.setPen(QColor(hue, saturation, /*value=*/255, QColor::Hsv));
+                painter.drawPoint(x + i + 1, y + j + 1);
+            }
+        }
+    }
 
-	// Stroke:
-	int dontCare, value;
-	color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
-	QColor stroke = (color.isValid() ? color.dark(125) : palette().color(QPalette::Text));
-	painter.setPen(/*color);//*/stroke);
-	painter.drawLine(x + 1,         y,              x + width - 2, y);
-	painter.drawLine(x,             y + 1,          x,             y + height - 2);
-	painter.drawLine(x + 1,         y + height - 1, x + width - 2, y + height - 1);
-	painter.drawLine(x + width - 1, y + 1,          x + width - 1, y + height - 2);
+    // Stroke:
+    int dontCare, value;
+    color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
+    QColor stroke = (color.isValid() ? color.dark(125) : palette().color(QPalette::Text));
+    painter.setPen(/*color);//*/stroke);
+    painter.drawLine(x + 1,         y,              x + width - 2, y);
+    painter.drawLine(x,             y + 1,          x,             y + height - 2);
+    painter.drawLine(x + 1,         y + height - 1, x + width - 2, y + height - 1);
+    painter.drawLine(x + width - 1, y + 1,          x + width - 1, y + height - 2);
 
-	// Round corners:
-	QColor antialiasing;
-	if (color.isValid()) {
-		antialiasing = Tool_mixColors(color, stroke);
-		painter.setPen(antialiasing);
-		painter.drawPoint(x + 1,         y + 1);
-		painter.drawPoint(x + 1,         y + height - 2);
-		painter.drawPoint(x + width - 2, y + height - 2);
-		painter.drawPoint(x + width - 2, y + 1);
-	} else {
-		// The two top corners:
-		antialiasing = Tool_mixColors(Qt::red, stroke);
-		painter.setPen(antialiasing);
-		painter.drawPoint(x + 1,         y + 1);
-		painter.drawPoint(x + width - 2, y + 1);
-		// The two bottom ones:
-		antialiasing = Tool_mixColors(Qt::white, stroke);
-		painter.setPen(antialiasing);
-		painter.drawPoint(x + 1,         y + height - 2);
-		painter.drawPoint(x + width - 2, y + height - 2);
-	}
+    // Round corners:
+    QColor antialiasing;
+    if (color.isValid()) {
+        antialiasing = Tool_mixColors(color, stroke);
+        painter.setPen(antialiasing);
+        painter.drawPoint(x + 1,         y + 1);
+        painter.drawPoint(x + 1,         y + height - 2);
+        painter.drawPoint(x + width - 2, y + height - 2);
+        painter.drawPoint(x + width - 2, y + 1);
+    } else {
+        // The two top corners:
+        antialiasing = Tool_mixColors(Qt::red, stroke);
+        painter.setPen(antialiasing);
+        painter.drawPoint(x + 1,         y + 1);
+        painter.drawPoint(x + width - 2, y + 1);
+        // The two bottom ones:
+        antialiasing = Tool_mixColors(Qt::white, stroke);
+        painter.setPen(antialiasing);
+        painter.drawPoint(x + 1,         y + height - 2);
+        painter.drawPoint(x + width - 2, y + height - 2);
+    }
 
-	// Mark default color:
-	if (isDefault) {
-		painter.setPen(stroke);
-		painter.drawLine(x + 1, y + height - 2, x + width - 2, y + 1);
-	}
+    // Mark default color:
+    if (isDefault) {
+        painter.setPen(stroke);
+        painter.drawLine(x + 1, y + height - 2, x + width - 2, y + 1);
+    }
 }
 
 int KColorCombo2::colorRectHeight() const
 {
-	return (fontMetrics().boundingRect(i18n("(Default)")).height() + 2)*3/2;
+    return (fontMetrics().boundingRect(i18n("(Default)")).height() + 2)*3 / 2;
 }
 
 int KColorCombo2::colorRectWidthForHeight(int height) const
 {
-	return height * 14 / 10; // 1.4 times the height, like A4 papers.
+    return height * 14 / 10; // 1.4 times the height, like A4 papers.
 }
 
 void KColorCombo2::deleteColorArray()
 {
-	if (m_colorArray) {
-		for (int i = 0; i < m_columnCount; ++i)
-			delete[] m_colorArray[i];
-		delete[] m_colorArray;
-		m_colorArray = 0;
-	}
+    if (m_colorArray) {
+        for (int i = 0; i < m_columnCount; ++i)
+            delete[] m_colorArray[i];
+        delete[] m_colorArray;
+        m_colorArray = 0;
+    }
 }
 
 void KColorCombo2::updateComboBox()
 {
-	int height = colorRectHeight()*2/3; // fontMetrics().boundingRect(i18n("(Default)")).height() + 2
-	QPixmap pixmap = colorRectPixmap(effectiveColor(), !m_color.isValid(), colorRectWidthForHeight(height), height); // TODO: isDefaultColorSelected()
-	changeItem(pixmap, (m_color.isValid() ? "" : i18n("(Default)")), /*index=*/0);
+    int height = colorRectHeight() * 2 / 3; // fontMetrics().boundingRect(i18n("(Default)")).height() + 2
+    QPixmap pixmap = colorRectPixmap(effectiveColor(), !m_color.isValid(), colorRectWidthForHeight(height), height); // TODO: isDefaultColorSelected()
+    changeItem(pixmap, (m_color.isValid() ? "" : i18n("(Default)")), /*index=*/0);
 }
 
 void KColorCombo2::popup()
 {
-	if (!m_colorArray)
-		setRainbowPreset();
+    if (!m_colorArray)
+        setRainbowPreset();
 
-	// Compute where to show the popup:
-	QRect desk = KGlobalSettings::desktopGeometry(this);
+    // Compute where to show the popup:
+    QRect desk = KGlobalSettings::desktopGeometry(this);
 
-	QPoint popupPoint = mapToGlobal(QPoint(0, 0));
+    QPoint popupPoint = mapToGlobal(QPoint(0, 0));
 
-	int popupHeight = m_popup->sizeHint().height();
-	if (popupPoint.y() + height() + popupHeight > desk.bottom())
-		popupPoint.setY(popupPoint.y() - popupHeight);
-	else
-		popupPoint.setY(popupPoint.y() + height());
+    int popupHeight = m_popup->sizeHint().height();
+    if (popupPoint.y() + height() + popupHeight > desk.bottom())
+        popupPoint.setY(popupPoint.y() - popupHeight);
+    else
+        popupPoint.setY(popupPoint.y() + height());
 
-	int popupWidth = m_popup->sizeHint().width();
-	if (popupPoint.x() + popupWidth > desk.right())
-		popupPoint.setX(desk.right() - popupWidth);
+    int popupWidth = m_popup->sizeHint().width();
+    if (popupPoint.x() + popupWidth > desk.right())
+        popupPoint.setX(desk.right() - popupWidth);
 
-	if (popupPoint.x() < desk.left())
-		popupPoint.setX(desk.left());
+    if (popupPoint.x() < desk.left())
+        popupPoint.setX(desk.left());
 
-	if (popupPoint.y() < desk.top())
-		popupPoint.setY(desk.top());
+    if (popupPoint.y() < desk.top())
+        popupPoint.setY(desk.top());
 
-	// Configure the popup:
-	m_popup->move(popupPoint);
-	//m_popup->setColor(m_color);
-	m_popup->doSelection();
-	m_popup->relayout(); // FIXME: In aboutToShow() ?
+    // Configure the popup:
+    m_popup->move(popupPoint);
+    //m_popup->setColor(m_color);
+    m_popup->doSelection();
+    m_popup->relayout(); // FIXME: In aboutToShow() ?
 #if 0
 //#ifndef QT_NO_EFFECTS
-	if (QApplication::isEffectEnabled(UI_AnimateCombo)) {
-		if (m_popup->y() < mapToGlobal(QPoint(0,0)).y())
-			qScrollEffect(m_popup, QEffects::UpScroll);
-		else
-			qScrollEffect(m_popup);
-	} else
+    if (QApplication::isEffectEnabled(UI_AnimateCombo)) {
+        if (m_popup->y() < mapToGlobal(QPoint(0, 0)).y())
+            qScrollEffect(m_popup, QEffects::UpScroll);
+        else
+            qScrollEffect(m_popup);
+    } else
 #endif
-		m_popup->show();
+        m_popup->show();
 
-	// The combo box is now shown pressed. Make it show not pressed again
-	// by causing its (invisible) list box to emit a 'selected' signal.
-	// Simulate an Enter to unpress it:
-	QListWidget *lb = listBox();
-	if (lb) {
-		lb->setCurrentItem(0);
-		QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
-		QApplication::postEvent(lb, keyEvent);
-	}
+    // The combo box is now shown pressed. Make it show not pressed again
+    // by causing its (invisible) list box to emit a 'selected' signal.
+    // Simulate an Enter to unpress it:
+    QListWidget *lb = listBox();
+    if (lb) {
+        lb->setCurrentItem(0);
+        QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
+        QApplication::postEvent(lb, keyEvent);
+    }
 }
 
 bool KColorCombo2::eventFilter(QObject */*object*/, QEvent *event)
 {
-	QMouseEvent *mouseEvent;
+    QMouseEvent *mouseEvent;
 
-	switch (event->type()) {
-		case QEvent::MouseButtonDblClick:
-		case QEvent::MouseButtonPress:
-			mouseEvent = (QMouseEvent*)event;
-			if ( !m_popup->rect().contains(mouseEvent->pos()) ) {
-				QPoint globalPos = m_popup->mapToGlobal(mouseEvent->pos());
-				if (QApplication::widgetAt(globalPos, /*child=*/true) == this) {
-					// The popup is being closed by a click on the KColorCombo2 widget.
-					// Avoid popping it up again immediately:
-					m_discardNextMousePress = true;
-				}
-			}
-			break;
-		default:
-			break;
-	}
+    switch (event->type()) {
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseButtonPress:
+        mouseEvent = (QMouseEvent*)event;
+        if (!m_popup->rect().contains(mouseEvent->pos())) {
+            QPoint globalPos = m_popup->mapToGlobal(mouseEvent->pos());
+            if (QApplication::widgetAt(globalPos, /*child=*/true) == this) {
+                // The popup is being closed by a click on the KColorCombo2 widget.
+                // Avoid popping it up again immediately:
+                m_discardNextMousePress = true;
+            }
+        }
+        break;
+    default:
+        break;
+    }
 
-	// Don't stop the event being handled further:
-	return false;
+    // Don't stop the event being handled further:
+    return false;
 }
 
 void KColorCombo2::mousePressEvent(QMouseEvent *event)
 {
-	m_dragStartPos = event->pos();
+    m_dragStartPos = event->pos();
 
-	if (event->button() == Qt::LeftButton && m_discardNextMousePress)
-		m_discardNextMousePress = false;
-	else
-		QComboBox::mousePressEvent(event);
+    if (event->button() == Qt::LeftButton && m_discardNextMousePress)
+        m_discardNextMousePress = false;
+    else
+        QComboBox::mousePressEvent(event);
 }
 
 void KColorCombo2::mouseMoveEvent(QMouseEvent *event)
 {
-	if( (event->state() & Qt::LeftButton) &&
-	    (event->pos() - m_dragStartPos).manhattanLength() > KGlobalSettings::dndEventDelay() ) {
-		// Drag color object:
-		QMimeData* mimeData = new QMimeData;
-		QDrag* colorDrag = new QDrag(this);
-		mimeData->setColor(effectiveColor());
-		// Replace the drag pixmap with our own rounded one, at the same position and dimetions:
-		QPixmap pixmap = colorDrag->pixmap();
-		pixmap = colorRectPixmap(effectiveColor(), /*isDefault=*/false, pixmap.width(), pixmap.height());
-		colorDrag->setPixmap(pixmap, colorDrag->pixmapHotSpot());
-		colorDrag->exec(Qt::CopyAction, Qt::CopyAction);
-		//setDown(false);
-	}
+    if ((event->state() & Qt::LeftButton) &&
+            (event->pos() - m_dragStartPos).manhattanLength() > KGlobalSettings::dndEventDelay()) {
+        // Drag color object:
+        QMimeData* mimeData = new QMimeData;
+        QDrag* colorDrag = new QDrag(this);
+        mimeData->setColor(effectiveColor());
+        // Replace the drag pixmap with our own rounded one, at the same position and dimetions:
+        QPixmap pixmap = colorDrag->pixmap();
+        pixmap = colorRectPixmap(effectiveColor(), /*isDefault=*/false, pixmap.width(), pixmap.height());
+        colorDrag->setPixmap(pixmap, colorDrag->pixmapHotSpot());
+        colorDrag->exec(Qt::CopyAction, Qt::CopyAction);
+        //setDown(false);
+    }
 }
 
 void KColorCombo2::dragEnterEvent(QDragEnterEvent *event)
 {
-	event->accept(isEnabled() && event->mimeData()->hasColor());
+    event->accept(isEnabled() && event->mimeData()->hasColor());
 }
 
 void KColorCombo2::dropEvent(QDropEvent *event)
 {
-	QColor color;
-	color = qvariant_cast<QColor>(event->mimeData()->colorData());
-	if (color.isValid())
-		setColor(color);
+    QColor color;
+    color = qvariant_cast<QColor>(event->mimeData()->colorData());
+    if (color.isValid())
+        setColor(color);
 }
 
 void KColorCombo2::keyPressEvent(QKeyEvent *event)
 {
-	KKey key(event);
+    KKey key(event);
 
-	if (KStandardShortcut::copy().contains(key)) {
-		QMimeData *mime = new QMimeData;
-		mime->setColor(effectiveColor());
-		QApplication::clipboard()->setData(mime, QClipboard::Clipboard);
-	} else if (KStandardShortcut::paste().contains(key)) {
-		QColor color;
-		color = qvariant_cast<QColor>(QApplication::clipboard()->data(QClipboard::Clipboard)->colorData());
-		setColor(color);
-	} else
-		QComboBox::keyPressEvent(event);
+    if (KStandardShortcut::copy().contains(key)) {
+        QMimeData *mime = new QMimeData;
+        mime->setColor(effectiveColor());
+        QApplication::clipboard()->setData(mime, QClipboard::Clipboard);
+    } else if (KStandardShortcut::paste().contains(key)) {
+        QColor color;
+        color = qvariant_cast<QColor>(QApplication::clipboard()->data(QClipboard::Clipboard)->colorData());
+        setColor(color);
+    } else
+        QComboBox::keyPressEvent(event);
 }
 
 void KColorCombo2::fontChange(const QFont &oldFont)
 {
-	// Since the color-rectangle is the same height of the text, we should resize it if the font change:
-	updateComboBox();
-	QComboBox::fontChange(oldFont); // To update geometry.
+    // Since the color-rectangle is the same height of the text, we should resize it if the font change:
+    updateComboBox();
+    QComboBox::fontChange(oldFont); // To update geometry.
 }
 
 void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)
 {
-	/* KBASE::virtual_hook(id, data); */
+    /* KBASE::virtual_hook(id, data); */
 }
 
 #endif // USE_NEW_KCOLORCOMBO

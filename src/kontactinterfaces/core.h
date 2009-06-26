@@ -37,8 +37,8 @@ class Plugin;
 */
 class KONTACTINTERFACES_EXPORT Core : public KParts::MainWindow
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     virtual ~Core();
 
     /**
@@ -47,7 +47,7 @@ class KONTACTINTERFACES_EXPORT Core : public KParts::MainWindow
 
       @param plugin is a pointer to the Kontact Plugin to select.
      */
-    virtual void selectPlugin( Kontact::Plugin *plugin ) = 0;
+    virtual void selectPlugin(Kontact::Plugin *plugin) = 0;
 
     /**
       This is an overloaded member function
@@ -55,7 +55,7 @@ class KONTACTINTERFACES_EXPORT Core : public KParts::MainWindow
 
       @param plugin is the name of the Kontact Plugin select.
      */
-    virtual void selectPlugin( const QString &plugin ) = 0;
+    virtual void selectPlugin(const QString &plugin) = 0;
 
     /**
       Returns the pointer list of available plugins.
@@ -65,30 +65,30 @@ class KONTACTINTERFACES_EXPORT Core : public KParts::MainWindow
     /**
       @internal (for Plugin)
      */
-    KParts::ReadOnlyPart *createPart( const char *libname );
+    KParts::ReadOnlyPart *createPart(const char *libname);
 
     /**
       @internal (for Plugin)
       Tell kontact that a part was loaded
      */
-    virtual void partLoaded( Plugin *plugin, KParts::ReadOnlyPart *part ) = 0;
+    virtual void partLoaded(Plugin *plugin, KParts::ReadOnlyPart *part) = 0;
 
-  Q_SIGNALS:
+Q_SIGNALS:
     /**
       Emitted when a new day starts
       */
-    void dayChanged( const QDate & );
+    void dayChanged(const QDate &);
 
-  protected:
-    explicit Core( QWidget *parentWidget = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS );
+protected:
+    explicit Core(QWidget *parentWidget = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS);
 
     QString lastErrorMessage() const;
 
-  private:
+private:
     class Private;
     Private *const d;
-    Q_PRIVATE_SLOT( d, void slotPartDestroyed( QObject * ) )
-    Q_PRIVATE_SLOT( d, void checkNewDay() )
+    Q_PRIVATE_SLOT(d, void slotPartDestroyed(QObject *))
+    Q_PRIVATE_SLOT(d, void checkNewDay())
 };
 
 }

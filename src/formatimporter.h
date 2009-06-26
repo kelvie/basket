@@ -25,8 +25,9 @@
 //#include <qwidget.h>
 #include <qdom.h>
 
-namespace KIO {
-	class Job;
+namespace KIO
+{
+class Job;
 }
 
 /**
@@ -34,18 +35,18 @@ namespace KIO {
   */
 class FormatImporter : QObject
 {
-  Q_OBJECT
-  public:
-	static bool shouldImportBaskets();
-	static void importBaskets();
-	static QDomElement importBasket(const QString &folderName);
+    Q_OBJECT
+public:
+    static bool shouldImportBaskets();
+    static void importBaskets();
+    static QDomElement importBasket(const QString &folderName);
 
-	void copyFolder(const QString &folder, const QString &newFolder);
-	void moveFolder(const QString &folder, const QString &newFolder);
-  private slots:
-	void slotCopyingDone(KIO::Job*);
-  private:
-	bool copyFinished;
+    void copyFolder(const QString &folder, const QString &newFolder);
+    void moveFolder(const QString &folder, const QString &newFolder);
+private slots:
+    void slotCopyingDone(KIO::Job*);
+private:
+    bool copyFinished;
 };
 
 #endif // FORMATIMPORTER_H

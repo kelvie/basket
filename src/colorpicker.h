@@ -31,30 +31,30 @@
   */
 class DesktopColorPicker : public QDesktopWidget
 {
-  Q_OBJECT
-  public:
-	/** Construtor, initializer and destructor */
-	DesktopColorPicker();
-	~DesktopColorPicker();
-  public slots:
-	/** Begin color picking.
-	  * This function returns immediatly, and pickedColor() is emitted if user has
-	  * choosen a color, and not canceled the process (by pressing Escape).
-	  */
-	void pickColor();
-  signals:
-	/** When user picked a color, this signal is emitted.
-	  */
-	void pickedColor(const QColor &color);
-	/** When user cancel a picking (by pressing Escape), this signal is emitted.
-	  */
-	void canceledPick();
-  protected slots:
-	void slotDelayedPick();
-  protected:
-	void mouseReleaseEvent(QMouseEvent *event);
-	void keyPressEvent(QKeyEvent *event);
-	bool m_gettingColorFromScreen;
+    Q_OBJECT
+public:
+    /** Construtor, initializer and destructor */
+    DesktopColorPicker();
+    ~DesktopColorPicker();
+public slots:
+    /** Begin color picking.
+      * This function returns immediatly, and pickedColor() is emitted if user has
+      * choosen a color, and not canceled the process (by pressing Escape).
+      */
+    void pickColor();
+signals:
+    /** When user picked a color, this signal is emitted.
+      */
+    void pickedColor(const QColor &color);
+    /** When user cancel a picking (by pressing Escape), this signal is emitted.
+      */
+    void canceledPick();
+protected slots:
+    void slotDelayedPick();
+protected:
+    void mouseReleaseEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    bool m_gettingColorFromScreen;
 };
 
 #endif // COLORPICKER_H

@@ -54,7 +54,10 @@ class NoteSelection;
 class BNPView;
 class KActionCollection;
 
-namespace KSettings { class Dialog; };
+namespace KSettings
+{
+class Dialog;
+};
 
 
 /** The window that contain baskets, organized by tabs.
@@ -62,49 +65,49 @@ namespace KSettings { class Dialog; };
   */
 class MainWindow : public KXmlGuiWindow
 {
-  Q_OBJECT
-  public:
-	/** Construtor, initializer and destructor */
-	MainWindow(QWidget *parent = 0);
-	~MainWindow();
-  private:
-	void setupActions();
-  public slots:
-	bool askForQuit();
-	/** Settings **/
-//	void toggleToolBar();
-	void toggleStatusBar();
-	void showShortcutsSettingsDialog();
-	void configureToolbars();
-	void configureNotifications();
-	void showSettingsDialog();
-	void minimizeRestore();
-	void quit();
-	void slotNewToolbarConfig();
+    Q_OBJECT
+public:
+    /** Construtor, initializer and destructor */
+    MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+private:
+    void setupActions();
+public slots:
+    bool askForQuit();
+    /** Settings **/
+//  void toggleToolBar();
+    void toggleStatusBar();
+    void showShortcutsSettingsDialog();
+    void configureToolbars();
+    void configureNotifications();
+    void showSettingsDialog();
+    void minimizeRestore();
+    void quit();
+    void slotNewToolbarConfig();
 
-  protected:
-	bool queryExit();
-	bool queryClose();
-	virtual void resizeEvent(QResizeEvent*);
-	virtual void moveEvent(QMoveEvent*);
+protected:
+    bool queryExit();
+    bool queryClose();
+    virtual void resizeEvent(QResizeEvent*);
+    virtual void moveEvent(QMoveEvent*);
 
-  public:
-	void ensurePolished();
+public:
+    void ensurePolished();
 
-  private:
-	// Settings actions :
-//	KToggleAction *m_actShowToolbar;
-	KToggleAction *m_actShowStatusbar;
-	KAction       *actQuit;
-	KAction       *actAppConfig;
-	QList<QAction *> actBasketsList;
+private:
+    // Settings actions :
+//  KToggleAction *m_actShowToolbar;
+    KToggleAction *m_actShowStatusbar;
+    KAction       *actQuit;
+    KAction       *actAppConfig;
+    QList<QAction *> actBasketsList;
 
-  private:
-	QVBoxLayout        *m_layout;
-	BNPView            *m_baskets;
-	bool                m_startDocked;
-	KSettings::Dialog  *m_settings;
-	bool                m_quit;
+private:
+    QVBoxLayout        *m_layout;
+    BNPView            *m_baskets;
+    bool                m_startDocked;
+    KSettings::Dialog  *m_settings;
+    bool                m_quit;
 };
 
 #endif // CONTAINER_H

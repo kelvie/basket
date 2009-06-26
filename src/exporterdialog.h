@@ -34,28 +34,28 @@ class Basket;
   */
 class ExporterDialog : public KDialog
 {
-  Q_OBJECT
-  public:
-	ExporterDialog(Basket *basket, QWidget *parent = 0, const char *name = 0);
-	~ExporterDialog();
-	QString filePath();
-	bool    embedLinkedFiles();
-	bool    embedLinkedFolders();
-	bool    erasePreviousFiles();
-	bool    formatForImpression();
-	void show();
+    Q_OBJECT
+public:
+    ExporterDialog(Basket *basket, QWidget *parent = 0, const char *name = 0);
+    ~ExporterDialog();
+    QString filePath();
+    bool    embedLinkedFiles();
+    bool    embedLinkedFolders();
+    bool    erasePreviousFiles();
+    bool    formatForImpression();
+    void show();
 
-  protected slots:
-	void load();
-	void save();
+protected slots:
+    void load();
+    void save();
     void accept();
-  private:
-	Basket        *m_basket;
-	KUrlRequester *m_url;
-	QCheckBox     *m_embedLinkedFiles;
-	QCheckBox     *m_embedLinkedFolders;
-	QCheckBox     *m_erasePreviousFiles;
-	QCheckBox     *m_formatForImpression;
+private:
+    Basket        *m_basket;
+    KUrlRequester *m_url;
+    QCheckBox     *m_embedLinkedFiles;
+    QCheckBox     *m_embedLinkedFolders;
+    QCheckBox     *m_erasePreviousFiles;
+    QCheckBox     *m_formatForImpression;
 };
 
 #endif // EXPORTERDIALOG_H

@@ -30,13 +30,13 @@ class QMimeData;
 
 class StopWatch
 {
-  public:
-	static void start(int id);
-	static void check(int id);
-  private:
-	static QVector<QTime>  starts;
-	static QVector<double> totals;
-	static QVector<uint>   counts;
+public:
+    static void start(int id);
+    static void check(int id);
+private:
+    static QVector<QTime>  starts;
+    static QVector<double> totals;
+    static QVector<uint>   counts;
 };
 
 /** Some useful functions for that application.
@@ -44,55 +44,55 @@ class StopWatch
   */
 namespace Tools
 {
-	// Text <-> HTML Conversions and Tools:
-	QString textToHTML(const QString &text);
-	QString textToHTMLWithoutP(const QString &text);
-	QString htmlToParagraph(const QString &html);
-	QString htmlToText(const QString &html);
-	QString tagURLs(const QString &test);
-	QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
+// Text <-> HTML Conversions and Tools:
+QString textToHTML(const QString &text);
+QString textToHTMLWithoutP(const QString &text);
+QString htmlToParagraph(const QString &html);
+QString htmlToText(const QString &html);
+QString tagURLs(const QString &test);
+QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
 
-	// String Manipulations:
-	QString stripEndWhiteSpaces(const QString &string);
+// String Manipulations:
+QString stripEndWhiteSpaces(const QString &string);
 
-	// Pixmap Manipulations:
-	/** @Return true if it is a Web color
-	  */
-	bool isWebColor(const QColor &color);
-	/** @Return a color that is 50% of @p color1 and 50% of @p color2.
-	  */
-	QColor mixColor(const QColor &color1, const QColor &color2);
-	/** @Return true if the color is too dark to be darkened one more time.
-	  */
-	bool tooDark(const QColor &color);
-	/** Make sure the @p pixmap is of the size (@p width, @p height) and @return a pixmap of this size.
-	  * If @p height <= 0, then width will be used to make the picture square.
-	  */
-	QPixmap normalizePixmap(const QPixmap &pixmap, int width, int height = 0);
-	/** @Return the pixmap @p source with depth*deltaX transparent pixels added to the left.\n
-	  * If @p deltaX is <= 0, then an indent delta is computed depending on the @p source width.
-	  */
-	QPixmap indentPixmap(const QPixmap &source, int depth, int deltaX = 0);
+// Pixmap Manipulations:
+/** @Return true if it is a Web color
+  */
+bool isWebColor(const QColor &color);
+/** @Return a color that is 50% of @p color1 and 50% of @p color2.
+  */
+QColor mixColor(const QColor &color1, const QColor &color2);
+/** @Return true if the color is too dark to be darkened one more time.
+  */
+bool tooDark(const QColor &color);
+/** Make sure the @p pixmap is of the size (@p width, @p height) and @return a pixmap of this size.
+  * If @p height <= 0, then width will be used to make the picture square.
+  */
+QPixmap normalizePixmap(const QPixmap &pixmap, int width, int height = 0);
+/** @Return the pixmap @p source with depth*deltaX transparent pixels added to the left.\n
+  * If @p deltaX is <= 0, then an indent delta is computed depending on the @p source width.
+  */
+QPixmap indentPixmap(const QPixmap &source, int depth, int deltaX = 0);
 
-	// File and Folder Manipulations:
-	/** Delete the folder @p folderOrFile recursively (to remove sub-folders and child files too).
-	  */
-	void deleteRecursively(const QString &folderOrFile);
-	/** @Return a new filename that doesn't already exist in @p destFolder.
-	  * If @p wantedName alread exist in @p destFolder, a dash and a number will be added before the extenssion.
-	  * Id there were already such a number in @p wantedName, it is incremented until a free filename is found.
-	  */
-	QString fileNameForNewFile(const QString &wantedName, const QString &destFolder);
+// File and Folder Manipulations:
+/** Delete the folder @p folderOrFile recursively (to remove sub-folders and child files too).
+  */
+void deleteRecursively(const QString &folderOrFile);
+/** @Return a new filename that doesn't already exist in @p destFolder.
+  * If @p wantedName alread exist in @p destFolder, a dash and a number will be added before the extenssion.
+  * Id there were already such a number in @p wantedName, it is incremented until a free filename is found.
+  */
+QString fileNameForNewFile(const QString &wantedName, const QString &destFolder);
 
-	// Other:
-	//void iconForURL(const KUrl &url);
-	/** @Return true if the source is from a file cutting in Konqueror.
-	  * @Return false if it was just a copy or if it was a drag.
-	  */
-	bool isAFileCut(const QMimeData *source);
+// Other:
+//void iconForURL(const KUrl &url);
+/** @Return true if the source is from a file cutting in Konqueror.
+  * @Return false if it was just a copy or if it was a drag.
+  */
+bool isAFileCut(const QMimeData *source);
 
-	// Debug
-	void printChildren(QObject* parent);
+// Debug
+void printChildren(QObject* parent);
 }
 
 #endif // TOOLS_H

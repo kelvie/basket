@@ -37,96 +37,94 @@
 #include "kgpgme.h"
 
 PasswordDlg::PasswordDlg(QWidget *parent)
-     : KDialog(parent)
-     , w(0)
+        : KDialog(parent)
+        , w(0)
 {
-	// KDialog options
-	setWindowTitle(i18n("Password Protection"));
-	setButtons(Ok | Cancel);
-	setDefaultButton(Ok);
-	setModal(true);
-	showButtonSeparator(true);
+    // KDialog options
+    setWindowTitle(i18n("Password Protection"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+    setModal(true);
+    showButtonSeparator(true);
 
-	setMainWidget(new QWidget(this));
-	QHBoxLayout* toplayout = new QHBoxLayout(mainWidget());
-	w = new Password;
-	toplayout->addWidget(w, 1);
+    setMainWidget(new QWidget(this));
+    QHBoxLayout* toplayout = new QHBoxLayout(mainWidget());
+    w = new Password;
+    toplayout->addWidget(w, 1);
 }
 
 PasswordDlg::~PasswordDlg()
 {
-	delete w;
+    delete w;
 }
 
 void PasswordDlg::accept()
 {
-	int n = type();
-	if(n == Basket::PrivateKeyEncryption && key().isEmpty())
-		KMessageBox::error(w, i18n("No private key selected."));
-	else
-		KDialog::accept();
+    int n = type();
+    if (n == Basket::PrivateKeyEncryption && key().isEmpty())
+        KMessageBox::error(w, i18n("No private key selected."));
+    else
+        KDialog::accept();
 }
 
 QString PasswordDlg::key() const
 {
-	QString s = w->keyCombo->currentText();
-	if(s.length() < 16)
-		return "";
-	int n = s.lastIndexOf(' ');
-	if(n < 0)
-		return "";
-	return s.mid(n+1);
+    QString s = w->keyCombo->currentText();
+    if (s.length() < 16)
+        return "";
+    int n = s.lastIndexOf(' ');
+    if (n < 0)
+        return "";
+    return s.mid(n + 1);
 }
 
 int PasswordDlg::type() const
 {
-	if (w->noPasswordRadioButton->isChecked())
-		return Basket::NoEncryption;
-	else if (w->passwordRadioButton->isChecked())
-		return Basket::PasswordEncryption;
-	else if (w->publicPrivateRadioButton->isChecked())
-		return Basket::PrivateKeyEncryption;
-	return -1;
+    if (w->noPasswordRadioButton->isChecked())
+        return Basket::NoEncryption;
+    else if (w->passwordRadioButton->isChecked())
+        return Basket::PasswordEncryption;
+    else if (w->publicPrivateRadioButton->isChecked())
+        return Basket::PrivateKeyEncryption;
+    return -1;
 }
 
 void PasswordDlg::setKey(const QString& key)
 {
-	for(int i = 0; i < w->keyCombo->count(); ++i)
-	{
-		if(w->keyCombo->itemText(i).contains(key))
-		{
-			w->keyCombo->setCurrentIndex(i);
-			return;
-		}
-	}
+    for (int i = 0; i < w->keyCombo->count(); ++i) {
+        if (w->keyCombo->itemText(i).contains(key)) {
+            w->keyCombo->setCurrentIndex(i);
+            return;
+        }
+    }
 }
 
 void PasswordDlg::setType(int type)
 {
-	if (type==Basket::NoEncryption)
-		w->noPasswordRadioButton->setChecked(true);
-	else if (type == Basket::PasswordEncryption)
-		w->passwordRadioButton->setChecked(true);
-	else if (type == Basket::PrivateKeyEncryption)
-		w->publicPrivateRadioButton->setChecked(true);
+    if (type == Basket::NoEncryption)
+        w->noPasswordRadioButton->setChecked(true);
+    else if (type == Basket::PasswordEncryption)
+        w->passwordRadioButton->setChecked(true);
+    else if (type == Basket::PrivateKeyEncryption)
+        w->publicPrivateRadioButton->setChecked(true);
 }
 
 Password::Password(QWidget *parent)
-	: QWidget(parent)
+        : QWidget(parent)
 {
-	// Setup from the UI file
-	setupUi(this);
+    // Setup from the UI file
+    setupUi(this);
 
-	KGpgMe gpg;
+    KGpgMe gpg;
 
-	KGpgKeyList list = gpg.keys(true);
-	for(KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
-		QString name = gpg.checkForUtf8((*it).name);
+    KGpgKeyList list = gpg.keys(true);
+    for (KGpgKeyList::iterator it = list.begin(); it != list.end(); ++it) {
+        QString name = gpg.checkForUtf8((*it).name);
 
-		keyCombo->addItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
-	}
-	publicPrivateRadioButton->setEnabled(keyCombo->count() > 0);
-	keyCombo->setEnabled(keyCombo->count() > 0);
+        keyCombo->addItem(QString("%1 <%2> %3").arg(name).arg((*it).email).arg((*it).id));
+    }
+    publicPrivateRadioButton->setEnabled(keyCombo->count() > 0);
+    keyCombo->setEnabled(keyCombo->count() > 0);
 }
 
 

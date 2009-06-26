@@ -54,24 +54,24 @@ class NoteSelection;
   */
 class NoteDrag
 {
-  protected:
-	static void serializeNotes(     NoteSelection *noteList, QDataStream &stream,         bool cutting );
-	static void serializeText(      NoteSelection *noteList, QDrag *multipleDrag               );
-	static void serializeHtml(      NoteSelection *noteList, QDrag *multipleDrag               );
-	static void serializeImage(     NoteSelection *noteList, QDrag *multipleDrag               );
-	static void serializeLinks(     NoteSelection *noteList, QDrag *multipleDrag, bool cutting );
-	static void setFeedbackPixmap(  NoteSelection *noteList, QDrag *multipleDrag               );
-	static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
-  public:
-	static QPixmap feedbackPixmap(NoteSelection *noteList);
-	static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
-	static bool canDecode(const QMimeData *source);
-	static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
-	static Basket* basketOf(const QMimeData *source);
-	static QList<Note*> notesOf(QDragEnterEvent *source);
-	static void createAndEmptyCuttingTmpFolder();
+protected:
+    static void serializeNotes(NoteSelection *noteList, QDataStream &stream,         bool cutting);
+    static void serializeText(NoteSelection *noteList, QDrag *multipleDrag);
+    static void serializeHtml(NoteSelection *noteList, QDrag *multipleDrag);
+    static void serializeImage(NoteSelection *noteList, QDrag *multipleDrag);
+    static void serializeLinks(NoteSelection *noteList, QDrag *multipleDrag, bool cutting);
+    static void setFeedbackPixmap(NoteSelection *noteList, QDrag *multipleDrag);
+    static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
+public:
+    static QPixmap feedbackPixmap(NoteSelection *noteList);
+    static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
+    static bool canDecode(const QMimeData *source);
+    static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
+    static Basket* basketOf(const QMimeData *source);
+    static QList<Note*> notesOf(QDragEnterEvent *source);
+    static void createAndEmptyCuttingTmpFolder();
 
-	static const char *NOTE_MIME_STRING;
+    static const char *NOTE_MIME_STRING;
 };
 
 /** QTextDrag with capabilities to drop GNOME and Mozilla texts
@@ -81,10 +81,10 @@ class NoteDrag
   */
 class ExtendedTextDrag : public QDrag
 {
-  Q_OBJECT
-  public:
-	static bool decode(const QMimeData *e, QString &str);
-	static bool decode(const QMimeData *e, QString &str, QString &subtype);
+    Q_OBJECT
+public:
+    static bool decode(const QMimeData *e, QString &str);
+    static bool decode(const QMimeData *e, QString &str, QString &subtype);
 };
 
 #endif // NOTEDRAG_H

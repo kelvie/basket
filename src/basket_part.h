@@ -63,26 +63,26 @@ public:
      */
     virtual void setModified(bool modified);
 
-	static KAboutData *createAboutData();
+    static KAboutData *createAboutData();
 
-  signals:
-	void showPart();
+signals:
+    void showPart();
 
-  protected:
+protected:
     /**
-	 * This must be implemented by each part
-	 */
-	virtual bool openFile();
+     * This must be implemented by each part
+     */
+    virtual bool openFile();
 
     /**
-		 * This must be implemented by each read-write part
-	 */
-	virtual bool saveFile();
+         * This must be implemented by each read-write part
+     */
+    virtual bool saveFile();
 
-  protected slots:
-	  void setCaption(const QString &caption);
+protected slots:
+    void setCaption(const QString &caption);
 
-  private:
+private:
     BNPView *m_view;
 };
 

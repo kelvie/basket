@@ -41,31 +41,33 @@ class KAboutData;
   */
 class BASKET_EXPORT Global
 {
-  private:
-	static QString s_customSavesFolder;
-  public:
-	// Global Variables:
-	static LikeBack          *likeBack;
-	static DebugWindow       *debugWindow;
-	static BackgroundManager *backgroundManager;
-	static SystemTray        *systemTray;
-	static BNPView           *bnpView;
-	static KSharedConfig::Ptr basketConfig;
-	static AboutData          basketAbout;
+private:
+    static QString s_customSavesFolder;
+public:
+    // Global Variables:
+    static LikeBack          *likeBack;
+    static DebugWindow       *debugWindow;
+    static BackgroundManager *backgroundManager;
+    static SystemTray        *systemTray;
+    static BNPView           *bnpView;
+    static KSharedConfig::Ptr basketConfig;
+    static AboutData          basketAbout;
 
-	// Application Folders:
-	static void setCustomSavesFolder(const QString &folder);
-	static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
-	static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
-	static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
-	static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
-	static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
+    // Application Folders:
+    static void setCustomSavesFolder(const QString &folder);
+    static QString savesFolder();       /// << @return e.g. "/home/username/.kde/share/apps/basket/".
+    static QString basketsFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/baskets/".
+    static QString backgroundsFolder(); /// << @return e.g. "/home/username/.kde/share/apps/basket/backgrounds/".
+    static QString templatesFolder();   /// << @return e.g. "/home/username/.kde/share/apps/basket/templates/".
+    static QString tempCutFolder();     /// << @return e.g. "/home/username/.kde/share/apps/basket/temp-cut/".   (was ".tmp/")
 
-	// Various Things:
-	static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
-	static KMainWindow* mainWindow();
-	static KConfig* config();
-	static KAboutData* about() { return &basketAbout; };
+    // Various Things:
+    static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
+    static KMainWindow* mainWindow();
+    static KConfig* config();
+    static KAboutData* about() {
+        return &basketAbout;
+    };
 };
 
 #endif // GLOBAL_H

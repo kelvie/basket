@@ -31,15 +31,15 @@ void setupCmdLineOptions(KCmdLineOptions *opts)
     opts->add("f");
     opts->add("data-folder \\<folder>",
               ki18n("Custom folder to load and save baskets and other "
-                   "application data."));
+                    "application data."));
     opts->add("h");
     opts->add("start-hidden",
               ki18n("Automatically hide the main window in the system tray on "
-                   "startup."));
+                    "startup."));
     opts->add("k");
     opts->add("use-drkonqi",
               ki18n("On crash, use the standard KDE crash handler rather than "
-                   "send an email."));
+                    "send an email."));
     opts->add("+[file]", ki18n("Open a basket archive or template."));
 }
 

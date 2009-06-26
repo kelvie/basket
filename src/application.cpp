@@ -29,7 +29,7 @@
 #include "bnpview.h"
 
 Application::Application()
- : KUniqueApplication()
+        : KUniqueApplication()
 {
 }
 
@@ -39,23 +39,23 @@ Application::~Application()
 
 int Application::newInstance()
 {
-	KUniqueApplication::newInstance();
+    KUniqueApplication::newInstance();
 
-	// Open the basket archive or template file supplied as argument:
-	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-	if (args && args->count() >= 1) {
-		QString fileName = args->arg(args->count() - 1);
-		if (QFile::exists(fileName)) {
-			QFileInfo fileInfo(fileName);
-			if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
-				// Tags are not loaded until Global::bnpView::lateInit() is called.
-				// It is called 0ms after the application start.
-				BNPView::s_fileToOpen = fileName;
-				QTimer::singleShot( 100, Global::bnpView, SLOT(delayedOpenArchive()) );
-//				Global::bnpView->openArchive(fileName);
-				args->clear();
-			}
-		}
-	}
-	return 0;
+    // Open the basket archive or template file supplied as argument:
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    if (args && args->count() >= 1) {
+        QString fileName = args->arg(args->count() - 1);
+        if (QFile::exists(fileName)) {
+            QFileInfo fileInfo(fileName);
+            if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
+                // Tags are not loaded until Global::bnpView::lateInit() is called.
+                // It is called 0ms after the application start.
+                BNPView::s_fileToOpen = fileName;
+                QTimer::singleShot(100, Global::bnpView, SLOT(delayedOpenArchive()));
+//              Global::bnpView->openArchive(fileName);
+                args->clear();
+            }
+        }
+    }
+    return 0;
 }

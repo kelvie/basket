@@ -35,7 +35,7 @@ class SystemTray : public KSystemTrayIcon
     Q_DISABLE_COPY(SystemTray);
 
 public:
-    SystemTray(QWidget *parent=0);
+    SystemTray(QWidget *parent = 0);
     ~SystemTray();
 
 public slots:
@@ -57,27 +57,27 @@ private:
   */
 class SystemTray2 : public SystemTray
 {
-  Q_OBJECT
-  public:
-	SystemTray2(QWidget *parent = 0, const char *name = 0);
-	~SystemTray2();
-  protected:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	virtual void dragEnterEvent(QDragEnterEvent *event);
-	virtual void dragMoveEvent(QDragMoveEvent* event);
-	virtual void dragLeaveEvent(QDragLeaveEvent*);
-	virtual void dropEvent(QDropEvent *event);
-	void wheelEvent(QWheelEvent *event);
-	void enterEvent(QEvent*);
-	void leaveEvent(QEvent*);
+    Q_OBJECT
+public:
+    SystemTray2(QWidget *parent = 0, const char *name = 0);
+    ~SystemTray2();
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent* event);
+    virtual void dragLeaveEvent(QDragLeaveEvent*);
+    virtual void dropEvent(QDropEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void enterEvent(QEvent*);
+    void leaveEvent(QEvent*);
 
-  private:
-	QTimer    *m_showTimer;
-	QTimer    *m_autoShowTimer;
-	bool       m_canDrag;
-	QPoint     m_pressPos;
+private:
+    QTimer    *m_showTimer;
+    QTimer    *m_autoShowTimer;
+    bool       m_canDrag;
+    QPoint     m_pressPos;
 };
 #endif // USE_OLD_SYSTRAY
 

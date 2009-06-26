@@ -38,75 +38,77 @@ class Basket;
 
 class BasketListViewItem : public QTreeWidgetItem
 {
-	public:
-	/// CONSTRUCTOR AND DESTRUCTOR:
-		BasketListViewItem(QTreeWidget *parent, Basket *basket);
-		BasketListViewItem(QTreeWidgetItem *parent, Basket *basket);
-		BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, Basket *basket);
-		BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket);
-		~BasketListViewItem();
+public:
+    /// CONSTRUCTOR AND DESTRUCTOR:
+    BasketListViewItem(QTreeWidget *parent, Basket *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, Basket *basket);
+    BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, Basket *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket);
+    ~BasketListViewItem();
 
-		Basket *basket() { return m_basket; }
-		void setup();
-		BasketListViewItem* lastChild();
-		QStringList childNamesTree(int deep = 0);
-		void moveChildsBaskets();
-		void ensureVisible();
-		bool isShown();
-		bool isCurrentBasket();
-		bool isUnderDrag();
-		QString escapedName(const QString &string);
+    Basket *basket() {
+        return m_basket;
+    }
+    void setup();
+    BasketListViewItem* lastChild();
+    QStringList childNamesTree(int deep = 0);
+    void moveChildsBaskets();
+    void ensureVisible();
+    bool isShown();
+    bool isCurrentBasket();
+    bool isUnderDrag();
+    QString escapedName(const QString &string);
 
-		QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
-		QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
-		bool haveChildsLoading();
-		bool haveHiddenChildsLoading();
-		bool haveChildsLocked();
-		bool haveHiddenChildsLocked();
-		int countChildsFound();
-		int countHiddenChildsFound();
+    QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
+    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
+    bool haveChildsLoading();
+    bool haveHiddenChildsLoading();
+    bool haveChildsLocked();
+    bool haveHiddenChildsLocked();
+    int countChildsFound();
+    int countHiddenChildsFound();
 
-		void setUnderDrag(bool);
-		bool isAbbreviated();
-		void setAbbreviated(bool b);
+    void setUnderDrag(bool);
+    bool isAbbreviated();
+    void setAbbreviated(bool b);
 
-	private:
-		Basket *m_basket;
-		int     m_width;
-		bool m_isUnderDrag;
-		bool m_isAbbreviated;
+private:
+    Basket *m_basket;
+    int     m_width;
+    bool m_isUnderDrag;
+    bool m_isAbbreviated;
 };
 
 Q_DECLARE_METATYPE(BasketListViewItem *);
 
 class BasketTreeListView : public QTreeWidget
 {
-	Q_OBJECT
-	public:
-		BasketTreeListView(QWidget *parent = 0);
-		void dragEnterEvent(QDragEnterEvent *event);
-		void removeExpands();
-		void dragLeaveEvent(QDragLeaveEvent *event);
-		void dragMoveEvent(QDragMoveEvent *event);
-		void dropEvent(QDropEvent *event);
-		void resizeEvent(QResizeEvent *event);
-		void contextMenuEvent(QContextMenuEvent *event);
-		Qt::DropActions supportedDropActions() const;
-	protected:
-		bool event(QEvent *e);
-		void focusInEvent(QFocusEvent*);
-	private:
-		QTimer         m_autoOpenTimer;
-		QTreeWidgetItem *m_autoOpenItem;
-	signals:
-		void itemActivated(QTreeWidgetItem *, int column);
-		void itemPressed(QTreeWidgetItem *, int column);
-		void contextMenuRequested(const QPoint &);
-	private slots:
-		void autoOpen();
-	private:
-		void setItemUnderDrag(BasketListViewItem* item);
-		BasketListViewItem* m_itemUnderDrag;
+    Q_OBJECT
+public:
+    BasketTreeListView(QWidget *parent = 0);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void removeExpands();
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
+    Qt::DropActions supportedDropActions() const;
+protected:
+    bool event(QEvent *e);
+    void focusInEvent(QFocusEvent*);
+private:
+    QTimer         m_autoOpenTimer;
+    QTreeWidgetItem *m_autoOpenItem;
+signals:
+    void itemActivated(QTreeWidgetItem *, int column);
+    void itemPressed(QTreeWidgetItem *, int column);
+    void contextMenuRequested(const QPoint &);
+private slots:
+    void autoOpen();
+private:
+    void setItemUnderDrag(BasketListViewItem* item);
+    BasketListViewItem* m_itemUnderDrag;
 };
 
 #endif // BASKETLISTVIEW_H

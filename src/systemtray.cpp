@@ -46,48 +46,48 @@
  */
 static bool copyImage(QImage &dest, QImage &src, int x, int y)
 {
-	if(dest.depth() != src.depth())
-		return false;
-	if((x + src.width()) >= dest.width())
-		return false;
-	if((y + src.height()) >= dest.height())
-		return false;
+    if (dest.depth() != src.depth())
+        return false;
+    if ((x + src.width()) >= dest.width())
+        return false;
+    if ((y + src.height()) >= dest.height())
+        return false;
 
-	// We want to use KIconEffect::overlay to do this, since it handles
-	// alpha, but the images need to be the same size.  We can handle that.
+    // We want to use KIconEffect::overlay to do this, since it handles
+    // alpha, but the images need to be the same size.  We can handle that.
 
-	QImage large_src(dest);
+    QImage large_src(dest);
 
-	// It would perhaps be better to create large_src based on a size, but
-	// this is the easiest way to make a new image with the same depth, size,
-	// etc.
+    // It would perhaps be better to create large_src based on a size, but
+    // this is the easiest way to make a new image with the same depth, size,
+    // etc.
 
-	large_src.detach();
+    large_src.detach();
 
-	// However, we do have to specifically ensure that setAlphaBuffer is set
-	// to false
+    // However, we do have to specifically ensure that setAlphaBuffer is set
+    // to false
 
-	//large_src.setAlphaBuffer(false);
-	large_src.fill(0); // All transparent pixels
-	//large_src.setAlphaBuffer(true);
+    //large_src.setAlphaBuffer(false);
+    large_src.fill(0); // All transparent pixels
+    //large_src.setAlphaBuffer(true);
 
-	int w = src.width();
-	int h = src.height();
-	for(int dx = 0; dx < w; dx++)
-		for(int dy = 0; dy < h; dy++)
-			large_src.setPixel(dx + x, dy + y, src.pixel(dx, dy));
+    int w = src.width();
+    int h = src.height();
+    for (int dx = 0; dx < w; dx++)
+        for (int dy = 0; dy < h; dy++)
+            large_src.setPixel(dx + x, dy + y, src.pixel(dx, dy));
 
-	// Apply effect to image
+    // Apply effect to image
 
-	KIconEffect::overlay(dest, large_src);
+    KIconEffect::overlay(dest, large_src);
 
-	return true;
+    return true;
 }
 
 
 /** Constructor */
 SystemTray::SystemTray(QWidget *parent)
-    : KSystemTrayIcon(parent)
+        : KSystemTrayIcon(parent)
 {
     // Create pixmaps for the icon:
     m_iconSize = QSize(geometry().width(), geometry().height());
@@ -115,8 +115,8 @@ void SystemTray::updateDisplay()
 
     // Update the icon
     if (basket->icon().isEmpty()
-        || basket->icon() == "basket"
-        || !Settings::showIconInSystray())
+            || basket->icon() == "basket"
+            || !Settings::showIconInSystray())
         setIcon(basket->isLocked() ? m_lockedIcon : m_icon);
     else {
         // Code that comes from JuK:
@@ -128,8 +128,8 @@ void SystemTray::updateDisplay()
         QImage fgImage = fgPix.toImage(); // Should be 16x16
 
         KIconEffect::semiTransparent(bgImage);
-        copyImage(bgImage, fgImage, bgImage.width()-fgImage.width() / 2,
-                  bgImage.height()-fgImage.height() / 2);
+        copyImage(bgImage, fgImage, bgImage.width() - fgImage.width() / 2,
+                  bgImage.height() - fgImage.height() / 2);
 
         if (basket->isLocked()) {
             QImage lockOverlay = loadIcon("object-locked").pixmap(m_iconSize).toImage();
@@ -151,28 +151,28 @@ void SystemTray::updateDisplay()
 #ifdef USE_OLD_SYSTRAY
 #define QT3_SUPPORT // No need to port that old stuff
 SystemTray::SystemTray(QWidget *parent, const char *name)
- : KSystemTray2(parent, name != 0 ? name : "SystemTray"), m_showTimer(0), m_autoShowTimer(0)
+        : KSystemTray2(parent, name != 0 ? name : "SystemTray"), m_showTimer(0), m_autoShowTimer(0)
 {
-	setAcceptDrops(true);
+    setAcceptDrops(true);
 
-	m_showTimer = new QTimer(this);
-	connect( m_showTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()) );
+    m_showTimer = new QTimer(this);
+    connect(m_showTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()));
 
-	m_autoShowTimer = new QTimer(this);
-	connect( m_autoShowTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()) );
+    m_autoShowTimer = new QTimer(this);
+    connect(m_autoShowTimer, SIGNAL(timeout()), Global::bnpView, SLOT(setActive()));
 
-	// Create pixmaps for the icon:
-	m_iconPixmap              = loadIcon("basket");
-//	FIXME: When main window is shown at start, the icon is loaded 1 pixel too high
-//	       and then reloaded instantly after at the right position.
-//	setPixmap(m_iconPixmap); // Load it the sooner as possible to avoid flicker
-	QImage  lockedIconImage   = m_iconPixmap.convertToImage();
-	QPixmap lockOverlayPixmap = loadIcon("object-locked");
-	QImage  lockOverlayImage  = lockOverlayPixmap.convertToImage();
-	KIconEffect::overlay(lockedIconImage, lockOverlayImage);
-	m_lockedIconPixmap.convertFromImage(lockedIconImage);
+    // Create pixmaps for the icon:
+    m_iconPixmap              = loadIcon("basket");
+//  FIXME: When main window is shown at start, the icon is loaded 1 pixel too high
+//         and then reloaded instantly after at the right position.
+//  setPixmap(m_iconPixmap); // Load it the sooner as possible to avoid flicker
+    QImage  lockedIconImage   = m_iconPixmap.convertToImage();
+    QPixmap lockOverlayPixmap = loadIcon("object-locked");
+    QImage  lockOverlayImage  = lockOverlayPixmap.convertToImage();
+    KIconEffect::overlay(lockedIconImage, lockOverlayImage);
+    m_lockedIconPixmap.convertFromImage(lockedIconImage);
 
-	updateToolTip(); // Set toolTip AND icon
+    updateToolTip(); // Set toolTip AND icon
 }
 
 SystemTray::~SystemTray()
@@ -181,192 +181,190 @@ SystemTray::~SystemTray()
 
 void SystemTray::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() & Qt::LeftButton) {          // Prepare drag
-		m_pressPos = event->globalPos();
-		m_canDrag  = true;
-		event->accept();
-	} else if (event->button() & Qt::MidButton) {    // Paste
-		Global::bnpView->currentBasket()->setInsertPopupMenu();
-		Global::bnpView->currentBasket()->pasteNote(QClipboard::Selection);
-		Global::bnpView->currentBasket()->cancelInsertPopupMenu();
-		if (Settings::usePassivePopup())
-			Global::bnpView->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
-		event->accept();
-	} else if (event->button() & Qt::RightButton) { // Popup menu
-		KMenu menu(this);
-		menu.addTitle( SmallIcon("basket"), KGlobal::mainComponent().aboutData()->programName() );
+    if (event->button() & Qt::LeftButton) {          // Prepare drag
+        m_pressPos = event->globalPos();
+        m_canDrag  = true;
+        event->accept();
+    } else if (event->button() & Qt::MidButton) {    // Paste
+        Global::bnpView->currentBasket()->setInsertPopupMenu();
+        Global::bnpView->currentBasket()->pasteNote(QClipboard::Selection);
+        Global::bnpView->currentBasket()->cancelInsertPopupMenu();
+        if (Settings::usePassivePopup())
+            Global::bnpView->showPassiveDropped(i18n("Pasted selection to basket <i>%1</i>"));
+        event->accept();
+    } else if (event->button() & Qt::RightButton) { // Popup menu
+        KMenu menu(this);
+        menu.addTitle(SmallIcon("basket"), KGlobal::mainComponent().aboutData()->programName());
 
-		Global::bnpView->actNewBasket->plug(&menu);
-		Global::bnpView->actNewSubBasket->plug(&menu);
-		Global::bnpView->actNewSiblingBasket->plug(&menu);
-		menu.insertSeparator();
-		Global::bnpView->m_actPaste->plug(&menu);
-		Global::bnpView->m_actGrabScreenshot->plug(&menu);
-		Global::bnpView->m_actColorPicker->plug(&menu);
+        Global::bnpView->actNewBasket->plug(&menu);
+        Global::bnpView->actNewSubBasket->plug(&menu);
+        Global::bnpView->actNewSiblingBasket->plug(&menu);
+        menu.insertSeparator();
+        Global::bnpView->m_actPaste->plug(&menu);
+        Global::bnpView->m_actGrabScreenshot->plug(&menu);
+        Global::bnpView->m_actColorPicker->plug(&menu);
 
-		if(!Global::bnpView->isPart())
-		{
-			KAction* action;
+        if (!Global::bnpView->isPart()) {
+            KAction* action;
 
-			menu.insertSeparator();
+            menu.insertSeparator();
 
-			action = Global::bnpView->actionCollection()->action("options_configure_global_keybinding");
-			if(action)
-				action->plug(&menu);
+            action = Global::bnpView->actionCollection()->action("options_configure_global_keybinding");
+            if (action)
+                action->plug(&menu);
 
-			action = Global::bnpView->actionCollection()->action("options_configure");
-			if(action)
-				action->plug(&menu);
+            action = Global::bnpView->actionCollection()->action("options_configure");
+            if (action)
+                action->plug(&menu);
 
-			menu.insertSeparator();
+            menu.insertSeparator();
 
-			// Minimize / restore : since we manage the popup menu by ourself, we should do that work :
-			action = Global::bnpView->actionCollection()->action("minimizeRestore");
-			if(action)
-			{
-				if (Global::mainWindow()->isVisible())
-					action->setText(i18n("&Minimize"));
-				else
-					action->setText(i18n("&Restore"));
-				action->plug(&menu);
-			}
+            // Minimize / restore : since we manage the popup menu by ourself, we should do that work :
+            action = Global::bnpView->actionCollection()->action("minimizeRestore");
+            if (action) {
+                if (Global::mainWindow()->isVisible())
+                    action->setText(i18n("&Minimize"));
+                else
+                    action->setText(i18n("&Restore"));
+                action->plug(&menu);
+            }
 
-			action = Global::bnpView->actionCollection()->action("file_quit");
-			if(action)
-				action->plug(&menu);
-		}
+            action = Global::bnpView->actionCollection()->action("file_quit");
+            if (action)
+                action->plug(&menu);
+        }
 
-		Global::bnpView->currentBasket()->setInsertPopupMenu();
-		connect( &menu, SIGNAL(aboutToHide()), Global::bnpView->currentBasket(), SLOT(delayedCancelInsertPopupMenu()) );
-		menu.exec(event->globalPos());
-		event->accept();
-	} else
-		event->ignore();
+        Global::bnpView->currentBasket()->setInsertPopupMenu();
+        connect(&menu, SIGNAL(aboutToHide()), Global::bnpView->currentBasket(), SLOT(delayedCancelInsertPopupMenu()));
+        menu.exec(event->globalPos());
+        event->accept();
+    } else
+        event->ignore();
 }
 
 void SystemTray::mouseMoveEvent(QMouseEvent *event)
 {
-	event->ignore();
+    event->ignore();
 }
 
 void SystemTray::mouseReleaseEvent(QMouseEvent *event)
 {
-	m_canDrag = false;
-	if (event->button() == Qt::LeftButton)         // Show / hide main window
-		if ( rect().contains(event->pos()) ) {     // Accept only if released in systemTray
-			toggleActive();
-			emit showPart();
-			event->accept();
-		} else
-			event->ignore();
+    m_canDrag = false;
+    if (event->button() == Qt::LeftButton)         // Show / hide main window
+        if (rect().contains(event->pos())) {       // Accept only if released in systemTray
+            toggleActive();
+            emit showPart();
+            event->accept();
+        } else
+            event->ignore();
 }
 
 void SystemTray::dragEnterEvent(QDragEnterEvent *event)
 {
-	m_showTimer->start( Settings::dropTimeToShow() * 100, true );
-	Global::bnpView->currentBasket()->showFrameInsertTo();
-///	m_parentContainer->setStatusBarDrag(); // FIXME: move this line in Basket::showFrameInsertTo() ?
-	Basket::acceptDropEvent(event);
+    m_showTimer->start(Settings::dropTimeToShow() * 100, true);
+    Global::bnpView->currentBasket()->showFrameInsertTo();
+/// m_parentContainer->setStatusBarDrag(); // FIXME: move this line in Basket::showFrameInsertTo() ?
+    Basket::acceptDropEvent(event);
 }
 
 void SystemTray::dragMoveEvent(QDragMoveEvent *event)
 {
-	Basket::acceptDropEvent(event);
+    Basket::acceptDropEvent(event);
 }
 
 void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
 {
-	m_showTimer->stop();
-	m_canDrag = false;
-	Global::bnpView->currentBasket()->resetInsertTo();
-	Global::bnpView->updateStatusBarHint();
+    m_showTimer->stop();
+    m_canDrag = false;
+    Global::bnpView->currentBasket()->resetInsertTo();
+    Global::bnpView->updateStatusBarHint();
 }
 
 #include <QX11Info>
 
 void SystemTray::dropEvent(QDropEvent *event)
 {
-	m_showTimer->stop();
+    m_showTimer->stop();
 
-	Global::bnpView->currentBasket()->blindDrop(event);
+    Global::bnpView->currentBasket()->blindDrop(event);
 
-/*	Basket *basket = Global::bnpView->currentBasket();
-	if (!basket->isLoaded()) {
-		Global::bnpView->showPassiveLoading(basket);
-		basket->load();
-	}
-	basket->contentsDropEvent(event);
-	kDebug() << (long) basket->selectedNotes();
+    /*  Basket *basket = Global::bnpView->currentBasket();
+        if (!basket->isLoaded()) {
+            Global::bnpView->showPassiveLoading(basket);
+            basket->load();
+        }
+        basket->contentsDropEvent(event);
+        kDebug() << (long) basket->selectedNotes();
 
-	if (Settings::usePassivePopup())
-		Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));*/
+        if (Settings::usePassivePopup())
+            Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));*/
 }
 
 void SystemTray::updateToolTip()
 {
-//	return; /////////////////////////////////////////////////////
+//  return; /////////////////////////////////////////////////////
 
-	Basket *basket = Global::bnpView->currentBasket();
-	if (!basket)
-		return;
+    Basket *basket = Global::bnpView->currentBasket();
+    if (!basket)
+        return;
 
-	if (basket->icon().isEmpty() || basket->icon() == "basket" || ! Settings::showIconInSystray())
-		setPixmap(basket->isLocked() ? m_lockedIconPixmap : m_iconPixmap);
-	else {
-		// Code that comes from JuK:
-		QPixmap bgPix = loadIcon("basket");
-		QPixmap fgPix = SmallIcon(basket->icon());
+    if (basket->icon().isEmpty() || basket->icon() == "basket" || ! Settings::showIconInSystray())
+        setPixmap(basket->isLocked() ? m_lockedIconPixmap : m_iconPixmap);
+    else {
+        // Code that comes from JuK:
+        QPixmap bgPix = loadIcon("basket");
+        QPixmap fgPix = SmallIcon(basket->icon());
 
-		QImage bgImage = bgPix.convertToImage(); // Probably 22x22
-		QImage fgImage = fgPix.convertToImage(); // Should be 16x16
-		QImage lockOverlayImage = loadIcon("object-locked").convertToImage();
+        QImage bgImage = bgPix.convertToImage(); // Probably 22x22
+        QImage fgImage = fgPix.convertToImage(); // Should be 16x16
+        QImage lockOverlayImage = loadIcon("object-locked").convertToImage();
 
-		KIconEffect::semiTransparent(bgImage);
-		copyImage(bgImage, fgImage, (bgImage.width() - fgImage.width()) / 2,
+        KIconEffect::semiTransparent(bgImage);
+        copyImage(bgImage, fgImage, (bgImage.width() - fgImage.width()) / 2,
                   (bgImage.height() - fgImage.height()) / 2);
-		if (basket->isLocked())
-			KIconEffect::overlay(bgImage, lockOverlayImage);
+        if (basket->isLocked())
+            KIconEffect::overlay(bgImage, lockOverlayImage);
 
-		bgPix.convertFromImage(bgImage);
-		setPixmap(bgPix);
-	}
+        bgPix.convertFromImage(bgImage);
+        setPixmap(bgPix);
+    }
 
-	//QTimer::singleShot( Container::c_delayTooltipTime, this, SLOT(updateToolTipDelayed()) );
-	// No need to delay: it's be called when notes are changed:
-	updateToolTipDelayed();
+    //QTimer::singleShot( Container::c_delayTooltipTime, this, SLOT(updateToolTipDelayed()) );
+    // No need to delay: it's be called when notes are changed:
+    updateToolTipDelayed();
 }
 
 void SystemTray::updateToolTipDelayed()
 {
-	Basket *basket = Global::bnpView->currentBasket();
+    Basket *basket = Global::bnpView->currentBasket();
 
-	QString tip = "<p><nobr>" + ( basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
-	                                                 : KDialog::makeStandardCaption(     "%1")          )
-	                            .arg(Tools::textToHTMLWithoutP(basket->basketName()));
+    QString tip = "<p><nobr>" + (basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
+                                 : KDialog::makeStandardCaption("%1"))
+                  .arg(Tools::textToHTMLWithoutP(basket->basketName()));
 
-	QToolTip::add(this, tip);
+    QToolTip::add(this, tip);
 }
 
 void SystemTray::wheelEvent(QWheelEvent *event)
 {
-	if (event->delta() > 0)
-		Global::bnpView->goToPreviousBasket();
-	else
-		Global::bnpView->goToNextBasket();
+    if (event->delta() > 0)
+        Global::bnpView->goToPreviousBasket();
+    else
+        Global::bnpView->goToNextBasket();
 
-	if (Settings::usePassivePopup())
-		Global::bnpView->showPassiveContent();
+    if (Settings::usePassivePopup())
+        Global::bnpView->showPassiveContent();
 }
 
 void SystemTray::enterEvent(QEvent*)
 {
-	if (Settings::showOnMouseIn())
-		m_autoShowTimer->start(Settings::timeToShowOnMouseIn() * 100, true );
+    if (Settings::showOnMouseIn())
+        m_autoShowTimer->start(Settings::timeToShowOnMouseIn() * 100, true);
 }
 
 void SystemTray::leaveEvent(QEvent*)
 {
-	m_autoShowTimer->stop();
+    m_autoShowTimer->stop();
 }
 
 #undef QT3_SUPPORT

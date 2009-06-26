@@ -34,18 +34,18 @@
   */
 class BackgroundEntry
 {
-	friend class BackgroundManager;
+    friend class BackgroundManager;
 
-  protected:
-	BackgroundEntry(const QString &location);
-	~BackgroundEntry();
+protected:
+    BackgroundEntry(const QString &location);
+    ~BackgroundEntry();
 
-	QString  name;
-	QString  location;
-	bool     tiled;    /// << Only valid after some object subscribed to this image! Because it's only read at this time.
-	QPixmap *pixmap;   /// << Only valid (non-null) after some object subscribed to this image! Because it's only read at this time.
-	QPixmap *preview;  /// << Only valid (non-null) after some object requested the preview.
-	int      customersCount;
+    QString  name;
+    QString  location;
+    bool     tiled;    /// << Only valid after some object subscribed to this image! Because it's only read at this time.
+    QPixmap *pixmap;   /// << Only valid (non-null) after some object subscribed to this image! Because it's only read at this time.
+    QPixmap *preview;  /// << Only valid (non-null) after some object requested the preview.
+    int      customersCount;
 };
 
 /** A node in the list of opaque background images (with a background color applyed to an image) of BackgroundManager.
@@ -54,16 +54,16 @@ class BackgroundEntry
   */
 class OpaqueBackgroundEntry
 {
-	friend class BackgroundManager;
+    friend class BackgroundManager;
 
-  protected:
-	OpaqueBackgroundEntry(const QString &name, const QColor &color);
-	~OpaqueBackgroundEntry();
+protected:
+    OpaqueBackgroundEntry(const QString &name, const QColor &color);
+    ~OpaqueBackgroundEntry();
 
-	QString  name;
-	QColor   color;
-	QPixmap *pixmap;
-	int      customersCount;
+    QString  name;
+    QColor   color;
+    QPixmap *pixmap;
+    int      customersCount;
 };
 
 /** Manage the list of background images.
@@ -87,46 +87,46 @@ class OpaqueBackgroundEntry
   */
 class BackgroundManager : private QObject
 {
-  Q_OBJECT
-  private:
-	/// LIST OF IMAGES:
-	typedef QList<BackgroundEntry*>       BackgroundsList;
-	typedef QList<OpaqueBackgroundEntry*> OpaqueBackgroundsList;
+    Q_OBJECT
+private:
+    /// LIST OF IMAGES:
+    typedef QList<BackgroundEntry*>       BackgroundsList;
+    typedef QList<OpaqueBackgroundEntry*> OpaqueBackgroundsList;
 
-  public:
-	/// CONTRUCTOR AND DESTRUCTOR:
-	BackgroundManager();
-	~BackgroundManager();
-	/// SUBSCRIPTION TO IMAGES:
-	bool subscribe(const QString &image); /// << @Return true if the loading is a success. In the counter-case, calling methods below is unsafe with this @p image name.
-	bool subscribe(const QString &image, const QColor &color); /// << Idem.
-	void unsubscribe(const QString &image);
-	void unsubscribe(const QString &image, const QColor &color);
-	/// GETTING THE IMAGES AND PROPERTIES:
-	QPixmap* pixmap(const QString &image);
-	QPixmap* opaquePixmap(const QString &image, const QColor &color);
-	bool tiled(const QString &image);
-	/// LIST OF IMAGES AND PREVIEWS:
-	bool exists(const QString &image);
-	QStringList imageNames();
-	QPixmap* preview(const QString &image);
-	/// USED FOR EXPORTATION:
-	QString pathForImageName(const QString &image); /// << It is STRONGLY advised to not use those two methods unless it's to copy (export) the images or something like that...
-	QString previewPathForImageName(const QString &image);
-	/// USED FOR IMPORTATION:
-	void addImage(const QString &fullPath);
+public:
+    /// CONTRUCTOR AND DESTRUCTOR:
+    BackgroundManager();
+    ~BackgroundManager();
+    /// SUBSCRIPTION TO IMAGES:
+    bool subscribe(const QString &image); /// << @Return true if the loading is a success. In the counter-case, calling methods below is unsafe with this @p image name.
+    bool subscribe(const QString &image, const QColor &color); /// << Idem.
+    void unsubscribe(const QString &image);
+    void unsubscribe(const QString &image, const QColor &color);
+    /// GETTING THE IMAGES AND PROPERTIES:
+    QPixmap* pixmap(const QString &image);
+    QPixmap* opaquePixmap(const QString &image, const QColor &color);
+    bool tiled(const QString &image);
+    /// LIST OF IMAGES AND PREVIEWS:
+    bool exists(const QString &image);
+    QStringList imageNames();
+    QPixmap* preview(const QString &image);
+    /// USED FOR EXPORTATION:
+    QString pathForImageName(const QString &image); /// << It is STRONGLY advised to not use those two methods unless it's to copy (export) the images or something like that...
+    QString previewPathForImageName(const QString &image);
+    /// USED FOR IMPORTATION:
+    void addImage(const QString &fullPath);
 
-  private:
-	BackgroundEntry*       backgroundEntryFor(const QString &image);
-	OpaqueBackgroundEntry* opaqueBackgroundEntryFor(const QString &image, const QColor &color);
+private:
+    BackgroundEntry*       backgroundEntryFor(const QString &image);
+    OpaqueBackgroundEntry* opaqueBackgroundEntryFor(const QString &image, const QColor &color);
 
-  private:
-	BackgroundsList       m_backgroundsList;
-	OpaqueBackgroundsList m_opaqueBackgroundsList;
-	QTimer                m_garbageTimer;
-  private slots:
-	void requestDelayedGarbage();
-	void doGarbage();
+private:
+    BackgroundsList       m_backgroundsList;
+    OpaqueBackgroundsList m_opaqueBackgroundsList;
+    QTimer                m_garbageTimer;
+private slots:
+    void requestDelayedGarbage();
+    void doGarbage();
 };
 
 #endif // BACKGROUNDMANAGER_H

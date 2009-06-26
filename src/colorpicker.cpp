@@ -38,10 +38,10 @@
  */
 
 DesktopColorPicker::DesktopColorPicker()
- : QDesktopWidget()
+        : QDesktopWidget()
 {
-	setObjectName("DesktopColorPicker");
-	m_gettingColorFromScreen = false;
+    setObjectName("DesktopColorPicker");
+    m_gettingColorFromScreen = false;
 }
 
 DesktopColorPicker::~DesktopColorPicker()
@@ -50,9 +50,9 @@ DesktopColorPicker::~DesktopColorPicker()
 
 void DesktopColorPicker::pickColor()
 {
-	m_gettingColorFromScreen = true;
-//	Global::mainContainer->setActive(false);
-	QTimer::singleShot( 50, this, SLOT(slotDelayedPick()) );
+    m_gettingColorFromScreen = true;
+//  Global::mainContainer->setActive(false);
+    QTimer::singleShot(50, this, SLOT(slotDelayedPick()));
 }
 
 /* When firered from basket context menu, and not from menu, grabMouse doesn't work!
@@ -64,35 +64,35 @@ void DesktopColorPicker::pickColor()
  */
 void DesktopColorPicker::slotDelayedPick()
 {
-	grabKeyboard();
-	grabMouse(Qt::CrossCursor);
+    grabKeyboard();
+    grabMouse(Qt::CrossCursor);
 }
 
 /* Validate the color
  */
 void DesktopColorPicker::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (m_gettingColorFromScreen) {
-		m_gettingColorFromScreen = false;
-		releaseMouse();
-		releaseKeyboard();
-		QColor color = KColorDialog::grabColor(event->globalPos());
-		emit pickedColor(color);
-	} else
-		QDesktopWidget::mouseReleaseEvent(event);
+    if (m_gettingColorFromScreen) {
+        m_gettingColorFromScreen = false;
+        releaseMouse();
+        releaseKeyboard();
+        QColor color = KColorDialog::grabColor(event->globalPos());
+        emit pickedColor(color);
+    } else
+        QDesktopWidget::mouseReleaseEvent(event);
 }
 
 /* Cancel the mode
  */
 void DesktopColorPicker::keyPressEvent(QKeyEvent *event)
 {
-	if (m_gettingColorFromScreen)
-		if (event->key() == Qt::Key_Escape) {
-			m_gettingColorFromScreen = false;
-			releaseMouse();
-			releaseKeyboard();
-			emit canceledPick();
-		}
-	QDesktopWidget::keyPressEvent(event);
+    if (m_gettingColorFromScreen)
+        if (event->key() == Qt::Key_Escape) {
+            m_gettingColorFromScreen = false;
+            releaseMouse();
+            releaseKeyboard();
+            emit canceledPick();
+        }
+    QDesktopWidget::keyPressEvent(event);
 }
 

@@ -50,48 +50,48 @@
 
 int main(int argc, char *argv[])
 {
-	// KCmdLineArgs::init will modify argv[0] so we remember it:
-	const char *argv0 = (argc >= 1 ? argv[0] : "");
+    // KCmdLineArgs::init will modify argv[0] so we remember it:
+    const char *argv0 = (argc >= 1 ? argv[0] : "");
 
-	KCmdLineOptions opts;
-	setupCmdLineOptions(&opts);
+    KCmdLineOptions opts;
+    setupCmdLineOptions(&opts);
 
-	KCmdLineArgs::init(argc, argv, Global::about());
-	KCmdLineArgs::addCmdLineOptions(opts);
+    KCmdLineArgs::init(argc, argv, Global::about());
+    KCmdLineArgs::addCmdLineOptions(opts);
 
-	KUniqueApplication::addCmdLineOptions();
-	Application app;
+    KUniqueApplication::addCmdLineOptions();
+    Application app;
 
-	// Initialize the config file
-	Global::basketConfig = KSharedConfig::openConfig("basketrc");
+    // Initialize the config file
+    Global::basketConfig = KSharedConfig::openConfig("basketrc");
 
-	Backup::figureOutBinaryPath(argv0, app);
+    Backup::figureOutBinaryPath(argv0, app);
 
-	/* Main Window */
-	MainWindow* win = new MainWindow();
-	Global::bnpView->handleCommandLine();
-	app.setActiveWindow(win);
+    /* Main Window */
+    MainWindow* win = new MainWindow();
+    Global::bnpView->handleCommandLine();
+    app.setActiveWindow(win);
 
-	if (Settings::useSystray()) {
-		// The user wanted to not show the window (but it is already hidden by default, so we do nothing):
-		if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
-			;
-		// When the application is restored by KDE session, restore its state:
-		else if (app.isSessionRestored())
-			win->setShown(!Settings::startDocked());
-		// Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
-		else
-			win->show();
-	} else
-		// No system tray icon: always show:
-		win->show();
+    if (Settings::useSystray()) {
+        // The user wanted to not show the window (but it is already hidden by default, so we do nothing):
+        if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden"))
+            ;
+        // When the application is restored by KDE session, restore its state:
+        else if (app.isSessionRestored())
+            win->setShown(!Settings::startDocked());
+        // Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
+        else
+            win->show();
+    } else
+        // No system tray icon: always show:
+        win->show();
 
-	// Self-test of the presence of basketui.rc (the only requiered file after basket executable)
-	if (Global::bnpView->popupMenu("basket") == 0L)
-		// An error message will be show by BNPView::popupMenu()
-		return 1;
+    // Self-test of the presence of basketui.rc (the only requiered file after basket executable)
+    if (Global::bnpView->popupMenu("basket") == 0L)
+        // An error message will be show by BNPView::popupMenu()
+        return 1;
 
-	/* Go */
-	int result = app.exec();
-	exit(result); // Do not clean up memory to not crash while deleting the KApplication, or do not hang up on KDE exit
+    /* Go */
+    int result = app.exec();
+    exit(result); // Do not clean up memory to not crash while deleting the KApplication, or do not hang up on KDE exit
 }

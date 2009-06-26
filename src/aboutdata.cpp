@@ -22,36 +22,36 @@
 #include <config.h>
 
 static const char description[] = I18N_NOOP(
-	"<p><b>Taking care of your ideas.</b></p>"
-	"<p>A note-taking application that makes it easy to record ideas as you think, and quickly find them later. "
-	"Organizing your notes has never been so easy.</p>");
+                                      "<p><b>Taking care of your ideas.</b></p>"
+                                      "<p>A note-taking application that makes it easy to record ideas as you think, and quickly find them later. "
+                                      "Organizing your notes has never been so easy.</p>");
 
-	// Or how to make order of disorganized toughts.
+// Or how to make order of disorganized toughts.
 
 AboutData::AboutData()
- : KAboutData( "basket", "", ki18n("BasKet Note Pads"),
-   VERSION, ki18n(description), KAboutData::License_GPL_V2,
-   ki18n("(c) 2003-2007, S\303\251bastien Lao\303\273t"), KLocalizedString(),
-   "http://basket.kde.org/",
-   "http://basket.kde.org/bugs/" )
+        : KAboutData("basket", "", ki18n("BasKet Note Pads"),
+                     VERSION, ki18n(description), KAboutData::License_GPL_V2,
+                     ki18n("(c) 2003-2007, S\303\251bastien Lao\303\273t"), KLocalizedString(),
+                     "http://basket.kde.org/",
+                     "http://basket.kde.org/bugs/")
 {
-	addAuthor( ki18n("Kelvie Wong"),
-		   ki18n("Maintainer"),
-		   "kelvie@ieee.org" );
+    addAuthor(ki18n("Kelvie Wong"),
+              ki18n("Maintainer"),
+              "kelvie@ieee.org");
 
-	addAuthor( ki18n("S\303\251bastien Lao\303\273t"),
-	           ki18n("Original Author"),
-	           "slaout@linux62.org" );
+    addAuthor(ki18n("S\303\251bastien Lao\303\273t"),
+              ki18n("Original Author"),
+              "slaout@linux62.org");
 
-	addAuthor( ki18n("Petri Damst\303\251n"),
-	           ki18n("Basket encryption, Kontact integration, KnowIt importer"),
-	           "damu@iki.fi" );
+    addAuthor(ki18n("Petri Damst\303\251n"),
+              ki18n("Basket encryption, Kontact integration, KnowIt importer"),
+              "damu@iki.fi");
 
-	addAuthor( ki18n("Alex Gontmakher"),
-	           ki18n("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
-	           "gsasha@cs.technion.ac.il" );
+    addAuthor(ki18n("Alex Gontmakher"),
+              ki18n("Baskets auto lock, save-status icon, HTML copy/paste, basket name tooltip, drop to basket name"),
+              "gsasha@cs.technion.ac.il");
 
-	addAuthor( ki18n("Marco Martin"),
-	           ki18n("Icon"),
-	           "m4rt@libero.it" );
+    addAuthor(ki18n("Marco Martin"),
+              ki18n("Icon"),
+              "m4rt@libero.it");
 }
