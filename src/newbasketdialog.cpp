@@ -257,6 +257,8 @@ NewBasketDialog::NewBasketDialog(Basket *parentBasket, const NewBasketDefaultPro
         if (m_createIn->currentIndex() != index)
             m_createIn->setCurrentIndex(index);
     }
+
+    m_name->setFocus();
 }
 
 void NewBasketDialog::returnPressed()
