@@ -31,7 +31,7 @@ private Q_SLOTS:
     void testCreation();
 };
 
-QTEST_KDEMAIN(NoteTest, NoGUI)
+QTEST_KDEMAIN(NoteTest, GUI)
 
 void NoteTest::testCreation()
 {
