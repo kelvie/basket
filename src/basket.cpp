@@ -5450,7 +5450,8 @@ bool Basket::saveToFile(const QString& fullPath, const QByteArray& array, unsign
         }
     } while (!success);
 
-    dialog->deleteLater();
+    if (dialog)
+	dialog->deleteLater();
     dialog = NULL;
 
     return true; // Guess we can't really return a fail
