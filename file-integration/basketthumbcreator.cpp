@@ -22,7 +22,8 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <q3textstream.h>
+#include <QTextStream>
+#include <QTextCodec>
 #include <ktempdir.h>
 
 #include "basketthumbcreator.h"
@@ -31,16 +32,16 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 {
 	// Create the temporar folder:
 	KTempDir tempDir;
-	tempDir.setAutoDelete(true);
+	tempDir.setAutoRemove(true);
 	QString tempFolder = tempDir.name();
 	QDir dir;
 	dir.mkdir(tempFolder);
-	const Q_ULONG BUFFER_SIZE = 1024;
+	const unsigned long int BUFFER_SIZE = 1024;
 
 	QFile file(path);
 	if (file.open(QIODevice::ReadOnly)) {
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::Latin1);
+		QTextStream stream(&file);
+		stream.setCodec(QTextCodec::codecForName("UTF-8"));
 		QString line = stream.readLine();
 		if (line != "BasKetNP:archive" && line != "BasKetNP:template") {
 			file.close();
@@ -49,7 +50,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 		while (!stream.atEnd()) {
 			// Get Key/Value Pair From the Line to Read:
 			line = stream.readLine();
-			int index = line.find(':');
+			int index = line.indexOf(':');
 			QString key;
 			QString value;
 			if (index >= 0) {
@@ -70,7 +71,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				QFile previewFile(tempFolder + "preview.png");
 				if (previewFile.open(QIODevice::WriteOnly)) {
 					char *buffer = new char[BUFFER_SIZE];
-					Q_LONG sizeRead;
+					long int sizeRead;
 					while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 						previewFile.write(buffer, sizeRead);
 						size -= sizeRead;
@@ -91,7 +92,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 				}
 				// Get the archive file:
 				char *buffer = new char[BUFFER_SIZE];
-				Q_LONG sizeRead;
+				long int sizeRead;
 				while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
 					size -= sizeRead;
 				}
@@ -110,7 +111,7 @@ ThumbCreator::Flags BasketThumbCreator::flags() const
 
 extern "C"
 {
-	ThumbCreator *new_creator()
+	KDE_EXPORT ThumbCreator *new_creator()
 	{
 		return new BasketThumbCreator();
 	}
