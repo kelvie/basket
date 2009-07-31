@@ -2028,7 +2028,8 @@ void Basket::contentsMouseReleaseEvent(QMouseEvent *event)
     // or if user made a selection and canceled it by regressing to a very small rectangle.
     if (m_noActionOnMouseRelease)
         return;
-    // We immediatly set it to true, to avoid actions set on mouseRelease if NO mousePress event has been triggered.
+
+    // We immediately set it to true, to avoid actions set on mouseRelease if NO mousePress event has been triggered.
     // This is the case when a popup menu is shown, and user click to the basket area to close it:
     // the menu then receive the mousePress event and the basket area ONLY receive the mouseRelease event.
     // Obviously, nothing should be done in this case:

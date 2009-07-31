@@ -69,7 +69,6 @@ class KGpgMe;
   */
 class Basket : public Q3ScrollView
 {
-/// CONSTRUCTOR AND DESTRUCTOR:
     Q_OBJECT
 public:
     enum EncryptionTypes {
@@ -79,6 +78,7 @@ public:
     };
 
 public:
+/// CONSTRUCTOR AND DESTRUCTOR:
     Basket(QWidget *parent, const QString &folderName);
     ~Basket();
 
@@ -88,6 +88,7 @@ private:
     bool   m_ignoreCloseEditorOnNextMouseRelease;
     QPoint m_pressPos;
     bool   m_canDrag;
+
 public:
     void viewportResizeEvent(QResizeEvent *);
     void drawContents(QPainter *painter);

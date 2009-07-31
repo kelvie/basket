@@ -17,6 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+//Added by qt3to4:
+#include <QVector>
+#include <QPixmap>
 
 #ifndef TOOLS_H
 #define TOOLS_H
