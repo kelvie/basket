@@ -35,7 +35,6 @@
 #include <QFocusEvent>
 #include <QDragLeaveEvent>
 #include <QMouseEvent>
-#include <QCloseEvent>
 #include <QShowEvent>
 #include <QDragEnterEvent>
 #include <QKeyEvent>
@@ -66,22 +65,6 @@ class Tag;
 #ifdef HAVE_LIBGPGME
 class KGpgMe;
 #endif
-
-/** Provide a dialog to avert the user the disk is full.
-  * This dialog is modal and is shown until the user has made space on the disk.
-  * @author Sébastien Laoût
-  */
-class DiskErrorDialog : public KDialog
-{
-    Q_OBJECT
-public:
-    DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent = 0);
-    ~DiskErrorDialog();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent*);
-};
-
 
 /** A list of flags to set how notes are inserted/plugged in the basket
   * Declare a varible with the type PlugOptions::Flags and assign a value like PlugOptions::DoSelection...
