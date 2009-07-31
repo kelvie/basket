@@ -440,38 +440,15 @@ public:
     static int MIN_HEIGHT       /*= 2*NOTE_MARGIN + EMBLEM_SIZE*/;
 };
 
-/*class InsertionData
-{
-  public:
-    enum Type { Free = 0, NoteRelative, ColumnBottom };
-    Type type;
+/*
+ * Convenience functions:
+ */
+void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
+		  int x, int y, int w, int h,
+		  bool sunken, bool horz, bool flat);
 
-    InsertionData(int _x, int _y)
-     : type(Free),
-       x(_x), y(_y),
-       note(0), group(false), onTop(false),
-       column(0)
-    {}
-    int x;
-    int y;
+extern void substractRectOnAreas(const QRect &rectToSubstract,
+		QList<QRect> &areas, bool andRemove = true);
 
-    InsertionData(Note *_note, bool _group, bool _onTop)
-     : type(NoteRelative),
-       x(0), y(0),
-       note(_note), group(_group), onTop(_onTop),
-       column(0)
-    {}
-    Note *note;
-    bool group;
-    bool onTop;
-
-    InsertionData(Note *_column)
-     : type(NoteRelative),
-       x(0), y(0),
-       note(0), group(false), onTop(false),
-       column(_column)
-    {}
-    Note *column;
-};*/
 
 #endif // NOTE_H

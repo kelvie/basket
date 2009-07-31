@@ -108,18 +108,6 @@
 
 const int Basket::FRAME_DELAY = 50/*1500*/; // Delay between two animation "frames" in milliseconds
 
-/*
- * Convenient function (defined in note.cpp !):
- */
-void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
-                  int x, int y, int w, int h,
-                  bool sunken, bool horz, bool flat);
-
-/*
- * Defined in note.cpp:
- */
-extern void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove = true);
-
 void debugZone(int zone)
 {
     QString s;
