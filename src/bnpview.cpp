@@ -179,6 +179,7 @@ void BNPView::lateInit()
 
     /* System tray icon */
     Global::systemTray = new SystemTray(Global::mainWindow());
+    Global::systemTray->setIcon(QIcon(":/images/cr22-app-basket"));
     connect(Global::systemTray, SIGNAL(showPart()), this, SIGNAL(showPart()));
     if (Settings::useSystray())
         Global::systemTray->show();
