@@ -443,8 +443,6 @@ void BNPView::initialize()
     connect(m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),         this, SLOT(needSave(QTreeWidgetItem*)));
     connect(m_tree, SIGNAL(itemCollapsed(QTreeWidgetItem*)),        this, SLOT(needSave(QTreeWidgetItem*)));
     connect(m_tree, SIGNAL(contextMenuRequested(const QPoint&)),      this, SLOT(slotContextMenu(const QPoint &)));
-    connect(m_tree, SIGNAL(mouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)), this,
-            SLOT(slotMouseButtonPressed(int, QTreeWidgetItem*, const QPoint&, int)));
     connect(m_tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(slotShowProperties(QTreeWidgetItem*)));
 
     connect(m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()));
@@ -894,13 +892,6 @@ void BNPView::slotShowProperties(QTreeWidgetItem *item)
 {
     if (item)
         propBasket();
-}
-
-void BNPView::slotMouseButtonPressed(int button, QTreeWidgetItem *item, const QPoint &/*pos*/, int /*column*/)
-{
-    if (item && (button & Qt::MidButton)) {
-        // TODO: Paste into ((BasketListViewItem*)listViewItem)->basket()
-    }
 }
 
 void BNPView::slotContextMenu(const QPoint &pos)

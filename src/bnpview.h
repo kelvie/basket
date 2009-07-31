@@ -330,7 +330,6 @@ private slots:
     void slotPressed(QTreeWidgetItem *item, int column);
     void needSave(QTreeWidgetItem*);
     void slotContextMenu(const QPoint &pos);
-    void slotMouseButtonPressed(int button, QTreeWidgetItem *item, const QPoint &pos, int column);
     void slotShowProperties(QTreeWidgetItem *item);
     void initialize();
 
