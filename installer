@@ -24,7 +24,7 @@ function error
 function prefix_cmd
 {
 	if test -n "$1"; then
-		echo '-DCMAKE_INSTALL_PREFIX="'$1'"'
+		echo '-DCMAKE_INSTALL_PREFIX='$1''
 	fi
 }
 
