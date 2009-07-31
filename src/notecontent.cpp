@@ -1758,8 +1758,8 @@ void LinkContent::startFetchingUrlPreview()
         KUrl::List urlList;
         urlList.append(filteredUrl);
         m_previewJob = KIO::filePreview(urlList, linkLook->previewSize(), linkLook->previewSize(), linkLook->iconSize());
-        connect(m_previewJob, SIGNAL(gotPreview(const KFileItem*, const QPixmap&)), this, SLOT(newPreview(const KFileItem*, const QPixmap&)));
-        connect(m_previewJob, SIGNAL(failed(const KFileItem*)),                     this, SLOT(removePreview(const KFileItem*)));
+        connect(m_previewJob, SIGNAL(gotPreview(const KFileItem*, const QPixmap&)), this, SLOT(newPreview(const KFileItem&, const QPixmap&)));
+        connect(m_previewJob, SIGNAL(failed(const KFileItem*)),                     this, SLOT(removePreview(const KFileItem&)));
     }
 }
 
