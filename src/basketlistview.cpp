@@ -435,6 +435,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 {
     kDebug() << "BasketTreeListView::dropEvent()";
     if (event->provides("application/x-qabstractitemmodeldatalist")) {
+	event->setDropAction(Qt::MoveAction);
         QTreeWidget::dropEvent(event);
     } else {
         kDebug() << "Forwarding dropped data to the basket";
@@ -519,5 +520,5 @@ void BasketTreeListView::focusInEvent(QFocusEvent*)
 
 Qt::DropActions BasketTreeListView::supportedDropActions() const
 {
-    return Qt::MoveAction | Qt::IgnoreAction;
+    return Qt::MoveAction | Qt::CopyAction;
 }
