@@ -1817,6 +1817,10 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
         return;
     }
 
+    /** If pixmap is Null (size 0), no point in painting: **/
+    if (!width() || !height())
+	    return;
+
     /** Initialise buffer painter: */
     m_bufferedPixmap = QPixmap(width(), height());
     QPainter painter2(&m_bufferedPixmap);
