@@ -73,7 +73,7 @@ Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool real
         content->saveToFile();
     } else {
         HtmlContent *content = new HtmlContent(note, createFileForNewNote(parent, "html"));
-        QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
+        QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
         content->setHtml(html);
         content->saveToFile();
     }

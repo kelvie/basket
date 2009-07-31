@@ -217,7 +217,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
     "<html>\n"
     " <head>\n"
     "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-    "  <meta name=\"Generator\" content=\"" << KGlobal::mainComponent().aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
+    "  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"Generator\" content=\"" << KGlobal::mainComponent().aboutData()->programName() << " " << VERSION << " http://basket.kde.org/\">\n"
     "  <style type=\"text/css\">\n"
 //      "   @media print {\n"
 //      "    span.printable { display: inline; }\n"

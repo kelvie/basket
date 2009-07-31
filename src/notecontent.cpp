@@ -908,7 +908,7 @@ bool TextContent::finishLazyLoad()
 {
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
-    QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
     m_simpleRichText = new QTextDocument;
     m_simpleRichText->setHtml(html);
     m_simpleRichText->setDefaultFont(note()->font());
@@ -959,7 +959,7 @@ void TextContent::setText(const QString &text, bool lazyLoad)
 void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    QString html = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
                    Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }

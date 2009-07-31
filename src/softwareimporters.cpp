@@ -231,7 +231,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     tomboy.replace("\n", "<br>\n");
 
     // Preserve consecutive spaces:
-    return "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
+    return "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
 }
 
 Note* SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
