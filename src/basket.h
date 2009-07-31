@@ -35,11 +35,9 @@
 #include <QFocusEvent>
 #include <QDragLeaveEvent>
 #include <QMouseEvent>
-#include <QShowEvent>
 #include <QDragEnterEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <QVBoxLayout>
 #include <QFrame>
 #include <QDropEvent>
 #include <QDragMoveEvent>
@@ -54,11 +52,9 @@
 #include "note.h" // For Note::Zone
 #include "config.h"
 
-class QVBoxLayout;
 class QDomDocument;
 class QDomElement;
 
-class Basket;
 class DecoratedBasket;
 class Note;
 class NoteEditor;
@@ -67,20 +63,6 @@ class TransparentWidget;
 #ifdef HAVE_LIBGPGME
 class KGpgMe;
 #endif
-
-/** A list of flags to set how notes are inserted/plugged in the basket
-  * Declare a varible with the type PlugOptions::Flags and assign a value like PlugOptions::DoSelection...
-  * @author Sébastien Laoût
-  */
-namespace PlugOptions
-{
-enum Flags {
-    SelectOnlyNewNotes = 0x01, /// << Unselect every notes in the basket and select the newly inserted ones
-    DoTagsInheriting   = 0x02  /// << The new notes inherit the tags of the sibbling note
-};
-// TODO: FocusLastInsertedNote (last visible!), EnsureVisibleAddedNotes, PopupFeebackBaloon (if not called by hand), AnimateNewPosition, FeedbackUnmatched
-// TODO: moveNoteInTree(bool animate);
-}
 
 /**
   * @author Sébastien Laoût
