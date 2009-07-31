@@ -32,6 +32,7 @@
 #include "basket.h"
 #include "notedrag.h"
 #include "notefactory.h"
+#include "noteselection.h"
 #include "tools.h"
 #include "global.h"
 

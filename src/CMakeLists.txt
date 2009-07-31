@@ -34,6 +34,7 @@ set(basketcommon_LIB_SRCS
     notedrag.cpp
     noteedit.cpp
     notefactory.cpp
+    noteselection.cpp
     password.cpp
     regiongrabber.cpp
     settings.cpp

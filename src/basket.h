@@ -97,29 +97,6 @@ enum Flags {
 // TODO: moveNoteInTree(bool animate);
 }
 
-/** This represent a hierarchy of the selected classes.
-  * If this is null, then there is no selected note.
-  */
-class NoteSelection
-{
-public:
-    NoteSelection()        : note(0), parent(0), firstChild(0), next(0), fullPath() {}
-    NoteSelection(Note *n) : note(n), parent(0), firstChild(0), next(0), fullPath() {}
-
-    Note          *note;
-    NoteSelection *parent;
-    NoteSelection *firstChild;
-    NoteSelection *next;
-    QString        fullPath; // Needeed for 'Cut' code to store temporary path of the cutted note.
-
-    NoteSelection* firstStacked();
-    NoteSelection* nextStacked();
-    void append(NoteSelection *node);
-    int count();
-
-    QList<Note*> parentGroups();
-};
-
 /** This store all needed information when exporting to HTML
   */
 class HtmlExportData

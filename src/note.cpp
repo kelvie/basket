@@ -42,6 +42,7 @@
 #include "basket.h"
 #include "tag.h"
 #include "note.h"
+#include "noteselection.h"
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
