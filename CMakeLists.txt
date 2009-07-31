@@ -16,6 +16,7 @@ include(MacroLibrary)
 
 IF(GPGME_FOUND)
   SET(HAVE_LIBGPGME 1)
+  SET(LARGEFILE_SOURCE_1)
   ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64)
 ELSE(GPGME_FOUND)
   MESSAGE("GPG not found, configuring without")

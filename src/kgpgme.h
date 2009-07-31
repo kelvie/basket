@@ -21,11 +21,10 @@
 #define KGPGME_H
 
 #include <config.h>
-//Added by qt3to4:
-#include <QList>
 
 #ifdef HAVE_LIBGPGME
 
+#include <QList>
 #include <gpgme.h>
 #include <qstringlist.h>
 
