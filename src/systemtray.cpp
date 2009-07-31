@@ -120,16 +120,16 @@ void SystemTray::updateDisplay()
         setIcon(basket->isLocked() ? m_lockedIcon : m_icon);
     else {
         // Code that comes from JuK:
-        QPixmap bgPix = loadIcon("basket").pixmap(m_iconSize);
+        QPixmap bgPix = loadIcon("basket").pixmap(22);
         int smallIconSize = kapp->style()->pixelMetric(QStyle::PM_SmallIconSize);
-        QPixmap fgPix = loadIcon(basket->icon()).pixmap(smallIconSize);
+        QPixmap fgPix = loadIcon(basket->icon()).pixmap(16);
 
         QImage bgImage = bgPix.toImage(); // Probably 22x22
         QImage fgImage = fgPix.toImage(); // Should be 16x16
 
         KIconEffect::semiTransparent(bgImage);
-        copyImage(bgImage, fgImage, bgImage.width() - fgImage.width() / 2,
-                  bgImage.height() - fgImage.height() / 2);
+        copyImage(bgImage, fgImage, (bgImage.width() - fgImage.width()) / 2,
+                  (bgImage.height() - fgImage.height()) / 2);
 
         if (basket->isLocked()) {
             QImage lockOverlay = loadIcon("object-locked").pixmap(m_iconSize).toImage();
