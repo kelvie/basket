@@ -3,16 +3,16 @@
 	<file>images/tag_export_help.png</file>
 	<file>images/tag_export_on_every_lines_help.png</file>
 	<file>images/insertion_help.png</file>
-	<file>images/cr16-action-likeback_bug.png</file>
-	<file>images/cr16-action-likeback_dislike.png</file>
-	<file>images/cr16-action-likeback_like.png</file>
-	<file>images/cr16-action-likeback_feature.png</file>
-	<file>images/cr16-app-basket.png</file>
-	<file>images/cr22-app-basket.png</file>
-	<file>images/cr32-app-basket.png</file>
-	<file>images/cr48-app-basket.png</file>
-	<file>images/cr64-app-basket.png</file>
-	<file>images/cr128-app-basket.png</file>
+	<file>images/hi16-action-likeback_bug.png</file>
+	<file>images/hi16-action-likeback_dislike.png</file>
+	<file>images/hi16-action-likeback_like.png</file>
+	<file>images/hi16-action-likeback_feature.png</file>
+	<file>images/hi16-app-basket.png</file>
+	<file>images/hi22-app-basket.png</file>
+	<file>images/hi32-app-basket.png</file>
+	<file>images/hi48-app-basket.png</file>
+	<file>images/hi64-app-basket.png</file>
+	<file>images/hi128-app-basket.png</file>
 	<file>tags/tag_checkbox.png</file>
 	<file>tags/tag_checkbox_checked.png</file>
 	<file>tags/tag_for_later.png</file>
