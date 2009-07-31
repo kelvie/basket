@@ -136,6 +136,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
     FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
+    textEdit->setFrameStyle(QFrame::Box);
     QPalette palette;
     palette.setColor(textEdit->backgroundRole(), note()->backgroundColor());
     palette.setColor(textEdit->foregroundRole(), note()->textColor());
@@ -213,6 +214,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
+    textEdit->setFrameStyle(QFrame::Box);
     textEdit->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll :
                                 QTextEdit::AutoNone);
 
