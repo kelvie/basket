@@ -34,7 +34,6 @@
 
 class Basket;
 class FilterData;
-class HtmlExportData;
 
 class NoteSelection;
 

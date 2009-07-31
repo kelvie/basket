@@ -80,22 +80,6 @@ enum Flags {
 // TODO: moveNoteInTree(bool animate);
 }
 
-/** This store all needed information when exporting to HTML
-  */
-class HtmlExportData
-{
-public:
-    QString iconsFolderPath;
-    QString iconsFolderName;
-    QString imagesFolderPath;
-    QString imagesFolderName;
-    QString dataFolderPath;
-    QString dataFolderName;
-    bool    formatForImpression;
-    bool    embedLinkedFiles;
-    bool    embedLinkedFolders;
-};
-
 /** This class handle Basket and add a FilterWidget on top of it.
   * @author Sébastien Laoût
   */
