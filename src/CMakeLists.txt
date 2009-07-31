@@ -44,6 +44,7 @@ set(basketcommon_LIB_SRCS
     systemtray.cpp
     tag.cpp
     tagsedit.cpp
+    transparentwidget.cpp
     tools.cpp
     variouswidgets.cpp
     xmlwork.cpp

@@ -91,6 +91,7 @@
 #include "noteedit.h"
 #include "noteselection.h"
 #include "tagsedit.h"
+#include "transparentwidget.h"
 #include "xmlwork.h"
 #include "global.h"
 #include "backgroundmanager.h"
@@ -102,59 +103,6 @@
 #ifdef HAVE_LIBGPGME
 #include "kgpgme.h"
 #endif
-
-/** Class TransparentWidget */
-
-//TODO: Why was Qt::WNoAutoErase used here?
-TransparentWidget::TransparentWidget(Basket *basket)
-        : QWidget(basket->viewport()), m_basket(basket)
-{
-    setFocusPolicy(Qt::NoFocus);
-    setMouseTracking(true); // To receive mouseMoveEvents
-
-    basket->viewport()->installEventFilter(this);
-}
-
-/*void TransparentWidget::reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt)
-{
-    QWidget::reparent(parent, Qt::WNoAutoErase, p, showIt);
-}*/
-
-void TransparentWidget::setPosition(int x, int y)
-{
-    m_x = x;
-    m_y = y;
-}
-
-void TransparentWidget::paintEvent(QPaintEvent*event)
-{
-    QWidget::paintEvent(event);
-    QPainter painter(this);
-
-//  painter.save();
-    painter.translate(-m_x, -m_y);
-    m_basket->drawContents(&painter, m_x, m_y, width(), height());
-
-//  painter.restore();
-//  painter.setPen(Qt::blue);
-//  painter.drawRect(0, 0, width(), height());
-}
-
-void TransparentWidget::mouseMoveEvent(QMouseEvent *event)
-{
-    QMouseEvent *translated = new QMouseEvent(QEvent::MouseMove, event->pos() + QPoint(m_x, m_y), event->button(), event->buttons(), event->modifiers());
-    m_basket->contentsMouseMoveEvent(translated);
-    delete translated;
-}
-
-bool TransparentWidget::eventFilter(QObject */*object*/, QEvent *event)
-{
-    // If the parent basket viewport has changed, we should change too:
-    if (event->type() == QEvent::Paint)
-        update();
-
-    return false; // Event not consumed, in every cases (because it's only a notification)!
-}
 
 /** Class Basket: */
 

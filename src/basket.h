@@ -63,6 +63,7 @@ class DecoratedBasket;
 class Note;
 class NoteEditor;
 class Tag;
+class TransparentWidget;
 #ifdef HAVE_LIBGPGME
 class KGpgMe;
 #endif
@@ -80,23 +81,6 @@ enum Flags {
 // TODO: FocusLastInsertedNote (last visible!), EnsureVisibleAddedNotes, PopupFeebackBaloon (if not called by hand), AnimateNewPosition, FeedbackUnmatched
 // TODO: moveNoteInTree(bool animate);
 }
-
-class TransparentWidget : public QWidget
-{
-    Q_OBJECT
-public:
-    TransparentWidget(Basket *basket);
-    void setPosition(int x, int y);
-    //void reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt = FALSE);
-protected:
-    void paintEvent(QPaintEvent*);
-    void mouseMoveEvent(QMouseEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
-private:
-    Basket *m_basket;
-    int     m_x;
-    int     m_y;
-};
 
 /**
   * @author Sébastien Laoût
