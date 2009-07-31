@@ -17,6 +17,7 @@ set(basketcommon_LIB_SRCS
     colorpicker.cpp
     crashhandler.cpp
     debugwindow.cpp
+    decoratedbasket.cpp
     diskerrordialog.cpp
     exporterdialog.cpp
     filter.cpp

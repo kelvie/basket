@@ -62,6 +62,7 @@
 
 #include "bnpview.h"
 #include "basket.h"
+#include "decoratedbasket.h"
 #include "tools.h"
 #include "settings.h"
 #include "debugwindow.h"

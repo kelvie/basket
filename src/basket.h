@@ -59,6 +59,7 @@ class QDomDocument;
 class QDomElement;
 
 class Basket;
+class DecoratedBasket;
 class Note;
 class NoteEditor;
 class Tag;
@@ -79,36 +80,6 @@ enum Flags {
 // TODO: FocusLastInsertedNote (last visible!), EnsureVisibleAddedNotes, PopupFeebackBaloon (if not called by hand), AnimateNewPosition, FeedbackUnmatched
 // TODO: moveNoteInTree(bool animate);
 }
-
-/** This class handle Basket and add a FilterWidget on top of it.
-  * @author Sébastien Laoût
-  */
-class DecoratedBasket : public QWidget
-{
-    Q_OBJECT
-public:
-    DecoratedBasket(QWidget *parent, const QString &folderName, Qt::WFlags fl = 0);
-    ~DecoratedBasket();
-    void setFilterBarPosition(bool onTop);
-    void resetFilter();
-    void setFilterBarVisible(bool show, bool switchFocus = true);
-    bool isFilterBarVisible()        {
-        return m_filter->isVisible();
-    }
-    const FilterData& filterData() {
-        return m_filter->filterData();
-    }
-    FilterBar* filterBar()         {
-        return m_filter;
-    }
-    Basket*    basket()            {
-        return m_basket;
-    }
-private:
-    QVBoxLayout *m_layout;
-    FilterBar   *m_filter;
-    Basket      *m_basket;
-};
 
 class TransparentWidget : public QWidget
 {
