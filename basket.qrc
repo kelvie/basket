@@ -13,5 +13,20 @@
 	<file>images/cr48-app-basket.png</file>
 	<file>images/cr64-app-basket.png</file>
 	<file>images/cr128-app-basket.png</file>
+	<file>tags/tag_checkbox.png</file>
+	<file>tags/tag_checkbox_checked.png</file>
+	<file>tags/tag_for_later.png</file>
+	<file>tags/tag_fun.png</file>
+	<file>tags/tag_important.png</file>
+	<file>tags/tag_preference_bad.png</file>
+	<file>tags/tag_preference_excelent.png</file>
+	<file>tags/tag_preference_good.png</file>
+	<file>tags/tag_priority_high.png</file>
+	<file>tags/tag_priority_low.png</file>
+	<file>tags/tag_priority_medium.png</file>
+	<file>tags/tag_progress_000.png</file>
+	<file>tags/tag_progress_025.png</file>
+	<file>tags/tag_progress_075.png</file>
+	<file>tags/tag_progress_100.png</file>
 </qresource>
 </RCC>
