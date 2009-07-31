@@ -59,7 +59,7 @@ QString Global::savesFolder()
             folder = new QString(s_customSavesFolder.endsWith("/") ? s_customSavesFolder : s_customSavesFolder + "/");
         } else if (!Settings::dataFolder().isEmpty()) { // Set by config option (in Basket -> Backup & Restore)
             QDir dir;
-            dir.mkdir(s_customSavesFolder);
+            dir.mkdir(Settings::dataFolder());
             folder = new QString(Settings::dataFolder().endsWith("/") ? Settings::dataFolder() : Settings::dataFolder() + "/");
         } else { // The default path (should be that for most computers)
             folder = new QString(KGlobal::dirs()->saveLocation("data", "basket/"));
