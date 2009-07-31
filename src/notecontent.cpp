@@ -1440,16 +1440,16 @@ void FileContent::linkLookChanged()
     //startFetchingUrlPreview();
 }
 
-void FileContent::newPreview(const KFileItem*, const QPixmap &preview)
+void FileContent::newPreview(const KFileItem&, const QPixmap &preview)
 {
     LinkLook *linkLook = this->linkLook();
     m_linkDisplay.setLink(fileName(), NoteFactory::iconForURL(KUrl(fullPath())), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
     contentChanged(m_linkDisplay.minWidth());
 }
 
-void FileContent::removePreview(const KFileItem*)
+void FileContent::removePreview(const KFileItem& ki)
 {
-    newPreview(0, QPixmap());
+    newPreview(ki, QPixmap());
 }
 
 void FileContent::startFetchingUrlPreview()
@@ -1463,8 +1463,8 @@ void FileContent::startFetchingUrlPreview()
         KUrl::List urlList;
         urlList.append(filteredUrl);
         m_previewJob = KIO::filePreview(urlList, linkLook->previewSize(), linkLook->previewSize(), linkLook->iconSize());
-        connect(m_previewJob, SIGNAL(gotPreview(const KFileItem*, const QPixmap&)), this, SLOT(newPreview(const KFileItem*, const QPixmap&)));
-        connect(m_previewJob, SIGNAL(failed(const KFileItem*)),                     this, SLOT(removePreview(const KFileItem*)));
+        connect(m_previewJob, SIGNAL(gotPreview(const KFileItem&, const QPixmap&)), this, SLOT(newPreview(const KFileItem&, const QPixmap&)));
+        connect(m_previewJob, SIGNAL(failed(const KFileItem&)),                     this, SLOT(removePreview(const KFileItem&)));
     }
 }
 
@@ -1657,16 +1657,16 @@ void LinkContent::linkLookChanged()
     fontChanged();
 }
 
-void LinkContent::newPreview(const KFileItem*, const QPixmap &preview)
+void LinkContent::newPreview(const KFileItem&, const QPixmap &preview)
 {
     LinkLook *linkLook = LinkLook::lookForURL(url());
     m_linkDisplay.setLink(title(), icon(), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
     contentChanged(m_linkDisplay.minWidth());
 }
 
-void LinkContent::removePreview(const KFileItem*)
+void LinkContent::removePreview(const KFileItem& ki)
 {
-    newPreview(0, QPixmap());
+    newPreview(ki, QPixmap());
 }
 
 // QHttp slots for getting link title

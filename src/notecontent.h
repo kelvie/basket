@@ -425,8 +425,8 @@ protected:
     LinkDisplay m_linkDisplay;
     // File Preview Management:
 protected slots:
-    void newPreview(const KFileItem*, const QPixmap &preview);
-    void removePreview(const KFileItem*);
+    void newPreview(const KFileItem&, const QPixmap &preview);
+    void removePreview(const KFileItem&);
     void startFetchingUrlPreview();
 protected:
     KIO::PreviewJob *m_previewJob;
@@ -543,8 +543,8 @@ protected:
 protected slots:
     void httpDone(bool err);
     void httpReadyRead();
-    void newPreview(const KFileItem*, const QPixmap &preview);
-    void removePreview(const KFileItem*);
+    void newPreview(const KFileItem&, const QPixmap &preview);
+    void removePreview(const KFileItem&);
     void startFetchingUrlPreview();
 protected:
     KIO::PreviewJob *m_previewJob;
