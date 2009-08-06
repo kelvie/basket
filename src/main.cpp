@@ -48,23 +48,8 @@
 
 #include <config.h>
 
-void myMessageHandler( QtMsgType type, const char* msg){
-	switch (type){
-		case QtDebugMsg:
-			fprintf(stderr, "Debug: %s\n", msg );
-			break;
-		case QtWarningMsg:
-			fprintf(stderr, "Warning: %s\n", msg );
-			abort();
-		case QtFatalMsg:
-			fprintf(stderr, "Warning: %s\n", msg );
-			abort();
-	}
-}
-
 int main(int argc, char *argv[])
 {
-    qInstallMsgHandler(myMessageHandler);
     // KCmdLineArgs::init will modify argv[0] so we remember it:
     const char *argv0 = (argc >= 1 ? argv[0] : "");
 
