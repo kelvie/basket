@@ -342,7 +342,9 @@ void Archive::open(const QString &path)
                     return;
                 }
 
-                Global::mainWindow()->raise();
+                if (Global::mainWindow()) {
+                    Global::mainWindow()->raise();
+                }
 
                 // Get the archive file:
                 QString tempArchive = tempFolder + "temp-archive.tar.gz";
