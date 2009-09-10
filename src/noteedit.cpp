@@ -587,8 +587,10 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
 
     if(m_noteContent->url().isEmpty()){
       m_url = new  KUrlRequester(KUrl(""), wid);
+      m_url->setMode(KFile::File | KFile::ExistingOnly);
     }else{ 
       m_url = new KUrlRequester(m_noteContent->url().prettyUrl(), wid);
+      m_url->setMode(KFile::File | KFile::ExistingOnly);
     }
     
     if(m_noteContent->title().isEmpty()){
