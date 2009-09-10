@@ -585,7 +585,18 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
     label3->setText(i18n("&Icon:"));
     label3->setBuddy(m_icon);
 
-    m_url = new KUrlRequester(KUrl(""), wid);
+    if(m_noteContent->url().isEmpty()){
+      m_url = new  KUrlRequester(KUrl(""), wid);
+    }else{ 
+      m_url = new KUrlRequester(m_noteContent->url().prettyUrl(), wid);
+    }
+    
+    if(m_noteContent->title().isEmpty()){
+      m_title->setText("");
+    }else{
+      m_title->setText(m_noteContent->title());
+    }
+    
     KUrl filteredURL = NoteFactory::filteredURL(KUrl(m_url->lineEdit()->text()));//KURIFilter::self()->filteredURI(KUrl(m_url->lineEdit()->text()));
     m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::MimeType);
     m_icon->setIconSize(LinkLook::lookForURL(filteredURL)->iconSize());
@@ -638,8 +649,10 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
     stretchWidget->setSizePolicy(policy); // Make it fill ALL vertical space
     layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 
+    
+   
 
-    urlChanged("");
+   // urlChanged("");
 
 //  if (ke)
 //      kapp->postEvent(m_url->lineEdit(), ke);
