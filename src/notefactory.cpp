@@ -549,12 +549,13 @@ Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction acti
         if (((*it).protocol() == "mailto") ||
                 (action == Qt::LinkAction))
             note = createNoteLinkOrLauncher(*it, parent);
-        else if (!(*it).isLocalFile()) {
-            if (action != Qt::LinkAction && (maybeImageOrAnimation(*it)/* || maybeSound(*it)*/))
-                note = copyFileAndLoad(*it, parent);
-            else
-                note = createNoteLinkOrLauncher(*it, parent);
-        } else {
+//         else if (!(*it).isLocalFile()) {
+//             if (action != Qt::LinkAction && (maybeImageOrAnimation(*it)/* || maybeSound(*it)*/))
+//                 note = copyFileAndLoad(*it, parent);
+//             else
+//                 note = createNoteLinkOrLauncher(*it, parent);
+//         } 
+	else {
             if (action == Qt::CopyAction)
                 note = copyFileAndLoad(*it, parent);
             else if (action == Qt::MoveAction)
