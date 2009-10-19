@@ -87,6 +87,7 @@
 #include "backup.h"
 #include "notefactory.h"
 #include "notecontent.h"
+#include "unistd.h" // usleep
 
 
 #include "bnpviewadaptor.h"
