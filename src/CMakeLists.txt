@@ -118,7 +118,9 @@ kde4_add_plugin(kontact_basketplugin ${kontact_basket_PLUGIN_SRCS})
 
 qt4_add_dbus_interfaces(kontact_basket_PLUGIN_SRCS org.kde.basket.basket.xml)
 
-target_link_libraries(kontact_basketplugin ${KDE4_CORE_LIBS} kontactinterface kdepim basketcommon kparts kdeui ${KDE4_KPARTS_LIBS})
+add_dependencies(kontact_basketplugin basket)
+
+target_link_libraries(kontact_basketplugin ${KDE4_CORE_LIBS} ${KDEPIMLIBS_KONTACTINTERFACE_LIBS} kdepim basketcommon kparts kdeui ${KDE4_KPARTS_LIBS})
 
 install(TARGETS kontact_basketplugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES basket_plugin.desktop DESTINATION ${SERVICES_INSTALL_DIR}/kontact)

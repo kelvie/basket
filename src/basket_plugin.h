@@ -21,7 +21,7 @@
 #ifndef BASKET_PLUGIN_H
 #define BASKET_PLUGIN_H
 
-#include <kontactinterface/plugin.h>
+#include <KontactInterface/Plugin>
 #include <KDE/KParts/Part>
 
 class BasketPlugin : public KontactInterface::Plugin
