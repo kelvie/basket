@@ -2910,7 +2910,7 @@ void Basket::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth
             layout->addWidget(label, 0, 1, 1, 2);
             QLabel* pixmap = new QLabel(m_decryptBox);
             pixmap->setPixmap(KIconLoader::global()->loadIcon("encrypted", KIconLoader::NoGroup, KIconLoader::SizeHuge));
-            layout->addWidget(pixmap, 0, 0, 2, 0);
+            layout->addWidget(pixmap, 0, 0, 2, 1);
 
             QSpacerItem* spacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
             layout->addItem(spacer, 1, 1);

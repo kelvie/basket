@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.4)
 
 find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
-#find_package(Gpgme)
+find_package(Gpgme)
+find_package(Gpgmepp)
 
 if (BUILD_KPARTS)
 find_package(KdepimLibs REQUIRED)
