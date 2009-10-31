@@ -59,9 +59,14 @@
 class NotePrivate
 {
 public:
-    NotePrivate() : prev(0), next(0) {}
+    NotePrivate()
+        : prev(0), next(0), x(0), y(-1)
+    {
+    }
     Note* prev;
     Note* next;
+    int x;
+    int y;
 };
 
 int Note::NOTE_MARGIN      = 2;
@@ -77,7 +82,7 @@ int Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
 
 Note::Note(Basket *parent)
         : d(new NotePrivate),
-        m_x(0), m_y(-1), m_width(-1), m_height(-1),
+        m_width(-1), m_height(-1),
         m_groupWidth(250),
         m_isFolded(false), m_firstChild(0L), m_parentNote(0),
         m_basket(parent), m_content(0), m_addedDate(QDateTime::currentDateTime()), m_lastModificationDate(QDateTime::currentDateTime()),
@@ -113,6 +118,31 @@ void Note::setPrev(Note* prev)
 Note* Note::prev() const
 {
     return d->prev;
+}
+
+int Note::y() const
+{
+    return d->y;
+}
+
+int Note::x() const
+{
+    return d->x;
+}
+
+int Note::bottom() const
+{
+    return d->y + m_height - 1;
+}
+
+int Note::finalX() const
+{
+    return d->x + m_deltaX;
+}
+
+int Note::finalY() const
+{
+    return d->y + m_deltaY;
 }
 
 QString Note::addedStringDate()
@@ -841,7 +871,7 @@ bool Note::advance()
         int deltaX = m_deltaX / 3;
         if (deltaX == 0)
             deltaX = (m_deltaX > 0 ? 1 : -1);
-        setX(m_x + deltaX);
+        setX(d->x + deltaX);
         m_deltaX -= deltaX;
     }
 
@@ -850,7 +880,7 @@ bool Note::advance()
         int deltaY = m_deltaY / 3;
         if (deltaY == 0)
             deltaY = (m_deltaY > 0 ? 1 : -1);
-        setY(m_y + deltaY);
+        setY(d->y + deltaY);
         m_deltaY -= deltaY;
     }
 
@@ -943,7 +973,7 @@ int Note::minRight()
 
 void Note::setX(int x)
 {
-    if (m_x == x)
+    if (d->x == x)
         return;
 
     if (isBufferized() && basket()->hasBackgroundImage()) {
@@ -952,19 +982,19 @@ void Note::setX(int x)
             unbufferize();
         else {
             int bgw = basket()->backgroundPixmap()->width();
-            if (m_x >= bgw && x < bgw) // Was not in the background image and is now inside it:
+            if (d->x >= bgw && x < bgw) // Was not in the background image and is now inside it:
                 unbufferize();
-            else if (m_x < bgw) // Was in the background image and is now at another position of the background image or is now outside:
+            else if (d->x < bgw) // Was in the background image and is now at another position of the background image or is now outside:
                 unbufferize();
         }
     }
 
-    m_x = x;
+    d->x = x;
 }
 
 void Note::setY(int y)
 {
-    if (m_y == y)
+    if (d->y == y)
         return;
 
     if (isBufferized() && basket()->hasBackgroundImage()) {
@@ -973,14 +1003,14 @@ void Note::setY(int y)
             unbufferize();
         else {
             int bgh = basket()->backgroundPixmap()->height();
-            if (m_y >= bgh && y < bgh) // Was not in the background image and is now inside it:
+            if (d->y >= bgh && y < bgh) // Was not in the background image and is now inside it:
                 unbufferize();
-            else if (m_y < bgh) // Was in the background image and is now at another position of the background image or is now outside:
+            else if (d->y < bgh) // Was in the background image and is now at another position of the background image or is now outside:
                 unbufferize();
         }
     }
 
-    m_y = y;
+    d->y = y;
 }
 
 
@@ -1055,7 +1085,7 @@ Note* Note::noteAt(int x, int y)
     if (matching() && hasResizer()) {
         int right = rightLimit();
         // TODO: This code is dupliacted 3 times: !!!!
-        if ((x >= right) && (x < right + RESIZER_WIDTH) && (y >= m_y) && (y < m_y + resizerHeight())) {
+        if ((x >= right) && (x < right + RESIZER_WIDTH) && (y >= d->y) && (y < d->y + resizerHeight())) {
             if (! m_computedAreas)
                 recomputeAreas();
             for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -1067,7 +1097,7 @@ Note* Note::noteAt(int x, int y)
     }
 
     if (isGroup()) {
-        if ((x >= m_x) && (x < m_x + width()) && (y >= m_y) && (y < m_y + m_height)) {
+        if ((x >= d->x) && (x < d->x + width()) && (y >= d->y) && (y < d->y + m_height)) {
             if (! m_computedAreas)
                 recomputeAreas();
             for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -1089,7 +1119,7 @@ Note* Note::noteAt(int x, int y)
             child = child->next();
             first = false;
         }
-    } else if (matching() && y >= m_y && y < m_y + m_height && x >= m_x && x < m_x + m_width) {
+    } else if (matching() && y >= d->y && y < d->y + m_height && x >= d->x && x < d->x + m_width) {
         if (! m_computedAreas)
             recomputeAreas();
         for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -1235,7 +1265,7 @@ int Note::rightLimit()
     else if (parentNote())
         return parentNote()->rightLimit();
     else
-        return m_x + m_groupWidth;
+        return d->x + m_groupWidth;
 }
 
 int Note::finalRightLimit()

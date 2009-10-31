@@ -70,8 +70,6 @@ public:
 
 /// GEOMETRY MANAGEMENT:
 private:
-    int m_x;
-    int m_y;
     int m_width;
     int m_height;
 //  int m_minContentWidth;
@@ -81,25 +79,20 @@ public:
     void setInitialHeight(int height) {
         m_height = height;
     } /// << Do NEVER use it unless you know what you do!
+    int x() const;
     void setX(int x);
+
+    int y() const;
     void setY(int y);
     void setXRecursively(int x);
     void setYRecursively(int y);
-    inline int  x()      {
-        return m_x;
-    }
-    inline int  y()      {
-        return m_y;
-    }
     inline int  width()  {
         return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width);
     }
     inline int  height() {
         return m_height;
     }
-    inline int  bottom() {
-        return m_y + m_height - 1;
-    }
+    int bottom() const;
     QRect rect();
     QRect resizerRect();
     QRect visibleRect();
@@ -256,12 +249,8 @@ public:
     inline int  deltaHeight()     {
         return m_deltaHeight;
     }
-    inline int  finalX()          {
-        return m_x + m_deltaX;
-    }
-    inline int  finalY()          {
-        return m_y + m_deltaY;
-    }
+    int finalX() const;
+    int finalY() const;
     inline int  finalHeight()     {
         return m_height + m_deltaHeight;
     }
