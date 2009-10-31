@@ -56,9 +56,6 @@
 #define FOR_EACH_CHILD(childVar) \
     for (Note *childVar = firstChild(); childVar; childVar = childVar->next())
 
-// TODO:
-#define FOR_EACH_VISIBLE_CHILD(childVar) \
-    for (...)
 
 int Note::NOTE_MARGIN      = 2;
 int Note::INSERTION_HEIGHT = 5;
