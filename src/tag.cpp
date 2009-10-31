@@ -610,9 +610,9 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
                       "      <emblem>tag_preference_good</emblem>\n"
                       "      <textEquivalent string=\"(** )\" />\n"
                       "    </state>\n"
-                      "    <state id=\"preference_excelent\">\n"
+                      "    <state id=\"preference_excellent\">\n"
                       "      <name>%8</name>\n" // "Excellent"
-                      "      <emblem>tag_preference_excelent</emblem>\n" // "excelent": typo error, but we should keep compatibility with old versions.
+                      "      <emblem>tag_preference_excellent</emblem>\n" 
                       "      <textEquivalent string=\"(***)\" />\n"
                       "    </state>\n"
                       "  </tag>\n"

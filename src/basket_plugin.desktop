@@ -4,7 +4,7 @@ Icon=basket
 X-KDE-ServiceTypes=Kontact/Plugin,KPluginInfo
 
 X-KDE-Library=kontact_basketplugin
-X-KDE-KontactPluginVersion=7
+X-KDE-KontactPluginVersion=9
 X-KDE-KontactPartLibraryName=libbasketpart
 X-KDE-KontactPluginHasSummary=false
 

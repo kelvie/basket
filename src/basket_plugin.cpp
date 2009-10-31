@@ -23,8 +23,8 @@
 
 #include "basket_part.h"
 
-#include <kontactinterfaces/core.h>
-#include <kontactinterfaces/plugin.h>
+#include <KontactInterface/Core>
+#include <KontactInterface/Plugin>
 
 #include <KDE/KActionCollection>
 #include <KDE/KGenericFactory>
@@ -33,8 +33,8 @@
 
 EXPORT_KONTACT_PLUGIN(BasketPlugin, basket)
 
-BasketPlugin::BasketPlugin(Kontact::Core *core, const QVariantList &)
-        : Kontact::Plugin(core, core, "Basket")
+BasketPlugin::BasketPlugin(KontactInterface::Core *core, const QVariantList &)
+        : KontactInterface::Plugin(core, core, "Basket")
 {
     setComponentData(KontactPluginFactory::componentData());
     Global::basketConfig = KSharedConfig::openConfig("basketrc");
