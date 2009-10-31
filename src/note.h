@@ -39,6 +39,8 @@ class NoteSelection;
 
 class QPainter;
 
+class NotePrivate;
+
 /** Handle basket notes and groups!\n
   * After creation, the note is a group. You should create a NoteContent with this Note
   * as constructor parameter to transform it to a note with content. eg:
@@ -56,23 +58,15 @@ public:
     Note(Basket *parent = 0);
     ~Note();
 
-/// DOUBLY LINKED LIST:
 private:
-    Note *m_prev;
-    Note *m_next;
+    NotePrivate* d;
+
+/// DOUBLY LINKED LIST:
 public:
-    inline void  setNext(Note *next) {
-        m_next = next;
-    }
-    inline void  setPrev(Note *prev) {
-        m_prev = prev;
-    }
-    inline Note* next()              {
-        return m_next;
-    }
-    inline Note* prev()              {
-        return m_prev;
-    }
+    void  setNext(Note *next);
+    void  setPrev(Note *prev);
+    Note* next() const;
+    Note* prev() const;
 
 /// GEOMETRY MANAGEMENT:
 private:

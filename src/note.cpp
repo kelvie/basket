@@ -56,6 +56,13 @@
 #define FOR_EACH_CHILD(childVar) \
     for (Note *childVar = firstChild(); childVar; childVar = childVar->next())
 
+class NotePrivate
+{
+public:
+    NotePrivate() : prev(0), next(0) {}
+    Note* prev;
+    Note* next;
+};
 
 int Note::NOTE_MARGIN      = 2;
 int Note::INSERTION_HEIGHT = 5;
@@ -69,7 +76,7 @@ int Note::EMBLEM_SIZE      = 16;
 int Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
 
 Note::Note(Basket *parent)
-        : m_prev(0), m_next(0),
+        : d(new NotePrivate),
         m_x(0), m_y(-1), m_width(-1), m_height(-1),
         m_groupWidth(250),
         m_isFolded(false), m_firstChild(0L), m_parentNote(0),
@@ -86,6 +93,26 @@ Note::~Note()
 {
     delete m_content;
     deleteChilds();
+}
+
+void Note::setNext(Note* next)
+{
+    d->next = next;
+}
+
+Note* Note::next() const
+{
+    return d->next;
+}
+
+void Note::setPrev(Note* prev)
+{
+    d->prev = prev;
+}
+
+Note* Note::prev() const
+{
+    return d->prev;
 }
 
 QString Note::addedStringDate()
@@ -532,7 +559,7 @@ bool Note::isColumn()
 bool Note::hasResizer()
 {
     // "isFree" || "isColmun but not the last"
-    return parentNote() == 0 && (basket() && basket()->isFreeLayout() || m_next != 0L);
+    return parentNote() == 0 && ((basket() && basket()->isFreeLayout()) || d->next != 0L);
 }
 
 int Note::resizerHeight()
@@ -1203,7 +1230,7 @@ int Note::groupWidth()
 
 int Note::rightLimit()
 {
-    if (isColumn() && m_next == 0L) // The last column
+    if (isColumn() && d->next == 0L) // The last column
         return qMax(x() + minWidth(), basket()->visibleWidth());
     else if (parentNote())
         return parentNote()->rightLimit();
@@ -1213,7 +1240,7 @@ int Note::rightLimit()
 
 int Note::finalRightLimit()
 {
-    if (isColumn() && m_next == 0L) // The last column
+    if (isColumn() && d->next == 0L) // The last column
         return qMax(finalX() + minWidth(), basket()->visibleWidth());
     else if (parentNote())
         return parentNote()->finalRightLimit();
