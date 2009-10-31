@@ -2789,3 +2789,6 @@ bool Note::convertTexts()
 
     return convertedNotes;
 }
+
+/* vim: set et sts=4 sw=4 ts=16 tw=78 : */
+
