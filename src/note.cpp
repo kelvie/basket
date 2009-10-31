@@ -524,18 +524,18 @@ int Note::yExpander()
 
 bool Note::isFree()
 {
-    return parentNote() == 0 && basket()->isFreeLayout();
+    return parentNote() == 0 && basket() && basket()->isFreeLayout();
 }
 
 bool Note::isColumn()
 {
-    return parentNote() == 0 && basket()->isColumnsLayout();
+    return parentNote() == 0 && basket() && basket()->isColumnsLayout();
 }
 
 bool Note::hasResizer()
 {
     // "isFree" || "isColmun but not the last"
-    return parentNote() == 0 && (basket()->isFreeLayout() || m_next != 0L);
+    return parentNote() == 0 && (basket() && basket()->isFreeLayout() || m_next != 0L);
 }
 
 int Note::resizerHeight()
