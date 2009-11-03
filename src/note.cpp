@@ -60,7 +60,8 @@ class NotePrivate
 {
 public:
     NotePrivate()
-        : prev(0), next(0), x(0), y(-1)
+        : prev(0), next(0), x(0), y(-1),
+          width(-1), height(-1)
     {
     }
     Note* prev;
@@ -84,7 +85,6 @@ int Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
 
 Note::Note(Basket *parent)
         : d(new NotePrivate),
-        m_width(-1), m_height(-1),
         m_groupWidth(250),
         m_isFolded(false), m_firstChild(0L), m_parentNote(0),
         m_basket(parent), m_content(0), m_addedDate(QDateTime::currentDateTime()), m_lastModificationDate(QDateTime::currentDateTime()),
