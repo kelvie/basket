@@ -76,9 +76,8 @@ private:
 public:
     void setWidth(int width);
     void setWidthForceRelayout(int width);
-    void setInitialHeight(int height) {
-        m_height = height;
-    } /// << Do NEVER use it unless you know what you do!
+    //! Do not use it unless you know what you do!
+    void setInitialHeight(int height);
     int x() const;
     void setX(int x);
 
@@ -86,12 +85,8 @@ public:
     void setY(int y);
     void setXRecursively(int x);
     void setYRecursively(int y);
-    inline int  width()  {
-        return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width);
-    }
-    inline int  height() {
-        return m_height;
-    }
+    int width() const;
+    int height() const;
     int bottom() const;
     QRect rect();
     QRect resizerRect();
@@ -102,9 +97,8 @@ public:
     int minRight();
     void unsetWidth();
     void requestRelayout();
-    void setHeight(int height) {
-        m_height = height;
-    } /// << DO NEVER USE IT!!! Only available when moving notes, groups should be recreated with the exact same state as before!
+    /** << DO NEVER USE IT!!! Only available when moving notes, groups should be recreated with the exact same state as before! */
+    void setHeight(int height);
 
 /// FREE AND COLUMN LAYOUTS MANAGEMENT:
 private:
@@ -115,7 +109,7 @@ public:
     int  rightLimit();
     int  finalRightLimit();
     bool isFree();
-    bool isColumn();
+    bool isColumn() const;
     bool hasResizer();
     int  resizerHeight();
 
@@ -125,7 +119,7 @@ private:
     Note *m_firstChild;
     Note *m_parentNote;
 public:
-    inline bool isGroup()                 {
+    inline bool isGroup() const           {
         return m_content == 0L;
     }
     inline bool isFolded()                {
@@ -134,7 +128,7 @@ public:
     inline Note* firstChild()             {
         return m_firstChild;
     }
-    inline Note* parentNote()             {
+    inline Note* parentNote() const       {
         return m_parentNote;
     }
     /*inline*/ bool showSubNotes();//            { return !m_isFolded || !m_collapseFinished; }
@@ -162,7 +156,7 @@ private:
     QDateTime    m_addedDate;
     QDateTime    m_lastModificationDate;
 public:
-    inline Basket*      basket()  {
+    inline Basket*      basket() const {
         return m_basket;
     }
     inline NoteContent* content() {

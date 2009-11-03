@@ -67,6 +67,8 @@ public:
     Note* next;
     int x;
     int y;
+    int width;
+    int height;
 };
 
 int Note::NOTE_MARGIN      = 2;
@@ -581,7 +583,7 @@ bool Note::isFree()
     return parentNote() == 0 && basket() && basket()->isFreeLayout();
 }
 
-bool Note::isColumn()
+bool Note::isColumn() const
 {
     return parentNote() == 0 && basket() && basket()->isColumnsLayout();
 }
@@ -903,6 +905,21 @@ bool Note::advance()
     return (m_deltaX == 0 && m_deltaY == 0 && m_deltaHeight == 0);
 }
 
+void Note::setHeight(int height)
+{
+    setInitialHeight(height);
+}
+
+void Note::setInitialHeight(int height)
+{
+    d->height = height;
+}
+
+int Note::height() const
+{
+    return d->height;
+}
+
 void Note::unsetWidth()
 {
     m_width = 0;
@@ -910,6 +927,11 @@ void Note::unsetWidth()
 
     FOR_EACH_CHILD(child)
     child->unsetWidth();
+}
+
+int Note::width() const
+{
+    return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width);
 }
 
 void Note::requestRelayout()
