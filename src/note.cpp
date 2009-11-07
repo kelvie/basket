@@ -1297,8 +1297,14 @@ void Note::drawExpander(QPainter *painter, int x, int y,
     painter->fillRect(opt.rect, background);
 
     QStyle *style = basket->style();
-    style->drawPrimitive(QStyle::PE_IndicatorBranch, &opt, painter,
-                         basket->viewport());
+    if (!expand){
+    	style->drawPrimitive(QStyle::PE_IndicatorArrowDown, &opt, painter,
+        	                 basket->viewport());
+    }
+    else{
+    	style->drawPrimitive(QStyle::PE_IndicatorArrowRight, &opt, painter,
+        	                 basket->viewport());
+    }
 }
 
 QColor expanderBackground(int height, int y, const QColor &foreground)
