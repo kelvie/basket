@@ -37,7 +37,7 @@
 #include <KDE/KDebug>
 #include "global.h"
 #include "bnpview.h"
-#include "basket.h"
+#include "basketview.h"
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"

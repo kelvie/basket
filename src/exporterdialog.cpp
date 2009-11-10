@@ -31,7 +31,7 @@
 #include <KDE/KVBox>
 
 #include "exporterdialog.h"
-#include "basket.h"
+#include "basketview.h"
 #include "global.h"
 
 ExporterDialog::ExporterDialog(BasketView *basket, QWidget *parent, const char *name)

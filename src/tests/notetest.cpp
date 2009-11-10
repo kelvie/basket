@@ -22,7 +22,7 @@
 #include <qtest_kde.h>
 
 #include "note.h"
-#include "basket.h"
+#include "basketview.h"
 
 class NoteTest: public QObject
 {

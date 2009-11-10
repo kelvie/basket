@@ -40,7 +40,7 @@
 #include "KDE/KIconDialog"
 
 #include "basketproperties.h"
-#include "basket.h"
+#include "basketview.h"
 #include "kcolorcombo2.h"
 #include "variouswidgets.h"
 #include "global.h"

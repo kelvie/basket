@@ -45,7 +45,7 @@
 #include <KDE/KStandardDirs>
 #include <KDE/KUriFilter>
 
-#include "basket.h"
+#include "basketview.h"
 #include "note.h"
 #include "notefactory.h"
 #include "notedrag.h"

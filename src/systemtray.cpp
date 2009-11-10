@@ -29,7 +29,7 @@
 #include <KDE/KIconEffect>
 
 // Local
-#include "basket.h"
+#include "basketview.h"
 #include "settings.h"
 #include "global.h"
 #include "tools.h"

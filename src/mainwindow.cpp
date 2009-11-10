@@ -69,7 +69,7 @@
 #include <KDE/KProgressDialog>
 
 #include "mainwindow.h"
-#include "basket.h"
+#include "basketview.h"
 #include "basketproperties.h"
 #include "note.h"
 #include "noteedit.h"

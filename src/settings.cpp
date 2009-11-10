@@ -46,7 +46,7 @@
 #include <QDateTime>
 
 #include "kgpgme.h"
-#include "basket.h"
+#include "basketview.h"
 #include "linklabel.h"
 #include "settings.h"
 #include "variouswidgets.h"

@@ -21,7 +21,7 @@
 #include "htmlexporter.h"
 #include "bnpview.h"
 #include "basketlistview.h"
-#include "basket.h"
+#include "basketview.h"
 #include "note.h"
 #include "tools.h"
 #include "config.h"

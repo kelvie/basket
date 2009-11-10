@@ -34,7 +34,7 @@
 #include "notecontent.h"
 #include "notefactory.h"
 #include "bnpview.h"
-#include "basket.h"
+#include "basketview.h"
 #include "global.h"
 #include "xmlwork.h"
 #include "tools.h"

@@ -22,7 +22,7 @@
 #include <qtest_kde.h>
 
 #include "note.h"
-#include "basket.h"
+#include "basketview.h"
 
 class BasketViewTest: public QObject
 {
@@ -37,5 +37,5 @@ void BasketViewTest::testCreation()
 {
 
 }
-#include "baskettest.moc"
+#include "basketviewtest.moc"
 /* vim: set et sts=4 sw=4 ts=8 tw=0 : */

@@ -11,4 +11,4 @@ macro(basket_standalone_unit_test _testname)
 endmacro(basket_standalone_unit_test)
 
 basket_standalone_unit_test(notetest)
-basket_standalone_unit_test(baskettest)
+basket_standalone_unit_test(basketviewtest)

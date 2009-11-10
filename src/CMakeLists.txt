@@ -8,7 +8,7 @@ set(basketcommon_LIB_SRCS
     archive.cpp
     backgroundmanager.cpp
     backup.cpp
-    basket.cpp
+    basketview.cpp
     basketfactory.cpp
     basketlistview.cpp
     basketproperties.cpp

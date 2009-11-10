@@ -61,7 +61,7 @@
 #include <cstdlib>
 
 #include "bnpview.h"
-#include "basket.h"
+#include "basketview.h"
 #include "decoratedbasket.h"
 #include "tools.h"
 #include "settings.h"

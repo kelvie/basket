@@ -29,7 +29,7 @@
 #include <KDE/KApplication>
 #include <QDesktopWidget>
 
-#include "basket.h"
+#include "basketview.h"
 #include "notedrag.h"
 #include "notefactory.h"
 #include "noteselection.h"

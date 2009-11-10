@@ -39,7 +39,7 @@
 #undef None
 #endif
 
-#include "basket.h"
+#include "basketview.h"
 #include "tag.h"
 #include "note.h"
 #include "noteselection.h"

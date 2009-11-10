@@ -42,7 +42,7 @@
 #include "archive.h"
 #include "global.h"
 #include "bnpview.h"
-#include "basket.h"
+#include "basketview.h"
 #include "basketlistview.h"
 #include "basketfactory.h"
 #include "tag.h"

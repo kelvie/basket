@@ -82,7 +82,7 @@
 #include <stdlib.h>     // rand() function
 #include <QDateTime>  // seed for rand()
 
-#include "basket.h"
+#include "basketview.h"
 #include "decoratedbasket.h"
 #include "diskerrordialog.h"
 #include "note.h"

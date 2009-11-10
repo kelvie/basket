@@ -34,7 +34,7 @@
 #include <QDomDocument>
 
 #include "softwareimporters.h"
-#include "basket.h"
+#include "basketview.h"
 #include "basketfactory.h"
 #include "notefactory.h"
 #include "global.h"

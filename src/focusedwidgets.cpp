@@ -25,7 +25,7 @@
 #include "focusedwidgets.h"
 #include "bnpview.h"
 #include "global.h"
-#include "basket.h"
+#include "basketview.h"
 
 #ifdef KeyPress
 #undef KeyPress

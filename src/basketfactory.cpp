@@ -26,7 +26,7 @@
 
 #include "basketfactory.h"
 #include "global.h"
-#include "basket.h"
+#include "basketview.h"
 #include "xmlwork.h"
 #include "note.h" // For balanced column width computation
 #include "bnpview.h"

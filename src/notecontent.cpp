@@ -51,7 +51,7 @@
 #include "note.h"
 #include "noteedit.h"
 #include "tag.h"
-#include "basket.h"
+#include "basketview.h"
 #include "filter.h"
 #include "xmlwork.h"
 #include "tools.h"

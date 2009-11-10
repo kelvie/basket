@@ -32,7 +32,7 @@
 #include <KDE/KMessageBox>
 
 
-#include "basket.h"
+#include "basketview.h"
 #include "kgpgme.h"
 
 PasswordDlg::PasswordDlg(QWidget *parent)

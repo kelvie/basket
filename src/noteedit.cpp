@@ -44,7 +44,7 @@
 // Use Tools::
 #include "notefactory.h"
 #include "note.h"
-#include "basket.h"
+#include "basketview.h"
 #include "settings.h"
 #include "tools.h"
 #include "variouswidgets.h"

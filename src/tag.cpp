@@ -37,7 +37,7 @@
 #include "debugwindow.h"
 #include "bnpview.h"
 #include "tools.h"
-#include "basket.h"
+#include "basketview.h"
 
 /** class State: */
 
