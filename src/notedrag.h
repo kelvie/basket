@@ -30,13 +30,13 @@
 
 class QDataStream;
 
-class Basket;
+class BasketView;
 class Note;
 class NoteSelection;
 
 /** Dragging/Copying/Cutting Scenario:
   * - User select some notes and cut them;
-  * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see Basket::toSelectionTree()):
+  * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see BasketView::toSelectionTree()):
   *   - This method create a new QDrag object, create a stream,
   *   - And then browse all notes and call the virtual Note::serialize() with the stream as parameter for them to serialize theire content in the "native format".
   *   - This give the MIME type "application/x-basket-note" that will be used by the application to paste the notes exactly as they were.
@@ -60,13 +60,13 @@ protected:
     static void serializeImage(NoteSelection *noteList, QDrag *multipleDrag);
     static void serializeLinks(NoteSelection *noteList, QDrag *multipleDrag, bool cutting);
     static void setFeedbackPixmap(NoteSelection *noteList, QDrag *multipleDrag);
-    static Note* decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket);
+    static Note* decodeHierarchy(QDataStream &stream, BasketView *parent, bool moveFiles, bool moveNotes, BasketView *originalBasket);
 public:
     static QPixmap feedbackPixmap(NoteSelection *noteList);
     static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
     static bool canDecode(const QMimeData *source);
-    static Note* decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes);
-    static Basket* basketOf(const QMimeData *source);
+    static Note* decode(const QMimeData *source, BasketView *parent, bool moveFiles, bool moveNotes);
+    static BasketView* basketOf(const QMimeData *source);
     static QList<Note*> notesOf(QDragEnterEvent *source);
     static void createAndEmptyCuttingTmpFolder();
 

@@ -31,7 +31,7 @@ class QRadioButton;
 class QTextEdit;
 class QVBoxLayout;
 
-class Basket;
+class BasketView;
 class Note;
 
 /** The dialog to ask how to import hierarchical data.
@@ -84,8 +84,8 @@ namespace SoftwareImporters
 // Useful methods to design importers:
 QString fromICS(const QString &ics);
 QString fromTomboy(QString tomboy);
-Note* insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
-void finishImport(Basket *basket);
+Note* insertTitledNote(BasketView *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
+void finishImport(BasketView *basket);
 
 // The importers in themselves:
 void importKNotes();
@@ -97,7 +97,7 @@ void importTomboy();
 void importTextFile();
 
 //
-void importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy);
+void importTuxCardsNode(const QDomElement &element, BasketView *parentBasket, Note *parentNote, int remainingHierarchy);
 }
 
 #endif // SOFTWAREIMPORTERS_H

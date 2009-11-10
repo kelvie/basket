@@ -28,7 +28,7 @@
 /** Class TransparentWidget */
 
 //TODO: Why was Qt::WNoAutoErase used here?
-TransparentWidget::TransparentWidget(Basket *basket)
+TransparentWidget::TransparentWidget(BasketView *basket)
         : QWidget(basket->viewport()), m_basket(basket)
 {
     setFocusPolicy(Qt::NoFocus);

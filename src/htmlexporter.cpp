@@ -45,7 +45,7 @@
 #include <KDE/KColorScheme>
 #include <KDE/KIO/CopyJob>
 
-HTMLExporter::HTMLExporter(Basket *basket)
+HTMLExporter::HTMLExporter(BasketView *basket)
 {
     QDir dir;
 
@@ -92,7 +92,7 @@ HTMLExporter::HTMLExporter(Basket *basket)
     config.sync();
 
     prepareExport(basket, destination);
-    exportBasket(basket, /*isSubBasket*/false);
+    exportBasket(basket, /*isSubBasketView*/false);
 
     progress->setValue(progress->value() + 1); // Finishing finished
 }
@@ -101,7 +101,7 @@ HTMLExporter::~HTMLExporter()
 {
 }
 
-void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
+void HTMLExporter::prepareExport(BasketView *basket, const QString &fullPath)
 {
     progress->setRange(0,/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
     progress->setValue(0);
@@ -132,7 +132,7 @@ void HTMLExporter::prepareExport(Basket *basket, const QString &fullPath)
     progress->setValue(progress->value() + 1); // Preparation finished
 }
 
-void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
+void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
 {
     if (!basket->isLoaded()) {
         basket->load();
@@ -208,7 +208,7 @@ void HTMLExporter::exportBasket(Basket *basket, bool isSubBasket)
     QColor bottomBgColor;
     Note::getGradientColors(basket->backgroundColor(), &topBgColor, &bottomBgColor);
     // Compute the gradient image for notes:
-    QString gradientImageFileName = Basket::saveGradientBackground(basket->backgroundColor(), basket->Q3ScrollView::font(), imagesFolderPath);
+    QString gradientImageFileName = BasketView::saveGradientBackground(basket->backgroundColor(), basket->Q3ScrollView::font(), imagesFolderPath);
 
     // Output the header:
     QString borderColor = Tools::mixColor(basket->backgroundColor(), basket->textColor()).name();
@@ -467,14 +467,14 @@ void HTMLExporter::exportNote(Note *note, int indent)
     }
 }
 
-void HTMLExporter::writeBasketTree(Basket *currentBasket)
+void HTMLExporter::writeBasketTree(BasketView *currentBasket)
 {
     stream << "  <ul class=\"tree\">\n";
     writeBasketTree(currentBasket, exportedBasket, 3);
     stream << "  </ul>\n";
 }
 
-void HTMLExporter::writeBasketTree(Basket *currentBasket, Basket *basket, int indent)
+void HTMLExporter::writeBasketTree(BasketView *currentBasket, BasketView *basket, int indent)
 {
     // Compute variable HTML code:
     QString spaces;

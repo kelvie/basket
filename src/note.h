@@ -32,7 +32,7 @@
 #include "tag.h"
 
 
-class Basket;
+class BasketView;
 class FilterData;
 
 class NoteSelection;
@@ -55,7 +55,7 @@ class BASKET_EXPORT Note
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
 public:
-    Note(Basket *parent = 0);
+    Note(BasketView *parent = 0);
     ~Note();
 
 private:
@@ -151,12 +151,12 @@ public:
 
 /// NOTES VARIOUS PROPERTIES:       // CONTENT MANAGEMENT?
 private:
-    Basket      *m_basket;
+    BasketView  *m_basket;
     NoteContent *m_content;
     QDateTime    m_addedDate;
     QDateTime    m_lastModificationDate;
 public:
-    inline Basket*      basket() const {
+    inline BasketView*      basket() const {
         return m_basket;
     }
     inline NoteContent* content() {
@@ -168,7 +168,7 @@ public:
     inline void setLastModificationDate(const QDateTime &dateTime) {
         m_lastModificationDate = dateTime;
     }
-    inline void setParentBasket(Basket *basket) {
+    inline void setParentBasket(BasketView *basket) {
         m_basket = basket;
     }
     QDateTime addedDate()            {
@@ -196,7 +196,7 @@ public:
     void draw(QPainter *painter, const QRect &clipRect);
     void drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap);
     static void getGradientColors(const QColor &originalBackground, QColor *colorTop, QColor *colorBottom);
-    static void drawExpander(QPainter *painter, int x, int y, const QColor &background, bool expand, Basket *basket);
+    static void drawExpander(QPainter *painter, int x, int y, const QColor &background, bool expand, BasketView *basket);
     void drawHandle(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground);
     void drawResizer(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground, bool rounded);
     void drawRoundings(QPainter *painter, int x, int y, int type, int width = 0, int height = 0);

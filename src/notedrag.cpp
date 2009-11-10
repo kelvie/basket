@@ -375,7 +375,7 @@ bool NoteDrag::canDecode(const QMimeData *source)
     return source->hasFormat(NOTE_MIME_STRING);
 }
 
-Basket* NoteDrag::basketOf(const QMimeData *source)
+BasketView* NoteDrag::basketOf(const QMimeData *source)
 {
     QByteArray srcData = source->data(NOTE_MIME_STRING);
     QBuffer buffer(&srcData);
@@ -384,7 +384,7 @@ Basket* NoteDrag::basketOf(const QMimeData *source)
         // Get the parent basket:
         quint64 basketPointer;
         stream >> (quint64&)basketPointer;
-        return (Basket*)basketPointer;
+        return (BasketView*)basketPointer;
     } else
         return 0;
 }
@@ -412,7 +412,7 @@ QList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
         return QList<Note*>();
 }
 
-Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, bool moveNotes)
+Note* NoteDrag::decode(const QMimeData *source, BasketView *parent, bool moveFiles, bool moveNotes)
 {
     QByteArray srcData = source->data(NOTE_MIME_STRING);
     QBuffer buffer(&srcData);
@@ -421,7 +421,7 @@ Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, 
         // Get the parent basket:
         quint64 basketPointer;
         stream >> (quint64&)basketPointer;
-        Basket *basket = (Basket*)basketPointer;
+        BasketView *basket = (BasketView*)basketPointer;
         // Get the note list:
         quint64          notePointer;
         QList<Note*> notes;
@@ -440,7 +440,7 @@ Note* NoteDrag::decode(const QMimeData *source, Basket *parent, bool moveFiles, 
         return 0;
 }
 
-Note* NoteDrag::decodeHierarchy(QDataStream &stream, Basket *parent, bool moveFiles, bool moveNotes, Basket *originalBasket)
+Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool moveFiles, bool moveNotes, BasketView *originalBasket)
 {
     quint64  notePointer;
     quint64  type;

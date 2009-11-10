@@ -51,7 +51,7 @@
 #include "backgroundmanager.h"
 #include "formatimporter.h"
 
-void Archive::save(Basket *basket, bool withSubBaskets, const QString &destination)
+void Archive::save(BasketView *basket, bool withSubBaskets, const QString &destination)
 {
     QDir dir;
     KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
@@ -86,7 +86,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
     QDomElement root = document.createElement("basketTree");
     document.appendChild(root);
     Global::bnpView->saveSubHierarchy(Global::bnpView->listViewItemForBasket(basket), document, root, withSubBaskets);
-    Basket::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
+    BasketView::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
     tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
     dir.remove(tempFolder + "baskets.xml");
 
@@ -120,7 +120,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
     tar.close();
 
     // Computing the File Preview:
-    Basket *previewBasket = basket; // FIXME: Use the first non-empty basket!
+    BasketView *previewBasket = basket; // FIXME: Use the first non-empty basket!
     QPixmap previewPixmap(previewBasket->visibleWidth(), previewBasket->visibleHeight());
     QPainter painter(&previewPixmap);
     // Save old state, and make the look clean ("smile, you are filmed!"):
@@ -189,7 +189,7 @@ void Archive::save(Basket *basket, bool withSubBaskets, const QString &destinati
     dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
+void Archive::saveBasketToArchive(BasketView *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
 {
     // Basket need to be loaded for tags exportation.
     // We load it NOW so that the progress bar really reflect the state of the exportation:
@@ -243,7 +243,7 @@ void Archive::saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QSt
     }
 }
 
-void Archive::listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list)
+void Archive::listUsedTags(BasketView *basket, bool recursive, QList<Tag*> &list)
 {
     basket->listUsedTags(list);
     BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -463,7 +463,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
         }
         node = node.nextSibling();
     }
-    Basket::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
+    BasketView::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
 }
 
 void Archive::importArchivedBackgroundImages(const QString &extractionFolder)
@@ -548,7 +548,7 @@ void Archive::renameMergedStatesAndBasketIcon(const QString &fullPath, QMap<QStr
     QDomElement notes = XMLWork::getElement(docElem, "notes");
     if (mergedStates.count() > 0)
         renameMergedStates(notes, mergedStates);
-    Basket::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
+    BasketView::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
 }
 
 void Archive::importBasketIcon(QDomElement properties, const QString &extractionFolder)
@@ -611,7 +611,7 @@ void Archive::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedS
     }
 }
 
-void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent)
+void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, BasketView *parent)
 {
     bool basketSetAsCurrent = (parent != 0);
     QDomNode n = basketNode;
@@ -628,7 +628,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
                 dir.rmdir(Global::basketsFolder() + newFolderName);
                 copier.moveFolder(extractionFolder + "baskets/" + folderName, Global::basketsFolder() + newFolderName);
                 // Append and load the basket in the tree:
-                Basket *basket = Global::bnpView->loadBasket(newFolderName);
+                BasketView *basket = Global::bnpView->loadBasket(newFolderName);
                 BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
                 basketItem->setExpanded(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
                 QDomElement properties = XMLWork::getElement(element, "properties");

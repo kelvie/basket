@@ -109,7 +109,7 @@ SystemTray::~SystemTray()
 /** Updates the icon and tooltip in the system tray */
 void SystemTray::updateDisplay()
 {
-    Basket *basket = Global::bnpView->currentBasket();
+    BasketView *basket = Global::bnpView->currentBasket();
     if (!basket)
         return;
 
@@ -263,13 +263,13 @@ void SystemTray::dragEnterEvent(QDragEnterEvent *event)
 {
     m_showTimer->start(Settings::dropTimeToShow() * 100, true);
     Global::bnpView->currentBasket()->showFrameInsertTo();
-/// m_parentContainer->setStatusBarDrag(); // FIXME: move this line in Basket::showFrameInsertTo() ?
-    Basket::acceptDropEvent(event);
+/// m_parentContainer->setStatusBarDrag(); // FIXME: move this line in BasketView::showFrameInsertTo() ?
+    BasketView::acceptDropEvent(event);
 }
 
 void SystemTray::dragMoveEvent(QDragMoveEvent *event)
 {
-    Basket::acceptDropEvent(event);
+    BasketView::acceptDropEvent(event);
 }
 
 void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
@@ -288,7 +288,7 @@ void SystemTray::dropEvent(QDropEvent *event)
 
     Global::bnpView->currentBasket()->blindDrop(event);
 
-    /*  Basket *basket = Global::bnpView->currentBasket();
+    /*  BasketView *basket = Global::bnpView->currentBasket();
         if (!basket->isLoaded()) {
             Global::bnpView->showPassiveLoading(basket);
             basket->load();
@@ -304,7 +304,7 @@ void SystemTray::updateToolTip()
 {
 //  return; /////////////////////////////////////////////////////
 
-    Basket *basket = Global::bnpView->currentBasket();
+    BasketView *basket = Global::bnpView->currentBasket();
     if (!basket)
         return;
 
@@ -336,7 +336,7 @@ void SystemTray::updateToolTip()
 
 void SystemTray::updateToolTipDelayed()
 {
-    Basket *basket = Global::bnpView->currentBasket();
+    BasketView *basket = Global::bnpView->currentBasket();
 
     QString tip = "<p><nobr>" + (basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
                                  : KDialog::makeStandardCaption("%1"))

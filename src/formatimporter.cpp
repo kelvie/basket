@@ -234,8 +234,8 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
                 QDomElement annotNote = document->createElement("note");
                 annotNote.setAttribute("type", "text");
                 annotGroup.appendChild(annotNote);
-                QString annotFileName = Tools::fileNameForNewFile("annotations1.txt", Basket::fullPathForFolderName(folderName));
-                QString annotFullPath = Basket::fullPathForFolderName(folderName) + "/" + annotFileName;
+                QString annotFileName = Tools::fileNameForNewFile("annotations1.txt", BasketView::fullPathForFolderName(folderName));
+                QString annotFullPath = BasketView::fullPathForFolderName(folderName) + "/" + annotFileName;
                 QFile file(annotFullPath);
                 if (file.open(QIODevice::WriteOnly)) {
                     QTextStream stream(&file);

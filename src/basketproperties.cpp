@@ -46,7 +46,7 @@
 #include "global.h"
 #include "backgroundmanager.h"
 
-BasketPropertiesDialog::BasketPropertiesDialog(Basket *basket, QWidget *parent)
+BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *parent)
         : KDialog(parent)
         , m_basket(basket)
 {

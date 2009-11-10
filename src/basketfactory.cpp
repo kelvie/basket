@@ -70,7 +70,7 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
         QTextStream stream(&file);
         stream.setCodec("UTF-8");
         int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
-        Basket *currentBasket = Global::bnpView->currentBasket();
+        BasketView *currentBasket = Global::bnpView->currentBasket();
         int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns - 1) * Note::RESIZER_WIDTH) / nbColumns : 0);
         stream << QString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
                           "<!DOCTYPE basket>\n"
@@ -100,7 +100,7 @@ void BasketFactory::newBasket(const QString &icon,
                               const QColor  &backgroundColor,
                               const QColor  &textColor,
                               const QString &templateName,
-                              Basket *parent)
+                              BasketView *parent)
 {
     // Unpack the templateName file to a new basket folder:
     QString folderName = unpackTemplate(templateName);

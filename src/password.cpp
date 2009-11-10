@@ -60,7 +60,7 @@ PasswordDlg::~PasswordDlg()
 void PasswordDlg::accept()
 {
     int n = type();
-    if (n == Basket::PrivateKeyEncryption && key().isEmpty())
+    if (n == BasketView::PrivateKeyEncryption && key().isEmpty())
         KMessageBox::error(w, i18n("No private key selected."));
     else
         KDialog::accept();
@@ -80,11 +80,11 @@ QString PasswordDlg::key() const
 int PasswordDlg::type() const
 {
     if (w->noPasswordRadioButton->isChecked())
-        return Basket::NoEncryption;
+        return BasketView::NoEncryption;
     else if (w->passwordRadioButton->isChecked())
-        return Basket::PasswordEncryption;
+        return BasketView::PasswordEncryption;
     else if (w->publicPrivateRadioButton->isChecked())
-        return Basket::PrivateKeyEncryption;
+        return BasketView::PrivateKeyEncryption;
     return -1;
 }
 
@@ -100,11 +100,11 @@ void PasswordDlg::setKey(const QString& key)
 
 void PasswordDlg::setType(int type)
 {
-    if (type == Basket::NoEncryption)
+    if (type == BasketView::NoEncryption)
         w->noPasswordRadioButton->setChecked(true);
-    else if (type == Basket::PasswordEncryption)
+    else if (type == BasketView::PasswordEncryption)
         w->passwordRadioButton->setChecked(true);
-    else if (type == Basket::PrivateKeyEncryption)
+    else if (type == BasketView::PrivateKeyEncryption)
         w->publicPrivateRadioButton->setChecked(true);
 }
 

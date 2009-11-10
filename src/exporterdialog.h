@@ -27,7 +27,7 @@ class KUrlRequester;
 class QCheckBox;
 class QString;
 
-class Basket;
+class BasketView;
 
 /**
   * @author Sébastien Laoût
@@ -36,7 +36,7 @@ class ExporterDialog : public KDialog
 {
     Q_OBJECT
 public:
-    ExporterDialog(Basket *basket, QWidget *parent = 0, const char *name = 0);
+    ExporterDialog(BasketView *basket, QWidget *parent = 0, const char *name = 0);
     ~ExporterDialog();
     QString filePath();
     bool    embedLinkedFiles();
@@ -50,7 +50,7 @@ protected slots:
     void save();
     void accept();
 private:
-    Basket        *m_basket;
+    BasketView    *m_basket;
     KUrlRequester *m_url;
     QCheckBox     *m_embedLinkedFiles;
     QCheckBox     *m_embedLinkedFolders;

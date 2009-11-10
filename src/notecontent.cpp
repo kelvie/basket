@@ -135,7 +135,7 @@ void NoteContent::contentChanged(int newMinWidth)
     }
 }
 
-Basket* NoteContent::basket()
+BasketView* NoteContent::basket()
 {
     if (note())
         return note()->basket();
@@ -1786,10 +1786,10 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     //            << "IsDir:"  + QString::number(fInfo.isDir());
         if (exportData.embedLinkedFiles && fInfo.isFile()) {
     //      DEBUG_WIN << "Embed file";
-            linkURL = exportData.dataFolderName + Basket::copyFile(url().path(), exportData.dataFolderPath, true);
+            linkURL = exportData.dataFolderName + BasketView::copyFile(url().path(), exportData.dataFolderPath, true);
         } else if (exportData.embedLinkedFolders && fInfo.isDir()) {
     //      DEBUG_WIN << "Embed folder";
-            linkURL = exportData.dataFolderName + Basket::copyFile(url().path(), exportData.dataFolderPath, true);
+            linkURL = exportData.dataFolderName + BasketView::copyFile(url().path(), exportData.dataFolderPath, true);
         } else {
     //      DEBUG_WIN << "Embed LINK";
     */

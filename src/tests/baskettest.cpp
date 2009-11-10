@@ -24,16 +24,16 @@
 #include "note.h"
 #include "basket.h"
 
-class BasketTest: public QObject
+class BasketViewTest: public QObject
 {
 Q_OBJECT
 private Q_SLOTS:
     void testCreation();
 };
 
-QTEST_KDEMAIN(BasketTest, GUI)
+QTEST_KDEMAIN(BasketViewTest, GUI)
 
-void BasketTest::testCreation()
+void BasketViewTest::testCreation()
 {
 
 }

@@ -26,7 +26,7 @@
 
 class QProgressBar;
 
-class Basket;
+class BasketView;
 class Note;
 
 /**
@@ -35,14 +35,14 @@ class Note;
 class HTMLExporter
 {
 public:
-    HTMLExporter(Basket *basket);
+    HTMLExporter(BasketView *basket);
     ~HTMLExporter();
 private:
-    void prepareExport(Basket *basket, const QString &fullPath);
-    void exportBasket(Basket *basket, bool isSubBasket);
+    void prepareExport(BasketView *basket, const QString &fullPath);
+    void exportBasket(BasketView *basket, bool isSubBasket);
     void exportNote(Note *note, int indent);
-    void writeBasketTree(Basket *currentBasket);
-    void writeBasketTree(Basket *currentBasket, Basket *basket, int indent);
+    void writeBasketTree(BasketView *currentBasket);
+    void writeBasketTree(BasketView *currentBasket, BasketView *basket, int indent);
 
 public:
     QString copyIcon(const QString &iconName, int size);
@@ -71,7 +71,7 @@ public:
 
     // Variables used by every export methods:
     QTextStream stream;
-    Basket *exportedBasket;
+    BasketView *exportedBasket;
     bool withBasketTree;
     QProgressBar *progress;
 };

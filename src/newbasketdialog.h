@@ -31,7 +31,7 @@ class QLineEdit;
 class QMimeData;
 class QComboBox;
 
-class Basket;
+class BasketView;
 
 class KColorCombo2;
 
@@ -79,7 +79,7 @@ class NewBasketDialog : public KDialog
 {
     Q_OBJECT
 public:
-    NewBasketDialog(Basket *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
+    NewBasketDialog(BasketView *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
     ~NewBasketDialog();
     void ensurePolished();
 protected slots:
@@ -95,7 +95,7 @@ private:
     KColorCombo2               *m_backgroundColor;
     QListWidget                 *m_templates;
     QComboBox                  *m_createIn;
-    QMap<int, Basket*>          m_basketsMap;
+    QMap<int, BasketView*>          m_basketsMap;
 };
 
 #endif // NEWBASKETDIALOG_H

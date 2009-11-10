@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-class Basket;
+class BasketView;
 class QPaintEvent;
 class QMouseEvent;
 class QObject;
@@ -32,7 +32,7 @@ class TransparentWidget : public QWidget
 {
     Q_OBJECT
 public:
-    TransparentWidget(Basket *basket);
+    TransparentWidget(BasketView *basket);
     void setPosition(int x, int y);
     //void reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt = FALSE);
 protected:
@@ -40,7 +40,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
 private:
-    Basket *m_basket;
+    BasketView *m_basket;
     int     m_x;
     int     m_y;
 };

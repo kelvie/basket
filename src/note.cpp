@@ -83,7 +83,7 @@ int Note::TAG_ARROW_WIDTH  = 5;
 int Note::EMBLEM_SIZE      = 16;
 int Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
 
-Note::Note(Basket *parent)
+Note::Note(BasketView *parent)
         : d(new NotePrivate),
         m_groupWidth(250),
         m_isFolded(false), m_firstChild(0L), m_parentNote(0),
@@ -1362,7 +1362,7 @@ void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBotto
 
 void Note::drawExpander(QPainter *painter, int x, int y,
                         const QColor &background, bool expand,
-                        Basket *basket)
+                        BasketView *basket)
 {
     QStyleOption opt;
     opt.state = (expand ? QStyle::State_On : QStyle::State_Off);
@@ -2312,7 +2312,7 @@ void Note::addStateToSelectedNotes(State *state, bool orReplace)
         addState(state, orReplace);
 
     FOR_EACH_CHILD(child)
-    child->addStateToSelectedNotes(state, orReplace); // TODO: Basket::addStateToSelectedNotes() does not have orReplace
+    child->addStateToSelectedNotes(state, orReplace); // TODO: BasketView::addStateToSelectedNotes() does not have orReplace
 }
 
 void Note::changeStateOfSelectedNotes(State *state)
@@ -2750,7 +2750,7 @@ bool Note::tryFoldParent()        // TODO: withCtrl  ? withShift  ?
 
 int Note::distanceOnLeftRight(Note *note, int side)
 {
-    if (side == Basket::RIGHT_SIDE) {
+    if (side == BasketView::RIGHT_SIDE) {
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
         if (finalX() > note->finalX() || finalRightLimit() > note->finalRightLimit())
             return -1;
@@ -2762,7 +2762,7 @@ int Note::distanceOnLeftRight(Note *note, int side)
     if (finalX() == note->finalX() && finalRightLimit() == note->finalRightLimit())
         return -1;
 
-    float thisCenterX = finalX() + (side == Basket::LEFT_SIDE ? width() : /*RIGHT_SIDE:*/ 0);
+    float thisCenterX = finalX() + (side == BasketView::LEFT_SIDE ? width() : /*RIGHT_SIDE:*/ 0);
     float thisCenterY = finalY() + finalHeight() / 2;
     float noteCenterX = note->finalX() + note->width() / 2;
     float noteCenterY = note->finalY() + note->finalHeight() / 2;
@@ -2785,7 +2785,7 @@ int Note::distanceOnLeftRight(Note *note, int side)
 
 int Note::distanceOnTopBottom(Note *note, int side)
 {
-    if (side == Basket::BOTTOM_SIDE) {
+    if (side == BasketView::BOTTOM_SIDE) {
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
         if (finalY() > note->finalY() || finalBottom() > note->finalBottom())
             return -1;
@@ -2798,7 +2798,7 @@ int Note::distanceOnTopBottom(Note *note, int side)
         return -1;
 
     float thisCenterX = finalX() + width() / 2;
-    float thisCenterY = finalY() + (side == Basket::TOP_SIDE ? finalHeight() : /*BOTTOM_SIDE:*/ 0);
+    float thisCenterY = finalY() + (side == BasketView::TOP_SIDE ? finalHeight() : /*BOTTOM_SIDE:*/ 0);
     float noteCenterX = note->finalX() + note->width() / 2;
     float noteCenterY = note->finalY() + note->finalHeight() / 2;
 

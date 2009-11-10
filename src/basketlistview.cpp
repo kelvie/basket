@@ -45,28 +45,28 @@
 
 /** class BasketListViewItem: */
 
-BasketListViewItem::BasketListViewItem(QTreeWidget *parent, Basket *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidget *parent, BasketView *basket)
         : QTreeWidgetItem(parent), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, Basket *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, BasketView *basket)
         : QTreeWidgetItem(parent), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, Basket *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketView *basket)
         : QTreeWidgetItem(parent, after), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, Basket *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketView *basket)
         : QTreeWidgetItem(parent, after), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
@@ -513,7 +513,7 @@ void BasketTreeListView::resizeEvent(QResizeEvent *event)
  */
 void BasketTreeListView::focusInEvent(QFocusEvent*)
 {
-    Basket *basket = Global::bnpView->currentBasket();
+    BasketView *basket = Global::bnpView->currentBasket();
     if (basket)
         basket->setFocus();
 }

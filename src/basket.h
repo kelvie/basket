@@ -67,7 +67,7 @@ class KGpgMe;
 /**
   * @author Sébastien Laoût
   */
-class Basket : public Q3ScrollView
+class BasketView : public Q3ScrollView
 {
     Q_OBJECT
 public:
@@ -79,8 +79,8 @@ public:
 
 public:
 /// CONSTRUCTOR AND DESTRUCTOR:
-    Basket(QWidget *parent, const QString &folderName);
-    ~Basket();
+    BasketView(QWidget *parent, const QString &folderName);
+    ~BasketView();
 
 /// USER INTERACTION:
 private:
@@ -426,8 +426,8 @@ signals:
     void postMessage(const QString &message);      /// << Post a temporar message in the statusBar.
     void setStatusBarText(const QString &message); /// << Set the permanent statusBar text or reset it if message isEmpty().
     void resetStatusBarText();                     /// << Equivalent to setStatusBarText("").
-    void propertiesChanged(Basket *basket);
-    void countsChanged(Basket *basket);
+    void propertiesChanged(BasketView *basket);
+    void countsChanged(BasketView *basket);
 public slots:
     void linkLookChanged();
     void signalCountsChanged();

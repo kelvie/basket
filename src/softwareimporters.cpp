@@ -234,7 +234,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     return "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
 }
 
-Note* SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
+Note* SoftwareImporters::insertTitledNote(BasketView *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
 {
     Note *nGroup = new Note(parent);
 
@@ -256,7 +256,7 @@ Note* SoftwareImporters::insertTitledNote(Basket *parent, const QString &title, 
     return nGroup;
 }
 
-void SoftwareImporters::finishImport(Basket *basket)
+void SoftwareImporters::finishImport(BasketView *basket)
 {
     // Unselect the last inserted group:
     basket->unselectAll();
@@ -283,7 +283,7 @@ void SoftwareImporters::importKJots()
         return;
 
     BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/i18n("From KJots"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-    Basket *kjotsBasket = Global::bnpView->currentBasket();
+    BasketView *kjotsBasket = Global::bnpView->currentBasket();
 
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
         QFile file(dirPath + *it);
@@ -296,7 +296,7 @@ void SoftwareImporters::importKJots()
 
                 // First create a basket for it:
                 BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.fileName()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
-                Basket *basket = Global::bnpView->currentBasket();
+                BasketView *basket = Global::bnpView->currentBasket();
                 basket->load();
 
                 QString title, body;
@@ -336,7 +336,7 @@ void SoftwareImporters::importKJots()
 
                 // First create a basket for it:
                 BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/bookTitle, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
-                Basket *basket = Global::bnpView->currentBasket();
+                BasketView *basket = Global::bnpView->currentBasket();
                 basket->load();
 
                 QDomElement docElem = XMLWork::getElement(doc->documentElement(), "KJotsBook");
@@ -370,7 +370,7 @@ void SoftwareImporters::importKNotes()
 
             // First create a basket for it:
             BasketFactory::newBasket(/*icon=*/"knotes", /*name=*/i18n("From KNotes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-            Basket *basket = Global::bnpView->currentBasket();
+            BasketView *basket = Global::bnpView->currentBasket();
             basket->load();
 
             bool inVJournal    = false;
@@ -441,7 +441,7 @@ void SoftwareImporters::importStickyNotes()
 
         // First create a basket for it:
         BasketFactory::newBasket(/*icon=*/"gnome", /*name=*/i18n("From Sticky Notes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-        Basket *basket = Global::bnpView->currentBasket();
+        BasketView *basket = Global::bnpView->currentBasket();
         basket->load();
 
         QDomElement docElem = doc->documentElement();
@@ -478,7 +478,7 @@ void SoftwareImporters::importTomboy()
     QString dirPath = QDir::home().absolutePath() + "/.tomboy/"; // I thing the assumption is good
     QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
-    Basket *basket = 0; // Create the basket ONLY if we found at least one note to add!
+    BasketView *basket = 0; // Create the basket ONLY if we found at least one note to add!
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
@@ -540,7 +540,7 @@ void SoftwareImporters::importTextFile()
         // First create a basket for it:
         QString title = i18nc("From TextFile.txt", "From %1", KUrl(fileName).fileName());
         BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-        Basket *basket = Global::bnpView->currentBasket();
+        BasketView *basket = Global::bnpView->currentBasket();
         basket->load();
 
         // Import every notes:
@@ -563,8 +563,8 @@ void SoftwareImporters::importKnowIt()
     if (!url.isEmpty()) {
         QFile file(url.path());
         QFileInfo info(url.path());
-        Basket* basket = 0;
-        QStack<Basket*> baskets;
+        BasketView* basket = 0;
+        QStack<BasketView*> baskets;
         QString text;
         int hierarchy = 0;
 
@@ -684,7 +684,7 @@ void SoftwareImporters::importTuxCards()
 
 // TODO: <InformationElement isOpen="true" isEncripted="false"
 
-void SoftwareImporters::importTuxCardsNode(const QDomElement &element, Basket *parentBasket, Note *parentNote, int remainingHierarchy)
+void SoftwareImporters::importTuxCardsNode(const QDomElement &element, BasketView *parentBasket, Note *parentNote, int remainingHierarchy)
 {
     for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
         QDomElement e = n.toElement();
@@ -708,7 +708,7 @@ void SoftwareImporters::importTuxCardsNode(const QDomElement &element, Basket *p
 
         if (remainingHierarchy > 0) {
             BasketFactory::newBasket(icon, name, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", parentBasket);
-            Basket *basket = Global::bnpView->currentBasket();
+            BasketView *basket = Global::bnpView->currentBasket();
             basket->load();
 
             if (isRichText)

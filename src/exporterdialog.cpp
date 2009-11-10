@@ -34,7 +34,7 @@
 #include "basket.h"
 #include "global.h"
 
-ExporterDialog::ExporterDialog(Basket *basket, QWidget *parent, const char *name)
+ExporterDialog::ExporterDialog(BasketView *basket, QWidget *parent, const char *name)
         : KDialog(parent)
         , m_basket(basket)
 {

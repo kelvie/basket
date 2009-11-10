@@ -33,7 +33,7 @@
 class QLineEdit;
 class QListWidgetItem;
 
-class Basket;
+class BasketView;
 
 /** A widget to select a command to run,
   * with a QLineEdit and a QPushButton.

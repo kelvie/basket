@@ -51,7 +51,7 @@ class KTar;
 class DesktopColorPicker;
 class RegionGrabber;
 
-class Basket;
+class BasketView;
 class DecoratedBasket;
 class BasketListViewItem;
 class NoteSelection;
@@ -77,11 +77,11 @@ public:
     void linkLookChanged();
     void filterPlacementChanged(bool onTop);
     /// MANAGE BASKETS:
-    BasketListViewItem* listViewItemForBasket(Basket *basket);
-    Basket* currentBasket();
-    Basket* parentBasketOf(Basket *basket);
-    void setCurrentBasket(Basket *basket);
-    void removeBasket(Basket *basket);
+    BasketListViewItem* listViewItemForBasket(BasketView *basket);
+    BasketView* currentBasket();
+    BasketView* parentBasketOf(BasketView *basket);
+    void setCurrentBasket(BasketView *basket);
+    void removeBasket(BasketView *basket);
     /// For NewBasketDialog (and later some other classes):
     int topLevelItemCount();
     ///
@@ -94,17 +94,17 @@ public:
 private:
     QDomElement basketElement(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement);
 public slots:
-    void countsChanged(Basket *basket);
+    void countsChanged(BasketView *basket);
     void notesStateChanged();
     bool convertTexts();
 
-    void updateBasketListViewItem(Basket *basket);
+    void updateBasketListViewItem(BasketView *basket);
     void save();
     void save(QTreeWidget* listView, QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
     void saveSubHierarchy(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
     void load();
     void load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets);
-    void loadNewBasket(const QString &folderName, const QDomElement &properties, Basket *parent);
+    void loadNewBasket(const QString &folderName, const QDomElement &properties, BasketView *parent);
     void goToPreviousBasket();
     void goToNextBasket();
     void foldBasket();
@@ -164,7 +164,7 @@ public slots:
     void showPassiveContent(bool forceShow = false);
     void showPassiveContentForced();
     void showPassiveImpossible(const QString &message);
-    void showPassiveLoading(Basket *basket);
+    void showPassiveLoading(BasketView *basket);
     // For GUI :
     void setFiltering(bool filtering);
     /** Edit */
@@ -181,9 +181,9 @@ public slots:
     void grabScreenshot(bool global = false);
     void grabScreenshotGlobal();
     void screenshotGrabbed(const QPixmap &pixmap);
-    /** Basket */
+    /** BasketView */
     void askNewBasket();
-    void askNewBasket(Basket *parent, Basket *pickProperties);
+    void askNewBasket(BasketView *parent, BasketView *pickProperties);
     void askNewSubBasket();
     void askNewSiblingBasket();
     void aboutToHideNewBasketPopup();
@@ -191,7 +191,7 @@ public slots:
     void cancelNewBasketPopup();
     void propBasket();
     void delBasket();
-    void doBasketDeletion(Basket *basket);
+    void doBasketDeletion(BasketView *basket);
     void password();
     void saveAsArchive();
     void openArchive();
@@ -282,11 +282,11 @@ private:
     DecoratedBasket* currentDecoratedBasket();
 
 public:
-    Basket* loadBasket(const QString &folderName); // Public only for class Archive
-    BasketListViewItem* appendBasket(Basket *basket, QTreeWidgetItem *parentItem); // Public only for class Archive
+    BasketView* loadBasket(const QString &folderName); // Public only for class Archive
+    BasketListViewItem* appendBasket(BasketView *basket, QTreeWidgetItem *parentItem); // Public only for class Archive
 
-    Basket* basketForFolderName(const QString &folderName);
-    Note* noteForFileName(const QString &fileName, Basket &basket, Note* note = 0);
+    BasketView* basketForFolderName(const QString &folderName);
+    Note* noteForFileName(const QString &fileName, BasketView &basket, Note* note = 0);
     KMenu* popupMenu(const QString &menuName);
     bool isPart();
     bool isMainWindowActive();

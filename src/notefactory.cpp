@@ -64,7 +64,7 @@
 
 /** Create notes from scratch (just a content) */
 
-Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool reallyPlainText/* = false*/)
+Note* NoteFactory::createNoteText(const QString &text, BasketView *parent, bool reallyPlainText/* = false*/)
 {
     Note *note = new Note(parent);
     if (reallyPlainText) {
@@ -80,7 +80,7 @@ Note* NoteFactory::createNoteText(const QString &text, Basket *parent, bool real
     return note;
 }
 
-Note* NoteFactory::createNoteHtml(const QString &html, Basket *parent)
+Note* NoteFactory::createNoteHtml(const QString &html, BasketView *parent)
 {
     Note *note = new Note(parent);
     HtmlContent *content = new HtmlContent(note, createFileForNewNote(parent, "html"));
@@ -89,21 +89,21 @@ Note* NoteFactory::createNoteHtml(const QString &html, Basket *parent)
     return note;
 }
 
-Note* NoteFactory::createNoteLink(const KUrl &url, Basket *parent)
+Note* NoteFactory::createNoteLink(const KUrl &url, BasketView *parent)
 {
     Note *note = new Note(parent);
     new LinkContent(note, url, titleForURL(url), iconForURL(url), /*autoTitle=*/true, /*autoIcon=*/true);
     return note;
 }
 
-Note* NoteFactory::createNoteLink(const KUrl &url, const QString &title, Basket *parent)
+Note* NoteFactory::createNoteLink(const KUrl &url, const QString &title, BasketView *parent)
 {
     Note *note = new Note(parent);
     new LinkContent(note, url, title, iconForURL(url), /*autoTitle=*/false, /*autoIcon=*/true);
     return note;
 }
 
-Note* NoteFactory::createNoteImage(const QPixmap &image, Basket *parent)
+Note* NoteFactory::createNoteImage(const QPixmap &image, BasketView *parent)
 {
     Note *note = new Note(parent);
     ImageContent *content = new ImageContent(note, createFileForNewNote(parent, "png"));
@@ -112,7 +112,7 @@ Note* NoteFactory::createNoteImage(const QPixmap &image, Basket *parent)
     return note;
 }
 
-Note* NoteFactory::createNoteColor(const QColor &color, Basket *parent)
+Note* NoteFactory::createNoteColor(const QColor &color, BasketView *parent)
 {
     Note *note = new Note(parent);
     new ColorContent(note, color);
@@ -192,7 +192,7 @@ QStringList NoteFactory::textToURLList(const QString &text)
     return list;
 }
 
-Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
+Note* NoteFactory::createNoteFromText(const QString &text, BasketView *parent)
 {
     /* Search for a color (#RGB , #RRGGBB , #RRRGGGBBB , #RRRRGGGGBBBB) and create a color note */
     QRegExp exp("^#(?:[a-fA-F\\d]{3}){1,4}$");
@@ -240,7 +240,7 @@ Note* NoteFactory::createNoteFromText(const QString &text, Basket *parent)
         return createNoteText(/*newT*/text, parent);
 }
 
-Note* NoteFactory::createNoteLauncher(const KUrl &url, Basket *parent)
+Note* NoteFactory::createNoteLauncher(const KUrl &url, BasketView *parent)
 {
     if (url.isEmpty())
         return createNoteLauncher("", "", "", parent);
@@ -248,7 +248,7 @@ Note* NoteFactory::createNoteLauncher(const KUrl &url, Basket *parent)
         return copyFileAndLoad(url, parent);
 }
 
-Note* NoteFactory::createNoteLauncher(const QString &command, const QString &name, const QString &icon, Basket *parent)
+Note* NoteFactory::createNoteLauncher(const QString &command, const QString &name, const QString &icon, BasketView *parent)
 {
     QString fileName = createNoteLauncherFile(command, name, icon, parent);
     if (fileName.isEmpty())
@@ -257,7 +257,7 @@ Note* NoteFactory::createNoteLauncher(const QString &command, const QString &nam
         return loadFile(fileName, parent);
 }
 
-QString NoteFactory::createNoteLauncherFile(const QString &command, const QString &name, const QString &icon, Basket *parent)
+QString NoteFactory::createNoteLauncherFile(const QString &command, const QString &name, const QString &icon, BasketView *parent)
 {
     QString content = QString(
                           "[Desktop Entry]\n"
@@ -280,7 +280,7 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
         return QString();
 }
 
-Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
+Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, BasketView *parent)
 {
     // IMPORTANT: we create the service ONLY if the extension is ".desktop".
     //            Otherwise, KService take a long time to analyse all the file
@@ -299,7 +299,7 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, Basket *parent)
 }
 
 
-bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *parent, Qt::DropAction action)
+bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, BasketView *parent, Qt::DropAction action)
 {
     if (NoteDrag::canDecode(source))
         return action == Qt::MoveAction && NoteDrag::basketOf(source) == parent;
@@ -307,7 +307,7 @@ bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, Basket *pa
         return false;
 }
 
-Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDrop, Qt::DropAction action, Note */*noteSource*/)
+Note* NoteFactory::dropNote(const QMimeData *source, BasketView *parent, bool fromDrop, Qt::DropAction action, Note */*noteSource*/)
 {
     Note *note = 0L;
 
@@ -446,7 +446,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, Basket *parent, bool fromDr
     return note;
 }
 
-Note* NoteFactory::createNoteUnknown(const QMimeData *source, Basket *parent/*, const QString &annotations*/)
+Note* NoteFactory::createNoteUnknown(const QMimeData *source, BasketView *parent/*, const QString &annotations*/)
 {
     // Save the MimeSource in a file: create and open the file:
     QString fileName = createFileForNewNote(parent, "unknown");
@@ -476,7 +476,7 @@ Note* NoteFactory::createNoteUnknown(const QMimeData *source, Basket *parent/*, 
     return note;
 }
 
-Note* NoteFactory::dropURLs(KUrl::List urls, Basket *parent, Qt::DropAction action, bool fromDrop)
+Note* NoteFactory::dropURLs(KUrl::List urls, BasketView *parent, Qt::DropAction action, bool fromDrop)
 {
     int  shouldAsk    = 0; // shouldAsk==0: don't ask ; shouldAsk==1: ask for "file" ; shouldAsk>=2: ask for "files"
     bool shiftPressed = Keyboard::shiftPressed();
@@ -592,7 +592,7 @@ void NoteFactory::consumeContent(QDataStream &stream, NoteType::Id type)
     }
 }
 
-Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, Basket *parent)
+Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, BasketView *parent)
 {
     /*  if (type == NoteType::Text) {
         QString text;
@@ -684,7 +684,7 @@ bool NoteFactory::maybeLauncher(const KUrl &url)
 
 ////////////// NEW:
 
-Note* NoteFactory::copyFileAndLoad(const KUrl &url, Basket *parent)
+Note* NoteFactory::copyFileAndLoad(const KUrl &url, BasketView *parent)
 {
     QString fileName = fileNameForNewNote(parent, url.fileName());
     QString fullPath = parent->fullPathForFileName(fileName);
@@ -704,7 +704,7 @@ Note* NoteFactory::copyFileAndLoad(const KUrl &url, Basket *parent)
     return loadFile(fileName, type, parent);
 }
 
-Note* NoteFactory::moveFileAndLoad(const KUrl &url, Basket *parent)
+Note* NoteFactory::moveFileAndLoad(const KUrl &url, BasketView *parent)
 {
     // Globally the same as copyFileAndLoad() but move instead of copy (KIO::move())
     QString fileName = fileNameForNewNote(parent, url.fileName());
@@ -727,7 +727,7 @@ Note* NoteFactory::moveFileAndLoad(const KUrl &url, Basket *parent)
     return loadFile(fileName, type, parent);
 }
 
-Note* NoteFactory::loadFile(const QString &fileName, Basket *parent)
+Note* NoteFactory::loadFile(const QString &fileName, BasketView *parent)
 {
     // The file MUST exists
     QFileInfo file(KUrl(parent->fullPathForFileName(fileName)).path());
@@ -739,7 +739,7 @@ Note* NoteFactory::loadFile(const QString &fileName, Basket *parent)
     return note;
 }
 
-Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, Basket *parent)
+Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, BasketView *parent)
 {
     Note *note = new Note(parent);
     switch (type) {
@@ -761,7 +761,7 @@ Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, Basket *
     return note;
 }
 
-NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
+NoteType::Id NoteFactory::typeForURL(const KUrl &url, BasketView */*parent*/)
 {
     /*  KMimeType::Ptr kMimeType = KMimeType::findByUrl(url);
         if (Global::debugWindow)
@@ -798,7 +798,7 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, Basket */*parent*/)
     else                                                     return NoteType::File;
 }
 
-QString NoteFactory::fileNameForNewNote(Basket *parent, const QString &wantedName)
+QString NoteFactory::fileNameForNewNote(BasketView *parent, const QString &wantedName)
 {
     return Tools::fileNameForNewFile(wantedName, parent->fullPath());
 }
@@ -806,7 +806,7 @@ QString NoteFactory::fileNameForNewNote(Basket *parent, const QString &wantedNam
 // Create a file to store a new note in Basket parent and with extension extension.
 // If wantedName is provided, the function will first try to use this file name, or derive it if it's impossible
 //  (extension willn't be used for that case)
-QString NoteFactory::createFileForNewNote(Basket *parent, const QString &extension, const QString &wantedName)
+QString NoteFactory::createFileForNewNote(BasketView *parent, const QString &extension, const QString &wantedName)
 {
     static int nb = 1;
 
@@ -941,7 +941,7 @@ bool NoteFactory::isIconExist(const QString &icon)
            ).isNull();
 }
 
-Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)
+Note* NoteFactory::createEmptyNote(NoteType::Id type, BasketView *parent)
 {
     QPixmap *pixmap;
     switch (type) {
@@ -969,7 +969,7 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, Basket *parent)
     }
 }
 
-Note* NoteFactory::importKMenuLauncher(Basket *parent)
+Note* NoteFactory::importKMenuLauncher(BasketView *parent)
 {
     KOpenWithDialog dialog(parent);
     dialog.setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
@@ -985,7 +985,7 @@ Note* NoteFactory::importKMenuLauncher(Basket *parent)
     return 0;
 }
 
-Note* NoteFactory::importIcon(Basket *parent)
+Note* NoteFactory::importIcon(BasketView *parent)
 {
     QString iconName = KIconDialog::getIcon(KIconLoader::Desktop, KIconLoader::Application, false, Settings::defIconSize());
     if (! iconName.isEmpty()) {
@@ -1000,7 +1000,7 @@ Note* NoteFactory::importIcon(Basket *parent)
     return 0;
 }
 
-Note* NoteFactory::importFileContent(Basket *parent)
+Note* NoteFactory::importFileContent(BasketView *parent)
 {
     KUrl url = KFileDialog::getOpenUrl(KUrl(), "", parent,
                                        i18n("Load File Content into a Note"));

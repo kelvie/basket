@@ -23,7 +23,7 @@
 
 class QString;
 
-class Basket;
+class BasketView;
 
 /** Methods to create various baskets (mkdir, init the properties and load it).
   * @author Sébastien Laoût
@@ -37,7 +37,7 @@ void newBasket(const QString &icon,
                const QColor  &backgroundColor,
                const QColor  &textColor,
                const QString &templateName,
-               Basket *parent);
+               BasketView *parent);
 /** Internal tool methods to process the method above: */
 QString newFolderName();
 QString unpackTemplate(const QString &templateName);

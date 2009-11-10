@@ -22,7 +22,7 @@
 #define DECORATEDBASKET_H
 
 class QString;
-class Basket;
+class BasketView;
 class QVBoxLayout;
 
 #include <QWidget>
@@ -49,12 +49,12 @@ public:
     FilterBar* filterBar()         {
         return m_filter;
     }
-    Basket*    basket()            {
+    BasketView*    basket()            {
         return m_basket;
     }
 private:
     QVBoxLayout *m_layout;
     FilterBar   *m_filter;
-    Basket      *m_basket;
+    BasketView  *m_basket;
 };
 #endif // DECORATEDBASKET_H

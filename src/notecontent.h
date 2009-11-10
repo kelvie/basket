@@ -54,7 +54,7 @@ class PreviewJob;
 }
 
 class Note;
-class Basket;
+class BasketView;
 class FilterData;
 class HtmlExporter;
 
@@ -169,7 +169,7 @@ public:
     Note    *note()     {
         return m_note;
     }         /// << Get the note managing this content.
-    Basket  *basket();                                 /// << Get the basket containing the note managing this content.
+    BasketView  *basket();                                 /// << Get the basket containing the note managing this content.
 public:
     void setEdited(); /// << Mark the note as edited NOW: change the "last modification time and time" AND save the basket to XML file.
 protected:

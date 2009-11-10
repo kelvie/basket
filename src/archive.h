@@ -24,7 +24,7 @@
 #include <QList>
 #include <QMap>
 
-class Basket;
+class BasketView;
 class Tag;
 
 class QString;
@@ -39,19 +39,19 @@ class KProgress;
 class Archive
 {
 public:
-    static void save(Basket *basket, bool withSubBaskets, const QString &destination);
+    static void save(BasketView *basket, bool withSubBaskets, const QString &destination);
     static void open(const QString &path);
 private:
     // Convenient Methods for Saving:
-    static void saveBasketToArchive(Basket *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress);
-    static void listUsedTags(Basket *basket, bool recursive, QList<Tag*> &list);
+    static void saveBasketToArchive(BasketView *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress);
+    static void listUsedTags(BasketView *basket, bool recursive, QList<Tag*> &list);
     // Convenient Methods for Loading:
     static void renameBasketFolders(const QString &extractionFolder, QMap<QString, QString> &mergedStates);
     static void renameBasketFolder(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, QMap<QString, QString> &mergedStates);
     static void renameMergedStatesAndBasketIcon(const QString &fullPath, QMap<QString, QString> &mergedStates, const QString &extractionFolder);
     static void renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedStates);
     static void importBasketIcon(QDomElement properties, const QString &extractionFolder);
-    static void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, Basket *parent);
+    static void loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, BasketView *parent);
     static void importTagEmblems(const QString &extractionFolder);
     static void importArchivedBackgroundImages(const QString &extractionFolder);
 };

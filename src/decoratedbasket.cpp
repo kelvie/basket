@@ -32,7 +32,7 @@ DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, Qt:
 {
     m_layout = new QVBoxLayout(this);
     m_filter = new FilterBar(this);
-    m_basket = new Basket(this, folderName);
+    m_basket = new BasketView(this, folderName);
     m_layout->addWidget(m_basket);
     setFilterBarPosition(Settings::filterOnTop());
 
