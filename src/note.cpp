@@ -134,7 +134,7 @@ int Note::x() const
 
 int Note::bottom() const
 {
-    return d->y + m_height - 1;
+    return d->y + d->height - 1;
 }
 
 int Note::finalX() const
@@ -891,7 +891,7 @@ bool Note::advance()
         int deltaHeight = m_deltaHeight / 3;
         if (deltaHeight == 0)
             deltaHeight = (m_deltaHeight > 0 ? 1 : -1);
-        m_height += deltaHeight;
+        d->height += deltaHeight;
         unbufferize();
         m_deltaHeight -= deltaHeight;
     }
@@ -922,7 +922,7 @@ int Note::height() const
 
 void Note::unsetWidth()
 {
-    m_width = 0;
+    d->width = 0;
     unbufferize();
 
     FOR_EACH_CHILD(child)
@@ -931,35 +931,35 @@ void Note::unsetWidth()
 
 int Note::width() const
 {
-    return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : m_width);
+    return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : d->width);
 }
 
 void Note::requestRelayout()
 {
-    m_width = 0;
+    d->width = 0;
     unbufferize();
     basket()->relayoutNotes(true); // TODO: A signal that will relayout ONCE and DELAYED if called several times
 }
 
 void Note::setWidth(int width) // TODO: inline ?
 {
-    if (m_width != width)
+    if (d->width != width)
         setWidthForceRelayout(width);
 }
 
 void Note::setWidthForceRelayout(int width)
 {
     unbufferize();
-    m_width = (width < minWidth() ? minWidth() : width);
+    d->width = (width < minWidth() ? minWidth() : width);
     int contentWidth = width - contentX() - NOTE_MARGIN;
     if (m_content) { ///// FIXME: is this OK?
         if (contentWidth < 1)
             contentWidth = 1;
         if (contentWidth < m_content->minWidth())
             contentWidth = m_content->minWidth();
-        m_height = m_content->setWidthAndGetHeight(contentWidth/* < 1 ? 1 : contentWidth*/) + 2 * NOTE_MARGIN;
-        if (m_height < 3 * INSERTION_HEIGHT) // Assure a minimal size...
-            m_height = 3 * INSERTION_HEIGHT;
+        d->height = m_content->setWidthAndGetHeight(contentWidth/* < 1 ? 1 : contentWidth*/) + 2 * NOTE_MARGIN;
+        if (d->height < 3 * INSERTION_HEIGHT) // Assure a minimal size...
+            d->height = 3 * INSERTION_HEIGHT;
     }
 }
 
@@ -1119,7 +1119,7 @@ Note* Note::noteAt(int x, int y)
     }
 
     if (isGroup()) {
-        if ((x >= d->x) && (x < d->x + width()) && (y >= d->y) && (y < d->y + m_height)) {
+      if ((x >= d->x) && (x < d->x + width()) && (y >= d->y) && (y < d->y + d->height)) {
             if (! m_computedAreas)
                 recomputeAreas();
             for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -1141,7 +1141,7 @@ Note* Note::noteAt(int x, int y)
             child = child->next();
             first = false;
         }
-    } else if (matching() && y >= d->y && y < d->y + m_height && x >= d->x && x < d->x + m_width) {
+    } else if (matching() && y >= d->y && y < d->y + d->height && x >= d->x && x < d->x + d->width) {
         if (! m_computedAreas)
             recomputeAreas();
         for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -1219,12 +1219,12 @@ void Note::relayoutAt(int x, int y, bool animate)
             child = child->next();
             first = false;
         }
-        if (finalHeight() != h || m_height != h) {
+        if (finalHeight() != h || d->height != h) {
             unbufferize();
             if (animate)
                 addAnimation(0, 0, h - finalHeight());
             else {
-                m_height = h;
+                d->height = h;
                 unbufferize();
             }
         }

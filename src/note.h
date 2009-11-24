@@ -68,11 +68,6 @@ public:
     Note* next() const;
     Note* prev() const;
 
-/// GEOMETRY MANAGEMENT:
-private:
-    int m_width;
-    int m_height;
-//  int m_minContentWidth;
 public:
     void setWidth(int width);
     void setWidthForceRelayout(int width);
@@ -246,7 +241,7 @@ public:
     int finalX() const;
     int finalY() const;
     inline int  finalHeight()     {
-        return m_height + m_deltaHeight;
+        return height() + m_deltaHeight;
     }
     inline int  finalBottom()     {
         return finalY() + finalHeight() - 1;
