@@ -1,0 +1,5 @@
+basket (1.9x~git##DATE##-1~##DIST##1~upstream1) ##DIST##; urgency=low
+
+  * Initial release.
+
+ -- Riyad Preukschas <riyad@informatik.uni-bremen.de>  ##RDATE##

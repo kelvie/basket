@@ -1,0 +1,18 @@
+Source: basket
+Section: kde
+Priority: extra
+Maintainer: Riyad Preukschas <riyad@informatik.uni-bremen.de>
+Build-Depends: debhelper (>= 7), cmake, kdelibs5-dev (>= 4.2)
+Standards-Version: 3.8.0
+Homepage: http://gitorious.org/basket
+
+Package: basket
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A multi-purpose note-taking application for KDE
+ This application provides as many baskets (drawers) as you wish; Several kinds
+ of objects (texts, URLs, images,...) can be drag-n-drop'd into it.
+ .
+ Objects can be edited, copied, dragged... So, they can be arranged according
+ to users' taste. Moreover, Basket allows you to keep all objects you want in
+ one place, keep data on hand, take notes...
