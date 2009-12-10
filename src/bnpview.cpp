@@ -166,6 +166,7 @@ void BNPView::lateInit()
                 toolbar->hide();
         }
     */
+	/*
     if (!isPart()) {
         if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")) {
             if (Global::mainWindow()) Global::mainWindow()->hide();
@@ -173,6 +174,7 @@ void BNPView::lateInit()
             if (Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
         }
     }
+    */
 
     // If the main window is hidden when session is saved, Container::queryClose()
     //  isn't called and the last value would be kept
