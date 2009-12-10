@@ -3661,7 +3661,8 @@ void BasketView::editorCursorPositionChanged()
     QPoint cursorPoint = textEdit->viewport()->mapTo(
                              viewport(), textEdit->cursorRect().center()
                          );
-    ensureVisible(cursorPoint.x(), cursorPoint.y());
+    QPoint contentsCursor = viewportToContents(cursorPoint);
+    ensureVisible(contentsCursor.x(), contentsCursor.y());
 }
 
 void BasketView::closeEditorDelayed()
