@@ -2005,12 +2005,12 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-
+/*
     if (event->buttons() == 0 && (zone == Note::Group || zone == Note::Handle)) {
         closeEditor();
         unselectAllBut(clicked);
     }
-
+*/
 
     // Do nothing if an action has already been made during mousePressEvent,
     // or if user made a selection and canceled it by regressing to a very small rectangle.
