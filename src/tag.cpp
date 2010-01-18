@@ -655,7 +655,7 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
                       "    <name>%3</name>\n" // "Information"
                       "    <shortcut>Ctrl+8</shortcut>\n"
                       "    <state id=\"information\">\n"
-                      "      <emblem>messagebox_info</emblem>\n"
+                      "      <emblem>dialog-information</emblem>\n"
                       "      <textEquivalent string=\"(i)\" />\n"
                       "    </state>\n"
                       "  </tag>\n"
