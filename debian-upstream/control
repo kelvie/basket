@@ -2,7 +2,7 @@ Source: basket
 Section: kde
 Priority: extra
 Maintainer: Riyad Preukschas <riyad@informatik.uni-bremen.de>
-Build-Depends: debhelper (>= 7), cmake, kdelibs5-dev (>= 4.2)
+Build-Depends: debhelper (>= 7), cmake, kdelibs5-dev (>= 4.2), kdepimlibs5-dev (>= 4.2)
 Standards-Version: 3.8.0
 Homepage: http://gitorious.org/basket
 
