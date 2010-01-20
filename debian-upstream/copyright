@@ -4,7 +4,7 @@ This package was debianized by:
 
 It was downloaded from:
 
-    http://gitorious.org/basket
+    http://basket.kde.org/
 
 Upstream Author(s):
 
@@ -12,7 +12,36 @@ Upstream Author(s):
 
 Copyright:
 
-    Copyright (C) 2008-2009  Riyad Preukschas <riyad@informatik.uni-bremen.de>
+    Copyright (C) 2008       Andrew Wang <andrew@umbrant.com>
+    Copyright (C) 2008       Carsten Lohrke <carlo@gentoo.org>
+    Copyright (C) 2009       David Damerell <david@nixbioinf.org>
+    Copyright (C) 2008-2010  Dr. Robert Marmorstein <robert@narnia.homeunix.com>
+    Copyright (C) 2009       Guillaume Martres <smarter@ubuntu.com>
+    Copyright (C) 2009       jesper <jesperht@yahoo.com>
+    Copyright (C) 2008       Juliano F. Ravasi <dev@juliano.info>
+    Copyright (C) 2008-2009  Kelvie Wong <kelvie@ieee.org>
+    Copyright (C) 2008       Laurent Montel <montel@kde.org>
+    Copyright (C) 2009       Maranatha Luckanachai <maranatha.myrrh@gmail.com>
+    Copyright (C) 2009       Marek Janukowicz <marek@janukowicz.net>
+    Copyright (C) 2009       Matt Rogers <mattr@kde.org>
+    Copyright (C) 2009-2010  Riyad Preukschas <riyad@informatik.uni-bremen.de>
+    Copyright (C) 2008       Rui Machado <ruimario@gmail.com>
+    Copyright (C) 2008       Terry <tencherry10@gmail.com>
+    Copyright (C) 2009       Trever Fischer <wm161@wm161.net>
+    Copyright (C) 2008       Voker57 <voker57@gmail.com>
+
+    Copyright (C) 2006-2007  danil <danil@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  gsasha <gsasha@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  huftis <huftis@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006       kodaaja <kodaaja@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  njsg <njsg@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2009       perihelion <perihelion.devel@free.fr>
+    Copyright (C) 2006-2007  phobeus <phobeus@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  seb <seb@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  soytetir <soytetir@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  tosky <tosky@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2007       under2x <under2x@68e0c82f-6715-0410-a4b6-c4571a790354>
+    Copyright (C) 2006-2007  yukiko <yukiko@68e0c82f-6715-0410-a4b6-c4571a790354>
 
 License:
 
@@ -34,6 +63,6 @@ Public License can be found in `/usr/share/common-licenses/GPL'.
 
 The Debian packaging is:
 
-    Copyright C) 2009, Riyad Preukschas <riyad@informatik.uni-bremen.de>
+    Copyright (C) 2009  Riyad Preukschas <riyad@informatik.uni-bremen.de>
 
 and is licensed under the GPL, see above.
