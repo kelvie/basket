@@ -2074,7 +2074,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
     }
 
     // Draw content:
-    // Optimization: do not draw text notes because it is time consuming and should be done nearly at each tetx modification.
+    // Optimization: do not draw text notes because it is time consuming and should be done nearly at each text modification.
     if (basket()->editedNote() != this || basket()->editedNote()->content()->type() != NoteType::Html) {
         painter2.translate(contentX(), NOTE_MARGIN);
         painter2.setFont(m_computedState.font(painter2.font()));
