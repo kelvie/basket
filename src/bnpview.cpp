@@ -2311,7 +2311,7 @@ void BNPView::showPassiveDroppedDelayed()
     QString title = m_passiveDroppedTitle;
 
     delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
+    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
     QImage contentsImage = NoteDrag::feedbackPixmap(m_passiveDroppedSelection).toImage();
     QResource::registerResource(contentsImage.bits(), ":/images/passivepopup_image");
     m_passivePopup->setView(
