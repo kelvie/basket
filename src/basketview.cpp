@@ -1195,7 +1195,7 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
     // File Watcher:
     m_watcher = new KDirWatch(this);
     connect(m_watcher,       SIGNAL(dirty(const QString&)),   this, SLOT(watchedFileModified(const QString&)));
-    connect(m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&)));
+    //connect(m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&)));
     connect(&m_watcherTimer, SIGNAL(timeout()),               this, SLOT(updateModifiedNotes()));
 
     // Various Connections:
