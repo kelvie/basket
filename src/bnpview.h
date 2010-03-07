@@ -44,7 +44,6 @@ class QDomDocument;
 class QDomElement;
 class KAction;
 class KToggleAction;
-class KPassivePopup;
 class KMenu;
 class KTar;
 
@@ -355,7 +354,6 @@ private:
     RegionGrabber      *m_regionGrabber;
     QString m_passiveDroppedTitle;
     NoteSelection *m_passiveDroppedSelection;
-    KPassivePopup *m_passivePopup;
     static const int c_delayTooltipTime;
     KActionCollection *m_actionCollection;
     KXMLGUIClient *m_guiClient;
