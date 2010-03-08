@@ -105,7 +105,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
         , m_firstShow(true)
         , m_regionGrabber(0)
         , m_passiveDroppedSelection(0)
-        , m_passivePopup(0)
         , m_actionCollection(actionCollection)
         , m_guiClient(aGUIClient)
         , m_statusbar(bar)
@@ -166,6 +165,7 @@ void BNPView::lateInit()
                 toolbar->hide();
         }
     */
+	/*
     if (!isPart()) {
         if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")) {
             if (Global::mainWindow()) Global::mainWindow()->hide();
@@ -173,6 +173,7 @@ void BNPView::lateInit()
             if (Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
         }
     }
+    */
 
     // If the main window is hidden when session is saved, Container::queryClose()
     //  isn't called and the last value would be kept
@@ -2308,36 +2309,59 @@ void BNPView::showPassiveDroppedDelayed()
 
     QString title = m_passiveDroppedTitle;
 
-    delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : this);
     QImage contentsImage = NoteDrag::feedbackPixmap(m_passiveDroppedSelection).toImage();
     QResource::registerResource(contentsImage.bits(), ":/images/passivepopup_image");
-    m_passivePopup->setView(
+
+    if (Settings::useSystray()){
+
+    KPassivePopup::message(KPassivePopup::Boxed, 
         title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
         (contentsImage.isNull() ? "" : "<img src=\":/images/passivepopup_image\">"),
         KIconLoader::global()->loadIcon(
             currentBasket()->icon(), KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
-        )
-    );
-    m_passivePopup->show();
+        ), 
+	Global::systemTray);
+    }
+    else{
+    	KPassivePopup::message(KPassivePopup::Boxed, 
+        title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+        (contentsImage.isNull() ? "" : "<img src=\":/images/passivepopup_image\">"),
+        KIconLoader::global()->loadIcon(
+            currentBasket()->icon(), KIconLoader::NoGroup, 16,
+            KIconLoader::DefaultState, QStringList(), 0L, true
+        ), 
+	(QWidget*)this);
+    }
 }
 
 void BNPView::showPassiveImpossible(const QString &message)
 {
-    delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
-    m_passivePopup->setView(
-        QString("<font color=red>%1</font>")
-        .arg(i18n("Basket <i>%1</i> is locked"))
-        .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
-        message,
-        KIconLoader::global()->loadIcon(
-            currentBasket()->icon(), KIconLoader::NoGroup, 16,
-            KIconLoader::DefaultState, QStringList(), 0L, true
-        )
-    );
-    m_passivePopup->show();
+	if (Settings::useSystray()){
+		KPassivePopup::message(KPassivePopup::Boxed,
+				QString("<font color=red>%1</font>")
+				.arg(i18n("Basket <i>%1</i> is locked"))
+        			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+			        message,
+			        KIconLoader::global()->loadIcon(
+			            currentBasket()->icon(), KIconLoader::NoGroup, 16,
+			            KIconLoader::DefaultState, QStringList(), 0L, true
+			        ),
+		Global::systemTray);
+	}
+	else{
+		KPassivePopup::message(KPassivePopup::Boxed,
+				QString("<font color=red>%1</font>")
+				.arg(i18n("Basket <i>%1</i> is locked"))
+        			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+			        message,
+			        KIconLoader::global()->loadIcon(
+			            currentBasket()->icon(), KIconLoader::NoGroup, 16,
+			            KIconLoader::DefaultState, QStringList(), 0L, true
+			        ),
+		(QWidget*)this);
+
+	}
 }
 
 void BNPView::showPassiveContentForced()
@@ -2353,9 +2377,8 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
     // FIXME: Duplicate code (2 times)
     QString message;
 
-    delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
-    m_passivePopup->setView(
+   if(Settings::useSystray()){
+    KPassivePopup::message(KPassivePopup::Boxed,
         "<qt>" + KDialog::makeStandardCaption(
             currentBasket()->isLocked() ? QString("%1 <font color=gray30>%2</font>")
             .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName()), i18n("(Locked)"))
@@ -2365,9 +2388,24 @@ void BNPView::showPassiveContent(bool forceShow/* = false*/)
         KIconLoader::global()->loadIcon(
             currentBasket()->icon(), KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
-        )
-    );
-    m_passivePopup->show();
+        ),
+    Global::systemTray);
+   }
+   else{
+    KPassivePopup::message(KPassivePopup::Boxed,
+        "<qt>" + KDialog::makeStandardCaption(
+            currentBasket()->isLocked() ? QString("%1 <font color=gray30>%2</font>")
+            .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName()), i18n("(Locked)"))
+            : Tools::textToHTMLWithoutP(currentBasket()->basketName())
+        ),
+        message,
+        KIconLoader::global()->loadIcon(
+            currentBasket()->icon(), KIconLoader::NoGroup, 16,
+            KIconLoader::DefaultState, QStringList(), 0L, true
+        ),
+    (QWidget*)this);
+
+   }
 }
 
 void BNPView::showPassiveLoading(BasketView *basket)
@@ -2375,17 +2413,26 @@ void BNPView::showPassiveLoading(BasketView *basket)
     if (isMainWindowActive())
         return;
 
-    delete m_passivePopup; // Delete previous one (if exists): it will then hide it (only one at a time)
-    m_passivePopup = new KPassivePopup(Settings::useSystray() ? (QWidget*)Global::systemTray : (QWidget*)this);
-    m_passivePopup->setView(
+    if (Settings::useSystray()){
+    KPassivePopup::message(KPassivePopup::Boxed,
         Tools::textToHTMLWithoutP(basket->basketName()),
         i18n("Loading..."),
         KIconLoader::global()->loadIcon(
             basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, true
-        )
-    );
-    m_passivePopup->show();
+        ), 
+	Global::systemTray);
+    }
+    else{
+    KPassivePopup::message(KPassivePopup::Boxed,
+        Tools::textToHTMLWithoutP(basket->basketName()),
+        i18n("Loading..."),
+        KIconLoader::global()->loadIcon(
+            basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
+            QStringList(), 0L, true
+        ), 
+        (QWidget *)this);
+    }
 }
 
 void BNPView::addNoteText()

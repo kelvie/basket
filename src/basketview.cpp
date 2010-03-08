@@ -1195,7 +1195,7 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
     // File Watcher:
     m_watcher = new KDirWatch(this);
     connect(m_watcher,       SIGNAL(dirty(const QString&)),   this, SLOT(watchedFileModified(const QString&)));
-    connect(m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&)));
+    //connect(m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&)));
     connect(&m_watcherTimer, SIGNAL(timeout()),               this, SLOT(updateModifiedNotes()));
 
     // Various Connections:
@@ -2005,12 +2005,12 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-
+/*
     if (event->buttons() == 0 && (zone == Note::Group || zone == Note::Handle)) {
         closeEditor();
         unselectAllBut(clicked);
     }
-
+*/
 
     // Do nothing if an action has already been made during mousePressEvent,
     // or if user made a selection and canceled it by regressing to a very small rectangle.
@@ -3661,7 +3661,8 @@ void BasketView::editorCursorPositionChanged()
     QPoint cursorPoint = textEdit->viewport()->mapTo(
                              viewport(), textEdit->cursorRect().center()
                          );
-    ensureVisible(cursorPoint.x(), cursorPoint.y());
+    QPoint contentsCursor = viewportToContents(cursorPoint);
+    ensureVisible(contentsCursor.x(), contentsCursor.y());
 }
 
 void BasketView::closeEditorDelayed()

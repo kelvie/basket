@@ -129,6 +129,7 @@ MainWindow::~MainWindow()
     KConfigGroup group = KGlobal::config()->group(autoSaveGroup());
     saveMainWindowSettings(group);
     delete m_settings;
+    delete m_baskets;
 }
 
 void MainWindow::setupActions()

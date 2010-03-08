@@ -838,8 +838,8 @@ NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
     QTabWidget *tabs = new QTabWidget(this);
     layout->addWidget(tabs);
 
-    m_soundLook       = new LinkLookEditWidget(this, i18n("Conference audio record"),                         "sound",       tabs);
-    m_fileLook        = new LinkLookEditWidget(this, i18n("Annual report"),                                   "document",    tabs);
+    m_soundLook       = new LinkLookEditWidget(this, i18n("Conference audio record"),                         "folder-sound",       tabs);
+    m_fileLook        = new LinkLookEditWidget(this, i18n("Annual report"),                                   "folder-documents",    tabs);
     m_localLinkLook   = new LinkLookEditWidget(this, i18n("Home folder"),                                     "user-home", tabs);
     m_networkLinkLook = new LinkLookEditWidget(this, "www.kde.org",             KMimeType::iconNameForUrl(KUrl("http://www.kde.org")), tabs);
     m_launcherLook    = new LinkLookEditWidget(this, i18n("Launch %1").arg(KGlobal::mainComponent().aboutData()->programName()), "basket",      tabs);
