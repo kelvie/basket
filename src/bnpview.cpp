@@ -165,7 +165,7 @@ void BNPView::lateInit()
                 toolbar->hide();
         }
     */
-	/*
+        /*
     if (!isPart()) {
         if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")) {
             if (Global::mainWindow()) Global::mainWindow()->hide();
@@ -2314,54 +2314,54 @@ void BNPView::showPassiveDroppedDelayed()
 
     if (Settings::useSystray()){
 
-    KPassivePopup::message(KPassivePopup::Boxed, 
+    KPassivePopup::message(KPassivePopup::Boxed,
         title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
         (contentsImage.isNull() ? "" : "<img src=\":/images/passivepopup_image\">"),
         KIconLoader::global()->loadIcon(
             currentBasket()->icon(), KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
-        ), 
-	Global::systemTray);
+        ),
+        Global::systemTray);
     }
     else{
-    	KPassivePopup::message(KPassivePopup::Boxed, 
+        KPassivePopup::message(KPassivePopup::Boxed,
         title.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
         (contentsImage.isNull() ? "" : "<img src=\":/images/passivepopup_image\">"),
         KIconLoader::global()->loadIcon(
             currentBasket()->icon(), KIconLoader::NoGroup, 16,
             KIconLoader::DefaultState, QStringList(), 0L, true
-        ), 
-	(QWidget*)this);
+        ),
+        (QWidget*)this);
     }
 }
 
 void BNPView::showPassiveImpossible(const QString &message)
 {
-	if (Settings::useSystray()){
-		KPassivePopup::message(KPassivePopup::Boxed,
-				QString("<font color=red>%1</font>")
-				.arg(i18n("Basket <i>%1</i> is locked"))
-        			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
-			        message,
-			        KIconLoader::global()->loadIcon(
-			            currentBasket()->icon(), KIconLoader::NoGroup, 16,
-			            KIconLoader::DefaultState, QStringList(), 0L, true
-			        ),
-		Global::systemTray);
-	}
-	else{
-		KPassivePopup::message(KPassivePopup::Boxed,
-				QString("<font color=red>%1</font>")
-				.arg(i18n("Basket <i>%1</i> is locked"))
-        			.arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
-			        message,
-			        KIconLoader::global()->loadIcon(
-			            currentBasket()->icon(), KIconLoader::NoGroup, 16,
-			            KIconLoader::DefaultState, QStringList(), 0L, true
-			        ),
-		(QWidget*)this);
+        if (Settings::useSystray()){
+                KPassivePopup::message(KPassivePopup::Boxed,
+                                QString("<font color=red>%1</font>")
+                                .arg(i18n("Basket <i>%1</i> is locked"))
+                                .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+                                message,
+                                KIconLoader::global()->loadIcon(
+                                    currentBasket()->icon(), KIconLoader::NoGroup, 16,
+                                    KIconLoader::DefaultState, QStringList(), 0L, true
+                                ),
+                Global::systemTray);
+        }
+        else{
+                KPassivePopup::message(KPassivePopup::Boxed,
+                                QString("<font color=red>%1</font>")
+                                .arg(i18n("Basket <i>%1</i> is locked"))
+                                .arg(Tools::textToHTMLWithoutP(currentBasket()->basketName())),
+                                message,
+                                KIconLoader::global()->loadIcon(
+                                    currentBasket()->icon(), KIconLoader::NoGroup, 16,
+                                    KIconLoader::DefaultState, QStringList(), 0L, true
+                                ),
+                (QWidget*)this);
 
-	}
+        }
 }
 
 void BNPView::showPassiveContentForced()
@@ -2420,8 +2420,8 @@ void BNPView::showPassiveLoading(BasketView *basket)
         KIconLoader::global()->loadIcon(
             basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, true
-        ), 
-	Global::systemTray);
+        ),
+        Global::systemTray);
     }
     else{
     KPassivePopup::message(KPassivePopup::Boxed,
@@ -2430,7 +2430,7 @@ void BNPView::showPassiveLoading(BasketView *basket)
         KIconLoader::global()->loadIcon(
             basket->icon(), KIconLoader::NoGroup, 16, KIconLoader::DefaultState,
             QStringList(), 0L, true
-        ), 
+        ),
         (QWidget *)this);
     }
 }
