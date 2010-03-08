@@ -165,7 +165,10 @@ void BNPView::lateInit()
                 toolbar->hide();
         }
     */
-        /*
+
+#if 0
+    // This is the logic to show or hide Basket when it is started up; ideally,
+    // it will take on its last state when KDE's session restore kicks in.
     if (!isPart()) {
         if (Settings::useSystray() && KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("start-hidden")) {
             if (Global::mainWindow()) Global::mainWindow()->hide();
@@ -173,7 +176,10 @@ void BNPView::lateInit()
             if (Global::mainWindow()) Global::mainWindow()->setShown(!Settings::startDocked());
         }
     }
-    */
+#else
+    #warning Proper fix for the systray problem
+#endif
+
 
     // If the main window is hidden when session is saved, Container::queryClose()
     //  isn't called and the last value would be kept
