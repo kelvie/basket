@@ -61,7 +61,7 @@ class NotePrivate
 public:
     NotePrivate()
         : prev(0), next(0), x(0), y(-1),
-          width(-1), height(-1)
+          width(-1), height(Note::MIN_HEIGHT)
     {
     }
     Note* prev;

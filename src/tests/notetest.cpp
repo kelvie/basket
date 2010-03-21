@@ -43,7 +43,7 @@ void NoteTest::testCreation()
     QCOMPARE(n->x(), 0);
     QCOMPARE(n->y(), -1);
     QCOMPARE(n->width(), Note::GROUP_WIDTH);
-    QCOMPARE(n->height(), -1);
+    QCOMPARE(n->height(), Note::MIN_HEIGHT);
     delete n;
 }
 
