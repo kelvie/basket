@@ -32,8 +32,7 @@ AboutData::AboutData()
         : KAboutData("basket", "", ki18n("BasKet Note Pads"),
                      VERSION, ki18n(description), KAboutData::License_GPL_V2,
                      ki18n("(c) 2003-2007, S\303\251bastien Lao\303\273t"), KLocalizedString(),
-                     "http://basket.kde.org/",
-                     "http://basket.kde.org/bugs/")
+                     "http://basket.kde.org/")
 {
     addAuthor(ki18n("Kelvie Wong"),
               ki18n("Maintainer"),
