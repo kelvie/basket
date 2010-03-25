@@ -3,5 +3,5 @@
 #cmakedefine HAVE_LIBGPGME
 
 /* Version number of package */
-#define VERSION "1.0.cmake"
+#define VERSION "1.81"
 
