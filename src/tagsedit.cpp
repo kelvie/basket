@@ -618,7 +618,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     connect(m_italic,          SIGNAL(toggled(bool)),                      this, SLOT(modified()));
     connect(m_strike,          SIGNAL(toggled(bool)),                      this, SLOT(modified()));
     connect(m_textColor,       SIGNAL(activated(const QColor&)),             this, SLOT(modified()));
-    connect(m_font,            SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
+    //connect(m_font,            SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_font,            SIGNAL(currentFontChanged(const QFont&)),        this, SLOT(modified()));
     connect(m_fontSize,        SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
     connect(m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
     connect(m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()));
