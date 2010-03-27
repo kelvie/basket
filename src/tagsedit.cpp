@@ -1140,6 +1140,7 @@ void TagsEditDialog::ensureCurrentItemVisible()
 
 void TagsEditDialog::loadBlankState()
 {
+    QFont defaultFont;
     m_stateName->setText("");
     m_emblem->resetIcon();
     m_removeEmblem->setEnabled(false);
@@ -1149,7 +1150,8 @@ void TagsEditDialog::loadBlankState()
     m_italic->setChecked(false);
     m_strike->setChecked(false);
     m_textColor->setColor(QColor());
-    m_font->setCurrentIndex(0);
+    //m_font->setCurrentIndex(0);
+    m_font->setCurrentFont(defaultFont.family());
     m_fontSize->setCurrentIndex(0);
     m_textEquivalent->setText("");
     m_onEveryLines->setChecked(false);
@@ -1172,8 +1174,9 @@ void TagsEditDialog::loadStateFrom(State *state)
     m_textEquivalent->setText(state->textEquivalent());
     m_onEveryLines->setChecked(state->onAllTextLines());
 
+    QFont defaultFont;
     if (state->fontName().isEmpty())
-        m_font->setCurrentIndex(0);
+        m_font->setCurrentFont(defaultFont.family() );
     else
         m_font->setCurrentFont(state->fontName());
 
