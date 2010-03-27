@@ -61,7 +61,7 @@ Commit messages
 Feel free to write whatever you want in your own branches, but try to have the
 messages that you merge into master follow a specific convention
 
-It is important to follow this convention because many git tools (such as Github
+It is important to follow this convention because many git tools (such as Gitorious
 and the gitweb web interfaces, as well as `git format-patch`, and even `git
 log`!)  rely on this convention when parsing commit messages.
 
@@ -100,30 +100,26 @@ Contributing
 ~~~~~~~~~~~~
 The first step to contribute is to clone a source repository:
 
-  git clone git://github.com/kelvie/basket.git
+  git clone git://gitorious.org/basket/basket.git
 
-Now you can hack away at it to your hearts content.  When you have a series of
-patches ready to be merged with my changes, first make sure your master is up to
-date with mine:
+You should do this through the Gitorious web interface.  When you have a series of
+patches ready to be merged with upstream, first make sure your master is up to
+date:
 
-  git pull git://github.com/kelvie/basket.git master
+  git pull git://gitorious.org/basket/basket.git master
 
-(or if you cloned from my repository, just `git pull` will suffice), and ask me
-to pull your changes, if you have published them, or use `git format-patch` to
-create a series of patches and post them to the mailing list.
-
-If you want to continue contributing, feel free to fork the main repository on
-Github (http://github.com/kelvie/basket/tree/) or repo.or.cz and send pull
-requests there.
+Then push your changes to your repository on Gitorious and then submit a merge
+request against the main repository.
 
 Contact
 -------
 If you have any questions, or would like to contribute (always welcome!) please
-send me an email at kelvie@ieee.org, or through the development mailing list at
+send me an email to the  development mailing list at
 basket-devel@lists.sourceforge.net.
 
-I'm usually idle on #basket-devel @ freenode on IRC, but you may catch me on
-there.  Due to timezone differences, however, it's generally better to email me.
+Developers are usually idle on #basket-devel @ freenode on IRC, and it's quite
+likely you'll catch one of us there Due to timezone differences, however, it's
+generally better to email the list.
 
 The BasKet web site (again, unmaintained right now) is at:
 http://basket.kde.org/
