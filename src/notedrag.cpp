@@ -119,7 +119,7 @@ void NoteDrag::serializeNotes(NoteSelection *noteList, QDataStream &stream, bool
                 if (cutting) {
                     // Move file in a temporary place:
                     QString fullPath = Global::tempCutFolder() + Tools::fileNameForNewFile(content->fileName(), Global::tempCutFolder());
-                    KIO::move(KUrl(content->fullPath()), KUrl(fullPath), /*showProgressInfo=*/false);
+                    KIO::move(KUrl(content->fullPath()), KUrl(fullPath), KIO::HideProgressInfo);
                     node->fullPath = fullPath;
                     stream << fullPath;
                 } else
@@ -487,8 +487,9 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 if (note->basket() != parent) {
                     QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
                     note->content()->setFileName(newFileName);
-                    KIO::FileCopyJob *copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-                                                /*perms=*/ -1, KIO::Overwrite | KIO::HideProgressInfo);
+
+		    KIO::CopyJob *copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName), 
+				    KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                     parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
                                     parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, Kurl)));
                 }
@@ -508,13 +509,13 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 // Later on, file_copy/file_move will copy/move the file to the new location.
                 QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
                 note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
-                KIO::FileCopyJob *copyJob;
-                if (moveFiles)
-                    copyJob = KIO::file_move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-                                             /*perms=*/ -1, KIO::Overwrite | KIO::HideProgressInfo);
-                else
-                    copyJob = KIO::file_copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-                                             /*perms=*/ -1, KIO::Overwrite | KIO::HideProgressInfo);
+		KIO::CopyJob *copyJob;
+	        if (moveFiles)
+			copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName), 
+					KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
+		else
+			copyJob = KIO::copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+					KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                 parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
                                 parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
                 note->setGroupWidth(groupWidth);

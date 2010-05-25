@@ -351,7 +351,7 @@ void BasketView::unplugNote(Note *note)
             note->parentNote()->setFirstChild(note->next());
 
         if (!note->parentNote()->isColumn()) {
-            // Ungroup if still 0 note inside parent group:
+            // Delete parent if now 0 notes inside parent group:
             if (! note->parentNote()->firstChild())
                 unplugNote(note->parentNote()); // TODO delete
 
@@ -4034,7 +4034,7 @@ void BasketView::noteDeleteWithoutConfirmation(bool deleteFilesToo)
 void BasketView::doCopy(CopyMode copyMode)
 {
     QClipboard *cb = KApplication::clipboard();
-    QClipboard::Mode mode = (copyMode == CopyToSelection ? QClipboard::Selection : QClipboard::Clipboard);
+    QClipboard::Mode mode = ((copyMode == CopyToSelection) ? QClipboard::Selection : QClipboard::Clipboard);
 
     NoteSelection *selection = selectedNotes();
     int countCopied = countSelecteds();
