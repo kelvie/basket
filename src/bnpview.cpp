@@ -437,7 +437,9 @@ void BNPView::initialize()
 
     /// Configure the List View Drag and Drop:
     m_tree->setDragEnabled(true);
+    m_tree->setDragDropMode(QAbstractItemView::DragDrop);
     m_tree->setAcceptDrops(true);
+    m_tree->viewport()->setAcceptDrops(true);
 
     /// Configure the Splitter:
     m_stack = new QStackedWidget(this);

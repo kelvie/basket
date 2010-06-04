@@ -493,7 +493,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                     KIO::CopyJob *copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 				    KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                     parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
+                                    parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
                 }
                 note->setGroupWidth(groupWidth);
                 note->setParentNote(0);
@@ -520,9 +520,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                         KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                 }
                 parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                                parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
-
-                note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
+                                parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
                 note->setGroupWidth(groupWidth);
                 note->setAddedDate(addedDate);
                 note->setLastModificationDate(lastModificationDate);

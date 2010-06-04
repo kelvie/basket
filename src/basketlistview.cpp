@@ -456,6 +456,9 @@ void BasketTreeListView::dragEnterEvent(QDragEnterEvent *event)
     kDebug() << event->format();
     event->acceptProposedAction();
     QTreeWidget::dragEnterEvent(event);
+    if (event->mimeData()->hasFormat("application/x-basket-note")) {
+	    event->acceptProposedAction();
+    }
 
 }
 
@@ -488,6 +491,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
         QTreeWidget::dropEvent(event);
     } else { // this handels application/x-basket-note drag events.
         kDebug() << "Forwarding dropped data to the basket";
+        event->setDropAction(Qt::MoveAction);
         QTreeWidgetItem *item = itemAt(event->pos());
         BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
         if (bitem) {
@@ -507,12 +511,23 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 
 void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 {
-    QTreeWidgetItem *item = itemAt(event->pos());
-    BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
-    if (m_autoOpenItem != item) {
-        m_autoOpenItem = item;
-        m_autoOpenTimer.setSingleShot(true);
-        m_autoOpenTimer.start(1700);
+    kDebug() << "BasketTreeListView::dragMoveEvent";
+    if (event->provides("application/x-qabstractitemmodeldatalist"))
+        QTreeWidget::dragMoveEvent(event);
+    else {
+        QTreeWidgetItem *item = itemAt(event->pos());
+        BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+        if (m_autoOpenItem != item) {
+            m_autoOpenItem = item;
+            m_autoOpenTimer.setSingleShot(true);
+            m_autoOpenTimer.start(1700);
+        }
+        QTreeWidget::dragMoveEvent(event); // FIXME: ADDED
+        if (item) {
+            event->accept();
+        }
+        setItemUnderDrag(bitem);
+
     }
     if (item) {
         event->accept();
