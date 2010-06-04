@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Icon=basket
 Type=Service
-ServiceTypes=KCModule
+X-KDE-ServiceTypes=KCModule
 
 X-KDE-ModuleType=Library
 X-KDE-Library=kcm_basket
