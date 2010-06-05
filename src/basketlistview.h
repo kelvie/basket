@@ -106,8 +106,6 @@ private:
     QTimer         m_autoOpenTimer;
     QTreeWidgetItem *m_autoOpenItem;
 signals:
-    void itemActivated(QTreeWidgetItem *, int column);
-    void itemPressed(QTreeWidgetItem *, int column);
     void contextMenuRequested(const QPoint &);
 private slots:
     void autoOpen();

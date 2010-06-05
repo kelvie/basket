@@ -732,13 +732,13 @@ void BNPView::setupActions()
     a->setIcon(KIcon("document-import"));
     m_actLoadFile = a;
 
-//  connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-    connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertCrossReference,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
+//  connect( m_actInsertText,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()) );
+    connect(m_actInsertHtml,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertImage,    SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertLink,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertCrossReference,SIGNAL(triggered()),insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertColor,    SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertLauncher, SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
@@ -747,9 +747,9 @@ void BNPView::setupActions()
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
-    connect(m_actImportKMenu, SIGNAL(activated()), insertWizardMapper, SLOT(map()));
-    connect(m_actImportIcon,  SIGNAL(activated()), insertWizardMapper, SLOT(map()));
-    connect(m_actLoadFile,    SIGNAL(activated()), insertWizardMapper, SLOT(map()));
+    connect(m_actImportKMenu, SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
+    connect(m_actImportIcon,  SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
+    connect(m_actLoadFile,    SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
     insertWizardMapper->setMapping(m_actImportKMenu,  1);
     insertWizardMapper->setMapping(m_actImportIcon,   2);
     insertWizardMapper->setMapping(m_actLoadFile,     3);
@@ -823,7 +823,7 @@ void BNPView::setupActions()
     newBasketMenu->addAction(actNewBasket);
     newBasketMenu->addAction(actNewSubBasket);
     newBasketMenu->addAction(actNewSiblingBasket);
-    connect(newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()));
+    connect(newBasketMenu, SIGNAL(triggered()), this, SLOT(askNewBasket()));
 
     a = ac->addAction("basket_properties", this, SLOT(propBasket()));
     a->setText(i18n("&Properties..."));

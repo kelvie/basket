@@ -47,6 +47,7 @@ class KColorCombo;
 class FocusWidgetFilter;
 class BasketListViewItem;
 class KComboBox;
+class QTextCharFormat;
 
 #include "notecontent.h"
 
@@ -145,8 +146,8 @@ protected:
     HtmlContent *m_htmlContent;
 public slots:
     void cursorPositionChanged();
-    void textChanged();
-    void fontChanged(const QFont &font);
+    void editTextChanged();
+    void charFormatChanged(const QTextCharFormat &format);
 protected slots:
 //  void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
     void setBold(bool isChecked);
@@ -219,7 +220,7 @@ public:
 
 /** QLineEdit behavior:
   * Create a new QLineEdit with a text, then the user select a part of it and press ONE letter key.
-  * The signal textChanged() is not emitted!
+  * The signal editTextChanged() is not emitted!
   * This class correct that!
   */
 class DebuggedLineEdit : public QLineEdit

@@ -743,7 +743,7 @@ Note* NoteFactory::copyFileAndLoad(const KUrl &url, BasketView *parent)
     KIO::CopyJob *copyJob = KIO::copy(url, KUrl(fullPath),
                                       KIO::Overwrite | KIO::Resume);
     parent->connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
+                    parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
 
     NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet
     return loadFile(fileName, type, parent);
@@ -765,7 +765,7 @@ Note* NoteFactory::moveFileAndLoad(const KUrl &url, BasketView *parent)
                                       KIO::Overwrite | KIO::Resume);
 
     parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
+                    parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
 
 
     NoteType::Id type = typeForURL(url, parent); // Use the type of the original file because the target doesn't exist yet

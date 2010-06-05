@@ -299,7 +299,7 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent)
         addItem(QString::number(*it));
 
 //  connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)));
+    connect(this, SIGNAL(editTextChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)));
 
     // TODO: 01617 void KFontSizeAction::setFontSize( int size )
 }

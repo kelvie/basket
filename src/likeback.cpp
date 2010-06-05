@@ -713,7 +713,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
 
     QAction *sendShortcut = new QAction(this);
     sendShortcut->setShortcut(Qt::CTRL + Qt::Key_Return);
-    connect(sendShortcut, SIGNAL(activated()), button(Ok), SLOT(animateClick()));
+    connect(sendShortcut, SIGNAL(triggered()), button(Ok), SLOT(animateClick()));
 
     setMainWidget(page);
 }

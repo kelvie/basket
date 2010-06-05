@@ -22,6 +22,7 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QHBoxLayout>
+#include <QTextCharFormat>
 #include <QKeyEvent>
 #include <QGridLayout>
 #include <KDE/KLineEdit>
@@ -240,7 +241,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()));
     connect(textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()));
 
-    connect(InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
+    connect(InlineEditors::instance()->richTextFont,     SIGNAL(editTextChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(qreal)),            textEdit, SLOT(setFontPointSize(qreal)));
     connect(InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&)));
 
@@ -251,28 +252,28 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(activated(int)),   textEdit, SLOT(setFocus()));
 
     connect(textEdit,  SIGNAL(cursorPositionChanged()),  this, SLOT(cursorPositionChanged()));
-    connect(textEdit,  SIGNAL(currentFontChanged(const QFont&)), this, SLOT(fontChanged(const QFont&)));
+    connect(textEdit,  SIGNAL(currentCharFormatChanged(const QTextCharFormat&)), this, SLOT(charFormatChanged(const QTextCharFormat&)));
 //  connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
     connect(InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    this, SLOT(setBold(bool)));
     connect(InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setFontItalic(bool)));
     connect(InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setFontUnderline(bool)));
-    connect(InlineEditors::instance()->richTextLeft,      SIGNAL(activated()), this, SLOT(setLeft()));
-    connect(InlineEditors::instance()->richTextCenter,    SIGNAL(activated()), this, SLOT(setCentered()));
-    connect(InlineEditors::instance()->richTextRight,     SIGNAL(activated()), this, SLOT(setRight()));
-    connect(InlineEditors::instance()->richTextJustified, SIGNAL(activated()), this, SLOT(setBlock()));
+    connect(InlineEditors::instance()->richTextLeft,      SIGNAL(triggered()), this, SLOT(setLeft()));
+    connect(InlineEditors::instance()->richTextCenter,    SIGNAL(triggered()), this, SLOT(setCentered()));
+    connect(InlineEditors::instance()->richTextRight,     SIGNAL(triggered()), this, SLOT(setRight()));
+    connect(InlineEditors::instance()->richTextJustified, SIGNAL(triggered()), this, SLOT(setBlock()));
 
 //  InlineEditors::instance()->richTextToolBar()->show();
     cursorPositionChanged();
-    fontChanged(textEdit->currentFont());
+    charFormatChanged(textEdit->currentCharFormat());
     //QTimer::singleShot( 0, this, SLOT(cursorPositionChanged()) );
     InlineEditors::instance()->enableRichTextToolBar();
 
-    connect(InlineEditors::instance()->richTextUndo,      SIGNAL(activated()), textEdit, SLOT(undo()));
-    connect(InlineEditors::instance()->richTextRedo,      SIGNAL(activated()), textEdit, SLOT(redo()));
+    connect(InlineEditors::instance()->richTextUndo,      SIGNAL(triggered()), textEdit, SLOT(undo()));
+    connect(InlineEditors::instance()->richTextRedo,      SIGNAL(triggered()), textEdit, SLOT(redo()));
     connect(textEdit, SIGNAL(undoAvailable(bool)), InlineEditors::instance()->richTextUndo, SLOT(setEnabled(bool)));
     connect(textEdit, SIGNAL(redoAvailable(bool)), InlineEditors::instance()->richTextRedo, SLOT(setEnabled(bool)));
-    connect(textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
     InlineEditors::instance()->richTextUndo->setEnabled(false);
     InlineEditors::instance()->richTextRedo->setEnabled(false);
 
@@ -299,7 +300,7 @@ void HtmlEditor::cursorPositionChanged()
     }
 }
 
-void HtmlEditor::textChanged()
+void HtmlEditor::editTextChanged()
 {
     // The following is a workaround for an apparent Qt bug.
     // When I start typing in a textEdit, the undo&redo actions are not enabled until I click
@@ -309,9 +310,9 @@ void HtmlEditor::textChanged()
     InlineEditors::instance()->richTextRedo->setEnabled(textEdit()->document()->isRedoAvailable());
 }
 
-void HtmlEditor::fontChanged(const QFont &font)
+void HtmlEditor::charFormatChanged(const QTextCharFormat &format)
 {
-    InlineEditors::instance()->richTextFontSize->setFontSize(font.pointSize());
+    InlineEditors::instance()->richTextFontSize->setFontSize(format.font().pointSize());
 }
 
 /*void HtmlEditor::slotVe<rticalAlignmentChanged(QTextEdit::VerticalAlignment align)
@@ -663,8 +664,8 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
     layout->addWidget(wid,     2, 1, Qt::AlignVCenter);
 
     m_isAutoModified = false;
-    connect(m_url,   SIGNAL(textChanged(const QString&)), this, SLOT(urlChanged(const QString&)));
-    connect(m_title, SIGNAL(textChanged(const QString&)), this, SLOT(doNotAutoTitle(const QString&)));
+    connect(m_url,   SIGNAL(editTextChanged(const QString&)), this, SLOT(urlChanged(const QString&)));
+    connect(m_title, SIGNAL(editTextChanged(const QString&)), this, SLOT(doNotAutoTitle(const QString&)));
     connect(m_icon,  SIGNAL(iconChanged(QString))       , this, SLOT(doNotAutoIcon(QString)));
     connect(m_autoTitle, SIGNAL(clicked()), this, SLOT(guessTitle()));
     connect(m_autoIcon,  SIGNAL(clicked()), this, SLOT(guessIcon()));
