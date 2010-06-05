@@ -121,7 +121,6 @@ void SystemTray::updateDisplay()
     else {
         // Code that comes from JuK:
         QPixmap bgPix = loadIcon("basket").pixmap(22);
-        int smallIconSize = kapp->style()->pixelMetric(QStyle::PM_SmallIconSize);
         QPixmap fgPix = loadIcon(basket->icon()).pixmap(16);
 
         QImage bgImage = bgPix.toImage(); // Probably 22x22
