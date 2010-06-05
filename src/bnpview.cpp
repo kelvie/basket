@@ -1097,12 +1097,12 @@ void BNPView::load()
     //END
     if (doc != 0) {
         QDomElement docElem = doc->documentElement();
-        load(m_tree, 0L, docElem);
+        load(0L, docElem);
     }
     m_loading = false;
 }
 
-void BNPView::load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets)
+void BNPView::load(QTreeWidgetItem *item, const QDomElement &baskets)
 {
     QDomNode n = baskets.firstChild();
     while (! n.isNull()) {
@@ -1117,7 +1117,7 @@ void BNPView::load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomEleme
                 if (XMLWork::trueOrFalse(element.attribute("lastOpened", element.attribute("lastOpened", "false")), false)) // Compat with 0.6.0-Alphas
                     setCurrentBasket(basket);
                 // Load Sub-baskets:
-                load(/*(QListView*)*/0L, basketItem, element);
+                load(basketItem, element);
             }
         }
         n = n.nextSibling();
@@ -1567,6 +1567,7 @@ void BNPView::needSave(QTreeWidgetItem *)
 
 void BNPView::slotPressed(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
     BasketView *basket = currentBasket();
 
     if (basket == 0)

@@ -104,7 +104,7 @@ public slots:
     void save(QTreeWidget* listView, QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
     void saveSubHierarchy(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
     void load();
-    void load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets);
+    void load(QTreeWidgetItem *item, const QDomElement &baskets);
     void loadNewBasket(const QString &folderName, const QDomElement &properties, BasketView *parent);
     void goToPreviousBasket();
     void goToNextBasket();
