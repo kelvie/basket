@@ -624,7 +624,10 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     connect(m_tagName,         SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
     connect(m_shortcut,        SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(modified()));
     connect(m_inherit,         SIGNAL(stateChanged(int)),                  this, SLOT(modified()));
+<<<<<<< HEAD
     connect(m_allowCrossRefernce, SIGNAL(clicked(bool)),                   this, SLOT(modified()));
+=======
+>>>>>>> Fix runtime warnings.
     connect(m_stateName,       SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
     connect(m_emblem,          SIGNAL(iconChanged(QString)),               this, SLOT(modified()));
     connect(m_backgroundColor, SIGNAL(changed(const QColor&)),             this, SLOT(modified()));
@@ -697,6 +700,11 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QAction *rename = new QAction(this);
     rename->setShortcut(Qt::Key_F2);
     connect(rename, SIGNAL(triggered()), this, SLOT(renameIt()));
+
+    m_tags->setMinimumSize(
+        m_tags->sizeHint().width() * 2,
+        m_tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
+    );
 
     if (addNewTag)
         QTimer::singleShot(0, this, SLOT(newTag()));

@@ -45,8 +45,6 @@ class RunCommandRequester;
 class QFontComboBox;
 class KColorCombo;
 class FocusWidgetFilter;
-class BasketListViewItem;
-class KComboBox;
 class QTextCharFormat;
 
 #include "notecontent.h"
