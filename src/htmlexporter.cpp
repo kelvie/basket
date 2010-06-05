@@ -81,7 +81,7 @@ HTMLExporter::HTMLExporter(BasketView *basket)
     }
 
     // Create the progress dialog that will always be shown during the export:
-    KProgressDialog dialog(0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."), /*Not modal, for password dialogs!*/false);
+    KProgressDialog dialog(0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."));
     dialog.showCancelButton(false);
     dialog.setAutoClose(true);
     dialog.show();
