@@ -200,7 +200,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
     disposition.setAttribute("mindMap",     "false");
     disposition.setAttribute("columnCount", "1");
     disposition.setAttribute("free",        "false");
-    bool isCheckList = XMLWork::trueOrFalse(XMLWork::getElementText(properties, "showCheckBoxes", false));
+    bool isCheckList = XMLWork::trueOrFalse(XMLWork::getElementText(properties, "showCheckBoxes"), false);
 
     // Insert all notes in a group (column): 1/ rename "items" to "group", 2/ add "notes" to root, 3/ move "group" into "notes"
     QDomElement column = XMLWork::getElement(docElem, "items");
