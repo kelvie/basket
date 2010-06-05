@@ -54,7 +54,7 @@
 void Archive::save(BasketView *basket, bool withSubBaskets, const QString &destination)
 {
     QDir dir;
-    KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
+    KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."));
     dialog.showCancelButton(false);
     dialog.setAutoClose(true);
     dialog.show();
