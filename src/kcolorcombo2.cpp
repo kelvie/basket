@@ -633,9 +633,12 @@ void KColorCombo2::deleteColorArray()
 void KColorCombo2::updateComboBox()
 {
     int height = colorRectHeight() * 2 / 3; // fontMetrics().boundingRect(i18n("(Default)")).height() + 2
-    QPixmap pixmap = colorRectPixmap(effectiveColor(), !m_color.isValid(), colorRectWidthForHeight(height), height); // TODO: isDefaultColorSelected()
+    QPixmap pixmap = colorRectPixmap(effectiveColor(), !m_color.isValid(), height, height); // TODO: isDefaultColorSelected()
     setItemIcon(/*index=*/0, pixmap);
-    setItemText(/*index=*/0, (m_color.isValid() ? "" : i18n("(Default)")));
+    setItemText(/*index=*/0,
+                (m_color.isValid()
+                 ? QString(i18n("R:%1, G:%2, B:%3")).arg(m_color.red()).arg(m_color.green()).arg(m_color.blue())
+                 : i18n("(Default)")));
 }
 
 void KColorCombo2::showPopup()
