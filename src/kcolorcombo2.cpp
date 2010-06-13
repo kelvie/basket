@@ -649,13 +649,13 @@ void KColorCombo2::showPopup()
 
     QPoint popupPoint = mapToGlobal(QPoint(0, 0));
 
-    int popupHeight = m_popup->sizeHint().height();
+    int popupHeight = m_popup->size().height();
     if (popupPoint.y() + height() + popupHeight > desk.bottom())
         popupPoint.setY(popupPoint.y() - popupHeight);
     else
         popupPoint.setY(popupPoint.y() + height());
 
-    int popupWidth = m_popup->sizeHint().width();
+    int popupWidth = m_popup->size().width();
     if (popupPoint.x() + popupWidth > desk.right())
         popupPoint.setX(desk.right() - popupWidth);
 
