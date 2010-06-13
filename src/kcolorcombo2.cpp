@@ -346,7 +346,6 @@ KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent, const char *nam
 
 void KColorCombo2::init()
 {
-    m_discardNextMousePress = false;
     m_colorArray            = 0;
     d                       = new KColorCombo2Private();
 
@@ -690,41 +689,6 @@ void KColorCombo2::showPopup()
         QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
         QApplication::postEvent(lb, keyEvent);
     }*/
-}
-
-bool KColorCombo2::eventFilter(QObject */*object*/, QEvent *event)
-{
-    QMouseEvent *mouseEvent;
-
-    switch (event->type()) {
-    case QEvent::MouseButtonDblClick:
-    case QEvent::MouseButtonPress:
-        mouseEvent = (QMouseEvent*)event;
-        if (!m_popup->rect().contains(mouseEvent->pos())) {
-            QPoint globalPos = m_popup->mapToGlobal(mouseEvent->pos());
-            if (QApplication::widgetAt(globalPos) == this) {
-                // The popup is being closed by a click on the KColorCombo2 widget.
-                // Avoid popping it up again immediately:
-                m_discardNextMousePress = true;
-            }
-        }
-        break;
-    default:
-        break;
-    }
-
-    // Don't stop the event being handled further:
-    return false;
-}
-
-void KColorCombo2::mousePressEvent(QMouseEvent *event)
-{
-    m_dragStartPos = event->pos();
-
-    if (event->button() == Qt::LeftButton && m_discardNextMousePress)
-        m_discardNextMousePress = false;
-    else
-        QComboBox::mousePressEvent(event);
 }
 
 void KColorCombo2::mouseMoveEvent(QMouseEvent *event)

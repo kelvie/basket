@@ -292,9 +292,7 @@ public:
 
 protected:
     virtual void showPopup();
-    virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dropEvent(QDropEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
@@ -323,7 +321,6 @@ private:
     KColorPopup *m_popup;
     QColor       m_color;
     QColor       m_defaultColor;
-    bool         m_discardNextMousePress;
     QColor     **m_colorArray;
     int          m_columnCount;
     int          m_rowCount;
