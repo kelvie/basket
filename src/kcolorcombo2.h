@@ -145,19 +145,19 @@ signals:
 
 public:
     /**
-     * Constructs a color combobox with parent @p parent called @p name.
+     * Constructs a color combobox with parent @p parent.
      * @param color         The initial selected color. If it is not valid, the default one will then be selected.\n
      *                      But if @p color is invalid and there is no default color, the result is undefined.
      * @param defaultColor  The color to return if the user choose the default one. If it is not valid, the user willn't be allowed to choose a default one.
      */
-    KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent = 0, const char *name = 0);
+    KColorCombo2(const QColor& color, const QColor& defaultColor, QWidget* parent = 0);
 
     /**
-     * Constructs a color combobox with parent @p parent called @p name.\n
+     * Constructs a color combobox with parent @p parent.\n
      * The user is not allowed to choose a default color, unless you call setDefaultColor() later.
      * @param color         The initial selected color. If it is invalid, the result is undefined.
      */
-    KColorCombo2(const QColor &color, QWidget *parent = 0L, const char *name = 0L);
+    KColorCombo2(const QColor& color, QWidget* parent = 0L);
 
     /**
      * Destroys the combobox.

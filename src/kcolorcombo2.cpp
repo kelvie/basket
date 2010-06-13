@@ -328,7 +328,7 @@ class KColorCombo2::KColorCombo2Private
  * Some other piece of code comes from KColorButton (in libkdeui) to enable color drag, drop, copy and paste.
  */
 
-KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent, const char *name)
+KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent)
         : QComboBox(parent),
         m_color(color), m_defaultColor(defaultColor)
 {
@@ -336,7 +336,7 @@ KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWid
     init();
 }
 
-KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent, const char *name)
+KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent)
         : QComboBox(parent),
         m_color(color), m_defaultColor()
 {
