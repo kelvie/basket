@@ -34,6 +34,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QDragEnterEvent>
+#include <QDebug>
 #include <klocale.h>
 #include <kcolordialog.h>
 #include <qclipboard.h>
@@ -198,6 +199,7 @@ void KColorPopup::validate()
 {
     hide();
     close();
+    emit closed();
 
     if (m_selectedRow != m_selector->rowCount()) // A normal row:
         m_selector->setColor(m_selector->colorAt(m_selectedColumn, m_selectedRow));
@@ -217,6 +219,7 @@ void KColorPopup::mousePressEvent(QMouseEvent *event)
     if (x < 0 || y < 0 || x >= width() || y >= height()) {
         hide();
         close();
+        emit closed();
     } else
         validate();
 
@@ -354,6 +357,7 @@ void KColorCombo2::init()
 
     m_popup = new KColorPopup(this);
     m_popup->installEventFilter(this);
+    connect(m_popup, SIGNAL(closed()), SLOT(popupClosed()));
 
     // By default, the array is filled with setRainbowPreset().
     // But we allocate it on demand (the later as possible) to avoid performances issues if the developer set another array.
@@ -784,5 +788,11 @@ void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)
 {
     /* KBASE::virtual_hook(id, data); */
 }
+
+void KColorCombo2::popupClosed()
+{
+    hidePopup();
+}
+
 
 #endif // USE_OLD_KCOLORCOMBO

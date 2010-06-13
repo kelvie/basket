@@ -134,7 +134,8 @@ public slots:
      * @see defaultColor() to get it.
      */
     void setDefaultColor(const QColor &color);
-
+private slots:
+    void popupClosed();
 signals:
     /**
      * Emitted when the color of the widget is changed, either with setColor() or via user selection.
@@ -355,6 +356,8 @@ public:
     KColorPopup(KColorCombo2 *parent);
     ~KColorPopup();
     void relayout(); // updateGeometry() ??
+signals:
+    void closed();
 protected:
     void paintEvent(QPaintEvent */*event*/);
     void mouseMoveEvent(QMouseEvent *event);
