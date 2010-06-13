@@ -638,7 +638,7 @@ void KColorCombo2::updateComboBox()
     setItemText(/*index=*/0,
                 (m_color.isValid()
                  ? QString(i18n("R:%1, G:%2, B:%3")).arg(m_color.red()).arg(m_color.green()).arg(m_color.blue())
-                 : i18n("(Default)")));
+                 : i18nc("color", "(Default)")));
 }
 
 void KColorCombo2::showPopup()

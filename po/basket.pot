@@ -1544,6 +1544,10 @@ msgstr ""
 msgid "(Default)"
 msgstr ""
 
+msgctxt "color"
+msgid "(Default)"
+msgstr ""
+
 #: src/kcolorcombo2.cpp:142
 msgid "Other..."
 msgstr ""
