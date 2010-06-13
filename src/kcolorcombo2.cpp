@@ -506,8 +506,6 @@ void KColorCombo2::newColorArray(int columnCount, int rowCount)
     m_colorArray  = new QColor* [columnCount];
     for (int i = 0; i < columnCount; ++i)
         m_colorArray[i] = new QColor[rowCount];
-
-    m_popup->relayout();
 }
 
 void KColorCombo2::setColorAt(int column, int row, const QColor &color)
