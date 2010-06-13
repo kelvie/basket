@@ -34,8 +34,7 @@
 
 class KColorPopup;
 
-
-#ifndef USE_NEW_KCOLORCOMBO
+#ifdef USE_OLD_KCOLORCOMBO
 #include <KColorCombo>
 
 // A temporary class for backwards compatibiility until KColorCombo2 gets
@@ -67,7 +66,7 @@ public:
 };
 
 
-#else
+#else /* USE_OLD_KCOLORCOMBO */
 /**
  * @short A combobox to display or allow user selection of a color in a user-friendly way.
  *
@@ -261,7 +260,7 @@ public:
      *
      * @see drawColorRect() if you need to draw it directly: it's faster.
      */
-    static QPixmap colorRectPixmap(const QColor &color, bool isDefault, int width, int height);
+    QPixmap colorRectPixmap(const QColor &color, bool isDefault, int width, int height);
 
     /**
      * Draw an image of a colored rounded-rectangle.\n
@@ -276,7 +275,7 @@ public:
      *
      * @see colorRectPixmap() to get a transparent pixmap of the rectangle.
      */
-    static void drawColorRect(QPainter &painter, int x, int y, const QColor &color, bool isDefault, int width, int height);
+    void drawColorRect(QPainter &painter, int x, int y, const QColor &color, bool isDefault, int width, int height);
 
     /**
      * Get the height of a color rectangle for this combobox.\n
@@ -291,7 +290,7 @@ public:
     int colorRectWidthForHeight(int height) const;
 
 protected:
-    virtual void popup();
+    virtual void showPopup();
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual bool eventFilter(QObject *object, QEvent *event);
@@ -369,7 +368,7 @@ protected:
 
 private:
     KColorCombo2 *m_selector;
-    QPixmap m_pixmap;
+    QPixmap *m_pixmap;
     int m_selectedRow;
     int m_selectedColumn;
     int m_columnOther;
@@ -379,6 +378,6 @@ private:
     static const int FRAME_WIDTH;
 };
 
-#endif // USE_NEW_KCOLORCOMBO
+#endif // USE_OLD_KCOLORCOMBO
 
 #endif // KCOLORCOMBO2_H

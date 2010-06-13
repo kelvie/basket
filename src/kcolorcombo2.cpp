@@ -20,7 +20,7 @@
 
 #include "kcolorcombo2.h"
 
-#ifdef USE_NEW_KCOLORCOMBO
+#ifndef USE_OLD_KCOLORCOMBO
 
 #include <qapplication.h>
 #include <qpixmap.h>
@@ -38,7 +38,7 @@
 #include <kcolordialog.h>
 #include <qclipboard.h>
 #include <kstdaccel.h>
-#include <kcolordrag.h>
+#include <kglobalsettings.h>
 
 //#define DEBUG_COLOR_ARRAY
 //#define OUTPUT_GIMP_PALETTE
@@ -58,8 +58,8 @@ const int KColorPopup::FRAME_WIDTH = 1;
 
 
 KColorPopup::KColorPopup(KColorCombo2 *parent)
-        : QWidget(/*parent=*/0, /*name=*/0, Qt::WType_Popup | WNoAutoErase),
-        m_selector(parent)
+        : QWidget(/*parent=*/0, Qt::Popup),
+        m_selector(parent), m_pixmap(0)
 {
     hide();
     setMouseTracking(true);
@@ -68,6 +68,7 @@ KColorPopup::KColorPopup(KColorCombo2 *parent)
 
 KColorPopup::~KColorPopup()
 {
+    delete m_pixmap;
 }
 
 #include <qcursor.h>
@@ -86,8 +87,9 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
     resize(width, height);
 
     // Initialize the pixmap:
-    m_pixmap.resize(width, height);
-    QPainter painter(&m_pixmap);
+    delete m_pixmap;
+    m_pixmap = new QPixmap(width, height);
+    QPainter painter(m_pixmap);
     painter.fillRect(0, 0, width, height, palette().color(QPalette::Base));
     painter.setPen(palette().color(QPalette::Text));
     painter.drawRect(0, 0, width, height);
@@ -127,7 +129,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
         m_selector->drawColorRect(painter, x, y, m_selector->defaultColor(), /*isDefault=*/true, colorWidth, colorHeight);
         painter.setFont(m_selector->font());
         painter.setPen(textColor);
-        painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("(Default)"));
+        painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextDontClip, i18n("(Default)"));
     }
     x = 1 + MARGIN + m_columnOther * (colorWidth + MARGIN);
     if (m_selectedColumn >= m_columnOther && rowCount == m_selectedRow) {
@@ -139,7 +141,7 @@ void KColorPopup::relayout() // FIXME: relayout should NOT redraw the pixmap!
     m_selector->drawColorRect(painter, x, y, m_otherColor, /*isDefault=*/false, colorWidth, colorHeight);
     painter.setFont(m_selector->font());
     painter.setPen(textColor);
-    painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | DontClip, i18n("Other..."));
+    painter.drawText(x + 2 + colorWidth, y, /*width=*/5000, colorHeight, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextDontClip, i18n("Other..."));
 
 //  QPoint pos = mapFromGlobal(QCursor::pos());
 //  painter.drawRect(pos.x(), pos.y(), 5000, 5000);
@@ -224,7 +226,8 @@ void KColorPopup::mousePressEvent(QMouseEvent *event)
 void KColorPopup::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.drawPixmap(0, 0, m_pixmap);
+    if (m_pixmap)
+        painter.drawPixmap(0, 0, *m_pixmap);
     painter.setPen(Qt::black);
     painter.drawRect(event->rect());
 }
@@ -323,16 +326,18 @@ class KColorCombo2::KColorCombo2Private
  */
 
 KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent, const char *name)
-        : QComboBox(/*editable=*/false, parent, name),
+        : QComboBox(parent),
         m_color(color), m_defaultColor(defaultColor)
 {
+    setEditable(false);
     init();
 }
 
 KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent, const char *name)
-        : QComboBox(/*editable=*/false, parent, name),
+        : QComboBox(parent),
         m_color(color), m_defaultColor()
 {
+    setEditable(false);
     init();
 }
 
@@ -343,7 +348,7 @@ void KColorCombo2::init()
     d                       = new KColorCombo2Private();
 
     setDefaultColor(m_defaultColor);
-    insertItem("", /*index=*/0);
+    insertItem(/*index=*/0, "");
     updateComboBox(); // It need an item of index 0 to exists, so we created it.
     setAcceptDrops(true);
 
@@ -411,14 +416,14 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
         // With light colors:
         for (int j = 1; j <= lightRowCount; ++j) { // Start to 1 because we don't want a row full of white!
             int saturation = j * 255 / (lightRowCount + 1);
-            setColorAt(i, j - 1, QColor(hue, saturation, 255, QColor::Hsv));
+            setColorAt(i, j - 1, QColor::fromHsv(hue, saturation, 255));
         }
         // With pure colors:
-        setColorAt(i, lightRowCount, QColor(hue, 255, 255, QColor::Hsv));
+        setColorAt(i, lightRowCount, QColor::fromHsv(hue, 255, 255));
         // With dark colors:
         for (int j = 1; j <= darkRowCount; ++j) {
             int value = 255 - j * 255 / (darkRowCount + 1);
-            setColorAt(i, lightRowCount + j, QColor(hue, 255, value, QColor::Hsv));
+            setColorAt(i, lightRowCount + j, QColor::fromHsv(hue, 255, value));
         }
     }
 
@@ -559,7 +564,7 @@ void KColorCombo2::drawColorRect(QPainter &painter, int x, int y, const QColor &
             int hue = i * 360 / (width - 2);
             for (int j = 0; j < height - 2; ++j) {
                 int saturation = 255 - (j * 255 / (height - 2));
-                painter.setPen(QColor(hue, saturation, /*value=*/255, QColor::Hsv));
+                painter.setPen(QColor::fromHsv(hue, saturation, /*value=*/255));
                 painter.drawPoint(x + i + 1, y + j + 1);
             }
         }
@@ -567,7 +572,7 @@ void KColorCombo2::drawColorRect(QPainter &painter, int x, int y, const QColor &
 
     // Stroke:
     int dontCare, value;
-    color.getHsv(/*hue:*/dontCare, /*saturation:*/dontCare, value);
+    color.getHsv(/*hue:*/&dontCare, /*saturation:*/&dontCare, &value);
     QColor stroke = (color.isValid() ? color.dark(125) : palette().color(QPalette::Text));
     painter.setPen(/*color);//*/stroke);
     painter.drawLine(x + 1,         y,              x + width - 2, y);
@@ -628,10 +633,11 @@ void KColorCombo2::updateComboBox()
 {
     int height = colorRectHeight() * 2 / 3; // fontMetrics().boundingRect(i18n("(Default)")).height() + 2
     QPixmap pixmap = colorRectPixmap(effectiveColor(), !m_color.isValid(), colorRectWidthForHeight(height), height); // TODO: isDefaultColorSelected()
-    changeItem(pixmap, (m_color.isValid() ? "" : i18n("(Default)")), /*index=*/0);
+    setItemIcon(/*index=*/0, pixmap);
+    setItemText(/*index=*/0, (m_color.isValid() ? "" : i18n("(Default)")));
 }
 
-void KColorCombo2::popup()
+void KColorCombo2::showPopup()
 {
     if (!m_colorArray)
         setRainbowPreset();
@@ -676,12 +682,12 @@ void KColorCombo2::popup()
     // The combo box is now shown pressed. Make it show not pressed again
     // by causing its (invisible) list box to emit a 'selected' signal.
     // Simulate an Enter to unpress it:
-    QListWidget *lb = listBox();
+    /*QListWidget *lb = listBox();
     if (lb) {
         lb->setCurrentItem(0);
         QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
         QApplication::postEvent(lb, keyEvent);
-    }
+    }*/
 }
 
 bool KColorCombo2::eventFilter(QObject */*object*/, QEvent *event)
@@ -694,7 +700,7 @@ bool KColorCombo2::eventFilter(QObject */*object*/, QEvent *event)
         mouseEvent = (QMouseEvent*)event;
         if (!m_popup->rect().contains(mouseEvent->pos())) {
             QPoint globalPos = m_popup->mapToGlobal(mouseEvent->pos());
-            if (QApplication::widgetAt(globalPos, /*child=*/true) == this) {
+            if (QApplication::widgetAt(globalPos) == this) {
                 // The popup is being closed by a click on the KColorCombo2 widget.
                 // Avoid popping it up again immediately:
                 m_discardNextMousePress = true;
@@ -721,16 +727,17 @@ void KColorCombo2::mousePressEvent(QMouseEvent *event)
 
 void KColorCombo2::mouseMoveEvent(QMouseEvent *event)
 {
-    if ((event->state() & Qt::LeftButton) &&
+    if ((event->buttons() & Qt::LeftButton) &&
             (event->pos() - m_dragStartPos).manhattanLength() > KGlobalSettings::dndEventDelay()) {
         // Drag color object:
         QMimeData* mimeData = new QMimeData;
         QDrag* colorDrag = new QDrag(this);
-        mimeData->setColor(effectiveColor());
+        mimeData->setColorData(effectiveColor());
         // Replace the drag pixmap with our own rounded one, at the same position and dimetions:
         QPixmap pixmap = colorDrag->pixmap();
         pixmap = colorRectPixmap(effectiveColor(), /*isDefault=*/false, pixmap.width(), pixmap.height());
-        colorDrag->setPixmap(pixmap, colorDrag->pixmapHotSpot());
+        colorDrag->setPixmap(pixmap);
+        colorDrag->setHotSpot(colorDrag->hotSpot());
         colorDrag->exec(Qt::CopyAction, Qt::CopyAction);
         //setDown(false);
     }
@@ -738,7 +745,8 @@ void KColorCombo2::mouseMoveEvent(QMouseEvent *event)
 
 void KColorCombo2::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->accept(isEnabled() && event->mimeData()->hasColor());
+    if (isEnabled() && event->mimeData()->hasColor())
+        event->accept();
 }
 
 void KColorCombo2::dropEvent(QDropEvent *event)
@@ -751,15 +759,15 @@ void KColorCombo2::dropEvent(QDropEvent *event)
 
 void KColorCombo2::keyPressEvent(QKeyEvent *event)
 {
-    KKey key(event);
+    QKeySequence key(event->key());
 
     if (KStandardShortcut::copy().contains(key)) {
         QMimeData *mime = new QMimeData;
-        mime->setColor(effectiveColor());
-        QApplication::clipboard()->setData(mime, QClipboard::Clipboard);
+        mime->setColorData(effectiveColor());
+        QApplication::clipboard()->setMimeData(mime, QClipboard::Clipboard);
     } else if (KStandardShortcut::paste().contains(key)) {
         QColor color;
-        color = qvariant_cast<QColor>(QApplication::clipboard()->data(QClipboard::Clipboard)->colorData());
+        color = qvariant_cast<QColor>(QApplication::clipboard()->mimeData(QClipboard::Clipboard)->colorData());
         setColor(color);
     } else
         QComboBox::keyPressEvent(event);
@@ -777,4 +785,4 @@ void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)
     /* KBASE::virtual_hook(id, data); */
 }
 
-#endif // USE_NEW_KCOLORCOMBO
+#endif // USE_OLD_KCOLORCOMBO
