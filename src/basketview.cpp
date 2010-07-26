@@ -3954,11 +3954,7 @@ void BasketView::noteDelete()
                                                   "<qt>Do you really want to delete these <b>%1</b> notes?</qt>",
                                                   countSelecteds()),
                                             i18np("Delete Note", "Delete Notes", countSelecteds())
-#if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
                                             , KStandardGuiItem::del(), KStandardGuiItem::cancel());
-#else
-                                           );
-#endif
     if (really == KMessageBox::No)
         return;
 
