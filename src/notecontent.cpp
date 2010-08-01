@@ -1908,7 +1908,6 @@ void WikiLinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
     content.appendChild(textNode);
 }
 
-
 void WikiLinkContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
     keys->append(i18n("Target"));
@@ -1946,11 +1945,10 @@ void WikiLinkContent::setCursor(QWidget *widget, int zone)
 QString WikiLinkContent::statusBarMessage(int zone)
 {
     if (zone == Note::Custom0 || zone == Note::Content)
-        return m_url.prettyUrl();
+        return i18n("Link to %1").arg(this->title());
     else
         return "";
 }
-
 
 KUrl WikiLinkContent::urlToOpen(bool /*with*/)
 {
