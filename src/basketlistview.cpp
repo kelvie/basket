@@ -531,7 +531,9 @@ QTreeWidgetItem* BasketTreeListView::findBasket(QTreeWidgetItem *parent, QString
 
     for(int i = 0; i < parent->childCount(); i++) {
         QTreeWidgetItem *child = parent->child(i);
-        if(child->text(0).toLower() == page.toLower()) {
+        BasketView* bv = ((BasketListViewItem*)child)->basket();
+
+        if(bv->folderName().toLower() == page.toLower() + '/') {
             if(pages.count() > 0) {
                 found = this->findBasket(child, pages);
                 break;

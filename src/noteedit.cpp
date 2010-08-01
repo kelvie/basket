@@ -833,23 +833,24 @@ void WikiLinkEditDialog::generateBasketList(BasketListViewItem *item, KComboBox 
 {
     if(!item)
         return;
+    BasketView* bv = item->basket();
+
     //TODO: add some fancy deco stuff to make it look like a tree list.
     QString pad = "  ";
-    QString text = item->text(0);
+    QString text = item->text(0); //user text
     for(int i = 0; i < indent; ++i)
         text.prepend(pad);
 
     //create the link text
     if(link.isEmpty())
         link = "basket://";
-    link.append(item->text(0).toLower());
+    link.append(bv->folderName().toLower()); //unique ref.
 
     targetList->addItem(item->icon(0), text, QVariant(link));
 
     int subBasketCount = item->childCount();
     if(subBasketCount > 0) {
         indent++;
-        link.append('/');
         for(int i = 0; i < subBasketCount; ++i) {
             this->generateBasketList((BasketListViewItem*)item->child(i), targetList, link, indent);
         }
