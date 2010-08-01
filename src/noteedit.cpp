@@ -780,13 +780,11 @@ WikiLinkEditDialog::WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *pa
 
     QGridLayout *layout = new QGridLayout(page);
 
-    //FIXME: I really need the invisibleRootItem so I can get all the baskets!
-    BasketListViewItem *item = Global::bnpView->topLevelItem(0);
-
     m_targetBasket = new KComboBox(wid);
-    this->generateBasketList(item, m_targetBasket);
+    this->generateBasketList(m_targetBasket);
 
     if(m_noteContent->url().isEmpty()){
+        BasketListViewItem *item = Global::bnpView->topLevelItem(0);
         m_noteContent->setWikiLink(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
         this->urlChanged(0);
     }else{
@@ -829,30 +827,33 @@ void WikiLinkEditDialog::slotOk()
     m_noteContent->setEdited();
 }
 
-void WikiLinkEditDialog::generateBasketList(BasketListViewItem *item, KComboBox *targetList, QString link, int indent)
+void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, QString link, int indent)
 {
-    if(!item)
-        return;
-    BasketView* bv = item->basket();
+    if(!item) { // include ALL top level items and their children.
+        for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)
+            this->generateBasketList(targetList, Global::bnpView->topLevelItem(i));
+    } else {
+        BasketView* bv = item->basket();
 
-    //TODO: add some fancy deco stuff to make it look like a tree list.
-    QString pad = "  ";
-    QString text = item->text(0); //user text
-    for(int i = 0; i < indent; ++i)
-        text.prepend(pad);
+        //TODO: add some fancy deco stuff to make it look like a tree list.
+        QString pad = "  ";
+        QString text = item->text(0); //user text
+        for(int i = 0; i < indent; ++i)
+            text.prepend(pad);
 
-    //create the link text
-    if(link.isEmpty())
-        link = "basket://";
-    link.append(bv->folderName().toLower()); //unique ref.
+        //create the link text
+        if(link.isEmpty())
+            link = "basket://";
+        link.append(bv->folderName().toLower()); //unique ref.
 
-    targetList->addItem(item->icon(0), text, QVariant(link));
+        targetList->addItem(item->icon(0), text, QVariant(link));
 
-    int subBasketCount = item->childCount();
-    if(subBasketCount > 0) {
-        indent++;
-        for(int i = 0; i < subBasketCount; ++i) {
-            this->generateBasketList((BasketListViewItem*)item->child(i), targetList, link, indent);
+        int subBasketCount = item->childCount();
+        if(subBasketCount > 0) {
+            indent++;
+            for(int i = 0; i < subBasketCount; ++i) {
+                this->generateBasketList(targetList, (BasketListViewItem*)item->child(i), link, indent);
+            }
         }
     }
 }
