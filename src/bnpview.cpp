@@ -2890,7 +2890,7 @@ void BNPView::loadWikiLink(QString link)
         l = l.mid(0, l.length() -1);
     pages = l.split("/");
 
-    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), pages);
+    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), pages.last());
 
     if(!item)
         return;
