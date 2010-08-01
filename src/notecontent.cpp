@@ -180,6 +180,10 @@ NoteType::Id LinkContent::type() const
 {
     return NoteType::Link;
 }
+NoteType::Id WikiLinkContent::type() const
+{
+    return NoteType::WikiLink;
+}
 NoteType::Id LauncherContent::type() const
 {
     return NoteType::Launcher;
@@ -220,6 +224,10 @@ QString FileContent::typeName() const
 QString LinkContent::typeName() const
 {
     return i18n("Link");
+}
+QString WikiLinkContent::typeName() const
+{
+    return i18n("Wiki Link");
 }
 QString LauncherContent::typeName() const
 {
@@ -262,6 +270,10 @@ QString LinkContent::lowerTypeName() const
 {
     return "link";
 }
+QString WikiLinkContent::lowerTypeName() const
+{
+    return "wiki_link";
+}
 QString LauncherContent::lowerTypeName() const
 {
     return "launcher";
@@ -293,6 +305,17 @@ QString LinkContent::toText(const QString &/*cuttedFullPath*/)
     if (autoTitle())
         return url().prettyUrl();
     else if (title().isEmpty() && url().isEmpty())
+        return "";
+    else if (url().isEmpty())
+        return title();
+    else if (title().isEmpty())
+        return url().prettyUrl();
+    else
+        return QString("%1 <%2>").arg(title(), url().prettyUrl());
+}
+QString WikiLinkContent::toText(const QString &/*cuttedFullPath*/)
+{
+    if (title().isEmpty() && url().isEmpty())
         return "";
     else if (url().isEmpty())
         return title();
@@ -346,6 +369,11 @@ QString LinkContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
     return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
 } // With the icon?
 
+QString WikiLinkContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
+{
+    return QString("basket://%1 <a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
+} // With the icon?
+
 QString LauncherContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
 {
     return QString("<a href=\"%1\">%2</a>").arg((cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath), name());
@@ -381,6 +409,11 @@ void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPat
     }
 }
 void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
+{
+    *url   = this->url();
+    *title = this->title();
+}
+void WikiLinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
 {
     *url   = this->url();
     *title = this->title();
@@ -425,6 +458,10 @@ bool LinkContent::useFile() const
 {
     return false;
 }
+bool WikiLinkContent::useFile() const
+{
+    return false;
+}
 bool LauncherContent::useFile() const
 {
     return true;
@@ -463,6 +500,10 @@ bool FileContent::canBeSavedAs() const
     return true;
 }
 bool LinkContent::canBeSavedAs() const
+{
+    return true;
+}
+bool WikiLinkContent::canBeSavedAs() const
 {
     return true;
 }
@@ -507,6 +548,10 @@ QString LinkContent::saveAsFilters() const
 {
     return "*";
 } // TODO: idem File + If isDir() const: return
+QString WikiLinkContent::saveAsFilters() const
+{
+    return "*";
+} // TODO: idem File + If isDir() const: return
 QString LauncherContent::saveAsFilters() const
 {
     return "application/x-desktop";
@@ -545,6 +590,10 @@ bool FileContent::match(const FilterData &data)
     return fileName().contains(data.string);
 }
 bool LinkContent::match(const FilterData &data)
+{
+    return title().contains(data.string) || url().prettyUrl().contains(data.string);
+}
+bool WikiLinkContent::match(const FilterData &data)
 {
     return title().contains(data.string) || url().prettyUrl().contains(data.string);
 }
@@ -589,6 +638,10 @@ QString LinkContent::editToolTipText() const
 {
     return i18n("Edit this link");
 }
+QString WikiLinkContent::editToolTipText() const
+{
+    return i18n("Edit this wiki link");
+}
 QString LauncherContent::editToolTipText() const
 {
     return i18n("Edit this launcher");
@@ -630,6 +683,10 @@ QString LinkContent::cssClass() const
 {
     return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
 }
+QString WikiLinkContent::cssClass() const
+{
+    return ""; //(LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
+}
 QString LauncherContent::cssClass() const
 {
     return "launcher";
@@ -667,6 +724,10 @@ void LinkContent::fontChanged()
 {
     setLink(url(), title(), icon(), autoTitle(), autoIcon());
 }
+void WikiLinkContent::fontChanged()
+{
+    setWikiLink(url(), title(), icon());
+}
 void LauncherContent::fontChanged()
 {
     setLauncher(name(), icon(), exec());
@@ -701,6 +762,10 @@ QString SoundContent::customOpenCommand()
 void LinkContent::serialize(QDataStream &stream)
 {
     stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon();
+}
+void WikiLinkContent::serialize(QDataStream &stream)
+{
+    stream << url() << title() << icon();
 }
 void ColorContent::serialize(QDataStream &stream)
 {
@@ -788,6 +853,15 @@ QPixmap LinkContent::feedbackPixmap(int width, int height)
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
+    palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+}
+
+QPixmap WikiLinkContent::feedbackPixmap(int width, int height)
+{
+    QPalette palette;
+    palette = basket()->palette();
+    palette.setColor(QPalette::WindowText, note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
     return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
@@ -1802,6 +1876,126 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     exporter->stream << m_linkDisplay.toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
+/** class WikiLinkContent:
+ */
+
+WikiLinkContent::WikiLinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon)
+        : NoteContent(parent)
+{
+    this->setWikiLink(url, title, icon);
+}
+
+WikiLinkContent::~WikiLinkContent()
+{
+}
+
+int WikiLinkContent::setWidthAndGetHeight(int width)
+{
+    m_linkDisplay.setWidth(width);
+    return m_linkDisplay.height();
+}
+
+void WikiLinkContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
+{
+    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+}
+
+void WikiLinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
+{
+    content.setAttribute("title",      title());
+    content.setAttribute("icon",       icon());
+    QDomText textNode = doc.createTextNode(url().prettyUrl());
+    content.appendChild(textNode);
+}
+
+
+void WikiLinkContent::toolTipInfos(QStringList *keys, QStringList *values)
+{
+    keys->append(i18n("Target"));
+    values->append(m_url.prettyUrl());
+}
+
+int WikiLinkContent::zoneAt(const QPoint &pos)
+{
+    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+}
+
+QRect WikiLinkContent::zoneRect(int zone, const QPoint &/*pos*/)
+{
+    QRect linkRect = m_linkDisplay.iconButtonRect();
+
+    if (zone == Note::Custom0)
+        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+    else if (zone == Note::Content)
+        return linkRect;
+    else
+        return QRect();
+}
+
+QString WikiLinkContent::zoneTip(int zone)
+{
+    return (zone == Note::Custom0 ? i18n("Open this link") : QString());
+}
+
+void WikiLinkContent::setCursor(QWidget *widget, int zone)
+{
+    if (zone == Note::Custom0)
+        widget->setCursor(Qt::PointingHandCursor);
+}
+
+QString WikiLinkContent::statusBarMessage(int zone)
+{
+    if (zone == Note::Custom0 || zone == Note::Content)
+        return m_url.prettyUrl();
+    else
+        return "";
+}
+
+
+KUrl WikiLinkContent::urlToOpen(bool /*with*/)
+{
+    return m_url;
+}
+
+QString WikiLinkContent::messageWhenOpening(OpenMessage where)
+{
+    if (url().isEmpty())
+        return i18n("Link has no basket to open.");
+
+    switch (where) {
+    case OpenOne:               return i18n("Opening basket...");
+    default:                    return "";
+    }
+}
+
+void WikiLinkContent::setLink(const KUrl &url, const QString &title, const QString &icon)
+{
+    this->setWikiLink(url, title, icon);
+}
+
+void WikiLinkContent::setWikiLink(const KUrl &url, const QString &title, const QString &icon)
+{
+    m_url = url;
+    m_title = (title.isEmpty() ? url.url() : title);
+    m_icon = icon;
+
+    LinkLook *look = LinkLook::lookForURL(m_url);
+    m_linkDisplay.setLink(m_title, m_icon, look, note()->font());
+
+    contentChanged(m_linkDisplay.minWidth());
+
+}
+
+void WikiLinkContent::linkLookChanged()
+{
+    fontChanged();
+}
+
+void WikiLinkContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
+{
+    exporter->stream << m_url.url();
+}
+
 /** class LauncherContent:
  */
 
@@ -2330,6 +2524,8 @@ void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeN
         autoTitle = XMLWork::trueOrFalse(content.attribute("autoTitle"), autoTitle);
         autoIcon  = XMLWork::trueOrFalse(content.attribute("autoIcon"),  autoIcon);
         new LinkContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"), autoTitle, autoIcon);
+    } else if (lowerTypeName == "wiki_link") {
+        new WikiLinkContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"));
     } else if (lowerTypeName == "launcher")  new LauncherContent(parent, content.text());
     else if (lowerTypeName == "color")     new ColorContent(parent, QColor(content.text()));
     else if (lowerTypeName == "unknown")   new UnknownContent(parent, content.text());

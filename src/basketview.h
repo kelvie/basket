@@ -104,6 +104,8 @@ public:
     void clickedToInsert(QMouseEvent *event, Note *clicked = 0, int zone = 0);
 private slots:
     void setFocusIfNotInPopupMenu();
+signals:
+    void wikiLink(QString link);
 
 /// LAYOUT:
 private:

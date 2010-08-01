@@ -156,6 +156,7 @@ public slots:
     void addNoteHtml();
     void addNoteImage();
     void addNoteLink();
+    void addNoteWikiLink();
     void addNoteColor();
     /** Passive Popups for Global Actions */
     void showPassiveDropped(const QString &title);
@@ -201,6 +202,8 @@ public slots:
     void changedSelectedNotes();
     void timeoutTryHide();
     void timeoutHide();
+
+    void loadWikiLink(QString link);
 
 public:
     static QString s_fileToOpen;
@@ -259,6 +262,7 @@ private:
 //      KAction       *m_actInsertText;
     KAction       *m_actInsertHtml;
     KAction       *m_actInsertLink;
+    KAction       *m_actInsertWikiLink;
     KAction       *m_actInsertImage;
     KAction       *m_actInsertColor;
     KAction       *m_actImportKMenu;

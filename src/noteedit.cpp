@@ -97,6 +97,10 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
     if (linkContent)
         return new LinkEditor(linkContent, parent);
 
+    WikiLinkContent *wikiLinkContent = dynamic_cast<WikiLinkContent*>(noteContent);
+    if(wikiLinkContent)
+        return new WikiLinkEditor(wikiLinkContent, parent);
+
     LauncherContent *launcherContent = dynamic_cast<LauncherContent*>(noteContent);
     if (launcherContent)
         return new LauncherEditor(launcherContent, parent);
@@ -479,6 +483,18 @@ LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
         setEmpty();
 }
 
+/** class WikiLinkEditor: */
+
+WikiLinkEditor::WikiLinkEditor(WikiLinkContent *wikiLinkContent, QWidget *parent)
+        : NoteEditor(wikiLinkContent)
+{
+    WikiLinkEditDialog dialog(wikiLinkContent, parent);
+    if (dialog.exec() == QDialog::Rejected)
+        cancel();
+    if (wikiLinkContent->url().isEmpty() && wikiLinkContent->title().isEmpty())
+        setEmpty();
+}
+
 /** class LauncherEditor: */
 
 LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent)
@@ -740,6 +756,104 @@ void LinkEditDialog::slotOk()
         m_icon->setFixedSize(minSize, minSize);
     else
         m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
+}
+
+/** class WikiLinkEditDialog: */
+
+WikiLinkEditDialog::WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
+        : KDialog(parent)
+        , m_noteContent(contentNote)
+{
+
+    // KDialog options
+    setCaption(i18n("Edit Wiki Link Note"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+    setObjectName("EditWikiLink");
+    setModal(true);
+    showButtonSeparator(true);
+    connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+
+    QWidget     *page   = new QWidget(this);
+    setMainWidget(page);
+    QWidget *wid = new QWidget(page);
+
+    QGridLayout *layout = new QGridLayout(page);
+
+    //FIXME: I really need the invisibleRootItem so I can get all the baskets!
+    BasketListViewItem *item = Global::bnpView->topLevelItem(0);
+
+    m_targetBasket = new KComboBox(wid);
+    this->generateBasketList(item, m_targetBasket);
+
+    if(m_noteContent->url().isEmpty()){
+        m_noteContent->setWikiLink(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
+        this->urlChanged(0);
+    }else{
+        //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
+        QString url = KUrl::decode_string(m_noteContent->url().url());
+        int row = m_targetBasket->findData(QVariant(url));
+        if(row >= 0)
+            m_targetBasket->setCurrentIndex(row);
+    }
+
+    QLabel *label1 = new QLabel(page);
+    label1->setText(i18n("Ta&rget:"));
+    label1->setBuddy(m_targetBasket);
+
+    layout->addWidget(label1,  0, 0, Qt::AlignVCenter);
+    layout->addWidget(m_targetBasket,   0, 1, Qt::AlignVCenter);
+
+    connect(m_targetBasket,   SIGNAL(activated(int)), this, SLOT(urlChanged(int)));
+
+    QWidget *stretchWidget = new QWidget(page);
+    QSizePolicy policy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    policy.setHorizontalStretch(1);
+    policy.setVerticalStretch(255);
+    stretchWidget->setSizePolicy(policy); // Make it fill ALL vertical space
+    layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
+}
+
+WikiLinkEditDialog::~WikiLinkEditDialog()
+{
+}
+
+void WikiLinkEditDialog::urlChanged(const int index)
+{
+    if(m_targetBasket)
+        m_noteContent->setWikiLink(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toString()), m_targetBasket->currentText().trimmed(), "edit-copy");
+}
+
+void WikiLinkEditDialog::slotOk()
+{
+    m_noteContent->setEdited();
+}
+
+void WikiLinkEditDialog::generateBasketList(BasketListViewItem *item, KComboBox *targetList, QString link, int indent)
+{
+    if(!item)
+        return;
+    //TODO: add some fancy deco stuff to make it look like a tree list.
+    QString pad = "  ";
+    QString text = item->text(0);
+    for(int i = 0; i < indent; ++i)
+        text.prepend(pad);
+
+    //create the link text
+    if(link.isEmpty())
+        link = "basket://";
+    link.append(item->text(0).toLower());
+
+    targetList->addItem(item->icon(0), text, QVariant(link));
+
+    int subBasketCount = item->childCount();
+    if(subBasketCount > 0) {
+        indent++;
+        link.append('/');
+        for(int i = 0; i < subBasketCount; ++i) {
+            this->generateBasketList((BasketListViewItem*)item->child(i), targetList, link, indent);
+        }
+    }
 }
 
 /** class LauncherEditDialog: */

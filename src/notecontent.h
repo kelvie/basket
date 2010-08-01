@@ -64,7 +64,7 @@ class HtmlExporter;
   */
 namespace NoteType
 {
-enum Id { Group = 255, Text = 1, Html, Image, Animation, Sound, File, Link, Launcher, Color, Unknown }; // Always positive
+enum Id { Group = 255, Text = 1, Html, Image, Animation, Sound, File, Link, WikiLink, Launcher, Color, Unknown }; // Always positive
 }
 
 /** Abstract base class for every content type of basket note.
@@ -548,6 +548,70 @@ protected slots:
     void startFetchingUrlPreview();
 protected:
     KIO::PreviewJob *m_previewJob;
+};
+
+/** Real implementation of wiki link notes:
+ * Copied and modified from LinkContent.
+ * @author Brian C. Milco
+ */
+class WikiLinkContent : public QObject, public NoteContent
+{
+    Q_OBJECT
+public:
+    // Constructor and destructor:
+    WikiLinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon);
+    ~WikiLinkContent();
+    // Simple Generic Methods:
+    NoteType::Id type() const;
+    QString typeName() const;
+    QString lowerTypeName() const;
+    QString toText(const QString &/*cuttedFullPath*/);
+    QString toHtml(const QString &imageName, const QString &cuttedFullPath);
+    void    toLink(KUrl *url, QString *title, const QString &cuttedFullPath);
+    bool    useFile() const;
+    bool    canBeSavedAs() const;
+    QString saveAsFilters() const;
+    bool    match(const FilterData &data);
+    // Complexe Generic Methods:
+    void    exportToHTML(HTMLExporter *exporter, int indent);
+    QString cssClass() const;
+    int     setWidthAndGetHeight(int width);
+    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    void    saveToNode(QDomDocument &doc, QDomElement &content);
+    void    fontChanged();
+    void    linkLookChanged();
+    QString editToolTipText() const;
+    void    toolTipInfos(QStringList *keys, QStringList *values);
+    // Drag and Drop Content:
+    void    serialize(QDataStream &stream);
+    QPixmap feedbackPixmap(int width, int height);
+    // Custom Zones:
+    int     zoneAt(const QPoint &pos);
+    QRect   zoneRect(int zone, const QPoint &/*pos*/);
+    QString zoneTip(int zone);
+    void    setCursor(QWidget *widget, int zone);
+    QString statusBarMessage(int zone);
+    // Open Content or File:
+    KUrl urlToOpen(bool /*with*/);
+    QString messageWhenOpening(OpenMessage where);
+    // Content-Specific Methods:
+    void    setLink(const KUrl &url, const QString &title, const QString &icon); /// << Change the link and relayout the note.
+    void    setWikiLink(const KUrl &url, const QString &title, const QString &icon);
+    KUrl    url()       {
+        return m_url;
+    } /// << @return the URL of the link note-content.
+    QString title()     {
+        return m_title;
+    } /// << @return the displayed title of the link note-content.
+    QString icon()      {
+        return m_icon;
+    } /// << @return the displayed icon of the link note-content.
+
+protected:
+    KUrl        m_url;
+    QString     m_title;
+    QString     m_icon;
+    LinkDisplay m_linkDisplay;
 };
 
 /** Real implementation of launcher notes:

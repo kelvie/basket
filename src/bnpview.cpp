@@ -676,6 +676,11 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("Ctrl+Y"));
     m_actInsertLink = a;
 
+    a = ac->addAction("insert_wiki_link");
+    a->setText(i18n("&Wiki Link"));
+    a->setIcon(KIcon("link"));
+    m_actInsertWikiLink = a;
+
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
     a->setIcon(KIcon("image-png"));
@@ -710,12 +715,14 @@ void BNPView::setupActions()
     connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertWikiLink,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
     connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
     insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link);
+    insertEmptyMapper->setMapping(m_actInsertWikiLink,NoteType::WikiLink);
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
@@ -749,6 +756,7 @@ void BNPView::setupActions()
 //  m_insertActions.append( m_actInsertText     );
     m_insertActions.append(m_actInsertHtml);
     m_insertActions.append(m_actInsertLink);
+    m_insertActions.append(m_actInsertWikiLink);
     m_insertActions.append(m_actInsertImage);
     m_insertActions.append(m_actInsertColor);
     m_insertActions.append(m_actImportKMenu);
@@ -1088,6 +1096,7 @@ BasketView* BNPView::loadBasket(const QString &folderName)
     connect(basket, SIGNAL(propertiesChanged(BasketView*)), this, SLOT(updateBasketListViewItem(BasketView*)));
 
     connect(basket->decoration()->filterBar(), SIGNAL(newFilter(const FilterData&)), this, SLOT(newFilterFromFilterBar()));
+    connect(basket, SIGNAL(wikiLink(QString)), this, SLOT(loadWikiLink(QString)));
 
     return basket;
 }
@@ -2457,6 +2466,10 @@ void BNPView::addNoteLink()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);
 }
+void BNPView::addNoteWikiLink()
+{
+    showMainWindow(); currentBasket()->insertEmptyNote(NoteType::WikiLink);
+}
 void BNPView::addNoteColor()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Color);
@@ -2863,4 +2876,25 @@ void BNPView::disconnectTagsMenuDelayed()
     disconnect(m_lastOpenedTagsMenu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering()));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick()));
+}
+
+void BNPView::loadWikiLink(QString link)
+{
+    QStringList pages;
+    //remove "basket://" and any encoding.
+    QString l = link.mid(9, link.length() - 9);
+    //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
+    l = KUrl::decode_string(l);
+
+    if(l.endsWith("/"))
+        l = l.mid(0, l.length() -1);
+    pages = l.split("/");
+
+    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), pages);
+
+    if(!item)
+        return;
+
+    BasketView* basket = ((BasketListViewItem*)item)->basket();
+    this->setCurrentBasket(basket);
 }

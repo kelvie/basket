@@ -45,6 +45,8 @@ class RunCommandRequester;
 class QFontComboBox;
 class KColorCombo;
 class FocusWidgetFilter;
+class BasketListViewItem;
+class KComboBox;
 
 #include "notecontent.h"
 
@@ -187,6 +189,13 @@ public:
     LinkEditor(LinkContent *linkContent, QWidget *parent);
 };
 
+class WikiLinkEditor : public NoteEditor
+{
+    Q_OBJECT
+public:
+    WikiLinkEditor(WikiLinkContent *wikiLinkContent, QWidget *parent);
+};
+
 class LauncherEditor : public NoteEditor
 {
     Q_OBJECT
@@ -251,6 +260,25 @@ private:
     QPushButton   *m_autoIcon;
 };
 
+/** The dialog to edit Wiki Link Note content.
+  * @author Brian C. Milco
+  */
+class WikiLinkEditDialog : public KDialog
+{
+    Q_OBJECT
+public:
+    WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *parent = 0);
+    ~WikiLinkEditDialog();
+
+protected slots:
+    void slotOk();
+    void urlChanged(const int index);
+protected:
+    void generateBasketList(BasketListViewItem *item, KComboBox *targetList, QString link = "", int indent = 0);
+private:
+    WikiLinkContent   *m_noteContent;
+    KComboBox     *m_targetBasket;
+};
 
 /** The dialog to edit Launcher Note content.
   * @author Sébastien Laoût
