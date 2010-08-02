@@ -827,7 +827,7 @@ void WikiLinkEditDialog::slotOk()
     m_noteContent->setEdited();
 }
 
-void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, QString link, int indent)
+void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, int indent)
 {
     if(!item) { // include ALL top level items and their children.
         for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)
@@ -842,8 +842,7 @@ void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListVie
             text.prepend(pad);
 
         //create the link text
-        if(link.isEmpty())
-            link = "basket://";
+        QString link = "basket://";
         link.append(bv->folderName().toLower()); //unique ref.
 
         targetList->addItem(item->icon(0), text, QVariant(link));
@@ -852,7 +851,7 @@ void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListVie
         if(subBasketCount > 0) {
             indent++;
             for(int i = 0; i < subBasketCount; ++i) {
-                this->generateBasketList(targetList, (BasketListViewItem*)item->child(i), link, indent);
+                this->generateBasketList(targetList, (BasketListViewItem*)item->child(i), indent);
             }
         }
     }

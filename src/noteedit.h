@@ -274,7 +274,7 @@ protected slots:
     void slotOk();
     void urlChanged(const int index);
 protected:
-    void generateBasketList(KComboBox *targetList, BasketListViewItem *item = 0, QString link = "", int indent = 0);
+    void generateBasketList(KComboBox *targetList, BasketListViewItem *item = 0, int indent = 0);
 private:
     WikiLinkContent   *m_noteContent;
     KComboBox     *m_targetBasket;

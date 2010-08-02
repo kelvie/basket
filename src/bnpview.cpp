@@ -2882,15 +2882,11 @@ void BNPView::loadWikiLink(QString link)
 {
     QStringList pages;
     //remove "basket://" and any encoding.
-    QString l = link.mid(9, link.length() - 9);
+    QString page = link.mid(9, link.length() - 9);
     //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
-    l = KUrl::decode_string(l);
+    page = KUrl::decode_string(page);
 
-    if(l.endsWith("/"))
-        l = l.mid(0, l.length() -1);
-    pages = l.split("/");
-
-    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), pages.last());
+    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), page);
 
     if(!item)
         return;
