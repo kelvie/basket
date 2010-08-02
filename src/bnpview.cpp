@@ -2880,17 +2880,15 @@ void BNPView::disconnectTagsMenuDelayed()
 
 void BNPView::loadWikiLink(QString link)
 {
-    QStringList pages;
     //remove "basket://" and any encoding.
-    QString page = link.mid(9, link.length() - 9);
+    QString folderName = link.mid(9, link.length() - 9);
     //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
-    page = KUrl::decode_string(page);
+    folderName = KUrl::decode_string(folderName);
 
-    QTreeWidgetItem *item = m_tree->findBasket(m_tree->invisibleRootItem(), page);
+    BasketView* basket = this->basketForFolderName(folderName);
 
-    if(!item)
+    if(!basket)
         return;
 
-    BasketView* basket = ((BasketListViewItem*)item)->basket();
     this->setCurrentBasket(basket);
 }

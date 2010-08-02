@@ -522,27 +522,3 @@ Qt::DropActions BasketTreeListView::supportedDropActions() const
 {
     return Qt::MoveAction | Qt::CopyAction;
 }
-
-QTreeWidgetItem* BasketTreeListView::findBasket(QTreeWidgetItem *parent, QString folderName)
-{
-    QTreeWidgetItem *found = 0;
-
-    if(!folderName.endsWith("/"))
-        folderName.append("/");
-
-    for(int i = 0; i < parent->childCount(); i++) {
-        QTreeWidgetItem *child = parent->child(i);
-        BasketView* bv = ((BasketListViewItem*)child)->basket();
-
-        if(bv->folderName().toLower() == folderName) {
-            found = child;
-            break;
-        } else {
-            found = this->findBasket(child, folderName);
-            if(found)
-                break;
-        }
-    }
-
-    return found;
-}

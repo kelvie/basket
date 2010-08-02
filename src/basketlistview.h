@@ -93,7 +93,6 @@ public:
     void resizeEvent(QResizeEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
     Qt::DropActions supportedDropActions() const;
-    QTreeWidgetItem* findBasket(QTreeWidgetItem *parent, QString folderName);
 protected:
     bool event(QEvent *e);
     void focusInEvent(QFocusEvent*);
