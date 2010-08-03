@@ -36,6 +36,10 @@
 
 #include "tools.h"
 
+#include "global.h"
+#include "bnpview.h"
+#include <KUrl>
+
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
 QVector<uint>   StopWatch::counts;
@@ -134,6 +138,21 @@ QString Tools::tagURLs(const QString &text)
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }
+    return richText;
+}
+
+QString Tools::tagWikiLinks(const QString &text)
+{
+    //Example Wiki Link: [[Basket | My first Basket ]]
+
+    QRegExp linkExp("[[(\\w+)(|\\w)?]]");
+    if(href.startsWith("")) {
+        qDebug() << "in tools" << href;
+        QStringList pages = href.mid(9, href.length() - 9).split('/');
+        QString url = Global::bnpView->wikiLinkFromBasketNameLink(pages);
+        anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(pages.last()) + "</a>";
+    } else
+
     return richText;
 }
 

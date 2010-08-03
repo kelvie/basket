@@ -2892,3 +2892,34 @@ void BNPView::loadWikiLink(QString link)
 
     this->setCurrentBasket(basket);
 }
+
+QString BNPView::wikiLinkFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent)
+{
+    QString found = "";
+
+    if(!parent) {
+        parent = m_tree->invisibleRootItem();
+        found = this->wikiLinkFromBasketNameLink(pages, parent);
+    } else {
+
+        QString page = pages.first();
+        pages.removeFirst();
+        //FIXME: decode_string is depreciated
+        page = KUrl::decode_string(page);
+        for(int i = 0; i < parent->childCount(); i++) {
+            QTreeWidgetItem *child = parent->child(i);
+            if(child->text(0).toLower() == page.toLower()) {
+                if(pages.count() > 0) {
+                    found = this->wikiLinkFromBasketNameLink(pages, child);
+                    break;
+                } else {
+                    found = "basket://" + ((BasketListViewItem*)child)->basket()->folderName();
+                    break;
+                }
+            } else
+            found = "";
+        }
+    }
+
+    return found;
+}
