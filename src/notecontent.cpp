@@ -982,7 +982,7 @@ bool TextContent::finishLazyLoad()
 {
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagWikiLinks(Tools::tagURLs(Tools::textToHTML(m_text))); // Don't collapse multiple spaces!
     m_simpleRichText = new QTextDocument;
     m_simpleRichText->setHtml(html);
     m_simpleRichText->setDefaultFont(note()->font());
@@ -1095,7 +1095,7 @@ bool HtmlContent::finishLazyLoad()
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
     m_simpleRichText = new QTextDocument;
-    m_simpleRichText->setHtml(Tools::tagURLs(m_html));
+    m_simpleRichText->setHtml(Tools::tagWikiLinks(Tools::tagURLs(m_html)));
     m_simpleRichText->setDefaultFont(note()->font());
     m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_simpleRichText->idealWidth();

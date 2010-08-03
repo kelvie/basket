@@ -143,16 +143,37 @@ QString Tools::tagURLs(const QString &text)
 
 QString Tools::tagWikiLinks(const QString &text)
 {
-    //Example Wiki Link: [[Basket | My first Basket ]]
+    QString richText(text);
 
-    QRegExp linkExp("[[(\\w+)(|\\w)?]]");
-    if(href.startsWith("")) {
-        qDebug() << "in tools" << href;
-        QStringList pages = href.mid(9, href.length() - 9).split('/');
+    int urlPos = 0;
+    int urlLen;
+
+    QRegExp urlEx("\\[\\[(.+)\\]\\]");
+    urlEx.setMinimal(true);
+    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
+        QString href = urlEx.cap(1);
+
+        QStringList hrefParts = href.split('|');
+        QString basketLink = hrefParts.first();
+        QString title;
+        if(basketLink.startsWith("basket://"))
+            basketLink = basketLink.mid(9, href.length() - 9);
+        QStringList pages = basketLink.split('/');
+
+        if(hrefParts.count()<= 1)
+            title = pages.last();
+        else
+            title = hrefParts.last().trimmed();
+
         QString url = Global::bnpView->wikiLinkFromBasketNameLink(pages);
-        anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(pages.last()) + "</a>";
-    } else
-
+        //FIXME: make an empty link notify the user that the link is broken.
+        if(url.isEmpty())
+            url.append("basket://");
+        QString anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(title) + "</a>";
+        richText.replace(urlPos, urlLen, anchor);
+        urlPos += anchor.length();
+    }
     return richText;
 }
 

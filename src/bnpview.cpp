@@ -2917,7 +2917,7 @@ QString BNPView::wikiLinkFromBasketNameLink(QStringList pages, QTreeWidgetItem *
                     break;
                 }
             } else
-            found = "";
+                found = "";
         }
     }
 
