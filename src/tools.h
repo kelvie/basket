@@ -30,6 +30,7 @@
 class QString;
 class QColor;
 class QMimeData;
+class HTMLExporter;
 
 class StopWatch
 {
@@ -54,6 +55,7 @@ QString htmlToParagraph(const QString &html);
 QString htmlToText(const QString &html);
 QString tagURLs(const QString &test);
 QString tagWikiLinks(const QString &text);
+QString tagWikiLinksForHtml(const QString &text, HTMLExporter *exporter);
 QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
 
 // String Manipulations:

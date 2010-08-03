@@ -204,7 +204,7 @@ public slots:
     void timeoutHide();
 
     void loadWikiLink(QString link);
-    QString wikiLinkFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent = 0);
+    QString folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent = 0);
 
 public:
     static QString s_fileToOpen;

@@ -72,6 +72,7 @@ public:
     // Variables used by every export methods:
     QTextStream stream;
     BasketView *exportedBasket;
+    BasketView *currentBasket;
     bool withBasketTree;
     QProgressBar *progress;
 };

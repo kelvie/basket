@@ -371,7 +371,7 @@ QString LinkContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
 
 QString WikiLinkContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
 {
-    return QString("basket://%1 <a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
+    return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
 } // With the icon?
 
 QString LauncherContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
@@ -1034,7 +1034,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-                   Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
+                   Tools::tagWikiLinksForHtml(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), exporter); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1145,7 +1145,7 @@ void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    exporter->stream << Tools::htmlToParagraph(Tools::tagURLs(html().replace("\t", "                ")))
+    exporter->stream << Tools::htmlToParagraph(Tools::tagWikiLinksForHtml(Tools::tagURLs(html().replace("\t", "                ")), exporter))
     .replace("  ", " &nbsp;")
     .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
@@ -1991,7 +1991,34 @@ void WikiLinkContent::linkLookChanged()
 
 void WikiLinkContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
-    exporter->stream << m_url.url();
+    QString url = m_url.url();
+    QString title;
+
+    if(url.startsWith("basket://"))
+        url = url.mid(9, url.length() -9);
+    if(url.endsWith('/'))
+        url = url.left(url.length() - 1);
+
+    BasketView* basket = Global::bnpView->basketForFolderName(url);
+
+    if(!basket)
+        title = "unknown basket";
+    else
+        title = basket->basketName();
+
+    //if the basket we're trying to link to is the basket that was exported then
+    //we have to use a special way to refer to it for the links.
+    if(basket == exporter->exportedBasket)
+        url = "../../" + exporter->fileName;
+    else {
+        //if we're in the exported basket then the links have to include
+        // the sub directories.
+        if(exporter->currentBasket == exporter->exportedBasket)
+            url.prepend(exporter->basketsFolderName);
+        url.append(".html");
+    }
+
+    exporter->stream << QString("<a href=\"%1\">%2</a>").arg(url).arg(title);
 }
 
 /** class LauncherContent:

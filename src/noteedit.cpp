@@ -836,10 +836,10 @@ void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListVie
         BasketView* bv = item->basket();
 
         //TODO: add some fancy deco stuff to make it look like a tree list.
-        QString pad = "  ";
+        QString pad;
         QString text = item->text(0); //user text
-        for(int i = 0; i < indent; ++i)
-            text.prepend(pad);
+
+        text.prepend(pad.fill(' ', indent *2));
 
         //create the link text
         QString link = "basket://";
