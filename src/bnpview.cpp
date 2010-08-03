@@ -549,6 +549,11 @@ void BNPView::setupActions()
     a->setIcon(KIcon("tintin"));
     a->setShortcut(0);
 
+    a = ac->addAction("basket_import_jreepad_file", this, SLOT(importJreepadFile()));
+    a->setText(i18n("J&reepad XML File..."));
+    a->setIcon(KIcon("text-xml"));
+    a->setShortcut(0);
+
     a = ac->addAction("basket_import_text_file", this, SLOT(importTextFile()));
     a->setText(i18n("Text &File..."));
     a->setIcon(KIcon("text-plain"));
@@ -1677,6 +1682,10 @@ void BNPView::importStickyNotes()
 void BNPView::importTomboy()
 {
     SoftwareImporters::importTomboy();
+}
+void BNPView::importJreepadFile()
+{
+    SoftwareImporters::importJreepadFile();
 }
 void BNPView::importTextFile()
 {

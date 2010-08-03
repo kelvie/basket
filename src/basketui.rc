@@ -29,6 +29,7 @@
     <Action name="basket_import_sticky_notes" />
     <Action name="basket_import_tomboy" />
     <Separator/>
+    <Action name="basket_import_jreepad_file" />
     <Action name="basket_import_text_file" />
    </Menu>
    <Action name="basket_backup_restore" />
@@ -183,6 +184,7 @@
    <Action name="basket_import_sticky_notes" />
    <Action name="basket_import_tomboy" />
    <Separator/>
+   <Action name="basket_import_jreepad_file" />
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />
@@ -201,6 +203,7 @@
    <Action name="basket_import_sticky_notes" />
    <Action name="basket_import_tomboy" />
    <Separator/>
+   <Action name="basket_import_jreepad_file" />
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />

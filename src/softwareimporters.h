@@ -94,6 +94,7 @@ void importKnowIt();
 void importTuxCards();
 void importStickyNotes();
 void importTomboy();
+void importJreepadFile();
 void importTextFile();
 
 //

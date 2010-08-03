@@ -121,6 +121,7 @@ public slots:
     void importTuxCards();
     void importStickyNotes();
     void importTomboy();
+    void importJreepadFile();
     void importTextFile();
     void backupRestore();
 
