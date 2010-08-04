@@ -676,10 +676,10 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("Ctrl+Y"));
     m_actInsertLink = a;
 
-    a = ac->addAction("insert_wiki_link");
-    a->setText(i18n("&Wiki Link"));
+    a = ac->addAction("insert_cross_reference");
+    a->setText(i18n("Cross &Reference"));
     a->setIcon(KIcon("link"));
-    m_actInsertWikiLink = a;
+    m_actInsertCrossReference = a;
 
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
@@ -715,14 +715,14 @@ void BNPView::setupActions()
     connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertWikiLink,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertCrossReference,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
     connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
     insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link);
-    insertEmptyMapper->setMapping(m_actInsertWikiLink,NoteType::WikiLink);
+    insertEmptyMapper->setMapping(m_actInsertCrossReference,NoteType::CrossReference);
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
@@ -756,7 +756,7 @@ void BNPView::setupActions()
 //  m_insertActions.append( m_actInsertText     );
     m_insertActions.append(m_actInsertHtml);
     m_insertActions.append(m_actInsertLink);
-    m_insertActions.append(m_actInsertWikiLink);
+    m_insertActions.append(m_actInsertCrossReference);
     m_insertActions.append(m_actInsertImage);
     m_insertActions.append(m_actInsertColor);
     m_insertActions.append(m_actImportKMenu);
@@ -1096,7 +1096,7 @@ BasketView* BNPView::loadBasket(const QString &folderName)
     connect(basket, SIGNAL(propertiesChanged(BasketView*)), this, SLOT(updateBasketListViewItem(BasketView*)));
 
     connect(basket->decoration()->filterBar(), SIGNAL(newFilter(const FilterData&)), this, SLOT(newFilterFromFilterBar()));
-    connect(basket, SIGNAL(wikiLink(QString)), this, SLOT(loadWikiLink(QString)));
+    connect(basket, SIGNAL(crossReference(QString)), this, SLOT(loadCrossReference(QString)));
 
     return basket;
 }
@@ -2466,9 +2466,9 @@ void BNPView::addNoteLink()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);
 }
-void BNPView::addNoteWikiLink()
+void BNPView::addNoteCrossReference()
 {
-    showMainWindow(); currentBasket()->insertEmptyNote(NoteType::WikiLink);
+    showMainWindow(); currentBasket()->insertEmptyNote(NoteType::CrossReference);
 }
 void BNPView::addNoteColor()
 {
@@ -2878,7 +2878,7 @@ void BNPView::disconnectTagsMenuDelayed()
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick()));
 }
 
-void BNPView::loadWikiLink(QString link)
+void BNPView::loadCrossReference(QString link)
 {
     //remove "basket://" and any encoding.
     QString folderName = link.mid(9, link.length() - 9);

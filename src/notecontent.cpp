@@ -180,9 +180,9 @@ NoteType::Id LinkContent::type() const
 {
     return NoteType::Link;
 }
-NoteType::Id WikiLinkContent::type() const
+NoteType::Id CrossReferenceContent::type() const
 {
-    return NoteType::WikiLink;
+    return NoteType::CrossReference;
 }
 NoteType::Id LauncherContent::type() const
 {
@@ -225,9 +225,9 @@ QString LinkContent::typeName() const
 {
     return i18n("Link");
 }
-QString WikiLinkContent::typeName() const
+QString CrossReferenceContent::typeName() const
 {
-    return i18n("Wiki Link");
+    return i18n("Cross Reference");
 }
 QString LauncherContent::typeName() const
 {
@@ -270,9 +270,9 @@ QString LinkContent::lowerTypeName() const
 {
     return "link";
 }
-QString WikiLinkContent::lowerTypeName() const
+QString CrossReferenceContent::lowerTypeName() const
 {
-    return "wiki_link";
+    return "cross_reference";
 }
 QString LauncherContent::lowerTypeName() const
 {
@@ -313,7 +313,7 @@ QString LinkContent::toText(const QString &/*cuttedFullPath*/)
     else
         return QString("%1 <%2>").arg(title(), url().prettyUrl());
 }
-QString WikiLinkContent::toText(const QString &/*cuttedFullPath*/)
+QString CrossReferenceContent::toText(const QString &/*cuttedFullPath*/)
 {
     if (title().isEmpty() && url().isEmpty())
         return "";
@@ -369,7 +369,7 @@ QString LinkContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
     return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
 } // With the icon?
 
-QString WikiLinkContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
+QString CrossReferenceContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
 {
     return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
 } // With the icon?
@@ -413,7 +413,7 @@ void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullP
     *url   = this->url();
     *title = this->title();
 }
-void WikiLinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
+void CrossReferenceContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
 {
     *url   = this->url();
     *title = this->title();
@@ -458,7 +458,7 @@ bool LinkContent::useFile() const
 {
     return false;
 }
-bool WikiLinkContent::useFile() const
+bool CrossReferenceContent::useFile() const
 {
     return false;
 }
@@ -503,7 +503,7 @@ bool LinkContent::canBeSavedAs() const
 {
     return true;
 }
-bool WikiLinkContent::canBeSavedAs() const
+bool CrossReferenceContent::canBeSavedAs() const
 {
     return true;
 }
@@ -548,7 +548,7 @@ QString LinkContent::saveAsFilters() const
 {
     return "*";
 } // TODO: idem File + If isDir() const: return
-QString WikiLinkContent::saveAsFilters() const
+QString CrossReferenceContent::saveAsFilters() const
 {
     return "*";
 } // TODO: idem File + If isDir() const: return
@@ -593,7 +593,7 @@ bool LinkContent::match(const FilterData &data)
 {
     return title().contains(data.string) || url().prettyUrl().contains(data.string);
 }
-bool WikiLinkContent::match(const FilterData &data)
+bool CrossReferenceContent::match(const FilterData &data)
 {
     return title().contains(data.string) || url().prettyUrl().contains(data.string);
 }
@@ -638,9 +638,9 @@ QString LinkContent::editToolTipText() const
 {
     return i18n("Edit this link");
 }
-QString WikiLinkContent::editToolTipText() const
+QString CrossReferenceContent::editToolTipText() const
 {
-    return i18n("Edit this wiki link");
+    return i18n("Edit this cross reference");
 }
 QString LauncherContent::editToolTipText() const
 {
@@ -683,7 +683,7 @@ QString LinkContent::cssClass() const
 {
     return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
 }
-QString WikiLinkContent::cssClass() const
+QString CrossReferenceContent::cssClass() const
 {
     return ""; //(LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
 }
@@ -724,9 +724,9 @@ void LinkContent::fontChanged()
 {
     setLink(url(), title(), icon(), autoTitle(), autoIcon());
 }
-void WikiLinkContent::fontChanged()
+void CrossReferenceContent::fontChanged()
 {
-    setWikiLink(url(), title(), icon());
+    setCrossReference(url(), title(), icon());
 }
 void LauncherContent::fontChanged()
 {
@@ -763,7 +763,7 @@ void LinkContent::serialize(QDataStream &stream)
 {
     stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon();
 }
-void WikiLinkContent::serialize(QDataStream &stream)
+void CrossReferenceContent::serialize(QDataStream &stream)
 {
     stream << url() << title() << icon();
 }
@@ -857,7 +857,7 @@ QPixmap LinkContent::feedbackPixmap(int width, int height)
     return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
-QPixmap WikiLinkContent::feedbackPixmap(int width, int height)
+QPixmap CrossReferenceContent::feedbackPixmap(int width, int height)
 {
     QPalette palette;
     palette = basket()->palette();
@@ -982,7 +982,7 @@ bool TextContent::finishLazyLoad()
 {
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagWikiLinks(Tools::tagURLs(Tools::textToHTML(m_text))); // Don't collapse multiple spaces!
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTML(m_text))); // Don't collapse multiple spaces!
     m_simpleRichText = new QTextDocument;
     m_simpleRichText->setHtml(html);
     m_simpleRichText->setDefaultFont(note()->font());
@@ -1034,7 +1034,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-                   Tools::tagWikiLinksForHtml(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), exporter); // Don't collapse multiple spaces!
+                   Tools::tagCrossReferencesForHtml(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), exporter); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1095,7 +1095,7 @@ bool HtmlContent::finishLazyLoad()
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
     m_simpleRichText = new QTextDocument;
-    m_simpleRichText->setHtml(Tools::tagWikiLinks(Tools::tagURLs(m_html)));
+    m_simpleRichText->setHtml(Tools::tagCrossReferences(Tools::tagURLs(m_html)));
     m_simpleRichText->setDefaultFont(note()->font());
     m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_simpleRichText->idealWidth();
@@ -1145,7 +1145,7 @@ void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    exporter->stream << Tools::htmlToParagraph(Tools::tagWikiLinksForHtml(Tools::tagURLs(html().replace("\t", "                ")), exporter))
+    exporter->stream << Tools::htmlToParagraph(Tools::tagCrossReferencesForHtml(Tools::tagURLs(html().replace("\t", "                ")), exporter))
     .replace("  ", " &nbsp;")
     .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
@@ -1876,31 +1876,31 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     exporter->stream << m_linkDisplay.toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
-/** class WikiLinkContent:
+/** class CrossReferenceContent:
  */
 
-WikiLinkContent::WikiLinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon)
+CrossReferenceContent::CrossReferenceContent(Note *parent, const KUrl &url, const QString &title, const QString &icon)
         : NoteContent(parent)
 {
-    this->setWikiLink(url, title, icon);
+    this->setCrossReference(url, title, icon);
 }
 
-WikiLinkContent::~WikiLinkContent()
+CrossReferenceContent::~CrossReferenceContent()
 {
 }
 
-int WikiLinkContent::setWidthAndGetHeight(int width)
+int CrossReferenceContent::setWidthAndGetHeight(int width)
 {
     m_linkDisplay.setWidth(width);
     return m_linkDisplay.height();
 }
 
-void WikiLinkContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
+void CrossReferenceContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
 {
     m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
 }
 
-void WikiLinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
+void CrossReferenceContent::saveToNode(QDomDocument &doc, QDomElement &content)
 {
     content.setAttribute("title",      title());
     content.setAttribute("icon",       icon());
@@ -1908,18 +1908,18 @@ void WikiLinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
     content.appendChild(textNode);
 }
 
-void WikiLinkContent::toolTipInfos(QStringList *keys, QStringList *values)
+void CrossReferenceContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
     keys->append(i18n("Target"));
     values->append(m_url.prettyUrl());
 }
 
-int WikiLinkContent::zoneAt(const QPoint &pos)
+int CrossReferenceContent::zoneAt(const QPoint &pos)
 {
     return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
-QRect WikiLinkContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRect CrossReferenceContent::zoneRect(int zone, const QPoint &/*pos*/)
 {
     QRect linkRect = m_linkDisplay.iconButtonRect();
 
@@ -1931,18 +1931,18 @@ QRect WikiLinkContent::zoneRect(int zone, const QPoint &/*pos*/)
         return QRect();
 }
 
-QString WikiLinkContent::zoneTip(int zone)
+QString CrossReferenceContent::zoneTip(int zone)
 {
     return (zone == Note::Custom0 ? i18n("Open this link") : QString());
 }
 
-void WikiLinkContent::setCursor(QWidget *widget, int zone)
+void CrossReferenceContent::setCursor(QWidget *widget, int zone)
 {
     if (zone == Note::Custom0)
         widget->setCursor(Qt::PointingHandCursor);
 }
 
-QString WikiLinkContent::statusBarMessage(int zone)
+QString CrossReferenceContent::statusBarMessage(int zone)
 {
     if (zone == Note::Custom0 || zone == Note::Content)
         return i18n("Link to %1").arg(this->title());
@@ -1950,12 +1950,12 @@ QString WikiLinkContent::statusBarMessage(int zone)
         return "";
 }
 
-KUrl WikiLinkContent::urlToOpen(bool /*with*/)
+KUrl CrossReferenceContent::urlToOpen(bool /*with*/)
 {
     return m_url;
 }
 
-QString WikiLinkContent::messageWhenOpening(OpenMessage where)
+QString CrossReferenceContent::messageWhenOpening(OpenMessage where)
 {
     if (url().isEmpty())
         return i18n("Link has no basket to open.");
@@ -1966,12 +1966,12 @@ QString WikiLinkContent::messageWhenOpening(OpenMessage where)
     }
 }
 
-void WikiLinkContent::setLink(const KUrl &url, const QString &title, const QString &icon)
+void CrossReferenceContent::setLink(const KUrl &url, const QString &title, const QString &icon)
 {
-    this->setWikiLink(url, title, icon);
+    this->setCrossReference(url, title, icon);
 }
 
-void WikiLinkContent::setWikiLink(const KUrl &url, const QString &title, const QString &icon)
+void CrossReferenceContent::setCrossReference(const KUrl &url, const QString &title, const QString &icon)
 {
     m_url = url;
     m_title = (title.isEmpty() ? url.url() : title);
@@ -1984,12 +1984,12 @@ void WikiLinkContent::setWikiLink(const KUrl &url, const QString &title, const Q
 
 }
 
-void WikiLinkContent::linkLookChanged()
+void CrossReferenceContent::linkLookChanged()
 {
     fontChanged();
 }
 
-void WikiLinkContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
+void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
     QString url = m_url.url();
     QString title;
@@ -2549,8 +2549,8 @@ void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeN
         autoTitle = XMLWork::trueOrFalse(content.attribute("autoTitle"), autoTitle);
         autoIcon  = XMLWork::trueOrFalse(content.attribute("autoIcon"),  autoIcon);
         new LinkContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"), autoTitle, autoIcon);
-    } else if (lowerTypeName == "wiki_link") {
-        new WikiLinkContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"));
+    } else if (lowerTypeName == "cross_reference") {
+        new CrossReferenceContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"));
     } else if (lowerTypeName == "launcher")  new LauncherContent(parent, content.text());
     else if (lowerTypeName == "color")     new ColorContent(parent, QColor(content.text()));
     else if (lowerTypeName == "unknown")   new UnknownContent(parent, content.text());

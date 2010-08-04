@@ -97,9 +97,9 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
     if (linkContent)
         return new LinkEditor(linkContent, parent);
 
-    WikiLinkContent *wikiLinkContent = dynamic_cast<WikiLinkContent*>(noteContent);
-    if(wikiLinkContent)
-        return new WikiLinkEditor(wikiLinkContent, parent);
+    CrossReferenceContent *crossReferenceContent = dynamic_cast<CrossReferenceContent*>(noteContent);
+    if(crossReferenceContent)
+        return new CrossReferenceEditor(crossReferenceContent, parent);
 
     LauncherContent *launcherContent = dynamic_cast<LauncherContent*>(noteContent);
     if (launcherContent)
@@ -483,15 +483,15 @@ LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
         setEmpty();
 }
 
-/** class WikiLinkEditor: */
+/** class CrossReferenceEditor: */
 
-WikiLinkEditor::WikiLinkEditor(WikiLinkContent *wikiLinkContent, QWidget *parent)
-        : NoteEditor(wikiLinkContent)
+CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent)
+        : NoteEditor(crossReferenceContent)
 {
-    WikiLinkEditDialog dialog(wikiLinkContent, parent);
+    CrossReferenceEditDialog dialog(crossReferenceContent, parent);
     if (dialog.exec() == QDialog::Rejected)
         cancel();
-    if (wikiLinkContent->url().isEmpty() && wikiLinkContent->title().isEmpty())
+    if (crossReferenceContent->url().isEmpty() && crossReferenceContent->title().isEmpty())
         setEmpty();
 }
 
@@ -758,18 +758,18 @@ void LinkEditDialog::slotOk()
         m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
 }
 
-/** class WikiLinkEditDialog: */
+/** class CrossReferenceEditDialog: */
 
-WikiLinkEditDialog::WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
+CrossReferenceEditDialog::CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
         : KDialog(parent)
         , m_noteContent(contentNote)
 {
 
     // KDialog options
-    setCaption(i18n("Edit Wiki Link Note"));
+    setCaption(i18n("Edit Cross Reference"));
     setButtons(Ok | Cancel);
     setDefaultButton(Ok);
-    setObjectName("EditWikiLink");
+    setObjectName("EditCrossReference");
     setModal(true);
     showButtonSeparator(true);
     connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
@@ -785,7 +785,7 @@ WikiLinkEditDialog::WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *pa
 
     if(m_noteContent->url().isEmpty()){
         BasketListViewItem *item = Global::bnpView->topLevelItem(0);
-        m_noteContent->setWikiLink(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
+        m_noteContent->setCrossReference(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
         this->urlChanged(0);
     }else{
         //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
@@ -812,22 +812,22 @@ WikiLinkEditDialog::WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *pa
     layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
 }
 
-WikiLinkEditDialog::~WikiLinkEditDialog()
+CrossReferenceEditDialog::~CrossReferenceEditDialog()
 {
 }
 
-void WikiLinkEditDialog::urlChanged(const int index)
+void CrossReferenceEditDialog::urlChanged(const int index)
 {
     if(m_targetBasket)
-        m_noteContent->setWikiLink(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toString()), m_targetBasket->currentText().trimmed(), "edit-copy");
+        m_noteContent->setCrossReference(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toString()), m_targetBasket->currentText().trimmed(), "edit-copy");
 }
 
-void WikiLinkEditDialog::slotOk()
+void CrossReferenceEditDialog::slotOk()
 {
     m_noteContent->setEdited();
 }
 
-void WikiLinkEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, int indent)
+void CrossReferenceEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, int indent)
 {
     if(!item) { // include ALL top level items and their children.
         for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)

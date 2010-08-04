@@ -103,17 +103,17 @@ Note* NoteFactory::createNoteLink(const KUrl &url, const QString &title, BasketV
     return note;
 }
 
-Note* NoteFactory::createNoteWikiLink(const KUrl &url, BasketView *parent)
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, BasketView *parent)
 {
     Note *note = new Note(parent);
-    new WikiLinkContent(note, url, titleForURL(url), iconForURL(url));
+    new CrossReferenceContent(note, url, titleForURL(url), iconForURL(url));
     return note;
 }
 
-Note* NoteFactory::createNoteWikiLink(const KUrl &url, const QString &title, BasketView *parent)
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, const QString &title, BasketView *parent)
 {
     Note *note = new Note(parent);
-    new WikiLinkContent(note, url, title, iconForURL(url));
+    new CrossReferenceContent(note, url, title, iconForURL(url));
     return note;
 }
 
@@ -600,7 +600,7 @@ void NoteFactory::consumeContent(QDataStream &stream, NoteType::Id type)
         QString title, icon;
         quint64 autoTitle64, autoIcon64;
         stream >> url >> title >> icon >> autoTitle64 >> autoIcon64;
-    } else if (type == NoteType::WikiLink) {
+    } else if (type == NoteType::CrossReference) {
         KUrl url;
         QString title, icon;
         stream >> url >> title >> icon;
@@ -636,12 +636,12 @@ Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, BasketV
         Note *note = NoteFactory::createNoteLink(url, parent);
         ((LinkContent*)(note->content()))->setLink(url, title, icon, autoTitle, autoIcon);
         return note;
-    } else if (type == NoteType::WikiLink) {
+    } else if (type == NoteType::CrossReference) {
         KUrl url;
         QString title, icon;
         stream >> url >> title >> icon;
-        Note *note = NoteFactory::createNoteWikiLink(url, parent);
-        ((WikiLinkContent*)(note->content()))->setWikiLink(url, title, icon);
+        Note *note = NoteFactory::createNoteCrossReference(url, parent);
+        ((CrossReferenceContent*)(note->content()))->setCrossReference(url, title, icon);
         return note;
     } else if (type == NoteType::Color) {
         QColor color;
@@ -779,7 +779,7 @@ Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, BasketVi
 
     default:
     case NoteType::Link:
-    case NoteType::WikiLink:
+    case NoteType::CrossReference:
     case NoteType::Color:
         return 0;
     }
@@ -982,8 +982,8 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, BasketView *parent)
         return NoteFactory::createNoteImage(*pixmap, parent);
     case NoteType::Link:
         return NoteFactory::createNoteLink(KUrl(), parent);
-    case NoteType::WikiLink:
-        return NoteFactory::createNoteWikiLink(KUrl(), parent);
+    case NoteType::CrossReference:
+        return NoteFactory::createNoteCrossReference(KUrl(), parent);
     case NoteType::Launcher:
         return NoteFactory::createNoteLauncher(KUrl(), parent);
     case NoteType::Color:

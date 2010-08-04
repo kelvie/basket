@@ -189,11 +189,11 @@ public:
     LinkEditor(LinkContent *linkContent, QWidget *parent);
 };
 
-class WikiLinkEditor : public NoteEditor
+class CrossReferenceEditor : public NoteEditor
 {
     Q_OBJECT
 public:
-    WikiLinkEditor(WikiLinkContent *wikiLinkContent, QWidget *parent);
+    CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent);
 };
 
 class LauncherEditor : public NoteEditor
@@ -260,15 +260,15 @@ private:
     QPushButton   *m_autoIcon;
 };
 
-/** The dialog to edit Wiki Link Note content.
+/** The dialog to edit cross reference content.
   * @author Brian C. Milco
   */
-class WikiLinkEditDialog : public KDialog
+class CrossReferenceEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    WikiLinkEditDialog(WikiLinkContent *contentNote, QWidget *parent = 0);
-    ~WikiLinkEditDialog();
+    CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
+    ~CrossReferenceEditDialog();
 
 protected slots:
     void slotOk();
@@ -276,7 +276,7 @@ protected slots:
 protected:
     void generateBasketList(KComboBox *targetList, BasketListViewItem *item = 0, int indent = 0);
 private:
-    WikiLinkContent   *m_noteContent;
+    CrossReferenceContent   *m_noteContent;
     KComboBox     *m_targetBasket;
 };
 

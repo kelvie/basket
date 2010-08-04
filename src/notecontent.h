@@ -64,7 +64,7 @@ class HtmlExporter;
   */
 namespace NoteType
 {
-enum Id { Group = 255, Text = 1, Html, Image, Animation, Sound, File, Link, WikiLink, Launcher, Color, Unknown }; // Always positive
+enum Id { Group = 255, Text = 1, Html, Image, Animation, Sound, File, Link, CrossReference, Launcher, Color, Unknown }; // Always positive
 }
 
 /** Abstract base class for every content type of basket note.
@@ -550,17 +550,17 @@ protected:
     KIO::PreviewJob *m_previewJob;
 };
 
-/** Real implementation of wiki link notes:
+/** Real implementation of cross reference notes:
  * Copied and modified from LinkContent.
  * @author Brian C. Milco
  */
-class WikiLinkContent : public QObject, public NoteContent
+class CrossReferenceContent : public QObject, public NoteContent
 {
     Q_OBJECT
 public:
     // Constructor and destructor:
-    WikiLinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon);
-    ~WikiLinkContent();
+    CrossReferenceContent(Note *parent, const KUrl &url, const QString &title, const QString &icon);
+    ~CrossReferenceContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -596,7 +596,7 @@ public:
     QString messageWhenOpening(OpenMessage where);
     // Content-Specific Methods:
     void    setLink(const KUrl &url, const QString &title, const QString &icon); /// << Change the link and relayout the note.
-    void    setWikiLink(const KUrl &url, const QString &title, const QString &icon);
+    void    setCrossReference(const KUrl &url, const QString &title, const QString &icon);
     KUrl    url()       {
         return m_url;
     } /// << @return the URL of the link note-content.

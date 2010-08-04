@@ -2163,7 +2163,7 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
                 KMenu *menu = Global::bnpView->popupMenu("fileimport");
                 menu->exec(event->globalPos());
             } else if (link.startsWith("basket://")) {
-                emit wikiLink(link);
+                emit crossReference(link);
             } else {
                 KRun *run = new KRun(KUrl(link), window()); //  open the URL.
                 run->setAutoDelete(true);
@@ -4113,7 +4113,7 @@ void BasketView::noteOpen(Note *note)
         QString customCommand = note->content()->customOpenCommand();
 
         if (url.url().startsWith("basket://")) {
-            emit wikiLink(url.url());
+            emit crossReference(url.url());
         } else if (customCommand.isEmpty()) {
             KRun *run = new KRun(url, window());
             run->setAutoDelete(true);

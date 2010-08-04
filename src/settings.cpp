@@ -593,7 +593,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
     m_middleAction->addItem(i18n("Paste clipboard"));
     m_middleAction->addItem(i18n("Insert image note"));
     m_middleAction->addItem(i18n("Insert link note"));
-    m_middleAction->addItem(i18n("Insert wiki link note"));
+    m_middleAction->addItem(i18n("Insert cross reference"));
     m_middleAction->addItem(i18n("Insert launcher note"));
     m_middleAction->addItem(i18n("Insert color note"));
     m_middleAction->addItem(i18n("Grab screen zone"));

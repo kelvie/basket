@@ -105,7 +105,7 @@ public:
 private slots:
     void setFocusIfNotInPopupMenu();
 signals:
-    void wikiLink(QString link);
+    void crossReference(QString link);
 
 /// LAYOUT:
 private:

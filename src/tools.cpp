@@ -36,7 +36,7 @@
 
 #include "tools.h"
 
-//wiki links
+//cross reference
 #include "global.h"
 #include "bnpview.h"
 #include <KUrl>
@@ -143,7 +143,7 @@ QString Tools::tagURLs(const QString &text)
     return richText;
 }
 
-QString Tools::tagWikiLinks(const QString &text)
+QString Tools::tagCrossReferences(const QString &text)
 {
     QString richText(text);
 
@@ -181,7 +181,7 @@ QString Tools::tagWikiLinks(const QString &text)
     return richText;
 }
 
-QString Tools::tagWikiLinksForHtml(const QString &text, HTMLExporter *exporter)
+QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *exporter)
 {
     QString richText(text);
 
