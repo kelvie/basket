@@ -819,7 +819,9 @@ CrossReferenceEditDialog::~CrossReferenceEditDialog()
 void CrossReferenceEditDialog::urlChanged(const int index)
 {
     if(m_targetBasket)
-        m_noteContent->setCrossReference(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toString()), m_targetBasket->currentText().trimmed(), "edit-copy");
+        m_noteContent->setCrossReference(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toStringList().first()),
+                                         m_targetBasket->currentText().trimmed(),
+                                         m_targetBasket->itemData(index, Qt::UserRole).toStringList().last());
 }
 
 void CrossReferenceEditDialog::slotOk()
@@ -844,8 +846,11 @@ void CrossReferenceEditDialog::generateBasketList(KComboBox *targetList, BasketL
         //create the link text
         QString link = "basket://";
         link.append(bv->folderName().toLower()); //unique ref.
+        QStringList data;
+        data.append(link);
+        data.append(bv->icon());
 
-        targetList->addItem(item->icon(0), text, QVariant(link));
+        targetList->addItem(item->icon(0), text, QVariant(data));
 
         int subBasketCount = item->childCount();
         if(subBasketCount > 0) {
