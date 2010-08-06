@@ -2018,7 +2018,11 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
         url.append(".html");
     }
 
-    exporter->stream << QString("<a href=\"%1\">%2</a>").arg(url).arg(title);
+    QString linkIcon = exporter->iconsFolderName + exporter->copyIcon(m_icon, 16);
+    linkIcon = QString("<img src=\"%1\" alt=\"\">")
+               .arg(linkIcon);
+
+    exporter->stream << QString("<a href=\"%1\">%2 %3</a>").arg(url, linkIcon, title);
 }
 
 /** class LauncherContent:
