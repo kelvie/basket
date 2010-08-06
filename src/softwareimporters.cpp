@@ -519,11 +519,14 @@ void SoftwareImporters::importTomboy()
 void SoftwareImporters::importJreepadFile(){
     typedef QPair<BasketView *, QDomElement> basketAndElementPair;
 
-    QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportJreepadFile"),  "*.xml|XML files");
-    if (fileName.isEmpty())
+    QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportJreepadFile"),
+                                                    "*.xml|XML files");
+    if (fileName.isEmpty()) {
         return;
+    }
 
-    basketAndElementPair newElement, currentElement;
+    basketAndElementPair newElement;
+    basketAndElementPair currentElement;
     QList<basketAndElementPair> elements;
     QList<BasketView*> basketList;
 
@@ -531,7 +534,9 @@ void SoftwareImporters::importJreepadFile(){
     newElement.second = doc->documentElement();
 
     BasketView *basket = 0;
-    BasketFactory::newBasket(/*icon=*/"xml", /*name=*/doc->documentElement().attribute("title"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+    BasketFactory::newBasket(/*icon=*/"xml", /*name=*/doc->documentElement().attribute("title"), 
+                             /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
+                             /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
     basket = Global::bnpView->currentBasket();
     basket->load();
     basketList << basket;
@@ -539,16 +544,19 @@ void SoftwareImporters::importJreepadFile(){
 
     elements << newElement;
 
-    BasketView* rootBasket = basket;
-    while( !elements.isEmpty() ) {
+    while ( !elements.isEmpty() ) {
         currentElement = elements.takeFirst();
         for (QDomNode n = currentElement.second.firstChild(); !n.isNull(); n = n.nextSibling()) {
             if ( n.isText() ) {
                 basket = currentElement.first;
                 Note *note = NoteFactory::createNoteFromText(n.toText().data(), basket);
-                basket->insertNote(note, basket->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
+                basket->insertNote(note, basket->firstNote(), 
+                                   Note::BottomColumn, QPoint(), /*animate=*/false);
             } else if ( n.isElement() ) {
-                BasketFactory::newBasket(/*icon=*/"xml", /*name=*/n.toElement().attribute("title"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/currentElement.first);
+                BasketFactory::newBasket(/*icon=*/"xml", /*name=*/n.toElement().attribute("title"), 
+                                         /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
+                                         /*textColor=*/QColor(), /*templateName=*/"1column", 
+                                         /*createIn=*/currentElement.first);
                 basket = Global::bnpView->currentBasket();
                 basket->load();
                 basketList << basket;
@@ -558,12 +566,10 @@ void SoftwareImporters::importJreepadFile(){
             }
         }
     }
-    foreach(basket, basketList) {
-        basket->unselectAll();
-        basket->save();
-        /*basket->closeBasket();*/
+    
+    foreach (basket, basketList) {
+        finishImport(basket);
     }
-    Global::bnpView->setCurrentBasket(rootBasket);
 }
 
 void SoftwareImporters::importTextFile()
