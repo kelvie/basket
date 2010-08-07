@@ -66,6 +66,7 @@ target_link_libraries(basketcommon
   ${KDE4_KFILE_LIBS}
   ${KDE4_PHONON_LIBRARY}
   ${QIMAGEBLITZ_LIBRARIES}
+  ${X11_LIBRARIES}
   ${GPGME_VANILLA_LIBRARIES})
 
 if(Q_WS_X11)

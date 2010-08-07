@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.4)
 
+find_package(X11 REQUIRED)
 find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
 find_package(Gpgme)
@@ -29,7 +30,7 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 
-include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
+include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${X11_INCLUDES} )
 
 #add_subdirectory(doc)
 add_subdirectory(src)
