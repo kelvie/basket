@@ -157,6 +157,7 @@ public slots:
     void addNoteHtml();
     void addNoteImage();
     void addNoteLink();
+    void addNoteCrossReference();
     void addNoteColor();
     /** Passive Popups for Global Actions */
     void showPassiveDropped(const QString &title);
@@ -202,6 +203,9 @@ public slots:
     void changedSelectedNotes();
     void timeoutTryHide();
     void timeoutHide();
+
+    void loadCrossReference(QString link);
+    QString folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent = 0);
 
 public:
     static QString s_fileToOpen;
@@ -260,6 +264,7 @@ private:
 //      KAction       *m_actInsertText;
     KAction       *m_actInsertHtml;
     KAction       *m_actInsertLink;
+    KAction       *m_actInsertCrossReference;
     KAction       *m_actInsertImage;
     KAction       *m_actInsertColor;
     KAction       *m_actImportKMenu;

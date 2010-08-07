@@ -36,6 +36,12 @@
 
 #include "tools.h"
 
+//cross reference
+#include "global.h"
+#include "bnpview.h"
+#include <KUrl>
+#include "htmlexporter.h"
+
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
 QVector<uint>   StopWatch::counts;
@@ -131,6 +137,99 @@ QString Tools::tagURLs(const QString &text)
             continue;
         }
         QString anchor = "<a href=\"" + href + "\">" + href + "</a>";
+        richText.replace(urlPos, urlLen, anchor);
+        urlPos += anchor.length();
+    }
+    return richText;
+}
+
+QString Tools::tagCrossReferences(const QString &text)
+{
+    QString richText(text);
+
+    int urlPos = 0;
+    int urlLen;
+
+    QRegExp urlEx("\\[\\[(.+)\\]\\]");
+    urlEx.setMinimal(true);
+    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
+        QString href = urlEx.cap(1);
+
+        QStringList hrefParts = href.split('|');
+        QString basketLink = hrefParts.first();
+        QString title;
+        if(basketLink.startsWith("basket://"))
+            basketLink = basketLink.mid(9, href.length() - 9);
+        if(basketLink.endsWith('/'))
+            basketLink = basketLink.left(basketLink.length() - 1);
+
+        QStringList pages = basketLink.split('/');
+
+        if(hrefParts.count()<= 1)
+            title = pages.last();
+        else
+            title = hrefParts.last().trimmed();
+
+        QString url = Global::bnpView->folderFromBasketNameLink(pages);
+        //FIXME: make an empty link notify the user that the link is broken.
+        url.prepend("basket://");
+        QString anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(title) + "</a>";
+        richText.replace(urlPos, urlLen, anchor);
+        urlPos += anchor.length();
+    }
+    return richText;
+}
+
+QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *exporter)
+{
+    QString richText(text);
+
+    int urlPos = 0;
+    int urlLen;
+
+    QRegExp urlEx("\\[\\[(.+)\\]\\]");
+    urlEx.setMinimal(true);
+    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
+        QString href = urlEx.cap(1);
+
+        QStringList hrefParts = href.split('|');
+        QString basketLink = hrefParts.first();
+        QString title;
+        if(basketLink.startsWith("basket://"))
+            basketLink = basketLink.mid(9, href.length() - 9);
+        if(basketLink.endsWith('/'))
+            basketLink = basketLink.left(basketLink.length() - 1);
+
+        QStringList pages = basketLink.split('/');
+
+        if(hrefParts.count()<= 1)
+            title = pages.last();
+        else
+            title = hrefParts.last().trimmed();
+
+        QString url = Global::bnpView->folderFromBasketNameLink(pages);
+        BasketView* basket = Global::bnpView->basketForFolderName(url);
+
+        if(url.endsWith('/'))
+            url = url.left(url.length() - 1);
+
+        if(!basket)
+            qDebug() << "the basket doesn't exist";
+
+        //if the basket we're trying to link to is the basket that was exported then
+        //we have to use a special way to refer to it for the links.
+        if(basket == exporter->exportedBasket)
+            url = "../../" + exporter->fileName;
+        else {
+            //if we're in the exported basket then the links have to include
+            // the sub directories.
+            if(exporter->currentBasket == exporter->exportedBasket)
+                url.prepend(exporter->basketsFolderName);
+            url.append(".html");
+        }
+        QString anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(title) + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }

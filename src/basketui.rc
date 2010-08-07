@@ -82,6 +82,7 @@
    <Action name="insert_html" />
    <Action name="insert_image" />
    <Action name="insert_link" />
+   <Action name="insert_cross_reference" />
    <Action name="insert_launcher" />
    <Action name="insert_color" />
    <Separator/>
@@ -225,6 +226,7 @@
   <Action name="insert_html" />
   <Action name="insert_image" />
   <Action name="insert_link" />
+  <Action name="insert_cross_reference" />
   <Action name="insert_launcher" />
   <Action name="insert_color" />
   <Separator/>

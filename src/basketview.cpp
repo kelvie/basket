@@ -2162,6 +2162,8 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
             } else if (link == "basket-internal-import") {
                 KMenu *menu = Global::bnpView->popupMenu("fileimport");
                 menu->exec(event->globalPos());
+            } else if (link.startsWith("basket://")) {
+                emit crossReference(link);
             } else {
                 KRun *run = new KRun(KUrl(link), window()); //  open the URL.
                 run->setAutoDelete(true);
@@ -4105,7 +4107,10 @@ void BasketView::noteOpen(Note *note)
         emit postMessage(message); // "Openning link target..." / "Launching application..." / "Openning note file..."
         // Finally do the opening job:
         QString customCommand = note->content()->customOpenCommand();
-        if (customCommand.isEmpty()) {
+
+        if (url.url().startsWith("basket://")) {
+            emit crossReference(url.url());
+        } else if (customCommand.isEmpty()) {
             KRun *run = new KRun(url, window());
             run->setAutoDelete(true);
         } else

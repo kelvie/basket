@@ -681,6 +681,11 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("Ctrl+Y"));
     m_actInsertLink = a;
 
+    a = ac->addAction("insert_cross_reference");
+    a->setText(i18n("Cross &Reference"));
+    a->setIcon(KIcon("link"));
+    m_actInsertCrossReference = a;
+
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
     a->setIcon(KIcon("image-png"));
@@ -715,12 +720,14 @@ void BNPView::setupActions()
     connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertCrossReference,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
     connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
     insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link);
+    insertEmptyMapper->setMapping(m_actInsertCrossReference,NoteType::CrossReference);
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
@@ -754,6 +761,7 @@ void BNPView::setupActions()
 //  m_insertActions.append( m_actInsertText     );
     m_insertActions.append(m_actInsertHtml);
     m_insertActions.append(m_actInsertLink);
+    m_insertActions.append(m_actInsertCrossReference);
     m_insertActions.append(m_actInsertImage);
     m_insertActions.append(m_actInsertColor);
     m_insertActions.append(m_actImportKMenu);
@@ -1093,6 +1101,7 @@ BasketView* BNPView::loadBasket(const QString &folderName)
     connect(basket, SIGNAL(propertiesChanged(BasketView*)), this, SLOT(updateBasketListViewItem(BasketView*)));
 
     connect(basket->decoration()->filterBar(), SIGNAL(newFilter(const FilterData&)), this, SLOT(newFilterFromFilterBar()));
+    connect(basket, SIGNAL(crossReference(QString)), this, SLOT(loadCrossReference(QString)));
 
     return basket;
 }
@@ -2466,6 +2475,10 @@ void BNPView::addNoteLink()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);
 }
+void BNPView::addNoteCrossReference()
+{
+    showMainWindow(); currentBasket()->insertEmptyNote(NoteType::CrossReference);
+}
 void BNPView::addNoteColor()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Color);
@@ -2872,4 +2885,50 @@ void BNPView::disconnectTagsMenuDelayed()
     disconnect(m_lastOpenedTagsMenu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering()));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick()));
+}
+
+void BNPView::loadCrossReference(QString link)
+{
+    //remove "basket://" and any encoding.
+    QString folderName = link.mid(9, link.length() - 9);
+    //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
+    folderName = KUrl::decode_string(folderName);
+
+    BasketView* basket = this->basketForFolderName(folderName);
+
+    if(!basket)
+        return;
+
+    this->setCurrentBasket(basket);
+}
+
+QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent)
+{
+    QString found = "";
+
+    if(!parent) {
+        parent = m_tree->invisibleRootItem();
+        found = this->folderFromBasketNameLink(pages, parent);
+    } else {
+
+        QString page = pages.first();
+        pages.removeFirst();
+        //FIXME: decode_string is depreciated
+        page = KUrl::decode_string(page);
+        for(int i = 0; i < parent->childCount(); i++) {
+            QTreeWidgetItem *child = parent->child(i);
+            if(child->text(0).toLower() == page.toLower()) {
+                if(pages.count() > 0) {
+                    found = this->folderFromBasketNameLink(pages, child);
+                    break;
+                } else {
+                    found = ((BasketListViewItem*)child)->basket()->folderName();
+                    break;
+                }
+            } else
+                found = "";
+        }
+    }
+
+    return found;
 }

@@ -180,6 +180,10 @@ NoteType::Id LinkContent::type() const
 {
     return NoteType::Link;
 }
+NoteType::Id CrossReferenceContent::type() const
+{
+    return NoteType::CrossReference;
+}
 NoteType::Id LauncherContent::type() const
 {
     return NoteType::Launcher;
@@ -220,6 +224,10 @@ QString FileContent::typeName() const
 QString LinkContent::typeName() const
 {
     return i18n("Link");
+}
+QString CrossReferenceContent::typeName() const
+{
+    return i18n("Cross Reference");
 }
 QString LauncherContent::typeName() const
 {
@@ -262,6 +270,10 @@ QString LinkContent::lowerTypeName() const
 {
     return "link";
 }
+QString CrossReferenceContent::lowerTypeName() const
+{
+    return "cross_reference";
+}
 QString LauncherContent::lowerTypeName() const
 {
     return "launcher";
@@ -293,6 +305,17 @@ QString LinkContent::toText(const QString &/*cuttedFullPath*/)
     if (autoTitle())
         return url().prettyUrl();
     else if (title().isEmpty() && url().isEmpty())
+        return "";
+    else if (url().isEmpty())
+        return title();
+    else if (title().isEmpty())
+        return url().prettyUrl();
+    else
+        return QString("%1 <%2>").arg(title(), url().prettyUrl());
+}
+QString CrossReferenceContent::toText(const QString &/*cuttedFullPath*/)
+{
+    if (title().isEmpty() && url().isEmpty())
         return "";
     else if (url().isEmpty())
         return title();
@@ -346,6 +369,11 @@ QString LinkContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
     return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
 } // With the icon?
 
+QString CrossReferenceContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
+{
+    return QString("<a href=\"%1\">%2</a>").arg(url().prettyUrl(), title());
+} // With the icon?
+
 QString LauncherContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
 {
     return QString("<a href=\"%1\">%2</a>").arg((cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath), name());
@@ -381,6 +409,11 @@ void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPat
     }
 }
 void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
+{
+    *url   = this->url();
+    *title = this->title();
+}
+void CrossReferenceContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
 {
     *url   = this->url();
     *title = this->title();
@@ -425,6 +458,10 @@ bool LinkContent::useFile() const
 {
     return false;
 }
+bool CrossReferenceContent::useFile() const
+{
+    return false;
+}
 bool LauncherContent::useFile() const
 {
     return true;
@@ -463,6 +500,10 @@ bool FileContent::canBeSavedAs() const
     return true;
 }
 bool LinkContent::canBeSavedAs() const
+{
+    return true;
+}
+bool CrossReferenceContent::canBeSavedAs() const
 {
     return true;
 }
@@ -507,6 +548,10 @@ QString LinkContent::saveAsFilters() const
 {
     return "*";
 } // TODO: idem File + If isDir() const: return
+QString CrossReferenceContent::saveAsFilters() const
+{
+    return "*";
+} // TODO: idem File + If isDir() const: return
 QString LauncherContent::saveAsFilters() const
 {
     return "application/x-desktop";
@@ -545,6 +590,10 @@ bool FileContent::match(const FilterData &data)
     return fileName().contains(data.string);
 }
 bool LinkContent::match(const FilterData &data)
+{
+    return title().contains(data.string) || url().prettyUrl().contains(data.string);
+}
+bool CrossReferenceContent::match(const FilterData &data)
 {
     return title().contains(data.string) || url().prettyUrl().contains(data.string);
 }
@@ -589,6 +638,10 @@ QString LinkContent::editToolTipText() const
 {
     return i18n("Edit this link");
 }
+QString CrossReferenceContent::editToolTipText() const
+{
+    return i18n("Edit this cross reference");
+}
 QString LauncherContent::editToolTipText() const
 {
     return i18n("Edit this launcher");
@@ -630,6 +683,10 @@ QString LinkContent::cssClass() const
 {
     return (LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
 }
+QString CrossReferenceContent::cssClass() const
+{
+    return ""; //(LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
+}
 QString LauncherContent::cssClass() const
 {
     return "launcher";
@@ -667,6 +724,10 @@ void LinkContent::fontChanged()
 {
     setLink(url(), title(), icon(), autoTitle(), autoIcon());
 }
+void CrossReferenceContent::fontChanged()
+{
+    setCrossReference(url(), title(), icon());
+}
 void LauncherContent::fontChanged()
 {
     setLauncher(name(), icon(), exec());
@@ -701,6 +762,10 @@ QString SoundContent::customOpenCommand()
 void LinkContent::serialize(QDataStream &stream)
 {
     stream << url() << title() << icon() << (quint64)autoTitle() << (quint64)autoIcon();
+}
+void CrossReferenceContent::serialize(QDataStream &stream)
+{
+    stream << url() << title() << icon();
 }
 void ColorContent::serialize(QDataStream &stream)
 {
@@ -788,6 +853,15 @@ QPixmap LinkContent::feedbackPixmap(int width, int height)
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
+    palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
+    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+}
+
+QPixmap CrossReferenceContent::feedbackPixmap(int width, int height)
+{
+    QPalette palette;
+    palette = basket()->palette();
+    palette.setColor(QPalette::WindowText, note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
     return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
@@ -908,7 +982,7 @@ bool TextContent::finishLazyLoad()
 {
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagURLs(Tools::textToHTML(m_text)); // Don't collapse multiple spaces!
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTML(m_text))); // Don't collapse multiple spaces!
     m_simpleRichText = new QTextDocument;
     m_simpleRichText->setHtml(html);
     m_simpleRichText->setDefaultFont(note()->font());
@@ -960,7 +1034,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-                   Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
+                   Tools::tagCrossReferencesForHtml(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), exporter); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1021,7 +1095,7 @@ bool HtmlContent::finishLazyLoad()
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
     m_simpleRichText = new QTextDocument;
-    m_simpleRichText->setHtml(Tools::tagURLs(m_html));
+    m_simpleRichText->setHtml(Tools::tagCrossReferences(Tools::tagURLs(m_html)));
     m_simpleRichText->setDefaultFont(note()->font());
     m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_simpleRichText->idealWidth();
@@ -1071,7 +1145,7 @@ void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    exporter->stream << Tools::htmlToParagraph(Tools::tagURLs(html().replace("\t", "                ")))
+    exporter->stream << Tools::htmlToParagraph(Tools::tagCrossReferencesForHtml(Tools::tagURLs(html().replace("\t", "                ")), exporter))
     .replace("  ", " &nbsp;")
     .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
@@ -1802,6 +1876,155 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     exporter->stream << m_linkDisplay.toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
+/** class CrossReferenceContent:
+ */
+
+CrossReferenceContent::CrossReferenceContent(Note *parent, const KUrl &url, const QString &title, const QString &icon)
+        : NoteContent(parent)
+{
+    this->setCrossReference(url, title, icon);
+}
+
+CrossReferenceContent::~CrossReferenceContent()
+{
+}
+
+int CrossReferenceContent::setWidthAndGetHeight(int width)
+{
+    m_linkDisplay.setWidth(width);
+    return m_linkDisplay.height();
+}
+
+void CrossReferenceContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
+{
+    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+}
+
+void CrossReferenceContent::saveToNode(QDomDocument &doc, QDomElement &content)
+{
+    content.setAttribute("title",      title());
+    content.setAttribute("icon",       icon());
+    QDomText textNode = doc.createTextNode(url().prettyUrl());
+    content.appendChild(textNode);
+}
+
+void CrossReferenceContent::toolTipInfos(QStringList *keys, QStringList *values)
+{
+    keys->append(i18n("Target"));
+    values->append(m_url.prettyUrl());
+}
+
+int CrossReferenceContent::zoneAt(const QPoint &pos)
+{
+    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+}
+
+QRect CrossReferenceContent::zoneRect(int zone, const QPoint &/*pos*/)
+{
+    QRect linkRect = m_linkDisplay.iconButtonRect();
+
+    if (zone == Note::Custom0)
+        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+    else if (zone == Note::Content)
+        return linkRect;
+    else
+        return QRect();
+}
+
+QString CrossReferenceContent::zoneTip(int zone)
+{
+    return (zone == Note::Custom0 ? i18n("Open this link") : QString());
+}
+
+void CrossReferenceContent::setCursor(QWidget *widget, int zone)
+{
+    if (zone == Note::Custom0)
+        widget->setCursor(Qt::PointingHandCursor);
+}
+
+QString CrossReferenceContent::statusBarMessage(int zone)
+{
+    if (zone == Note::Custom0 || zone == Note::Content)
+        return i18n("Link to %1").arg(this->title());
+    else
+        return "";
+}
+
+KUrl CrossReferenceContent::urlToOpen(bool /*with*/)
+{
+    return m_url;
+}
+
+QString CrossReferenceContent::messageWhenOpening(OpenMessage where)
+{
+    if (url().isEmpty())
+        return i18n("Link has no basket to open.");
+
+    switch (where) {
+    case OpenOne:               return i18n("Opening basket...");
+    default:                    return "";
+    }
+}
+
+void CrossReferenceContent::setLink(const KUrl &url, const QString &title, const QString &icon)
+{
+    this->setCrossReference(url, title, icon);
+}
+
+void CrossReferenceContent::setCrossReference(const KUrl &url, const QString &title, const QString &icon)
+{
+    m_url = url;
+    m_title = (title.isEmpty() ? url.url() : title);
+    m_icon = icon;
+
+    LinkLook *look = LinkLook::lookForURL(m_url);
+    m_linkDisplay.setLink(m_title, m_icon, look, note()->font());
+
+    contentChanged(m_linkDisplay.minWidth());
+
+}
+
+void CrossReferenceContent::linkLookChanged()
+{
+    fontChanged();
+}
+
+void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
+{
+    QString url = m_url.url();
+    QString title;
+
+    if(url.startsWith("basket://"))
+        url = url.mid(9, url.length() -9);
+    if(url.endsWith('/'))
+        url = url.left(url.length() - 1);
+
+    BasketView* basket = Global::bnpView->basketForFolderName(url);
+
+    if(!basket)
+        title = "unknown basket";
+    else
+        title = basket->basketName();
+
+    //if the basket we're trying to link to is the basket that was exported then
+    //we have to use a special way to refer to it for the links.
+    if(basket == exporter->exportedBasket)
+        url = "../../" + exporter->fileName;
+    else {
+        //if we're in the exported basket then the links have to include
+        // the sub directories.
+        if(exporter->currentBasket == exporter->exportedBasket)
+            url.prepend(exporter->basketsFolderName);
+        url.append(".html");
+    }
+
+    QString linkIcon = exporter->iconsFolderName + exporter->copyIcon(m_icon, 16);
+    linkIcon = QString("<img src=\"%1\" alt=\"\">")
+               .arg(linkIcon);
+
+    exporter->stream << QString("<a href=\"%1\">%2 %3</a>").arg(url, linkIcon, title);
+}
+
 /** class LauncherContent:
  */
 
@@ -2330,6 +2553,8 @@ void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeN
         autoTitle = XMLWork::trueOrFalse(content.attribute("autoTitle"), autoTitle);
         autoIcon  = XMLWork::trueOrFalse(content.attribute("autoIcon"),  autoIcon);
         new LinkContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"), autoTitle, autoIcon);
+    } else if (lowerTypeName == "cross_reference") {
+        new CrossReferenceContent(parent, KUrl(content.text()), content.attribute("title"), content.attribute("icon"));
     } else if (lowerTypeName == "launcher")  new LauncherContent(parent, content.text());
     else if (lowerTypeName == "color")     new ColorContent(parent, QColor(content.text()));
     else if (lowerTypeName == "unknown")   new UnknownContent(parent, content.text());
