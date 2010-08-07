@@ -41,6 +41,7 @@
 #include "bnpview.h"
 #include <KUrl>
 #include "htmlexporter.h"
+#include "linklabel.h"
 
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
@@ -172,9 +173,16 @@ QString Tools::tagCrossReferences(const QString &text)
             title = hrefParts.last().trimmed();
 
         QString url = Global::bnpView->folderFromBasketNameLink(pages);
-        //FIXME: make an empty link notify the user that the link is broken.
+
+        bool linkIsEmpty = url.isEmpty();
         url.prepend("basket://");
-        QString anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(title) + "</a>";
+
+        //FIXME: why is including the style sheet with the link the only way this works?
+        // I should be able to set the style sheet at the note level, shouldn't I?
+        QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
+        QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"cross_reference\">"
+                         + KUrl::decode_string(title) + "</a>";
+
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }
@@ -229,7 +237,8 @@ QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *expo
                 url.prepend(exporter->basketsFolderName);
             url.append(".html");
         }
-        QString anchor = "<a href=\"" + url + "\">" + KUrl::decode_string(title) + "</a>";
+
+        QString anchor = "<a href=\"" + url + "\" class=\"cross_reference\">" + KUrl::decode_string(title) + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }

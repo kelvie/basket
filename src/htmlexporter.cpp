@@ -263,6 +263,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     << LinkLook::localLinkLook->toCSS("local", basket->textColor())
     << LinkLook::networkLinkLook->toCSS("network", basket->textColor())
     << LinkLook::launcherLook->toCSS("launcher", basket->textColor())
+    << LinkLook::crossReferenceLook->toCSS("cross_reference", basket->textColor())
     <<
     "   .unknown { margin: 1px 2px; border: 1px solid " << borderColor << "; -moz-border-radius: 4px; }\n";
     QList<State*> states = basket->usedStates();

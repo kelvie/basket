@@ -685,7 +685,7 @@ QString LinkContent::cssClass() const
 }
 QString CrossReferenceContent::cssClass() const
 {
-    return ""; //(LinkLook::lookForURL(m_url) == LinkLook::localLinkLook ? "local" : "network");
+    return "cross_reference";
 }
 QString LauncherContent::cssClass() const
 {
@@ -1095,6 +1095,10 @@ bool HtmlContent::finishLazyLoad()
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
     m_simpleRichText = new QTextDocument;
+
+    QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
+       "a:hover.cross_reference { text-decoration: underline; color: #ff8000; }";
+    m_simpleRichText->setDefaultStyleSheet(css);
     m_simpleRichText->setHtml(Tools::tagCrossReferences(Tools::tagURLs(m_html)));
     m_simpleRichText->setDefaultFont(note()->font());
     m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
@@ -1977,7 +1981,7 @@ void CrossReferenceContent::setCrossReference(const KUrl &url, const QString &ti
     m_title = (title.isEmpty() ? url.url() : title);
     m_icon = icon;
 
-    LinkLook *look = LinkLook::lookForURL(m_url);
+    LinkLook *look = LinkLook::crossReferenceLook;
     m_linkDisplay.setLink(m_title, m_icon, look, note()->font());
 
     contentChanged(m_linkDisplay.minWidth());
@@ -2018,7 +2022,8 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
         url.append(".html");
     }
 
-    QString linkIcon = exporter->iconsFolderName + exporter->copyIcon(m_icon, 16);
+    QString linkIcon = exporter->iconsFolderName + exporter->copyIcon(m_icon,
+                                                 LinkLook::crossReferenceLook->iconSize());
     linkIcon = QString("<img src=\"%1\" alt=\"\">")
                .arg(linkIcon);
 
