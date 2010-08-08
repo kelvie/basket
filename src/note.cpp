@@ -243,8 +243,9 @@ int Note::newFilter(const FilterData &data)
 
     int countMatches = (content() && matching() ? 1 : 0);
 
-    FOR_EACH_CHILD(child)
-    countMatches += child->newFilter(data);
+    FOR_EACH_CHILD(child) {
+        countMatches += child->newFilter(data);
+    }
 
     return countMatches;
 }
@@ -275,7 +276,9 @@ int Note::count()
 
     int count = 0;
     FOR_EACH_CHILD(child)
-    count += child->count();
+    {
+        count += child->count();
+    }
     return count;
 }
 
@@ -283,7 +286,9 @@ int Note::countDirectChilds()
 {
     int count = 0;
     FOR_EACH_CHILD(child)
-    ++count;
+    {
+        ++count;
+    }
     return count;
 }
 
@@ -338,7 +343,9 @@ void Note::resetWasInLastSelectionRect()
     m_wasInLastSelectionRect = false;
 
     FOR_EACH_CHILD(child)
-    child->resetWasInLastSelectionRect();
+    {
+        child->resetWasInLastSelectionRect();
+    }
 }
 
 void Note::finishLazyLoad()
@@ -347,7 +354,9 @@ void Note::finishLazyLoad()
         content()->finishLazyLoad();
 
     FOR_EACH_CHILD(child)
-    child->finishLazyLoad();
+    {
+        child->finishLazyLoad();
+    }
 }
 
 void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers /*= true*/)
@@ -411,7 +420,9 @@ void Note::setSelectedRecursively(bool selected)
     setSelected(selected && matching());
 
     FOR_EACH_CHILD(child)
-    child->setSelectedRecursively(selected);
+    {
+        child->setSelectedRecursively(selected);
+    }
 }
 
 void Note::invertSelectionRecursively()
@@ -420,7 +431,9 @@ void Note::invertSelectionRecursively()
         setSelected(!isSelected() && matching());
 
     FOR_EACH_CHILD(child)
-    child->invertSelectionRecursively();
+    {
+        child->invertSelectionRecursively();
+    }
 }
 
 void Note::unselectAllBut(Note *toSelect)
@@ -488,7 +501,9 @@ NoteSelection* Note::selectedNotes()
     NoteSelection *selection = new NoteSelection(this);
 
     FOR_EACH_CHILD(child)
-    selection->append(child->selectedNotes());
+    {
+        selection->append(child->selectedNotes());
+    }
 
     if (selection->firstChild) {
         if (selection->firstChild->next)
@@ -753,34 +768,54 @@ QRect Note::zoneRect(Note::Zone zone, const QPoint &pos)
     QRect rect;
     int insertSplit = (Settings::groupOnInsertionLine() ? 2 : 1);
     switch (zone) {
-    case Note::Handle:        return QRect(0, 0, HANDLE_WIDTH, height());
+    case Note::Handle:
+        return QRect(0, 0, HANDLE_WIDTH, height());
     case Note::Group:
         yExp = yExpander();
-        if (pos.y() < yExp)                   return QRect(0,                     INSERTION_HEIGHT,       width(),     yExp - INSERTION_HEIGHT);
-        if (pos.y() > yExp + EXPANDER_HEIGHT) return QRect(0,                     yExp + EXPANDER_HEIGHT, width(),     height() - yExp - EXPANDER_HEIGHT - INSERTION_HEIGHT);
-        if (pos.x() < NOTE_MARGIN)            return QRect(0,                     0,                      NOTE_MARGIN, height());
-        else                                  return QRect(width() - NOTE_MARGIN, 0,                      NOTE_MARGIN, height());
-    case Note::TagsArrow:     return QRect(HANDLE_WIDTH + (NOTE_MARGIN+EMBLEM_SIZE)*m_emblemsCount,
-                                               INSERTION_HEIGHT,
-                                               NOTE_MARGIN + TAG_ARROW_WIDTH + NOTE_MARGIN,
-                                               height() - 2*INSERTION_HEIGHT);
+        if (pos.y() < yExp) {
+            return QRect(0, INSERTION_HEIGHT, width(), yExp - INSERTION_HEIGHT);
+        }
+        if (pos.y() > yExp + EXPANDER_HEIGHT) {
+            return QRect(0, yExp + EXPANDER_HEIGHT, width(), height() - yExp - EXPANDER_HEIGHT - INSERTION_HEIGHT);
+        }
+        if (pos.x() < NOTE_MARGIN) {
+            return QRect(0, 0, NOTE_MARGIN, height());
+        }
+        else {
+            return QRect(width() - NOTE_MARGIN, 0, NOTE_MARGIN, height());
+        }
+    case Note::TagsArrow:
+        return QRect(HANDLE_WIDTH + (NOTE_MARGIN + EMBLEM_SIZE) * m_emblemsCount,
+                     INSERTION_HEIGHT,
+                     NOTE_MARGIN + TAG_ARROW_WIDTH + NOTE_MARGIN,
+                     height() - 2*INSERTION_HEIGHT);
     case Note::Custom0:
-    case Note::Content:       rect = content()->zoneRect(zone, pos - QPoint(contentX(), NOTE_MARGIN));
+    case Note::Content:
+        rect = content()->zoneRect(zone, pos - QPoint(contentX(), NOTE_MARGIN));
         rect.translate(contentX(), NOTE_MARGIN);
         return rect.intersect(QRect(contentX(), INSERTION_HEIGHT, width() - contentX(), height() - 2*INSERTION_HEIGHT));     // Only IN contentRect
-    case Note::GroupExpander: return QRect(NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT);
-    case Note::Resizer:       right = rightLimit();
+    case Note::GroupExpander:
+        return QRect(NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT);
+    case Note::Resizer:
+        right = rightLimit();
         return QRect(right - x(), 0, RESIZER_WIDTH, resizerHeight());
     case Note::Link:
-    case Note::TopInsert:     if (isGroup()) return QRect(0,            0,                           width(),                              INSERTION_HEIGHT);
+    case Note::TopInsert:
+        if (isGroup()) return QRect(0,            0,                           width(),                              INSERTION_HEIGHT);
         else           return QRect(HANDLE_WIDTH, 0,                           width() / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
-    case Note::TopGroup:                     return QRect(xGroup,       0,                           width() - xGroup,                     INSERTION_HEIGHT);
-    case Note::BottomInsert:  if (isGroup()) return QRect(0,            height() - INSERTION_HEIGHT, width(),                              INSERTION_HEIGHT);
+    case Note::TopGroup:
+        return QRect(xGroup,       0,                           width() - xGroup,                     INSERTION_HEIGHT);
+    case Note::BottomInsert:
+        if (isGroup()) return QRect(0,            height() - INSERTION_HEIGHT, width(),                              INSERTION_HEIGHT);
         else           return QRect(HANDLE_WIDTH, height() - INSERTION_HEIGHT, width() / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
-    case Note::BottomGroup:                  return QRect(xGroup,       height() - INSERTION_HEIGHT, width() - xGroup,                     INSERTION_HEIGHT);
-    case Note::BottomColumn:  return QRect(0, height(), rightLimit() - x(), basket()->contentsHeight() - height());
-    case Note::None:          return QRect(/*0, 0, -1, -1*/);
-    default:                  return QRect(/*0, 0, -1, -1*/);
+    case Note::BottomGroup:
+        return QRect(xGroup,       height() - INSERTION_HEIGHT, width() - xGroup,                     INSERTION_HEIGHT);
+    case Note::BottomColumn:
+        return QRect(0, height(), rightLimit() - x(), basket()->contentsHeight() - height());
+    case Note::None:
+        return QRect(/*0, 0, -1, -1*/);
+    default:
+        return QRect(/*0, 0, -1, -1*/);
     }
 }
 
@@ -788,26 +823,40 @@ void Note::setCursor(Zone zone)
 {
     switch (zone) {
     case Note::Handle:
-    case Note::Group:         basket()->viewport()->setCursor(Qt::SizeAllCursor);      break;
-    case Note::Resizer:       if (isColumn())
+    case Note::Group:
+        basket()->viewport()->setCursor(Qt::SizeAllCursor);
+        break;
+    case Note::Resizer:
+        if (isColumn())
             basket()->viewport()->setCursor(Qt::SplitHCursor);
         else
-            basket()->viewport()->setCursor(Qt::SizeHorCursor);  break;
+            basket()->viewport()->setCursor(Qt::SizeHorCursor);
+        break;
 
-    case Note::Custom0:       content()->setCursor(basket()->viewport(), zone);        break;
+    case Note::Custom0:
+        content()->setCursor(basket()->viewport(), zone);
+        break;
 
     case Note::Link:
     case Note::TagsArrow:
-    case Note::GroupExpander: basket()->viewport()->setCursor(Qt::PointingHandCursor); break;
+    case Note::GroupExpander:
+        basket()->viewport()->setCursor(Qt::PointingHandCursor);
+        break;
 
-    case Note::Content:       basket()->viewport()->setCursor(Qt::IBeamCursor);        break;
+    case Note::Content: 
+        basket()->viewport()->setCursor(Qt::IBeamCursor);
+        break;
 
     case Note::TopInsert:
     case Note::TopGroup:
     case Note::BottomInsert:
     case Note::BottomGroup:
-    case Note::BottomColumn:  basket()->viewport()->setCursor(Qt::CrossCursor);        break;
-    case Note::None:          basket()->viewport()->unsetCursor(); break;
+    case Note::BottomColumn:  
+        basket()->viewport()->setCursor(Qt::CrossCursor);
+        break;
+    case Note::None:
+        basket()->viewport()->unsetCursor();
+        break;
     default:
         State *state = stateForEmblemNumber(zone - Emblem0);
         if (state && state->parentTag()->states().count() > 1)
@@ -2893,4 +2942,4 @@ bool Note::convertTexts()
 }
 
 /* vim: set et sts=4 sw=4 ts=16 tw=78 : */
-
+/* kate: indent-width 4; replace-tabs on; */
