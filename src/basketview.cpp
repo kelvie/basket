@@ -1770,6 +1770,9 @@ void BasketView::contentsDropEvent(QDropEvent *event)
 //      resetInsertTo();
 //      doHoverEffects(); called by insertNote()
         save();
+
+        if(note->content()->lowerTypeName() == "cross_reference")
+            event->setDropAction(Qt::LinkAction);
     }
 
     m_draggedNotes.clear();

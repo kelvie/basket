@@ -95,6 +95,8 @@ public:
     Qt::DropActions supportedDropActions() const;
 protected:
     bool event(QEvent *e);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     void focusInEvent(QFocusEvent*);
 private:
     QTimer         m_autoOpenTimer;
@@ -108,6 +110,7 @@ private slots:
 private:
     void setItemUnderDrag(BasketListViewItem* item);
     BasketListViewItem* m_itemUnderDrag;
+    QPoint m_dragStartPosition;
 };
 
 #endif // BASKETLISTVIEW_H
