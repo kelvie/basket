@@ -1124,7 +1124,7 @@ bool BNPView::canFold()
     BasketListViewItem *item = listViewItemForBasket(currentBasket());
     if (!item)
         return false;
-    return item->parent() || (item->childCount() > 0 && item->isExpanded());
+    return (item->childCount() > 0 && item->isExpanded());
 }
 
 bool BNPView::canExpand()
@@ -1132,7 +1132,7 @@ bool BNPView::canExpand()
     BasketListViewItem *item = listViewItemForBasket(currentBasket());
     if (!item)
         return false;
-    return item->childCount() > 0;
+    return (item->childCount() > 0 && !item->isExpanded());
 }
 
 BasketListViewItem* BNPView::appendBasket(BasketView *basket, QTreeWidgetItem *parentItem)
