@@ -177,12 +177,17 @@ QString Tools::tagCrossReferences(const QString &text)
         bool linkIsEmpty = url.isEmpty();
         url.prepend("basket://");
 
-        //FIXME: why is including the style sheet with the link the only way this works?
-        // I should be able to set the style sheet at the note level, shouldn't I?
         QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
-        QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"cross_reference\">"
-                         + KUrl::decode_string(title) + "</a>";
+        QString classes =  "cross_reference";
+        classes += (linkIsEmpty ? " xref_empty" : "");
 
+        css += (linkIsEmpty ?
+                " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+                " a:hover.xref_empty { color: #A55858; }"
+                : "");
+
+        QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">"
+                         + KUrl::decode_string(title) + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }
@@ -223,9 +228,6 @@ QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *expo
         if(url.endsWith('/'))
             url = url.left(url.length() - 1);
 
-        if(!basket)
-            qDebug() << "the basket doesn't exist";
-
         //if the basket we're trying to link to is the basket that was exported then
         //we have to use a special way to refer to it for the links.
         if(basket == exporter->exportedBasket)
@@ -235,10 +237,22 @@ QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *expo
             // the sub directories.
             if(exporter->currentBasket == exporter->exportedBasket)
                 url.prepend(exporter->basketsFolderName);
-            url.append(".html");
+            if(!url.isEmpty())
+                url.append(".html");
         }
 
-        QString anchor = "<a href=\"" + url + "\" class=\"cross_reference\">" + KUrl::decode_string(title) + "</a>";
+        bool linkIsEmpty = url.isEmpty();
+
+//        QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
+        QString classes =  "cross_reference";
+        classes += (linkIsEmpty ? " xref_empty" : "");
+
+        QString css = (linkIsEmpty ?
+                " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+                " a:hover.xref_empty { color: #A55858; }"
+                : "");
+
+        QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + KUrl::decode_string(title) + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }
