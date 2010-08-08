@@ -36,6 +36,7 @@
 #include <kmenu.h>
 #include <QSignalMapper>
 #include <QDir>
+#include <QUndoStack>
 #include <KDE/KIconTheme>
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
@@ -88,7 +89,7 @@
 #include "notefactory.h"
 #include "notecontent.h"
 #include "unistd.h" // usleep
-
+#include "history.h"
 
 #include "bnpviewadaptor.h"
 /** class BNPView: */
@@ -127,6 +128,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
     Global::backgroundManager = new BackgroundManager();
 
     setupGlobalShortcuts();
+    m_history = new QUndoStack(this);
     initialize();
     QTimer::singleShot(0, this, SLOT(lateInit()));
 }
@@ -148,6 +150,8 @@ BNPView::~BNPView()
     Global::systemTray = 0;
     delete m_colorPicker;
     delete m_statusbar;
+    delete m_history;
+    m_history = 0;
 
     NoteDrag::createAndEmptyCuttingTmpFolder(); // Clean the temporary folder we used
 }
@@ -457,10 +461,11 @@ void BNPView::initialize()
 
     connect(m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()));
     connect(m_tree, SIGNAL(itemCollapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()));
-    connect(this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()));
 
-    connect(this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)));
     connect(this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged()));
+
+    connect(m_history, SIGNAL(canRedoChanged(bool)), this, SLOT(canUndoRedoChanged()));
+    connect(m_history, SIGNAL(canUndoChanged(bool)), this, SLOT(canUndoRedoChanged()));
 
     /* LikeBack */
     Global::likeBack = new LikeBack(LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about());
@@ -864,26 +869,26 @@ void BNPView::setupActions()
 
     a = ac->addAction("go_basket_previous", this, SLOT(goToPreviousBasket()));
     a->setText(i18n("&Previous Basket"));
-    a->setIcon(KIcon("go-up"));
-    a->setShortcut(KShortcut("Alt+Up"));
+    a->setIcon(KIcon("go-previous"));
+    a->setShortcut(KShortcut("Alt+Left"));
     m_actPreviousBasket = a;
 
     a = ac->addAction("go_basket_next", this, SLOT(goToNextBasket()));
     a->setText(i18n("&Next Basket"));
-    a->setIcon(KIcon("go-down"));
-    a->setShortcut(KShortcut("Alt+Down"));
+    a->setIcon(KIcon("go-next"));
+    a->setShortcut(KShortcut("Alt+Right"));
     m_actNextBasket = a;
 
     a = ac->addAction("go_basket_fold", this, SLOT(foldBasket()));
     a->setText(i18n("&Fold Basket"));
-    a->setIcon(KIcon("go-previous"));
-    a->setShortcut(KShortcut("Alt+Left"));
+    a->setIcon(KIcon("go-up"));
+    a->setShortcut(KShortcut("Alt+Up"));
     m_actFoldBasket = a;
 
     a = ac->addAction("go_basket_expand", this, SLOT(expandBasket()));
     a->setText(i18n("&Expand Basket"));
-    a->setIcon(KIcon("go-next"));
-    a->setShortcut(KShortcut("Alt+Right"));
+    a->setIcon(KIcon("go-down"));
+    a->setShortcut(KShortcut("Alt+Down"));
     m_actExpandBasket = a;
 
 #if 0
@@ -1139,8 +1144,6 @@ BasketListViewItem* BNPView::appendBasket(BasketView *basket, QTreeWidgetItem *p
         newBasketItem = new BasketListViewItem(m_tree, m_tree->topLevelItem(m_tree->topLevelItemCount() - 1), basket);
     }
 
-    emit basketNumberChanged(basketCount());
-
     return newBasketItem;
 }
 
@@ -1149,7 +1152,7 @@ void BNPView::loadNewBasket(const QString &folderName, const QDomElement &proper
     BasketView *basket = loadBasket(folderName);
     appendBasket(basket, (basket ? listViewItemForBasket(parent) : 0));
     basket->loadProperties(properties);
-    setCurrentBasket(basket);
+    setCurrentBasketInHistory(basket);
 //  save();
 }
 
@@ -1160,60 +1163,14 @@ int BNPView::topLevelItemCount()
 
 void BNPView::goToPreviousBasket()
 {
-    if (m_tree->topLevelItemCount() <= 0)
-        return;
-
-    BasketListViewItem *item     = listViewItemForBasket(currentBasket());
-    BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemAbove(item);
-
-    while (toSwitch && !toSwitch->isShown()) {
-        toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
-    }
-
-    if (!toSwitch) {
-        toSwitch = (BasketListViewItem *)m_tree->topLevelItem(m_tree->topLevelItemCount() - 1);
-        while (toSwitch->childCount() >= 0) {
-            toSwitch = (BasketListViewItem *)toSwitch->child(toSwitch->childCount() - 1);
-        }
-    }
-
-    while (toSwitch && !toSwitch->isShown()) {
-        toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
-    }
-
-    if (toSwitch)
-        setCurrentBasket(toSwitch->basket());
-
-    if (Settings::usePassivePopup())
-        showPassiveContent();
+    if(m_history->canUndo())
+        m_history->undo();
 }
 
 void BNPView::goToNextBasket()
 {
-    if (m_tree->topLevelItemCount() <= 0)
-        return;
-
-    BasketListViewItem *item     = listViewItemForBasket(currentBasket());
-    BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemBelow(item);
-
-    while (toSwitch && !toSwitch->isShown()) {
-        toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
-    }
-
-    if (!toSwitch) {
-        //toSwitch = (BasketListViewItem*)m_tree->child(0);
-        toSwitch = (BasketListViewItem*)m_tree->itemAt(0, 0);
-    }
-
-    while (toSwitch && !toSwitch->isShown()) {
-        toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
-    }
-
-    if (toSwitch)
-        setCurrentBasket(toSwitch->basket());
-
-    if (Settings::usePassivePopup())
-        showPassiveContent();
+    if(m_history->canRedo())
+        m_history->redo();
 }
 
 void BNPView::foldBasket()
@@ -1406,6 +1363,17 @@ BasketView* BNPView::parentBasketOf(BasketView *basket)
         return 0;
 }
 
+void BNPView::setCurrentBasketInHistory(BasketView *basket)
+{
+    if(!basket)
+        return;
+
+    if (currentBasket() == basket)
+        return;
+
+    m_history->push(new HistorySetBasket(basket));
+}
+
 void BNPView::setCurrentBasket(BasketView *basket)
 {
     if (currentBasket() == basket)
@@ -1455,7 +1423,7 @@ void BNPView::removeBasket(BasketView *basket)
         nextBasketItem = (BasketListViewItem*)(basketItem->parent());
 
     if (nextBasketItem)
-        setCurrentBasket(nextBasketItem->basket());
+        setCurrentBasketInHistory(nextBasketItem->basket());
 
     // Remove from the view:
     basket->unsubscribeBackgroundImages();
@@ -1470,7 +1438,6 @@ void BNPView::removeBasket(BasketView *basket)
     else // No need to save two times if we add a basket
         save();
 
-    emit basketNumberChanged(basketCount());
 }
 
 void BNPView::setTreePlacement(bool onLeft)
@@ -1574,7 +1541,7 @@ void BNPView::slotPressed(QTreeWidgetItem *item, int column)
         m_tree->setCurrentItem(listViewItemForBasket(basket), true);
 
     else if (dynamic_cast<BasketListViewItem*>(item) != 0 && currentBasket() != ((BasketListViewItem*)item)->basket()) {
-        setCurrentBasket(((BasketListViewItem*)item)->basket());
+        setCurrentBasketInHistory(((BasketListViewItem*)item)->basket());
         needSave(0);
     }
     basket->setFocus();
@@ -2114,7 +2081,6 @@ void BNPView::delBasket()
 
     doBasketDeletion(basket);
 
-//  basketNumberChanged();
 //  rebuildBasketsMenu();
 }
 
@@ -2216,17 +2182,10 @@ void BNPView::openArchive()
         Archive::open(path);
 }
 
-
 void BNPView::activatedTagShortcut()
 {
     Tag *tag = Tag::tagForKAction((KAction*)sender());
     currentBasket()->activatedTagShortcut(tag);
-}
-
-void BNPView::slotBasketNumberChanged(int number)
-{
-    m_actPreviousBasket->setEnabled(number > 1);
-    m_actNextBasket    ->setEnabled(number > 1);
 }
 
 void BNPView::slotBasketChanged()
@@ -2234,6 +2193,15 @@ void BNPView::slotBasketChanged()
     m_actFoldBasket->setEnabled(canFold());
     m_actExpandBasket->setEnabled(canExpand());
     setFiltering(currentBasket() && currentBasket()->decoration()->filterData().isFiltering);
+    this->canUndoRedoChanged();
+}
+
+void BNPView::canUndoRedoChanged()
+{
+    if(m_history) {
+        m_actPreviousBasket->setEnabled(m_history->canUndo());
+        m_actNextBasket    ->setEnabled(m_history->canRedo());
+    }
 }
 
 void BNPView::currentBasketChanged()
@@ -2890,7 +2858,7 @@ void BNPView::loadCrossReference(QString link)
     if(!basket)
         return;
 
-    this->setCurrentBasket(basket);
+    this->setCurrentBasketInHistory(basket);
 }
 
 QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent)
