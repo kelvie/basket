@@ -460,19 +460,14 @@ Note* NoteFactory::dropNote(const QMimeData *source, BasketView *parent, bool fr
     if(source->hasFormat("application/x-basket-item")) {
         QByteArray data = source->data("application/x-basket-item");
         QDataStream stream(&data, QIODevice::ReadOnly);
-        QStringList itemData;
         QString basketName, folderName, icon;
 
         while (!stream.atEnd())
-            stream >> itemData;
-
-        basketName = itemData.takeFirst();
-        folderName = itemData.takeFirst();
-        icon       = itemData.takeFirst();
+            stream >> basketName >> folderName >> icon;
 
         return createNoteCrossReference(KUrl("basket://" + folderName), basketName, icon, parent);
     }
-
+qDebug() << "no known note type failing out" << source->formats();
     /* Unsucceful drop */
     note = createNoteUnknown(source, parent);
     QString message = i18n("<p>%1 doesn't support the data you've dropped.<br>"

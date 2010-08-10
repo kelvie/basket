@@ -399,7 +399,7 @@ void BasketTreeListView::mousePressEvent(QMouseEvent *event)
 
 void BasketTreeListView::mouseMoveEvent(QMouseEvent *event)
 {
-    QTreeWidget::mouseMoveEvent(event);
+    //QTreeWidget::mouseMoveEvent(event);
     if (!(event->buttons() & Qt::LeftButton)) {
         event->ignore();
         return;
@@ -420,10 +420,8 @@ void BasketTreeListView::mouseMoveEvent(QMouseEvent *event)
     QList<QTreeWidgetItem*>::iterator i;
     for (i = items.begin(); i != items.end(); ++i) {
         BasketListViewItem *basketItem = static_cast<BasketListViewItem*>(*i);
-        QStringList basketProperties;
-        basketProperties << basketItem->basket()->basketName() << basketItem->basket()->folderName()
+        out << basketItem->basket()->basketName() << basketItem->basket()->folderName()
                 << basketItem->basket()->icon();
-        out << basketProperties;
     }
 
     QDrag *drag = new QDrag(this);
