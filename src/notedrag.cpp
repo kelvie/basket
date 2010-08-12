@@ -485,13 +485,14 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 originalBasket->unplugNote(oldNote);
                 note = oldNote;
                 if (note->basket() != parent) {
-                    QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
+
+                    QString newFileName = Tools::fileNameForNewFile(fileName, parent->fullPath());
                     note->content()->setFileName(newFileName);
 
-		    KIO::CopyJob *copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName), 
+                    KIO::CopyJob *copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 				    KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                     parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, Kurl)));
+                                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
                 }
                 note->setGroupWidth(groupWidth);
                 note->setParentNote(0);
