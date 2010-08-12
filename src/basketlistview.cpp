@@ -507,7 +507,6 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 
 void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 {
-    qDebug() << event->mimeData()->formats();
     QTreeWidgetItem *item = itemAt(event->pos());
     BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
     if (m_autoOpenItem != item) {

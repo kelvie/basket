@@ -481,10 +481,11 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
             }
         } else {
             stream >> fileName >> fullPath >> addedDate >> lastModificationDate;
+
             if (moveNotes) {
                 originalBasket->unplugNote(oldNote);
                 note = oldNote;
-                if (note->basket() != parent) {
+                if (note->basket() != parent && (!fileName.isEmpty() && !fullPath.isEmpty())) {
 
                     QString newFileName = Tools::fileNameForNewFile(fileName, parent->fullPath());
                     note->content()->setFileName(newFileName);
