@@ -2874,15 +2874,32 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
         pages.removeFirst();
         //FIXME: decode_string is depreciated
         page = KUrl::decode_string(page);
+
+        QRegExp re(":\\{([0-9]+)\\}");
+        re.setMinimal(true);
+        int pos = 0;
+
+        pos = re.indexIn(page, pos);
+        int basketNum = 1;
+
+        if(pos != -1)
+            basketNum = re.cap(1).toInt();
+
+        page = page.left(page.length() - re.matchedLength());
+
         for(int i = 0; i < parent->childCount(); i++) {
             QTreeWidgetItem *child = parent->child(i);
+
             if(child->text(0).toLower() == page.toLower()) {
-                if(pages.count() > 0) {
-                    found = this->folderFromBasketNameLink(pages, child);
-                    break;
-                } else {
-                    found = ((BasketListViewItem*)child)->basket()->folderName();
-                    break;
+                basketNum--;
+                if(basketNum == 0) {
+                    if(pages.count() > 0) {
+                        found = this->folderFromBasketNameLink(pages, child);
+                        break;
+                    } else {
+                        found = ((BasketListViewItem*)child)->basket()->folderName();
+                        break;
+                    }
                 }
             } else
                 found = "";

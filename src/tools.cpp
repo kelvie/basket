@@ -287,10 +287,13 @@ QString Tools::convertToCrossReference(const QString &html)
         QString url = Global::bnpView->folderFromBasketNameLink(pages);
 
         url.prepend("basket://");
-
-        QString anchor = QString("[[%1|%2]]").arg(url, title);
-        richText.replace(urlPos, urlLen, anchor);
-        urlPos += anchor.length();
+        if(url == "basket://" || url.isEmpty()) {
+            urlPos += urlLen;
+        } else {
+            QString anchor = QString("[[%1|%2]]").arg(url, title);
+            richText.replace(urlPos, urlLen, anchor);
+            urlPos += anchor.length();
+        }
     }
     return richText;
 }
