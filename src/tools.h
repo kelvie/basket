@@ -56,6 +56,7 @@ QString htmlToText(const QString &html);
 QString tagURLs(const QString &test);
 QString tagCrossReferences(const QString &text);
 QString tagCrossReferencesForHtml(const QString &text, HTMLExporter *exporter);
+QString convertToCrossReference(const QString &html);
 QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
 
 // String Manipulations:
