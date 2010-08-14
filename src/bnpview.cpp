@@ -2865,16 +2865,25 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
 {
     QString found = "";
 
-    if(!parent) {
+    QString page = pages.first();
+    //FIXME: decode_string is depreciated
+    page = KUrl::decode_string(page);
+    pages.removeFirst();
+
+    if(page == "..") {
+        QTreeWidgetItem *p;
+        if(parent)
+            p = parent->parent();
+        else
+            p = m_tree->currentItem()->parent();
+        found = this->folderFromBasketNameLink(pages, p);
+    } else if(!parent && page == "") {
         parent = m_tree->invisibleRootItem();
         found = this->folderFromBasketNameLink(pages, parent);
     } else {
-
-        QString page = pages.first();
-        pages.removeFirst();
-        //FIXME: decode_string is depreciated
-        page = KUrl::decode_string(page);
-
+        if(!parent && (page == "." || page != "")) {
+            parent = m_tree->currentItem();
+        }
         QRegExp re(":\\{([0-9]+)\\}");
         re.setMinimal(true);
         int pos = 0;

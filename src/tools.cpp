@@ -272,8 +272,6 @@ QString Tools::convertToCrossReference(const QString &html)
             continue;
         }
 
-        if(basketLink.startsWith('/'))
-            basketLink = basketLink.right(basketLink.length() - 1);
         if(basketLink.endsWith('/'))
             basketLink = basketLink.left(basketLink.length() - 1);
 
