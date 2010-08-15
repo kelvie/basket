@@ -1034,7 +1034,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-                   Tools::tagCrossReferencesForHtml(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), exporter); // Don't collapse multiple spaces!
+                   Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), false, exporter); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1149,7 +1149,7 @@ void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    exporter->stream << Tools::htmlToParagraph(Tools::tagCrossReferencesForHtml(Tools::tagURLs(html().replace("\t", "                ")), exporter))
+    exporter->stream << Tools::htmlToParagraph(Tools::tagCrossReferences(Tools::tagURLs(html().replace("\t", "                ")), false, exporter))
     .replace("  ", " &nbsp;")
     .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }

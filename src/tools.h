@@ -54,10 +54,14 @@ QString textToHTMLWithoutP(const QString &text);
 QString htmlToParagraph(const QString &html);
 QString htmlToText(const QString &html);
 QString tagURLs(const QString &test);
-QString tagCrossReferences(const QString &text);
-QString tagCrossReferencesForHtml(const QString &text, HTMLExporter *exporter);
-QString convertToCrossReference(const QString &html);
 QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
+
+//Cross Reference tools:
+QString tagCrossReferences(const QString &text, bool userLink = false, HTMLExporter *exporter = 0);
+//private functions:
+QString crossReferenceForBasket(QStringList linkParts);
+QString crossReferenceForHtml(QStringList linkParts, HTMLExporter *exporter);
+QString crossReferenceForConversion(QStringList linkParts);
 
 // String Manipulations:
 QString stripEndWhiteSpaces(const QString &string);

@@ -228,7 +228,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     textEdit->setPalette(palette);
 
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    textEdit->setHtml(Tools::convertToCrossReference(m_htmlContent->html()));
+    textEdit->setHtml(Tools::tagCrossReferences(m_htmlContent->html(), /*userLink=*/true));
     textEdit->moveCursor(QTextCursor::End);
     textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
     setInlineEditor(textEdit);
@@ -380,7 +380,7 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    m_htmlContent->setHtml(Tools::convertToCrossReference(textEdit()->toHtml()));
+    m_htmlContent->setHtml(Tools::tagCrossReferences(textEdit()->toHtml(), /*userLink=*/true));
     m_htmlContent->saveToFile();
     m_htmlContent->setEdited();
 

@@ -149,48 +149,7 @@ QString Tools::tagURLs(const QString &text)
     return richText;
 }
 
-QString Tools::tagCrossReferences(const QString &text)
-{
-    QString richText(text);
-    //TODO: refactor this code so that it can be shared with all the xref tool functions.
-    int urlPos = 0;
-    int urlLen;
-
-    QRegExp urlEx("\\[\\[(.+)\\]\\]");
-    urlEx.setMinimal(true);
-    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
-        urlLen = urlEx.matchedLength();
-        QString href = urlEx.cap(1);
-
-        QStringList hrefParts = href.split('|');
-        QString basketLink = hrefParts.first();
-        QString title;
-
-        bool linkIsEmpty = false;
-
-        if(basketLink == "basket://" || basketLink.isEmpty())
-            linkIsEmpty = true;
-
-        title = hrefParts.last().trimmed();
-
-        QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
-        QString classes =  "cross_reference";
-        classes += (linkIsEmpty ? " xref_empty" : "");
-
-        css += (linkIsEmpty ?
-                " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
-                " a:hover.xref_empty { color: #A55858; }"
-                : "");
-
-        QString anchor = "<style>" + css + "</style><a href=\"" + basketLink + "\" class=\"" + classes + "\">"
-                         + KUrl::decode_string(title) + "</a>";
-        richText.replace(urlPos, urlLen, anchor);
-        urlPos += anchor.length();
-    }
-    return richText;
-}
-
-QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *exporter)
+QString Tools::tagCrossReferences(const QString &text, bool userLink, HTMLExporter *exporter)
 {
     QString richText(text);
 
@@ -204,96 +163,124 @@ QString Tools::tagCrossReferencesForHtml(const QString &text, HTMLExporter *expo
         QString href = urlEx.cap(1);
 
         QStringList hrefParts = href.split('|');
-        QString basketLink = hrefParts.first();
-        QString title;
+        QString anchor;
 
-        bool linkIsEmpty = false;
-
-        if(basketLink == "basket://" || basketLink.isEmpty())
-            linkIsEmpty = true;
-
-        title = hrefParts.last().trimmed();
-
-        QString url;
-        if(basketLink.startsWith("basket://"))
-        url = basketLink.mid(9, basketLink.length() - 9);
-
-        BasketView *basket = Global::bnpView->basketForFolderName(url);
-
-        //remove the trailing slash.
-        url = url.left(url.length() - 1);
-
-        //if the basket we're trying to link to is the basket that was exported then
-        //we have to use a special way to refer to it for the links.
-        if(basket == exporter->exportedBasket)
-            url = "../../" + exporter->fileName;
-        else {
-            //if we're in the exported basket then the links have to include
-            // the sub directories.
-            if(exporter->currentBasket == exporter->exportedBasket)
-                url.prepend(exporter->basketsFolderName);
-            if(!url.isEmpty())
-                url.append(".html");
-        }
-
-        QString classes =  "cross_reference";
-        classes += (linkIsEmpty ? " xref_empty" : "");
-
-        QString css = (linkIsEmpty ?
-                " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
-                " a:hover.xref_empty { color: #A55858; }"
-                : "");
-
-        QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + KUrl::decode_string(title) + "</a>";
-        richText.replace(urlPos, urlLen, anchor);
-        urlPos += anchor.length();
-    }
-    return richText;
-}
-
-QString Tools::convertToCrossReference(const QString &html)
-{
-    QString richText(html);
-
-    int urlPos = 0;
-    int urlLen;
-    //TODO: refactor
-    QRegExp urlEx("\\[\\[(.+)\\]\\]");
-    urlEx.setMinimal(true);
-    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
-        urlLen = urlEx.matchedLength();
-        QString href = urlEx.cap(1);
-
-        QStringList hrefParts = href.split('|');
-        QString basketLink = hrefParts.first();
-        QString title;
-        if(basketLink.startsWith("basket://")) {//don't convert a converted link.
-            urlPos += urlLen;
-            continue;
-        }
-
-        if(basketLink.endsWith('/'))
-            basketLink = basketLink.left(basketLink.length() - 1);
-
-        QStringList pages = basketLink.split('/');
-
-        if(hrefParts.count()<= 1)
-            title = pages.last();
+        if(exporter)
+            anchor = crossReferenceForHtml(hrefParts, exporter);
+        else if(userLink)
+            anchor = crossReferenceForConversion(hrefParts);
         else
-            title = hrefParts.last().trimmed();
+            anchor = crossReferenceForBasket(hrefParts);
 
-        QString url = Global::bnpView->folderFromBasketNameLink(pages);
 
-        url.prepend("basket://");
-        if(url == "basket://" || url.isEmpty()) {
-            urlPos += urlLen;
-        } else {
-            QString anchor = QString("[[%1|%2]]").arg(url, title);
-            richText.replace(urlPos, urlLen, anchor);
-            urlPos += anchor.length();
-        }
+        richText.replace(urlPos, urlLen, anchor);
+        urlPos += anchor.length();
     }
     return richText;
+}
+
+
+QString Tools::crossReferenceForBasket(QStringList linkParts)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    bool linkIsEmpty = false;
+
+    if(basketLink == "basket://" || basketLink.isEmpty())
+        linkIsEmpty = true;
+
+    title = linkParts.last().trimmed();
+
+    QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
+    QString classes =  "cross_reference";
+    classes += (linkIsEmpty ? " xref_empty" : "");
+
+    css += (linkIsEmpty ?
+        " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+        " a:hover.xref_empty { color: #A55858; }"
+        : "");
+
+    QString anchor = "<style>" + css + "</style><a href=\"" + basketLink + "\" class=\"" + classes + "\">"
+                + KUrl::decode_string(title) + "</a>";
+    return anchor;
+}
+
+QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *exporter)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    bool linkIsEmpty = false;
+
+    if(basketLink == "basket://" || basketLink.isEmpty())
+        linkIsEmpty = true;
+
+    title = linkParts.last().trimmed();
+
+    QString url;
+    if(basketLink.startsWith("basket://"))
+    url = basketLink.mid(9, basketLink.length() - 9);
+
+    BasketView *basket = Global::bnpView->basketForFolderName(url);
+
+    //remove the trailing slash.
+    url = url.left(url.length() - 1);
+
+    //if the basket we're trying to link to is the basket that was exported then
+    //we have to use a special way to refer to it for the links.
+    if(basket == exporter->exportedBasket)
+        url = "../../" + exporter->fileName;
+    else {
+        //if we're in the exported basket then the links have to include
+        // the sub directories.
+        if(exporter->currentBasket == exporter->exportedBasket)
+            url.prepend(exporter->basketsFolderName);
+        if(!url.isEmpty())
+            url.append(".html");
+    }
+
+    QString classes =  "cross_reference";
+    classes += (linkIsEmpty ? " xref_empty" : "");
+
+    QString css = (linkIsEmpty ?
+            " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+            " a:hover.xref_empty { color: #A55858; }"
+            : "");
+
+    QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + KUrl::decode_string(title) + "</a>";
+    return anchor;
+}
+
+QString Tools::crossReferenceForConversion(QStringList linkParts)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    if(basketLink.startsWith("basket://"))
+        return QString("[[%1|%2]]").arg(basketLink, linkParts.last());
+
+    if(basketLink.endsWith('/'))
+        basketLink = basketLink.left(basketLink.length() - 1);
+
+    QStringList pages = basketLink.split('/');
+
+    if(linkParts.count()<= 1)
+        title = pages.last();
+    else
+        title = linkParts.last().trimmed();
+
+    QString url = Global::bnpView->folderFromBasketNameLink(pages);
+
+    url.prepend("basket://");
+    QString anchor;
+
+    if(url == "basket://" || url.isEmpty()) {
+        anchor = linkParts.first();
+    } else
+        anchor = QString("[[%1|%2]]").arg(url, title);
+
+    return anchor;
 }
 
 QString Tools::htmlToText(const QString &html)
