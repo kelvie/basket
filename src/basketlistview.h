@@ -94,7 +94,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     Qt::DropActions supportedDropActions() const;
 
-    static const char * TREE_ITEM_MIME_STRING;
+    static QString TREE_ITEM_MIME_STRING;
 protected:
     QStringList mimeTypes() const;
     QMimeData* mimeData(const QList<QTreeWidgetItem *> items) const;

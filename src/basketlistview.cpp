@@ -362,7 +362,7 @@ void BasketListViewItem::setAbbreviated(bool b)
 }
 
 /** class BasketTreeListView: */
-const char * BasketTreeListView::TREE_ITEM_MIME_STRING = "application/x-basket-item";
+QString BasketTreeListView::TREE_ITEM_MIME_STRING = "application/x-basket-item";
 
 BasketTreeListView::BasketTreeListView(QWidget *parent)
         : QTreeWidget(parent), m_autoOpenItem(0)
@@ -483,7 +483,7 @@ void BasketTreeListView::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BasketTreeListView::dropEvent(QDropEvent *event)
 {
-    if (event->provides(TREE_ITEM_MIME_STRING)) {
+    if (event->mimeData()->hasFormat(TREE_ITEM_MIME_STRING)) {
         event->setDropAction(Qt::MoveAction);
         QTreeWidget::dropEvent(event);
     } else { // this handels application/x-basket-note drag events.
