@@ -120,6 +120,9 @@
   <text>Main Toolbar</text>
   <Action name="basket_properties" />
   <Separator lineSeparator="true" name="separator_0" />
+  <Action name="go_basket_previous" />
+  <Action name="go_basket_next" />
+  <Separator lineSeparator="true" name="separator_0" />
   <Action name="edit_cut" />
   <Action name="edit_copy" />
   <Action name="edit_paste" />

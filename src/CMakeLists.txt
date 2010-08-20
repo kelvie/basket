@@ -25,6 +25,7 @@ set(basketcommon_LIB_SRCS
     formatimporter.cpp
     global.cpp
     htmlexporter.cpp
+    history.cpp
     kcolorcombo2.cpp
     keyboard.cpp
     kgpgme.cpp

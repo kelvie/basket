@@ -117,6 +117,13 @@ Note* NoteFactory::createNoteCrossReference(const KUrl &url, const QString &titl
     return note;
 }
 
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, const QString &title, const QString &icon, BasketView *parent)
+{
+    Note *note = new Note(parent);
+    new CrossReferenceContent(note, url, title, icon);
+    return note;
+}
+
 Note* NoteFactory::createNoteImage(const QPixmap &image, BasketView *parent)
 {
     Note *note = new Note(parent);
@@ -448,6 +455,19 @@ Note* NoteFactory::dropNote(const QMimeData *source, BasketView *parent, bool fr
     // If the text/plain comes from GEdit or GNOME it can be empty: we need ExtendedTextDrag to check other MIME types
     if (ExtendedTextDrag::decode(source, text))
         return createNoteFromText(text, parent);
+
+    /* Create a cross reference note */
+
+    if(source->hasFormat(BasketTreeListView::TREE_ITEM_MIME_STRING)) {
+        QByteArray data = source->data(BasketTreeListView::TREE_ITEM_MIME_STRING);
+        QDataStream stream(&data, QIODevice::ReadOnly);
+        QString basketName, folderName, icon;
+
+        while (!stream.atEnd())
+            stream >> basketName >> folderName >> icon;
+
+        return createNoteCrossReference(KUrl("basket://" + folderName), basketName, icon, parent);
+    }
 
     /* Unsucceful drop */
     note = createNoteUnknown(source, parent);

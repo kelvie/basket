@@ -117,6 +117,7 @@ public:
     static LinkLook *localLinkLook;
     static LinkLook *networkLinkLook;
     static LinkLook *launcherLook;
+    static LinkLook *crossReferenceLook;
     /* Static method to get a LinkLook from an URL */
     static LinkLook* lookForURL(const KUrl &url);
 };

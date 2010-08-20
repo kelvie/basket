@@ -42,6 +42,7 @@
 class QStackedWidget;
 class QDomDocument;
 class QDomElement;
+class QUndoStack;
 class KAction;
 class KToggleAction;
 class KMenu;
@@ -80,6 +81,7 @@ public:
     BasketView* currentBasket();
     BasketView* parentBasketOf(BasketView *basket);
     void setCurrentBasket(BasketView *basket);
+    void setCurrentBasketInHistory(BasketView *basket);
     void removeBasket(BasketView *basket);
     /// For NewBasketDialog (and later some other classes):
     int topLevelItemCount();
@@ -214,8 +216,8 @@ public slots:
     void addWelcomeBaskets();
 private slots:
     void updateNotesActions();
-    void slotBasketNumberChanged(int number);
     void slotBasketChanged();
+    void canUndoRedoChanged();
     void currentBasketChanged();
     void isLockedChanged();
     void lateInit();
@@ -339,7 +341,6 @@ private slots:
     void initialize();
 
 signals:
-    void basketNumberChanged(int number);
     void basketChanged();
     void setWindowCaption(const QString &s);
     void showPart();
@@ -366,6 +367,8 @@ private:
     BasketStatusBar *m_statusbar;
     QTimer             *m_tryHideTimer;
     QTimer             *m_hideTimer;
+
+    QUndoStack *m_history;
 };
 
 #endif // BNPVIEW_H

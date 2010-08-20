@@ -228,7 +228,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     textEdit->setPalette(palette);
 
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    textEdit->setHtml(m_htmlContent->html());
+    textEdit->setHtml(Tools::tagCrossReferences(m_htmlContent->html(), /*userLink=*/true));
     textEdit->moveCursor(QTextCursor::End);
     textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
     setInlineEditor(textEdit);
@@ -380,7 +380,7 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    m_htmlContent->setHtml(textEdit()->toHtml());
+    m_htmlContent->setHtml(Tools::tagCrossReferences(textEdit()->toHtml(), /*userLink=*/true));
     m_htmlContent->saveToFile();
     m_htmlContent->setEdited();
 
@@ -787,12 +787,16 @@ CrossReferenceEditDialog::CrossReferenceEditDialog(CrossReferenceContent *conten
         BasketListViewItem *item = Global::bnpView->topLevelItem(0);
         m_noteContent->setCrossReference(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
         this->urlChanged(0);
-    }else{
-        //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
-        QString url = KUrl::decode_string(m_noteContent->url().url());
-        int row = m_targetBasket->findData(QVariant(url));
-        if(row >= 0)
-            m_targetBasket->setCurrentIndex(row);
+    } else {
+        QString url = m_noteContent->url().url();
+        //cannot use findData because I'm using a StringList and I don't have the second
+        // piece of data to make find work.
+        for(int i = 0; i < m_targetBasket->count(); ++i) {
+            if(url == m_targetBasket->itemData(i, Qt::UserRole).toStringList().first()) {
+                m_targetBasket->setCurrentIndex(i);
+                break;
+            }
+        }
     }
 
     QLabel *label1 = new QLabel(page);
