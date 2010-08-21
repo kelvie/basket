@@ -2850,8 +2850,7 @@ void BNPView::loadCrossReference(QString link)
 {
     //remove "basket://" and any encoding.
     QString folderName = link.mid(9, link.length() - 9);
-    //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
-    folderName = KUrl::decode_string(folderName);
+    folderName = QUrl::fromPercentEncoding(folderName.toLatin1());
 
     BasketView* basket = this->basketForFolderName(folderName);
 
@@ -2866,8 +2865,8 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
     QString found = "";
 
     QString page = pages.first();
-    //FIXME: decode_string is depreciated
-    page = KUrl::decode_string(page);
+
+    page = QUrl::fromPercentEncoding(page.toLatin1());
     pages.removeFirst();
 
     if(page == "..") {
