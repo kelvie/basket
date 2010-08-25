@@ -12,7 +12,7 @@ function error
   echo "      Think to install the *-dev or *-devel packages of your distribution."
   echo "                     For example, if libmng cannot be found,"
   echo "  please check if libmng AND libmng-devel packages are installed on your system."
-  echo "      See the reported errors to know which librarie need to be installed."
+  echo "      See the reported errors to know which libraries need to be installed."
   echo "      If it complains about not being able to find the file FindGpgme.cmake, "
   echo "                 you will need the -devel package of kdepimlibs."
   echo "         Consult the INSTALL document  for a full list of the requirements."
@@ -58,6 +58,9 @@ echo ""
 echo ""
 echo "                             What do you want to do?"
 echo ""
+echo "       You can specify the number of threads to use when building basket by"
+echo "        passing in a number when running this script. (ie. ./installer 4 )"
+echo ""
 echo "  1/ Install BasKet Note Pads system wide (you will need root access)"
 echo "  2/ Install BasKet Note Pads in your user folder"
 #echo "  3/ Uninstall BasKet Note Pads (you should not: it is so fantastic ;-) )"
@@ -67,7 +70,7 @@ echo -n "Your choice (default is 1): "
 read -n 1 WHAT_TO_DO
 echo ""
 
-if [ "_$WHAT_TO_DO" == "_2" ]; then
+if [ "$WHAT_TO_DO" == "2" ]; then
   SYS_WIDE=0
   WHAT_TO_DO=2 # To transform it from string to int
 else
@@ -137,8 +140,13 @@ echo "    ======================================================================
 echo ""
 echo ""
 
-echo "make"
-make || error
+if [ $1 -gt 0 ]; then
+    threads=$1
+else
+    threads=2
+fi
+echo "make -j${threads}"
+make -j${threads} || error
 
 clear
 echo ""
@@ -153,7 +161,7 @@ echo ""
 
 echo $'\a' # Beep to avert user the configuration/compilation is ended and he must act to enter the password
 
-if [ "_$SYS_WIDE" == "_n" ]; then
+if [ "$SYS_WIDE" == 0 ]; then
   # First make the bin folder to not copy basket file to bin file if bin/ doesn't exist
   make install
 else
@@ -183,25 +191,31 @@ echo ""
 
 echo -n "Start or restart BasKet Note Pads? [y/n] (default is y): "
 read -n 1 RESTART
-if [ "_$RESTART" != "_" ]; then # If pressed Enter, a new line was already print
+if [ "$RESTART" != "y" ]; then # If pressed Enter, a new line was already print
   echo ""
 fi
 
-if [ "_$RESTART" != "_n" ]; then
+if [ "$RESTART" == "y" -o  "$RESTART" == "" ]; then
+echo "Restart applicatoin"
   # Get the pid of the process basket, if currently running
-  pid=`ps aux | awk '$11 == "basket" { print $2 }'`
-  if [ "_$pid" == "_" ]; then
+  pid=`ps aux | ps aux | awk '$11 ~ /basket$/ { print $2 }'`
+  if [ "$pid" == "" ]; then
     dummy=0
   else
     kill -s SIGTERM $pid
   fi
 
-  if [ "_$SYS_WIDE" == "_n" ]; then
+  if [ "$SYS_WIDE" == 1 ]; then
     echo "$prefix/bin/basket"
     $prefix/bin/basket
   else
-    echo "basket"
-    basket
+    base=`kde-config --localprefix`
+    if test -d $base ; then
+      echo "${base}bin/basket"  
+      ${base}bin/basket
+    else
+      echo "Could not find your kde installation."  
+    fi
   fi
 fi
 
@@ -213,7 +227,7 @@ echo "    ======================================================================
 echo ""
 echo ""
 echo "   In the future, if you want to uninstall BasKet Note Pads, you will have to"
-if [ "_$SYS_WIDE" == "_n" ]; then
+if [ "$SYS_WIDE" == 0 ]; then
   echo "                enter the command make uninstall in this folder."
 else
   echo "            enter the command su -c 'make uninstall' in this folder."
