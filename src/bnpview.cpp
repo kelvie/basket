@@ -2065,7 +2065,7 @@ void BNPView::delBasket()
     QStringList basketsList = listViewItemForBasket(basket)->childNamesTree(0);
     if (basketsList.count() > 0) {
         int deleteChilds = KMessageBox::questionYesNoList(this,
-                           i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>",
+                           i18n("<qt><b>%1</b> has the following children baskets.<br>Do you want to remove them too?</qt>",
                                 Tools::textToHTMLWithoutP(basket->basketName())),
                            basketsList,
                            i18n("Remove Children Baskets")
@@ -2076,7 +2076,7 @@ void BNPView::delBasket()
 #endif
 
         if (deleteChilds == KMessageBox::No)
-            listViewItemForBasket(basket)->moveChildsBaskets();
+            return;
     }
 
     doBasketDeletion(basket);
