@@ -59,6 +59,9 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
     showButtonSeparator(false);
 
     QWidget *page = new QWidget(this);
+    QTabWidget *tabWidget = new QTabWidget(this);
+    tabWidget->addTab(page, i18n("Basic"));
+
     QVBoxLayout *topLayout = new QVBoxLayout(page);
 
     // Icon and Name:
@@ -141,16 +144,19 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
     QVBoxLayout* dispLayout = new QVBoxLayout;
     m_disposition->setLayout(dispLayout);
 
+    QHBoxLayout *colCountLayout = new QHBoxLayout(m_disposition);
     columnForm = new QRadioButton(i18n("Col&umns:"), m_disposition);
-    dispLayout->addWidget(columnForm);
+    colCountLayout->addWidget(columnForm);
     bg->addButton(columnForm);
+
 
     m_columnCount = new KIntNumInput(m_basket->columnsCount(), m_disposition);
     m_columnCount->setRange(1, 20, /*step=*/1);
     m_columnCount->setSliderEnabled(false);
     m_columnCount->setValue(m_basket->columnsCount());
     connect(m_columnCount, SIGNAL(valueChanged(int)), this, SLOT(selectColumnsLayout()));
-    dispLayout->addWidget(m_columnCount);
+    dispLayout->addLayout(colCountLayout);
+    colCountLayout->addWidget(m_columnCount);
 
     freeForm = new QRadioButton(i18n("&Free-form"), m_disposition);
     dispLayout->addWidget(freeForm);
@@ -172,10 +178,11 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
 
     mindMap->hide();
 
+    QWidget *page2 = new QWidget(this);
+    tabWidget->addTab(page2, i18n("&Keyboard Shortcut"));
+
     // Keyboard Shortcut:
-    m_shortcutRole = new QGroupBox(i18n("&Keyboard Shortcut"), page);
     m_shortcutRoleLayout = new QVBoxLayout;
-    m_shortcutRole->setLayout(m_shortcutRoleLayout);
     QWidget *shortcutWidget = new QWidget;
     m_shortcutRoleLayout->addWidget(shortcutWidget);
     QHBoxLayout *shortcutLayout = new QHBoxLayout(shortcutWidget);
@@ -209,7 +216,8 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
     case 1: m_globalButton->setChecked(true); break;
     case 2: m_switchButton->setChecked(true); break;
     }
-    topLayout->addWidget(m_shortcutRole);
+
+    page2->setLayout(m_shortcutRoleLayout);
 
     topLayout->addSpacing(marginHint());
     topLayout->addStretch(10);
@@ -218,7 +226,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
     connect(this, SIGNAL(okClicked()), this, SLOT(applyChanges()));
     connect(this, SIGNAL(applyClicked()), this, SLOT(applyChanges()));
 
-    setMainWidget(page);
+    setMainWidget(tabWidget);
 }
 
 BasketPropertiesDialog::~BasketPropertiesDialog()

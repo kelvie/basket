@@ -68,7 +68,6 @@ private:
     QRadioButton  *freeForm;
     KIntNumInput  *m_columnCount;
     KShortcutWidget *m_shortcut;
-    QGroupBox *m_shortcutRole;
     QVBoxLayout *m_shortcutRoleLayout;
     QRadioButton * m_showButton;
     QRadioButton * m_globalButton;
