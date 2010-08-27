@@ -345,6 +345,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     //m_tags->setSorting(-1); // Sort column -1, so disabled sorting
     //m_tags->setResizeMode(QTreeWidget::LastColumn);
 
+    m_tags->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     m_moveUp    = new KPushButton(KGuiItem("", "arrow-up"),   mainWidget());
     m_moveDown  = new KPushButton(KGuiItem("", "arrow-down"), mainWidget());
     m_deleteTag = new KPushButton(KGuiItem("", "edit-delete"), mainWidget());
@@ -683,11 +685,6 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QAction *rename = new QAction(this);
     rename->setShortcut(Qt::Key_F2);
     connect(rename, SIGNAL(activated()), this, SLOT(renameIt()));
-
-    m_tags->setMinimumSize(
-        m_tags->sizeHint().width() * 2,
-        m_tagBox->sizeHint().height() + m_stateBox->sizeHint().height()
-    );
 
     if (addNewTag)
         QTimer::singleShot(0, this, SLOT(newTag()));
