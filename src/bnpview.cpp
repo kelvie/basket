@@ -815,6 +815,26 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("F2"));
     m_actPropBasket = a;
 
+    a = ac->addAction("basket_sort_children_asc", this, SLOT(sortChildrenAsc()));
+    a->setText(i18n("Sort Children Ascending"));
+    a->setIcon(KIcon("view-sort-ascending"));
+    m_actSortChildrenAsc = a;
+
+    a = ac->addAction("basket_sort_children_desc", this, SLOT(sortChildrenDesc()));
+    a->setText(i18n("Sort Children Descending"));
+    a->setIcon(KIcon("view-sort-descending"));
+    m_actSortChildrenDesc = a;
+
+    a = ac->addAction("basket_sort_siblings_asc", this, SLOT(sortSiblingsAsc()));
+    a->setText(i18n("Sort Siblings Ascending"));
+    a->setIcon(KIcon("view-sort-ascending"));
+    m_actSortSiblingsAsc = a;
+
+    a = ac->addAction("basket_sort_siblings_desc", this, SLOT(sortSiblingsDesc()));
+    a->setText(i18n("Sort Siblings Descending"));
+    a->setIcon(KIcon("view-sort-descending"));
+    m_actSortSiblingsDesc = a;
+
     a = ac->addAction("basket_remove", this, SLOT(delBasket()));
     a->setText(i18nc("Remove Basket", "&Remove"));
     a->setShortcut(0);
@@ -2915,4 +2935,32 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
     }
 
     return found;
+}
+
+void BNPView::sortChildrenAsc()
+{
+    m_tree->currentItem()->sortChildren(0, Qt::AscendingOrder);
+}
+
+void BNPView::sortChildrenDesc()
+{
+    m_tree->currentItem()->sortChildren(0, Qt::DescendingOrder);
+}
+
+void BNPView::sortSiblingsAsc()
+{
+    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
+    if(!parent)
+        m_tree->sortItems(0, Qt::AscendingOrder);
+    else
+        parent->sortChildren(0, Qt::AscendingOrder);
+}
+
+void BNPView::sortSiblingsDesc()
+{
+    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
+    if(!parent)
+        m_tree->sortItems(0, Qt::DescendingOrder);
+    else
+        parent->sortChildren(0, Qt::DescendingOrder);
 }
