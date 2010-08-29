@@ -12,6 +12,13 @@
     <Action name="basket_export_basket_archive" />
     <Action name="basket_export_html" />
    </Menu>
+   <Menu icon="view-sort-ascending" >
+    <text>&amp;Sort</text>
+    <Action name="basket_sort_children_asc" />
+    <Action name="basket_sort_children_desc" />
+    <Action name="basket_sort_siblings_asc" />
+    <Action name="basket_sort_siblings_desc" />
+   </Menu>
    <Action name="basket_remove" />
    <Separator/>
    <Action name="basket_password" />
@@ -162,6 +169,13 @@
    <text>&amp;Export</text>
    <Action name="basket_export_basket_archive" />
    <Action name="basket_export_html" />
+  </Menu>
+  <Menu icon="view-sort-ascending" >
+   <text>&amp;Sort</text>
+   <Action name="basket_sort_children_asc" />
+   <Action name="basket_sort_children_desc" />
+   <Action name="basket_sort_siblings_asc" />
+   <Action name="basket_sort_siblings_desc" />
   </Menu>
   <Action name="basket_remove" />
   <Separator/>
