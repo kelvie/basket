@@ -130,6 +130,13 @@ QString Tools::tagURLs(const QString &text)
         urlPos = 0;
     urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
     while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+
+        //if this match is already a link don't convert it.
+        if(richText.mid(urlPos - 6, 6) == "href=\"") {
+            urlPos += urlLen;
+            continue;
+        }
+
         urlLen = urlEx.matchedLength();
         QString href = richText.mid(urlPos, urlLen);
         //we handle basket links seperately...
