@@ -2194,6 +2194,14 @@ void BNPView::delayedOpenArchive()
     Archive::open(s_fileToOpen);
 }
 
+QString BNPView::s_basketToOpen = "";
+
+void BNPView::delayedOpenBasket()
+{
+    BasketView *bv = this->basketForFolderName(s_basketToOpen);
+    this->setCurrentBasketInHistory(bv);
+}
+
 void BNPView::openArchive()
 {
     QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");

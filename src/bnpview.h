@@ -198,6 +198,7 @@ public slots:
     void saveAsArchive();
     void openArchive();
     void delayedOpenArchive();
+    void delayedOpenBasket();
     void lockBasket();
     void hideOnEscape();
 
@@ -215,6 +216,7 @@ public slots:
 
 public:
     static QString s_fileToOpen;
+    static QString s_basketToOpen;
 
 public slots:
     void addWelcomeBaskets();
