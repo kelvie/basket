@@ -2,7 +2,7 @@
 Type=Application
 
 Exec=basket %f
-MimeType=application/x-basket-archive;application/x-basket-template;
+MimeType=application/x-basket-archive;application/x-basket-template;application/x-basket-item;
 Icon=basket
 Categories=Qt;KDE;Office;
 
