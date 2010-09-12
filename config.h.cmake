@@ -1,8 +1,7 @@
-
 /* Define if libgpgme is available */
 #cmakedefine HAVE_LIBGPGME
 
-/* Define if libgpgme is available */
+/* Define if Nepomuk is available */
 #cmakedefine HAVE_NEPOMUK
 
 /* Version number of package */
