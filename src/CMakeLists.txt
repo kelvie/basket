@@ -2,6 +2,23 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGE
 add_subdirectory(tests)
 
 ########### next target ###############
+IF(SHAREDDESKTOPONTOLOGIES_FOUND AND SOPRANO_FOUND AND NEPOMUK_FOUND)
+  set(HAVE_NEPOMUK TRUE)
+  set(nepomukintegration_LIB_SRCS nepomukintegration.cpp)
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src" ${NEPOMUK_INCLUDES} ${SOPRANO_INCLUDE_DIR})
+  include(SopranoAddOntology)
+  soprano_add_ontology(nepomukintegration_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nie.trig "NIE" "Soprano::Vocabulary" "trig")
+  soprano_add_ontology(nepomukintegration_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nfo.trig "NFO" "Soprano::Vocabulary" "trig")
+  soprano_add_ontology(nepomukintegration_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/pimo/pimo.trig "PIMO" "Soprano::Vocabulary" "trig")
+  add_library(nepomukintegration STATIC ${nepomukintegration_LIB_SRCS})
+  target_link_libraries(nepomukintegration ${NEPOMUK_LIBRARIES} ${SOPRANO_LIBRARIES})
+ELSE(SHAREDDESKTOPONTOLOGIES_FOUND AND SOPRANO_FOUND AND NEPOMUK_FOUND)
+  MESSAGE("Soprano and/or Nepomuk not found, configuring without")
+ENDIF(SHAREDDESKTOPONTOLOGIES_FOUND AND SOPRANO_FOUND AND NEPOMUK_FOUND)
+
+
+
+########### next target ###############
 
 set(basketcommon_LIB_SRCS
     aboutdata.cpp

@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 2.6)
 
 find_package(X11 REQUIRED)
 find_package(KDE4 REQUIRED)
 find_package(QImageBlitz REQUIRED)
 find_package(Gpgme)
 find_package(Gpgmepp)
+find_package(Soprano)
+find_package(Nepomuk)
+find_package(SharedDesktopOntologies)
 
 if (BUILD_KPARTS)
 find_package(KdepimLibs REQUIRED)
@@ -40,4 +43,3 @@ add_subdirectory(welcome)
 add_subdirectory(backgrounds)
 add_subdirectory(images)
 add_subdirectory(file-integration)
-
