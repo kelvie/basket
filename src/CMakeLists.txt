@@ -86,6 +86,9 @@ if(Q_WS_X11)
     target_link_libraries(basketcommon ${X11_X11_LIB})
 endif(Q_WS_X11)
 
+if(HAVE_NEPOMUK)
+    target_link_libraries(basketcommon nepomukintegration)
+endif(HAVE_NEPOMUK)
 set_target_properties(basketcommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 
 install(TARGETS basketcommon DESTINATION ${LIB_INSTALL_DIR})
