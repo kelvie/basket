@@ -133,14 +133,14 @@ QStringList BasketListViewItem::childNamesTree(int deep)
     for (int j = 0; j < deep; ++j)
         spaces += "  ";
 
-    // Append the name:
-    result.append(spaces + basket()->basketName());
+    // Append the names of sub baskets
+    if(deep > 0)
+        result.append(spaces + basket()->basketName());
 
     // Append the children:
     for (int i = 0; i < childCount(); i++) {
         QStringList children = ((BasketListViewItem *)child(i))->childNamesTree(deep + 1);
-        for (QStringList::iterator it = children.begin(); it != children.end(); ++it)
-            result.append(*it);
+        result.append(children);
     }
     return result;
 }

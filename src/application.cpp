@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
+#include <KDebug>
 
 #include "application.h"
 #include "global.h"
@@ -45,9 +46,17 @@ int Application::newInstance()
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
     if (args && args->count() >= 1) {
         QString fileName = args->arg(args->count() - 1);
+
         if (QFile::exists(fileName)) {
             QFileInfo fileInfo(fileName);
-            if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
+            bool isInBasketPath = fileInfo.absoluteFilePath().contains(Global::basketsFolder());
+
+            if (fileInfo.fileName() == ".basket" && isInBasketPath) {
+                QString folder = fileInfo.absolutePath().split("/").last();
+                folder.append("/");
+                BNPView::s_basketToOpen = folder;
+                QTimer::singleShot(100, Global::bnpView, SLOT(delayedOpenBasket()));
+            } else if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
                 // Tags are not loaded until Global::bnpView::lateInit() is called.
                 // It is called 0ms after the application start.
                 BNPView::s_fileToOpen = fileName;

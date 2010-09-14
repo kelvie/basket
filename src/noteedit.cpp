@@ -515,6 +515,7 @@ ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
     KColorDialog dialog(parent);
     dialog.setColor(colorContent->color());
     dialog.setCaption(i18n("Edit Color Note"));
+    dialog.setButtons(KDialog::Ok | KDialog::Cancel);
     if (dialog.exec() == QDialog::Accepted) {
         if (dialog.color() != colorContent->color()) {
             colorContent->setColor(dialog.color());
