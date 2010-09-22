@@ -16,6 +16,7 @@
 /* #include <Nepomuk/File> */
 #include <Nepomuk/Tag>
 #include <Soprano/Vocabulary/NAO>
+#include <Soprano/Vocabulary/RDF>
 #include <Soprano/Vocabulary/RDFS>
 #include "rdf.h"
 #include "nie.h"
@@ -52,11 +53,11 @@ bool nepomukintegration::updateMetadata(const QString &fullPath, const QDomDocum
             }
         }
 
-        QHash<KUrl, Nepomuk::Variant> basketProperties = basketRes.properties();
+        QHash<QUrl, Nepomuk::Variant> basketProperties = basketRes.properties();
         DEBUG_WIN << "\tproperties : ";
-        for( QHash<KUrl, Nepomuk::Variant>::const_iterator it = basketProperties.constBegin();
+        for( QHash<QUrl, Nepomuk::Variant>::const_iterator it = basketProperties.constBegin();
         it != basketProperties.constEnd(); ++it ) {
-            KUrl propertyUri = it.key();
+            QUrl propertyUri = it.key();
             Nepomuk::Variant value = it.value();
             Nepomuk::Types::Class propertyType( propertyUri );
             DEBUG_WIN << "\t" + propertyType.uri().toString() + "/"
