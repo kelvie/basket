@@ -1,9 +1,9 @@
 #include "nepomukintegration.h"
 
-#include <QUrl>
 #include <QDomNode>
 #include <QDomDocument>
 #include <QDomElement>
+#include <KUrl>
 #include <KDE/KDebug>
 
 
@@ -18,7 +18,6 @@
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDFS>
 #include "rdf.h"
-#include "dc.h"
 #include "nie.h"
 #include "nfo.h"
 #include "pimo.h"
@@ -28,20 +27,19 @@ bool nepomukintegration::updateMetadata(const QString &fullPath, const QDomDocum
 
     if ( Nepomuk::ResourceManager::instance()->initialized() || Nepomuk::ResourceManager::instance()->init() ) {
         DEBUG_WIN << "\tinitialized";
-        QUrl basketUri = QUrl::fromLocalFile( fullPath );
+        KUrl basketUri = KUrl( fullPath );
         /* Nepomuk::File basketRes(basketUri); */
         Nepomuk::Resource basketRes(basketUri);
-        basketRes.setProperty( "a", Soprano::Vocabulary::PIMO::Note() );
-        /* basketRes.addType( Soprano::Vocabulary::PIMO::Note() );
-        basketRes.addType( Soprano::Vocabulary::NFO::FileDataObject() ); */
+        basketRes.addType( Soprano::Vocabulary::PIMO::Note() );
+        /* Added by Strigi; no need: basketRes.addType( Soprano::Vocabulary::NFO::FileDataObject() ); */
         basketRes.setProperty( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::PIMO::Note() );
         basketRes.setProperty( Soprano::Vocabulary::NIE::mimeType(), "application/x-basket-item" );
         basketRes.setProperty( Soprano::Vocabulary::NIE::url(), basketUri );
-        basketRes.setProperty( Soprano::Vocabulary::NFO::fileUrl(), basketUri );
+        /* nfo:fileUrl is deprecated in favor of nie:url: basketRes.setProperty( Soprano::Vocabulary::NFO::fileUrl(), basketUri ); */
         basketRes.setProperty( Soprano::Vocabulary::NFO::fileName(), ".basket" );
         QString basketName = document.elementsByTagName("name").item(0).firstChild().nodeValue();
-        basketRes.setProperty( Soprano::Vocabulary::DC::title(), basketName);
-        basketRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), basketName);
+        basketRes.setProperty( Soprano::Vocabulary::NIE::title(), basketName);
+        basketRes.setLabel( basketName );
         QDomNode n;
         Nepomuk::Tag basketTag;
 
@@ -54,11 +52,11 @@ bool nepomukintegration::updateMetadata(const QString &fullPath, const QDomDocum
             }
         }
 
-        QHash<QUrl, Nepomuk::Variant> basketProperties = basketRes.properties();
+        QHash<KUrl, Nepomuk::Variant> basketProperties = basketRes.properties();
         DEBUG_WIN << "\tproperties : ";
-        for( QHash<QUrl, Nepomuk::Variant>::const_iterator it = basketProperties.constBegin();
+        for( QHash<KUrl, Nepomuk::Variant>::const_iterator it = basketProperties.constBegin();
         it != basketProperties.constEnd(); ++it ) {
-            QUrl propertyUri = it.key();
+            KUrl propertyUri = it.key();
             Nepomuk::Variant value = it.value();
             Nepomuk::Types::Class propertyType( propertyUri );
             DEBUG_WIN << "\t" + propertyType.uri().toString() + "/"
