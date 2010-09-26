@@ -130,6 +130,13 @@ QString Tools::tagURLs(const QString &text)
         urlPos = 0;
     urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
     while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+
+        //if this match is already a link don't convert it.
+        if(richText.mid(urlPos - 6, 6) == "href=\"") {
+            urlPos += urlLen;
+            continue;
+        }
+
         urlLen = urlEx.matchedLength();
         QString href = richText.mid(urlPos, urlLen);
         //we handle basket links seperately...
@@ -202,7 +209,7 @@ QString Tools::crossReferenceForBasket(QStringList linkParts)
         : "");
 
     QString anchor = "<style>" + css + "</style><a href=\"" + basketLink + "\" class=\"" + classes + "\">"
-                + KUrl::decode_string(title) + "</a>";
+                + QUrl::fromPercentEncoding(title.toLatin1()); + "</a>";
     return anchor;
 }
 
@@ -248,7 +255,7 @@ QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *export
             " a:hover.xref_empty { color: #A55858; }"
             : "");
 
-    QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + KUrl::decode_string(title) + "</a>";
+    QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + QUrl::fromPercentEncoding(title.toLatin1()); + "</a>";
     return anchor;
 }
 

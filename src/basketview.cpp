@@ -1379,28 +1379,30 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         m_zoneToInsert    = zone;
         m_posToInsert     = event->pos();
 
-        KMenu* menu = Global::bnpView->popupMenu("insert_popup");
+        KMenu menu(this);
+        menu.addActions(Global::bnpView->popupMenu("insert_popup")->actions());
+
         // If we already added a title, remove it because it would be kept and
         // then added several times.
-        if (m_insertMenuTitle && menu->actions().contains(m_insertMenuTitle))
-            menu->removeAction(m_insertMenuTitle);
+        if (m_insertMenuTitle && menu.actions().contains(m_insertMenuTitle))
+            menu.removeAction(m_insertMenuTitle);
 
-        QAction *first = menu->actions().value(0);
+        QAction *first = menu.actions().value(0);
 
         // i18n: Verbs (for the "insert" menu)
         if (zone == Note::TopGroup || zone == Note::BottomGroup)
-            m_insertMenuTitle = menu->addTitle(i18n("Group"), first);
+            m_insertMenuTitle = menu.addTitle(i18n("Group"), first);
         else
-            m_insertMenuTitle = menu->addTitle(i18n("Insert"), first);
+            m_insertMenuTitle = menu.addTitle(i18n("Insert"), first);
 
         setInsertPopupMenu();
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(hideInsertPopupMenu()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(hideInsertPopupMenu()));
         doHoverEffects(clicked, zone); // In the case where another popup menu was open, we should do that manually!
         m_lockedHovering = true;
-        menu->exec(QCursor::pos());
+        menu.exec(QCursor::pos());
         m_noActionOnMouseRelease = true;
         return;
     }
@@ -3270,7 +3272,7 @@ void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
         act->setData(4);
         menu.addAction(act);
     }
-    if (sequenceOnDelete) {
+    if (sequenceOnDelete && tag->countStates() != 1) {
         // Not sure if this is equivalent to menu.setAccel(sequence, 1);
         menu.actionAt(QPoint(0, 1))->setShortcut(sequence);
     }

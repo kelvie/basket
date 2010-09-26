@@ -820,6 +820,26 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("F2"));
     m_actPropBasket = a;
 
+    a = ac->addAction("basket_sort_children_asc", this, SLOT(sortChildrenAsc()));
+    a->setText(i18n("Sort Children Ascending"));
+    a->setIcon(KIcon("view-sort-ascending"));
+    m_actSortChildrenAsc = a;
+
+    a = ac->addAction("basket_sort_children_desc", this, SLOT(sortChildrenDesc()));
+    a->setText(i18n("Sort Children Descending"));
+    a->setIcon(KIcon("view-sort-descending"));
+    m_actSortChildrenDesc = a;
+
+    a = ac->addAction("basket_sort_siblings_asc", this, SLOT(sortSiblingsAsc()));
+    a->setText(i18n("Sort Siblings Ascending"));
+    a->setIcon(KIcon("view-sort-ascending"));
+    m_actSortSiblingsAsc = a;
+
+    a = ac->addAction("basket_sort_siblings_desc", this, SLOT(sortSiblingsDesc()));
+    a->setText(i18n("Sort Siblings Descending"));
+    a->setIcon(KIcon("view-sort-descending"));
+    m_actSortSiblingsDesc = a;
+
     a = ac->addAction("basket_remove", this, SLOT(delBasket()));
     a->setText(i18nc("Remove Basket", "&Remove"));
     a->setShortcut(0);
@@ -2074,7 +2094,7 @@ void BNPView::delBasket()
     QStringList basketsList = listViewItemForBasket(basket)->childNamesTree(0);
     if (basketsList.count() > 0) {
         int deleteChilds = KMessageBox::questionYesNoList(this,
-                           i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>",
+                           i18n("<qt><b>%1</b> has the following children baskets.<br>Do you want to remove them too?</qt>",
                                 Tools::textToHTMLWithoutP(basket->basketName())),
                            basketsList,
                            i18n("Remove Children Baskets")
@@ -2085,7 +2105,7 @@ void BNPView::delBasket()
 #endif
 
         if (deleteChilds == KMessageBox::No)
-            listViewItemForBasket(basket)->moveChildsBaskets();
+            return;
     }
 
     doBasketDeletion(basket);
@@ -2859,8 +2879,7 @@ void BNPView::loadCrossReference(QString link)
 {
     //remove "basket://" and any encoding.
     QString folderName = link.mid(9, link.length() - 9);
-    //FIXME: use QUrl::fromPercentEncoding(QByteArray encodedURL) instead.
-    folderName = KUrl::decode_string(folderName);
+    folderName = QUrl::fromPercentEncoding(folderName.toLatin1());
 
     BasketView* basket = this->basketForFolderName(folderName);
 
@@ -2875,8 +2894,8 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
     QString found = "";
 
     QString page = pages.first();
-    //FIXME: decode_string is depreciated
-    page = KUrl::decode_string(page);
+
+    page = QUrl::fromPercentEncoding(page.toLatin1());
     pages.removeFirst();
 
     if(page == "..") {
@@ -2925,4 +2944,32 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
     }
 
     return found;
+}
+
+void BNPView::sortChildrenAsc()
+{
+    m_tree->currentItem()->sortChildren(0, Qt::AscendingOrder);
+}
+
+void BNPView::sortChildrenDesc()
+{
+    m_tree->currentItem()->sortChildren(0, Qt::DescendingOrder);
+}
+
+void BNPView::sortSiblingsAsc()
+{
+    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
+    if(!parent)
+        m_tree->sortItems(0, Qt::AscendingOrder);
+    else
+        parent->sortChildren(0, Qt::AscendingOrder);
+}
+
+void BNPView::sortSiblingsDesc()
+{
+    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
+    if(!parent)
+        m_tree->sortItems(0, Qt::DescendingOrder);
+    else
+        parent->sortChildren(0, Qt::DescendingOrder);
 }

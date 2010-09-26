@@ -209,6 +209,11 @@ public slots:
     void loadCrossReference(QString link);
     QString folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent = 0);
 
+    void sortChildrenAsc();
+    void sortChildrenDesc();
+    void sortSiblingsAsc();
+    void sortSiblingsDesc();
+
 public:
     static QString s_fileToOpen;
 
@@ -237,6 +242,10 @@ public:
     KAction       *m_actHideWindow;
     KAction       *m_actExportToHtml;
     KAction       *m_actPropBasket;
+    KAction       *m_actSortChildrenAsc;
+    KAction       *m_actSortChildrenDesc;
+    KAction       *m_actSortSiblingsAsc;
+    KAction       *m_actSortSiblingsDesc;
     KAction       *m_actDelBasket;
     KToggleAction *m_actFilterAllBaskets;
 
