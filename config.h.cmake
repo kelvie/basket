@@ -5,5 +5,5 @@
 #cmakedefine HAVE_NEPOMUK
 
 /* Version number of package */
-#define VERSION "1.81"
+#define VERSION "1.90"
 
