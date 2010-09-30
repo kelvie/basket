@@ -18,7 +18,6 @@
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
 #include <Soprano/Vocabulary/RDFS>
-#include "rdf.h"
 #include "nie.h"
 #include "nfo.h"
 #include "pimo.h"
