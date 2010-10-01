@@ -908,7 +908,7 @@ bool BasketView::save()
 #ifdef HAVE_NEPOMUK
     } else {
         //The .basket file is saved; now updating the Metadata in Nepomuk
-        DEBUG_WIN << "NepomukIntegration: Basket[" + folderName() + "]:"; // <font color=red>Updating Metadata</font>!";
+        DEBUG_WIN << "NepomukIntegration: Updating Basket[" + folderName() + "]:"; // <font color=red>Updating Metadata</font>!";
         nepomukintegration::updateMetadata(fullPath() + ".basket", document);
 #endif
     }

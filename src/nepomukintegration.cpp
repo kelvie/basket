@@ -8,6 +8,7 @@
 
 
 #include "global.h"
+#include "tag.h"
 #include "debugwindow.h"
 
 #include <Nepomuk/ResourceManager>
@@ -42,15 +43,18 @@ bool nepomukintegration::updateMetadata(const QString &fullPath, const QDomDocum
         basketRes.setLabel( basketName );
         QDomNode n;
         Nepomuk::Tag basketTag;
-
-        QDomNodeList tagList = document.elementsByTagName("tags");
-        for (int i = 0; i < tagList.count(); i++) {
-            foreach(QString t, tagList.item(i).firstChild().nodeValue().split(';') ) {
-                basketTag = Nepomuk::Tag( t );
-                basketTag.setProperty( Soprano::Vocabulary::NAO::prefLabel(), t );
-                basketRes.addTag( basketTag );
+        QList<Nepomuk::Tag> tagList;
+        
+        QDomNodeList tagElements = document.elementsByTagName("tags");
+        for (int i = 0; i < tagElements.count(); i++) {
+            foreach(QString t, tagElements.item(i).firstChild().nodeValue().split(';') ) {
+                QString tagName = Tag::stateForId(t)->name();
+                basketTag = Nepomuk::Tag( tagName );
+                basketTag.setProperty( Soprano::Vocabulary::NAO::prefLabel(), tagName );
+                tagList.append( basketTag );
             }
         }
+        basketRes.setTags( tagList );
 
         QHash<QUrl, Nepomuk::Variant> basketProperties = basketRes.properties();
         DEBUG_WIN << "\tproperties : ";
@@ -62,12 +66,23 @@ bool nepomukintegration::updateMetadata(const QString &fullPath, const QDomDocum
             DEBUG_WIN << "\t" + propertyType.uri().toString() + "/"
                     + propertyType.label() + "/" + propertyType.name() + ": " + value.toString();
         }
-
-        //basketRes.remove();
     } else {
         DEBUG_WIN << "\tinitialization failed!";
         return false;
     }
     return true;
+}
 
+bool nepomukintegration::deleteMetadata(const QString &fullPath) {
+
+    if ( Nepomuk::ResourceManager::instance()->initialized() || Nepomuk::ResourceManager::instance()->init() ) {
+        DEBUG_WIN << "\tinitialized";
+        KUrl basketUri = KUrl( fullPath );
+        Nepomuk::Resource basketRes(basketUri);
+        basketRes.remove();
+    } else {
+        DEBUG_WIN << "\tinitialization failed!";
+        return false;
+    }
+    return true;
 }

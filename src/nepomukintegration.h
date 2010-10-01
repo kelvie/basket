@@ -9,6 +9,7 @@ class nepomukintegration
 public:
     nepomukintegration(){};
     static bool updateMetadata(const QString &fullPath, const QDomDocument &document);
+    static bool deleteMetadata(const QString &fullPath);
 };
 
 #endif // NEPOMUKINTEGRATION_H

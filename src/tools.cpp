@@ -35,6 +35,11 @@
 #include <QTime>
 
 #include "tools.h"
+#include "debugwindow.h"
+#include "config.h"
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
 
 //cross reference
 #include "global.h"
@@ -525,6 +530,11 @@ void Tools::deleteRecursively(const QString &folderOrFile)
     } else
         // Delete the file:
         QFile::remove(folderOrFile);
+#ifdef HAVE_NEPOMUK
+    //The file/dir is deleted; now deleting the Metadata in Nepomuk
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukintegration::deleteMetadata(folderOrFile);
+#endif
 }
 
 QString Tools::fileNameForNewFile(const QString &wantedName, const QString &destFolder)
