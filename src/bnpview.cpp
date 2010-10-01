@@ -2118,9 +2118,9 @@ void BNPView::doBasketDeletion(BasketView *basket)
     basket->closeEditor();
 
     QTreeWidgetItem *basketItem = listViewItemForBasket(basket);
-    for (int i = 0; i < basketItem->childCount(); i++) {
+    while( basketItem->childCount() > 0 ) {
         // First delete the child baskets:
-        doBasketDeletion(((BasketListViewItem*)basketItem->child(i))->basket());
+        doBasketDeletion(((BasketListViewItem*)basketItem->child(0))->basket());
     }
     // Then, basket have no child anymore, delete it:
     DecoratedBasket *decoBasket = basket->decoration();
