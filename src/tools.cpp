@@ -172,11 +172,11 @@ QString Tools::tagCrossReferences(const QString &text, bool userLink, HTMLExport
         QStringList hrefParts = href.split('|');
         QString anchor;
 
-        if(exporter)
+        if(exporter) // if we're exporting this basket to html.
             anchor = crossReferenceForHtml(hrefParts, exporter);
-        else if(userLink)
+        else if(userLink) //the link is manually created (ie [[/top level/sub]] )
             anchor = crossReferenceForConversion(hrefParts);
-        else
+        else // otherwise it's a standard link (ie. [[basket://basket107]] )
             anchor = crossReferenceForBasket(hrefParts);
 
 
@@ -282,8 +282,13 @@ QString Tools::crossReferenceForConversion(QStringList linkParts)
     url.prepend("basket://");
     QString anchor;
 
+    //if we don't change the link return it back exactly
+    //as it came in because it may not be a link.
     if(url == "basket://" || url.isEmpty()) {
-        anchor = linkParts.first();
+        QString returnValue = "";
+        foreach(QString s, linkParts)
+            returnValue.append(s);
+        anchor = returnValue.prepend("[[").append("]]");
     } else
         anchor = QString("[[%1|%2]]").arg(url, title);
 
