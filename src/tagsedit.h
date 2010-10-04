@@ -192,6 +192,7 @@ private:
     KColorCombo2  *m_backgroundColor;
     QLineEdit     *m_textEquivalent;
     QCheckBox     *m_onEveryLines;
+    QCheckBox     *m_allowCrossRefernce;
 
     TagCopy::List m_tagCopies;
     State::List   m_deletedStates;

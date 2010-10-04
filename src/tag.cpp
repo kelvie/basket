@@ -42,8 +42,9 @@
 /** class State: */
 
 State::State(const QString &id, Tag *tag)
-        : m_id(id), m_name(), m_emblem(), m_bold(false), m_italic(false), m_underline(false), m_strikeOut(false),
-        m_textColor(), m_fontName(), m_fontSize(-1), m_backgroundColor(), m_textEquivalent(), m_onAllTextLines(false), m_parentTag(tag)
+        : m_id(id), m_name(), m_emblem(), m_bold(false), m_italic(false), m_underline(false),
+        m_strikeOut(false), m_textColor(), m_fontName(), m_fontSize(-1), m_backgroundColor(),
+        m_textEquivalent(), m_onAllTextLines(false), m_allowCrossReferences(true), m_parentTag(tag)
 {
 }
 
@@ -206,6 +207,7 @@ void State::copyTo(State *other)
     other->m_backgroundColor = m_backgroundColor;
     other->m_textEquivalent  = m_textEquivalent;
     other->m_onAllTextLines  = m_onAllTextLines; // TODO
+    other->m_allowCrossReferences = m_allowCrossReferences;
     //TODO: other->m_parentTag;
 }
 
@@ -327,6 +329,8 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
                     QDomElement textEquivalentElement = XMLWork::getElement(subElement, "textEquivalent");
                     state->setTextEquivalent(textEquivalentElement.attribute("string", ""));
                     state->setOnAllTextLines(XMLWork::trueOrFalse(textEquivalentElement.attribute("onAllTextLines", "false")));
+                    QString allowXRef = XMLWork::getElementText(subElement, "allowCrossReferences", "true");
+                    state->setAllowCrossReferences(XMLWork::trueOrFalse(allowXRef));
                     tag->appendState(state);
                 }
                 subNode = subNode.nextSibling();
@@ -498,6 +502,7 @@ void Tag::saveTagsTo(QList<Tag*> &list, const QString &fullPath)
             stateNode.appendChild(textEquivalentNode);
             textEquivalentNode.setAttribute("string",         state->textEquivalent());
             textEquivalentNode.setAttribute("onAllTextLines", XMLWork::trueOrFalse(state->onAllTextLines()));
+            XMLWork::addElement(document, stateNode, "allowCrossReferences", XMLWork::trueOrFalse(state->allowCrossReferences()));
         }
     }
 
@@ -683,6 +688,7 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
                       "    <state id=\"code\">\n"
                       "      <font name=\"monospace\" />\n"
                       "      <textEquivalent string=\"|\" onAllTextLines=\"true\" />\n"
+                      "      <allowCrossReferences>false</allowCrossReferences>\n"
                       "    </state>\n"
                       "  </tag>\n"
                       "\n"

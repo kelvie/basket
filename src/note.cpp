@@ -2382,6 +2382,13 @@ State* Note::stateOfTag(Tag *tag)
     return 0;
 }
 
+bool Note::allowCrossReferences()
+{
+    for (State::List::iterator it = m_states.begin(); it != m_states.end(); ++it)
+        if (!(*it)->allowCrossReferences())
+            return false;
+    return true;
+}
 State* Note::stateForEmblemNumber(int number)
 {
     int i = -1;

@@ -982,7 +982,12 @@ bool TextContent::finishLazyLoad()
 {
     int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
     delete m_simpleRichText;
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTML(m_text))); // Don't collapse multiple spaces!
+
+    QString convert = Tools::tagURLs(Tools::textToHTML(m_text));
+    if(note()->allowCrossReferences())
+        convert = Tools::tagCrossReferences(convert);
+
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + convert; // Don't collapse multiple spaces!
     m_simpleRichText = new QTextDocument;
     m_simpleRichText->setHtml(html);
     m_simpleRichText->setDefaultFont(note()->font());
@@ -1033,8 +1038,13 @@ void TextContent::setText(const QString &text, bool lazyLoad)
 void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
-                   Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), false, exporter); // Don't collapse multiple spaces!
+
+    QString convert = Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
+
+    if(note()->allowCrossReferences())
+        convert = Tools::tagCrossReferences(convert, false, exporter);
+
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + convert;
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1099,7 +1109,12 @@ bool HtmlContent::finishLazyLoad()
     QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
        "a:hover.cross_reference { text-decoration: underline; color: #ff8000; }";
     m_simpleRichText->setDefaultStyleSheet(css);
-    m_simpleRichText->setHtml(Tools::tagCrossReferences(Tools::tagURLs(m_html)));
+
+    QString convert = Tools::tagURLs(m_html);
+    if(note()->allowCrossReferences())
+        convert = Tools::tagCrossReferences(convert);
+
+    m_simpleRichText->setHtml(convert);
     m_simpleRichText->setDefaultFont(note()->font());
     m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_simpleRichText->idealWidth();
@@ -1149,7 +1164,11 @@ void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-    exporter->stream << Tools::htmlToParagraph(Tools::tagCrossReferences(Tools::tagURLs(html().replace("\t", "                ")), false, exporter))
+    QString convert = Tools::tagURLs(html().replace("\t", "                "));
+    if(note()->allowCrossReferences())
+        convert = Tools::tagCrossReferences(convert, false, exporter);
+
+    exporter->stream << Tools::htmlToParagraph(convert)
     .replace("  ", " &nbsp;")
     .replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }

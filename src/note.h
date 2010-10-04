@@ -343,6 +343,7 @@ public:
     QFont  font(); // Computed!
     QColor backgroundColor(); // Computed!
     QColor textColor(); // Computed!
+    bool allowCrossReferences();
 
 /// FILTERING:
 private:

@@ -86,6 +86,9 @@ public:
     void setOnAllTextLines(bool yes)             {
         m_onAllTextLines  = yes;
     }
+    void setAllowCrossReferences(bool yes)        {
+        m_allowCrossReferences = yes;
+    }
     void setParentTag(Tag *tag)                  {
         m_parentTag       = tag;
     }
@@ -129,6 +132,9 @@ public:
     bool    onAllTextLines()  const {
         return m_onAllTextLines;
     }
+    bool allowCrossReferences() const {
+        return m_allowCrossReferences;
+    }
     Tag*    parentTag()       const {
         return m_parentTag;
     }
@@ -154,6 +160,7 @@ private:
     QColor   m_backgroundColor;
     QString  m_textEquivalent;
     bool     m_onAllTextLines;
+    bool     m_allowCrossReferences;
     Tag     *m_parentTag;
 };
 

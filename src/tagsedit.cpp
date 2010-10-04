@@ -396,6 +396,16 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
 
     m_inherit = new QCheckBox(i18n("&Inherited by new sibling notes"), tagWidget);
 
+    m_allowCrossRefernce = new QCheckBox(i18n("Allow Cross Reference Links"), tagWidget);
+
+    HelpLabel *allowCrossReferenceHelp = new HelpLabel(
+        i18n("What does this do?"),
+        "<p>" + i18n("This option will enable you to type a cross reference link directly into a text note. Cross Reference links can have the following sytax:") + "</p>" +
+        "<p>" + i18n("From the top of the tree (Absolute path):") + "<br />" + i18n("[[/top level item/child|optional title]]") + "<p>" +
+        "<p>" + i18n("Relative to the current basket:") + "<br />" + i18n("[[../sibling|optional title]]") + "<br />" +
+        i18n("[[child|optional title]]") + "<br />" + i18n("[[./child|optional title]]") + "<p>",
+        tagWidget);
+
     QGridLayout *tagGrid = new QGridLayout(tagWidget);
     tagGrid->addWidget(tagNameLabel, 0, 0);
     tagGrid->addWidget(m_tagName, 0, 1, 1, 3);
@@ -403,6 +413,8 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     tagGrid->addWidget(m_shortcut, 1, 1);
     tagGrid->addWidget(m_removeShortcut, 1, 2);
     tagGrid->addWidget(m_inherit, 2, 0, 1, 4);
+    tagGrid->addWidget(m_allowCrossRefernce, 3, 0);
+    tagGrid->addWidget(allowCrossReferenceHelp, 3, 1);
     tagGrid->setColumnStretch(/*col=*/3, /*stretch=*/255);
 
     m_stateBox           = new QGroupBox(i18n("State"), rightWidget);
@@ -612,6 +624,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     connect(m_tagName,         SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
     connect(m_shortcut,        SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(modified()));
     connect(m_inherit,         SIGNAL(stateChanged(int)),                  this, SLOT(modified()));
+    connect(m_allowCrossRefernce, SIGNAL(clicked(bool)),                   this, SLOT(modified()));
     connect(m_stateName,       SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
     connect(m_emblem,          SIGNAL(iconChanged(QString)),               this, SLOT(modified()));
     connect(m_backgroundColor, SIGNAL(changed(const QColor&)),             this, SLOT(modified()));
@@ -1152,6 +1165,7 @@ void TagsEditDialog::loadBlankState()
     m_fontSize->setCurrentIndex(0);
     m_textEquivalent->setText("");
     m_onEveryLines->setChecked(false);
+    m_allowCrossRefernce->setChecked(false);
 }
 
 void TagsEditDialog::loadStateFrom(State *state)
@@ -1170,6 +1184,7 @@ void TagsEditDialog::loadStateFrom(State *state)
     m_textColor->setColor(state->textColor());
     m_textEquivalent->setText(state->textEquivalent());
     m_onEveryLines->setChecked(state->onAllTextLines());
+    m_allowCrossRefernce->setChecked(state->allowCrossReferences());
 
     QFont defaultFont;
     if (state->fontName().isEmpty())
@@ -1203,6 +1218,7 @@ void TagsEditDialog::saveStateTo(State *state)
     state->setTextColor(m_textColor->color());
     state->setTextEquivalent(m_textEquivalent->text());
     state->setOnAllTextLines(m_onEveryLines->isChecked());
+    state->setAllowCrossReferences(m_allowCrossRefernce->isChecked());
 
     if (m_font->currentIndex() == 0)
         state->setFontName("");
