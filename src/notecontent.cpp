@@ -1088,7 +1088,7 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 
     QString content;
     bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-
+    
     if (success)
         setHtml(content, lazyLoad);
     else {

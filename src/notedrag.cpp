@@ -28,6 +28,7 @@
 #include <kdeversion.h>
 #include <KDE/KApplication>
 #include <QDesktopWidget>
+#include <KDebug>
 
 #include "basketview.h"
 #include "notedrag.h"
@@ -481,7 +482,6 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
             }
         } else {
             stream >> fileName >> fullPath >> addedDate >> lastModificationDate;
-
             if (moveNotes) {
                 originalBasket->unplugNote(oldNote);
                 note = oldNote;
@@ -509,17 +509,20 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 // Here we are CREATING a new EMPTY file, so the name is RESERVED
                 // (while dropping several files at once a filename cannot be used by two of them).
                 // Later on, file_copy/file_move will copy/move the file to the new location.
-                QString newFileName = NoteFactory::createFileForNewNote(parent, "", fileName);
-                note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
-		KIO::CopyJob *copyJob;
-	        if (moveFiles)
-			copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName), 
-					KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
-		else
-			copyJob = KIO::copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
-					KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
+                QString newFileName = Tools::fileNameForNewFile(fileName, parent->fullPath());
+                        //NoteFactory::createFileForNewNote(parent, "", fileName);
+                KIO::CopyJob *copyJob;
+                if (moveFiles) {
+                    copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+                        KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
+                } else {
+                    copyJob = KIO::copy(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
+                        KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
+                }
                 parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
                                 parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
+
+                note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
                 note->setGroupWidth(groupWidth);
                 note->setAddedDate(addedDate);
                 note->setLastModificationDate(lastModificationDate);
