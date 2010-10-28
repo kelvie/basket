@@ -44,7 +44,7 @@
     <sub-class-of type="application/xml"/>
     <comment>Basket Note Pads</comment>
     <icon name="basket" />
-    <glob pattern=".basket" weight="50" />
+    <glob pattern=".basket" weight="60" />
     <magic priority="90">
       <match type="string" offset="2" value="xml">
         <match type="string" offset="39" value="!DOCTYPE basket>"/>
