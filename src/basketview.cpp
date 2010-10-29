@@ -909,7 +909,7 @@ bool BasketView::save()
     } else {
         //The .basket file is saved; now updating the Metadata in Nepomuk
         DEBUG_WIN << "NepomukIntegration: Updating Basket[" + folderName() + "]:"; // <font color=red>Updating Metadata</font>!";
-        nepomukintegration::updateMetadata(fullPath() + ".basket", document);
+        nepomukIntegration::updateMetadata(fullPath(), document);
 #endif
     }
 
@@ -1182,6 +1182,7 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
 {
     m_action = new KAction(this);
     connect(m_action, SIGNAL(triggered()), this, SLOT(activatedShortcut()));
+    m_action->setObjectName(folderName);
     m_action->setGlobalShortcut(KShortcut());
     // We do this in the basket properties dialog (and keep it in sync with the
     // global one)

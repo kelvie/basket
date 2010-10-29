@@ -533,7 +533,7 @@ void Tools::deleteRecursively(const QString &folderOrFile)
 #ifdef HAVE_NEPOMUK
     //The file/dir is deleted; now deleting the Metadata in Nepomuk
     DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
-    nepomukintegration::deleteMetadata(folderOrFile);
+    nepomukIntegration::deleteMetadata(folderOrFile);
 #endif
 }
 
