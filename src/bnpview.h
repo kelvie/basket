@@ -126,6 +126,7 @@ public slots:
     void importJreepadFile();
     void importTextFile();
     void backupRestore();
+    void checkCleanup();
 
     /** Note */
     void activatedTagShortcut();
