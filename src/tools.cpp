@@ -133,8 +133,9 @@ QString Tools::tagURLs(const QString &text)
         urlPos += urlEx.matchedLength();
     else
         urlPos = 0;
-    urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
+    urlEx.setPattern("(www\\.(?!\\.)|(fish|(f|ht)tp(|s))://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
     while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
 
         //if this match is already a link don't convert it.
         if(richText.mid(urlPos - 6, 6) == "href=\"") {
@@ -142,7 +143,6 @@ QString Tools::tagURLs(const QString &text)
             continue;
         }
 
-        urlLen = urlEx.matchedLength();
         QString href = richText.mid(urlPos, urlLen);
         //we handle basket links seperately...
         if(href.contains("basket://")) {
@@ -154,6 +154,7 @@ QString Tools::tagURLs(const QString &text)
             urlPos++;
             continue;
         }
+        // Don't use QString::arg since %01, %20, etc could be in the string
         QString anchor = "<a href=\"" + href + "\">" + href + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
