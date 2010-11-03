@@ -1751,9 +1751,9 @@ void checkBasket(BasketListViewItem * item, QList<QString> & dirList, QList<QStr
         checkBasket((BasketListViewItem *) item->child(i), dirList, fileList);
     }
     if ( basket != Global::bnpView->currentBasket() ) {
-        //AP
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\nIt is the current basket, not unloading\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); fflush(stdout);fflush(stderr);
         basket->unbufferizeAll();
+    } else {
+        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") is the current basket, not unloading.";
     }
     kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 }
@@ -1812,8 +1812,6 @@ void BNPView::checkCleanup() {
         DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " removed!</font>";
     }
     DEBUG_WIN << "Check, cleanup and reindexing completed";
-    //AP
-    printf("Check, cleanup and reindexing completed\n"); fflush(stdout);fflush(stderr);
 }
 
 void BNPView::countsChanged(BasketView *basket)
