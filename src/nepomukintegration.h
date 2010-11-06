@@ -9,45 +9,47 @@
 #include <QDomDocument>
 #include <KUrl>
 
-#define nepomukUpdaterIdleTime  30
+#include "basketview.h"
+#include "debugwindow.h"
 
-class nepomukUpdater : public QThread
+class nepomukIntegration : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  void queueBasket(QString fullPath, QDomDocument document);
-  bool isEmpty() { return ( basketList.isEmpty() && requestedIndexList.isEmpty() ); }
-  nepomukUpdater();
-  ~nepomukUpdater();
-protected:
-  void run();
+    static void updateMetadata(BasketView * basket);
+    static void deleteMetadata(const QString &fullPath);
+    static bool doDelete(const QString &fullPath);
 private:
-  QMutex mutex;
-  typedef QPair<QString, QDomDocument> basketPathAndDocumentPair;
-  QList<basketPathAndDocumentPair> basketList;
-  unsigned int idleTime;
-  QList<KUrl> requestedIndexList;
-  void queueIndexRequest(KUrl file);
+    static nepomukIntegration *instance;
+    static QMutex instanceMutex;
+
+    nepomukIntegration(BasketView * basket, int idleTime);
+    ~nepomukIntegration() {
+        //I hope deletion is handled automatically
+        //delete workerThread;
+        //delete cleanupIdle;
+        DEBUG_WIN << "nepomukUpdater object destructed";
+    }
+
+    int idleTime;
+    QThread workerThread;
+    QTimer cleanupTimer;
+    QMutex mutex;
+    QList<BasketView *> basketList;
+    bool isDoingUpdate;
+    QList<KUrl> requestedIndexList;
+    bool isCleaningupRequestedIndexes;
+    void queueBasket(BasketView * basket);
+    void queueIndexRequest(KUrl file);
 signals:
-  void updateCompleted(QString fullPath, bool successful);
-  void indexCleanupCompleted(KUrl file);
+    void updateCompleted(QString basketFolderName, bool successful);
+    //void indexCleanupCompleted(KUrl file);
 private slots:
-  void doUpdate();
-  void checkQueue();
-  void cleanupRequestedIndexes();
-  void cleanupFinishedThread();
-};
+    void doUpdate();
+    void checkQueue();
+    void cleanupRequestedIndexes();
+    void cleanup();
 
-class nepomukIntegration
-{
-private:
-  //nepomukIntegration(){};
-  static nepomukUpdater *updaterInstance;
-public:
-  static QMutex updaterInstanceMutex;
-  static void releaseUpdaterInstance();
-  static void updateMetadata(const QString &fullPath, const QDomDocument &document);
-  static bool deleteMetadata(const QString &fullPath);
 };
 
 #endif // NEPOMUKINTEGRATION_H
