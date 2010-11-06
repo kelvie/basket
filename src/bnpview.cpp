@@ -1739,6 +1739,8 @@ void checkBasket(BasketListViewItem * item, QList<QString> & dirList, QList<QStr
     if (!basket->loadingLaunched() && !basket->isLocked()) {
         basket->load();
     }
+    DEBUG_WIN << "\t********************************************************************************";
+    DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") loaded.";
     Note *note = basket->firstNote();
     if (! note ) {
         DEBUG_WIN << "\tHas NO notes!";
@@ -1751,9 +1753,12 @@ void checkBasket(BasketListViewItem * item, QList<QString> & dirList, QList<QStr
         checkBasket((BasketListViewItem *) item->child(i), dirList, fileList);
     }
     if ( basket != Global::bnpView->currentBasket() ) {
+        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") unloading...";
+        DEBUG_WIN << "\t********************************************************************************";
         basket->unbufferizeAll();
     } else {
         DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") is the current basket, not unloading.";
+        DEBUG_WIN << "\t********************************************************************************";
     }
     kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 }
@@ -1796,8 +1801,10 @@ void BNPView::checkCleanup() {
 
     foreach(topDirEntry, dirList) {
         DEBUG_WIN << "<font color='red'>" + topDirEntry + " does not belong to any basket!</font>";
-        Tools::deleteRecursively(Global::basketsFolder() + "/" + topDirEntry);
-        DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " removed!</font>";
+        //Tools::deleteRecursively(Global::basketsFolder() + "/" + topDirEntry);
+        //DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " removed!</font>";
+        Tools::trashRecursively(Global::basketsFolder() + "/" + topDirEntry);
+        DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " trashed!</font>";
         foreach(subDirEntry, fileList) {
             fileInfo.setFile(Global::basketsFolder() + "/" + subDirEntry);
             if ( ! fileInfo.isFile() ) {
@@ -1808,8 +1815,10 @@ void BNPView::checkCleanup() {
     }
     foreach(subDirEntry, fileList) {
         DEBUG_WIN << "<font color='red'>" + subDirEntry + " does not belong to any note!</font>";
-        Tools::deleteRecursively(Global::basketsFolder() + "/" + subDirEntry);
-        DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " removed!</font>";
+        //Tools::deleteRecursively(Global::basketsFolder() + "/" + subDirEntry);
+        //DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " removed!</font>";
+        Tools::trashRecursively(Global::basketsFolder() + "/" + subDirEntry);
+        DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " trashed!</font>";
     }
     DEBUG_WIN << "Check, cleanup and reindexing completed";
 }
