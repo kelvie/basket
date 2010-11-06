@@ -538,6 +538,36 @@ void Tools::deleteRecursively(const QString &folderOrFile)
 #endif
 }
 
+#include <kio/copyjob.h>
+void Tools::deleteMetadataRecursively(const QString &folderOrFile)
+{
+    QFileInfo fileInfo(folderOrFile);
+    if (fileInfo.isDir()) {
+        // Delete Metadata of the child files:
+        QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
+        QStringList list = dir.entryList();
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+            if (*it != "." && *it != "..")
+                deleteMetadataRecursively(folderOrFile + "/" + *it);
+    }
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukIntegration::deleteMetadata(folderOrFile);
+}
+
+void Tools::trashRecursively(const QString &folderOrFile)
+{
+    if (folderOrFile.isEmpty())
+        return;
+
+#ifdef HAVE_NEPOMUK
+    //First, deleting the Metadata in Nepomuk
+    deleteMetadataRecursively(folderOrFile);
+#endif
+
+    KIO::trash( KUrl(folderOrFile), KIO::HideProgressInfo );
+}
+
+
 QString Tools::fileNameForNewFile(const QString &wantedName, const QString &destFolder)
 {
     QString fileName  = wantedName;

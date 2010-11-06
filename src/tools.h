@@ -89,6 +89,12 @@ QPixmap indentPixmap(const QPixmap &source, int depth, int deltaX = 0);
 /** Delete the folder @p folderOrFile recursively (to remove sub-folders and child files too).
   */
 void deleteRecursively(const QString &folderOrFile);
+/** Trash the folder @p folderOrFile recursively (to move sub-folders and child files to the Trash, too).
+  */
+void trashRecursively(const QString &folderOrFile);
+/** Delete the metadata of file or folder @p folderOrFile from Nepomuk, recursively.
+  */
+void deleteMetadataRecursively(const QString &folderOrFile);
 /** @Return a new filename that doesn't already exist in @p destFolder.
   * If @p wantedName alread exist in @p destFolder, a dash and a number will be added before the extenssion.
   * Id there were already such a number in @p wantedName, it is incremented until a free filename is found.
