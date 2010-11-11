@@ -221,6 +221,9 @@ void nepomukIntegration::cleanupRequestedIndexes() {
         isCleaningupRequestedIndexes = false;
         DEBUG_WIN << "\tqueue is empty, desconnected from indexingStopped signal and isCleaningupRequestedIndexes set to false.";
         if ( ! isDoingUpdate ) {
+            //Make sure the timer is not active so that the queues are rechecked
+            //             and timeout of the timer is reevaluated and restarted
+            cleanupTimer.stop();
             QTimer::singleShot(500, this, SLOT(checkQueue()));
         }
         DEBUG_WIN << "cleanupRequestedIndexes: Done";
@@ -339,8 +342,8 @@ void nepomukIntegration::doUpdate() {
             noteRes.setProperty( Soprano::Vocabulary::PIMO::partOf(), basketRes );
             //TODO
             //Is this name OK?
-            noteRes.setProperty( Soprano::Vocabulary::NIE::title(), basketName + " / " + noteContentFile);
-            noteRes.setLabel( basketName + " / " + noteContentFile );
+            noteRes.setProperty( Soprano::Vocabulary::NIE::title(), basketName + " (" + noteContentFile + ")" );
+            noteRes.setLabel( basketName + " (" + noteContentFile + ")" );
 
             queueIndexRequest( noteUrl );
         }
@@ -352,7 +355,7 @@ void nepomukIntegration::doUpdate() {
         DEBUG_WIN << "doUpdate: \tnepomukstrigiDBusMessage created";
         QList<QVariant> indexingArgs;
         indexingArgs.append(basketFolderAbsolutePath);
-        indexingArgs.append(true);
+        indexingArgs.append(false);
         nepomukstrigiDBusMessage.setArguments(indexingArgs);
         DEBUG_WIN << "doUpdate: \tnepomukstrigiDBusMessage prepared";
         if ( QDBusConnection::sessionBus().send(nepomukstrigiDBusMessage) ) {
@@ -414,5 +417,7 @@ bool nepomukIntegration::doDelete(const QString &fullPath) {
 }
 
 void nepomukIntegration::deleteMetadata(const QString &fullPath) {
-    QtConcurrent::run(doDelete, fullPath);
+    //Only process files in Global::basketsFolder()
+    if ( fullPath.contains(Global::basketsFolder()) )
+        QtConcurrent::run(doDelete, fullPath);
 }
