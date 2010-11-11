@@ -49,9 +49,7 @@ int Application::newInstance()
 
         if (QFile::exists(fileName)) {
             QFileInfo fileInfo(fileName);
-            bool isInBasketPath = fileInfo.absoluteFilePath().contains(Global::basketsFolder());
-
-            if (fileInfo.fileName() == ".basket" && isInBasketPath) {
+            if (fileInfo.absoluteFilePath().contains(Global::basketsFolder())) {
                 QString folder = fileInfo.absolutePath().split("/").last();
                 folder.append("/");
                 BNPView::s_basketToOpen = folder;
