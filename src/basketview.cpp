@@ -3285,7 +3285,10 @@ void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
     }
     if (sequenceOnDelete && tag->countStates() != 1) {
         // Not sure if this is equivalent to menu.setAccel(sequence, 1);
-        menu.actionAt(QPoint(0, 1))->setShortcut(sequence);
+	QAction* menuAction = menu.actionAt(QPoint(0,1));
+	if (menuAction){
+		menuAction->setShortcut(sequence);
+	}
     }
 
     connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(toggledStateInMenu(QAction *)));
