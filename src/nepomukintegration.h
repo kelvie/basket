@@ -10,6 +10,7 @@
 #include <KUrl>
 
 #include "basketview.h"
+#include "global.h"
 #include "debugwindow.h"
 
 class nepomukIntegration : public QObject

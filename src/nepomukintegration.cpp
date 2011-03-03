@@ -69,12 +69,9 @@ nepomukIntegration::nepomukIntegration(BasketView * basket, int idleTime = 15000
     QMutexLocker locker(&mutex);
     basketList << basket;
 
-    DEBUG_WIN << "nepomukIntegration thread (before moveToThread): " << QThread::currentThreadId();
     moveToThread(&workerThread);
-    DEBUG_WIN << "nepomukIntegration thread (after moveToThread, before QThread.start): " << QThread::currentThreadId();
     QTimer::singleShot(500, this, SLOT(doUpdate()));
     workerThread.start(QThread::IdlePriority);
-    DEBUG_WIN << "nepomukIntegration thread (after QThread.start): " << QThread::currentThreadId();
 
     DEBUG_WIN << "nepomukIntegration object constructed";
 }
@@ -131,7 +128,6 @@ void nepomukIntegration::cleanup() {
  */
 
 void nepomukIntegration::updateMetadata(BasketView * basket) {
-    DEBUG_WIN << "updateMetadata thread " << QThread::currentThreadId();
     DEBUG_WIN << "updateMetadata: Going to lock updaterInstanceMutex";
     QMutexLocker locker(&instanceMutex);
     if ( instance == NULL ) {
@@ -256,7 +252,6 @@ void listAllNotes(Note * note, QString basketFolderAbsolutePath, QList<QString> 
 
 
 void nepomukIntegration::doUpdate() {
-    DEBUG_WIN << "doUpdate: thread: " << QThread::currentThreadId();
     DEBUG_WIN << "doUpdate: Going to lock";
     mutex.lock();
     if ( basketList.isEmpty() ) {
