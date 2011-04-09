@@ -35,6 +35,11 @@
 #include <QTime>
 
 #include "tools.h"
+#include "debugwindow.h"
+#include "config.h"
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
 
 //cross reference
 #include "global.h"
@@ -128,8 +133,9 @@ QString Tools::tagURLs(const QString &text)
         urlPos += urlEx.matchedLength();
     else
         urlPos = 0;
-    urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
+    urlEx.setPattern("(www\\.(?!\\.)|(fish|(f|ht)tp(|s))://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
     while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
 
         //if this match is already a link don't convert it.
         if(richText.mid(urlPos - 6, 6) == "href=\"") {
@@ -137,7 +143,6 @@ QString Tools::tagURLs(const QString &text)
             continue;
         }
 
-        urlLen = urlEx.matchedLength();
         QString href = richText.mid(urlPos, urlLen);
         //we handle basket links seperately...
         if(href.contains("basket://")) {
@@ -149,6 +154,7 @@ QString Tools::tagURLs(const QString &text)
             urlPos++;
             continue;
         }
+        // Don't use QString::arg since %01, %20, etc could be in the string
         QString anchor = "<a href=\"" + href + "\">" + href + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
@@ -525,7 +531,42 @@ void Tools::deleteRecursively(const QString &folderOrFile)
     } else
         // Delete the file:
         QFile::remove(folderOrFile);
+#ifdef HAVE_NEPOMUK
+    //The file/dir is deleted; now deleting the Metadata in Nepomuk
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukIntegration::deleteMetadata(folderOrFile);
+#endif
 }
+
+#include <kio/copyjob.h>
+void Tools::deleteMetadataRecursively(const QString &folderOrFile)
+{
+    QFileInfo fileInfo(folderOrFile);
+    if (fileInfo.isDir()) {
+        // Delete Metadata of the child files:
+        QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
+        QStringList list = dir.entryList();
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+            if (*it != "." && *it != "..")
+                deleteMetadataRecursively(folderOrFile + "/" + *it);
+    }
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukIntegration::deleteMetadata(folderOrFile);
+}
+
+void Tools::trashRecursively(const QString &folderOrFile)
+{
+    if (folderOrFile.isEmpty())
+        return;
+
+#ifdef HAVE_NEPOMUK
+    //First, deleting the Metadata in Nepomuk
+    deleteMetadataRecursively(folderOrFile);
+#endif
+
+    KIO::trash( KUrl(folderOrFile), KIO::HideProgressInfo );
+}
+
 
 QString Tools::fileNameForNewFile(const QString &wantedName, const QString &destFolder)
 {
