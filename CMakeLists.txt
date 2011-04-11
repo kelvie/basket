@@ -11,6 +11,7 @@ find_package(SharedDesktopOntologies)
 
 if (BUILD_KPARTS)
 find_package(KdepimLibs REQUIRED)
+include_directories(${KDEPIMLIBS_INCLUDE_DIRS})
 endif (BUILD_KPARTS)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
