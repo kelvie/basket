@@ -255,7 +255,8 @@ void nepomukIntegration::doUpdate() {
     DEBUG_WIN << "doUpdate: Going to lock";
     mutex.lock();
     if ( basketList.isEmpty() ) {
-        DEBUG_WIN << "<font color='red'>doUpdate should not be run with an empty basketList! Returning!</font>";
+        mutex.unlock();
+        DEBUG_WIN << "<font color='red'>doUpdate should not be run with an empty basketList! Unlocked and Returning!</font>";
         return;
     }
     BasketView * basket = basketList.takeFirst();
@@ -267,7 +268,7 @@ void nepomukIntegration::doUpdate() {
     foreach (tmpBasket, basketList) {
         if ( basketFolderName == tmpBasket->folderName() ) {
             mutex.unlock();
-            printf("doUpdate: \tDuplicate, unlocked\n"); fflush(stdout);fflush(stderr);
+            DEBUG_WIN << "doUpdate: \tDuplicate basket index update request, unlocked\n";
             emit updateCompleted(basketFolderName, false);
             return;
         }
