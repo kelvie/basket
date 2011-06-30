@@ -533,6 +533,11 @@ void BNPView::setupActions()
     a->setIcon(KIcon("knowit"));
     a->setShortcut(0);
 
+    a = ac->addAction("basket_import_onenote", this, SLOT(importOneNoteXml()));
+    a->setText(i18n("&OneNote..."));
+    a->setIcon(KIcon("onenote"));
+    a->setShortcut(0);
+
     a = ac->addAction("basket_import_tuxcards", this, SLOT(importTuxCards()));
     a->setText(i18n("Tux&Cards..."));
     a->setIcon(KIcon("tuxcards"));
@@ -1665,6 +1670,10 @@ void BNPView::importKNotes()
 void BNPView::importKnowIt()
 {
     SoftwareImporters::importKnowIt();
+}
+void BNPView::importOneNoteXml()
+{
+    SoftwareImporters::importOneNoteXml();
 }
 void BNPView::importTuxCards()
 {
