@@ -104,6 +104,10 @@
 #include "kgpgme.h"
 #endif
 
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
+
 /** Class BasketView: */
 
 const int BasketView::FRAME_DELAY = 50/*1500*/; // Delay between two animation "frames" in milliseconds
@@ -901,6 +905,12 @@ bool BasketView::save()
     if (!saveToFile(fullPath() + ".basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString())) {
         DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to save</font>!";
         return false;
+#ifdef HAVE_NEPOMUK
+    } else {
+        //The .basket file is saved; now updating the Metadata in Nepomuk
+        DEBUG_WIN << "NepomukIntegration: Updating Basket[" + folderName() + "]:"; // <font color=red>Updating Metadata</font>!";
+        nepomukIntegration::updateMetadata(this);
+#endif
     }
 
     Global::bnpView->setUnsavedStatus(false);
@@ -1172,6 +1182,7 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
 {
     m_action = new KAction(this);
     connect(m_action, SIGNAL(triggered()), this, SLOT(activatedShortcut()));
+    m_action->setObjectName(folderName);
     m_action->setGlobalShortcut(KShortcut());
     // We do this in the basket properties dialog (and keep it in sync with the
     // global one)
@@ -3958,11 +3969,7 @@ void BasketView::noteDelete()
                                                   "<qt>Do you really want to delete these <b>%1</b> notes?</qt>",
                                                   countSelecteds()),
                                             i18np("Delete Note", "Delete Notes", countSelecteds())
-#if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
                                             , KStandardGuiItem::del(), KStandardGuiItem::cancel());
-#else
-                                           );
-#endif
     if (really == KMessageBox::No)
         return;
 

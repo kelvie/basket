@@ -932,7 +932,7 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
 TextContent::TextContent(Note *parent, const QString &fileName, bool lazyLoad)
         : NoteContent(parent, fileName), m_simpleRichText(0)
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(lazyLoad);
 }
 
@@ -1054,7 +1054,7 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 HtmlContent::HtmlContent(Note *parent, const QString &fileName, bool lazyLoad)
         : NoteContent(parent, fileName), m_simpleRichText(0)
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(lazyLoad);
 }
 
@@ -1154,6 +1154,10 @@ QString HtmlContent::messageWhenOpening(OpenMessage where)
 void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 {
     m_html = html;
+    QRegExp rx("([^\\x00-\\x7f])");
+    while (m_html.contains(rx)) {
+        m_html.replace( rx.cap().unicode()[0], QString("&#%1;").arg(rx.cap().unicode()[0].unicode()) );
+    }
     m_textEquivalent = toText(""); //OPTIM_FILTER
     if (!lazyLoad)
         finishLazyLoad();
@@ -1179,7 +1183,7 @@ void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
 ImageContent::ImageContent(Note *parent, const QString &fileName, bool lazyLoad)
         : NoteContent(parent, fileName), m_format()
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(lazyLoad);
 }
 
@@ -1318,7 +1322,7 @@ AnimationContent::AnimationContent(Note *parent,
         , m_buffer(new QBuffer(this))
         , m_movie(new QMovie(this))
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(lazyLoad);
     connect(m_movie, SIGNAL(updated(QRect)), this, SLOT(movieUpdated()));
     connect(m_movie, SIGNAL(resized(QSize)), this, SLOT(movieResized()));
@@ -1414,7 +1418,7 @@ void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 FileContent::FileContent(Note *parent, const QString &fileName)
         : NoteContent(parent, fileName), m_previewJob(0)
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???
 }
 
@@ -2055,7 +2059,7 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 LauncherContent::LauncherContent(Note *parent, const QString &fileName)
         : NoteContent(parent, fileName)
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(/*lazyLoad=*/false);
 }
 
@@ -2450,7 +2454,7 @@ const int UnknownContent::DECORATION_MARGIN = 2;
 UnknownContent::UnknownContent(Note *parent, const QString &fileName)
         : NoteContent(parent, fileName)
 {
-    basket()->addWatchedFile(fullPath());
+    basket()->addWatchedFile(fullPath() + fileName);
     loadFromFile(/*lazyLoad=*/false);
 }
 

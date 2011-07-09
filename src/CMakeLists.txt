@@ -51,6 +51,15 @@ set(basketcommon_LIB_SRCS
     xmlwork.cpp
 )
 
+IF(HAVE_NEPOMUK)
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src" ${NEPOMUK_INCLUDES} ${SOPRANO_INCLUDE_DIR})
+  include(SopranoAddOntology)
+  soprano_add_ontology(basketcommon_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nie.trig "NIE" "Soprano::Vocabulary" "trig")
+  soprano_add_ontology(basketcommon_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nfo.trig "NFO" "Soprano::Vocabulary" "trig")
+  soprano_add_ontology(basketcommon_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/pimo/pimo.trig "PIMO" "Soprano::Vocabulary" "trig")
+  list(INSERT basketcommon_LIB_SRCS 10 nepomukintegration.cpp)
+ENDIF(HAVE_NEPOMUK)
+
 kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
@@ -67,11 +76,16 @@ target_link_libraries(basketcommon
   ${KDE4_KFILE_LIBS}
   ${KDE4_PHONON_LIBRARY}
   ${QIMAGEBLITZ_LIBRARIES}
+  ${X11_LIBRARIES}
   ${GPGME_VANILLA_LIBRARIES})
 
 if(Q_WS_X11)
     target_link_libraries(basketcommon ${X11_X11_LIB})
 endif(Q_WS_X11)
+
+IF(HAVE_NEPOMUK)
+  target_link_libraries(basketcommon ${NEPOMUK_LIBRARIES} ${SOPRANO_LIBRARIES})
+ENDIF(HAVE_NEPOMUK)
 
 set_target_properties(basketcommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 
@@ -121,7 +135,7 @@ qt4_add_dbus_interfaces(kontact_basket_PLUGIN_SRCS org.kde.basket.basket.xml)
 
 add_dependencies(kontact_basketplugin basket)
 
-target_link_libraries(kontact_basketplugin ${KDE4_CORE_LIBS} ${KDEPIMLIBS_KONTACTINTERFACE_LIBS} kdepim basketcommon kparts kdeui ${KDE4_KPARTS_LIBS})
+target_link_libraries(kontact_basketplugin ${KDE4_CORE_LIBS} ${KDEPIMLIBS_KONTACTINTERFACE_LIBS} basketcommon kparts kdeui ${KDE4_KPARTS_LIBS})
 
 install(TARGETS kontact_basketplugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES basket_plugin.desktop DESTINATION ${SERVICES_INSTALL_DIR}/kontact)

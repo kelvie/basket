@@ -123,8 +123,10 @@ public slots:
     void importTuxCards();
     void importStickyNotes();
     void importTomboy();
+    void importJreepadFile();
     void importTextFile();
     void backupRestore();
+    void checkCleanup();
 
     /** Note */
     void activatedTagShortcut();
@@ -198,6 +200,7 @@ public slots:
     void saveAsArchive();
     void openArchive();
     void delayedOpenArchive();
+    void delayedOpenBasket();
     void lockBasket();
     void hideOnEscape();
 
@@ -215,6 +218,7 @@ public slots:
 
 public:
     static QString s_fileToOpen;
+    static QString s_basketToOpen;
 
 public slots:
     void addWelcomeBaskets();

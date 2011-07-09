@@ -554,6 +554,11 @@ void BNPView::setupActions()
     a->setIcon(KIcon("tintin"));
     a->setShortcut(0);
 
+    a = ac->addAction("basket_import_jreepad_file", this, SLOT(importJreepadFile()));
+    a->setText(i18n("J&reepad XML File..."));
+    a->setIcon(KIcon("text-xml"));
+    a->setShortcut(0);
+
     a = ac->addAction("basket_import_text_file", this, SLOT(importTextFile()));
     a->setText(i18n("Text &File..."));
     a->setIcon(KIcon("text-plain"));
@@ -562,6 +567,15 @@ void BNPView::setupActions()
     a = ac->addAction("basket_backup_restore", this, SLOT(backupRestore()));
     a->setText(i18n("&Backup && Restore..."));
     a->setShortcut(0);
+
+    a = ac->addAction("check_cleanup", this, SLOT(checkCleanup()));
+    a->setText(i18n("&Check && Cleanup..."));
+    a->setShortcut(0);
+    if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("debug")) {
+        a->setEnabled(true);
+    } else {
+        a->setEnabled(false);
+    }
 
     /** Note : ****************************************************************/
 
@@ -1674,6 +1688,10 @@ void BNPView::importTomboy()
 {
     SoftwareImporters::importTomboy();
 }
+void BNPView::importJreepadFile()
+{
+    SoftwareImporters::importJreepadFile();
+}
 void BNPView::importTextFile()
 {
     SoftwareImporters::importTextFile();
@@ -1683,6 +1701,126 @@ void BNPView::backupRestore()
 {
     BackupDialog dialog;
     dialog.exec();
+}
+
+void checkNote(Note * note, QList<QString> & fileList) {
+    while (note) {
+        note->finishLazyLoad();
+        if ( note->isGroup() ) {
+            checkNote(note->firstChild(), fileList);
+        } else if ( note->content()->useFile() ) {
+            QString noteFileName = note->basket()->folderName() + note->content()->fileName();
+            int basketFileIndex = fileList.indexOf( noteFileName );
+            if (basketFileIndex < 0) {
+                DEBUG_WIN << "<font color='red'>" + noteFileName + " NOT FOUND!</font>";
+            } else {
+                fileList.removeAt(basketFileIndex);
+            }
+        }
+        note = note->next();
+    }
+}
+
+void checkBasket(BasketListViewItem * item, QList<QString> & dirList, QList<QString> & fileList) {
+    BasketView* basket = ((BasketListViewItem *)item)->basket();
+    QString basketFolderName = basket->folderName();
+    int basketFolderIndex = dirList.indexOf( basket->folderName() );
+    if (basketFolderIndex < 0) {
+        DEBUG_WIN << "<font color='red'>" + basketFolderName + " NOT FOUND!</font>";
+    } else {
+        dirList.removeAt(basketFolderIndex);
+    }
+    int basketFileIndex = fileList.indexOf( basket->folderName() + ".basket" );
+    if (basketFileIndex < 0) {
+        DEBUG_WIN << "<font color='red'>.basket file of " + basketFolderName + ".basket NOT FOUND!</font>";
+    } else {
+        fileList.removeAt(basketFileIndex);
+    }
+    if (!basket->loadingLaunched() && !basket->isLocked()) {
+        basket->load();
+    }
+    DEBUG_WIN << "\t********************************************************************************";
+    DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") loaded.";
+    Note *note = basket->firstNote();
+    if (! note ) {
+        DEBUG_WIN << "\tHas NO notes!";
+    } else {
+        checkNote(note, fileList);
+    }
+    basket->save();
+    kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+    for ( int i=0; i < item->childCount(); i++) {
+        checkBasket((BasketListViewItem *) item->child(i), dirList, fileList);
+    }
+    if ( basket != Global::bnpView->currentBasket() ) {
+        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") unloading...";
+        DEBUG_WIN << "\t********************************************************************************";
+        basket->unbufferizeAll();
+    } else {
+        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") is the current basket, not unloading.";
+        DEBUG_WIN << "\t********************************************************************************";
+    }
+    kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+}
+
+void BNPView::checkCleanup() {
+    DEBUG_WIN << "Starting the check, cleanup and reindexing... (" + Global::basketsFolder() + ")";
+    QList<QString> dirList;
+    QList<QString> fileList;
+    QString topDirEntry;
+    QString subDirEntry;
+    QFileInfo fileInfo;
+    QDir topDir(Global::basketsFolder(), QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
+    foreach( topDirEntry, topDir.entryList() ) {
+        if( topDirEntry != "." && topDirEntry != ".." ) {
+            fileInfo.setFile(Global::basketsFolder() + "/" + topDirEntry);
+            if (fileInfo.isDir()) {
+                dirList << topDirEntry + "/";
+                QDir basketDir(Global::basketsFolder() + "/" + topDirEntry,
+                               QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
+                foreach( subDirEntry, basketDir.entryList() ) {
+                    if (subDirEntry != "." && subDirEntry != "..") {
+                        fileList << topDirEntry + "/" + subDirEntry;
+                    }
+                }
+            } else if (topDirEntry != "." && topDirEntry != ".." && topDirEntry != "baskets.xml") {
+                fileList << topDirEntry;
+            }
+        }
+    }
+    DEBUG_WIN << "Directories found: "+ QString::number(dirList.count());
+    DEBUG_WIN << "Files found: "+ QString::number(fileList.count());
+
+    DEBUG_WIN << "Checking Baskets:";
+    for (int i = 0; i < topLevelItemCount(); i++) {
+        checkBasket( topLevelItem(i), dirList, fileList );
+    }
+    DEBUG_WIN << "Baskets checked.";
+    DEBUG_WIN << "Directories remaining (not in any basket): "+ QString::number(dirList.count());
+    DEBUG_WIN << "Files remaining (not in any basket): "+ QString::number(fileList.count());
+
+    foreach(topDirEntry, dirList) {
+        DEBUG_WIN << "<font color='red'>" + topDirEntry + " does not belong to any basket!</font>";
+        //Tools::deleteRecursively(Global::basketsFolder() + "/" + topDirEntry);
+        //DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " removed!</font>";
+        Tools::trashRecursively(Global::basketsFolder() + "/" + topDirEntry);
+        DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " trashed!</font>";
+        foreach(subDirEntry, fileList) {
+            fileInfo.setFile(Global::basketsFolder() + "/" + subDirEntry);
+            if ( ! fileInfo.isFile() ) {
+                fileList.removeAll( subDirEntry );
+                DEBUG_WIN << "<font color='red'>\t\t" + subDirEntry + " already removed!</font>";
+            }
+        }
+    }
+    foreach(subDirEntry, fileList) {
+        DEBUG_WIN << "<font color='red'>" + subDirEntry + " does not belong to any note!</font>";
+        //Tools::deleteRecursively(Global::basketsFolder() + "/" + subDirEntry);
+        //DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " removed!</font>";
+        Tools::trashRecursively(Global::basketsFolder() + "/" + subDirEntry);
+        DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " trashed!</font>";
+    }
+    DEBUG_WIN << "Check, cleanup and reindexing completed";
 }
 
 void BNPView::countsChanged(BasketView *basket)
@@ -2109,9 +2247,9 @@ void BNPView::doBasketDeletion(BasketView *basket)
     basket->closeEditor();
 
     QTreeWidgetItem *basketItem = listViewItemForBasket(basket);
-    for (int i = 0; i < basketItem->childCount(); i++) {
+    while( basketItem->childCount() > 0 ) {
         // First delete the child baskets:
-        doBasketDeletion(((BasketListViewItem*)basketItem->child(i))->basket());
+        doBasketDeletion(((BasketListViewItem*)basketItem->child(0))->basket());
     }
     // Then, basket have no child anymore, delete it:
     DecoratedBasket *decoBasket = basket->decoration();
@@ -2192,6 +2330,14 @@ QString BNPView::s_fileToOpen = "";
 void BNPView::delayedOpenArchive()
 {
     Archive::open(s_fileToOpen);
+}
+
+QString BNPView::s_basketToOpen = "";
+
+void BNPView::delayedOpenBasket()
+{
+    BasketView *bv = this->basketForFolderName(s_basketToOpen);
+    this->setCurrentBasketInHistory(bv);
 }
 
 void BNPView::openArchive()

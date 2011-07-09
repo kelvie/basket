@@ -140,9 +140,8 @@ echo "    ======================================================================
 echo ""
 echo ""
 
-if [ $1 -gt 0 ]; then
-    threads=$1
-else
+threads=${1:-2}
+if [ $threads -le 0 ]; then
     threads=2
 fi
 echo "make -j${threads}"

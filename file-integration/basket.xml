@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-basket-archive">
+    <comment>Basket Archive</comment>
+    <comment xml:lang="af">verskille tussen lêers</comment>
+    <comment xml:lang="de">Korbarchiv</comment>
+    <comment xml:lang="es">Archivo de cestas</comment>
+    <comment xml:lang="fr">Archive de paniers</comment>
+    <comment xml:lang="it">Archivio di canestri</comment>
+    <comment xml:lang="ja">バスケットアーカイブ</comment>
+    <comment xml:lang="nb">Kurvarkiv</comment>
+    <comment xml:lang="nn">Korgarkiv</comment>
+    <comment xml:lang="pt">Ficheiro de cestos</comment>
+    <comment xml:lang="ru">Контейнер Basket</comment>
+    <comment xml:lang="tr">Basket Arşivi</comment>
+    <icon name="basket" />
+    <glob pattern="*.baskets" weight="50" />
+    <magic priority="90">
+      <match type="string" offset="0" value="BasKetNP:archive\n"/>
+    </magic>
+  </mime-type>
+
+  <mime-type type="application/x-basket-template">
+    <comment>Basket Template</comment>
+    <comment xml:lang="de">Korbvorlage</comment>
+    <comment xml:lang="es">Plantilla de cesta</comment>
+    <comment xml:lang="fr">Modèle de panier</comment>
+    <comment xml:lang="it">Modello di canestri</comment>
+    <comment xml:lang="ja">バスケットテンプレート</comment>
+    <comment xml:lang="nb">Kurvmal</comment>
+    <comment xml:lang="nn">Korgmal</comment>
+    <comment xml:lang="pt">Modelo de cesto</comment>
+    <comment xml:lang="ru">Шаблон корзины</comment>
+    <comment xml:lang="tr">Basket Şabolonu</comment>
+    <icon name="basket" />
+    <glob pattern="*.baskett" weight="50" />
+    <magic priority="90">
+      <match type="string" offset="0" value="BasKetNP:template\n"/>
+    </magic>
+  </mime-type>
+
+  <mime-type type="application/x-basket-item">
+    <sub-class-of type="text/xml"/>
+    <sub-class-of type="application/xml"/>
+    <comment>Basket Note Pads</comment>
+    <icon name="basket" />
+    <glob pattern=".basket" weight="60" />
+    <magic priority="90">
+      <match type="string" offset="2" value="xml">
+        <match type="string" offset="39" value="!DOCTYPE basket>"/>
+      </match>
+    </magic>
+    <root-XML localName="basket" />
+  </mime-type>
+</mime-info>
