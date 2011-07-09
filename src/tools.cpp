@@ -215,7 +215,7 @@ QString Tools::crossReferenceForBasket(QStringList linkParts)
         : "");
 
     QString anchor = "<style>" + css + "</style><a href=\"" + basketLink + "\" class=\"" + classes + "\">"
-                + QUrl::fromPercentEncoding(title.toLatin1()); + "</a>";
+                + QUrl::fromPercentEncoding(title.toLatin1()) + "</a>";
     return anchor;
 }
 
