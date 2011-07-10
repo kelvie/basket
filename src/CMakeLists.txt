@@ -60,7 +60,7 @@ IF(HAVE_NEPOMUK)
   list(INSERT basketcommon_LIB_SRCS 10 nepomukintegration.cpp)
 ENDIF(HAVE_NEPOMUK)
 
-kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui)
+kde4_add_ui_files(basketcommon_LIB_SRCS passwordlayout.ui basketproperties.ui)
 
 QT4_ADD_DBUS_ADAPTOR(basketcommon_LIB_SRCS org.basket.BNPView.xml bnpview.h BNPView)
 

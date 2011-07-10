@@ -25,6 +25,8 @@
 #include <QMap>
 #include <QString>
 
+#include "ui_basketproperties.h"
+
 class KIconButton;
 class QLineEdit;
 class QComboBox;
@@ -41,7 +43,7 @@ class KColorCombo2;
 /** The dialog that hold basket settings.
   * @author Sébastien Laoût
   */
-class BasketPropertiesDialog : public KDialog
+class BasketPropertiesDialog : public KDialog, private Ui::BasketPropertiesUi
 {
     Q_OBJECT
 public:
@@ -55,23 +57,11 @@ public slots:
 protected slots:
     void capturedShortcut(const KShortcut &shortcut);
     void selectColumnsLayout();
+
 private:
-    BasketView    *m_basket;
-    KIconButton   *m_icon;
-    QLineEdit     *m_name;
-    QComboBox     *m_backgroundImage;
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
-    QGroupBox     *m_disposition;
-    QRadioButton  *columnForm;
-    QRadioButton  *mindMap;
-    QRadioButton  *freeForm;
-    KIntNumInput  *m_columnCount;
-    KShortcutWidget *m_shortcut;
-    QVBoxLayout *m_shortcutRoleLayout;
-    QRadioButton * m_showButton;
-    QRadioButton * m_globalButton;
-    QRadioButton * m_switchButton;
+    BasketView    *m_basket;
     QMap<int, QString> m_backgroundImagesMap;
 };
 
