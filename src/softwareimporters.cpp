@@ -115,14 +115,14 @@ OneNoteImportDialog::OneNoteImportDialog(QWidget *parent)
 
     m_root_new_choice = new QRadioButton(i18n("Create New Basket At &Root"), m_choices);
     m_child_new_choice = new QRadioButton(i18n("Create New Basket Below &Selected Basket"),   m_choices);
-    m_childsub_new_choice = new QRadioButton(i18n("Create New S&ub-Basket Below Selected Basket"),   m_choices);
+    //m_childsub_new_choice = new QRadioButton(i18n("Create New S&ub-Basket Below Selected Basket"),   m_choices);
 	m_add_author_meta_choice = new QCheckBox (i18n("Add Note on OneNote Page Author/Timeline metadata"),  m_choices);
 
     m_child_new_choice->setChecked(true);
     m_add_author_meta_choice->setChecked(false);
     m_choiceLayout->addWidget(m_root_new_choice);
     m_choiceLayout->addWidget(m_child_new_choice);
-    m_choiceLayout->addWidget(m_childsub_new_choice);
+    //m_choiceLayout->addWidget(m_childsub_new_choice);
     m_choiceLayout->addWidget(m_add_author_meta_choice);
 
     topLayout->addWidget(m_choices);
@@ -574,62 +574,6 @@ void SoftwareImporters::importTomboy()
         finishImport(basket);
 }
 
-void SoftwareImporters::importJreepadFile(){
-    typedef QPair<BasketView *, QDomElement> basketAndElementPair;
-
-    QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportJreepadFile"),
-                                                    "*.xml|XML files");
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    basketAndElementPair newElement;
-    basketAndElementPair currentElement;
-    QList<basketAndElementPair> elements;
-    QList<BasketView*> basketList;
-
-    QDomDocument *doc = XMLWork::openFile("node", fileName);
-    newElement.second = doc->documentElement();
-
-    BasketView *basket = 0;
-    BasketFactory::newBasket(/*icon=*/"xml", /*name=*/doc->documentElement().attribute("title"), 
-                             /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
-                             /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-    basket = Global::bnpView->currentBasket();
-    basket->load();
-    basketList << basket;
-    newElement.first = basket;
-
-    elements << newElement;
-
-    while ( !elements.isEmpty() ) {
-        currentElement = elements.takeFirst();
-        for (QDomNode n = currentElement.second.firstChild(); !n.isNull(); n = n.nextSibling()) {
-            if ( n.isText() ) {
-                basket = currentElement.first;
-                Note *note = NoteFactory::createNoteFromText(n.toText().data(), basket);
-                basket->insertNote(note, basket->firstNote(), 
-                                   Note::BottomColumn, QPoint(), /*animate=*/false);
-            } else if ( n.isElement() ) {
-                BasketFactory::newBasket(/*icon=*/"xml", /*name=*/n.toElement().attribute("title"), 
-                                         /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
-                                         /*textColor=*/QColor(), /*templateName=*/"1column", 
-                                         /*createIn=*/currentElement.first);
-                basket = Global::bnpView->currentBasket();
-                basket->load();
-                basketList << basket;
-                newElement.first = basket;
-                newElement.second = n.toElement();
-                elements << newElement;
-            }
-        }
-    }
-    
-    foreach (basket, basketList) {
-        finishImport(basket);
-    }
-}
-
 void SoftwareImporters::importTextFile()
 {
     QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportTextFile"),  "*|All files");
@@ -845,7 +789,8 @@ void SoftwareImporters::importOneNoteNode(const QDomElement &element, BasketView
 	QString outlineStyle = e.attribute("style");
 	
 	// OneNote coor, dimensions are in 70dpi spec. Apply 'common-sense' multiplicator to change to 96 dpi screen
-	const float dpiMulitplicator=1.37143;
+	//const float dpiMulitplicator=1.37143;
+	const float dpiMulitplicator=1.42857;
 	int x = 0;
 	int y = 0;
 	int width = -1;
@@ -905,15 +850,39 @@ void SoftwareImporters::importOneNoteNode(const QDomElement &element, BasketView
 	    }
             else {
                 nContent = NoteFactory::createNoteText(content, basket);
-	    }
-	    
-	    if (width > 0) nContent->setWidth(width);
-	    if (height > 0) nContent->setHeight(height);
 		QString addMsg;
-		addMsg.sprintf("Note at: %d,%d of size (%d,%d) for ", x, y, width, height);
+		addMsg.sprintf("Text Note at: %d,%d of size (%d,%d) for ", x, y, width, height);
 		addMsg.append(strMsg);
+		//KMessageBox::information(0, addMsg, i18n("Text Note"));
+	    }
 	
-	basket->insertNote(nContent, /*clickedNote=*/0, /*Zone=*/Note::None, QPoint(x,y), /*animate=*/false);
+	if (width > 0 && height > 0 && x > 0 && y > 0) {
+	        nContent->setWidth(width);
+	        nContent->setInitialHeight(height);
+	        nContent->setXRecursively(x);
+	        nContent->setYRecursively(y);
+	        basket->appendNoteAfter(nContent, basket->lastNote());
+	        basket->relayoutNotes(true);
+	}
+	else {
+	        basket->insertNote(nContent, /*clickedNote=*/0, /*Zone=*/Note::None, QPoint(x,y), /*animate=*/false);
+	}
+	    
+	if (height > 0) nContent->setHeight(height);
+	/*
+	if (width > 0) {
+		int newHeight = nContent->content()->setWidthAndGetHeight(width);
+		nContent->setWidthForceRelayout(width);
+	    if ( newHeight == 10 ) { // content.indexOf("EBS Security") >= 0
+		QString addMsg;
+		addMsg.sprintf("Note dimension: min: %d, wid: %d -- %d,%d of size (%d,%d) for: ", nContent->minWidth(), nContent->width(), x, y, width, height);
+		addMsg.append(strMsg);
+                KMessageBox::information(0, addMsg, i18n("Width Issue"));
+            }
+
+	}
+	 */ 
+
 	
     } // of for
 }

@@ -42,7 +42,6 @@
 class QStackedWidget;
 class QDomDocument;
 class QDomElement;
-class QUndoStack;
 class KAction;
 class KToggleAction;
 class KMenu;
@@ -81,7 +80,6 @@ public:
     BasketView* currentBasket();
     BasketView* parentBasketOf(BasketView *basket);
     void setCurrentBasket(BasketView *basket);
-    void setCurrentBasketInHistory(BasketView *basket);
     void removeBasket(BasketView *basket);
     /// For NewBasketDialog (and later some other classes):
     int topLevelItemCount();
@@ -124,10 +122,8 @@ public slots:
     void importTuxCards();
     void importStickyNotes();
     void importTomboy();
-    void importJreepadFile();
     void importTextFile();
     void backupRestore();
-    void checkCleanup();
 
     /** Note */
     void activatedTagShortcut();
@@ -161,7 +157,6 @@ public slots:
     void addNoteHtml();
     void addNoteImage();
     void addNoteLink();
-    void addNoteCrossReference();
     void addNoteColor();
     /** Passive Popups for Global Actions */
     void showPassiveDropped(const QString &title);
@@ -201,7 +196,6 @@ public slots:
     void saveAsArchive();
     void openArchive();
     void delayedOpenArchive();
-    void delayedOpenBasket();
     void lockBasket();
     void hideOnEscape();
 
@@ -209,24 +203,15 @@ public slots:
     void timeoutTryHide();
     void timeoutHide();
 
-    void loadCrossReference(QString link);
-    QString folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent = 0);
-
-    void sortChildrenAsc();
-    void sortChildrenDesc();
-    void sortSiblingsAsc();
-    void sortSiblingsDesc();
-
 public:
     static QString s_fileToOpen;
-    static QString s_basketToOpen;
 
 public slots:
     void addWelcomeBaskets();
 private slots:
     void updateNotesActions();
+    void slotBasketNumberChanged(int number);
     void slotBasketChanged();
-    void canUndoRedoChanged();
     void currentBasketChanged();
     void isLockedChanged();
     void lateInit();
@@ -246,10 +231,6 @@ public:
     KAction       *m_actHideWindow;
     KAction       *m_actExportToHtml;
     KAction       *m_actPropBasket;
-    KAction       *m_actSortChildrenAsc;
-    KAction       *m_actSortChildrenDesc;
-    KAction       *m_actSortSiblingsAsc;
-    KAction       *m_actSortSiblingsDesc;
     KAction       *m_actDelBasket;
     KToggleAction *m_actFilterAllBaskets;
 
@@ -279,7 +260,6 @@ private:
 //      KAction       *m_actInsertText;
     KAction       *m_actInsertHtml;
     KAction       *m_actInsertLink;
-    KAction       *m_actInsertCrossReference;
     KAction       *m_actInsertImage;
     KAction       *m_actInsertColor;
     KAction       *m_actImportKMenu;
@@ -354,6 +334,7 @@ private slots:
     void initialize();
 
 signals:
+    void basketNumberChanged(int number);
     void basketChanged();
     void setWindowCaption(const QString &s);
     void showPart();
@@ -380,8 +361,6 @@ private:
     BasketStatusBar *m_statusbar;
     QTimer             *m_tryHideTimer;
     QTimer             *m_hideTimer;
-
-    QUndoStack *m_history;
 };
 
 #endif // BNPVIEW_H

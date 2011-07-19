@@ -12,13 +12,6 @@
     <Action name="basket_export_basket_archive" />
     <Action name="basket_export_html" />
    </Menu>
-   <Menu icon="view-sort-ascending" >
-    <text>&amp;Sort</text>
-    <Action name="basket_sort_children_asc" />
-    <Action name="basket_sort_children_desc" />
-    <Action name="basket_sort_siblings_asc" />
-    <Action name="basket_sort_siblings_desc" />
-   </Menu>
    <Action name="basket_remove" />
    <Separator/>
    <Action name="basket_password" />
@@ -37,12 +30,9 @@
     <Action name="basket_import_sticky_notes" />
     <Action name="basket_import_tomboy" />
     <Separator/>
-    <Action name="basket_import_jreepad_file" />
     <Action name="basket_import_text_file" />
    </Menu>
    <Action name="basket_backup_restore" />
-   <Separator/>
-   <Action name="check_cleanup" />
   </Menu>
   <Menu name="edit" >
    <text>&amp;Edit</text>
@@ -89,7 +79,6 @@
    <Action name="insert_html" />
    <Action name="insert_image" />
    <Action name="insert_link" />
-   <Action name="insert_cross_reference" />
    <Action name="insert_launcher" />
    <Action name="insert_color" />
    <Separator/>
@@ -129,9 +118,6 @@
  <ToolBar newline="false" position="Top" noMerge="1" name="mainToolBar" fullWidth="true" >
   <text>Main Toolbar</text>
   <Action name="basket_properties" />
-  <Separator lineSeparator="true" name="separator_0" />
-  <Action name="go_basket_previous" />
-  <Action name="go_basket_next" />
   <Separator lineSeparator="true" name="separator_0" />
   <Action name="edit_cut" />
   <Action name="edit_copy" />
@@ -174,13 +160,6 @@
    <Action name="basket_export_basket_archive" />
    <Action name="basket_export_html" />
   </Menu>
-  <Menu icon="view-sort-ascending" >
-   <text>&amp;Sort</text>
-   <Action name="basket_sort_children_asc" />
-   <Action name="basket_sort_children_desc" />
-   <Action name="basket_sort_siblings_asc" />
-   <Action name="basket_sort_siblings_desc" />
-  </Menu>
   <Action name="basket_remove" />
   <Separator/>
   <Action name="basket_password" />
@@ -199,12 +178,9 @@
    <Action name="basket_import_sticky_notes" />
    <Action name="basket_import_tomboy" />
    <Separator/>
-   <Action name="basket_import_jreepad_file" />
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />
-  <Separator/>
-  <Action name="check_cleanup" />
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />
@@ -221,12 +197,9 @@
    <Action name="basket_import_sticky_notes" />
    <Action name="basket_import_tomboy" />
    <Separator/>
-   <Action name="basket_import_jreepad_file" />
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />
-  <Separator/>
-  <Action name="check_cleanup" />
  </Menu>
  <Menu noMerge="1" name="note_popup" >
   <Action name="note_edit" />
@@ -245,7 +218,6 @@
   <Action name="insert_html" />
   <Action name="insert_image" />
   <Action name="insert_link" />
-  <Action name="insert_cross_reference" />
   <Action name="insert_launcher" />
   <Action name="insert_color" />
   <Separator/>

@@ -36,7 +36,6 @@
 #include <kmenu.h>
 #include <QSignalMapper>
 #include <QDir>
-#include <QUndoStack>
 #include <KDE/KIconTheme>
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
@@ -89,7 +88,7 @@
 #include "notefactory.h"
 #include "notecontent.h"
 #include "unistd.h" // usleep
-#include "history.h"
+
 
 #include "bnpviewadaptor.h"
 /** class BNPView: */
@@ -128,7 +127,6 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
     Global::backgroundManager = new BackgroundManager();
 
     setupGlobalShortcuts();
-    m_history = new QUndoStack(this);
     initialize();
     QTimer::singleShot(0, this, SLOT(lateInit()));
 }
@@ -150,8 +148,6 @@ BNPView::~BNPView()
     Global::systemTray = 0;
     delete m_colorPicker;
     delete m_statusbar;
-    delete m_history;
-    m_history = 0;
 
     NoteDrag::createAndEmptyCuttingTmpFolder(); // Clean the temporary folder we used
 }
@@ -461,11 +457,10 @@ void BNPView::initialize()
 
     connect(m_tree, SIGNAL(itemExpanded(QTreeWidgetItem*)),  this, SIGNAL(basketChanged()));
     connect(m_tree, SIGNAL(itemCollapsed(QTreeWidgetItem*)), this, SIGNAL(basketChanged()));
+    connect(this,   SIGNAL(basketNumberChanged(int)),  this, SIGNAL(basketChanged()));
 
+    connect(this, SIGNAL(basketNumberChanged(int)), this, SLOT(slotBasketNumberChanged(int)));
     connect(this, SIGNAL(basketChanged()),          this, SLOT(slotBasketChanged()));
-
-    connect(m_history, SIGNAL(canRedoChanged(bool)), this, SLOT(canUndoRedoChanged()));
-    connect(m_history, SIGNAL(canUndoChanged(bool)), this, SLOT(canUndoRedoChanged()));
 
     /* LikeBack */
     Global::likeBack = new LikeBack(LikeBack::AllButtons, /*showBarByDefault=*/false, Global::config(), Global::about());
@@ -559,11 +554,6 @@ void BNPView::setupActions()
     a->setIcon(KIcon("tintin"));
     a->setShortcut(0);
 
-    a = ac->addAction("basket_import_jreepad_file", this, SLOT(importJreepadFile()));
-    a->setText(i18n("J&reepad XML File..."));
-    a->setIcon(KIcon("text-xml"));
-    a->setShortcut(0);
-
     a = ac->addAction("basket_import_text_file", this, SLOT(importTextFile()));
     a->setText(i18n("Text &File..."));
     a->setIcon(KIcon("text-plain"));
@@ -572,15 +562,6 @@ void BNPView::setupActions()
     a = ac->addAction("basket_backup_restore", this, SLOT(backupRestore()));
     a->setText(i18n("&Backup && Restore..."));
     a->setShortcut(0);
-
-    a = ac->addAction("check_cleanup", this, SLOT(checkCleanup()));
-    a->setText(i18n("&Check && Cleanup..."));
-    a->setShortcut(0);
-    if (KCmdLineArgs::parsedArgs() && KCmdLineArgs::parsedArgs()->isSet("debug")) {
-        a->setEnabled(true);
-    } else {
-        a->setEnabled(false);
-    }
 
     /** Note : ****************************************************************/
 
@@ -700,11 +681,6 @@ void BNPView::setupActions()
     a->setShortcut(KShortcut("Ctrl+Y"));
     m_actInsertLink = a;
 
-    a = ac->addAction("insert_cross_reference");
-    a->setText(i18n("Cross &Reference"));
-    a->setIcon(KIcon("link"));
-    m_actInsertCrossReference = a;
-
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
     a->setIcon(KIcon("image-png"));
@@ -739,14 +715,12 @@ void BNPView::setupActions()
     connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertCrossReference,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
     connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
     connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
     insertEmptyMapper->setMapping(m_actInsertLink,     NoteType::Link);
-    insertEmptyMapper->setMapping(m_actInsertCrossReference,NoteType::CrossReference);
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
@@ -780,7 +754,6 @@ void BNPView::setupActions()
 //  m_insertActions.append( m_actInsertText     );
     m_insertActions.append(m_actInsertHtml);
     m_insertActions.append(m_actInsertLink);
-    m_insertActions.append(m_actInsertCrossReference);
     m_insertActions.append(m_actInsertImage);
     m_insertActions.append(m_actInsertColor);
     m_insertActions.append(m_actImportKMenu);
@@ -833,26 +806,6 @@ void BNPView::setupActions()
     a->setIcon(KIcon("document-properties"));
     a->setShortcut(KShortcut("F2"));
     m_actPropBasket = a;
-
-    a = ac->addAction("basket_sort_children_asc", this, SLOT(sortChildrenAsc()));
-    a->setText(i18n("Sort Children Ascending"));
-    a->setIcon(KIcon("view-sort-ascending"));
-    m_actSortChildrenAsc = a;
-
-    a = ac->addAction("basket_sort_children_desc", this, SLOT(sortChildrenDesc()));
-    a->setText(i18n("Sort Children Descending"));
-    a->setIcon(KIcon("view-sort-descending"));
-    m_actSortChildrenDesc = a;
-
-    a = ac->addAction("basket_sort_siblings_asc", this, SLOT(sortSiblingsAsc()));
-    a->setText(i18n("Sort Siblings Ascending"));
-    a->setIcon(KIcon("view-sort-ascending"));
-    m_actSortSiblingsAsc = a;
-
-    a = ac->addAction("basket_sort_siblings_desc", this, SLOT(sortSiblingsDesc()));
-    a->setText(i18n("Sort Siblings Descending"));
-    a->setIcon(KIcon("view-sort-descending"));
-    m_actSortSiblingsDesc = a;
 
     a = ac->addAction("basket_remove", this, SLOT(delBasket()));
     a->setText(i18nc("Remove Basket", "&Remove"));
@@ -908,26 +861,26 @@ void BNPView::setupActions()
 
     a = ac->addAction("go_basket_previous", this, SLOT(goToPreviousBasket()));
     a->setText(i18n("&Previous Basket"));
-    a->setIcon(KIcon("go-previous"));
-    a->setShortcut(KShortcut("Alt+Left"));
+    a->setIcon(KIcon("go-up"));
+    a->setShortcut(KShortcut("Alt+Up"));
     m_actPreviousBasket = a;
 
     a = ac->addAction("go_basket_next", this, SLOT(goToNextBasket()));
     a->setText(i18n("&Next Basket"));
-    a->setIcon(KIcon("go-next"));
-    a->setShortcut(KShortcut("Alt+Right"));
+    a->setIcon(KIcon("go-down"));
+    a->setShortcut(KShortcut("Alt+Down"));
     m_actNextBasket = a;
 
     a = ac->addAction("go_basket_fold", this, SLOT(foldBasket()));
     a->setText(i18n("&Fold Basket"));
-    a->setIcon(KIcon("go-up"));
-    a->setShortcut(KShortcut("Alt+Up"));
+    a->setIcon(KIcon("go-previous"));
+    a->setShortcut(KShortcut("Alt+Left"));
     m_actFoldBasket = a;
 
     a = ac->addAction("go_basket_expand", this, SLOT(expandBasket()));
     a->setText(i18n("&Expand Basket"));
-    a->setIcon(KIcon("go-down"));
-    a->setShortcut(KShortcut("Alt+Down"));
+    a->setIcon(KIcon("go-next"));
+    a->setShortcut(KShortcut("Alt+Right"));
     m_actExpandBasket = a;
 
 #if 0
@@ -1140,7 +1093,6 @@ BasketView* BNPView::loadBasket(const QString &folderName)
     connect(basket, SIGNAL(propertiesChanged(BasketView*)), this, SLOT(updateBasketListViewItem(BasketView*)));
 
     connect(basket->decoration()->filterBar(), SIGNAL(newFilter(const FilterData&)), this, SLOT(newFilterFromFilterBar()));
-    connect(basket, SIGNAL(crossReference(QString)), this, SLOT(loadCrossReference(QString)));
 
     return basket;
 }
@@ -1163,7 +1115,7 @@ bool BNPView::canFold()
     BasketListViewItem *item = listViewItemForBasket(currentBasket());
     if (!item)
         return false;
-    return (item->childCount() > 0 && item->isExpanded());
+    return item->parent() || (item->childCount() > 0 && item->isExpanded());
 }
 
 bool BNPView::canExpand()
@@ -1171,7 +1123,7 @@ bool BNPView::canExpand()
     BasketListViewItem *item = listViewItemForBasket(currentBasket());
     if (!item)
         return false;
-    return (item->childCount() > 0 && !item->isExpanded());
+    return item->childCount() > 0;
 }
 
 BasketListViewItem* BNPView::appendBasket(BasketView *basket, QTreeWidgetItem *parentItem)
@@ -1183,6 +1135,8 @@ BasketListViewItem* BNPView::appendBasket(BasketView *basket, QTreeWidgetItem *p
         newBasketItem = new BasketListViewItem(m_tree, m_tree->topLevelItem(m_tree->topLevelItemCount() - 1), basket);
     }
 
+    emit basketNumberChanged(basketCount());
+
     return newBasketItem;
 }
 
@@ -1191,7 +1145,7 @@ void BNPView::loadNewBasket(const QString &folderName, const QDomElement &proper
     BasketView *basket = loadBasket(folderName);
     appendBasket(basket, (basket ? listViewItemForBasket(parent) : 0));
     basket->loadProperties(properties);
-    setCurrentBasketInHistory(basket);
+    setCurrentBasket(basket);
 //  save();
 }
 
@@ -1202,14 +1156,60 @@ int BNPView::topLevelItemCount()
 
 void BNPView::goToPreviousBasket()
 {
-    if(m_history->canUndo())
-        m_history->undo();
+    if (m_tree->topLevelItemCount() <= 0)
+        return;
+
+    BasketListViewItem *item     = listViewItemForBasket(currentBasket());
+    BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemAbove(item);
+
+    while (toSwitch && !toSwitch->isShown()) {
+        toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
+    }
+
+    if (!toSwitch) {
+        toSwitch = (BasketListViewItem *)m_tree->topLevelItem(m_tree->topLevelItemCount() - 1);
+        while (toSwitch->childCount() >= 0) {
+            toSwitch = (BasketListViewItem *)toSwitch->child(toSwitch->childCount() - 1);
+        }
+    }
+
+    while (toSwitch && !toSwitch->isShown()) {
+        toSwitch = (BasketListViewItem *)m_tree->itemAbove(toSwitch);
+    }
+
+    if (toSwitch)
+        setCurrentBasket(toSwitch->basket());
+
+    if (Settings::usePassivePopup())
+        showPassiveContent();
 }
 
 void BNPView::goToNextBasket()
 {
-    if(m_history->canRedo())
-        m_history->redo();
+    if (m_tree->topLevelItemCount() <= 0)
+        return;
+
+    BasketListViewItem *item     = listViewItemForBasket(currentBasket());
+    BasketListViewItem *toSwitch = (BasketListViewItem *)m_tree->itemBelow(item);
+
+    while (toSwitch && !toSwitch->isShown()) {
+        toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
+    }
+
+    if (!toSwitch) {
+        //toSwitch = (BasketListViewItem*)m_tree->child(0);
+        toSwitch = (BasketListViewItem*)m_tree->itemAt(0, 0);
+    }
+
+    while (toSwitch && !toSwitch->isShown()) {
+        toSwitch = (BasketListViewItem *)m_tree->itemBelow(toSwitch);
+    }
+
+    if (toSwitch)
+        setCurrentBasket(toSwitch->basket());
+
+    if (Settings::usePassivePopup())
+        showPassiveContent();
 }
 
 void BNPView::foldBasket()
@@ -1402,17 +1402,6 @@ BasketView* BNPView::parentBasketOf(BasketView *basket)
         return 0;
 }
 
-void BNPView::setCurrentBasketInHistory(BasketView *basket)
-{
-    if(!basket)
-        return;
-
-    if (currentBasket() == basket)
-        return;
-
-    m_history->push(new HistorySetBasket(basket));
-}
-
 void BNPView::setCurrentBasket(BasketView *basket)
 {
     if (currentBasket() == basket)
@@ -1462,7 +1451,7 @@ void BNPView::removeBasket(BasketView *basket)
         nextBasketItem = (BasketListViewItem*)(basketItem->parent());
 
     if (nextBasketItem)
-        setCurrentBasketInHistory(nextBasketItem->basket());
+        setCurrentBasket(nextBasketItem->basket());
 
     // Remove from the view:
     basket->unsubscribeBackgroundImages();
@@ -1477,6 +1466,7 @@ void BNPView::removeBasket(BasketView *basket)
     else // No need to save two times if we add a basket
         save();
 
+    emit basketNumberChanged(basketCount());
 }
 
 void BNPView::setTreePlacement(bool onLeft)
@@ -1580,7 +1570,7 @@ void BNPView::slotPressed(QTreeWidgetItem *item, int column)
         m_tree->setCurrentItem(listViewItemForBasket(basket), true);
 
     else if (dynamic_cast<BasketListViewItem*>(item) != 0 && currentBasket() != ((BasketListViewItem*)item)->basket()) {
-        setCurrentBasketInHistory(((BasketListViewItem*)item)->basket());
+        setCurrentBasket(((BasketListViewItem*)item)->basket());
         needSave(0);
     }
     basket->setFocus();
@@ -1697,10 +1687,6 @@ void BNPView::importTomboy()
 {
     SoftwareImporters::importTomboy();
 }
-void BNPView::importJreepadFile()
-{
-    SoftwareImporters::importJreepadFile();
-}
 void BNPView::importTextFile()
 {
     SoftwareImporters::importTextFile();
@@ -1710,126 +1696,6 @@ void BNPView::backupRestore()
 {
     BackupDialog dialog;
     dialog.exec();
-}
-
-void checkNote(Note * note, QList<QString> & fileList) {
-    while (note) {
-        note->finishLazyLoad();
-        if ( note->isGroup() ) {
-            checkNote(note->firstChild(), fileList);
-        } else if ( note->content()->useFile() ) {
-            QString noteFileName = note->basket()->folderName() + note->content()->fileName();
-            int basketFileIndex = fileList.indexOf( noteFileName );
-            if (basketFileIndex < 0) {
-                DEBUG_WIN << "<font color='red'>" + noteFileName + " NOT FOUND!</font>";
-            } else {
-                fileList.removeAt(basketFileIndex);
-            }
-        }
-        note = note->next();
-    }
-}
-
-void checkBasket(BasketListViewItem * item, QList<QString> & dirList, QList<QString> & fileList) {
-    BasketView* basket = ((BasketListViewItem *)item)->basket();
-    QString basketFolderName = basket->folderName();
-    int basketFolderIndex = dirList.indexOf( basket->folderName() );
-    if (basketFolderIndex < 0) {
-        DEBUG_WIN << "<font color='red'>" + basketFolderName + " NOT FOUND!</font>";
-    } else {
-        dirList.removeAt(basketFolderIndex);
-    }
-    int basketFileIndex = fileList.indexOf( basket->folderName() + ".basket" );
-    if (basketFileIndex < 0) {
-        DEBUG_WIN << "<font color='red'>.basket file of " + basketFolderName + ".basket NOT FOUND!</font>";
-    } else {
-        fileList.removeAt(basketFileIndex);
-    }
-    if (!basket->loadingLaunched() && !basket->isLocked()) {
-        basket->load();
-    }
-    DEBUG_WIN << "\t********************************************************************************";
-    DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") loaded.";
-    Note *note = basket->firstNote();
-    if (! note ) {
-        DEBUG_WIN << "\tHas NO notes!";
-    } else {
-        checkNote(note, fileList);
-    }
-    basket->save();
-    kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-    for ( int i=0; i < item->childCount(); i++) {
-        checkBasket((BasketListViewItem *) item->child(i), dirList, fileList);
-    }
-    if ( basket != Global::bnpView->currentBasket() ) {
-        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") unloading...";
-        DEBUG_WIN << "\t********************************************************************************";
-        basket->unbufferizeAll();
-    } else {
-        DEBUG_WIN << basket->basketName() << "(" << basketFolderName << ") is the current basket, not unloading.";
-        DEBUG_WIN << "\t********************************************************************************";
-    }
-    kapp->processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-}
-
-void BNPView::checkCleanup() {
-    DEBUG_WIN << "Starting the check, cleanup and reindexing... (" + Global::basketsFolder() + ")";
-    QList<QString> dirList;
-    QList<QString> fileList;
-    QString topDirEntry;
-    QString subDirEntry;
-    QFileInfo fileInfo;
-    QDir topDir(Global::basketsFolder(), QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
-    foreach( topDirEntry, topDir.entryList() ) {
-        if( topDirEntry != "." && topDirEntry != ".." ) {
-            fileInfo.setFile(Global::basketsFolder() + "/" + topDirEntry);
-            if (fileInfo.isDir()) {
-                dirList << topDirEntry + "/";
-                QDir basketDir(Global::basketsFolder() + "/" + topDirEntry,
-                               QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
-                foreach( subDirEntry, basketDir.entryList() ) {
-                    if (subDirEntry != "." && subDirEntry != "..") {
-                        fileList << topDirEntry + "/" + subDirEntry;
-                    }
-                }
-            } else if (topDirEntry != "." && topDirEntry != ".." && topDirEntry != "baskets.xml") {
-                fileList << topDirEntry;
-            }
-        }
-    }
-    DEBUG_WIN << "Directories found: "+ QString::number(dirList.count());
-    DEBUG_WIN << "Files found: "+ QString::number(fileList.count());
-
-    DEBUG_WIN << "Checking Baskets:";
-    for (int i = 0; i < topLevelItemCount(); i++) {
-        checkBasket( topLevelItem(i), dirList, fileList );
-    }
-    DEBUG_WIN << "Baskets checked.";
-    DEBUG_WIN << "Directories remaining (not in any basket): "+ QString::number(dirList.count());
-    DEBUG_WIN << "Files remaining (not in any basket): "+ QString::number(fileList.count());
-
-    foreach(topDirEntry, dirList) {
-        DEBUG_WIN << "<font color='red'>" + topDirEntry + " does not belong to any basket!</font>";
-        //Tools::deleteRecursively(Global::basketsFolder() + "/" + topDirEntry);
-        //DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " removed!</font>";
-        Tools::trashRecursively(Global::basketsFolder() + "/" + topDirEntry);
-        DEBUG_WIN << "<font color='red'>\t" + topDirEntry + " trashed!</font>";
-        foreach(subDirEntry, fileList) {
-            fileInfo.setFile(Global::basketsFolder() + "/" + subDirEntry);
-            if ( ! fileInfo.isFile() ) {
-                fileList.removeAll( subDirEntry );
-                DEBUG_WIN << "<font color='red'>\t\t" + subDirEntry + " already removed!</font>";
-            }
-        }
-    }
-    foreach(subDirEntry, fileList) {
-        DEBUG_WIN << "<font color='red'>" + subDirEntry + " does not belong to any note!</font>";
-        //Tools::deleteRecursively(Global::basketsFolder() + "/" + subDirEntry);
-        //DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " removed!</font>";
-        Tools::trashRecursively(Global::basketsFolder() + "/" + subDirEntry);
-        DEBUG_WIN << "<font color='red'>\t" + subDirEntry + " trashed!</font>";
-    }
-    DEBUG_WIN << "Check, cleanup and reindexing completed";
 }
 
 void BNPView::countsChanged(BasketView *basket)
@@ -2232,7 +2098,7 @@ void BNPView::delBasket()
     QStringList basketsList = listViewItemForBasket(basket)->childNamesTree(0);
     if (basketsList.count() > 0) {
         int deleteChilds = KMessageBox::questionYesNoList(this,
-                           i18n("<qt><b>%1</b> has the following children baskets.<br>Do you want to remove them too?</qt>",
+                           i18n("<qt><b>%1</b> have the following children baskets.<br>Do you want to remove them too?</qt>",
                                 Tools::textToHTMLWithoutP(basket->basketName())),
                            basketsList,
                            i18n("Remove Children Baskets")
@@ -2243,11 +2109,12 @@ void BNPView::delBasket()
 #endif
 
         if (deleteChilds == KMessageBox::No)
-            return;
+            listViewItemForBasket(basket)->moveChildsBaskets();
     }
 
     doBasketDeletion(basket);
 
+//  basketNumberChanged();
 //  rebuildBasketsMenu();
 }
 
@@ -2256,9 +2123,9 @@ void BNPView::doBasketDeletion(BasketView *basket)
     basket->closeEditor();
 
     QTreeWidgetItem *basketItem = listViewItemForBasket(basket);
-    while( basketItem->childCount() > 0 ) {
+    for (int i = 0; i < basketItem->childCount(); i++) {
         // First delete the child baskets:
-        doBasketDeletion(((BasketListViewItem*)basketItem->child(0))->basket());
+        doBasketDeletion(((BasketListViewItem*)basketItem->child(i))->basket());
     }
     // Then, basket have no child anymore, delete it:
     DecoratedBasket *decoBasket = basket->decoration();
@@ -2341,14 +2208,6 @@ void BNPView::delayedOpenArchive()
     Archive::open(s_fileToOpen);
 }
 
-QString BNPView::s_basketToOpen = "";
-
-void BNPView::delayedOpenBasket()
-{
-    BasketView *bv = this->basketForFolderName(s_basketToOpen);
-    this->setCurrentBasketInHistory(bv);
-}
-
 void BNPView::openArchive()
 {
     QString filter = "*.baskets|" + i18n("Basket Archives") + "\n*|" + i18n("All Files");
@@ -2357,10 +2216,17 @@ void BNPView::openArchive()
         Archive::open(path);
 }
 
+
 void BNPView::activatedTagShortcut()
 {
     Tag *tag = Tag::tagForKAction((KAction*)sender());
     currentBasket()->activatedTagShortcut(tag);
+}
+
+void BNPView::slotBasketNumberChanged(int number)
+{
+    m_actPreviousBasket->setEnabled(number > 1);
+    m_actNextBasket    ->setEnabled(number > 1);
 }
 
 void BNPView::slotBasketChanged()
@@ -2368,15 +2234,6 @@ void BNPView::slotBasketChanged()
     m_actFoldBasket->setEnabled(canFold());
     m_actExpandBasket->setEnabled(canExpand());
     setFiltering(currentBasket() && currentBasket()->decoration()->filterData().isFiltering);
-    this->canUndoRedoChanged();
-}
-
-void BNPView::canUndoRedoChanged()
-{
-    if(m_history) {
-        m_actPreviousBasket->setEnabled(m_history->canUndo());
-        m_actNextBasket    ->setEnabled(m_history->canRedo());
-    }
 }
 
 void BNPView::currentBasketChanged()
@@ -2608,10 +2465,6 @@ void BNPView::addNoteImage()
 void BNPView::addNoteLink()
 {
     showMainWindow(); currentBasket()->insertEmptyNote(NoteType::Link);
-}
-void BNPView::addNoteCrossReference()
-{
-    showMainWindow(); currentBasket()->insertEmptyNote(NoteType::CrossReference);
 }
 void BNPView::addNoteColor()
 {
@@ -3019,103 +2872,4 @@ void BNPView::disconnectTagsMenuDelayed()
     disconnect(m_lastOpenedTagsMenu, SIGNAL(triggered(QAction *)), currentBasket(), SLOT(toggledTagInMenu(QAction *)));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(unlockHovering()));
     disconnect(m_lastOpenedTagsMenu, SIGNAL(aboutToHide()),  currentBasket(), SLOT(disableNextClick()));
-}
-
-void BNPView::loadCrossReference(QString link)
-{
-    //remove "basket://" and any encoding.
-    QString folderName = link.mid(9, link.length() - 9);
-    folderName = QUrl::fromPercentEncoding(folderName.toLatin1());
-
-    BasketView* basket = this->basketForFolderName(folderName);
-
-    if(!basket)
-        return;
-
-    this->setCurrentBasketInHistory(basket);
-}
-
-QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *parent)
-{
-    QString found = "";
-
-    QString page = pages.first();
-
-    page = QUrl::fromPercentEncoding(page.toLatin1());
-    pages.removeFirst();
-
-    if(page == "..") {
-        QTreeWidgetItem *p;
-        if(parent)
-            p = parent->parent();
-        else
-            p = m_tree->currentItem()->parent();
-        found = this->folderFromBasketNameLink(pages, p);
-    } else if(!parent && page == "") {
-        parent = m_tree->invisibleRootItem();
-        found = this->folderFromBasketNameLink(pages, parent);
-    } else {
-        if(!parent && (page == "." || page != "")) {
-            parent = m_tree->currentItem();
-        }
-        QRegExp re(":\\{([0-9]+)\\}");
-        re.setMinimal(true);
-        int pos = 0;
-
-        pos = re.indexIn(page, pos);
-        int basketNum = 1;
-
-        if(pos != -1)
-            basketNum = re.cap(1).toInt();
-
-        page = page.left(page.length() - re.matchedLength());
-
-        for(int i = 0; i < parent->childCount(); i++) {
-            QTreeWidgetItem *child = parent->child(i);
-
-            if(child->text(0).toLower() == page.toLower()) {
-                basketNum--;
-                if(basketNum == 0) {
-                    if(pages.count() > 0) {
-                        found = this->folderFromBasketNameLink(pages, child);
-                        break;
-                    } else {
-                        found = ((BasketListViewItem*)child)->basket()->folderName();
-                        break;
-                    }
-                }
-            } else
-                found = "";
-        }
-    }
-
-    return found;
-}
-
-void BNPView::sortChildrenAsc()
-{
-    m_tree->currentItem()->sortChildren(0, Qt::AscendingOrder);
-}
-
-void BNPView::sortChildrenDesc()
-{
-    m_tree->currentItem()->sortChildren(0, Qt::DescendingOrder);
-}
-
-void BNPView::sortSiblingsAsc()
-{
-    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
-    if(!parent)
-        m_tree->sortItems(0, Qt::AscendingOrder);
-    else
-        parent->sortChildren(0, Qt::AscendingOrder);
-}
-
-void BNPView::sortSiblingsDesc()
-{
-    QTreeWidgetItem *parent = m_tree->currentItem()->parent();
-    if(!parent)
-        m_tree->sortItems(0, Qt::DescendingOrder);
-    else
-        parent->sortChildren(0, Qt::DescendingOrder);
 }
