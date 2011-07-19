@@ -116,6 +116,7 @@ void importOneNoteXml();
 void importTuxCards();
 void importStickyNotes();
 void importTomboy();
+void importJreepadFile();
 void importTextFile();
 
 //

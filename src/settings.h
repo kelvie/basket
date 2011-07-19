@@ -154,6 +154,7 @@ private:
     LinkLookEditWidget  *m_localLinkLook;
     LinkLookEditWidget  *m_networkLinkLook;
     LinkLookEditWidget  *m_launcherLook;
+    LinkLookEditWidget  *m_crossReferenceLook;
 };
 
 class BASKET_EXPORT ApplicationsPage : public KCModule

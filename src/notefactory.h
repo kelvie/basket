@@ -49,6 +49,9 @@ Note* createNoteText(const QString &text,     BasketView *parent, bool reallyPla
 Note* createNoteHtml(const QString &html,     BasketView *parent);
 Note* createNoteLink(const KUrl    &url,      BasketView *parent);
 Note* createNoteLink(const KUrl    &url,      const QString &title, BasketView *parent);
+Note* createNoteCrossReference(const KUrl &url, BasketView *parent);
+Note* createNoteCrossReference(const KUrl &url, const QString &title, BasketView *parent);
+Note* createNoteCrossReference(const KUrl &url, const QString &title, const QString &icon, BasketView *parent);
 Note* createNoteImage(const QPixmap &image,    BasketView *parent);
 Note* createNoteColor(const QColor  &color,    BasketView *parent);
 Note* createNoteFromText(const QString &content,  BasketView *parent);  // Find automatically the type from the text meaning  // TODO: Return Note::List?

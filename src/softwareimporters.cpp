@@ -574,6 +574,62 @@ void SoftwareImporters::importTomboy()
         finishImport(basket);
 }
 
+void SoftwareImporters::importJreepadFile(){
+    typedef QPair<BasketView *, QDomElement> basketAndElementPair;
+
+    QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportJreepadFile"),
+                                                    "*.xml|XML files");
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    basketAndElementPair newElement;
+    basketAndElementPair currentElement;
+    QList<basketAndElementPair> elements;
+    QList<BasketView*> basketList;
+
+    QDomDocument *doc = XMLWork::openFile("node", fileName);
+    newElement.second = doc->documentElement();
+
+    BasketView *basket = 0;
+    BasketFactory::newBasket(/*icon=*/"xml", /*name=*/doc->documentElement().attribute("title"), 
+                             /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
+                             /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+    basket = Global::bnpView->currentBasket();
+    basket->load();
+    basketList << basket;
+    newElement.first = basket;
+
+    elements << newElement;
+
+    while ( !elements.isEmpty() ) {
+        currentElement = elements.takeFirst();
+        for (QDomNode n = currentElement.second.firstChild(); !n.isNull(); n = n.nextSibling()) {
+            if ( n.isText() ) {
+                basket = currentElement.first;
+                Note *note = NoteFactory::createNoteFromText(n.toText().data(), basket);
+                basket->insertNote(note, basket->firstNote(), 
+                                   Note::BottomColumn, QPoint(), /*animate=*/false);
+            } else if ( n.isElement() ) {
+                BasketFactory::newBasket(/*icon=*/"xml", /*name=*/n.toElement().attribute("title"), 
+                                         /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
+                                         /*textColor=*/QColor(), /*templateName=*/"1column", 
+                                         /*createIn=*/currentElement.first);
+                basket = Global::bnpView->currentBasket();
+                basket->load();
+                basketList << basket;
+                newElement.first = basket;
+                newElement.second = n.toElement();
+                elements << newElement;
+            }
+        }
+    }
+    
+    foreach (basket, basketList) {
+        finishImport(basket);
+    }
+}
+
 void SoftwareImporters::importTextFile()
 {
     QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportTextFile"),  "*|All files");

@@ -133,14 +133,14 @@ QStringList BasketListViewItem::childNamesTree(int deep)
     for (int j = 0; j < deep; ++j)
         spaces += "  ";
 
-    // Append the name:
-    result.append(spaces + basket()->basketName());
+    // Append the names of sub baskets
+    if(deep > 0)
+        result.append(spaces + basket()->basketName());
 
     // Append the children:
     for (int i = 0; i < childCount(); i++) {
         QStringList children = ((BasketListViewItem *)child(i))->childNamesTree(deep + 1);
-        for (QStringList::iterator it = children.begin(); it != children.end(); ++it)
-            result.append(*it);
+        result.append(children);
     }
     return result;
 }
@@ -362,6 +362,7 @@ void BasketListViewItem::setAbbreviated(bool b)
 }
 
 /** class BasketTreeListView: */
+QString BasketTreeListView::TREE_ITEM_MIME_STRING = "application/x-basket-item";
 
 BasketTreeListView::BasketTreeListView(QWidget *parent)
         : QTreeWidget(parent), m_autoOpenItem(0)
@@ -373,6 +374,37 @@ BasketTreeListView::BasketTreeListView(QWidget *parent)
 void BasketTreeListView::contextMenuEvent(QContextMenuEvent *e)
 {
     emit contextMenuRequested(e->pos());
+}
+
+QStringList BasketTreeListView::mimeTypes() const
+{
+    QStringList types;
+    types << TREE_ITEM_MIME_STRING;
+    types << NoteDrag::NOTE_MIME_STRING;
+    return types;
+}
+
+QMimeData* BasketTreeListView::mimeData(const QList<QTreeWidgetItem *> items) const
+{
+    QString mimeType = TREE_ITEM_MIME_STRING;
+
+    QByteArray data = QByteArray();
+    QDataStream out(&data, QIODevice::WriteOnly);
+
+    if(items.isEmpty())
+        return new QMimeData();
+
+
+    for (int i = 0; i < items.count(); ++i) {
+        BasketListViewItem *basketItem = static_cast<BasketListViewItem*>(items[i]);
+        out << basketItem->basket()->basketName() << basketItem->basket()->folderName()
+                << basketItem->basket()->icon();
+    }
+
+    QMimeData *mimeData = new QMimeData();
+
+    mimeData->setData(mimeType, data);
+    return mimeData;
 }
 
 bool BasketTreeListView::event(QEvent *e)
@@ -391,22 +423,40 @@ bool BasketTreeListView::event(QEvent *e)
     return QTreeWidget::event(e);
 }
 
-void BasketTreeListView::dragEnterEvent(QDragEnterEvent *event)
+void BasketTreeListView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->provides("application/x-qabstractitemmodeldatalist")) {
-        QTreeWidgetItemIterator it(this); // TODO: Don't show expanders if it's not a basket drag...
-        while (*it) {
-            QTreeWidgetItem *item = *it;
-            if (item->childCount() <= 0) {
-                item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-                item->setExpanded(true);
-            }
-            ++it;
-        }
-        update();
+    m_dragStartPosition = event->pos();
+    QTreeWidget::mousePressEvent(event);
+}
+
+void BasketTreeListView::mouseMoveEvent(QMouseEvent *event)
+{
+    //QTreeWidget::mouseMoveEvent(event);
+    if (!(event->buttons() & Qt::LeftButton)) {
+        event->ignore();
+        return;
+    }
+    if ((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance()) {
+        event->ignore();
+        return;
     }
 
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = this->mimeData(this->selectedItems());
+    drag->setMimeData(mimeData);
+
+    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+    if(dropAction == Qt::MoveAction || dropAction == Qt::CopyAction)
+        event->accept();
+
+}
+
+void BasketTreeListView::dragEnterEvent(QDragEnterEvent *event)
+{
+    kDebug() << event->format();
+    event->acceptProposedAction();
     QTreeWidget::dragEnterEvent(event);
+
 }
 
 void BasketTreeListView::removeExpands()
@@ -433,11 +483,10 @@ void BasketTreeListView::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BasketTreeListView::dropEvent(QDropEvent *event)
 {
-    kDebug() << "BasketTreeListView::dropEvent()";
-    if (event->provides("application/x-qabstractitemmodeldatalist")) {
-	event->setDropAction(Qt::MoveAction);
+    if (event->mimeData()->hasFormat(TREE_ITEM_MIME_STRING)) {
+        event->setDropAction(Qt::MoveAction);
         QTreeWidget::dropEvent(event);
-    } else {
+    } else { // this handels application/x-basket-note drag events.
         kDebug() << "Forwarding dropped data to the basket";
         QTreeWidgetItem *item = itemAt(event->pos());
         BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
@@ -458,24 +507,19 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 
 void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 {
-    kDebug() << "BasketTreeListView::dragMoveEvent";
-    if (event->provides("application/x-qabstractitemmodeldatalist"))
-        QTreeWidget::dragMoveEvent(event);
-    else {
-        QTreeWidgetItem *item = itemAt(event->pos());
-        BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
-        if (m_autoOpenItem != item) {
-            m_autoOpenItem = item;
-            m_autoOpenTimer.setSingleShot(true);
-            m_autoOpenTimer.start(1700);
-        }
-        if (item) {
-            event->accept();
-        }
-        setItemUnderDrag(bitem);
-
-        QTreeWidget::dragMoveEvent(event); // FIXME: ADDED
+    QTreeWidgetItem *item = itemAt(event->pos());
+    BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+    if (m_autoOpenItem != item) {
+        m_autoOpenItem = item;
+        m_autoOpenTimer.setSingleShot(true);
+        m_autoOpenTimer.start(1700);
     }
+    if (item) {
+        event->accept();
+    }
+    setItemUnderDrag(bitem);
+
+    QTreeWidget::dragMoveEvent(event);
 }
 
 void BasketTreeListView::setItemUnderDrag(BasketListViewItem* item)

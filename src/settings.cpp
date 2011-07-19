@@ -112,17 +112,21 @@ void Settings::loadConfig()
     LinkLook defaultLocalLinkLook;
     LinkLook defaultNetworkLinkLook;
     LinkLook defaultLauncherLook; /* italic  bold    underlining                color      hoverColor  iconSize  preview */
+    LinkLook defaultCrossReferenceLook;
+
     defaultSoundLook.setLook(false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::None);
     defaultFileLook.setLook(false,  false,  LinkLook::Never,           QColor(),  QColor(),   32,       LinkLook::TwiceIconSize);
     defaultLocalLinkLook.setLook(true,   false,  LinkLook::OnMouseHover,    QColor(),  QColor(),   22,       LinkLook::TwiceIconSize);
     defaultNetworkLinkLook.setLook(false,  false,  LinkLook::OnMouseOutside,  QColor(),  QColor(),   16,       LinkLook::None);
     defaultLauncherLook.setLook(false,  true,   LinkLook::Never,           QColor(),  QColor(),   48,       LinkLook::None);
+    defaultCrossReferenceLook.setLook(false, false, LinkLook::OnMouseHover, QColor(), QColor(), 16, LinkLook::None);
 
     loadLinkLook(LinkLook::soundLook,       "Sound Look",        defaultSoundLook);
     loadLinkLook(LinkLook::fileLook,        "File Look",         defaultFileLook);
     loadLinkLook(LinkLook::localLinkLook,   "Local Link Look",   defaultLocalLinkLook);
     loadLinkLook(LinkLook::networkLinkLook, "Network Link Look", defaultNetworkLinkLook);
     loadLinkLook(LinkLook::launcherLook,    "Launcher Look",     defaultLauncherLook);
+    loadLinkLook(LinkLook::crossReferenceLook, "Cross Reference Look", defaultCrossReferenceLook);
 
     KConfigGroup config = Global::config()->group("Main window");    // TODO: Split with a "System tray icon" group !
     setTreeOnLeft(config.readEntry("treeOnLeft",           true));
@@ -206,6 +210,7 @@ void Settings::saveConfig()
     saveLinkLook(LinkLook::localLinkLook,   "Local Link Look");
     saveLinkLook(LinkLook::networkLinkLook, "Network Link Look");
     saveLinkLook(LinkLook::launcherLook,    "Launcher Look");
+    saveLinkLook(LinkLook::crossReferenceLook,"Cross Reference Look");
 
     KConfigGroup config = Global::config()->group("Main window");
     config.writeEntry("treeOnLeft",           treeOnLeft());
@@ -593,6 +598,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
     m_middleAction->addItem(i18n("Paste clipboard"));
     m_middleAction->addItem(i18n("Insert image note"));
     m_middleAction->addItem(i18n("Insert link note"));
+    m_middleAction->addItem(i18n("Insert cross reference"));
     m_middleAction->addItem(i18n("Insert launcher note"));
     m_middleAction->addItem(i18n("Insert color note"));
     m_middleAction->addItem(i18n("Grab screen zone"));
@@ -843,11 +849,14 @@ NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
     m_localLinkLook   = new LinkLookEditWidget(this, i18n("Home folder"),                                     "user-home", tabs);
     m_networkLinkLook = new LinkLookEditWidget(this, "www.kde.org",             KMimeType::iconNameForUrl(KUrl("http://www.kde.org")), tabs);
     m_launcherLook    = new LinkLookEditWidget(this, i18n("Launch %1").arg(KGlobal::mainComponent().aboutData()->programName()), "basket",      tabs);
+    m_crossReferenceLook=new LinkLookEditWidget(this, i18n("Another basket"), "basket", tabs);
+
     tabs->addTab(m_soundLook,       i18n("&Sounds"));
     tabs->addTab(m_fileLook,        i18n("&Files"));
     tabs->addTab(m_localLinkLook,   i18n("&Local Links"));
     tabs->addTab(m_networkLinkLook, i18n("&Network Links"));
     tabs->addTab(m_launcherLook,    i18n("Launc&hers"));
+    tabs->addTab(m_crossReferenceLook, i18n("&Cross References"));
 
     load();
 }
@@ -859,6 +868,7 @@ void NotesAppearancePage::load()
     m_localLinkLook->set(LinkLook::localLinkLook);
     m_networkLinkLook->set(LinkLook::networkLinkLook);
     m_launcherLook->set(LinkLook::launcherLook);
+    m_crossReferenceLook->set(LinkLook::crossReferenceLook);
 }
 
 void NotesAppearancePage::save()
@@ -868,6 +878,7 @@ void NotesAppearancePage::save()
     m_localLinkLook->saveChanges();
     m_networkLinkLook->saveChanges();
     m_launcherLook->saveChanges();
+    m_crossReferenceLook->saveChanges();
     Global::bnpView->linkLookChanged();
 }
 

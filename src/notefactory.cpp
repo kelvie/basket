@@ -103,6 +103,27 @@ Note* NoteFactory::createNoteLink(const KUrl &url, const QString &title, BasketV
     return note;
 }
 
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, BasketView *parent)
+{
+    Note *note = new Note(parent);
+    new CrossReferenceContent(note, url, titleForURL(url), iconForURL(url));
+    return note;
+}
+
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, const QString &title, BasketView *parent)
+{
+    Note *note = new Note(parent);
+    new CrossReferenceContent(note, url, title, iconForURL(url));
+    return note;
+}
+
+Note* NoteFactory::createNoteCrossReference(const KUrl &url, const QString &title, const QString &icon, BasketView *parent)
+{
+    Note *note = new Note(parent);
+    new CrossReferenceContent(note, url, title, icon);
+    return note;
+}
+
 Note* NoteFactory::createNoteImage(const QPixmap &image, BasketView *parent)
 {
     Note *note = new Note(parent);
@@ -435,6 +456,19 @@ Note* NoteFactory::dropNote(const QMimeData *source, BasketView *parent, bool fr
     if (ExtendedTextDrag::decode(source, text))
         return createNoteFromText(text, parent);
 
+    /* Create a cross reference note */
+
+    if(source->hasFormat(BasketTreeListView::TREE_ITEM_MIME_STRING)) {
+        QByteArray data = source->data(BasketTreeListView::TREE_ITEM_MIME_STRING);
+        QDataStream stream(&data, QIODevice::ReadOnly);
+        QString basketName, folderName, icon;
+
+        while (!stream.atEnd())
+            stream >> basketName >> folderName >> icon;
+
+        return createNoteCrossReference(KUrl("basket://" + folderName), basketName, icon, parent);
+    }
+
     /* Unsucceful drop */
     note = createNoteUnknown(source, parent);
     QString message = i18n("<p>%1 doesn't support the data you've dropped.<br>"
@@ -586,6 +620,10 @@ void NoteFactory::consumeContent(QDataStream &stream, NoteType::Id type)
         QString title, icon;
         quint64 autoTitle64, autoIcon64;
         stream >> url >> title >> icon >> autoTitle64 >> autoIcon64;
+    } else if (type == NoteType::CrossReference) {
+        KUrl url;
+        QString title, icon;
+        stream >> url >> title >> icon;
     } else if (type == NoteType::Color) {
         QColor color;
         stream >> color;
@@ -617,6 +655,13 @@ Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, BasketV
         autoIcon  = (bool)autoIcon64;
         Note *note = NoteFactory::createNoteLink(url, parent);
         ((LinkContent*)(note->content()))->setLink(url, title, icon, autoTitle, autoIcon);
+        return note;
+    } else if (type == NoteType::CrossReference) {
+        KUrl url;
+        QString title, icon;
+        stream >> url >> title >> icon;
+        Note *note = NoteFactory::createNoteCrossReference(url, parent);
+        ((CrossReferenceContent*)(note->content()))->setCrossReference(url, title, icon);
         return note;
     } else if (type == NoteType::Color) {
         QColor color;
@@ -754,6 +799,7 @@ Note* NoteFactory::loadFile(const QString &fileName, NoteType::Id type, BasketVi
 
     default:
     case NoteType::Link:
+    case NoteType::CrossReference:
     case NoteType::Color:
         return 0;
     }
@@ -956,6 +1002,8 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, BasketView *parent)
         return NoteFactory::createNoteImage(*pixmap, parent);
     case NoteType::Link:
         return NoteFactory::createNoteLink(KUrl(), parent);
+    case NoteType::CrossReference:
+        return NoteFactory::createNoteCrossReference(KUrl(), parent);
     case NoteType::Launcher:
         return NoteFactory::createNoteLauncher(KUrl(), parent);
     case NoteType::Color:

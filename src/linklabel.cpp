@@ -57,6 +57,7 @@ LinkLook *LinkLook::fileLook        = new LinkLook(/*useLinkColor=*/false, /*can
 LinkLook *LinkLook::localLinkLook   = new LinkLook(/*useLinkColor=*/true,  /*canPreview=*/true);
 LinkLook *LinkLook::networkLinkLook = new LinkLook(/*useLinkColor=*/true,  /*canPreview=*/false);
 LinkLook *LinkLook::launcherLook    = new LinkLook(/*useLinkColor=*/true,  /*canPreview=*/false);
+LinkLook *LinkLook::crossReferenceLook=new LinkLook(/*useLinkColor=*/true,  /*canPreview=*/false);
 
 LinkLook::LinkLook(bool useLinkColor, bool canPreview)
 {
@@ -138,7 +139,7 @@ LinkLook* LinkLook::lookForURL(const KUrl &url)
 QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor) const
 {
     // Set the link class:
-    QString css = QString("   .%1 a { display: block; width: 100%;").arg(cssClass);
+    QString css = QString("{ display: block; width: 100%;");
     if (underlineOutside())
         css += " text-decoration: underline;";
     else
@@ -149,6 +150,10 @@ QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor)
         css += " font-weight: bold;";
     QColor textColor = (color().isValid() || m_useLinkColor ? effectiveColor() : defaultTextColor);
     css += QString(" color: %1; }\n").arg(textColor.name());
+
+   QString css2 = css;
+   css.prepend(QString("   .%1 a").arg(cssClass));
+   css2.prepend(QString("   a.%1").arg(cssClass));
 
     // Set the hover state class:
     QString hover;
@@ -163,10 +168,11 @@ QString LinkLook::toCSS(const QString &cssClass, const QColor &defaultTextColor)
     }
 
     // But include it only if it contain a different style than non-hover state:
-    if (!hover.isEmpty())
+    if (!hover.isEmpty()) {
         css += QString("   .%1 a:hover { %2 }\n").arg(cssClass, hover);
-
-    return css;
+        css2 += QString("    a:hover.%1 { %2 }\n").arg(cssClass, hover);
+    }
+    return css + css2;
 }
 
 /** LinkLabel */

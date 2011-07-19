@@ -97,6 +97,10 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
     if (linkContent)
         return new LinkEditor(linkContent, parent);
 
+    CrossReferenceContent *crossReferenceContent = dynamic_cast<CrossReferenceContent*>(noteContent);
+    if(crossReferenceContent)
+        return new CrossReferenceEditor(crossReferenceContent, parent);
+
     LauncherContent *launcherContent = dynamic_cast<LauncherContent*>(noteContent);
     if (launcherContent)
         return new LauncherEditor(launcherContent, parent);
@@ -224,7 +228,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     textEdit->setPalette(palette);
 
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    textEdit->setHtml(m_htmlContent->html());
+    textEdit->setHtml(Tools::tagCrossReferences(m_htmlContent->html(), /*userLink=*/true));
     textEdit->moveCursor(QTextCursor::End);
     textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
     setInlineEditor(textEdit);
@@ -376,7 +380,7 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    m_htmlContent->setHtml(textEdit()->toHtml());
+    m_htmlContent->setHtml(Tools::tagCrossReferences(textEdit()->toHtml(), /*userLink=*/true));
     m_htmlContent->saveToFile();
     m_htmlContent->setEdited();
 
@@ -479,6 +483,18 @@ LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
         setEmpty();
 }
 
+/** class CrossReferenceEditor: */
+
+CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent)
+        : NoteEditor(crossReferenceContent)
+{
+    CrossReferenceEditDialog dialog(crossReferenceContent, parent);
+    if (dialog.exec() == QDialog::Rejected)
+        cancel();
+    if (crossReferenceContent->url().isEmpty() && crossReferenceContent->title().isEmpty())
+        setEmpty();
+}
+
 /** class LauncherEditor: */
 
 LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent)
@@ -499,6 +515,7 @@ ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
     KColorDialog dialog(parent);
     dialog.setColor(colorContent->color());
     dialog.setCaption(i18n("Edit Color Note"));
+    dialog.setButtons(KDialog::Ok | KDialog::Cancel);
     if (dialog.exec() == QDialog::Accepted) {
         if (dialog.color() != colorContent->color()) {
             colorContent->setColor(dialog.color());
@@ -740,6 +757,114 @@ void LinkEditDialog::slotOk()
         m_icon->setFixedSize(minSize, minSize);
     else
         m_icon->setFixedSize(m_icon->sizeHint().height(), m_icon->sizeHint().height()); // Make it square
+}
+
+/** class CrossReferenceEditDialog: */
+
+CrossReferenceEditDialog::CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent/*, QKeyEvent *ke*/)
+        : KDialog(parent)
+        , m_noteContent(contentNote)
+{
+
+    // KDialog options
+    setCaption(i18n("Edit Cross Reference"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+    setObjectName("EditCrossReference");
+    setModal(true);
+    showButtonSeparator(true);
+    connect(this, SIGNAL(okClicked()), SLOT(slotOk()));
+
+    QWidget     *page   = new QWidget(this);
+    setMainWidget(page);
+    QWidget *wid = new QWidget(page);
+
+    QGridLayout *layout = new QGridLayout(page);
+
+    m_targetBasket = new KComboBox(wid);
+    this->generateBasketList(m_targetBasket);
+
+    if(m_noteContent->url().isEmpty()){
+        BasketListViewItem *item = Global::bnpView->topLevelItem(0);
+        m_noteContent->setCrossReference(KUrl(item->data(0, Qt::UserRole).toString()), m_targetBasket->currentText(), "edit-copy");
+        this->urlChanged(0);
+    } else {
+        QString url = m_noteContent->url().url();
+        //cannot use findData because I'm using a StringList and I don't have the second
+        // piece of data to make find work.
+        for(int i = 0; i < m_targetBasket->count(); ++i) {
+            if(url == m_targetBasket->itemData(i, Qt::UserRole).toStringList().first()) {
+                m_targetBasket->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
+
+    QLabel *label1 = new QLabel(page);
+    label1->setText(i18n("Ta&rget:"));
+    label1->setBuddy(m_targetBasket);
+
+    layout->addWidget(label1,  0, 0, Qt::AlignVCenter);
+    layout->addWidget(m_targetBasket,   0, 1, Qt::AlignVCenter);
+
+    connect(m_targetBasket,   SIGNAL(activated(int)), this, SLOT(urlChanged(int)));
+
+    QWidget *stretchWidget = new QWidget(page);
+    QSizePolicy policy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    policy.setHorizontalStretch(1);
+    policy.setVerticalStretch(255);
+    stretchWidget->setSizePolicy(policy); // Make it fill ALL vertical space
+    layout->addWidget(stretchWidget, 3, 1, Qt::AlignVCenter);
+}
+
+CrossReferenceEditDialog::~CrossReferenceEditDialog()
+{
+}
+
+void CrossReferenceEditDialog::urlChanged(const int index)
+{
+    if(m_targetBasket)
+        m_noteContent->setCrossReference(KUrl(m_targetBasket->itemData(index, Qt::UserRole).toStringList().first()),
+                                         m_targetBasket->currentText().trimmed(),
+                                         m_targetBasket->itemData(index, Qt::UserRole).toStringList().last());
+}
+
+void CrossReferenceEditDialog::slotOk()
+{
+    m_noteContent->setEdited();
+}
+
+void CrossReferenceEditDialog::generateBasketList(KComboBox *targetList, BasketListViewItem *item, int indent)
+{
+    if(!item) { // include ALL top level items and their children.
+        for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)
+            this->generateBasketList(targetList, Global::bnpView->topLevelItem(i));
+    } else {
+        BasketView* bv = item->basket();
+
+        //TODO: add some fancy deco stuff to make it look like a tree list.
+        QString pad;
+        QString text = item->text(0); //user text
+
+        text.prepend(pad.fill(' ', indent *2));
+
+        //create the link text
+        QString link = "basket://";
+        link.append(bv->folderName().toLower()); //unique ref.
+        QStringList data;
+        data.append(link);
+        data.append(bv->icon());
+
+        targetList->addItem(item->icon(0), text, QVariant(data));
+
+        int subBasketCount = item->childCount();
+        if(subBasketCount > 0) {
+            indent++;
+            for(int i = 0; i < subBasketCount; ++i) {
+                this->generateBasketList(targetList, (BasketListViewItem*)item->child(i), indent);
+            }
+        }
+    }
 }
 
 /** class LauncherEditDialog: */
