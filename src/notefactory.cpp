@@ -884,6 +884,8 @@ QString NoteFactory::createFileForNewNote(BasketView *parent, const QString &ext
 
 KUrl NoteFactory::filteredURL(const KUrl &url)
 {
+    return url;
+    /*
     // KURIFilter::filteredURI() is slow if the URL contains only letters, digits and '-' or '+'.
     // So, we don't use that function is that case:
     bool isSlow = true;
@@ -898,6 +900,7 @@ KUrl NoteFactory::filteredURL(const KUrl &url)
         return url;
     else
         return KUriFilter::self()->filteredUri(url);
+        */
 }
 
 QString NoteFactory::titleForURL(const KUrl &url)
