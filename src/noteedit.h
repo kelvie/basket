@@ -47,6 +47,8 @@ class KColorCombo;
 class FocusWidgetFilter;
 class QTextCharFormat;
 
+class BasketListViewItem;
+
 #include "notecontent.h"
 
 /** The base class for every note editor.
