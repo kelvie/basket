@@ -947,9 +947,11 @@ QString NoteFactory::titleForURL(const KUrl &url)
 
 QString NoteFactory::iconForURL(const KUrl &url)
 {
-    QString icon = KMimeType::iconNameForUrl(url.url());
+    QString icon = "";
     if (url.protocol() == "mailto")
         icon = "message";
+//    else 
+//        icon = KMimeType::iconNameForUrl(url.url());
     return icon;
 }
 

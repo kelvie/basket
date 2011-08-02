@@ -45,7 +45,6 @@
 #include <QFileInfo>
 #include <KDE/KFileItem>
 #include <KDE/KIO/PreviewJob>
-#include <kio/global.h>
 
 #include "notecontent.h"
 #include "note.h"
@@ -1555,6 +1554,7 @@ void FileContent::removePreview(const KFileItem& ki)
 
 void FileContent::startFetchingUrlPreview()
 {
+    /*
     KUrl url(fullPath());
     LinkLook *linkLook = this->linkLook();
 
@@ -1567,6 +1567,7 @@ void FileContent::startFetchingUrlPreview()
         connect(m_previewJob, SIGNAL(gotPreview(const KFileItem&, const QPixmap&)), this, SLOT(newPreview(const KFileItem&, const QPixmap&)));
         connect(m_previewJob, SIGNAL(failed(const KFileItem&)),                     this, SLOT(removePreview(const KFileItem&)));
     }
+    */
 }
 
 void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
