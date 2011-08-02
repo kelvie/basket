@@ -18,28 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "archive.h"
+
 #include <QString>
 #include <QStringList>
 #include <QList>
 #include <QMap>
 #include <QDir>
 #include <QTextStream>
-#include <KDE/KTar>
 #include <QtXml>
-#include <KDE/KMessageBox>
 #include <QPixmap>
 #include <QPainter>
+#include <QProgressBar>
+
 #include <KDE/KStandardDirs>
 #include <KDE/KApplication>
 #include <KDE/KIconLoader>
 #include <KDE/KProgressDialog>
 #include <KDE/KMainWindow>
+#include <KDE/KDebug>
+#include <KDE/KMessageBox>
+#include <KDE/KTar>
 
-#include <QProgressBar>
-#include "kdebug.h"
-
-
-#include "archive.h"
 #include "global.h"
 #include "bnpview.h"
 #include "basketview.h"
@@ -175,7 +175,7 @@ void Archive::save(BasketView *basket, bool withSubBaskets, const QString &desti
                 file.write(buffer, sizeRead);
         }
         // Clean Up:
-        delete buffer;
+        delete[] buffer;
         buffer = 0;
         file.close();
     }
@@ -358,7 +358,7 @@ void Archive::open(const QString &path)
                         size -= sizeRead;
                     }
                     archiveFile.close();
-                    delete buffer;
+                    delete[] buffer;
 
                     // Extract the Archive:
                     QString extractionFolder = tempFolder + "extraction/";
@@ -401,7 +401,7 @@ void Archive::open(const QString &path)
                 while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
                     size -= sizeRead;
                 }
-                delete buffer;
+                delete[] buffer;
             } else {
                 // We do not know what it is, and we do not care.
             }

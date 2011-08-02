@@ -30,6 +30,9 @@ class Tag;
 class QString;
 class QStringList;
 class QDomNode;
+class QProgressBar;
+class QDomElement;
+
 class KTar;
 class KProgress;
 
