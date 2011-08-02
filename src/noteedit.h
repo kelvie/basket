@@ -37,6 +37,7 @@ class KToolBar;
 class KToggleAction;
 class KActionCollection;
 class KAction;
+class KComboBox;
 
 class FontSizeCombo;
 
@@ -46,6 +47,7 @@ class QFontComboBox;
 class KColorCombo;
 class FocusWidgetFilter;
 class QTextCharFormat;
+class BasketListViewItem;
 
 #include "notecontent.h"
 
