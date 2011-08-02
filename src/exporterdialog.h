@@ -21,7 +21,7 @@
 #ifndef EXPORTERDIALOG_H
 #define EXPORTERDIALOG_H
 
-#include <KDialog>
+#include <KDE/KDialog>
 
 class KUrlRequester;
 class QCheckBox;

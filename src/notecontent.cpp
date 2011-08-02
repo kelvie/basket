@@ -18,54 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
-#include <QDir>
-#include <QtXml>
-#include <QPainter>
-#include <QFontMetrics>
-#include <QWidget>
-#include <QCursor>
-#include <QBuffer>
-#include <QStringList>
-#include <QPixmap>
-#include <KDE/KTextEdit>
-#include <KDE/KService>
-#include <KDE/KColorDialog>
-#include <KDE/KMessageBox>
-#include <KDE/KLocale>
-#include <QAbstractTextDocumentLayout>
-
-#include <QBitmap>
-#include <KDE/KUriFilter>
-#include <QRegExp>
-#include <KDE/KFileMetaInfo>
-#include <QDateTime>
-#include <QDrag>
-
-#include <QFileInfo>
-#include <KDE/KFileItem>
-#include <KDE/KIO/PreviewJob>
-
 #include "notecontent.h"
+
+#include <QtCore/QBuffer>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QRegExp>
+#include <QtCore/QStringList>
+#include <QtGui/QAbstractTextDocumentLayout>    //For m_simpleRichText->documentLayout()
+#include <QtGui/QBitmap>                        //For QPixmap::createHeuristicMask()
+#include <QtGui/QFontMetrics>
+#include <QtGui/QMovie>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QWidget>
+#include <QtXml/QDomDocument>
+#include <QtNetwork/QHttp>
+
+#include <KDE/KDebug>
+#include <KDE/KService>
+#include <KDE/KLocale>
+#include <KDE/KFileMetaInfo>
+#include <KDE/KFileItem>
+#include <KDE/KIO/PreviewJob>                   //For KIO::file_preview(...)
+
+#include <KDE/Phonon/AudioOutput>
+#include <KDE/Phonon/MediaObject>
+
 #include "note.h"
-#include "noteedit.h"
-#include "tag.h"
 #include "basketview.h"
 #include "filter.h"
 #include "xmlwork.h"
 #include "tools.h"
 #include "notefactory.h"
-#include "linklabel.h"
 #include "global.h"
 #include "settings.h"
-#include "focusedwidgets.h"
 #include "debugwindow.h"
-#include "kcolorcombo2.h"
 #include "htmlexporter.h"
-
-#include "config.h"
-
-#include <KDE/KDebug>
 
 /** class NoteContent:
  */

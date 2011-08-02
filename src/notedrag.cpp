@@ -18,26 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QPainter>
-#include <QTextCodec>
-#include <QBuffer>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
+#include "notedrag.h"
+
+#include <QtCore/QDir>
+#include <QtCore/QTextCodec>
+#include <QtCore/QBuffer>
+#include <QtCore/QTextStream>
+#include <QtCore/QList>
+#include <QtCore/QMimeData>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QDesktopWidget>       //For kapp->desktop()
+#include <QtGui/QDragEnterEvent>
+
 #include <kdeversion.h>
 #include <KDE/KApplication>
-#include <QDesktopWidget>
-#include <KDebug>
+
+#include <KIO/CopyJob>
 
 #include "basketview.h"
-#include "notedrag.h"
 #include "notefactory.h"
 #include "noteselection.h"
 #include "tools.h"
 #include "global.h"
-
-#include <KIO/CopyJob>
 
 /** NoteDrag */
 

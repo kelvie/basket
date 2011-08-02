@@ -22,23 +22,19 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <QTreeWidget>
-#include <kapplication.h>
-#include <kmessagebox.h>
-#include <kpassworddialog.h>
-#include <kiconloader.h>
-#include <kdebug.h>
-#include <qcheckbox.h>
-#include <qlayout.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QVBoxLayout>
-#include <klocale.h>
-#include <locale.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QLabel>
+#include <QtGui/QPixmap>
+#include <QtGui/QVBoxLayout>
+
+#include <KDE/KApplication>
+#include <KDE/KLocale>
+#include <KDE/KMessageBox>
+#include <KDE/KPasswordDialog>
+
+#include <locale.h>         //For LC_ALL, etc.
+#include <errno.h>          //For errno
+#include <unistd.h>         //For write
 
 // KGpgSelKey class based on class in KGpg with the same name
 
@@ -63,7 +59,6 @@ public:
         QVBoxLayout* vbox;
         QWidget* page = new QWidget(this);
         QLabel* labeltxt;
-        //  KIconLoader* loader = KIconLoader::global();
         QPixmap keyPair = KIcon("kgpg_key2").pixmap(20, 20);
 
         setMinimumSize(350, 100);

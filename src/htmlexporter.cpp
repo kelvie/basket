@@ -19,31 +19,35 @@
  ***************************************************************************/
 
 #include "htmlexporter.h"
+
 #include "bnpview.h"
 #include "basketlistview.h"
 #include "basketview.h"
 #include "note.h"
 #include "tools.h"
 #include "config.h"
-#include "tag.h"
+#include "linklabel.h"
+#include "notecontent.h"
 
 #include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KDebug>
+#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
-#include <KDE/KIconLoader>
 #include <KDE/KFileDialog>
 #include <KDE/KMessageBox>
-#include <QDir>
-#include <QFile>
-#include <QPainter>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
 #include <KDE/KProgressDialog>
-#include <QProgressBar>
-#include <KDE/KDebug>
-#include <KDE/KColorScheme>
-#include <KDE/KIO/CopyJob>
+
+#include <KDE/KIO/Job>      //For KIO::file_copy
+#include <KDE/KIO/CopyJob>  //For KIO::copy
+
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QList>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
 
 HTMLExporter::HTMLExporter(BasketView *basket)
 {

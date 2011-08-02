@@ -21,17 +21,20 @@
 #ifndef LIKEBACK_PRIVATE_H
 #define LIKEBACK_PRIVATE_H
 
-#include <KDE/KDialog>
-#include <QTimer>
-#include <QRadioButton>
-
 #include "likeback.h"
+
+#include <KDE/KDialog>
+
+#include <QtCore/QTimer>
 
 class QToolButton;
 class QTextEdit;
+class QRadioButton;
 class QCheckBox;
 class QGroupBox;
 class Kaction;
+
+class LikeBackBar;
 
 class LikeBackPrivate
 {

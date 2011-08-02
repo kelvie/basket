@@ -18,13 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QTextStream>
+#include "basketfactory.h"
+
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomElement>
+
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
-#include <QDomElement>
 
-#include "basketfactory.h"
 #include "global.h"
 #include "basketview.h"
 #include "xmlwork.h"

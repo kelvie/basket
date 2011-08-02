@@ -26,16 +26,18 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <QLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QTextStream>
-#include <QHBoxLayout>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QProgressBar>
+
 #include <KDE/KLocale>
-#include <QDir>
 #include <KDE/KApplication>
 #include <KDE/KAboutData>
-#include <QGroupBox>
 #include <KDE/KDirSelectDialog>
 #include <KDE/KRun>
 #include <KDE/KConfig>
@@ -43,10 +45,10 @@
 #include <KDE/KFileDialog>
 #include <KDE/KProgressDialog>
 #include <KDE/KMessageBox>
-#include <QProgressBar>
+#include <KDE/KVBox>
+
 #include <unistd.h> // usleep()
 
-#include <KVBox>
 
 /**
  * Backups are wrapped in a .tar.gz, inside that folder name.

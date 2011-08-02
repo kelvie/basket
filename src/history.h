@@ -21,7 +21,7 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QUndoCommand>
+#include <QtGui/QUndoCommand>
 
 class BasketView;
 

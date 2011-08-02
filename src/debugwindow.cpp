@@ -18,16 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLayout>
-#include <QTextBrowser>
-#include <QString>
-#include <QEvent>
-#include <QCloseEvent>
-#include <QVBoxLayout>
+#include "debugwindow.h"
+
+#include <QtCore/QString>
+#include <QtGui/QTextBrowser>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QVBoxLayout>
+
 #include <KDE/KLocale>
 
 #include "global.h"
-#include "debugwindow.h"
 
 DebugWindow::DebugWindow(QWidget *parent)
         : QWidget(parent)

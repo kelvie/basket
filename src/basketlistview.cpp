@@ -19,29 +19,33 @@
  ***************************************************************************/
 
 #include "basketlistview.h"
-#include <QRegExp>
-#include <QDragLeaveEvent>
-#include <QPixmap>
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QResizeEvent>
-#include <QFocusEvent>
+
+#include <QtCore/QRegExp>
+#include <QtGui/QApplication>
+#include <QtGui/QStandardItemModel>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QBitmap>
+#include <QtGui/QPixmapCache>
+#include <QtGui/QToolTip>
+
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
 #include <KDE/KStringHandler>
-#include <QPainter>
-#include <QBitmap>
-#include <QPixmapCache>
-#include <QToolTip>
 #include <KDE/KDebug>
+
 #include "global.h"
 #include "bnpview.h"
 #include "basketview.h"
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
-#include <QStandardItemModel>
 
 /** class BasketListViewItem: */
 

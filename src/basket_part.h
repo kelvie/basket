@@ -22,11 +22,13 @@
 #define _BASKETPART_H_
 
 #include <KDE/KParts/Part>
-#include <KDE/KParts/Factory>
 
 class QWidget;
 class QPainter;
+
+class KAboutData;
 class KUrl;
+
 class BNPView;
 
 /**

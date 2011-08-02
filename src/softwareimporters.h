@@ -26,7 +26,6 @@
 class QString;
 class QGroupBox;
 class QDomElement;
-class KTextEdit;
 class QRadioButton;
 class QTextEdit;
 class QVBoxLayout;

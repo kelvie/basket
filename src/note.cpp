@@ -18,19 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPainter>
-#include <QPixmap>
-#include <QList>
-#include <QStyle>
-#include <KDE/KApplication>
-#include <KDE/KStyle>
-#include <QCursor>
-#include <KDE/KIconLoader>
+#include "note.h"
 
+#include <QtCore/QList>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOption>
+#include <QtGui/QImage>
+
+#include <qimageblitz/qimageblitz.h>        //For Blitz::fade(...)
+
+#include <KDE/KDebug>
+#include <KDE/KApplication>
+#include <KDE/KIconLoader>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KUriFilter>
-#include <QFile>
+#include <KDE/KLocale>  //For KGLobal::locale(
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
@@ -40,16 +43,12 @@
 #endif
 
 #include "basketview.h"
+#include "filter.h"
 #include "tag.h"
-#include "note.h"
 #include "noteselection.h"
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
-
-#include <KDE/KDebug>
-#include <QImage>
-#include <qimageblitz/qimageblitz.h>
 
 /** class Note: */
 

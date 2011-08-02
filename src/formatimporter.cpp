@@ -18,19 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QStringList>
-#include <QDir>
-#include <QFileInfo>
-#include <QtXml>
-#include <QTextStream>
+#include "formatimporter.h"
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
 #include <KIO/CopyJob>
 #include <KDE/KApplication>
 #include "KDE/KDebug"
 
-#include "formatimporter.h"
 #include "notecontent.h"
 #include "notefactory.h"
 #include "bnpview.h"

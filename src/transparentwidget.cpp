@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 + ***************************************************************************/
 
-#include "basketview.h"
 #include "transparentwidget.h"
+#include "basketview.h"
 
-#include <QPainter>
-#include <QPaintEvent>
-#include <QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QMouseEvent>
 
 /** Class TransparentWidget */
 

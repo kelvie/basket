@@ -21,14 +21,13 @@
 #ifndef NOTEDRAG_H
 #define NOTEDRAG_H
 
-#include <QString>
-#include <QDataStream>
-#include <QPixmap>
 #include <QList>
 #include <QDrag>
-#include <QDragEnterEvent>
 
 class QDataStream;
+class QDragEnterEvent;
+class QPixmap;
+class QString;
 
 class BasketView;
 class Note;

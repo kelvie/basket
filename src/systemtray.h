@@ -21,9 +21,7 @@
 #ifndef SYSTEMTRAY_H
 #define SYSTEMTRAY_H
 
-#include <KSystemTrayIcon>
-
-class MainWindow;
+#include <KDE/KSystemTrayIcon>
 
 /** A thin wrapper around KSystemTrayIcon until the old SystemTray is ported.
  * As things are ported, items should

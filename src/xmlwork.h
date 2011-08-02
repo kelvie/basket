@@ -21,7 +21,8 @@
 #ifndef XMLWORKXMLWORK_H
 #define XMLWORKXMLWORK_H
 
-class QString;
+#include <QtCore/QString>
+
 class QDomDocument;
 class QDomElement;
 

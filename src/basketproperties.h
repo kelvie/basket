@@ -22,8 +22,7 @@
 #define BASKETPROPERTIES_H
 
 #include <KDE/KDialog>
-#include <QMap>
-#include <QString>
+#include <QtCore/QMap>
 
 #include "ui_basketproperties.h"
 
@@ -33,12 +32,14 @@ class QComboBox;
 class QGroupBox;
 class QVBoxLayout;
 class QRadioButton;
+class QString;
+
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
+class KColorCombo2;
 
 class BasketView;
-class KColorCombo2;
 
 /** The dialog that hold basket settings.
   * @author Sébastien Laoût

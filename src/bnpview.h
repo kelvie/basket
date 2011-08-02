@@ -21,28 +21,29 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <QtCore/QTimer>
 #include <QtCore/QList>
-#include <QtCore/QEvent>
-#include <QtGui/QHideEvent>
-#include <QtGui/QShowEvent>
-#include <QtGui/QPixmap>
 #include <QtGui/QClipboard>
 #include <QtGui/QSplitter>
-#include <QtGui/QTreeWidget>
 
 #include <KDE/KXMLGUIClient>
 
 #include "global.h"
 #include "basket_export.h"
-#include "basketlistview.h"
 
-/// NEW:
-
-class QStackedWidget;
 class QDomDocument;
 class QDomElement;
+
+class QStackedWidget;
+class QPixmap;
+class QTimer;
+class QTreeWidget;
+class QTreeWidgetItem;
 class QUndoStack;
+
+class QEvent;
+class QHideEvent;
+class QShowEvent;
+
 class KAction;
 class KToggleAction;
 class KMenu;
@@ -53,7 +54,9 @@ class RegionGrabber;
 
 class BasketView;
 class DecoratedBasket;
+class BasketListView;
 class BasketListViewItem;
+class BasketTreeListView;
 class NoteSelection;
 class BasketStatusBar;
 class Tag;

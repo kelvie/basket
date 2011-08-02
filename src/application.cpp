@@ -18,14 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KCmdLineArgs>
-#include <QString>
-#include <QFile>
-#include <QFileInfo>
-#include <QTimer>
-#include <KDebug>
-
 #include "application.h"
+
+#include <KDE/KCmdLineArgs>
+#include <KDE/KDebug>
+
+#include <QtCore/QString>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
+
 #include "global.h"
 #include "bnpview.h"
 

@@ -18,20 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KApplication>
-#include <KDE/KStyle>
+#include "tag.h"
+
 #include <KDE/KIconLoader>
-#include <QPainter>
-#include <QFont>
-#include <QtXml>
-#include <QDir>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 
-#include "tag.h"
+#include <QtCore/QDir>
+#include <QtCore/QList>
+#include <QtCore/QTextStream>
+#include <QtGui/QFont>
+#include <QtXml/QDomDocument>
+
 #include "xmlwork.h"
 #include "global.h"
 #include "debugwindow.h"
@@ -733,16 +731,6 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
     } else
         DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
 }
-
-#include <kapplication.h>
-#include <qrect.h>
-#include <qstyle.h>
-#include <qcheckbox.h>
-#include <qbitmap.h>
-#include <qimage.h>
-#include <qradiobutton.h>
-#include <kiconeffect.h>
-
 
 // StateAction
 StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* parent, bool withTagName)

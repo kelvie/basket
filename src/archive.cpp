@@ -26,17 +26,19 @@
 #include <QtCore/QMap>
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
-#include <QtXml/QDomDocument>
 #include <QtGui/QPixmap>
 #include <QtGui/QPainter>
 #include <QtGui/QProgressBar>
+#include <QtXml/QDomDocument>
 
-#include <KDE/KStandardDirs>
-#include <KDE/KApplication>
+#include <KDE/KDebug>
+#include <KDE/KLocale>
+#include <KDE/KAboutData>
+#include <KDE/KStandardDirs>        //For KGlobal::dirs()
+#include <KDE/KMainWindow>          //For Global::MainWindow()
+#include <KDE/KComponentData>       //For KGlobal::mainComponent aboutData
 #include <KDE/KIconLoader>
 #include <KDE/KProgressDialog>
-#include <KDE/KMainWindow>
-#include <KDE/KDebug>
 #include <KDE/KMessageBox>
 #include <KDE/KTar>
 

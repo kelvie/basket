@@ -19,13 +19,13 @@
 #ifndef REGIONGRABBER_H
 #define REGIONGRABBER_H
 
-#include <QWidget>
-#include <QRegion>
-#include <QPoint>
-#include <QVector>
-#include <QRect>
-#include <QTimer>
+#include <QtCore/QVector>
+#include <QtCore/QTimer>
+#include <QtGui/QWidget>
 
+class QPoint;
+class QRect;
+class QRegion;
 class QPaintEvent;
 class QResizeEvent;
 class QMouseEvent;

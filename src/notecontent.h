@@ -21,42 +21,47 @@
 #ifndef NOTECONTENT_H
 #define NOTECONTENT_H
 
-#include <QObject>
-#include <QString>
-#include <QTextDocument>
-#include <QPixmap>
-#include <QMovie>
-#include <QColor>
+#include <QtCore/QObject>
+
 #include <KDE/KUrl>
-#include <QHttp>
+
+#include <phonon/phononnamespace.h>
 
 #include "linklabel.h"
-#include <Phonon/AudioOutput>
-#include <Phonon/SeekSlider>
-#include <Phonon/MediaObject>
-#include <Phonon/VolumeSlider>
-#include <Phonon/BackendCapabilities>
+
 class QDomDocument;
 class QDomElement;
+
+class QBuffer;
+class QColor;
+class QHttp;
+class QMimeData;
+class QMovie;
 class QPainter;
-class QWidget;
+class QPixmap;
 class QPoint;
 class QRect;
+class QString;
 class QStringList;
-class QBuffer;
-
-class QMimeData;
+class QTextDocument;
+class QWidget;
 
 class KFileItem;
+class KUrl;
+
 namespace KIO
 {
-class PreviewJob;
+    class PreviewJob;
 }
 
-class Note;
+namespace Phonon
+{
+    class MediaObject;
+}
+
 class BasketView;
 class FilterData;
-class HtmlExporter;
+class Note;
 
 /** A list of numeric identifier for each note type.
   * Declare a varible with the type NoteType::Id and assign a value like NoteType::Text...

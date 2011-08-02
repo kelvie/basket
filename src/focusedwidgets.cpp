@@ -18,19 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QWheelEvent>
-#include <QKeyEvent>
-#include <KDE/KLocale>
-
 #include "focusedwidgets.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QWheelEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QScrollBar>
+
 #include "bnpview.h"
-#include "global.h"
 #include "basketview.h"
+#include "global.h"
 
 #ifdef KeyPress
 #undef KeyPress
 #endif
-#include <qevent.h>
+
 
 /** class FocusedTextEdit */
 

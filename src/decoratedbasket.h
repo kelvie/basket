@@ -25,7 +25,8 @@ class QString;
 class BasketView;
 class QVBoxLayout;
 
-#include <QWidget>
+#include <QtGui/QWidget>
+
 #include "filter.h"
 
 /** This class handle Basket and add a FilterWidget on top of it.

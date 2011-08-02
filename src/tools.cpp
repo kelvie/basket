@@ -20,22 +20,22 @@
 
 #include "tools.h"
 
-#include <QString>
-#include <QPixmap>
-#include <QImage>
-#include <QRegExp>
-#include <QList>
-#include <QFileInfo>
-#include <QDir>
-#include <QMimeData>
-#include <QFont>
-#include <QFontInfo>
-#include <QObject>
-#include <QTextDocument>
-#include <QTime>
+#include <QtCore/QString>
+#include <QtCore/QRegExp>
+#include <QtCore/QList>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QMimeData>
+#include <QtCore/QObject>
+#include <QtCore/QTime>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QFont>
+#include <QtGui/QFontInfo>
+#include <QtGui/QTextDocument>  //For Qt::convertFromPlainText and Qt::WhiteSpaceNormal.
 
 #include <KDE/KDebug>
-#include <KDE/KIO/CopyJob>
+#include <KDE/KIO/CopyJob>      //For KIO::trash
 #include <KDE/KUrl>
 
 #include "debugwindow.h"
@@ -518,8 +518,6 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
     QPixmap result = QPixmap::fromImage(resultImage);
     return result;
 }
-
-#include <QTextDocument>
 
 void Tools::deleteRecursively(const QString &folderOrFile)
 {

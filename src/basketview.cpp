@@ -18,71 +18,64 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDrag>
-#include <QtXml>
-#include <QPainter>
-#include <QStyle>
-#include <QWheelEvent>
-#include <QContextMenuEvent>
-#include <QFocusEvent>
-#include <QPaintEvent>
-#include <QDragMoveEvent>
-#include <QVBoxLayout>
-#include <QDragLeaveEvent>
-#include <QKeyEvent>
-#include <QFrame>
-#include <QResizeEvent>
-#include <QLabel>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QHBoxLayout>
-#include <QList>
-#include <QMouseEvent>
-#include <QCloseEvent>
-#include <QGridLayout>
-#include <KDE/KStyle>
-#include <QToolTip>
-#include <QCursor>
-#include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
-#include <QPushButton>
+#include "basketview.h"
+
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QPoint>
+#include <QtCore/QList>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>  // seed for rand()
+#include <QtGui/QApplication>
+#include <QtGui/QDrag>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QWheelEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QTextDocument>
+#include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QToolTip>
+#include <QtGui/QCursor>
+#include <QtGui/QClipboard>
+#include <QtGui/QInputDialog>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KTextEdit>
-#include <QPoint>
-#include <QStringList>
+#include <KDE/KStyle>
 #include <KDE/KApplication>
 #include <KDE/KColorScheme> // for KStatefulBrush
 #include <KDE/KOpenWithDialog>
 #include <KDE/KService>
 #include <KDE/KLocale>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <KFileDialog>
+#include <KDE/KFileDialog>
 #include <KDE/KAboutData>
 #include <KDE/KLineEdit>
 #include <KDE/KSaveFile>
 #include <KDE/KDebug>
-
-#include <KAuthorized>
-#include <KIO/CopyJob>
-
-#include <unistd.h> // For sleep()
-
+#include <KDE/KAuthorized>
 #include <KDE/KMenu>
 #include <KDE/KIconLoader>
 #include <KDE/KRun>
-
-#include <QClipboard>
-
 #include <KDE/KMessageBox>
-#include <QInputDialog>
+#include <KDE/KDirWatch>
 
-#include <QLayout>
+#include <KIO/CopyJob>
 
+#include <unistd.h> // For sleep()
 #include <stdlib.h>     // rand() function
-#include <QDateTime>  // seed for rand()
 
-#include "basketview.h"
 #include "decoratedbasket.h"
 #include "diskerrordialog.h"
 #include "note.h"
@@ -99,7 +92,9 @@
 #include "tools.h"
 #include "debugwindow.h"
 #include "exporterdialog.h"
+#include "focusedwidgets.h"
 #include "config.h"
+
 #ifdef HAVE_LIBGPGME
 #include "kgpgme.h"
 #endif

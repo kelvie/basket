@@ -20,36 +20,16 @@
 
 #include "ksystemtrayicon2.h"
 
-// To draw the systray screenshot image:
-#include <qmovie.h>
-#include <qvariant.h>
 //Added by qt3to4:
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QDragLeaveEvent>
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QDragEnterEvent>
+#include <QtGui/QPainter>
+#include <QtCore/QPoint>
+#include <QtGui/QPixmap>
 
-#include <qdesktopwidget.h>
-#include <qmime.h>
-#include <qpainter.h>
-#include <qpoint.h>
-#include <qpixmap.h>
-// To know the program name:
-#include <kglobal.h>
-#include <kcomponentdata.h>
-#include <kaboutdata.h>
-#include <kiconeffect.h>
-// Others:
-#include <kmessagebox.h>
-#include <kmanagerselection.h>
 #include <kdeversion.h>
-#include <kapplication.h>
-#include <kmenu.h>
-#include <kiconloader.h>
-#include <kdebug.h>
+
+#include <KDE/KApplication>
+#include <KDE/KGlobal>          // To know the program name:
+#include <KDE/KMessageBox>
 
 KSystemTray2::KSystemTray2(QWidget *parent, const char *name)
         : KSystemTray(parent, name)

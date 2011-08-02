@@ -18,45 +18,41 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.         *
  ***************************************************************************/
 
+#include "likeback.h"
+#include "likeback_p.h"
+
 #include <KDE/KApplication>
 #include <KDE/KAboutData>
 #include <KDE/KConfig>
 #include <KDE/KAction>
+#include <KDE/KActionCollection>
 #include <KDE/KIcon>
 #include <KDE/KLocale>
 #include <KDE/KDebug>
 #include <KDE/KMessageBox>
-#include <QLayout>
-#include <QToolButton>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
+
 #include <KDE/KPushButton>
-#include <QCheckBox>
-#include <QRadioButton>
-#include <QButtonGroup>
-#include <QGroupBox>
 #include <KDE/KGuiItem>
-#include <QTextEdit>
-#include <QLayout>
-#include <QLabel>
 #include <KDE/KDialog>
-#include <QHttp>
-#include <KDE/KUrl>
 #include <KDE/KInputDialog>
-#include <QValidator>
-#include <QAction>
-
-#include <pwd.h>
-
 #include <KDE/KGlobal>
-
-#include "likeback.h"
-#include "likeback_p.h"
-#include <KDE/KActionCollection>
 #include <KDE/KUser>
-#include <QDesktopWidget>
+
+#include <QtGui/QToolButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QCheckBox>
+#include <QtGui/QRadioButton>
+#include <QtGui/QGroupBox>
+#include <QtGui/QTextEdit>
+#include <QtGui/QLabel>
+#include <QtNetwork/QHttp>
+#include <QtGui/QAction>
+#include <QtGui/QValidator>
+#include <QtGui/QDesktopWidget>
+
 /****************************************/
 /********** class LikeBackBar: **********/
 /****************************************/

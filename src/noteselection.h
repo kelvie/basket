@@ -21,7 +21,8 @@
 #ifndef NOTESELECTION_H
 #define NOTESELECTION_H
 
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QString>
 
 class Note;
 

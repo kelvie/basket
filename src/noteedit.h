@@ -21,36 +21,33 @@
 #ifndef NOTEEDIT_H
 #define NOTEEDIT_H
 
-#include <KDialog>
-#include <QTextEdit>
+#include <KDE/KDialog>
+
 #include <QLineEdit>
-#include <QKeyEvent>
+
+#include "notecontent.h"
 
 class QWidget;
-//class QLineEdit;
 class QPushButton;
+class QKeyEvent;
+class QFontComboBox;
+class QTextCharFormat;
+
 class KIconButton;
 class KUrlRequester;
 class KTextEdit;
-class KMainWindow;
-class KToolBar;
 class KToggleAction;
-class KActionCollection;
+class KToolBar;
 class KAction;
+class KActionCollection;
 class KComboBox;
+class KColorCombo;
 
 class FontSizeCombo;
-
 class Note;
 class RunCommandRequester;
-class QFontComboBox;
-class KColorCombo;
 class FocusWidgetFilter;
-class QTextCharFormat;
-
 class BasketListViewItem;
-
-#include "notecontent.h"
 
 /** The base class for every note editor.
   * Scenario:
@@ -150,7 +147,6 @@ public slots:
     void editTextChanged();
     void charFormatChanged(const QTextCharFormat &format);
 protected slots:
-//  void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
     void setBold(bool isChecked);
     void setLeft();
     void setCentered();
@@ -322,9 +318,9 @@ public:
     void enableRichTextToolBar();
     void disableRichTextToolBar();
     QPalette palette() const;
-    QFontComboBox *richTextFont;
+    QFontComboBox     *richTextFont;
     FontSizeCombo     *richTextFontSize;
-    KColorCombo *richTextColor;
+    KColorCombo       *richTextColor;
     KToggleAction     *richTextBold;
     KToggleAction     *richTextItalic;
     KToggleAction     *richTextUnderline;

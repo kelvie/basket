@@ -21,42 +21,45 @@
 #ifndef BASKET_H
 #define BASKET_H
 
-#include <q3scrollview.h>
-#include <QToolTip>
-#include <QList>
-#include <QTimer>
-#include <QImage>
-#include <QDateTime>
-#include <QClipboard>
-#include <QResizeEvent>
-#include <QContextMenuEvent>
-#include <QWheelEvent>
-#include <QPixmap>
-#include <QFocusEvent>
-#include <QDragLeaveEvent>
-#include <QMouseEvent>
-#include <QDragEnterEvent>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QFrame>
-#include <QDropEvent>
-#include <QDragMoveEvent>
-#include <QPaintEvent>
-#include <KDE/KShortcut>
-#include <KDE/KDirWatch>
-#include <KDE/KAction>
-#include <KDE/KIO/Job>
-#include <KDialog>
+#include <Qt3Support/Q3ScrollView> //TODO: Replace with QGraphicsView
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtGui/QTextCursor>
+#include <QtGui/QClipboard>
 
-#include "filter.h"
 #include "note.h" // For Note::Zone
 #include "config.h"
+
+class QFrame;
+class QPixmap;
+class QPushButton;
 
 class QDomDocument;
 class QDomElement;
 
+class QContextMenuEvent;
+class QDragLeaveEvent;
+class QDragEnterEvent;
+class QDragMoveEvent;
+class QDropEvent;
+class QEvent;
+class QFocusEvent;
+class QHelpEvent;
+class QKeyEvent;
+class QMouseEvent;
+class QResizeEvent;
+class QWheelEvent;
+
+class KAction;
+class KDirWatch;
+class KShortcut;
+class KUrl;
+
+namespace KIO { 
+    class Job; 
+}
+
 class DecoratedBasket;
-class Note;
 class NoteEditor;
 class Tag;
 class TransparentWidget;

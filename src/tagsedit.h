@@ -21,31 +21,32 @@
 #ifndef TAGEDIT_H
 #define TAGEDIT_H
 
-#include <KDialog>
-#include <KDE/KComboBox>
-#include <QTreeWidget>
-#include <QList>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QItemDelegate>
+#include <KDE/KDialog>
+
+#include <QtCore/QList>
+#include <QtGui/QItemDelegate>
+#include <QtGui/QTreeWidgetItem>
 
 #include "tag.h"
 
-class QGroupBox;
-class QLineEdit;
 class QCheckBox;
-class KPushButton;
-class KIconButton;
 class QFontComboBox;
+class QGroupBox;
+class QHBoxLayout;
 class QLabel;
+class QLineEdit;
+class QTreeWidget;
+
+class QKeyEvent;
+class QMouseEvent;
+
+class KIconButton;
+class KPushButton;
 class KShortcut;
 class KShortcutWidget;
 
-class KColorCombo2;
-
 class FontSizeCombo;
+class KColorCombo2;
 
 class StateCopy
 {

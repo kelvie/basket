@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QtXml>
-#include <QStringList>
-#include <QFile>
-
 #include "xmlwork.h"
+
+#include <QtCore/QFile>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtXml/QDomDocument>
 
 QDomDocument* XMLWork::openFile(const QString &name, const QString &filePath)
 {

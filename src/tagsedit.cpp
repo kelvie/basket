@@ -18,41 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QToolTip>
-#include <QLabel>
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QVBoxLayout>
-#include <QLayout>
-#include <KDE/KIconLoader>
-#include <KDE/KApplication>
-#include <QCheckBox>
-#include <KDE/KPushButton>
-#include <QGroupBox>
-#include <QList>
-#include <KDE/KLocale>
-#include <KDE/KStandardDirs>
-#include <KDE/KSeparator>
-#include <KDE/KStringHandler>
-#include <QPainter>
-#include <QAction>
-#include <KDE/KMessageBox>
-#include <QTimer>
-#include <QHeaderView>
-
-#include <kshortcutwidget.h>
-#include <QFontComboBox>
-
-#include "KDE/KIconDialog"
-#include "tag.h"
 #include "tagsedit.h"
+
+#include <QtCore/QEvent>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtGui/QAction>
+#include <QtGui/QCheckBox>
+#include <QtGui/QFontComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHeaderView>    //For m_tags->header()
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QVBoxLayout>
+
+#include <KDE/KApplication>
+#include <KDE/KIconButton>
+#include <KDE/KIconLoader>
+#include <KDE/KLocale>
+#include <KDE/KMessageBox>
+#include <KDE/KPushButton>
+#include <KDE/KSeparator>
+#include <KDE/KShortcutWidget>
+
+#include "tag.h"
 #include "kcolorcombo2.h"
-#include "variouswidgets.h"
+#include "variouswidgets.h"         //For FontSizeCombo
 #include "global.h"
 #include "bnpview.h"
 

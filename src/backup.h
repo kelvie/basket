@@ -21,10 +21,12 @@
 #ifndef BACKUP_H
 #define BACKUP_H
 
-#include <KDialog>
-#include <QApplication>
-#include <QThread>
-#include <QLabel>
+#include <KDE/KDialog>
+
+#include <QtCore/QThread>
+
+class QApplication;
+class QLabel;
 
 #include "basket_export.h"
 

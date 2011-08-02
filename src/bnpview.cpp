@@ -25,10 +25,7 @@
 #include <QtCore/QEvent>
 #include <QtGui/QStackedWidget>
 #include <QtGui/QPixmap>
-#include <QtGui/QPainter>
 #include <QtGui/QImage>
-#include <QtGui/QBitmap>
-#include <QtGui/QWhatsThis>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QShowEvent>
 #include <QtGui/QKeyEvent>
@@ -36,12 +33,11 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QDir>
 #include <QtGui/QUndoStack>
+#include <QtXml/QDomDocument>
 
+#include <KDE/KApplication>
 #include <KDE/KMenu>
-#include <KDE/KIconTheme>
 #include <KDE/KIconLoader>
-#include <KDE/KLocale>
-#include <KDE/KStringHandler>
 #include <KDE/KMessageBox>
 #include <KDE/KFileDialog>
 #include <KDE/KProgressDialog>
@@ -51,15 +47,18 @@
 #include <KDE/KPassivePopup>
 #include <KDE/KXMLGUIFactory>
 #include <KDE/KCmdLineArgs>
-#include <KDE/KGlobalAccel>
-#include <KDE/KApplication>
-#include <KDE/KShortcutsDialog>
-#include <KDE/KDebug>
 #include <KDE/KAction>
 #include <KDE/KActionMenu>
 #include <KDE/KActionCollection>
 #include <KDE/KStandardShortcut>
 #include <KDE/KToggleAction>
+
+#include <kdeversion.h>
+
+#ifndef BASKET_USE_DRKONQI
+#include <KDE/KCrash>
+#endif //BASKET_USE_DRKONQI
+
 
 #include <cstdlib>
 #include <unistd.h> // usleep
@@ -89,10 +88,10 @@
 #include "likeback.h"
 #include "backup.h"
 #include "notefactory.h"
-#include "notecontent.h"
 #include "history.h"
 
 #include "bnpviewadaptor.h"
+
 /** class BNPView: */
 
 const int BNPView::c_delayTooltipTime = 275;

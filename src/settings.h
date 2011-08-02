@@ -21,37 +21,28 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QString>
-#include <QLabel>
-#include <KDialog>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QToolTip>
-#include <QColor>
-#include <QPoint>
-#include <QSize>
 #include <KDE/KCModule>
-#include <KDE/KAction>
-#include <KDE/KMainWindow>
-#include <QDateTime>
+#include <KDE/KAction>          //For UseSysTray
+#include <KDE/KMainWindow>      //For Global::mainWindow()
+
+#include <QtCore/QDate>
 
 #include "basket_export.h"
-#include "global.h"
 #include "bnpview.h"
 #include "systemtray.h"
 
-class KColorCombo;
 class KIntNumInput;
-class KGlobalAccel;
-class QLabel;
 
-class Container;
-class SystemTray;
-class DebugWindow;
+class QString;
+class QCheckBox;
+class QPushButton;
+class QComboBox;
+class QPoint;
+class QSize;
+
 class LinkLook;
 class LinkLookEditWidget;
 class RunCommandRequester;
-class IconSizeCombo;
 
 class BASKET_EXPORT GeneralPage : public KCModule
 {

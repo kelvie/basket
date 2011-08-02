@@ -1,17 +1,17 @@
 #ifndef NEPOMUKINTEGRATION_H
 #define NEPOMUKINTEGRATION_H
 
-#include <QThread>
-#include <QPair>
-#include <QMutex>
-#include <QTimer>
-#include <QString>
-#include <QDomDocument>
-#include <KUrl>
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
+#include <QtCore/QTimer>
 
-#include "basketview.h"
+//For DEBUG_WIN:
 #include "global.h"
 #include "debugwindow.h"
+
+class QString;
+class KUrl;
+class BasketView;
 
 class nepomukIntegration : public QObject
 {

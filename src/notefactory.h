@@ -21,15 +21,14 @@
 #ifndef NOTEFACTORY_H
 #define NOTEFACTORY_H
 
-#include <QEvent>
-#include <QPixmap>
-#include <QDropEvent>
-#include <KDE/KUrl>
-#include <QStringList>
+#include "notecontent.h"        //For NoteType::Id
 
-class QString;
-class QPixmap;
 class QColor;
+class QPixmap;
+class QString;
+class QStringList;
+
+class KUrl;
 
 class BasketView;
 class Note;

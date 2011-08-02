@@ -22,15 +22,10 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <QLayout>
-#include <QToolButton>
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QHBoxLayout>
-#include <KDE/KLocale>
-#include <KDE/KIconLoader>
-#include <KDE/KMessageBox>
+#include <QtGui/QHBoxLayout>
 
+#include <KDE/KLocale>
+#include <KDE/KMessageBox>
 
 #include "basketview.h"
 #include "kgpgme.h"

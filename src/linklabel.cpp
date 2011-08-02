@@ -18,32 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QFrame>
-#include <QEvent>
-#include <QVBoxLayout>
-#include <QBoxLayout>
-#include <KDE/KUrl>
-#include <QLayout>
-#include <KDE/KIconLoader>
-#include <QCursor>
-#include <KDE/KLocale>
-#include <QPushButton>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QPainter>
-#include <QStyle>
-#include <KDE/KApplication>
-#include <KDialog>
-#include <KDE/KCModule>
-#include <KDE/KDebug>
-#include <KDE/KColorScheme>
-#include <QGroupBox>
-
 #include "linklabel.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QFrame>
+#include <QtGui/QCursor>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QPainter>
+#include <QtGui/QStyle>
+#include <QtGui/QGroupBox>
+
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KLocale>
+#include <KDE/KIconLoader>
+#include <KDE/KUrl>
+#include <KDE/KCModule>
+
 #include "variouswidgets.h"
 #include "tools.h"
 #include "global.h"

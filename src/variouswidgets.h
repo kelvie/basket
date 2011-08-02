@@ -21,19 +21,18 @@
 #ifndef VARIOUSWIDGETS_H
 #define VARIOUSWIDGETS_H
 
-#include <QWidget>
-#include <QResizeEvent>
-#include <QKeyEvent>
+#include <QtGui/QWidget>
+#include <QtGui/QDialog>
+
+#include <KDE/KDialog>
 #include <KDE/KComboBox>
-#include <QDialog>
 #include <KDE/KUrlLabel>
-#include <QString>
-#include <KDialog>
 
 class QLineEdit;
 class QListWidgetItem;
-
-class BasketView;
+class QResizeEvent;
+class QString;
+class QKeyEvent;
 
 /** A widget to select a command to run,
   * with a QLineEdit and a QPushButton.

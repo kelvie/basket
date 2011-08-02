@@ -18,14 +18,14 @@
 
 #include "regiongrabber.h"
 
-#include <QPainter>
-#include <QMouseEvent>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QToolTip>
+#include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QToolTip>
 
 #include <KDE/KLocale>
-#include <KWindowSystem>
+#include <KDE/KWindowSystem>
 
 RegionGrabber::RegionGrabber() :
         QWidget(0), selection(), mouseDown(false), newSelection(false),

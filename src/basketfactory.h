@@ -21,6 +21,7 @@
 #ifndef BASKETFACTORY_H
 #define BASKETFACTORY_H
 
+class QColor;
 class QString;
 
 class BasketView;

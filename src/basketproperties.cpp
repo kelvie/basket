@@ -18,28 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLineEdit>
-#include <QComboBox>
-//Added by qt3to4:
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
-#include <KDE/KNumInput>
-#include <kshortcutwidget.h>
-#include <QLayout>
-#include <QLabel>
-#include <QRadioButton>
-#include <QGroupBox>
-#include <QButtonGroup>
-#include <QStringList>
+#include "basketproperties.h"
+
+#include <QtCore/QStringList>
+#include <QtGui/QLineEdit>
+#include <QtGui/QComboBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QLabel>
+#include <QtGui/QRadioButton>
+#include <QtGui/QGroupBox>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QStyle>
+
 #include <KDE/KLocale>
-#include <QStyle>
+#include <KDE/KShortcutWidget>
+#include <KDE/KNumInput>
 #include <KDE/KApplication>
 #include <KDE/KIconLoader>
 #include <KDE/KIconDialog>
 
-#include "basketproperties.h"
 #include "basketview.h"
 #include "kcolorcombo2.h"
 #include "variouswidgets.h"

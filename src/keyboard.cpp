@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kapplication.h> // it define Q_WS_X11
-
 #include "keyboard.h"
+
+#include <KDE/KApplication> // it define Q_WS_X11
 
 /* This file contain modified code from klistbox.cpp
  */

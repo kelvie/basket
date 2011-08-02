@@ -21,15 +21,16 @@
 #ifndef NEWBASKETDIALOG_H
 #define NEWBASKETDIALOG_H
 
-#include <KDialog>
-#include <QListWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
+#include <KDE/KDialog>
+
+#include <QtCore/QMap>
+#include <QtGui/QListWidget>
 
 class KIconButton;
 class QLineEdit;
 class QMimeData;
 class QComboBox;
+class QTreeWidgetItem;
 
 class BasketView;
 

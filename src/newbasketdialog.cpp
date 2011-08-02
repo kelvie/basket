@@ -18,33 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
-#include <QLabel>
+#include "newbasketdialog.h"
+
+#include <QtGui/QLineEdit>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPainter>
+#include <QtGui/QComboBox>
+
 #include <KDE/KLocale>
 #include <KDE/KPushButton>
 #include <KDE/KGuiItem>
 #include <KDE/KMessageBox>
-#include <QSize>
-#include <QPainter>
-#include <KApplication>
 #include <KDE/KIconLoader>
-#include <KDE/KMainWindow>
+#include <KDE/KIconButton>
+#include <KDE/KMainWindow>      //For Global::mainWindow()
 
-#include <QComboBox>
-
-#include "kicondialog.h"
-#include "newbasketdialog.h"
 #include "basketfactory.h"
 #include "basketview.h"
 #include "basketlistview.h"
-#include "variouswidgets.h"
 #include "kcolorcombo2.h"
 #include "tools.h"
 #include "global.h"
 #include "bnpview.h"
+#include "variouswidgets.h"     //For HelpLabel
 
 /** class SingleSelectionKIconView: */
 

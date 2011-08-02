@@ -18,39 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <config.h>
-#include <QLayout>
-#include <QLineEdit>
-#include <QTabWidget>
-#include <QGroupBox>
-#include <QLabel>
-#include <QPushButton>
-//Added by qt3to4:
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
+#include "settings.h"
+
+#include <QtGui/QCheckBox>
+#include <QtGui/QTabWidget>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtCore/QDate>
+
 #include <KDE/KNumInput>
-#include <KDE/KColorCombo>
-#include <KDE/KIconLoader>
 #include <KDE/KConfig>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
-#include <QWhatsThis>
-#include <QRadioButton>
-#include <KDE/KApplication>
 #include <KDE/KAboutData>
 #include <KDE/KMimeType>
-#include <KDE/KStandardDirs>
-#include <KDE/KDebug>
-#include <QDateTime>
+#include <KDE/KComponentData>
 
 #include "kgpgme.h"
-#include "basketview.h"
+#include "basketview.h"     //For Global::bnpview::currentBasket()
 #include "linklabel.h"
-#include "settings.h"
 #include "variouswidgets.h"
-#include "note.h"
 
 /** Settings */
 

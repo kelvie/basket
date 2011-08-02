@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDebug>
-#include "note.h"
 #include "noteselection.h"
+
+#include <KDE/KDebug>
+
+#include "note.h"
+#include "notecontent.h"
 
 /** Class NoteSelection: */
 

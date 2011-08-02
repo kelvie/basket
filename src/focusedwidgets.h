@@ -22,15 +22,10 @@
 #define FOCUSEDWIDGETS_H
 
 #include <KDE/KTextEdit>
-#include <KDE/KColorCombo>
-#include <QFontComboBox>
-#include <KComboBox>
-#include <KDE/KLineEdit>
-#include <KDE/KApplication>
-#include <QClipboard>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QWheelEvent>
+
+class QEvent;
+class QKeyEvent;
+class QWheelEvent;
 
 class KMenu;
 

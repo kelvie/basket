@@ -18,49 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QImage>
-#include <QTextStream>
-#include <QDropEvent>
-#include <QVector>
+#include "notefactory.h"
+
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QVector>
+#include <QtCore/QRegExp>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QMimeData>
+#include <QtGui/QImage>
+#include <QtGui/QPixmap>
+#include <QtGui/QColor>
+#include <QtGui/QImageReader>
+#include <QtGui/QMovie>
+#include <QtGui/QTextDocument> //For Qt::mightBeRichText(...)
+#include <QtGui/QBitmap> //For createHeuristicMask
+
 #include <KDE/KUrl>
-#include <QPixmap>
-#include <QColor>
-#include <QRegExp>
-#include <QDir>
 #include <KDE/KMimeType>
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
-#include <KDE/KDesktopFile>
-#include <KDE/KApplication>
-#include <KDE/KAboutData>
-#include <QFile>
 #include <KDE/KFileMetaInfo>
-#include <QTextCodec>
 #include <KDE/KOpenWithDialog>
 #include <KDE/KFileDialog>
 #include <KDE/KIconLoader>
-#include <QFileInfo>
 #include <KDE/KMenu>
-#include <KDE/KStandardDirs>
 #include <KDE/KUriFilter>
+#include <KDE/KIconDialog>
+#include <KDE/KAboutData> //For KGlobal::mainComponent().aboutData(...)
+
+#include <KDE/KIO/CopyJob>
 
 #include "basketview.h"
+#include "basketlistview.h"
 #include "note.h"
-#include "notefactory.h"
 #include "notedrag.h"
-#include "linklabel.h"
 #include "global.h"
 #include "settings.h"
 #include "keyboard.h"
-#include "variouswidgets.h"
+#include "variouswidgets.h" //For IconSizeDialog
 #include "tools.h"
-#include "KDE/KIconDialog"
 
 #include "debugwindow.h"
 
-#include <QBitmap>
-#include <KDE/KIO/CopyJob>
 
 /** Create notes from scratch (just a content) */
 

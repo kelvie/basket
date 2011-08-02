@@ -18,22 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QDir>
-#include <QTextStream>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include "softwareimporters.h"
+
+#include <QtCore/QString>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtCore/QStack>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QRadioButton>
+#include <QtGui/QTextEdit>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KStandardDirs>
 #include <KDE/KLocale>
 #include <KDE/KFileDialog>
-#include <QStack>
-#include <QLayout>
-#include <QRadioButton>
 #include <KDE/KMessageBox>
-#include <QTextEdit>
-#include <QDomDocument>
 
-#include "softwareimporters.h"
 #include "basketview.h"
 #include "basketfactory.h"
 #include "notefactory.h"
@@ -41,7 +43,6 @@
 #include "bnpview.h"
 #include "xmlwork.h"
 #include "tools.h"
-#include <QGroupBox>
 
 /** class TreeImportDialog: */
 

@@ -21,12 +21,13 @@
 #ifndef BACKGROUNDMANAGER_H
 #define BACKGROUNDMANAGER_H
 
-#include <qobject.h>
-#include <QList>
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qcolor.h>
-#include <qtimer.h>
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtGui/QColor>
+
+class QPixmap;
+class QString;
 
 /** A node in the list of background images of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.

@@ -22,19 +22,19 @@
 #include "systemtray.h"
 
 // Qt
-#include <QImage>
-#include <QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QPixmap>
 
 // KDE
-#include <KDE/KIconEffect>
+#include <KDE/KLocale>
+#include <KDE/KIconEffect>  //Port to Blitz/Quasar?
+#include <KDE/KDialog>
 
 // Local
 #include "basketview.h"
 #include "settings.h"
 #include "global.h"
 #include "tools.h"
-#include "linklabel.h"
-#include "note.h"
 
 
 /* This function comes directly from JuK: */

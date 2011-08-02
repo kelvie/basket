@@ -18,42 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QLayout>
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QTextCharFormat>
-#include <QKeyEvent>
-#include <QGridLayout>
+#include "noteedit.h"
+
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QTextCharFormat>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QGridLayout>
+#include <QtGui/QFontComboBox>
+
+#include <KDE/KApplication>
 #include <KDE/KLineEdit>
 #include <KDE/KUrlRequester>
 #include <KDE/KColorDialog>
+#include <KDE/KColorCombo>
 #include <KDE/KService>
 #include <KDE/KConfig>
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
-#include <KDE/KMainWindow>
 #include <KDE/KToolBar>
 #include <KDE/KAction>
-#include <KDE/KUriFilter>
-#include <KDE/KDebug>
-#include <KDE/KStandardAction>
+#include <KDE/KActionCollection>
+#include <KDE/KIconButton>
+#include <KDE/KToggleAction>
+#include <KDE/KDesktopFile>
 
-#include "KDE/KIconDialog"
-#include "noteedit.h"
 #include "notecontent.h"
-// Use Tools::
 #include "notefactory.h"
 #include "note.h"
 #include "basketview.h"
+#include "basketlistview.h"
 #include "settings.h"
 #include "tools.h"
 #include "variouswidgets.h"
 #include "focusedwidgets.h"
-
-#include <KDE/KActionCollection>
-#include <KDE/KToggleAction>
-#include <KDE/KDesktopFile>
 
 /** class NoteEditor: */
 

@@ -21,16 +21,16 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <QTreeWidget>
-#include <QTimer>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QDragMoveEvent>
-#include <QFocusEvent>
-#include <QDragLeaveEvent>
-#include <QItemDelegate>
+#include <QtCore/QTimer>
+#include <QtGui/QTreeWidget>
+
+class QPixmap;
+class QResizeEvent;
+class QDragEnterEvent;
+class QDropEvent;
+class QDragMoveEvent;
+class QFocusEvent;
+class QDragLeaveEvent;
 
 class BasketView;
 

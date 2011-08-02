@@ -21,12 +21,9 @@
 #ifndef LINKLABEL_H
 #define LINKLABEL_H
 
-#include <QFrame>
-#include <QBoxLayout>
-#include <QPixmap>
-#include <QLabel>
-#include <QEvent>
+#include <QtGui/QFrame>
 
+class QPixmap;
 class QString;
 class KUrl;
 class QColor;
@@ -36,6 +33,7 @@ class QSpacerItem;
 class QPushButton;
 class QCheckBox;
 class QComboBox;
+class QEvent;
 
 class KColorCombo2;
 class IconSizeCombo;

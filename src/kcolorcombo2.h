@@ -21,16 +21,16 @@
 #ifndef KCOLORCOMBO2_H
 #define KCOLORCOMBO2_H
 
-#include <qcombobox.h>
-#include <qcolor.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QEvent>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QPaintEvent>
+#include <QtGui/QComboBox>
+
+class QColor;
+class QPixmap;
+
+class QDragEnterEvent;
+class QDropEvent;
+class QMouseEvent;
+class QKeyEvent;
+class QPaintEvent;
 
 class KColorPopup;
 

@@ -21,9 +21,10 @@
 #ifndef COLORPICKER_H
 #define COLORPICKER_H
 
-#include <QDesktopWidget>
-#include <QKeyEvent>
-#include <QMouseEvent>
+#include <QtGui/QDesktopWidget>
+
+class QKeyEvent;
+class QMouseEvent;
 
 /** Class to pick a color on the screen
   * @author Sébastien Laoût
