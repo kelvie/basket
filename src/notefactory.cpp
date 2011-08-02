@@ -902,7 +902,7 @@ KUrl NoteFactory::filteredURL(const KUrl &url)
             QLatin1String("kshorturifilter") <<
             QLatin1String("kuriikwsfilter") <<
             QLatin1String("kurisearchfilter") <<
-//            QLatin1String("localdomainfilter") <<
+            QLatin1String("localdomainfilter") <<
             QLatin1String("fixuphosturifilter"); 
         return KUriFilter::self()->filteredUri(url, list);
     }
