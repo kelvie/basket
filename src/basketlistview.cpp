@@ -528,11 +528,11 @@ void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
         }
         setItemUnderDrag(bitem);
 
-        if (item) {
-            event->accept();
-        }
-        setItemUnderDrag(bitem);
     }
+    if (item) {
+        event->accept();
+    }
+    setItemUnderDrag(bitem);
 
     QTreeWidget::dragMoveEvent(event);
 }
