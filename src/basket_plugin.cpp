@@ -71,5 +71,3 @@ void BasketPlugin::showPart()
 {
     core()->selectPlugin(this);
 }
-
-#include "basket_plugin.moc"
