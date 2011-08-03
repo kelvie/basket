@@ -37,7 +37,7 @@
 #include <QStyle>
 #include <KDE/KApplication>
 #include <KDE/KIconLoader>
-#include "KDE/KIconDialog"
+#include <KDE/KIconDialog>
 
 #include "basketproperties.h"
 #include "basketview.h"
