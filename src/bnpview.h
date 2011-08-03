@@ -21,17 +21,17 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <QTreeWidget>
+#include <QtCore/QTimer>
+#include <QtCore/QList>
+#include <QtCore/QEvent>
+#include <QtGui/QHideEvent>
+#include <QtGui/QShowEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QClipboard>
+#include <QtGui/QSplitter>
+#include <QtGui/QTreeWidget>
+
 #include <KDE/KXMLGUIClient>
-#include <QTimer>
-#include <QClipboard>
-#include <QSplitter>
-#include <QTreeWidget>
-#include <QList>
-#include <QPixmap>
-#include <QHideEvent>
-#include <QEvent>
-#include <QShowEvent>
 
 #include "global.h"
 #include "basket_export.h"

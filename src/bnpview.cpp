@@ -18,25 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/// NEW:
+#include "bnpview.h"
 
-#include <QStackedWidget>
-#include <QRegExp>
-#include <QPixmap>
-#include <QPainter>
-#include <QImage>
-#include <QBitmap>
-#include <QWhatsThis>
-#include <QResizeEvent>
-#include <QShowEvent>
-#include <QList>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QHideEvent>
-#include <kmenu.h>
-#include <QSignalMapper>
-#include <QDir>
-#include <QUndoStack>
+#include <QtCore/QList>
+#include <QtCore/QRegExp>
+#include <QtCore/QEvent>
+#include <QtGui/QStackedWidget>
+#include <QtGui/QPixmap>
+#include <QtGui/QPainter>
+#include <QtGui/QImage>
+#include <QtGui/QBitmap>
+#include <QtGui/QWhatsThis>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QShowEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QHideEvent>
+#include <QtCore/QSignalMapper>
+#include <QtCore/QDir>
+#include <QtGui/QUndoStack>
+
+#include <KDE/KMenu>
 #include <KDE/KIconTheme>
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
@@ -59,9 +60,10 @@
 #include <KDE/KActionCollection>
 #include <KDE/KStandardShortcut>
 #include <KDE/KToggleAction>
-#include <cstdlib>
 
-#include "bnpview.h"
+#include <cstdlib>
+#include <unistd.h> // usleep
+
 #include "basketview.h"
 #include "decoratedbasket.h"
 #include "tools.h"
@@ -88,7 +90,6 @@
 #include "backup.h"
 #include "notefactory.h"
 #include "notecontent.h"
-#include "unistd.h" // usleep
 #include "history.h"
 
 #include "bnpviewadaptor.h"
