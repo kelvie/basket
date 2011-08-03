@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KDebug>
+#include "tools.h"
+
 #include <QString>
 #include <QPixmap>
 #include <QImage>
@@ -30,23 +31,25 @@
 #include <QFont>
 #include <QFontInfo>
 #include <QObject>
-
 #include <QTextDocument>
 #include <QTime>
 
-#include "tools.h"
+#include <KDE/KDebug>
+#include <KDE/KIO/CopyJob>
+#include <KDE/KUrl>
+
 #include "debugwindow.h"
 #include "config.h"
-#ifdef HAVE_NEPOMUK
-#include "nepomukintegration.h"
-#endif
 
 //cross reference
 #include "global.h"
 #include "bnpview.h"
-#include <KUrl>
 #include "htmlexporter.h"
 #include "linklabel.h"
+
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
 
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
@@ -543,7 +546,6 @@ void Tools::deleteRecursively(const QString &folderOrFile)
 #endif
 }
 
-#include <kio/copyjob.h>
 void Tools::deleteMetadataRecursively(const QString &folderOrFile)
 {
     QFileInfo fileInfo(folderOrFile);
