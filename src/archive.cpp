@@ -20,16 +20,16 @@
 
 #include "archive.h"
 
-#include <QString>
-#include <QStringList>
-#include <QList>
-#include <QMap>
-#include <QDir>
-#include <QTextStream>
-#include <QtXml>
-#include <QPixmap>
-#include <QPainter>
-#include <QProgressBar>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomDocument>
+#include <QtGui/QPixmap>
+#include <QtGui/QPainter>
+#include <QtGui/QProgressBar>
 
 #include <KDE/KStandardDirs>
 #include <KDE/KApplication>

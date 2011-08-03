@@ -21,8 +21,8 @@
 #ifndef ARCHIVE_H
 #define ARCHIVE_H
 
-#include <QList>
-#include <QMap>
+#include <QtCore/QList>
+#include <QtCore/QMap>
 
 class BasketView;
 class Tag;
