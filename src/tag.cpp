@@ -404,7 +404,7 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
         for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2, ++itTest) {
             State *state       = *it2;
             State *stateToTest = *itTest;
-            if (state->id().startsWith("tag_state_") || stateToTest->id().startsWith("tag_state_")) {
+            if (state->id().startsWith(QLatin1String("tag_state_")) || stateToTest->id().startsWith(QLatin1String("tag_state_"))) {
                 defaultTag = false;
             }
             if (state->name()            != stateToTest->name())            {

@@ -742,7 +742,7 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
 QString Note::linkAt(const QPoint &pos)
 {
     QString link = m_content->linkAt(pos - QPoint(contentX(), NOTE_MARGIN));
-    if (link.isEmpty() || link.startsWith("basket://"))
+    if (link.isEmpty() || link.startsWith(QLatin1String("basket://")))
         return link;
     else
         return NoteFactory::filteredURL(KUrl(link)).prettyUrl();//KURIFilter::self()->filteredURI(link);

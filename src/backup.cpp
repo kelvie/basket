@@ -356,7 +356,7 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
     KMessageBox::information(
         0,
         "<qt>" + message.arg(
-            (folder.endsWith("/") ? folder.left(folder.length() - 1) : folder),
+            (folder.endsWith('/') ? folder.left(folder.length() - 1) : folder),
             KGlobal::mainComponent().aboutData()->programName()),
         i18n("Restart")
     );

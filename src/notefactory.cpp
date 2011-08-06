@@ -189,21 +189,21 @@ QStringList NoteFactory::textToURLList(const QString &text)
         }
 
         /* Search for an url and create an URL note */
-        if ((ltext.startsWith("/") && ltext[1] != '/' && ltext[1] != '*') ||  // Take files but not C/C++/... comments !
-                ltext.startsWith("file:")    ||
-                ltext.startsWith("http://")  ||
-                ltext.startsWith("https://") ||
-                ltext.startsWith("www.")     ||
-                ltext.startsWith("ftp.")     ||
-                ltext.startsWith("ftp://")   ||
-                ltext.startsWith("mailto:")) {
+        if ((ltext.startsWith('/') && ltext[1] != '/' && ltext[1] != '*') ||  // Take files but not C/C++/... comments !
+                ltext.startsWith(QLatin1String("file:"))    ||
+                ltext.startsWith(QLatin1String("http://"))  ||
+                ltext.startsWith(QLatin1String("https://")) ||
+                ltext.startsWith(QLatin1String("www."))     ||
+                ltext.startsWith(QLatin1String("ftp."))     ||
+                ltext.startsWith(QLatin1String("ftp://"))   ||
+                ltext.startsWith(QLatin1String("mailto:"))) {
 
             // First, correct the text to use the good format for the url
-            if (ltext.startsWith("/"))
+            if (ltext.startsWith('/'))
                 (*it).insert(0, "file:");
-            if (ltext.startsWith("www."))
+            if (ltext.startsWith(QLatin1String("www.")))
                 (*it).insert(0, "http://");
-            if (ltext.startsWith("ftp."))
+            if (ltext.startsWith(QLatin1String("ftp.")))
                 (*it).insert(0, "ftp://");
 
             // And create the Url note (or launcher if URL point a .desktop file)
@@ -311,7 +311,7 @@ Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, BasketView *parent)
     //            "Invalid entry (missing '=') at /my/file.ogg:11984"
     //            "Invalid entry (missing ']') at /my/file.ogg:11984"...
     KService::Ptr service;
-    if (url.fileName().endsWith(".desktop"))
+    if (url.fileName().endsWith(QLatin1String(".desktop")))
         service = new KService(url.path());
 
     // If link point to a .desktop file then add a launcher, otherwise it's a link
@@ -678,13 +678,13 @@ Note* NoteFactory::decodeContent(QDataStream &stream, NoteType::Id type, BasketV
 bool NoteFactory::maybeText(const KUrl &url)
 {
     QString path = url.url().toLower();
-    return path.endsWith(".txt");
+    return path.endsWith(QLatin1String(".txt"));
 }
 
 bool NoteFactory::maybeHtml(const KUrl &url)
 {
     QString path = url.url().toLower();
-    return path.endsWith(".html") || path.endsWith(".htm");
+    return path.endsWith(QLatin1String(".html")) || path.endsWith(QLatin1String(".htm"));
 }
 
 bool NoteFactory::maybeImageOrAnimation(const KUrl &url)
@@ -714,19 +714,19 @@ bool NoteFactory::maybeImageOrAnimation(const KUrl &url)
 bool NoteFactory::maybeAnimation(const KUrl &url)
 {
     QString path = url.url().toLower();
-    return path.endsWith(".mng") || path.endsWith(".gif");
+    return path.endsWith(QLatin1String(".mng")) || path.endsWith(QLatin1String(".gif"));
 }
 
 bool NoteFactory::maybeSound(const KUrl &url)
 {
     QString path = url.url().toLower();
-    return path.endsWith(".mp3") || path.endsWith(".ogg");
+    return path.endsWith(QLatin1String(".mp3")) || path.endsWith(QLatin1String(".ogg"));
 }
 
 bool NoteFactory::maybeLauncher(const KUrl &url)
 {
     QString path = url.url().toLower();
-    return path.endsWith(".desktop");
+    return path.endsWith(QLatin1String(".desktop"));
 }
 
 ////////////// NEW:
@@ -837,12 +837,12 @@ NoteType::Id NoteFactory::typeForURL(const KUrl &url, BasketView */*parent*/)
         *Global::debugWindow << "typeForURL: " + url.prettyUrl() + " ; MIME type = " + mimeType;
 
     if (mimeType == "application/x-desktop")            return NoteType::Launcher;
-    else if (viewText  && mimeType.startsWith("text/plain")) return NoteType::Text;
-    else if (viewHTML  && mimeType.startsWith("text/html"))  return NoteType::Html;
+    else if (viewText  && mimeType.startsWith(QLatin1String("text/plain"))) return NoteType::Text;
+    else if (viewHTML  && mimeType.startsWith(QLatin1String("text/html")))  return NoteType::Html;
     else if (viewImage && mimeType == "movie/x-mng")         return NoteType::Animation;
     else if (viewImage && mimeType == "image/gif")           return NoteType::Animation;
-    else if (viewImage && mimeType.startsWith("image/"))     return NoteType::Image;
-    else if (viewSound && mimeType.startsWith("audio/"))     return NoteType::Sound;
+    else if (viewImage && mimeType.startsWith(QLatin1String("image/")))     return NoteType::Image;
+    else if (viewSound && mimeType.startsWith(QLatin1String("audio/")))     return NoteType::Sound;
     else                                                     return NoteType::File;
 }
 
@@ -915,41 +915,41 @@ QString NoteFactory::titleForURL(const KUrl &url)
     QString title = url.prettyUrl();
     QString home  = "file:" + QDir::homePath() + "/";
 
-    if (title.startsWith("mailto:"))
+    if (title.startsWith(QLatin1String("mailto:")))
         return title.remove(0, 7);
 
     if (title.startsWith(home))
         title = "~/" + title.remove(0, home.length());
 
-    if (title.startsWith("file://"))
+    if (title.startsWith(QLatin1String("file://")))
         title = title.remove(0, 7); // 7 == QString("file://").length() - 1
-    else if (title.startsWith("file:"))
+    else if (title.startsWith(QLatin1String("file:")))
         title = title.remove(0, 5); // 5 == QString("file:").length() - 1
-    else if (title.startsWith("http://www."))
+    else if (title.startsWith(QLatin1String("http://www.")))
         title = title.remove(0, 11); // 11 == QString("http://www.").length() - 1
-    else if (title.startsWith("http://"))
+    else if (title.startsWith(QLatin1String("http://")))
         title = title.remove(0, 7); // 7 == QString("http://").length() - 1
 
     if (! url.isLocalFile()) {
-        if (title.endsWith("/index.html") && title.length() > 11)
+        if (title.endsWith(QLatin1String("/index.html")) && title.length() > 11)
             title.truncate(title.length() - 11); // 11 == QString("/index.html").length()
-        else if (title.endsWith("/index.htm") && title.length() > 10)
+        else if (title.endsWith(QLatin1String("/index.htm")) && title.length() > 10)
             title.truncate(title.length() - 10); // 10 == QString("/index.htm").length()
-        else if (title.endsWith("/index.xhtml") && title.length() > 12)
+        else if (title.endsWith(QLatin1String("/index.xhtml")) && title.length() > 12)
             title.truncate(title.length() - 12); // 12 == QString("/index.xhtml").length()
-        else if (title.endsWith("/index.php") && title.length() > 10)
+        else if (title.endsWith(QLatin1String("/index.php")) && title.length() > 10)
             title.truncate(title.length() - 10); // 10 == QString("/index.php").length()
-        else if (title.endsWith("/index.asp") && title.length() > 10)
+        else if (title.endsWith(QLatin1String("/index.asp")) && title.length() > 10)
             title.truncate(title.length() - 10); // 10 == QString("/index.asp").length()
-        else if (title.endsWith("/index.php3") && title.length() > 11)
+        else if (title.endsWith(QLatin1String("/index.php3")) && title.length() > 11)
             title.truncate(title.length() - 11); // 11 == QString("/index.php3").length()
-        else if (title.endsWith("/index.php4") && title.length() > 11)
+        else if (title.endsWith(QLatin1String("/index.php4")) && title.length() > 11)
             title.truncate(title.length() - 11); // 11 == QString("/index.php4").length()
-        else if (title.endsWith("/index.php5") && title.length() > 11)
+        else if (title.endsWith(QLatin1String("/index.php5")) && title.length() > 11)
             title.truncate(title.length() - 11); // 11 == QString("/index.php5").length()
     }
 
-    if (title.length() > 2 && title.endsWith("/")) // length > 2 because "/" and "~/" shouldn't be transformed to "" and "~"
+    if (title.length() > 2 && title.endsWith('/')) // length > 2 because "/" and "~/" shouldn't be transformed to "" and "~"
         title.truncate(title.length() - 1); // eg. transform "www.kde.org/" to "www.kde.org"
 
     return title;
@@ -1038,7 +1038,7 @@ Note* NoteFactory::importKMenuLauncher(BasketView *parent)
         // * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
         // * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
         QString serviceUrl = dialog->service()->entryPath();
-        if (! serviceUrl.startsWith("/"))
+        if (! serviceUrl.startsWith('/'))
             serviceUrl = dialog->service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
         return createNoteLauncher(serviceUrl, parent);
     }

@@ -387,7 +387,7 @@ void Archive::open(const QString &path)
                     stream.seek(file.pos());
 
                 }
-            } else if (key.endsWith("*")) {
+            } else if (key.endsWith('*')) {
                 // We do not know what it is, but we should read the embedded-file in order to discard it:
                 bool ok;
                 qint64 size = value.toULong(&ok);

@@ -378,10 +378,10 @@ void KGpgMe::setPassphraseCb()
     if (m_useGnuPGAgent) {
         if (agent_info.indexOf(':'))
             agent = true;
-        if (agent_info.startsWith("disable:"))
+        if (agent_info.startsWith(QLatin1String("disable:")))
             setenv("GPG_AGENT_INFO", agent_info.mid(8).toAscii(), 1);
     } else {
-        if (!agent_info.startsWith("disable:"))
+        if (!agent_info.startsWith(QLatin1String("disable:")))
             setenv("GPG_AGENT_INFO", "disable:" + agent_info.toAscii(), 1);
     }
     if (agent)

@@ -2013,7 +2013,7 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
     QString url = m_url.url();
     QString title;
 
-    if(url.startsWith("basket://"))
+    if(url.startsWith(QLatin1String("basket://")))
         url = url.mid(9, url.length() -9);
     if(url.endsWith('/'))
         url = url.left(url.length() - 1);

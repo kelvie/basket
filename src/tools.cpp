@@ -235,7 +235,7 @@ QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *export
     title = linkParts.last().trimmed();
 
     QString url;
-    if(basketLink.startsWith("basket://"))
+    if(basketLink.startsWith(QLatin1String("basket://")))
     url = basketLink.mid(9, basketLink.length() - 9);
 
     BasketView *basket = Global::bnpView->basketForFolderName(url);
@@ -273,7 +273,7 @@ QString Tools::crossReferenceForConversion(QStringList linkParts)
     QString basketLink = linkParts.first();
     QString title;
 
-    if(basketLink.startsWith("basket://"))
+    if(basketLink.startsWith(QLatin1String("basket://")))
         return QString("[[%1|%2]]").arg(basketLink, linkParts.last());
 
     if(basketLink.endsWith('/'))

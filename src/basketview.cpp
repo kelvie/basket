@@ -1184,8 +1184,8 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
     // global one)
     m_action->setShortcutConfigurable(false);
 
-    if (!m_folderName.endsWith("/"))
-        m_folderName += "/";
+    if (!m_folderName.endsWith('/'))
+        m_folderName += '/';
 
     setFocusPolicy(Qt::StrongFocus);
     setDragAutoScroll(true);
@@ -2171,7 +2171,7 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
             } else if (link == "basket-internal-import") {
                 KMenu *menu = Global::bnpView->popupMenu("fileimport");
                 menu->exec(event->globalPos());
-            } else if (link.startsWith("basket://")) {
+            } else if (link.startsWith(QLatin1String("basket://"))) {
                 emit crossReference(link);
             } else {
                 KRun *run = new KRun(KUrl(link), window()); //  open the URL.
@@ -4120,7 +4120,7 @@ void BasketView::noteOpen(Note *note)
         // Finally do the opening job:
         QString customCommand = note->content()->customOpenCommand();
 
-        if (url.url().startsWith("basket://")) {
+        if (url.url().startsWith(QLatin1String("basket://"))) {
             emit crossReference(url.url());
         } else if (customCommand.isEmpty()) {
             KRun *run = new KRun(url, window());
@@ -5090,7 +5090,7 @@ bool BasketView::isFileEncrypted()
     if (file.open(QIODevice::ReadOnly)) {
         // Should be ASCII anyways
         QString line = file.readLine(32);
-        if (line.startsWith("-----BEGIN PGP MESSAGE-----"))
+        if (line.startsWith(QLatin1String("-----BEGIN PGP MESSAGE-----")))
             return true;
     }
     return false;

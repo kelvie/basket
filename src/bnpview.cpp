@@ -2143,8 +2143,8 @@ BasketView* BNPView::basketForFolderName(const QString &folderName)
     */
 
     QString name = folderName;
-    if (!name.endsWith("/"))
-        name += "/";
+    if (!name.endsWith('/'))
+        name += '/';
 
     QTreeWidgetItemIterator it(m_tree);
     while (*it) {

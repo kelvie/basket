@@ -327,7 +327,7 @@ void SoftwareImporters::importKJots()
                 finishImport(basket);
 
                 // IT IS A NOTEBOOK XML FILE, AT THE VERION 0.7.0 and later:
-            } else if ((*it).endsWith(".book") /*&& !buf.isNull() && (buf.left(2) == "<!" / *<!DOCTYPE...* / || buf.left(2) == "<?" / *<?xml...* /)*/) {
+            } else if ((*it).endsWith(QLatin1String(".book")) /*&& !buf.isNull() && (buf.left(2) == "<!" / *<!DOCTYPE...* / || buf.left(2) == "<?" / *<?xml...* /)*/) {
 
                 QDomDocument *doc = XMLWork::openFile("KJots", dirPath + *it);
                 if (doc == 0)
@@ -362,7 +362,7 @@ void SoftwareImporters::importKNotes()
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(".ics"))    // Don't process *.ics~ and otehr files
+        if (!(*it).endsWith(QLatin1String(".ics")))    // Don't process *.ics~ and otehr files
             continue;
         QFile file(dirPath + *it);
         if (file.open(QIODevice::ReadOnly)) {
@@ -386,14 +386,14 @@ void SoftwareImporters::importKNotes()
 
                 if (!buf.isNull() && buf == "BEGIN:VJOURNAL") {
                     inVJournal = true;
-                } else if (inVJournal && buf.startsWith("SUMMARY:")) {
+                } else if (inVJournal && buf.startsWith(QLatin1String("SUMMARY:"))) {
                     title = buf.mid(8, buf.length());
-                } else if (inVJournal && buf.startsWith("DESCRIPTION:")) {
+                } else if (inVJournal && buf.startsWith(QLatin1String("DESCRIPTION:"))) {
                     body = buf.mid(12, buf.length());
                     inDescription = true;
-                } else if (inDescription && buf.startsWith(" ")) {
+                } else if (inDescription && buf.startsWith(QLatin1String(" "))) {
                     body += buf.mid(1, buf.length());
-                } else if (buf.startsWith("X-KDE-KNotes-RichText:")) {
+                } else if (buf.startsWith(QLatin1String("X-KDE-KNotes-RichText:"))) {
                     isRichText = XMLWork::trueOrFalse(buf.mid(22, buf.length() - 22).trimmed(), "false");
                 } else if (buf == "END:VJOURNAL") {
                     insertTitledNote(basket, fromICS(title), fromICS(body), (isRichText ? Qt::RichText : Qt::PlainText));
@@ -483,7 +483,7 @@ void SoftwareImporters::importTomboy()
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(".note"))
+        if (!(*it).endsWith(QLatin1String(".note")))
             continue;
         QDomDocument *doc = XMLWork::openFile("note", dirPath + *it);
         if (doc == 0)
@@ -654,8 +654,8 @@ void SoftwareImporters::importKnowIt()
             while (1) {
                 line = stream.readLine();
 
-                if (line.startsWith("\\NewEntry") ||
-                        line.startsWith("\\CurrentEntry") || stream.atEnd()) {
+                if (line.startsWith(QLatin1String("\\NewEntry")) ||
+                        line.startsWith(QLatin1String("\\CurrentEntry")) || stream.atEnd()) {
                     while (level + 1 < baskets.size() - baskets.count(0))
                         baskets.pop();
                     if (level + 1 > baskets.size() - baskets.count(0))
@@ -701,9 +701,9 @@ void SoftwareImporters::importKnowIt()
                     text = "";
                     links.clear();
                     descriptions.clear();
-                } else if (line.startsWith("\\Link")) {
+                } else if (line.startsWith(QLatin1String("\\Link"))) {
                     links.append(line.mid(6));
-                } else if (line.startsWith("\\Descr")) {
+                } else if (line.startsWith(QLatin1String("\\Descr"))) {
                     while (descriptions.count() < links.count() - 1)
                         descriptions.append("");
                     descriptions.append(line.mid(7));

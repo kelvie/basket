@@ -733,7 +733,7 @@ QString LikeBackDialog::introductionText()
                 languagesMessage = "";
         }
     } else {
-        if (!KGlobal::locale()->language().startsWith("en"))
+        if (!KGlobal::locale()->language().startsWith(QLatin1String("en")))
             languagesMessage = i18n("Please write in English.");
     }
 
