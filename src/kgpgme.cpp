@@ -18,10 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kgpgme.h"
+#include "config.h"
 
 #ifdef HAVE_LIBGPGME
 
+#include "kgpgme.h"
+
+#include <QtCore/QPointer>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QLabel>
 #include <QtGui/QPixmap>
@@ -182,10 +185,10 @@ QString KGpgMe::checkForUtf8(QString txt)
 
 QString KGpgMe::selectKey(QString previous)
 {
-    KGpgSelKey dlg(kapp->activeWindow(), "", previous, *this);
+    QPointer<KGpgSelKey> dlg = new KGpgSelKey(kapp->activeWindow(), "", previous, *this);
 
-    if (dlg.exec())
-        return dlg.key();
+    if (dlg->exec())
+        return dlg->key();
     return "";
 }
 
