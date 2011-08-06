@@ -105,7 +105,7 @@ bool NoteContent::trySetFileName(const QString &fileName)
         return true;
     }
 
-    return false; // !useFile() or unsuccesful rename
+    return false; // !useFile() or unsuccessful rename
 }
 
 QString NoteContent::fullPath()
@@ -395,7 +395,7 @@ void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPat
         *title = (cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
     } else {
         *url   = KUrl();
-        *title = QString();
+        title->clear();
     }
 }
 void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
@@ -1276,7 +1276,7 @@ QString ImageContent::messageWhenOpening(OpenMessage where)
 void ImageContent::setPixmap(const QPixmap &pixmap)
 {
     m_pixmap = pixmap;
-    // Since it's scalled, the height is always greater or equal to the size of the tag emblems (16)
+    // Since it's scaled, the height is always greater or equal to the size of the tag emblems (16)
     contentChanged(16 + 1); // TODO: always good? I don't think...
 }
 
@@ -1444,14 +1444,14 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
         values->append(mime->comment());
     }
 
-    KFileMetaInfo infos = KFileMetaInfo(KUrl(fullPath()));
-    if (infos.isValid()) {
-        QStringList groups = infos.preferredKeys();
+    KFileMetaInfo info = KFileMetaInfo(KUrl(fullPath()));
+    if (info.isValid()) {
+        QStringList groups = info.preferredKeys();
         int i = 0;
         for (QStringList::Iterator it = groups.begin();
                 i < 6 && it != groups.end();
                 ++it) {
-            KFileMetaInfoItem item = infos.item(*it);
+            KFileMetaInfoItem item = info.item(*it);
             QString value = item.value().toString();
             if (!value.isEmpty()) {
                 keys->append(item.name());
@@ -2538,7 +2538,7 @@ void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
         for (int i = 0; i < mimes.count(); ++i) {
             // Get the size:
             stream >> size;
-            // Allocate memory to retreive size bytes and store them:
+            // Allocate memory to retrieve size bytes and store them:
             array = new QByteArray;
             array->resize(size);
             stream.readRawData(array->data(), size);

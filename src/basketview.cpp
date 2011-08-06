@@ -5155,7 +5155,8 @@ bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array, un
 
 #ifdef HAVE_LIBGPGME
     if (isEncrypted()) {
-        QString key = QString::null;
+        QString key;
+        key.clear();
 
         // We only use gpg-agent for private key encryption and saving without
         // public key doesn't need one.
