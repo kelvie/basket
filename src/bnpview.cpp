@@ -2267,13 +2267,13 @@ void BNPView::doBasketDeletion(BasketView *basket)
 void BNPView::password()
 {
 #ifdef HAVE_LIBGPGME
-    PasswordDlg dlg(kapp->activeWindow());
+    QPointer<PasswordDlg> dlg = new PasswordDlg(kapp->activeWindow());
     BasketView *cur = currentBasket();
 
-    dlg.setType(cur->encryptionType());
-    dlg.setKey(cur->encryptionKey());
-    if (dlg.exec()) {
-        cur->setProtection(dlg.type(), dlg.key());
+    dlg->setType(cur->encryptionType());
+    dlg->setKey(cur->encryptionKey());
+    if (dlg->exec()) {
+        cur->setProtection(dlg->type(), dlg->key());
         if (cur->encryptionType() != BasketView::NoEncryption)
             cur->lock();
     }

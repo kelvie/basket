@@ -1783,7 +1783,7 @@ void LinkContent::httpReadyRead()
 
         // todo: this should probably strip odd html tags like &nbsp; etc
         QRegExp reg("<title>[\\s]*(&nbsp;)?([^<]+)[\\s]*</title>", Qt::CaseInsensitive);
-        reg.setMinimal(TRUE);
+        reg.setMinimal(true);
         int offset = 0;
         //kDebug() << *m_httpBuff << " bytes: " << bytes_read;
 

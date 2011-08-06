@@ -1031,15 +1031,15 @@ Note* NoteFactory::createEmptyNote(NoteType::Id type, BasketView *parent)
 
 Note* NoteFactory::importKMenuLauncher(BasketView *parent)
 {
-    KOpenWithDialog dialog(parent);
-    dialog.setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
-    dialog.exec();
-    if (dialog.service()) {
+    QPointer<KOpenWithDialog> dialog = new KOpenWithDialog(parent);
+    dialog->setSaveNewApplications(true); // To create temp file, needed by createNoteLauncher()
+    dialog->exec();
+    if (dialog->service()) {
         // * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
         // * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
-        QString serviceUrl = dialog.service()->entryPath();
+        QString serviceUrl = dialog->service()->entryPath();
         if (! serviceUrl.startsWith("/"))
-            serviceUrl = dialog.service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
+            serviceUrl = dialog->service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);
         return createNoteLauncher(serviceUrl, parent);
     }
     return 0;
@@ -1049,12 +1049,12 @@ Note* NoteFactory::importIcon(BasketView *parent)
 {
     QString iconName = KIconDialog::getIcon(KIconLoader::Desktop, KIconLoader::Application, false, Settings::defIconSize());
     if (! iconName.isEmpty()) {
-        IconSizeDialog dialog(i18n("Import Icon as Image"), i18n("Choose the size of the icon to import as an image:"), iconName, Settings::defIconSize(), 0);
-        dialog.exec();
-        if (dialog.iconSize() > 0) {
-            Settings::setDefIconSize(dialog.iconSize());
+        QPointer<IconSizeDialog> dialog = new IconSizeDialog(i18n("Import Icon as Image"), i18n("Choose the size of the icon to import as an image:"), iconName, Settings::defIconSize(), 0);
+        dialog->exec();
+        if (dialog->iconSize() > 0) {
+            Settings::setDefIconSize(dialog->iconSize());
             Settings::saveConfig();
-            return createNoteImage(DesktopIcon(iconName, dialog.iconSize()), parent);   // TODO: wantedName = iconName !
+            return createNoteImage(DesktopIcon(iconName, dialog->iconSize()), parent);   // TODO: wantedName = iconName !
         }
     }
     return 0;

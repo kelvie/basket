@@ -93,6 +93,7 @@
 #include "debugwindow.h"
 #include "exporterdialog.h"
 #include "focusedwidgets.h"
+
 #include "config.h"
 
 #ifdef HAVE_LIBGPGME
@@ -3307,8 +3308,8 @@ void BasketView::toggledStateInMenu(QAction* action)
         return;
     }
     if (id == 2) { // Customize this State:
-        TagsEditDialog dialog(this, m_tagPopupNote->stateOfTag(m_tagPopup));
-        dialog.exec();
+        QPointer<TagsEditDialog> dialog = new TagsEditDialog(this, m_tagPopupNote->stateOfTag(m_tagPopup));
+        dialog->exec();
         return;
     }
     if (id == 3) { // Filter by this Tag
@@ -3380,10 +3381,10 @@ void BasketView::toggledTagInMenu(QAction *act)
 {
     int id = act->data().toInt();
     if (id == 1) { // Assign new Tag...
-        TagsEditDialog dialog(this, /*stateToEdit=*/0, /*addNewTag=*/true);
-        dialog.exec();
-        if (!dialog.addedStates().isEmpty()) {
-            State::List states = dialog.addedStates();
+        QPointer<TagsEditDialog> dialog = new TagsEditDialog(this, /*stateToEdit=*/0, /*addNewTag=*/true);
+        dialog->exec();
+        if (!dialog->addedStates().isEmpty()) {
+            State::List states = dialog->addedStates();
             for (State::List::iterator itState = states.begin(); itState != states.end(); ++itState)
                 FOR_EACH_NOTE(note)
                 note->addStateToSelectedNotes(*itState);
@@ -3400,8 +3401,8 @@ void BasketView::toggledTagInMenu(QAction *act)
         return;
     }
     if (id == 3) { // Customize...
-        TagsEditDialog dialog(this);
-        dialog.exec();
+        QPointer<TagsEditDialog> dialog = new TagsEditDialog(this);
+        dialog->exec();
         return;
     }
 
@@ -4138,13 +4139,13 @@ bool KRun__displayOpenWithDialog(const KUrl::List& lst, QWidget *window, bool te
         KMessageBox::sorry(window, i18n("You are not authorized to open this file.")); // TODO: Better message, i18n freeze :-(
         return false;
     }
-    KOpenWithDialog l(lst, text, QString::null, 0L);
-    if (l.exec()) {
-        KService::Ptr service = l.service();
+    QPointer<KOpenWithDialog> dialog = new KOpenWithDialog(lst, text, QString::null, 0L);
+    if (dialog->exec()) {
+        KService::Ptr service = dialog->service();
         if (!!service)
             return KRun::run(*service, lst, window, tempFiles);
-        //kDebug(250) << "No service set, running " << l.text() << endl;
-        return KRun::run(l.text(), lst, window); // TODO handle tempFiles
+        //kDebug(250) << "No service set, running " << dialog->text() << endl;
+        return KRun::run(dialog->text(), lst, window); // TODO handle tempFiles
     }
     return false;
 }

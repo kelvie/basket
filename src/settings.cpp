@@ -821,10 +821,10 @@ void NewNotesPage::defaults()
 
 void NewNotesPage::visualize()
 {
-    ViewSizeDialog size(this, m_imgSizeX->value(), m_imgSizeY->value());
-    size.exec();
-    m_imgSizeX->setValue(size.width());
-    m_imgSizeY->setValue(size.height());
+    QPointer<ViewSizeDialog> size = new ViewSizeDialog(this, m_imgSizeX->value(), m_imgSizeY->value());
+    size->exec();
+    m_imgSizeX->setValue(size->width());
+    m_imgSizeY->setValue(size->height());
 }
 
 /** class NotesAppearancePage: */

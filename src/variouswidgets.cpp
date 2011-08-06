@@ -21,6 +21,7 @@
 #include "variouswidgets.h"
 
 #include <QtCore/QList>
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <QtGui/QLineEdit>
 #include <QtGui/QLabel>
@@ -65,7 +66,7 @@ RunCommandRequester::~RunCommandRequester()
 
 void RunCommandRequester::slotSelCommand()
 {
-    KOpenWithDialog *dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
+    QPointer<KOpenWithDialog> dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
     dlg->exec();
     if (! dlg->text().isEmpty())
         m_runCommand->setText(dlg->text());

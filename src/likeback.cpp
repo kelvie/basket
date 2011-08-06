@@ -38,6 +38,7 @@
 #include <KDE/KGlobal>
 #include <KDE/KUser>
 
+#include <QtCore/QPointer>
 #include <QtGui/QToolButton>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QGridLayout>
@@ -347,8 +348,8 @@ bool LikeBack::enabledBar()
 void LikeBack::execCommentDialog(Button type, const QString &initialComment, const QString &windowPath, const QString &context)
 {
     disableBar();
-    LikeBackDialog dialog(type, initialComment, windowPath, context, this);
-    dialog.exec();
+    QPointer<LikeBackDialog> dialog = new LikeBackDialog(type, initialComment, windowPath, context, this);
+    dialog->exec();
     enableBar();
 }
 
