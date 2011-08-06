@@ -50,7 +50,7 @@ class LinkLook
 public:
     enum Underlining { Always = 0, Never, OnMouseHover, OnMouseOutside };
     enum Preview { None = 0, IconSize, TwiceIconSize, ThreeIconSize };
-    LinkLook(bool useLinkColor = true, bool canPreview = true);
+    explicit LinkLook(bool useLinkColor = true, bool canPreview = true);
     LinkLook(const LinkLook &other);
     void setLook(bool italic, bool bold, int underlining,
                  QColor color, QColor hoverColor,

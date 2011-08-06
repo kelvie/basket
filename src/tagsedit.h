@@ -131,7 +131,7 @@ class TagsEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    TagsEditDialog(QWidget *parent = 0, State *stateToEdit = 0, bool addNewTag = false);
+    explicit TagsEditDialog(QWidget *parent = 0, State *stateToEdit = 0, bool addNewTag = false);
     ~TagsEditDialog();
     State::List deletedStates() {
         return m_deletedStates;

@@ -57,7 +57,7 @@ class SystemTray2 : public SystemTray
 {
     Q_OBJECT
 public:
-    SystemTray2(QWidget *parent = 0, const char *name = 0);
+    explicit SystemTray2(QWidget *parent = 0, const char *name = 0);
     ~SystemTray2();
 protected:
     void mousePressEvent(QMouseEvent *event);

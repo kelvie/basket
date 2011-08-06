@@ -37,7 +37,7 @@ class BackupDialog : public KDialog
 {
     Q_OBJECT
 public:
-    BackupDialog(QWidget *parent = 0, const char *name = 0);
+    explicit BackupDialog(QWidget *parent = 0, const char *name = 0);
     ~BackupDialog();
 private slots:
     void moveToAnotherFolder();

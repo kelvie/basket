@@ -28,7 +28,7 @@ class BasketView;
 class HistorySetBasket : public QUndoCommand
 {
 public:
-    HistorySetBasket(BasketView *basket, QUndoCommand *parent = 0);
+    explicit HistorySetBasket(BasketView *basket, QUndoCommand *parent = 0);
     void undo();
     void redo();
 

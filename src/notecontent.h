@@ -80,7 +80,7 @@ class NoteContent
 {
 public:
     // Constructor and destructor:
-    NoteContent(Note *parent, const QString &fileName = "");              /// << Constructor. Inherited notes should call it to initialize the parent note.
+    explicit NoteContent(Note *parent, const QString &fileName = "");     /// << Constructor. Inherited notes should call it to initialize the parent note.
     virtual ~NoteContent()                                             {} /// << Virtual destructor. Reimplement it if you should destroy some data your custom types.
     // Simple Abstract Generic Methods:
     virtual NoteType::Id type() const                                = 0; /// << @return the internal number that identify that note type.

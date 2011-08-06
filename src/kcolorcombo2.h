@@ -53,7 +53,7 @@ public:
         setDefaultColor(defaultColor);
     }
 
-    KColorCombo2(const QColor &color,
+    explicit KColorCombo2(const QColor &color,
                  QWidget *parent = 0)
             : KColorCombo(parent) {
         setColor(color);
@@ -157,7 +157,7 @@ public:
      * The user is not allowed to choose a default color, unless you call setDefaultColor() later.
      * @param color         The initial selected color. If it is invalid, the result is undefined.
      */
-    KColorCombo2(const QColor& color, QWidget* parent = 0L);
+    explicit KColorCombo2(const QColor& color, QWidget* parent = 0L);
 
     /**
      * Destroys the combobox.

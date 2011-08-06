@@ -224,7 +224,7 @@ class DebuggedLineEdit : public QLineEdit
 {
     Q_OBJECT
 public:
-    DebuggedLineEdit(const QString &text, QWidget *parent = 0);
+    explicit DebuggedLineEdit(const QString &text, QWidget *parent = 0);
     ~DebuggedLineEdit();
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -237,7 +237,7 @@ class LinkEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
+    explicit LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
     ~LinkEditDialog();
     void ensurePolished();
 
@@ -265,7 +265,7 @@ class CrossReferenceEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
+    explicit CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
     ~CrossReferenceEditDialog();
 
 protected slots:
@@ -285,7 +285,7 @@ class LauncherEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    LauncherEditDialog(LauncherContent *contentNote, QWidget *parent = 0);
+    explicit LauncherEditDialog(LauncherContent *contentNote, QWidget *parent = 0);
     ~LauncherEditDialog();
     void ensurePolished();
 protected slots:

@@ -48,7 +48,7 @@ class BasketPropertiesDialog : public KDialog, private Ui::BasketPropertiesUi
 {
     Q_OBJECT
 public:
-    BasketPropertiesDialog(BasketView *basket, QWidget *parent = 0);
+    explicit BasketPropertiesDialog(BasketView *basket, QWidget *parent = 0);
     ~BasketPropertiesDialog();
     void ensurePolished();
 

@@ -45,7 +45,7 @@ public:
 
 public:
     /// CONSTRUCTOR AND DESTRUCTOR:
-    State(const QString &id = QString(), Tag *tag = 0);
+    explicit State(const QString &id = QString(), Tag *tag = 0);
     ~State();
     /// SET PROPERTIES:
     void setId(const QString &id)                {

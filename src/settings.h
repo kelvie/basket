@@ -48,7 +48,7 @@ class BASKET_EXPORT GeneralPage : public KCModule
 {
     Q_OBJECT
 public:
-    GeneralPage(QWidget * parent = 0, const char * name = 0);
+    explicit GeneralPage(QWidget * parent = 0, const char * name = 0);
     virtual ~GeneralPage() {}
 
     virtual void load();
@@ -75,7 +75,7 @@ class BASKET_EXPORT BasketsPage : public KCModule
 {
     Q_OBJECT
 public:
-    BasketsPage(QWidget * parent = 0, const char * name = 0);
+    explicit BasketsPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -105,7 +105,7 @@ class BASKET_EXPORT NewNotesPage : public KCModule
 {
     Q_OBJECT
 public:
-    NewNotesPage(QWidget * parent = 0, const char * name = 0);
+    explicit NewNotesPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -132,7 +132,7 @@ class BASKET_EXPORT NotesAppearancePage : public KCModule
 {
     Q_OBJECT
 public:
-    NotesAppearancePage(QWidget * parent = 0, const char * name = 0);
+    explicit NotesAppearancePage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -152,7 +152,7 @@ class BASKET_EXPORT ApplicationsPage : public KCModule
 {
     Q_OBJECT
 public:
-    ApplicationsPage(QWidget * parent = 0, const char * name = 0);
+    explicit ApplicationsPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();

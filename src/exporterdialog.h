@@ -36,7 +36,7 @@ class ExporterDialog : public KDialog
 {
     Q_OBJECT
 public:
-    ExporterDialog(BasketView *basket, QWidget *parent = 0, const char *name = 0);
+    explicit ExporterDialog(BasketView *basket, QWidget *parent = 0, const char *name = 0);
     ~ExporterDialog();
     QString filePath();
     bool    embedLinkedFiles();
