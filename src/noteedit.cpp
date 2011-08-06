@@ -484,8 +484,8 @@ void FileEditor::validate()
 LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
         : NoteEditor(linkContent)
 {
-    LinkEditDialog dialog(linkContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<LinkEditDialog> dialog = new LinkEditDialog(linkContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (linkContent->url().isEmpty() && linkContent->title().isEmpty())
         setEmpty();
@@ -496,8 +496,8 @@ LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
 CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent)
         : NoteEditor(crossReferenceContent)
 {
-    CrossReferenceEditDialog dialog(crossReferenceContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<CrossReferenceEditDialog> dialog = new CrossReferenceEditDialog(crossReferenceContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (crossReferenceContent->url().isEmpty() && crossReferenceContent->title().isEmpty())
         setEmpty();
@@ -508,8 +508,8 @@ CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReference
 LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent)
         : NoteEditor(launcherContent)
 {
-    LauncherEditDialog dialog(launcherContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<LauncherEditDialog> dialog = new LauncherEditDialog(launcherContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (launcherContent->name().isEmpty() && launcherContent->exec().isEmpty())
         setEmpty();
@@ -520,13 +520,13 @@ LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent
 ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
         : NoteEditor(colorContent)
 {
-    KColorDialog dialog(parent);
-    dialog.setColor(colorContent->color());
-    dialog.setCaption(i18n("Edit Color Note"));
-    dialog.setButtons(KDialog::Ok | KDialog::Cancel);
-    if (dialog.exec() == QDialog::Accepted) {
-        if (dialog.color() != colorContent->color()) {
-            colorContent->setColor(dialog.color());
+    QPointer<KColorDialog> dialog = new KColorDialog(parent);
+    dialog->setColor(colorContent->color());
+    dialog->setCaption(i18n("Edit Color Note"));
+    dialog->setButtons(KDialog::Ok | KDialog::Cancel);
+    if (dialog->exec() == QDialog::Accepted) {
+        if (dialog->color() != colorContent->color()) {
+            colorContent->setColor(dialog->color());
             colorContent->setEdited();
         }
     } else
