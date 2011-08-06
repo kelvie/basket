@@ -361,7 +361,7 @@ gpgme_error_t KGpgMe::readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const
 
 bool KGpgMe::isGnuPGAgentAvailable()
 {
-    QString agent_info = getenv("GPG_AGENT_INFO");
+    QString agent_info = qgetenv("GPG_AGENT_INFO");
 
     if (agent_info.indexOf(':') > 0)
         return true;
@@ -373,7 +373,7 @@ void KGpgMe::setPassphraseCb()
     bool agent = false;
     QString agent_info;
 
-    agent_info = getenv("GPG_AGENT_INFO");
+    agent_info = qgetenv("GPG_AGENT_INFO");
 
     if (m_useGnuPGAgent) {
         if (agent_info.indexOf(':'))
