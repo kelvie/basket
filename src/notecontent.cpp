@@ -1832,7 +1832,7 @@ void LinkContent::startFetchingLinkTitle()
         }
         m_http->setHost(this->url().host(), this->url().port() == 0 ? 80 : this->url().port());
         QString path = this->url().encodedPathAndQuery(KUrl::AddTrailingSlash);
-        if (path == "")
+        if (path.isEmpty())
             path = "/";
         //kDebug()  <<  "path: " << path;
         m_http->get(path);

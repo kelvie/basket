@@ -3045,11 +3045,11 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
         else
             p = m_tree->currentItem()->parent();
         found = this->folderFromBasketNameLink(pages, p);
-    } else if(!parent && page == "") {
+    } else if(!parent && page.isEmpty()) {
         parent = m_tree->invisibleRootItem();
         found = this->folderFromBasketNameLink(pages, parent);
     } else {
-        if(!parent && (page == "." || page != "")) {
+        if(!parent && (page == "." || !page.isEmpty())) {
             parent = m_tree->currentItem();
         }
         QRegExp re(":\\{([0-9]+)\\}");
