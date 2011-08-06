@@ -191,7 +191,7 @@ void BackupDialog::backup()
     KConfig *config = KGlobal::config().data();
     KConfigGroup configGroup(config, "Backups");
     QString folder = configGroup.readEntry("lastFolder", QDir::homePath()) + "/";
-    QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1", QDate::currentDate().toString(Qt::ISODate));
+    QString fileName = i18nc("Backup filename (without extension), %1 is the date", "Baskets_%1", QDate::currentDate().toString(Qt::ISODate));
     QString url = folder + fileName;
 
     // Ask a file name & path to the user:
