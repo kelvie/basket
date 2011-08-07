@@ -35,7 +35,8 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QWidget>
 #include <QtXml/QDomDocument>
-#include <QtNetwork/QHttp>
+#include <QtNetwork/QNetworkReply>
+#include <KDE/KIO/AccessManager>
 
 #include <KDE/KDebug>
 #include <KDE/KService>
@@ -1630,13 +1631,13 @@ QString SoundContent::messageWhenOpening(OpenMessage where)
  */
 
 LinkContent::LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
-        : NoteContent(parent), m_http(0), m_httpBuff(0), m_previewJob(0)
+        : NoteContent(parent), m_access_manager(0), m_httpBuff(0), m_previewJob(0)
 {
     setLink(url, title, icon, autoTitle, autoIcon);
 }
 LinkContent::~LinkContent()
 {
-    delete m_http;
+    delete m_access_manager;
     delete m_httpBuff;
 }
 
@@ -1765,13 +1766,14 @@ void LinkContent::removePreview(const KFileItem& ki)
 // QHttp slots for getting link title
 void LinkContent::httpReadyRead()
 {
-    unsigned long bytesAvailable = m_http->bytesAvailable();
+    //Check for availability
+    unsigned long bytesAvailable = m_reply->bytesAvailable();
     if (bytesAvailable <= 0)
         return;
 
     char* buf = new char[bytesAvailable+1];
 
-    long bytes_read = m_http->read(buf, bytesAvailable);
+    long bytes_read = m_reply->read(buf, bytesAvailable);
     if (bytes_read > 0) {
 
         // m_httpBuff will keep data if title is not found in initial read
@@ -1797,45 +1799,50 @@ void LinkContent::httpReadyRead()
             setLink(url(), title(), icon(), autoTitle(), autoIcon());
 
             // stop the http connection
-            m_http->abort();
+            m_reply->abort();
 
             delete m_httpBuff;
             m_httpBuff = 0;
         }
         // Stop at 10k bytes
         else if (m_httpBuff->length() > 10000)   {
-            m_http->abort();
+            m_reply->abort();
             delete m_httpBuff;
             m_httpBuff = 0;
         }
     }
     delete buf;
 }
-void LinkContent::httpDone(bool)
-{
-    m_http->closeConnection();
+
+void LinkContent::httpDone(QNetworkReply* reply) {
+    //If all done, close and delete the reply.
+    reply->deleteLater();
 }
 
 void LinkContent::startFetchingLinkTitle()
 {
-    if (this->url().protocol() == "http") {
-        // delete old m_http, for some reason it will not connect a second time...
-        if (m_http != 0) {
-            delete m_http;
-            m_http = 0;
+    KUrl newUrl = this->url();
+
+    //If this is not an HTTP request, just ignore it.
+    if (newUrl.protocol() == "http") {
+
+        //If we have no access_manager, create one.
+        if (m_access_manager == 0) {
+            m_access_manager = new KIO::Integration::AccessManager(this);
+            connect(m_access_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(httpDone(QNetworkReply*)));
+            connect(m_access_manager, SIGNAL(readyRead()), this, SLOT(httpReadyRead()));
         }
-        if (m_http == 0) {
-            m_http = new QHttp(this);
-            connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
-            connect(m_http, SIGNAL(readyRead(QHttpResponseHeader)), this,
-                    SLOT(httpReadyRead()));
-        }
-        m_http->setHost(this->url().host(), this->url().port() == 0 ? 80 : this->url().port());
-        QString path = this->url().encodedPathAndQuery(KUrl::AddTrailingSlash);
-        if (path.isEmpty())
-            path = "/";
-        //kDebug()  <<  "path: " << path;
-        m_http->get(path);
+
+        //If no explicit port, default to port 80.
+        if (newUrl.port() == 0)
+            newUrl.setPort(80);
+
+        //If no path or query part, default to /
+        if (newUrl.encodedPathAndQuery(KUrl::AddTrailingSlash).isEmpty())
+            newUrl.setPath("/");
+
+        //Issue request
+        m_reply = m_access_manager->get(QNetworkRequest(newUrl));
     }
 }
 

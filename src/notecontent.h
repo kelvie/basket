@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 
 #include <KDE/KUrl>
+#include <KDE/KIO/AccessManager>
 
 #include <phonon/phononnamespace.h>
 
@@ -34,7 +35,6 @@ class QDomElement;
 
 class QBuffer;
 class QColor;
-class QHttp;
 class QMimeData;
 class QMovie;
 class QPainter;
@@ -542,12 +542,13 @@ protected:
     bool        m_autoTitle;
     bool        m_autoIcon;
     LinkDisplay m_linkDisplay;
-    QHttp*      m_http;
+    KIO::Integration::AccessManager*      m_access_manager;
+    QNetworkReply*      m_reply;
     QString*    m_httpBuff;
     // File Preview Management:
 protected slots:
-    void httpDone(bool err);
     void httpReadyRead();
+    void httpDone(QNetworkReply* reply);
     void newPreview(const KFileItem&, const QPixmap &preview);
     void removePreview(const KFileItem&);
     void startFetchingUrlPreview();
