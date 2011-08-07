@@ -38,8 +38,8 @@ public:
     ~DesktopColorPicker();
 public slots:
     /** Begin color picking.
-      * This function returns immediatly, and pickedColor() is emitted if user has
-      * choosen a color, and not canceled the process (by pressing Escape).
+      * This function returns immediately, and pickedColor() is emitted if user has
+      * chozen a color, and not canceled the process (by pressing Escape).
       */
     void pickColor();
 signals:

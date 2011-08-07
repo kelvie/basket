@@ -770,7 +770,7 @@ void TagsEditDialog::newTag()
     m_deleteTag->setEnabled(true);
     m_tagBox->setEnabled(true);
 
-    // Add to the "controler":
+    // Add to the "controller":
     m_tags->setCurrentItem(item);
     currentItemChanged(item);
     item->setSelected(true);
@@ -806,7 +806,7 @@ void TagsEditDialog::newState()
     // Add to the "view":
     TagListViewItem *item = new TagListViewItem(tagItem, tagItem->lastChild(), newStateCopy);
 
-    // Add to the "controler":
+    // Add to the "controller":
     m_tags->setCurrentItem(item);
     currentItemChanged(item);
     m_stateName->setFocus();

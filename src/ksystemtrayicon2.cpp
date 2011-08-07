@@ -132,7 +132,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
         if (x + w > desktopWidth)  x = desktopWidth - w;
         if (y + h > desktopHeight) y = desktopHeight - h;
 
-        // Grab the desktop and draw a circle arround the icon:
+        // Grab the desktop and draw a circle around the icon:
         QPixmap shot = QPixmap::grabWindow(QX11Info::appRootWindow(), x, y, w, h);
         QPainter painter(&shot);
         const int CIRCLE_MARGINS = 6;
@@ -152,7 +152,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 #endif
         painter.end();
 
-        // Then, we add a border arround the image to make it more visible:
+        // Then, we add a border around the image to make it more visible:
         QPixmap finalShot(w + 2*IMAGE_BORDER, h + 2*IMAGE_BORDER);
         finalShot.fill(KApplication::palette().active().foreground());
         painter.begin(&finalShot);

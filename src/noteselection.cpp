@@ -29,7 +29,7 @@
 
 NoteSelection* NoteSelection::nextStacked()
 {
-    // First, search in the childs:
+    // First, search in the children:
     if (firstChild) {
         if (firstChild->note && firstChild->note->content())
             return firstChild;

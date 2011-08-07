@@ -386,7 +386,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
     gl->addWidget(m_filterOnTop, 1, 1);
     connect(m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()));
 
-    // Use Baloons to Report Results of Global Actions:
+    // Use balloons to Report Results of Global Actions:
     hLay = new QHBoxLayout(0);
     m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
     connect(m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()));

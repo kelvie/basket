@@ -314,7 +314,7 @@ void BackupDialog::restore()
     }
 
     // Note: The safety backup is not removed now because the code can has been wrong, somehow, or the user perhapse restored an older backup by error...
-    //       The restore process will not be called very often (it is possible it will only be called once or twice arround the world during the next years).
+    //       The restore process will not be called very often (it is possible it will only be called once or twice around the world during the next years).
     //       So it is rare enough to force the user to remove the safety folder, but keep him in control and let him safely recover from restoration errors.
 
     Backup::setFolderAndRestart(Global::savesFolder()/*No change*/, i18n("Your backup has been successfuly restored to <b>%1</b>. %2 is going to be restarted to take this change into account."));
@@ -330,7 +330,7 @@ void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)
 {
     /*
        The application can be launched by two ways:
-       - Globaly (app.applicationFilePath() is good)
+       - Globally (app.applicationFilePath() is good)
        - In KDevelop or with an absolute path (app.applicationFilePath() is wrong)
        This function is called at the very start of main() so that the current directory has not been changed yet.
 

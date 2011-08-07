@@ -177,7 +177,7 @@ QString Note::toText(const QString &cuttedFullPath)
     if (content()) {
         // Convert note to text:
         QString text = content()->toText(cuttedFullPath);
-        // If we should not export tags with the text, return immediatly:
+        // If we should not export tags with the text, return immediately:
         if (!Settings::exportTextTags())
             return text;
         // Compute the text equivalent of the tag states:
@@ -645,7 +645,7 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
     if (basket()->resizingNote() == this)
         return Resizer;
 
-    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it whith the whole column:
+    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it with the whole column:
     if (toAdd && isColumn() && hasResizer()) {
         int right = rightLimit() - x();
         if ((pos.x() >= right) && (pos.x() < right + RESIZER_WIDTH) && (pos.y() >= 0) && (pos.y() < resizerHeight())) // Code copied from below
@@ -1449,7 +1449,7 @@ void Note::drawExpander(QPainter *painter, int x, int y,
 
 QColor expanderBackground(int height, int y, const QColor &foreground)
 {
-    // We will divide height per two, substract one and use that below a division bar:
+    // We will divide height per two, subtract one and use that below a division bar:
     // To avoid division by zero error, height should be bigger than 3.
     // And to avoid y errors or if y is on the borders, we return the border color: the background color.
     if (height <= 3 || y <= 0 || y >= height - 1)
@@ -1751,7 +1751,7 @@ void Note::setOnTop(bool onTop)
     }
 }
 
-void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove)
+void subtractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove)
 {
     for (int i = 0; i < areas.size();) {
         QRect &rect = areas[i];
@@ -1813,9 +1813,9 @@ bool Note::recomputeAreas(Note *note, bool noteIsAfterThis)
     else if (note->matching() && noteIsAfterThis && ((!(isOnTop() || isEditing()) || ((isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing()))) ||
              (!(isOnTop() || isEditing()) && (note->isOnTop() || note->isEditing())))) {
         //if (!(isSelected() && !note->isSelected())) { // FIXME: FIXME: FIXME: FIXME: This last condition was added LATE, so we should look if it's ALWAYS good:
-        substractRectOnAreas(note->visibleRect(), m_areas, true);
+        subtractRectOnAreas(note->visibleRect(), m_areas, true);
         if (note->hasResizer())
-            substractRectOnAreas(note->resizerRect(), m_areas, true);
+            subtractRectOnAreas(note->resizerRect(), m_areas, true);
         //}
     }
 
@@ -1870,7 +1870,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
     if (!matching())
         return;
 
-    /** Paint childs: */
+    /** Paint children: */
     if (isGroup()) {
         Note *child = firstChild();
         bool first = true;
@@ -2531,7 +2531,7 @@ QRect Note::visibleRect()
     Note *parent = parentNote();
     while (parent) {
         if (parent->expandingOrCollapsing())
-            substractRectOnAreas(QRect(x(), parent->y() - height(), width(), height()), areas, true);
+            subtractRectOnAreas(QRect(x(), parent->y() - height(), width(), height()), areas, true);
         parent = parent->parentNote();
     }
 
@@ -2548,9 +2548,9 @@ void Note::recomputeBlankRects(QList<QRect> &blankAreas)
 
     // visibleRect() instead of rect() because if we are folding/expanding a smaller parent group, then some part is hidden!
     // But anyway, a resizer is always a primary note and is never hidden by a parent group, so no visibleResizerRect() method!
-    substractRectOnAreas(visibleRect(), blankAreas, true);
+    subtractRectOnAreas(visibleRect(), blankAreas, true);
     if (hasResizer())
-        substractRectOnAreas(resizerRect(), blankAreas, true);
+        subtractRectOnAreas(resizerRect(), blankAreas, true);
 
     if (isGroup()) {
         Note *child = firstChild();
@@ -2618,7 +2618,7 @@ void Note::usedStates(QList<State*> &states)
 
 Note* Note::nextInStack()
 {
-    // First, search in the childs:
+    // First, search in the children:
     if (firstChild()) {
         if (firstChild()->content())
             return firstChild();

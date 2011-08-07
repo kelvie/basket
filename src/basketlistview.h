@@ -59,7 +59,7 @@ public:
     QString escapedName(const QString &string);
 
     QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
-    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
+    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height);
     bool haveChildsLoading();
     bool haveHiddenChildsLoading();
     bool haveChildsLocked();

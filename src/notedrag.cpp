@@ -87,13 +87,13 @@ QDrag* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *sour
         mimeData->setData(NOTE_MIME_STRING,  buffer.buffer());
     }
 
-    // The "Other Flavours" Serialization:
+    // The "Other Flavors" Serialization:
     serializeText(noteList, multipleDrag);
     serializeHtml(noteList, multipleDrag);
     serializeImage(noteList, multipleDrag);
     serializeLinks(noteList, multipleDrag, cutting);
 
-    // The Alternate Flavours:
+    // The Alternate Flavors:
     if (noteList->count() == 1)
         noteList->firstStacked()->note->content()->addAlternateDragObjects(mimeData);
 
@@ -473,15 +473,15 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
             if (isFolded)
                 note->toggleFolded(/*animate=*/false);
             if (moveNotes) {
-                note->setX(oldNote->x()); // We don't move groups but re-create them (every childs can to not be selected)
+                note->setX(oldNote->x()); // We don't move groups but re-create them (every children can to not be selected)
                 note->setY(oldNote->y()); // We just set the position of the copied group so the animation seems as if the group is the same as (or a copy of) the old.
                 note->setHeight(oldNote->height()); // Idem: the only use of Note::setHeight()
             }
-            Note* childs = decodeHierarchy(stream, parent, moveFiles, moveNotes, originalBasket);
-            if (childs) {
-                for (Note *n = childs; n; n = n->next())
+            Note* children = decodeHierarchy(stream, parent, moveFiles, moveNotes, originalBasket);
+            if (children) {
+                for (Note *n = children; n; n = n->next())
                     n->setParentNote(note);
-                note->setFirstChild(childs);
+                note->setFirstChild(children);
             }
         } else {
             stream >> fileName >> fullPath >> addedDate >> lastModificationDate;
@@ -529,7 +529,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 note->setLastModificationDate(lastModificationDate);
             }
         }
-        // Retreive the states (tags) and assign them to the note:
+        // Retrieve the states (tags) and assign them to the note:
         if (note && note->content()) {
             quint64 statePointer;
             do {

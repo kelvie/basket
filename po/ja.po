@@ -1444,7 +1444,7 @@ msgstr ""
 "合は、最後の手段として、ファイル %5basketui.rc を削除してみてください。</p>"
 
 #: src/bnpview.cpp:1831
-msgid "Ressource not Found"
+msgid "Resource not Found"
 msgstr "リソースが見つかりません"
 
 #: src/bnpview.cpp:1855 src/bnpview.cpp:1864

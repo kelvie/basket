@@ -116,7 +116,7 @@ public:
     ~IconSizeDialog();
     int iconSize() {
         return m_iconSize;
-    } /// << @return the choosen icon size (16, 32, ...) or -1 if canceled!
+    } /// << @return the chozen icon size (16, 32, ...) or -1 if canceled!
 protected slots:
     void slotCancel();
     void slotSelectionChanged();

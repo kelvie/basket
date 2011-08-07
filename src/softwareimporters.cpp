@@ -362,7 +362,7 @@ void SoftwareImporters::importKNotes()
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(QLatin1String(".ics")))    // Don't process *.ics~ and otehr files
+        if (!(*it).endsWith(QLatin1String(".ics")))    // Don't process *.ics~ and other files
             continue;
         QFile file(dirPath + *it);
         if (file.open(QIODevice::ReadOnly)) {

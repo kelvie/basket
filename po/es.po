@@ -1485,7 +1485,7 @@ msgstr ""
 "el fichero %5basketui.rc</p>"
 
 #: src/bnpview.cpp:1831
-msgid "Ressource not Found"
+msgid "Resource not Found"
 msgstr "Recurso no encontrado"
 
 #: src/bnpview.cpp:1855 src/bnpview.cpp:1864

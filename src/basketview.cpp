@@ -786,7 +786,7 @@ void BasketView::setDisposition(int disposition, int columnCount)
         Note *column = firstNote();
         m_columnsCount = 0; // Now, so relayoutNotes() will not relayout the free notes as if they were columns!
         while (column) {
-            // Move all childs on the first level:
+            // Move all children on the first level:
             Note *nextColumn = column->next();
             ungroupNote(column);
             column = nextColumn;
@@ -1262,7 +1262,7 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
     // If user click the basket, focus it!
     // The focus is delayed because if the click results in showing a popup menu,
     // the interface flicker by showing the focused rectangle (as the basket gets focus)
-    // and immediatly removing it (because the popup menu now have focus).
+    // and immediately removing it (because the popup menu now have focus).
     if (!isDuringEdit())
         QTimer::singleShot(0, this, SLOT(setFocusIfNotInPopupMenu()));
 
@@ -1482,7 +1482,7 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectionStarted = true;
         m_selectionBeginPoint = event->pos();
-        // We usualy invert the selection with the Ctrl key, but some environements (like GNOME or The Gimp) do it with the Shift key.
+        // We usually invert the selection with the Ctrl key, but some environements (like GNOME or The Gimp) do it with the Shift key.
         // Since the Shift key has no specific usage, we allow to invert selection ALSO with Shift for Gimp people
         m_selectionInvert = controlPressed || shiftPressed;
     }
@@ -1717,7 +1717,7 @@ void BasketView::contentsDragMoveEvent(QDragMoveEvent *event)
         } else
             acceptDropEvent(event);*/
 
-    // A workarround since QScrollView::dragAutoScroll seem to have no effect :
+    // A workaround since QScrollView::dragAutoScroll seem to have no effect :
 //  ensureVisible(event->pos().x() + contentsX(), event->pos().y() + contentsY(), 30, 30);
 //  QScrollView::dragMoveEvent(event);
 }
@@ -2398,11 +2398,11 @@ void BasketView::unselectAll()
             QTextCursor cursor = m_editor->textEdit()->textCursor();
             cursor.clearSelection();
             m_editor->textEdit()->setTextCursor(cursor);
-            selectionChangedInEditor(); // THIS IS NOT EMITED BY Qt!!!
+            selectionChangedInEditor(); // THIS IS NOT EMITTED BY Qt!!!
         } else if (m_editor->lineEdit())
             m_editor->lineEdit()->deselect();
     } else {
-        if (countSelecteds() > 0) // Optimisation
+        if (countSelecteds() > 0) // Optimization
             FOR_EACH_NOTE(note)
             note->setSelectedRecursively(false);
     }
@@ -3065,7 +3065,7 @@ void BasketView::recomputeBlankRects()
 
     // See the drawing of blank areas in BasketView::drawContents()
     if (hasBackgroundImage() && ! isTiledBackground())
-        substractRectOnAreas(QRect(0, 0, backgroundPixmap()->width(), backgroundPixmap()->height()), m_blankAreas, false);
+        subtractRectOnAreas(QRect(0, 0, backgroundPixmap()->width(), backgroundPixmap()->height()), m_blankAreas, false);
 }
 
 void BasketView::addAnimatedNote(Note *note)
@@ -3450,7 +3450,7 @@ void BasketView::updateEditorAppearance()
         palette.setColor(m_editor->widget()->foregroundRole(), m_editor->note()->textColor());
         m_editor->widget()->setPalette(palette);
 
-        // Uggly Hack arround Qt bugs: placeCursor() don't call any signal:
+        // Ugly Hack around Qt bugs: placeCursor() don't call any signal:
         HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
         if (htmlEditor) {
             if (m_editor->textEdit()->textCursor().atStart()) {
@@ -3810,7 +3810,7 @@ NoteSelection* BasketView::selectedNotes()
     for (NoteSelection *node = selection.firstChild; node; node = node->next)
         node->parent = 0;
 
-    // If the top-most groups are columns, export only childs of those groups
+    // If the top-most groups are columns, export only children of those groups
     // (because user is not consciencious that columns are groups, and don't care: it's not what she want):
     if (selection.firstChild->note->isColumn()) {
         NoteSelection tmpSelection;
@@ -4295,7 +4295,7 @@ void BasketView::noteGroup()
         note = nextNote;
     }
 
-    m_loaded = true; // Part 2 / 2 of the workarround!
+    m_loaded = true; // Part 2 / 2 of the workaround!
 
     // Do cleanup:
     unplugNote(fakeNote);

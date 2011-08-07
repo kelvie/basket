@@ -2035,7 +2035,7 @@ KMenu* BNPView::popupMenu(const QString &menuName)
                                    "file %5basketui.rc</p>",
                                    aboutData->programName(), aboutData->programName(),
                                    stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
-                               i18n("Ressource not Found"), KMessageBox::AllowLink);
+                               i18n("Resource not Found"), KMessageBox::AllowLink);
         }
         if (!isPart())
             exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
@@ -2670,7 +2670,7 @@ void BNPView::setActive(bool active)
 
     if (active == isMainWindowActive())
         return;
-    kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
+    kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag through systray"
     Global::systemTray->toggleActive();
 }
 

@@ -268,7 +268,7 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
     return pmScaled;
 }
 
-QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height)
+QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height)
 {
     if (isLoading)
         return QPixmap();
@@ -277,7 +277,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
     boldFont.setBold(true);
 
     QString text;
-    if (childsAreLoading) {
+    if (childrenAreLoading) {
         if (countChildsFound > 0)
             text = i18n("%1+%2+", QString::number(countFound), QString::number(countChildsFound));
         else

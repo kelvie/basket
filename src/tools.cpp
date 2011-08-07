@@ -147,7 +147,7 @@ QString Tools::tagURLs(const QString &text)
         }
 
         QString href = richText.mid(urlPos, urlLen);
-        //we handle basket links seperately...
+        //we handle basket links separately...
         if(href.contains("basket://")) {
             urlPos += urlLen;
             continue;

@@ -28,7 +28,7 @@ class QTextBrowser;
 class QString;
 class QCloseEvent;
 
-/**A simple window that display text through debuging messages.
+/**A simple window that display text through debugging messages.
   *@author Sébastien Laoût
   */
 

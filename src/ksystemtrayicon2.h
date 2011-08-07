@@ -36,7 +36,7 @@ public:
       * (the [x]) to inform him that the application sit in the system tray
       * and willn't be closed (as he is used to).
       *
-      * You usualy call it from reimplemented KMainWindow::queryClose()
+      * You usually call it from reimplemented KMainWindow::queryClose()
       *
       * @since 3.4
       */

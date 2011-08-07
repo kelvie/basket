@@ -807,7 +807,7 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
             return opaque;
         } else
             return m_pixmap;
-    } else { // Scalled down
+    } else { // Scaled down
         QImage imageToScale = m_pixmap.toImage();
         QPixmap pmScaled;
         pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height,
@@ -829,7 +829,7 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
     QPixmap pixmap = m_movie->currentPixmap();
     if (width >= pixmap.width() && height >= pixmap.height()) // Full size
         return pixmap;
-    else { // Scalled down
+    else { // Scaled down
         QImage imageToScale = pixmap.toImage();
         QPixmap pmScaled;
         pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height,
@@ -1183,7 +1183,7 @@ int ImageContent::setWidthAndGetHeight(int width)
     // Don't store width: we will get it on paint!
     if (width >= m_pixmap.width()) // Full size
         return m_pixmap.height();
-    else { // Scalled down
+    else { // Scaled down
         double height = m_pixmap.height() * (double)width / m_pixmap.width();
         return int((double)(int)height <= (height - 0.5) ? height + 1 : height);
     }
@@ -1198,7 +1198,7 @@ void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QPa
 
     if (width >= m_pixmap.width()) // Full size
         painter->drawPixmap(0, 0, m_pixmap);
-    else { // Scalled down
+    else { // Scaled down
         double scale = ((double)width) / m_pixmap.width();
         painter->scale(scale, scale);
         painter->drawPixmap(0, 0, m_pixmap);  // TODO: Smooth !!!
@@ -1288,7 +1288,7 @@ void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 
     QString imageName = exporter->copyFile(fullPath(), /*createIt=*/true);
 
-    if (contentWidth <= m_pixmap.width()) { // Scalled down
+    if (contentWidth <= m_pixmap.width()) { // Scaled down
         double scale = ((double)contentWidth) / m_pixmap.width();
         width  = (int)(m_pixmap.width()  * scale);
         height = (int)(m_pixmap.height() * scale);
@@ -1298,7 +1298,7 @@ void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
     exporter->stream << "<img src=\"" << exporter->dataFolderName << imageName
     << "\" width=\"" << width << "\" height=\"" << height << "\" alt=\"\">";
 
-    if (contentWidth <= m_pixmap.width()) // Scalled down
+    if (contentWidth <= m_pixmap.width()) // Scaled down
         exporter->stream << "</a>";
 }
 

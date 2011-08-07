@@ -306,7 +306,7 @@ QString NoteFactory::createNoteLauncherFile(const QString &command, const QStrin
 Note* NoteFactory::createNoteLinkOrLauncher(const KUrl &url, BasketView *parent)
 {
     // IMPORTANT: we create the service ONLY if the extension is ".desktop".
-    //            Otherwise, KService take a long time to analyse all the file
+    //            Otherwise, KService take a long time to analyze all the file
     //            and output such things to stdout:
     //            "Invalid entry (missing '=') at /my/file.ogg:11984"
     //            "Invalid entry (missing ']') at /my/file.ogg:11984"...
@@ -423,7 +423,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, BasketView *parent, bool fr
         if (Global::debugWindow)
             for (int i = 0; i < mozilla.count(); i++)
                 *Global::debugWindow << QString("'") + QChar(mozilla[i]) + "' " + QString::number(int(mozilla[i]));
-        // text/x-moz-url give the URL followed by the link title and separed by OxOA (10 decimal: new line?)
+        // text/x-moz-url give the URL followed by the link title and separated by OxOA (10 decimal: new line?)
         uint size   = 0;
         QChar *name = 0L;
         // For each little endian mozilla chars, copy it to the array of QChars
@@ -1036,7 +1036,7 @@ Note* NoteFactory::importKMenuLauncher(BasketView *parent)
     dialog->exec();
     if (dialog->service()) {
         // * locateLocal() return a local file even if it is a system wide one (local one doesn't exists)
-        // * desktopEntryPath() returns the full path for system wide ressources, but relative path if in home
+        // * desktopEntryPath() returns the full path for system wide resources, but relative path if in home
         QString serviceUrl = dialog->service()->entryPath();
         if (! serviceUrl.startsWith('/'))
             serviceUrl = dialog->service()->locateLocal(); //locateLocal("xdgdata-apps", serviceUrl);

@@ -418,7 +418,7 @@ void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBotto
 		  int x, int y, int w, int h,
 		  bool sunken, bool horz, bool flat);
 
-extern void substractRectOnAreas(const QRect &rectToSubstract,
+extern void subtractRectOnAreas(const QRect &rectToSubstract,
 		QList<QRect> &areas, bool andRemove = true);
 
 

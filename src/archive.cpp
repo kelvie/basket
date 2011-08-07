@@ -407,7 +407,7 @@ void Archive::open(const QString &path)
             } else {
                 // We do not know what it is, and we do not care.
             }
-            // Analyse the Value, if Understood:
+            // Analyze the Value, if Understood:
         }
         file.close();
     }

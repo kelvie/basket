@@ -57,7 +57,7 @@ private:
 
 /** Struct to store default properties of a new basket.
   * When the dialog shows up, the @p icon is used, as well as the @p backgroundColor.
-  * A template is choosen depending on @p freeLayout and @p columnLayout.
+  * A template is chozen depending on @p freeLayout and @p columnLayout.
   * If @p columnLayout is too high, the template with the more columns will be chosen instead.
   * If the user change the background color in the dialog, then @p backgroundImage and @p textColor will not be used!
   * @author Sébastien Laoût

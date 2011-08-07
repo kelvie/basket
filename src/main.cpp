@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
                 if (!Settings::startDocked())
                         win->show();
         }
-        // Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
+        // Else, the application has been launched explicitly by the user (KMenu, keyboard shortcut...), so he need it, we show it:
         else
             win->show();
     } else

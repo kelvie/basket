@@ -383,8 +383,8 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
 Tag* Tag::tagSimilarTo(Tag *tagToTest)
 {
     // Tags are considered similar if they have the same name, the same number of states, in the same order, and the same look.
-    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparision.
-    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparision.
+    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparison.
+    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparison.
     // Default tags are equal only if they have the same number of states, in the same order, and the same look.
     // This is because default tag names are translated differently in every countries, but they are essentialy the same!
     // User tags begins with "tag_state_" followed by a number. Default tags are the other ones.

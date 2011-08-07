@@ -60,7 +60,7 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 
     KTextEdit::keyPressEvent(event);
 
-    // Workaround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
+    // Workaround (for ensuring the cursor to be visible): signal not emitted when pressing those keys:
     if (event->key() == Qt::Key_Home
             || event->key() == Qt::Key_End
             || event->key() == Qt::Key_PageUp

@@ -111,7 +111,7 @@ void HTMLExporter::prepareExport(BasketView *basket, const QString &fullPath)
     progress->setValue(0);
     kapp->processEvents();
 
-    // Remember the file path choosen by the user:
+    // Remember the file path chozen by the user:
     filePath = fullPath;
     fileName = KUrl(fullPath).fileName();
     exportedBasket = basket;
@@ -448,15 +448,15 @@ void HTMLExporter::exportNote(Note *note, int indent)
         }
         stream << '\n' << spaces.fill(' ', indent) << "</table>\n" /*<< spaces.fill(' ', indent - 1)*/;
     } else {
-        // Additionnal class for the content (link, netword, color...):
-        QString additionnalClasses = note->content()->cssClass();
-        if (!additionnalClasses.isEmpty())
-            additionnalClasses = " " + additionnalClasses;
+        // Additional class for the content (link, netword, color...):
+        QString additionalClasses = note->content()->cssClass();
+        if (!additionalClasses.isEmpty())
+            additionalClasses = " " + additionalClasses;
         // Assign the style of each associted tags:
         for (State::List::Iterator it = note->states().begin(); it != note->states().end(); ++it)
-            additionnalClasses += " tag_" + (*it)->id();
+            additionalClasses += " tag_" + (*it)->id();
         //stream << spaces.fill(' ', indent);
-        stream << "<table class=\"note" << additionnalClasses << "\"" << freeStyle << "><tr>";
+        stream << "<table class=\"note" << additionalClasses << "\"" << freeStyle << "><tr>";
         if (note->emblemsCount() > 0) {
             stream << "<td class=\"tags\"><nobr>";
             for (State::List::Iterator it = note->states().begin(); it != note->states().end(); ++it)

@@ -87,7 +87,7 @@ public:
     virtual QString typeName() const                                 = 0; /// << @return the translated type name to display in the user interface.
     virtual QString lowerTypeName() const                            = 0; /// << @return the type name in lowercase without space, for eg. saving.
     virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
-    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
+    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt resource.
     virtual QPixmap toPixmap()                      {
         return QPixmap();
     } /// << @return an image equivalent of the content.
@@ -161,7 +161,7 @@ public:
     virtual QString customOpenCommand() {
         return QString();
     }  /// << Reimplement this if your urlToOpen() should be opened with another application instead of the default KDE one. This choice should be left to the users in the setting (choice to use a custom app or not, and which app).
-    // Common File Management:                                            ///    (and do save changes) and optionnaly hide the toolbar.
+    // Common File Management:                                            ///    (and do save changes) and optionaly hide the toolbar.
     virtual void setFileName(const QString &fileName); /// << Set the filename. Reimplement it if you eg. want to update the view when the filename is changed.
     bool trySetFileName(const QString &fileName);      /// << Set the new filename and return true. Can fail and return false if a file with this fileName already exists.
     QString  fullPath();                               /// << Get the absolute path of the file where this content is stored on disk.
