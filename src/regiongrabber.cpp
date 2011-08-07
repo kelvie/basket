@@ -53,7 +53,7 @@ RegionGrabber::~RegionGrabber()
 void RegionGrabber::init()
 {
     pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-    showFullScreen();
+    showFullScreen();   //krazy:exclude=qmethods        -- Necessary for proper screenshot capture.
     resize(pixmap.size());
     move(0, 0);
     setCursor(Qt::CrossCursor);
