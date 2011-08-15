@@ -24,6 +24,7 @@
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QGridLayout>
+#include <QGraphicsProxyWidget>
 #include <KDE/KLineEdit>
 #include <KDE/KUrlRequester>
 #include <KDE/KColorDialog>
@@ -37,14 +38,14 @@
 #include <KDE/KUriFilter>
 #include <KDE/KDebug>
 #include <KDE/KStandardAction>
-
+#include <QScrollBar>
 #include "KDE/KIconDialog"
 #include "noteedit.h"
 #include "notecontent.h"
 // Use Tools::
 #include "notefactory.h"
 #include "note.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "settings.h"
 #include "tools.h"
 #include "variouswidgets.h"
@@ -64,6 +65,12 @@ NoteEditor::NoteEditor(NoteContent *noteContent)
     m_textEdit = 0;
     m_lineEdit = 0;
     m_noteContent = noteContent;
+}
+
+NoteEditor::~NoteEditor()
+{
+  if(m_widget)
+    delete m_widget;
 }
 
 Note* NoteEditor::note()
@@ -118,7 +125,13 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
 
 void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 {
-    m_widget   = inlineEditor;
+	if(m_widget) delete m_widget;
+
+    m_widget   = new QGraphicsProxyWidget();
+    m_widget->setWidget(inlineEditor);
+    m_widget->setZValue(500);
+    //m_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    m_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_textEdit = 0;
     m_lineEdit = 0;
 
@@ -137,7 +150,7 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
         : NoteEditor(textContent), m_textContent(textContent)
 {
-    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
+    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);
@@ -168,7 +181,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 
 TextEditor::~TextEditor()
 {
-    delete widget(); // TODO: delete that in validate(), so we can remove one method
+    delete graphicsWidget()->widget(); // TODO: delete that in validate(), so we can remove one method
 }
 
 void TextEditor::autoSave(bool toFileToo)
@@ -207,7 +220,8 @@ void TextEditor::validate()
     m_textContent->saveToFile();
     m_textContent->setEdited();
 
-//  delete widget();
+  delete graphicsWidget()->widget();
+  setInlineEditor(0);
 }
 
 /** class HtmlEditor: */
@@ -215,7 +229,7 @@ void TextEditor::validate()
 HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
         : NoteEditor(htmlContent), m_htmlContent(htmlContent)
 {
-    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
+    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);
@@ -228,11 +242,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     textEdit->setPalette(palette);
 
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QString convert = m_htmlContent->html();
-    if(note()->allowCrossReferences())
-        convert = Tools::tagCrossReferences(convert, /*userLink=*/true);
-
-    textEdit->setHtml(convert);
+    textEdit->setHtml(Tools::tagCrossReferences(m_htmlContent->html(), /*userLink=*/true));
     textEdit->moveCursor(QTextCursor::End);
     textEdit->verticalScrollBar()->setCursor(Qt::ArrowCursor);
     setInlineEditor(textEdit);
@@ -314,7 +324,7 @@ void HtmlEditor::fontChanged(const QFont &font)
     InlineEditors::instance()->richTextFontSize->setFontSize(font.pointSize());
 }
 
-/*void HtmlEditor::slotVe<rticalAlignmentChanged(QTextEdit::VerticalAlignment align)
+/*void HtmlEditor::slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align)
 {
     QTextEdit::VerticalAlignment align = textEdit()
     switch (align) {
@@ -368,7 +378,7 @@ void HtmlEditor::setBold(bool isChecked)
 
 HtmlEditor::~HtmlEditor()
 {
-    delete widget();
+    //delete graphicsWidget()->widget();
 }
 
 void HtmlEditor::autoSave(bool toFileToo)
@@ -393,13 +403,13 @@ void HtmlEditor::validate()
     m_htmlContent->setEdited();
 
     disconnect();
-    widget()->disconnect();
+    graphicsWidget()->disconnect();
     if (InlineEditors::instance()) {
         InlineEditors::instance()->disableRichTextToolBar();
 //      if (InlineEditors::instance()->richTextToolBar())
 //          InlineEditors::instance()->richTextToolBar()->hide();
     }
-    delete widget();
+    delete graphicsWidget()->widget();
     setInlineEditor(0);
 }
 
@@ -462,7 +472,7 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 
 FileEditor::~FileEditor()
 {
-    delete widget();
+    delete graphicsWidget()->widget();
 }
 
 void FileEditor::autoSave(bool toFileToo)
@@ -848,7 +858,7 @@ void CrossReferenceEditDialog::generateBasketList(KComboBox *targetList, BasketL
         for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)
             this->generateBasketList(targetList, Global::bnpView->topLevelItem(i));
     } else {
-        BasketView* bv = item->basket();
+        BasketScene* bv = item->basket();
 
         //TODO: add some fancy deco stuff to make it look like a tree list.
         QString pad;

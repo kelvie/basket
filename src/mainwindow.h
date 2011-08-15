@@ -45,7 +45,7 @@ class QSignalMapper;
 class QStringList;
 class QToolTipGroup;
 class KPassivePopup;
-class BasketView;
+class BasketScene;
 class DecoratedBasket;
 class Container;
 class RegionGrabber;

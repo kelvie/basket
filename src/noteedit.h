@@ -26,7 +26,7 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 
-class QWidget;
+class QGraphicsProxyWidget;
 //class QLineEdit;
 class QPushButton;
 class KIconButton;
@@ -69,6 +69,8 @@ class NoteEditor : public QObject
     Q_OBJECT
 public:
     NoteEditor(NoteContent *noteContent);
+    virtual ~NoteEditor();
+
     bool        isEmpty()  {
         return m_isEmpty;
     }
@@ -78,7 +80,7 @@ public:
     bool        isInline() {
         return m_widget != 0;
     }
-    QWidget*    widget()   {
+    QGraphicsProxyWidget*    graphicsWidget()   {
         return m_widget;
     }
     KTextEdit*  textEdit() {
@@ -91,7 +93,7 @@ public:
 private:
     bool         m_isEmpty;
     bool         m_canceled;
-    QWidget     *m_widget;
+    QGraphicsProxyWidget     *m_widget;
     KTextEdit   *m_textEdit;
     QLineEdit   *m_lineEdit;
     NoteContent *m_noteContent;

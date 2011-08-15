@@ -41,7 +41,7 @@
 #include "global.h"
 #include "debugwindow.h"
 #include "notedrag.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "aboutdata.h"
 #include "basket_options.h"
 #include "backup.h"

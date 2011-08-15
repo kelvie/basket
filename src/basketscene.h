@@ -21,10 +21,11 @@
 #ifndef BASKET_H
 #define BASKET_H
 
-#include <q3scrollview.h>
+#include <QGraphicsView>
 #include <QToolTip>
 #include <QList>
 #include <QTimer>
+#include <QTimeLine>
 #include <QImage>
 #include <QDateTime>
 #include <QClipboard>
@@ -34,7 +35,7 @@
 #include <QPixmap>
 #include <QFocusEvent>
 #include <QDragLeaveEvent>
-#include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QDragEnterEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -60,6 +61,7 @@ class Note;
 class NoteEditor;
 class Tag;
 class TransparentWidget;
+
 #ifdef HAVE_LIBGPGME
 class KGpgMe;
 #endif
@@ -67,7 +69,7 @@ class KGpgMe;
 /**
   * @author Sébastien Laoût
   */
-class BasketView : public Q3ScrollView
+class BasketScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
@@ -79,29 +81,29 @@ public:
 
 public:
 /// CONSTRUCTOR AND DESTRUCTOR:
-    BasketView(QWidget *parent, const QString &folderName);
-    ~BasketView();
+    BasketScene(QWidget *parent, const QString &folderName);
+    ~BasketScene();
 
 /// USER INTERACTION:
 private:
     bool   m_noActionOnMouseRelease;
     bool   m_ignoreCloseEditorOnNextMouseRelease;
-    QPoint m_pressPos;
+    QPointF m_pressPos;
     bool   m_canDrag;
 
 public:
-    void viewportResizeEvent(QResizeEvent *);
-    void drawContents(QPainter *painter);
-    void drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight);
+    void drawBackground ( QPainter * painter, const QRectF & rect );
+    void drawForeground ( QPainter * painter, const QRectF & rect );
+
+    void viewportResized();
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
-    void contentsMouseMoveEvent(QMouseEvent *event);
-    void contentsMousePressEvent(QMouseEvent *event);
-    void contentsMouseReleaseEvent(QMouseEvent *event);
-    void contentsMouseDoubleClickEvent(QMouseEvent *event);
-    void contentsContextMenuEvent(QContextMenuEvent *event);
-    void updateNote(Note *note);
-    void clickedToInsert(QMouseEvent *event, Note *clicked = 0, int zone = 0);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    void clickedToInsert(QGraphicsSceneMouseEvent *event, Note *clicked = 0, int zone = 0);
 private slots:
     void setFocusIfNotInPopupMenu();
 signals:
@@ -117,12 +119,12 @@ private:
     Note   *m_movingNote;
     QPoint  m_pickedHandle;
 public:
-    int tmpWidth;
-    int tmpHeight;
+    qreal tmpWidth;
+    qreal tmpHeight;
 public:
     void unsetNotesWidth();
     void relayoutNotes(bool animate);
-    Note* noteAt(int x, int y);
+    Note* noteAt(QPointF pos);
     inline Note* firstNote()       {
         return m_firstNote;
     }
@@ -159,7 +161,7 @@ public:
     /// <<  After that, you should delete the notes yourself. Do not call prepend/append/group... functions two times: unplug and ok
     void ungroupNote(Note *group);                   /// << Unplug @p group but put child notes at its place.
     /// And this one do almost all the above methods depending on the context:
-    void insertNote(Note *note, Note *clicked, int zone, const QPoint &pos = QPoint(), bool animateNewPosition = false);
+    void insertNote(Note *note, Note *clicked, int zone, const QPointF &pos = QPointF(), bool animateNewPosition = false);
     void insertCreatedNote(Note *note);
     /// And working with selections:
     void unplugSelection(NoteSelection *selection);
@@ -167,13 +169,14 @@ public:
     void selectSelection(NoteSelection *selection);
 private:
     void preparePlug(Note *note);
+    
 private:
     Note  *m_clickedToInsert;
     int    m_zoneToInsert;
-    QPoint m_posToInsert;
+    QPointF m_posToInsert;
     Note  *m_savedClickedToInsert;
     int    m_savedZoneToInsert;
-    QPoint m_savedPosToInsert;
+    QPointF m_savedPosToInsert;
     bool   m_isInsertPopupMenu;
     QAction *m_insertMenuTitle;
 public:
@@ -205,18 +208,14 @@ protected:
 
 /// ANIMATIONS:
 private:
-    QList<Note*> m_animatedNotes;
-    QTimer            m_animationTimer;
-    int               m_deltaY;
-    QTime             m_lastFrameTime;
-    static const int FRAME_DELAY;
-private slots:
-    void animateObjects();
+    QTimeLine *m_animationTimeLine;
+    static const int ANIMATION_DELAY;
+    
 public slots:
+    void animationFrameChanged(int);
     void animateLoad();
-public:
-    void addAnimatedNote(Note *note);
-
+    void finishAnimation();
+    
 /// LOAD AND SAVE:
 private:
     bool m_loaded;
@@ -303,10 +302,11 @@ public:
     inline QColor         textColorSetting()       {
         return m_textColorSetting;
     }
-    QColor backgroundColor();
-    QColor textColor();
+    QColor backgroundColor() const;
+    QColor textColor() const;
     void setAppearance(const QString &icon, const QString &name, const QString &backgroundImage, const QColor &backgroundColor, const QColor &textColor);
-    void blendBackground(QPainter &painter, const QRect &rect, int xPainter = -1, int yPainter = -1, bool opaque = false, QPixmap *bg = 0);
+    void blendBackground(QPainter &painter, const QRectF &rect, qreal xPainter = -1, qreal yPainter = -1, bool opaque = false, QPixmap *bg = 0);
+    void blendBackground(QPainter &painter, const QRectF &rect, bool opaque, QPixmap *bg );
     void unbufferizeAll();
     void subscribeBackgroundImages();
     void unsubscribeBackgroundImages();
@@ -333,7 +333,7 @@ private:
     int    m_hoveredZone;
     bool   m_lockedHovering;
     bool   m_underMouse;
-    QRect  m_inserterRect;
+    QRectF  m_inserterRect;
     bool   m_inserterShown;
     bool   m_inserterSplit;
     bool   m_inserterTop;
@@ -349,8 +349,8 @@ public:
         return m_inserterGroup;
     }
 public slots:
-    void doHoverEffects(Note *note, Note::Zone zone, const QPoint &pos = QPoint(0, 0)); /// << @p pos is optionnal and only used to show the link target in the statusbar
-    void doHoverEffects(const QPoint &pos);
+    void doHoverEffects(Note *note, Note::Zone zone, const QPointF &pos = QPointF(0, 0)); /// << @p pos is optionnal and only used to show the link target in the statusbar
+    void doHoverEffects(const QPointF &pos);
     void doHoverEffects(); // The same, but using the current cursor position
     void mouseEnteredEditorWidget();
 public:
@@ -362,13 +362,13 @@ public:
     void addStateToSelectedNotes(State *state);
     void changeStateOfSelectedNotes(State *state);
     bool selectedNotesHaveTags();
-    const QRect& inserterRect()  {
+    const QRectF& inserterRect()  {
         return m_inserterRect;
     }
     bool         inserterShown() {
         return m_inserterShown;
     }
-    void drawInserter(QPainter &painter, int xPainter, int yPainter);
+    void drawInserter(QPainter &painter, qreal xPainter, qreal yPainter);
     DecoratedBasket* decoration();
     State *stateForTagFromSelectedNotes(Tag *tag);
 public slots:
@@ -380,7 +380,6 @@ private slots:
     void toggledStateInMenu(QAction *act);
     void unlockHovering();
     void disableNextClick();
-    void contentsMoved();
 public:
     Note  *m_tagPopupNote;
 private:
@@ -392,9 +391,9 @@ private:
     bool   m_isSelecting;
     bool   m_selectionStarted;
     bool   m_selectionInvert;
-    QPoint m_selectionBeginPoint;
-    QPoint m_selectionEndPoint;
-    QRect  m_selectionRect;
+    QPointF m_selectionBeginPoint;
+    QPointF m_selectionEndPoint;
+    QRectF  m_selectionRect;
     QTimer m_autoScrollSelectionTimer;
     void stopAutoScrollSelection();
 private slots:
@@ -403,10 +402,10 @@ public:
     inline bool isSelecting() {
         return m_isSelecting;
     }
-    inline const QRect& selectionRect() {
+    inline const QRectF& selectionRect() {
         return m_selectionRect;
     }
-    void selectNotesIn(const QRect &rect, bool invertSelection, bool unselectOthers = true);
+    void selectNotesIn(const QRectF &rect, bool invertSelection, bool unselectOthers = true);
     void resetWasInLastSelectionRect();
     void selectAll();
     void unselectAll();
@@ -419,7 +418,7 @@ public:
 
 /// BLANK SPACES DRAWING:
 private:
-    QList<QRect> m_blankAreas;
+    QList<QRectF> m_blankAreas;
     void recomputeBlankRects();
     QWidget *m_cornerWidget;
 
@@ -428,8 +427,8 @@ signals:
     void postMessage(const QString &message);      /// << Post a temporar message in the statusBar.
     void setStatusBarText(const QString &message); /// << Set the permanent statusBar text or reset it if message isEmpty().
     void resetStatusBarText();                     /// << Equivalent to setStatusBarText("").
-    void propertiesChanged(BasketView *basket);
-    void countsChanged(BasketView *basket);
+    void propertiesChanged(BasketScene *basket);
+    void countsChanged(BasketScene *basket);
 public slots:
     void linkLookChanged();
     void signalCountsChanged();
@@ -484,7 +483,7 @@ private:
 
 /// ACTIONS ON SELECTED NOTES FROM THE INTERFACE:
 public slots:
-    void noteEdit(Note *note = 0L, bool justAdded = false, const QPoint &clickedPoint = QPoint());
+    void noteEdit(Note *note = 0L, bool justAdded = false, const QPointF &clickedPoint = QPointF());
     void showEditedNoteWhileFiltering();
     void noteDelete();
     void noteDeleteWithoutConfirmation(bool deleteFilesToo = true);
@@ -515,8 +514,8 @@ private:
     TransparentWidget *m_leftEditorBorder;
     TransparentWidget *m_rightEditorBorder;
     bool        m_redirectEditActions;
-    int         m_editorWidth;
-    int         m_editorHeight;
+    qreal         m_editorWidth;
+    qreal         m_editorHeight;
     QTimer      m_inactivityAutoSaveTimer;
     bool        m_doNotCloseEditor;
     QTextCursor m_textCursor;
@@ -538,8 +537,8 @@ protected slots:
 public slots:
     void editorCursorPositionChanged();
 private:
-    int m_editorX;
-    int m_editorY;
+    qreal m_editorX;
+    qreal m_editorY;
 public slots:
     void placeEditor(bool andEnsureVisible = false);
     void placeEditorAndEnsureVisible();
@@ -550,6 +549,10 @@ public slots:
     void openBasket();
     void closeBasket();
 
+signals:
+    void activated();
+    void closed();
+    
 /// FILTERING:
 public slots:
     void newFilter(const FilterData &data, bool andEnsureVisible = true);
@@ -562,9 +565,10 @@ private:
     bool m_isDuringDrag;
     QList<Note*> m_draggedNotes;
 public:
-    static void acceptDropEvent(QDropEvent *event, bool preCond = true);
-    void contentsDropEvent(QDropEvent *event);
-    void blindDrop(QDropEvent* event);
+    static void acceptDropEvent(QGraphicsSceneDragDropEvent *event, bool preCond = true);
+    void dropEvent(QGraphicsSceneDragDropEvent *event);
+    void blindDrop(QGraphicsSceneDragDropEvent * event);
+    void blindDrop(const QMimeData *mimeData, Qt::DropAction dropAction, QWidget *source);
     bool isDuringDrag() {
         return m_isDuringDrag;
     }
@@ -572,9 +576,9 @@ public:
         return m_draggedNotes;
     }
 protected:
-    void contentsDragEnterEvent(QDragEnterEvent*);
-    void contentsDragMoveEvent(QDragMoveEvent *event);
-    void contentsDragLeaveEvent(QDragLeaveEvent*);
+    void dragEnterEvent(QGraphicsSceneDragDropEvent *);
+    void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void dragLeaveEvent(QGraphicsSceneDragDropEvent *);
 public slots:
     void slotCopyingDone2(KIO::Job *job, const KUrl &from, const KUrl &to);
 public:
@@ -610,7 +614,7 @@ public:
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void focusInEvent(QFocusEvent*);
     virtual void focusOutEvent(QFocusEvent*);
-    QRect noteVisibleRect(Note *note); // clipped global (desktop as origin) rectangle
+    QRectF noteVisibleRect(Note *note); // clipped global (desktop as origin) rectangle
     Note* firstNoteInGroup();
     Note *noteOnHome();
     Note *noteOnEnd();
@@ -625,7 +629,7 @@ public:
 
 
 public:
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
 
 
 
@@ -654,7 +658,7 @@ public slots:
     void showFrameInsertTo() {}
     void resetInsertTo() {}
 
-    void  computeInsertPlace(const QPoint &/*cursorPosition*/)    { }
+    void  computeInsertPlace(const QPointF &/*cursorPosition*/)    { }
 public:
 
     friend class SystemTray;
@@ -665,6 +669,11 @@ private:
     bool m_relayoutOnNextShow;
 public:
     void aboutToBeActivated();
+
+    
+    QGraphicsView *graphicsView() { return m_view; }
+private:
+    QGraphicsView *m_view;
 };
 
 #endif // BASKET_H

@@ -30,7 +30,7 @@
 #include <QDesktopWidget>
 #include <KDebug>
 
-#include "basketview.h"
+#include "basketscene.h"
 #include "notedrag.h"
 #include "notefactory.h"
 #include "noteselection.h"
@@ -376,7 +376,7 @@ bool NoteDrag::canDecode(const QMimeData *source)
     return source->hasFormat(NOTE_MIME_STRING);
 }
 
-BasketView* NoteDrag::basketOf(const QMimeData *source)
+BasketScene* NoteDrag::basketOf(const QMimeData *source)
 {
     QByteArray srcData = source->data(NOTE_MIME_STRING);
     QBuffer buffer(&srcData);
@@ -385,14 +385,14 @@ BasketView* NoteDrag::basketOf(const QMimeData *source)
         // Get the parent basket:
         quint64 basketPointer;
         stream >> (quint64&)basketPointer;
-        return (BasketView*)basketPointer;
+        return (BasketScene*)basketPointer;
     } else
         return 0;
 }
 
-QList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
+QList<Note*> NoteDrag::notesOf(QGraphicsSceneDragDropEvent *source)
 {
-    QByteArray srcData = source->encodedData(NOTE_MIME_STRING);
+    QByteArray srcData = source->mimeData()->data(NOTE_MIME_STRING);
     QBuffer buffer(&srcData);
     if (buffer.open(QIODevice::ReadOnly)) {
         QDataStream stream(&buffer);
@@ -413,7 +413,7 @@ QList<Note*> NoteDrag::notesOf(QDragEnterEvent *source)
         return QList<Note*>();
 }
 
-Note* NoteDrag::decode(const QMimeData *source, BasketView *parent, bool moveFiles, bool moveNotes)
+Note* NoteDrag::decode(const QMimeData *source, BasketScene *parent, bool moveFiles, bool moveNotes)
 {
     QByteArray srcData = source->data(NOTE_MIME_STRING);
     QBuffer buffer(&srcData);
@@ -422,7 +422,7 @@ Note* NoteDrag::decode(const QMimeData *source, BasketView *parent, bool moveFil
         // Get the parent basket:
         quint64 basketPointer;
         stream >> (quint64&)basketPointer;
-        BasketView *basket = (BasketView*)basketPointer;
+        BasketScene *basket = (BasketScene*)basketPointer;
         // Get the note list:
         quint64          notePointer;
         QList<Note*> notes;
@@ -441,7 +441,7 @@ Note* NoteDrag::decode(const QMimeData *source, BasketView *parent, bool moveFil
         return 0;
 }
 
-Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool moveFiles, bool moveNotes, BasketView *originalBasket)
+Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketScene *parent, bool moveFiles, bool moveNotes, BasketScene *originalBasket)
 {
     quint64  notePointer;
     quint64  type;
@@ -464,6 +464,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
         stream >> type >> groupWidth;
         if (type == NoteType::Group) {
             note = new Note(parent);
+	    note->setZValue(-1);
             note->setGroupWidth(groupWidth);
             quint64 isFolded;
             stream >> isFolded;
@@ -473,6 +474,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketView *parent, bool mo
                 note->setX(oldNote->x()); // We don't move groups but re-create them (every childs can to not be selected)
                 note->setY(oldNote->y()); // We just set the position of the copied group so the animation seems as if the group is the same as (or a copy of) the old.
                 note->setHeight(oldNote->height()); // Idem: the only use of Note::setHeight()
+                parent->removeItem(oldNote);		
             }
             Note* childs = decodeHierarchy(stream, parent, moveFiles, moveNotes, originalBasket);
             if (childs) {

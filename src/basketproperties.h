@@ -37,7 +37,7 @@ class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
 
-class BasketView;
+class BasketScene;
 class KColorCombo2;
 
 /** The dialog that hold basket settings.
@@ -47,7 +47,7 @@ class BasketPropertiesDialog : public KDialog, private Ui::BasketPropertiesUi
 {
     Q_OBJECT
 public:
-    BasketPropertiesDialog(BasketView *basket, QWidget *parent = 0);
+    BasketPropertiesDialog(BasketScene *basket, QWidget *parent = 0);
     ~BasketPropertiesDialog();
     void ensurePolished();
 
@@ -61,7 +61,7 @@ protected slots:
 private:
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
-    BasketView    *m_basket;
+    BasketScene    *m_basket;
     QMap<int, QString> m_backgroundImagesMap;
 };
 

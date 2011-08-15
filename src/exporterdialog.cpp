@@ -31,10 +31,10 @@
 #include <KDE/KVBox>
 
 #include "exporterdialog.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "global.h"
 
-ExporterDialog::ExporterDialog(BasketView *basket, QWidget *parent, const char *name)
+ExporterDialog::ExporterDialog(BasketScene *basket, QWidget *parent, const char *name)
         : KDialog(parent)
         , m_basket(basket)
 {

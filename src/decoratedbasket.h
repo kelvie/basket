@@ -22,8 +22,9 @@
 #define DECORATEDBASKET_H
 
 class QString;
-class BasketView;
+class BasketScene;
 class QVBoxLayout;
+class QGraphicsView;
 
 #include <QWidget>
 #include "filter.h"
@@ -49,12 +50,15 @@ public:
     FilterBar* filterBar()         {
         return m_filter;
     }
-    BasketView*    basket()            {
+    BasketScene*    basket()            {
         return m_basket;
     }
+
+    void resizeEvent(QResizeEvent *event);
+
 private:
     QVBoxLayout *m_layout;
     FilterBar   *m_filter;
-    BasketView  *m_basket;
+    BasketScene  *m_basket;
 };
 #endif // DECORATEDBASKET_H

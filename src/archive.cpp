@@ -42,7 +42,7 @@
 #include "archive.h"
 #include "global.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "basketlistview.h"
 #include "basketfactory.h"
 #include "tag.h"
@@ -51,7 +51,7 @@
 #include "backgroundmanager.h"
 #include "formatimporter.h"
 
-void Archive::save(BasketView *basket, bool withSubBaskets, const QString &destination)
+void Archive::save(BasketScene *basket, bool withSubBaskets, const QString &destination)
 {
     QDir dir;
     KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
@@ -86,7 +86,7 @@ void Archive::save(BasketView *basket, bool withSubBaskets, const QString &desti
     QDomElement root = document.createElement("basketTree");
     document.appendChild(root);
     Global::bnpView->saveSubHierarchy(Global::bnpView->listViewItemForBasket(basket), document, root, withSubBaskets);
-    BasketView::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
+    BasketScene::safelySaveToFile(tempFolder + "baskets.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString());
     tar.addLocalFile(tempFolder + "baskets.xml", "baskets/baskets.xml");
     dir.remove(tempFolder + "baskets.xml");
 
@@ -120,8 +120,9 @@ void Archive::save(BasketView *basket, bool withSubBaskets, const QString &desti
     tar.close();
 
     // Computing the File Preview:
-    BasketView *previewBasket = basket; // FIXME: Use the first non-empty basket!
-    QPixmap previewPixmap(previewBasket->visibleWidth(), previewBasket->visibleHeight());
+    BasketScene *previewBasket = basket; // FIXME: Use the first non-empty basket!
+    //QPixmap previewPixmap(previewBasket->visibleWidth(), previewBasket->visibleHeight());
+    QPixmap previewPixmap(previewBasket->width(), previewBasket->height());
     QPainter painter(&previewPixmap);
     // Save old state, and make the look clean ("smile, you are filmed!"):
     NoteSelection *selection = previewBasket->selectedNotes();
@@ -130,7 +131,7 @@ void Archive::save(BasketView *basket, bool withSubBaskets, const QString &desti
     previewBasket->setFocusedNote(0);
     previewBasket->doHoverEffects(0, Note::None);
     // Take the screenshot:
-    previewBasket->drawContents(&painter, 0, 0, previewPixmap.width(), previewPixmap.height());
+    previewBasket->render(&painter);
     // Go back to the old look:
     previewBasket->selectSelection(selection);
     previewBasket->setFocusedNote(focusedNote);
@@ -189,7 +190,7 @@ void Archive::save(BasketView *basket, bool withSubBaskets, const QString &desti
     dir.rmdir(tempFolder);
 }
 
-void Archive::saveBasketToArchive(BasketView *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
+void Archive::saveBasketToArchive(BasketScene *basket, bool recursive, KTar *tar, QStringList &backgrounds, const QString &tempFolder, QProgressBar *progress)
 {
     // Basket need to be loaded for tags exportation.
     // We load it NOW so that the progress bar really reflect the state of the exportation:
@@ -243,7 +244,7 @@ void Archive::saveBasketToArchive(BasketView *basket, bool recursive, KTar *tar,
     }
 }
 
-void Archive::listUsedTags(BasketView *basket, bool recursive, QList<Tag*> &list)
+void Archive::listUsedTags(BasketScene *basket, bool recursive, QList<Tag*> &list)
 {
     basket->listUsedTags(list);
     BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
@@ -463,7 +464,7 @@ void Archive::importTagEmblems(const QString &extractionFolder)
         }
         node = node.nextSibling();
     }
-    BasketView::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
+    BasketScene::safelySaveToFile(extractionFolder + "tags.xml", document->toString());
 }
 
 void Archive::importArchivedBackgroundImages(const QString &extractionFolder)
@@ -548,7 +549,7 @@ void Archive::renameMergedStatesAndBasketIcon(const QString &fullPath, QMap<QStr
     QDomElement notes = XMLWork::getElement(docElem, "notes");
     if (mergedStates.count() > 0)
         renameMergedStates(notes, mergedStates);
-    BasketView::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
+    BasketScene::safelySaveToFile(fullPath, /*"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + */doc->toString());
 }
 
 void Archive::importBasketIcon(QDomElement properties, const QString &extractionFolder)
@@ -611,7 +612,7 @@ void Archive::renameMergedStates(QDomNode notes, QMap<QString, QString> &mergedS
     }
 }
 
-void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, BasketView *parent)
+void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &basketNode, QMap<QString, QString> &folderMap, BasketScene *parent)
 {
     bool basketSetAsCurrent = (parent != 0);
     QDomNode n = basketNode;
@@ -628,7 +629,7 @@ void Archive::loadExtractedBaskets(const QString &extractionFolder, QDomNode &ba
                 dir.rmdir(Global::basketsFolder() + newFolderName);
                 copier.moveFolder(extractionFolder + "baskets/" + folderName, Global::basketsFolder() + newFolderName);
                 // Append and load the basket in the tree:
-                BasketView *basket = Global::bnpView->loadBasket(newFolderName);
+                BasketScene *basket = Global::bnpView->loadBasket(newFolderName);
                 BasketListViewItem *basketItem = Global::bnpView->appendBasket(basket, (basket && parent ? Global::bnpView->listViewItemForBasket(parent) : 0));
                 basketItem->setExpanded(!XMLWork::trueOrFalse(element.attribute("folded", "false"), false));
                 QDomElement properties = XMLWork::getElement(element, "properties");

@@ -37,7 +37,7 @@
 #include <KDE/KDebug>
 #include "global.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
@@ -45,28 +45,28 @@
 
 /** class BasketListViewItem: */
 
-BasketListViewItem::BasketListViewItem(QTreeWidget *parent, BasketView *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidget *parent, BasketScene *basket)
         : QTreeWidgetItem(parent), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, BasketView *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, BasketScene *basket)
         : QTreeWidgetItem(parent), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketView *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketScene *basket)
         : QTreeWidgetItem(parent, after), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
 {
 }
 
-BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketView *basket)
+BasketListViewItem::BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketScene *basket)
         : QTreeWidgetItem(parent, after), m_basket(basket)
         , m_isUnderDrag(false)
         , m_isAbbreviated(false)
@@ -193,7 +193,7 @@ bool BasketListViewItem::isUnderDrag()
 
 // TODO: Move this function from item.cpp to class Tools:
 extern void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
-                         int x, int y, int w, int h,
+                         qreal x, qreal y, qreal w, qreal h,
                          bool sunken, bool horz, bool flat);   /*const*/
 
 QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color)
@@ -205,9 +205,9 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
     }
 
     // Compute the sizes of the image components:
-    QRect textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
-    int xMargin = height / 6;
-    int width   = xMargin + textRect.width() + xMargin;
+    QRectF textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
+    qreal xMargin = height / 6;
+    qreal width   = xMargin + textRect.width() + xMargin;
 
     // Create the gradient image:
     QPixmap gradient(3 * width, 3 * height); // We double the size to be able to smooth scale down it (== antialiased curves)
@@ -491,7 +491,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
         QTreeWidgetItem *item = itemAt(event->pos());
         BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
         if (bitem) {
-            bitem->basket()->blindDrop(event);
+            bitem->basket()->blindDrop(event->mimeData(),event->dropAction(),event->source());
         } else {
             kDebug() << "Forwarding failed: no bitem found";
         }
@@ -557,7 +557,7 @@ void BasketTreeListView::resizeEvent(QResizeEvent *event)
  */
 void BasketTreeListView::focusInEvent(QFocusEvent*)
 {
-    BasketView *basket = Global::bnpView->currentBasket();
+    BasketScene *basket = Global::bnpView->currentBasket();
     if (basket)
         basket->setFocus();
 }

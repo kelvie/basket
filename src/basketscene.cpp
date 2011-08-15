@@ -40,6 +40,7 @@
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <QGridLayout>
+#include <QGraphicsProxyWidget>
 #include <KDE/KStyle>
 #include <QToolTip>
 #include <QCursor>
@@ -73,6 +74,7 @@
 #include <KDE/KRun>
 
 #include <QClipboard>
+#include <QScrollBar>
 
 #include <KDE/KMessageBox>
 #include <QInputDialog>
@@ -82,7 +84,7 @@
 #include <stdlib.h>     // rand() function
 #include <QDateTime>  // seed for rand()
 
-#include "basketview.h"
+#include "basketscene.h"
 #include "decoratedbasket.h"
 #include "diskerrordialog.h"
 #include "note.h"
@@ -108,9 +110,7 @@
 #include "nepomukintegration.h"
 #endif
 
-/** Class BasketView: */
-
-const int BasketView::FRAME_DELAY = 50/*1500*/; // Delay between two animation "frames" in milliseconds
+const int BasketScene::ANIMATION_DELAY = 2000;
 
 void debugZone(int zone)
 {
@@ -142,7 +142,7 @@ void debugZone(int zone)
 #define FOR_EACH_NOTE(noteVar) \
     for (Note *noteVar = firstNote(); noteVar; noteVar = noteVar->next())
 
-void BasketView::prependNoteIn(Note *note, Note *in)
+void BasketScene::prependNoteIn(Note *note, Note *in)
 {
     if (!note)
         // No note to prepend:
@@ -171,7 +171,7 @@ void BasketView::prependNoteIn(Note *note, Note *in)
         appendNoteBefore(note, firstNote());
 }
 
-void BasketView::appendNoteIn(Note *note, Note *in)
+void BasketScene::appendNoteIn(Note *note, Note *in)
 {
     if (!note)
         // No note to append:
@@ -202,7 +202,7 @@ void BasketView::appendNoteIn(Note *note, Note *in)
         appendNoteAfter(note, lastNote());
 }
 
-void BasketView::appendNoteAfter(Note *note, Note *after)
+void BasketScene::appendNoteAfter(Note *note, Note *after)
 {
     if (!note)
         // No note to append:
@@ -243,7 +243,7 @@ void BasketView::appendNoteAfter(Note *note, Note *after)
         signalCountsChanged();
 }
 
-void BasketView::appendNoteBefore(Note *note, Note *before)
+void BasketScene::appendNoteBefore(Note *note, Note *before)
 {
     if (!note)
         // No note to append:
@@ -288,12 +288,12 @@ void BasketView::appendNoteBefore(Note *note, Note *before)
         signalCountsChanged();
 }
 
-DecoratedBasket* BasketView::decoration()
+DecoratedBasket* BasketScene::decoration()
 {
     return (DecoratedBasket*)parent();
 }
 
-void BasketView::preparePlug(Note *note)
+void BasketScene::preparePlug(Note *note)
 {
     // Select only the new notes, compute the new notes count and the new number of found notes:
     if (m_loaded)
@@ -326,7 +326,7 @@ void BasketView::preparePlug(Note *note)
     }
 }
 
-void BasketView::unplugNote(Note *note)
+void BasketScene::unplugNote(Note *note)
 {
     // If there is nothing to do...
     if (!note)
@@ -357,8 +357,10 @@ void BasketView::unplugNote(Note *note)
         if (!note->parentNote()->isColumn()) {
             // Delete parent if now 0 notes inside parent group:
             if (! note->parentNote()->firstChild())
+	    {
                 unplugNote(note->parentNote()); // TODO delete
-
+		delete note->parentNote();
+	    }
             // Ungroup if still 1 note inside parent group:
             else if (! note->parentNote()->firstChild()->next())
                 ungroupNote(note->parentNote());
@@ -368,11 +370,11 @@ void BasketView::unplugNote(Note *note)
     note->setParentNote(0);
     note->setPrev(0);
     note->setNext(0);
-
+//     note->deleteLater();
 //  recomputeBlankRects(); // FIXME: called too much time. It's here because when dragging and moving a note to another basket and then go back to the original basket, the note is deleted but the note rect is not painter anymore.
 }
 
-void BasketView::ungroupNote(Note *group)
+void BasketScene::ungroupNote(Note *group)
 {
     Note *note            = group->firstChild();
     Note *lastGroupedNote = group;
@@ -397,11 +399,11 @@ void BasketView::ungroupNote(Note *group)
     // Unplug the group:
     group->setFirstChild(0);
     unplugNote(group); // TODO: delete
-
+    delete group;
     relayoutNotes(true);
 }
 
-void BasketView::groupNoteBefore(Note *note, Note *with)
+void BasketScene::groupNoteBefore(Note *note, Note *with)
 {
     if (!note || !with)
         // No note to group or nowhere to group it:
@@ -445,7 +447,7 @@ void BasketView::groupNoteBefore(Note *note, Note *with)
         signalCountsChanged();
 }
 
-void BasketView::groupNoteAfter(Note *note, Note *with)
+void BasketScene::groupNoteAfter(Note *note, Note *with)
 {
     if (!note || !with)
         // No note to group or nowhere to group it:
@@ -489,7 +491,7 @@ void BasketView::groupNoteAfter(Note *note, Note *with)
         signalCountsChanged();
 }
 
-void BasketView::loadNotes(const QDomElement &notes, Note *parent)
+void BasketScene::loadNotes(const QDomElement &notes, Note *parent)
 {
     Note *note;
     for (QDomNode n = notes.firstChild(); !n.isNull(); n = n.nextSibling()) {
@@ -552,7 +554,7 @@ void BasketView::loadNotes(const QDomElement &notes, Note *parent)
     }
 }
 
-void BasketView::saveNotes(QDomDocument &document, QDomElement &element, Note *parent)
+void BasketScene::saveNotes(QDomDocument &document, QDomElement &element, Note *parent)
 {
     Note *note = (parent ? parent->firstChild() : firstNote());
     while (note) {
@@ -561,8 +563,8 @@ void BasketView::saveNotes(QDomDocument &document, QDomElement &element, Note *p
         element.appendChild(noteElement);
         // Free Note Properties:
         if (note->isFree()) {
-            noteElement.setAttribute("x", note->finalX());
-            noteElement.setAttribute("y", note->finalY());
+            noteElement.setAttribute("x", note->x());
+            noteElement.setAttribute("y", note->y());
         }
         // Resizeable Note Properties:
         if (note->hasResizer())
@@ -595,7 +597,7 @@ void BasketView::saveNotes(QDomDocument &document, QDomElement &element, Note *p
     }
 }
 
-void BasketView::loadProperties(const QDomElement &properties)
+void BasketScene::loadProperties(const QDomElement &properties)
 {
     // Compute Default Values for When Loading the Properties:
     QString defaultBackgroundColor = (backgroundColorSetting().isValid() ? backgroundColorSetting().name() : "");
@@ -639,7 +641,7 @@ void BasketView::loadProperties(const QDomElement &properties)
     setAppearance(icon, name, backgroundImage, backgroundColor, textColor); // Will emit propertiesChanged(this)
 }
 
-void BasketView::saveProperties(QDomDocument &document, QDomElement &properties)
+void BasketScene::saveProperties(QDomDocument &document, QDomElement &properties)
 {
     XMLWork::addElement(document, properties, "name", basketName());
     XMLWork::addElement(document, properties, "icon", icon());
@@ -668,7 +670,7 @@ void BasketView::saveProperties(QDomDocument &document, QDomElement &properties)
     protection.setAttribute("key",  m_encryptionKey);
 }
 
-void BasketView::subscribeBackgroundImages()
+void BasketScene::subscribeBackgroundImages()
 {
     if (!m_backgroundImageName.isEmpty()) {
         Global::backgroundManager->subscribe(m_backgroundImageName);
@@ -681,7 +683,7 @@ void BasketView::subscribeBackgroundImages()
     }
 }
 
-void BasketView::unsubscribeBackgroundImages()
+void BasketScene::unsubscribeBackgroundImages()
 {
     if (hasBackgroundImage()) {
         Global::backgroundManager->unsubscribe(m_backgroundImageName);
@@ -692,8 +694,8 @@ void BasketView::unsubscribeBackgroundImages()
         m_selectedBackgroundPixmap = 0;
     }
 }
-
-void BasketView::setAppearance(const QString &icon, const QString &name, const QString &backgroundImage, const QColor &backgroundColor, const QColor &textColor)
+#include <QBitmap>
+void BasketScene::setAppearance(const QString &icon, const QString &name, const QString &backgroundImage, const QColor &backgroundColor, const QColor &textColor)
 {
     unsubscribeBackgroundImages();
 
@@ -722,21 +724,20 @@ void BasketView::setAppearance(const QString &icon, const QString &name, const Q
         subscribeBackgroundImages();
 
     recomputeAllStyles(); // If a note have a tag with the same background color as the basket one, then display a "..."
-    recomputeBlankRects(); // See the drawing of blank areas in BasketView::drawContents()
+    recomputeBlankRects(); // See the drawing of blank areas in BasketScene::drawContents()
     unbufferizeAll();
-    updateContents();
 
-    if (isDuringEdit() && m_editor->widget()) {
+    if (isDuringEdit() && m_editor->graphicsWidget()) {
         QPalette palette;
-        palette.setColor(m_editor->widget()->backgroundRole(), m_editor->note()->backgroundColor());
-        palette.setColor(m_editor->widget()->foregroundRole(), m_editor->note()->textColor());
-        m_editor->widget()->setPalette(palette);
+        palette.setColor(m_editor->graphicsWidget()->widget()->backgroundRole(), m_editor->note()->backgroundColor());
+        palette.setColor(m_editor->graphicsWidget()->widget()->foregroundRole(), m_editor->note()->textColor());
+        m_editor->graphicsWidget()->setPalette(palette);
     }
 
     emit propertiesChanged(this);
 }
 
-void BasketView::setDisposition(int disposition, int columnCount)
+void BasketScene::setDisposition(int disposition, int columnCount)
 {
     static const int COLUMNS_LAYOUT  = 0;
     static const int FREE_LAYOUT     = 1;
@@ -749,7 +750,7 @@ void BasketView::setDisposition(int disposition, int columnCount)
             // Insert each new columns:
             for (int i = m_columnsCount; i < columnCount; ++i) {
                 Note *newColumn = new Note(this);
-                insertNote(newColumn, /*clicked=*/lastNote(), /*zone=*/Note::BottomInsert, QPoint(), /*animateNewPosition=*/false);
+                insertNote(newColumn, /*clicked=*/lastNote(), /*zone=*/Note::BottomInsert, QPointF(), /*animateNewPosition=*/false);
             }
         } else if (firstNote() && columnCount < m_columnsCount) {
             Note *column = firstNote();
@@ -775,11 +776,12 @@ void BasketView::setDisposition(int disposition, int columnCount)
                         }
                         columnToRemove->setFirstChild(0);
                     }
+                    delete columnToRemove;
                 }
             }
             // Paste the content in the last column:
             if (cuttedNotes)
-                insertNote(cuttedNotes, /*clicked=*/lastNote(), /*zone=*/Note::BottomColumn, QPoint(), /*animateNewPosition=*/true);
+                insertNote(cuttedNotes, /*clicked=*/lastNote(), /*zone=*/Note::BottomColumn, QPointF(), /*animateNewPosition=*/true);
             unselectAll();
         }
         if (columnCount != m_columnsCount) {
@@ -811,13 +813,13 @@ void BasketView::setDisposition(int disposition, int columnCount)
             for (int i = 0; i < columnCount; ++i) {
                 Note *column = new Note(this);
                 if (lastInsertedColumn)
-                    insertNote(column, /*clicked=*/lastInsertedColumn, /*zone=*/Note::BottomInsert, QPoint(), /*animateNewPosition=*/false);
+                    insertNote(column, /*clicked=*/lastInsertedColumn, /*zone=*/Note::BottomInsert, QPointF(), /*animateNewPosition=*/false);
                 else
                     m_firstNote = column;
                 lastInsertedColumn = column;
             }
             // Reinsert the old notes in the first column:
-            insertNote(notes, /*clicked=*/firstNote(), /*zone=*/Note::BottomColumn, QPoint(), /*animateNewPosition=*/true);
+            insertNote(notes, /*clicked=*/firstNote(), /*zone=*/Note::BottomColumn, QPointF(), /*animateNewPosition=*/true);
             unselectAll();
         } else {
             // Insert the number of columns that is needed:
@@ -825,7 +827,7 @@ void BasketView::setDisposition(int disposition, int columnCount)
             for (int i = 0; i < columnCount; ++i) {
                 Note *column = new Note(this);
                 if (lastInsertedColumn)
-                    insertNote(column, /*clicked=*/lastInsertedColumn, /*zone=*/Note::BottomInsert, QPoint(), /*animateNewPosition=*/false);
+                    insertNote(column, /*clicked=*/lastInsertedColumn, /*zone=*/Note::BottomInsert, QPointF(), /*animateNewPosition=*/false);
                 else
                     m_firstNote = column;
                 lastInsertedColumn = column;
@@ -836,7 +838,7 @@ void BasketView::setDisposition(int disposition, int columnCount)
     }
 }
 
-void BasketView::equalizeColumnSizes()
+void BasketScene::equalizeColumnSizes()
 {
     if (!firstNote())
         return;
@@ -844,8 +846,8 @@ void BasketView::equalizeColumnSizes()
     // Necessary to know the available space;
     relayoutNotes(true);
 
-    int availableSpace = visibleWidth();
-    int columnWidth = (visibleWidth() - (columnsCount() - 1) * Note::GROUP_WIDTH) / columnsCount();
+    int availableSpace = m_view->viewport()->width();
+    int columnWidth = (availableSpace - (columnsCount() - 1) * Note::GROUP_WIDTH) / columnsCount();
     int columnCount = columnsCount();
     Note *column = firstNote();
     while (column) {
@@ -871,15 +873,15 @@ void BasketView::equalizeColumnSizes()
     relayoutNotes(true);
 }
 
-void BasketView::enableActions()
+void BasketScene::enableActions()
 {
     Global::bnpView->enableActions();
-    setFocusPolicy(isLocked() ? Qt::NoFocus : Qt::StrongFocus);
+    m_view->setFocusPolicy(isLocked() ? Qt::NoFocus : Qt::StrongFocus);
     if (isLocked())
-        viewport()->setCursor(Qt::ArrowCursor); // When locking, the cursor stays the last form it was
+        m_view->viewport()->setCursor(Qt::ArrowCursor); // When locking, the cursor stays the last form it was
 }
 
-bool BasketView::save()
+bool BasketScene::save()
 {
     if (!m_loaded)
         return false;
@@ -917,7 +919,7 @@ bool BasketView::save()
     return true;
 }
 
-void BasketView::aboutToBeActivated()
+void BasketScene::aboutToBeActivated()
 {
     if (m_finishLoadOnFirstShow) {
         FOR_EACH_NOTE(note)
@@ -931,9 +933,11 @@ void BasketView::aboutToBeActivated()
 
         m_finishLoadOnFirstShow = false;
     }
+    
+    emit activated();
 }
 
-void BasketView::reload()
+void BasketScene::reload()
 {
     closeEditor();
     unbufferizeAll(); // Keep the memory footprint low
@@ -943,10 +947,10 @@ void BasketView::reload()
     m_loaded = false;
     m_loadingLaunched = false;
 
-    updateContents();
+    invalidate();
 }
 
-void BasketView::load()
+void BasketScene::load()
 {
     // Load only once:
     if (m_loadingLaunched)
@@ -984,8 +988,6 @@ void BasketView::load()
     loadProperties(properties); // Since we are loading, this time the background image will also be loaded!
     // Now that the background image is loaded and subscribed, we display it during the load process:
     delete doc;
-    updateContents();
-//  kapp->processEvents();
 
     //BEGIN Compatibility with 0.6.0 Pre-Alpha versions:
     QDomElement notes = XMLWork::getElement(docElem, "notes");
@@ -993,7 +995,6 @@ void BasketView::load()
         notes = XMLWork::getElement(docElem, "items");
     m_watcher->stopScan();
     m_shouldConvertPlainTextNotes = false; // Convert Pre-0.6.0 baskets: plain text notes should be converted to rich text ones once all is loaded!
-
 
     // Load notes
     m_finishLoadOnFirstShow = (Global::bnpView->currentBasket() != this);
@@ -1028,17 +1029,17 @@ void BasketView::load()
     enableActions();
 }
 
-void BasketView::filterAgain(bool andEnsureVisible/* = true*/)
+void BasketScene::filterAgain(bool andEnsureVisible/* = true*/)
 {
     newFilter(decoration()->filterData(), andEnsureVisible);
 }
 
-void BasketView::filterAgainDelayed()
+void BasketScene::filterAgainDelayed()
 {
     QTimer::singleShot(0, this, SLOT(filterAgain()));
 }
 
-void BasketView::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
+void BasketScene::newFilter(const FilterData &data, bool andEnsureVisible/* = true*/)
 {
     if (!isLoaded())
         return;
@@ -1062,30 +1063,30 @@ void BasketView::newFilter(const FilterData &data, bool andEnsureVisible/* = tru
 //StopWatch::check(20);
 }
 
-bool BasketView::isFiltering()
+bool BasketScene::isFiltering()
 {
     return decoration()->filterBar()->filterData().isFiltering;
 }
 
 
 
-QString BasketView::fullPath()
+QString BasketScene::fullPath()
 {
     return Global::basketsFolder() + folderName();
 }
 
-QString BasketView::fullPathForFileName(const QString &fileName)
+QString BasketScene::fullPathForFileName(const QString &fileName)
 {
     return fullPath() + fileName;
 }
 
-/*static*/ QString BasketView::fullPathForFolderName(const QString &folderName)
+/*static*/ QString BasketScene::fullPathForFolderName(const QString &folderName)
 {
     return Global::basketsFolder() + folderName;
 }
 
 
-void BasketView::setShortcut(KShortcut shortcut, int action)
+void BasketScene::setShortcut(KShortcut shortcut, int action)
 {
     if (action > 0) {
         m_action->setGlobalShortcut(
@@ -1097,7 +1098,7 @@ void BasketView::setShortcut(KShortcut shortcut, int action)
     m_shortcutAction = action;
 }
 
-void BasketView::activatedShortcut()
+void BasketScene::activatedShortcut()
 {
     Global::bnpView->setCurrentBasket(this);
 
@@ -1105,7 +1106,7 @@ void BasketView::activatedShortcut()
         Global::bnpView->setActive(true);
 }
 
-void BasketView::signalCountsChanged()
+void BasketScene::signalCountsChanged()
 {
     if (!m_timerCountsChanged.isActive()) {
         m_timerCountsChanged.setSingleShot(true);
@@ -1113,14 +1114,15 @@ void BasketView::signalCountsChanged()
     }
 }
 
-void BasketView::countsChangedTimeOut()
+void BasketScene::countsChangedTimeOut()
 {
     emit countsChanged(this);
 }
 
 
-BasketView::BasketView(QWidget *parent, const QString &folderName)
-        : Q3ScrollView(parent)
+BasketScene::BasketScene(QWidget *parent, const QString &folderName)
+        //: Q3ScrollView(parent)
+        : QGraphicsScene(parent)
         , m_noActionOnMouseRelease(false)
         , m_ignoreCloseEditorOnNextMouseRelease(false)
         , m_pressPos(-100, -100)
@@ -1179,7 +1181,11 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
         , m_startOfShiftSelectionNote(0)
         , m_finishLoadOnFirstShow(false)
         , m_relayoutOnNextShow(false)
+	, m_animationTimeLine(0)
 {
+    m_view = new QGraphicsView(this);
+    m_view->setFocusPolicy(Qt::StrongFocus);
+
     m_action = new KAction(this);
     connect(m_action, SIGNAL(triggered()), this, SLOT(activatedShortcut()));
     m_action->setObjectName(folderName);
@@ -1191,77 +1197,69 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
     if (!m_folderName.endsWith("/"))
         m_folderName += "/";
 
-    setFocusPolicy(Qt::StrongFocus);
-    setDragAutoScroll(true);
+//    setDragAutoScroll(true);
 
     // By default, there is no corner widget: we set one for the corner area to be painted!
     // If we don't set one and there are two scrollbars present, slowly resizing up the window show graphical glitches in that area!
-    m_cornerWidget = new QWidget(this);
-    setCornerWidget(m_cornerWidget);
+    m_cornerWidget = new QWidget(m_view);
+    m_view->setCornerWidget(m_cornerWidget);
 
-    viewport()->setAcceptDrops(true);
-    viewport()->setMouseTracking(true);
-    viewport()->setAutoFillBackground(false); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
+    m_view->viewport()->setAcceptDrops(true);
+    m_view->viewport()->setMouseTracking(true);
+    m_view->viewport()->setAutoFillBackground(false); // Do not clear the widget before paintEvent() because we always draw every pixels (faster and flicker-free)
 
     // File Watcher:
     m_watcher = new KDirWatch(this);
+
     connect(m_watcher,       SIGNAL(dirty(const QString&)),   this, SLOT(watchedFileModified(const QString&)));
     //connect(m_watcher,       SIGNAL(deleted(const QString&)), this, SLOT(watchedFileDeleted(const QString&)));
     connect(&m_watcherTimer, SIGNAL(timeout()),               this, SLOT(updateModifiedNotes()));
 
     // Various Connections:
-    connect(&m_animationTimer,           SIGNAL(timeout()),   this, SLOT(animateObjects()));
     connect(&m_autoScrollSelectionTimer, SIGNAL(timeout()),   this, SLOT(doAutoScrollSelection()));
     connect(&m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut()));
     connect(&m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimeout()));
     connect(&m_inactivityAutoLockTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoLockTimeout()));
-    connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(contentsMoved()));
 #ifdef HAVE_LIBGPGME
     m_gpg = new KGpgMe();
 #endif
     m_locked = isFileEncrypted();
 }
 
-void BasketView::contentsMoved()
-{
-    // This slot is called BEFORE the content move, so we delay the hover effects:
-    QTimer::singleShot(0, this, SLOT(doHoverEffects()));
-}
-
-void BasketView::enterEvent(QEvent *)
+void BasketScene::enterEvent(QEvent *)
 {
     m_underMouse = true;
     doHoverEffects();
 }
 
-void BasketView::leaveEvent(QEvent *)
+void BasketScene::leaveEvent(QEvent *)
 {
     m_underMouse = false;
     doHoverEffects();
 
     if (m_lockedHovering)
-        return;
+	return;
 
     removeInserter();
     if (m_hoveredNote) {
         m_hoveredNote->setHovered(false);
         m_hoveredNote->setHoveredZone(Note::None);
-        updateNote(m_hoveredNote);
+        m_hoveredNote->update();
     }
     m_hoveredNote = 0;
 }
 
-void BasketView::setFocusIfNotInPopupMenu()
+void BasketScene::setFocusIfNotInPopupMenu()
 {
     if (!kapp->activePopupWidget()) {
         if (isDuringEdit())
-            m_editor->widget()->setFocus();
+            m_editor->graphicsWidget()->setFocus();
         else
             setFocus();
     }
 }
 
-void BasketView::contentsMousePressEvent(QMouseEvent *event)
+void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // If user click the basket, focus it!
     // The focus is delayed because if the click results in showing a popup menu,
@@ -1283,36 +1281,39 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         // The code is the same as at the bottom of this method:
         if (event->button() == Qt::LeftButton) {
             m_selectionStarted = true;
-            m_selectionBeginPoint = event->pos();
+            m_selectionBeginPoint = event->scenePos();
             m_selectionInvert = controlPressed || shiftPressed;
         }
+
         return;
     }
 
     // Figure out what is the clicked note and zone:
-    Note *clicked = noteAt(event->pos().x(), event->pos().y());
-    Note::Zone zone = (clicked ? clicked->zoneAt(event->pos() - QPoint(clicked->x(), clicked->y())) : Note::None);
+    Note *clicked = noteAt(event->scenePos());
+    Note::Zone zone = (clicked ? clicked->zoneAt(event->scenePos() - QPointF(clicked->x(), clicked->y())) : Note::None);
 
     // Popup Tags menu:
     if (zone == Note::TagsArrow && !controlPressed && !shiftPressed && event->button() != Qt::MidButton) {
-        if (!clicked->isSelected())
+        if (!clicked->allSelected())
             unselectAllBut(clicked);
         setFocusedNote(clicked); /// /// ///
         m_startOfShiftSelectionNote = clicked;
         m_noActionOnMouseRelease = true;
         popupTagsMenu(clicked);
+
         return;
     }
 
     if (event->button() == Qt::LeftButton) {
         // Prepare to allow drag and drop when moving mouse further:
         if ((zone == Note::Handle || zone == Note::Group) ||
-                (clicked && clicked->isSelected() &&
+                (clicked && clicked->allSelected() &&
                  (zone == Note::TagsArrow || zone == Note::Custom0 || zone == Note::Content || zone == Note::Link /**/ || zone >= Note::Emblem0 /**/))) {
             if (!shiftPressed && !controlPressed) {
-                m_pressPos = event->pos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
+                m_pressPos = event->scenePos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
                 m_canDrag  = true;
-                // Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
+
+               // Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
                 if (m_editor && m_editor->textEdit()) {
                     KTextEdit *editor = m_editor->textEdit();
                     m_textCursor = editor->textCursor();
@@ -1323,9 +1324,10 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         // Initializing Resizer move:
         if (zone == Note::Resizer) {
             m_resizingNote  = clicked;
-            m_pickedResizer = event->pos().x() - clicked->rightLimit();
+            m_pickedResizer = event->scenePos().x() - clicked->rightLimit();
             m_noActionOnMouseRelease = true;
             m_lockedHovering = true;
+
             return;
         }
 
@@ -1333,13 +1335,18 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         if (zone == Note::Handle || zone == Note::Group || (zone == Note::GroupExpander && (controlPressed || shiftPressed))) {
             Note *end = clicked;
             if (clicked->isGroup() && shiftPressed) {
-                if (clicked->contains(m_startOfShiftSelectionNote)) {
+                if (clicked->containsNote(m_startOfShiftSelectionNote)) {
                     m_startOfShiftSelectionNote = clicked->firstRealChild();
                     end = clicked->lastRealChild();
-                } else if (clicked->firstRealChild()->isAfter(m_startOfShiftSelectionNote))
+                }
+                else if (clicked->firstRealChild()->isAfter(m_startOfShiftSelectionNote))
+		{
                     end = clicked->lastRealChild();
+		}
                 else
+		{
                     end = clicked->firstRealChild();
+		}
             }
             if (controlPressed && shiftPressed)
                 selectRange(m_startOfShiftSelectionNote, end, /*unselectOthers=*/false);
@@ -1353,26 +1360,35 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
             m_startOfShiftSelectionNote = (end->isGroup() ? end->firstRealChild() : end);
             //m_noActionOnMouseRelease = false;
             m_noActionOnMouseRelease = true;
+
             return;
         }
 
         // Folding/Unfolding group:
         if (zone == Note::GroupExpander) {
-            clicked->toggleFolded(Settings::playAnimations());
-            relayoutNotes(true);
+	    clicked->toggleFolded();
+	    
+	    if( /*m_animationTimeLine == 0 && */Settings::playAnimations())
+	    {
+ 		kWarning()<<"Folding animation to be done";
+	    }
+	    
+	    relayoutNotes(true);
             m_noActionOnMouseRelease = true;
+
             return;
         }
     }
 
     // Popup menu for tag emblems:
     if (event->button() == Qt::RightButton && zone >= Note::Emblem0) {
-        if (!clicked->isSelected())
+        if (!clicked->allSelected())
             unselectAllBut(clicked);
         setFocusedNote(clicked); /// /// ///
         m_startOfShiftSelectionNote = clicked;
         popupEmblemMenu(clicked, zone - Note::Emblem0);
         m_noActionOnMouseRelease = true;
+
         return;
     }
 
@@ -1388,9 +1404,9 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         unselectAll();
         m_clickedToInsert = clicked;
         m_zoneToInsert    = zone;
-        m_posToInsert     = event->pos();
+        m_posToInsert     = event->scenePos();
 
-        KMenu menu(this);
+        KMenu menu(m_view);
         menu.addActions(Global::bnpView->popupMenu("insert_popup")->actions());
 
         // If we already added a title, remove it because it would be kept and
@@ -1420,7 +1436,7 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
 
     // Note Context Menu:
     if (event->button() == Qt::RightButton && clicked && !clicked->isColumn() && zone != Note::Resizer) {
-        if (!clicked->isSelected())
+        if (!clicked->allSelected())
             unselectAllBut(clicked);
         setFocusedNote(clicked); /// /// ///
         if (editedNote() == clicked) {
@@ -1443,7 +1459,7 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         if ((Settings::middleAction() != 0) && (event->modifiers() == Qt::ShiftModifier)) {
             m_clickedToInsert = clicked;
             m_zoneToInsert    = zone;
-            m_posToInsert     = event->pos();
+            m_posToInsert     = event->scenePos();
             closeEditor();
             removeInserter();                     // If clicked at an insertion line and the new note shows a dialog for editing,
             NoteType::Id type = (NoteType::Id)0;  //  hide that inserter before the note edition instead of after the dialog is closed
@@ -1465,7 +1481,7 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
             }
         } else {
             if (clicked)
-                zone = clicked->zoneAt(event->pos() - QPoint(clicked->x(), clicked->y()), true);
+                zone = clicked->zoneAt(event->scenePos() - QPoint(clicked->x(), clicked->y()), true);
             closeEditor();
             clickedToInsert(event, clicked, zone);
             save();
@@ -1485,21 +1501,21 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
     // Prepare selection:
     if (event->button() == Qt::LeftButton) {
         m_selectionStarted = true;
-        m_selectionBeginPoint = event->pos();
+        m_selectionBeginPoint = event->scenePos();
         // We usualy invert the selection with the Ctrl key, but some environements (like GNOME or The Gimp) do it with the Shift key.
         // Since the Shift key has no specific usage, we allow to invert selection ALSO with Shift for Gimp people
         m_selectionInvert = controlPressed || shiftPressed;
     }
 }
 
-void BasketView::delayedCancelInsertPopupMenu()
+void BasketScene::delayedCancelInsertPopupMenu()
 {
     QTimer::singleShot(0, this, SLOT(cancelInsertPopupMenu()));
 }
 
-void BasketView::contentsContextMenuEvent(QContextMenuEvent *event)
+void BasketScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-    if (event->reason() == QContextMenuEvent::Keyboard) {
+    if (event->reason() == QGraphicsSceneContextMenuEvent::Keyboard) {
         if (countFounds/*countShown*/() == 0) { // TODO: Count shown!!
             KMenu *menu = Global::bnpView->popupMenu("insert_popup");
             setInsertPopupMenu();
@@ -1508,7 +1524,7 @@ void BasketView::contentsContextMenuEvent(QContextMenuEvent *event)
             connect(menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
             removeInserter();
             m_lockedHovering = true;
-            menu->exec(mapToGlobal(QPoint(0, 0)));
+            menu->exec(m_view->mapToGlobal(QPoint(0, 0)));
         } else {
             if (! m_focusedNote->isSelected())
                 unselectAllBut(m_focusedNote);
@@ -1520,55 +1536,58 @@ void BasketView::contentsContextMenuEvent(QContextMenuEvent *event)
             connect(menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
             doHoverEffects(m_focusedNote, Note::Content); // In the case where another popup menu was open, we should do that manually!
             m_lockedHovering = true;
-            menu->exec(noteVisibleRect(m_focusedNote).bottomLeft());
+            menu->exec(noteVisibleRect(m_focusedNote).bottomLeft().toPoint());
         }
     }
 }
 
-QRect BasketView::noteVisibleRect(Note *note)
+QRectF BasketScene::noteVisibleRect(Note *note)
 {
-    QRect rect(contentsToViewport(QPoint(note->x(), note->y())), QSize(note->width(), note->height()));
-    QPoint basketPoint = mapToGlobal(QPoint(0, 0));
-    rect.moveTopLeft(rect.topLeft() + basketPoint + QPoint(frameWidth(), frameWidth()));
+    QRectF rect(QPointF(note->x(), note->y()), QSizeF(note->width(), note->height()));
+    QPoint basketPoint = m_view->mapToGlobal(QPoint(0, 0));
+    rect.moveTopLeft(rect.topLeft() + basketPoint + QPoint(m_view->frameWidth(), m_view->frameWidth()));
 
     // Now, rect contain the global note rectangle on the screen.
     // We have to clip it by the basket widget :
-    if (rect.bottom() > basketPoint.y() + visibleHeight() + 1) { // Bottom too... bottom
-        rect.setBottom(basketPoint.y() + visibleHeight() + 1);
+//    if (rect.bottom() > basketPoint.y() + visibleHeight() + 1) { // Bottom too... bottom
+//        rect.setBottom(basketPoint.y() + visibleHeight() + 1);
+    if (rect.bottom() > basketPoint.y() + m_view->viewport()->height() + 1) { // Bottom too... bottom
+        rect.setBottom(basketPoint.y() + m_view->viewport()->height() + 1);
         if (rect.height() <= 0) // Have at least one visible pixel of height
             rect.setTop(rect.bottom());
     }
-    if (rect.top() < basketPoint.y() + frameWidth()) { // Top too... top
-        rect.setTop(basketPoint.y() + frameWidth());
+    if (rect.top() < basketPoint.y() + m_view->frameWidth()) { // Top too... top
+        rect.setTop(basketPoint.y() + m_view->frameWidth());
         if (rect.height() <= 0)
             rect.setBottom(rect.top());
     }
-    if (rect.right() > basketPoint.x() + visibleWidth() + 1) { // Right too... right
-        rect.setRight(basketPoint.x() + visibleWidth() + 1);
+//    if (rect.right() > basketPoint.x() + visibleWidth() + 1) { // Right too... right
+//        rect.setRight(basketPoint.x() + visibleWidth() + 1);
+    if (rect.right() > basketPoint.x() + m_view->viewport()->width() + 1) { // Right too... right
+        rect.setRight(basketPoint.x() + m_view->viewport()->width() + 1);
         if (rect.width() <= 0) // Have at least one visible pixel of width
             rect.setLeft(rect.right());
     }
-    if (rect.left() < basketPoint.x() + frameWidth()) { // Left too... left
-        rect.setLeft(basketPoint.x() + frameWidth());
+    if (rect.left() < basketPoint.x() + m_view->frameWidth()) { // Left too... left
+        rect.setLeft(basketPoint.x() + m_view->frameWidth());
         if (rect.width() <= 0)
             rect.setRight(rect.left());
     }
-
     return rect;
 }
 
-void BasketView::disableNextClick()
+void BasketScene::disableNextClick()
 {
     m_lastDisableClick = QTime::currentTime();
 }
 
-void BasketView::recomputeAllStyles()
+void BasketScene::recomputeAllStyles()
 {
     FOR_EACH_NOTE(note)
     note->recomputeAllStyles();
 }
 
-void BasketView::removedStates(const QList<State*> &deletedStates)
+void BasketScene::removedStates(const QList<State*> &deletedStates)
 {
     bool modifiedBasket = false;
 
@@ -1580,11 +1599,11 @@ void BasketView::removedStates(const QList<State*> &deletedStates)
         save();
 }
 
-void BasketView::insertNote(Note *note, Note *clicked, int zone, const QPoint &pos, bool animateNewPosition)
+void BasketScene::insertNote(Note *note, Note *clicked, int zone, const QPointF &pos, bool animateNewPosition)
 {
     if (!note) {
         kDebug() << "Wanted to insert NO note";
-        return;
+       return;
     }
 
     if (clicked && zone == Note::BottomColumn) {
@@ -1649,19 +1668,19 @@ void BasketView::insertNote(Note *note, Note *clicked, int zone, const QPoint &p
         if (note->isGroup() && note->firstChild())
             note->setInitialHeight(note->firstChild()->height());
         //note->setGroupWidth(initialWidth);
-        if (animateNewPosition && Settings::playAnimations())
+        /*if (animateNewPosition && Settings::playAnimations())
             note->setFinalPosition(pos.x(), pos.y());
-        else {
+        else {*/
             note->setXRecursively(pos.x());
             note->setYRecursively(pos.y());
-        }
+        //}
         appendNoteAfter(note, lastNote());
     }
 
     relayoutNotes(true);
 }
 
-void BasketView::clickedToInsert(QMouseEvent *event, Note *clicked, /*Note::Zone*/int zone)
+void BasketScene::clickedToInsert(QGraphicsSceneMouseEvent *event, Note *clicked, /*Note::Zone*/int zone)
 {
     Note *note;
     if (event->button() == Qt::MidButton)
@@ -1672,7 +1691,7 @@ void BasketView::clickedToInsert(QMouseEvent *event, Note *clicked, /*Note::Zone
     if (!note)
         return;
 
-    insertNote(note, clicked, zone, event->pos(), /*animateNewPosition=*/false);
+    insertNote(note, clicked, zone, QPointF(event->scenePos()), /*animateNewPosition=*/false);
 
 //  ensureNoteVisible(lastInsertedNote()); // TODO: in insertNote()
 
@@ -1683,7 +1702,7 @@ void BasketView::clickedToInsert(QMouseEvent *event, Note *clicked, /*Note::Zone
     }
 }
 
-void BasketView::contentsDragEnterEvent(QDragEnterEvent *event)
+void BasketScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
     m_isDuringDrag = true;
     Global::bnpView->updateStatusBarHint();
@@ -1692,7 +1711,7 @@ void BasketView::contentsDragEnterEvent(QDragEnterEvent *event)
     event->accept();
 }
 
-void BasketView::contentsDragMoveEvent(QDragMoveEvent *event)
+void BasketScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
 //  m_isDuringDrag = true;
 
@@ -1705,10 +1724,10 @@ void BasketView::contentsDragMoveEvent(QDragMoveEvent *event)
 
 //  if (insertAtCursorPos())
 //      computeInsertPlace(pos);
-    doHoverEffects(event->pos());
+    doHoverEffects(event->scenePos());
 
 //  showFrameInsertTo();
-    if (isFreeLayout() || noteAt(event->pos().x(), event->pos().y())) // Cursor before rightLimit() or hovering the dragged source notes
+    if (isFreeLayout() || noteAt(event->scenePos())) // Cursor before rightLimit() or hovering the dragged source notes
         acceptDropEvent(event);
     else {
         event->setAccepted(false);
@@ -1726,7 +1745,7 @@ void BasketView::contentsDragMoveEvent(QDragMoveEvent *event)
 //  QScrollView::dragMoveEvent(event);
 }
 
-void BasketView::contentsDragLeaveEvent(QDragLeaveEvent*)
+void BasketScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *)
 {
 //  resetInsertTo();
     m_isDuringDrag = false;
@@ -1736,10 +1755,10 @@ void BasketView::contentsDragLeaveEvent(QDragLeaveEvent*)
     doHoverEffects();
 }
 
-void BasketView::contentsDropEvent(QDropEvent *event)
+void BasketScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-    QPoint pos = event->pos();
-    kDebug() << "Contents Drop Event at position " << pos.x() << ":" << pos.y();
+    QPointF pos = event->scenePos();
+    kDebug() << "Drop Event at position " << pos.x() << ":" << pos.y();
 
     m_isDuringDrag = false;
     emit resetStatusBarText();
@@ -1752,7 +1771,7 @@ void BasketView::contentsDropEvent(QDropEvent *event)
     // the note is first removed, and relayoutNotes() compute the new height that is smaller
     // Then noteAt() is called for the mouse pointer position, because the basket is now smaller, the cursor is out of boundaries!!!
     // Should, of course, not return 0:
-    Note *clicked = noteAt(event->pos().x(), event->pos().y());
+    Note *clicked = noteAt(pos);
 
     if (NoteFactory::movingNotesInTheSameBasket(event->mimeData(), this, event->dropAction()) && event->dropAction() == Qt::MoveAction) {
         m_doNotCloseEditor = true;
@@ -1761,7 +1780,7 @@ void BasketView::contentsDropEvent(QDropEvent *event)
     Note *note = NoteFactory::dropNote(event->mimeData(), this, true, event->dropAction(), dynamic_cast<Note*>(event->source()));
 
     if (note) {
-        Note::Zone zone = (clicked ? clicked->zoneAt(event->pos() - QPoint(clicked->x(), clicked->y()), /*toAdd=*/true) : Note::None);
+        Note::Zone zone = (clicked ? clicked->zoneAt(pos - QPointF(clicked->x(), clicked->y()), /*toAdd=*/true) : Note::None);
         bool animateNewPosition = NoteFactory::movingNotesInTheSameBasket(event->mimeData(), this, event->dropAction());
         if (animateNewPosition) {
             FOR_EACH_NOTE(n)
@@ -1771,7 +1790,7 @@ void BasketView::contentsDropEvent(QDropEvent *event)
                 n->setOnTop(true);
         }
 
-        insertNote(note, clicked, zone, event->pos(), animateNewPosition);
+        insertNote(note, clicked, zone, pos, animateNewPosition);
 
         // If moved a note on bottom, contentsHeight has been disminished, then view scrolled up, and we should re-scroll the view down:
         ensureNoteVisible(note);
@@ -1799,7 +1818,7 @@ void BasketView::contentsDropEvent(QDropEvent *event)
 
 // handles dropping of a note to basket that is not shown
 // (usually through its entry in the basket list)
-void BasketView::blindDrop(QDropEvent* event)
+void BasketScene::blindDrop(QGraphicsSceneDragDropEvent* event)
 {
     if (!m_isInsertPopupMenu && redirectEditActions()) {
         if (m_editor->textEdit())
@@ -1825,7 +1844,33 @@ void BasketView::blindDrop(QDropEvent* event)
     save();
 }
 
-void BasketView::insertEmptyNote(int type)
+void BasketScene::blindDrop(const QMimeData *mimeData, Qt::DropAction dropAction, QWidget *source)
+{
+    if (!m_isInsertPopupMenu && redirectEditActions()) {
+        if (m_editor->textEdit())
+            m_editor->textEdit()->paste();
+        else if (m_editor->lineEdit())
+            m_editor->lineEdit()->paste();
+    } else {
+        if (!isLoaded()) {
+            Global::bnpView->showPassiveLoading(this);
+            load();
+        }
+        closeEditor();
+        unselectAll();
+        Note *note = NoteFactory::dropNote(mimeData, this, true, dropAction,
+                                           dynamic_cast<Note*>(source));
+        if (note) {
+            insertCreatedNote(note);
+            //unselectAllBut(note);
+            if (Settings::usePassivePopup())
+                Global::bnpView->showPassiveDropped(i18n("Dropped to basket <i>%1</i>"));
+        }
+    }
+    save();
+}
+
+void BasketScene::insertEmptyNote(int type)
 {
     if (!isLoaded())
         load();
@@ -1836,7 +1881,7 @@ void BasketView::insertEmptyNote(int type)
     noteEdit(note, /*justAdded=*/true);
 }
 
-void BasketView::insertWizard(int type)
+void BasketScene::insertWizard(int type)
 {
     saveInsertionData();
     Note *note = 0;
@@ -1854,7 +1899,7 @@ void BasketView::insertWizard(int type)
     resetInsertionData();
 }
 
-void BasketView::insertColor(const QColor &color)
+void BasketScene::insertColor(const QColor &color)
 {
     Note *note = NoteFactory::createNoteColor(color, this);
     restoreInsertionData();
@@ -1863,7 +1908,7 @@ void BasketView::insertColor(const QColor &color)
     resetInsertionData();
 }
 
-void BasketView::insertImage(const QPixmap &image)
+void BasketScene::insertImage(const QPixmap &image)
 {
     Note *note = NoteFactory::createNoteImage(image, this);
     restoreInsertionData();
@@ -1872,7 +1917,7 @@ void BasketView::insertImage(const QPixmap &image)
     resetInsertionData();
 }
 
-void BasketView::pasteNote(QClipboard::Mode mode)
+void BasketScene::pasteNote(QClipboard::Mode mode)
 {
     if (!m_isInsertPopupMenu && redirectEditActions()) {
         if (m_editor->textEdit())
@@ -1894,12 +1939,12 @@ void BasketView::pasteNote(QClipboard::Mode mode)
     }
 }
 
-void BasketView::insertCreatedNote(Note *note)
+void BasketScene::insertCreatedNote(Note *note)
 {
     // Get the insertion data if the user clicked inside the basket:
     Note *clicked = m_clickedToInsert;
     int zone      = m_zoneToInsert;
-    QPoint pos    = m_posToInsert;
+    QPointF pos    = m_posToInsert;
 
     // If it isn't the case, use the default position:
     if (!clicked && (pos.x() < 0 || pos.y() < 0)) {
@@ -1908,7 +1953,7 @@ void BasketView::insertCreatedNote(Note *note)
         if (m_focusedNote) {
             clicked = m_focusedNote;
             zone    = (m_focusedNote->isFree() ? Note::BottomGroup : Note::BottomInsert);
-            pos     = QPoint(m_focusedNote->x(), m_focusedNote->finalBottom());
+            pos     = QPointF(m_focusedNote->x(), m_focusedNote->bottom());
             // Insert at the end of the last column:
         } else if (isColumnsLayout()) {
             Note *column = /*(Settings::newNotesPlace == 0 ?*/ firstNote() /*: lastNote())*/;
@@ -1921,7 +1966,7 @@ void BasketView::insertCreatedNote(Note *note)
             /*}*/
             // Insert at free position:
         } else {
-            pos = QPoint(0, 0);
+            pos = QPointF(0, 0);
         }
     }
 
@@ -1932,38 +1977,38 @@ void BasketView::insertCreatedNote(Note *note)
     save();
 }
 
-void BasketView::saveInsertionData()
+void BasketScene::saveInsertionData()
 {
     m_savedClickedToInsert = m_clickedToInsert;
     m_savedZoneToInsert    = m_zoneToInsert;
     m_savedPosToInsert     = m_posToInsert;
 }
 
-void BasketView::restoreInsertionData()
+void BasketScene::restoreInsertionData()
 {
     m_clickedToInsert = m_savedClickedToInsert;
     m_zoneToInsert    = m_savedZoneToInsert;
     m_posToInsert     = m_savedPosToInsert;
 }
 
-void BasketView::resetInsertionData()
+void BasketScene::resetInsertionData()
 {
     m_clickedToInsert = 0;
     m_zoneToInsert    = 0;
     m_posToInsert     = QPoint(-1, -1);
 }
 
-void BasketView::hideInsertPopupMenu()
+void BasketScene::hideInsertPopupMenu()
 {
     QTimer::singleShot(50/*ms*/, this, SLOT(timeoutHideInsertPopupMenu()));
 }
 
-void BasketView::timeoutHideInsertPopupMenu()
+void BasketScene::timeoutHideInsertPopupMenu()
 {
     resetInsertionData();
 }
 
-void BasketView::acceptDropEvent(QDropEvent *event, bool preCond)
+void BasketScene::acceptDropEvent(QGraphicsSceneDragDropEvent *event, bool preCond)
 {
     // FIXME: Should not accept all actions! Or not all actions (link not supported?!)
     //event->acceptAction(preCond && 1);
@@ -1971,7 +2016,7 @@ void BasketView::acceptDropEvent(QDropEvent *event, bool preCond)
     event->setAccepted(preCond);
 }
 
-void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
+void BasketScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     // Now disallow drag:
     m_canDrag = false;
@@ -1992,8 +2037,7 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
             m_lockedHovering = false;
             //doHoverEffects();
             save();
-        }
-    */
+    }*/
 
     // Cancel Selection rectangle:
     if (m_isSelecting) {
@@ -2001,12 +2045,12 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
         stopAutoScrollSelection();
         resetWasInLastSelectionRect();
         doHoverEffects();
-        updateContents(m_selectionRect);
+	invalidate(m_selectionRect);
     }
     m_selectionStarted = false;
 
-    Note *clicked = noteAt(event->pos().x(), event->pos().y());
-    Note::Zone zone = (clicked ? clicked->zoneAt(event->pos() - QPoint(clicked->x(), clicked->y())) : Note::None);
+    Note *clicked = noteAt(event->scenePos());
+    Note::Zone zone = (clicked ? clicked->zoneAt(event->scenePos() - QPointF(clicked->x(), clicked->y())) : Note::None);
     if ((zone == Note::Handle || zone == Note::Group) && editedNote() && editedNote() == clicked) {
         if (m_ignoreCloseEditorOnNextMouseRelease)
             m_ignoreCloseEditorOnNextMouseRelease = false;
@@ -2036,13 +2080,11 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
     // Obviously, nothing should be done in this case:
     m_noActionOnMouseRelease = true;
 
-
-
     if (event->button() == Qt::MidButton && zone != Note::Resizer && (!isDuringEdit() || clicked != editedNote())) {
         if ((Settings::middleAction() != 0) && (event->modifiers() == Qt::ShiftModifier)) {
             m_clickedToInsert = clicked;
             m_zoneToInsert    = zone;
-            m_posToInsert     = event->pos();
+            m_posToInsert     = event->scenePos();
             closeEditor();
             removeInserter();                     // If clicked at an insertion line and the new note shows a dialog for editing,
             NoteType::Id type = (NoteType::Id)0;  //  hide that inserter before the note edition instead of after the dialog is closed
@@ -2078,6 +2120,7 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
             clickedToInsert(event);
             save();
         }
+
         return;
     }
 //  Note::Zone zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()) );
@@ -2096,6 +2139,7 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
         setFocusedNote(clicked); /// /// ///
         m_startOfShiftSelectionNote = (clicked->isGroup() ? clicked->firstRealChild() : clicked);
         m_noActionOnMouseRelease = true;
+
         return;
     }
 
@@ -2115,13 +2159,14 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
                     clicked->states().erase(it);
                     clicked->recomputeStyle();
                     clicked->unbufferize();
-                    updateNote(clicked);
+                    clicked->update();
                     updateEditorAppearance();
                     filterAgain();
                     save();
                     break;
                 }
             }
+
             return;
         }/* else if (event->button() == Qt::RightButton) {
         popupEmblemMenu(clicked, zone - Note::Emblem0);
@@ -2137,9 +2182,9 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::MidButton && zone == Note::Resizer)
         return; //zone = clicked->zoneAt( event->pos() - QPoint(clicked->x(), clicked->y()), true );
     if (event->button() == Qt::RightButton && (clicked->isColumn() || zone == Note::Resizer))
-        return;
+	return;
     if (clicked->isGroup() && zone == Note::None)
-        return;
+	return;
     switch (zone) {
     case Note::Handle:
     case Note::Group:
@@ -2167,18 +2212,18 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
         break;
 
     case Note::Link:
-        link = clicked->linkAt(event->pos() - QPoint(clicked->x(), clicked->y()));
+        link = clicked->linkAt(event->scenePos() - QPoint(clicked->x(), clicked->y()));
         if (! link.isEmpty()) {
             if (link == "basket-internal-remove-basket") {
                 // TODO: ask confirmation: "Do you really want to delete the welcome baskets?\n You can re-add them at any time in the Help menu."
                 Global::bnpView->doBasketDeletion(this);
             } else if (link == "basket-internal-import") {
                 KMenu *menu = Global::bnpView->popupMenu("fileimport");
-                menu->exec(event->globalPos());
+                menu->exec(event->screenPos());
             } else if (link.startsWith("basket://")) {
                 emit crossReference(link);
             } else {
-                KRun *run = new KRun(KUrl(link), window()); //  open the URL.
+                KRun *run = new KRun(KUrl(link), m_view->window()); //  open the URL.
                 run->setAutoDelete(true);
             }
             break;
@@ -2186,7 +2231,8 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
     case Note::Content:
         closeEditor();
         unselectAllBut(clicked);
-        noteEdit(clicked, /*justAdded=*/false, event->pos());
+        noteEdit(clicked, /*justAdded=*/false, clicked->mapFromScene(event->scenePos()));
+        QGraphicsScene::mouseReleaseEvent(event);
         break;
 
     case Note::TopInsert:
@@ -2200,35 +2246,35 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
 
     case Note::None:
     default:
-        KMessageBox::information(viewport(),
+        KMessageBox::information(m_view->viewport(),
                                  i18n("This message should never appear. If it does, this program is buggy! "
                                       "Please report the bug to the developer."));
         break;
     }
 }
 
-void BasketView::contentsMouseDoubleClickEvent(QMouseEvent *event)
+void BasketScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    Note *clicked = noteAt(event->pos().x(), event->pos().y());
-    Note::Zone zone = (clicked ? clicked->zoneAt(event->pos() - QPoint(clicked->x(), clicked->y())) : Note::None);
+    Note *clicked = noteAt(event->scenePos());
+    Note::Zone zone = (clicked ? clicked->zoneAt(event->scenePos() - QPointF(clicked->x(), clicked->y())) : Note::None);
 
     if (event->button() == Qt::LeftButton && (zone == Note::Group || zone == Note::Handle)) {
         doCopy(CopyToSelection);
         m_noActionOnMouseRelease = true;
     } else
-        contentsMousePressEvent(event);
+        mousePressEvent(event);
 }
 
-void BasketView::contentsMouseMoveEvent(QMouseEvent *event)
+void BasketScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     // Drag the notes:
-    if (m_canDrag && (m_pressPos - event->pos()).manhattanLength() > KApplication::startDragDistance()) {
+    if (m_canDrag && (m_pressPos - event->scenePos()).manhattanLength() > KApplication::startDragDistance()) {
         m_canDrag          = false;
         m_isSelecting      = false; // Don't draw selection rectangle ater drag!
         m_selectionStarted = false;
         NoteSelection *selection = selectedNotes();
         if (selection->firstStacked()) {
-            QDrag *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/this); // d will be deleted by QT
+            QDrag *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/m_view); // d will be deleted by QT
             /*bool shouldRemove = */d->exec();
 //      delete selection;
 
@@ -2241,21 +2287,23 @@ void BasketView::contentsMouseMoveEvent(QMouseEvent *event)
 
     // Moving a Resizer:
     if (m_resizingNote) {
-        int groupWidth = event->pos().x() - m_resizingNote->x() - m_pickedResizer;
-        int minRight   = m_resizingNote->minRight();
-        int maxRight   = 100 * contentsWidth(); // A big enough value (+infinity) for free layouts.
-        Note *nextColumn = m_resizingNote->next();
+        qreal groupWidth = event->scenePos().x() - m_resizingNote->x() - m_pickedResizer;
+        qreal minRight   = m_resizingNote->minRight();
+//        int maxRight   = 100 * contentsWidth(); // A big enough value (+infinity) for free layouts.
+        qreal maxRight   = 100 * sceneRect().width(); // A big enough value (+infinity) for free layouts.
+		Note *nextColumn = m_resizingNote->next();
         if (m_resizingNote->isColumn()) {
             if (nextColumn)
                 maxRight = nextColumn->x() + nextColumn->rightLimit() - nextColumn->minRight() - Note::RESIZER_WIDTH;
             else
-                maxRight = contentsWidth();
+//                maxRight = contentsWidth();
+                maxRight = sceneRect().width();
         }
         if (groupWidth > maxRight - m_resizingNote->x())
             groupWidth = maxRight - m_resizingNote->x();
         if (groupWidth < minRight - m_resizingNote->x())
             groupWidth = minRight - m_resizingNote->x();
-        int delta = groupWidth - m_resizingNote->groupWidth();
+        qreal delta = groupWidth - m_resizingNote->groupWidth();
         m_resizingNote->setGroupWidth(groupWidth);
         // If resizing columns:
         if (m_resizingNote->isColumn()) {
@@ -2287,38 +2335,39 @@ void BasketView::contentsMouseMoveEvent(QMouseEvent *event)
     if (m_selectionStarted)
         doAutoScrollSelection();
 
-    doHoverEffects(event->pos());
+    doHoverEffects(event->scenePos());
 }
 
-void BasketView::doAutoScrollSelection()
+void BasketScene::doAutoScrollSelection()
 {
     static const int AUTO_SCROLL_MARGIN = 50;  // pixels
     static const int AUTO_SCROLL_DELAY  = 100; // milliseconds
 
-    QPoint pos = viewport()->mapFromGlobal(QCursor::pos());
-
+    QPoint pos = m_view->mapFromGlobal(QCursor::pos());
     // Do the selection:
-
     if (m_isSelecting)
-        updateContents(m_selectionRect);
+	invalidate(m_selectionRect);
 
-    m_selectionEndPoint = viewportToContents(pos);
-    m_selectionRect = QRect(m_selectionBeginPoint, m_selectionEndPoint).normalized();
+
+    m_selectionEndPoint = m_view->mapToScene(pos);
+    m_selectionRect = QRectF(m_selectionBeginPoint, m_selectionEndPoint).normalized();
     if (m_selectionRect.left() < 0)                    m_selectionRect.setLeft(0);
     if (m_selectionRect.top() < 0)                     m_selectionRect.setTop(0);
-    if (m_selectionRect.right() >= contentsWidth())    m_selectionRect.setRight(contentsWidth() - 1);
-    if (m_selectionRect.bottom() >= contentsHeight())  m_selectionRect.setBottom(contentsHeight() - 1);
+//    if (m_selectionRect.right() >= contentsWidth())    m_selectionRect.setRight(contentsWidth() - 1);
+//    if (m_selectionRect.bottom() >= contentsHeight())  m_selectionRect.setBottom(contentsHeight() - 1);
+    if (m_selectionRect.right() >= sceneRect().width())    m_selectionRect.setRight(sceneRect().width() - 1);
+    if (m_selectionRect.bottom() >= sceneRect().height())  m_selectionRect.setBottom(sceneRect().height() - 1);
 
     if ((m_selectionBeginPoint - m_selectionEndPoint).manhattanLength() > QApplication::startDragDistance()) {
         m_isSelecting = true;
         selectNotesIn(m_selectionRect, m_selectionInvert);
-        updateContents(m_selectionRect);
+	invalidate(m_selectionRect);
         m_noActionOnMouseRelease = true;
     } else {
         // If the user was selecting but cancel by making the rectangle too small, cancel it really!!!
         if (m_isSelecting) {
             if (m_selectionInvert)
-                selectNotesIn(QRect(), m_selectionInvert);
+                selectNotesIn(QRectF(), m_selectionInvert);
             else
                 unselectAllBut(0); // TODO: unselectAll();
         }
@@ -2326,42 +2375,48 @@ void BasketView::doAutoScrollSelection()
             resetWasInLastSelectionRect();
         m_isSelecting = false;
         stopAutoScrollSelection();
-        return;
+
+	return;
     }
 
     // Do the auto-scrolling:
     // FIXME: It's still flickering
 
-    QRect insideRect(AUTO_SCROLL_MARGIN, AUTO_SCROLL_MARGIN, visibleWidth() - 2*AUTO_SCROLL_MARGIN, visibleHeight() - 2*AUTO_SCROLL_MARGIN);
+//    QRectF insideRect(AUTO_SCROLL_MARGIN, AUTO_SCROLL_MARGIN, visibleWidth() - 2*AUTO_SCROLL_MARGIN, visibleHeight() - 2*AUTO_SCROLL_MARGIN);
+    QRectF insideRect(AUTO_SCROLL_MARGIN, AUTO_SCROLL_MARGIN, m_view->viewport()->width() - 2*AUTO_SCROLL_MARGIN, m_view->viewport()->height() - 2*AUTO_SCROLL_MARGIN);
 
     int dx = 0;
     int dy = 0;
 
     if (pos.y() < AUTO_SCROLL_MARGIN)
         dy = pos.y() - AUTO_SCROLL_MARGIN;
-    else if (pos.y() > visibleHeight() - AUTO_SCROLL_MARGIN)
-        dy = pos.y() - visibleHeight() + AUTO_SCROLL_MARGIN;
+    else if (pos.y() > m_view->viewport()->height() - AUTO_SCROLL_MARGIN)
+        dy = pos.y() - m_view->viewport()->height() + AUTO_SCROLL_MARGIN;
+//    else if (pos.y() > visibleHeight() - AUTO_SCROLL_MARGIN)
+//        dy = pos.y() - visibleHeight() + AUTO_SCROLL_MARGIN;
 
     if (pos.x() < AUTO_SCROLL_MARGIN)
         dx = pos.x() - AUTO_SCROLL_MARGIN;
-    else if (pos.x() > visibleWidth() - AUTO_SCROLL_MARGIN)
-        dx = pos.x() - visibleWidth() + AUTO_SCROLL_MARGIN;
+    else if (pos.x() > m_view->viewport()->width() - AUTO_SCROLL_MARGIN)
+        dx = pos.x() - m_view->viewport()->width() + AUTO_SCROLL_MARGIN;
+//    else if (pos.x() > visibleWidth() - AUTO_SCROLL_MARGIN)
+//        dx = pos.x() - visibleWidth() + AUTO_SCROLL_MARGIN;
 
     if (dx || dy) {
         kapp->sendPostedEvents(); // Do the repaints, because the scrolling will make the area to repaint to be wrong
-        scrollBy(dx, dy);
+//        scrollBy(dx, dy);
         if (!m_autoScrollSelectionTimer.isActive())
             m_autoScrollSelectionTimer.start(AUTO_SCROLL_DELAY);
     } else
         stopAutoScrollSelection();
 }
 
-void BasketView::stopAutoScrollSelection()
+void BasketScene::stopAutoScrollSelection()
 {
     m_autoScrollSelectionTimer.stop();
 }
 
-void BasketView::resetWasInLastSelectionRect()
+void BasketScene::resetWasInLastSelectionRect()
 {
     Note *note = m_firstNote;
     while (note) {
@@ -2370,7 +2425,7 @@ void BasketView::resetWasInLastSelectionRect()
     }
 }
 
-void BasketView::selectAll()
+void BasketScene::selectAll()
 {
     if (redirectEditActions()) {
         if (m_editor->textEdit())
@@ -2395,7 +2450,7 @@ void BasketView::selectAll()
     }
 }
 
-void BasketView::unselectAll()
+void BasketScene::unselectAll()
 {
     if (redirectEditActions()) {
         if (m_editor->textEdit()) {
@@ -2412,36 +2467,36 @@ void BasketView::unselectAll()
     }
 }
 
-void BasketView::invertSelection()
+void BasketScene::invertSelection()
 {
     FOR_EACH_NOTE(note)
     note->invertSelectionRecursively();
 }
 
-void BasketView::unselectAllBut(Note *toSelect)
+void BasketScene::unselectAllBut(Note *toSelect)
 {
     FOR_EACH_NOTE(note)
     note->unselectAllBut(toSelect);
 }
 
-void BasketView::invertSelectionOf(Note *toSelect)
+void BasketScene::invertSelectionOf(Note *toSelect)
 {
     FOR_EACH_NOTE(note)
     note->invertSelectionOf(toSelect);
 }
 
-void BasketView::selectNotesIn(const QRect &rect, bool invertSelection, bool unselectOthers /*= true*/)
+void BasketScene::selectNotesIn(const QRectF &rect, bool invertSelection, bool unselectOthers /*= true*/)
 {
     FOR_EACH_NOTE(note)
     note->selectIn(rect, invertSelection, unselectOthers);
 }
 
-void BasketView::doHoverEffects()
+void BasketScene::doHoverEffects()
 {
-    doHoverEffects(viewportToContents(viewport()->mapFromGlobal(QCursor::pos())));
+    doHoverEffects(m_view->mapToScene(m_view->viewport()->mapFromGlobal(QCursor::pos())));
 }
 
-void BasketView::doHoverEffects(Note *note, Note::Zone zone, const QPoint &pos)
+void BasketScene::doHoverEffects(Note *note, Note::Zone zone, const QPointF &pos)
 {
     // Inform the old and new hovered note (if any):
     Note *oldHoveredNote = m_hoveredNote;
@@ -2449,26 +2504,34 @@ void BasketView::doHoverEffects(Note *note, Note::Zone zone, const QPoint &pos)
         if (m_hoveredNote) {
             m_hoveredNote->setHovered(false);
             m_hoveredNote->setHoveredZone(Note::None);
-            updateNote(m_hoveredNote);
+            m_hoveredNote->update();
         }
         m_hoveredNote = note;
-        if (note)
-            note->setHovered(true);
+        if (m_hoveredNote)
+	{
+            m_hoveredNote->setHovered(true);
+	}
     }
 
     // If we are hovering a note, compute which zone is hovered and inform the note:
     if (m_hoveredNote) {
         if (zone != m_hoveredZone || oldHoveredNote != m_hoveredNote) {
             m_hoveredZone = zone;
-            m_hoveredNote->setCursor(zone);
-            updateNote(m_hoveredNote);
-        }
-        m_hoveredNote->setHoveredZone(zone);
-        // If we are hovering an insert line zone, update this thing:
+	    m_hoveredNote->setHoveredZone(zone);
+            m_view->viewport()->setCursor(m_hoveredNote->cursorFromZone(zone));
+
+	    m_hoveredNote->update();
+	}
+
+	// If we are hovering an insert line zone, update this thing:
         if (zone == Note::TopInsert || zone == Note::TopGroup || zone == Note::BottomInsert || zone == Note::BottomGroup || zone == Note::BottomColumn)
-            placeInserter(m_hoveredNote, zone);
+	{
+	    placeInserter(m_hoveredNote, zone);
+	}
         else
+	{
             removeInserter();
+	}
         // If we are hovering an embedded link in a rich text element, show the destination in the statusbar:
         if (zone == Note::Link)
             emit setStatusBarText(m_hoveredNote->linkAt(pos - QPoint(m_hoveredNote->x(), m_hoveredNote->y())));
@@ -2477,60 +2540,62 @@ void BasketView::doHoverEffects(Note *note, Note::Zone zone, const QPoint &pos)
         // If we aren't hovering a note, reset all:
     } else {
         if (isFreeLayout() && !isSelecting())
-            viewport()->setCursor(Qt::CrossCursor);
+            m_view->viewport()->setCursor(Qt::CrossCursor);
         else
-            viewport()->unsetCursor();
+            m_view->viewport()->unsetCursor();
         m_hoveredZone = Note::None;
         removeInserter();
         emit resetStatusBarText();
     }
 }
 
-void BasketView::doHoverEffects(const QPoint &pos)
+void BasketScene::doHoverEffects(const QPointF &pos)
 {
 //  if (isDuringEdit())
 //      viewport()->unsetCursor();
 
     // Do we have the right to do hover effects?
     if (! m_loaded || m_lockedHovering)
-        return;
+    {
+      return;      
+    }
 
     // enterEvent() (mouse enter in the widget) set m_underMouse to true, and leaveEvent() make it false.
     // But some times the enterEvent() is not trigerred: eg. when dragging the scrollbar:
     // Ending the drag INSIDE the basket area will make NO hoverEffects() because m_underMouse is false.
     // User need to leave the area and re-enter it to get effects.
     // This hack solve that by dismissing the m_underMouse variable:
-    bool underMouse = Global::bnpView->currentBasket() == this && QRect(contentsX(), contentsY(), visibleWidth(), visibleHeight()).contains(pos);
 
     // Don't do hover effects when a popup menu is opened.
     // Primarily because the basket area will only receive mouseEnterEvent and mouveLeaveEvent.
     // It willn't be noticed of mouseMoveEvent, which would result in a apparently broken application state:
-    if (kapp->activePopupWidget())
-        underMouse = false;
+    bool underMouse = !kapp->activePopupWidget();
+    //if (kapp->activePopupWidget())
+    //    underMouse = false;
 
     // Compute which note is hovered:
-    Note       *note = (m_isSelecting || !underMouse ? 0 : noteAt(pos.x(), pos.y()));
-    Note::Zone  zone = (note ? note->zoneAt(pos - QPoint(note->x(), note->y()), isDuringDrag()) : Note::None);
+    Note       *note = (m_isSelecting || !underMouse ? 0 : noteAt(pos));
+    Note::Zone  zone = (note ? note->zoneAt(pos - QPointF(note->x(), note->y()), isDuringDrag()) : Note::None);
 
     // Inform the old and new hovered note (if any) and update the areas:
     doHoverEffects(note, zone, pos);
 }
 
-void BasketView::mouseEnteredEditorWidget()
+void BasketScene::mouseEnteredEditorWidget()
 {
     if (!m_lockedHovering && !kapp->activePopupWidget())
         doHoverEffects(editedNote(), Note::Content, QPoint());
 }
 
-void BasketView::removeInserter()
+void BasketScene::removeInserter()
 {
     if (m_inserterShown) { // Do not hide (and then update/repaint the view) if it is already hidden!
         m_inserterShown = false;
-        updateContents(m_inserterRect);
+	invalidate(m_inserterRect);
     }
 }
 
-void BasketView::placeInserter(Note *note, int zone)
+void BasketScene::placeInserter(Note *note, int zone)
 {
     // Remove the inserter:
     if (!note) {
@@ -2539,16 +2604,17 @@ void BasketView::placeInserter(Note *note, int zone)
     }
 
     // Update the old position:
-    if (inserterShown())
-        updateContents(m_inserterRect);
+	if (inserterShown()){
+	  invalidate(m_inserterRect);
+	}
     // Some comodities:
     m_inserterShown = true;
     m_inserterTop   = (zone == Note::TopGroup || zone == Note::TopInsert);
     m_inserterGroup = (zone == Note::TopGroup || zone == Note::BottomGroup);
     // X and width:
-    int groupIndent = (note->isGroup() ? note->width() : Note::HANDLE_WIDTH);
-    int x     = note->x();
-    int width = (note->isGroup() ? note->rightLimit() - note->x() : note->width());
+    qreal groupIndent = (note->isGroup() ? note->width() : Note::HANDLE_WIDTH);
+    qreal x     = note->x();
+    qreal width = (note->isGroup() ? note->rightLimit() - note->x() : note->width());
     if (m_inserterGroup) {
         x     += groupIndent;
         width -= groupIndent;
@@ -2557,26 +2623,26 @@ void BasketView::placeInserter(Note *note, int zone)
 //  if (note->isGroup())
 //      width = note->rightLimit() - note->x() - (m_inserterGroup ? groupIndent : 0);
     // Y:
-    int y = note->y() - (m_inserterGroup && m_inserterTop ? 1 : 3);
+    qreal y = note->y() - (m_inserterGroup && m_inserterTop ? 1 : 3);
     if (!m_inserterTop)
-        y += (note->isColumn() ? note->finalHeight() : note->height());
+        y += (note->isColumn() ? note->height() : note->height());
     // Assigning result:
-    m_inserterRect = QRect(x, y, width, 6 - (m_inserterGroup ? 2 : 0));
+    m_inserterRect = QRectF(x, y, width, 6 - (m_inserterGroup ? 2 : 0));
     // Update the new position:
-    updateContents(m_inserterRect);
+    invalidate(m_inserterRect);
 }
 
-inline void drawLineByRect(QPainter &painter, int x, int y, int width, int height)
+inline void drawLineByRect(QPainter &painter, qreal x, qreal y, qreal width, qreal height)
 {
     painter.drawLine(x, y, x + width - 1, y + height - 1);
 }
 
-void BasketView::drawInserter(QPainter &painter, int xPainter, int yPainter)
+void BasketScene::drawInserter(QPainter &painter, qreal xPainter, qreal yPainter)
 {
     if (!m_inserterShown)
         return;
 
-    QRect rect = m_inserterRect; // For shorter code-lines when drawing!
+    QRectF rect = m_inserterRect; // For shorter code-lines when drawing!
     rect.translate(-xPainter, -yPainter);
     int lineY  = (m_inserterGroup && m_inserterTop ? 0 : 2);
     int roundY = (m_inserterGroup && m_inserterTop ? 0 : 1);
@@ -2609,7 +2675,7 @@ void BasketView::drawInserter(QPainter &painter, int xPainter, int yPainter)
     }
 }
 
-bool BasketView::event(QEvent *event)
+bool BasketScene::event(QEvent *event)
 {
     // Only take the help events
     if (event->type() == QEvent::ToolTip) {
@@ -2617,38 +2683,38 @@ bool BasketView::event(QEvent *event)
         tooltipEvent(helpEvent);
         return true;
     } else
-        return Q3ScrollView::event(event);
+	return QGraphicsScene::event(event);
 }
 
-void BasketView::tooltipEvent(QHelpEvent *event)
+void BasketScene::tooltipEvent(QHelpEvent *event)
 {
     QPoint pos = event->globalPos();
     if (!m_loaded || !Settings::showNotesToolTip())
-        return;
+	return;
 
     QString message;
-    QRect   rect;
+    QRectF   rect;
 
-    QPoint contentPos = viewportToContents(event->pos());
-    Note *note = noteAt(contentPos.x(), contentPos.y());
+    QPointF contentPos = m_view->mapToScene(event->pos());
+    Note *note = noteAt(contentPos);
 
     if (!note && isFreeLayout()) {
         message = i18n("Insert note here\nRight click for more options");
-        QRect itRect;
-        for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
-            itRect = QRect(0, 0, visibleWidth(), visibleHeight()).intersect(*it);
+        QRectF itRect;
+        for (QList<QRectF>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
+            itRect = QRectF(0, 0, m_view->viewport()->width(), m_view->viewport()->height()).intersect(*it);
             if (itRect.contains(contentPos)) {
                 rect = itRect;
-                rect.moveLeft(rect.left() - contentsX());
-                rect.moveTop(rect.top()  - contentsY());
+                rect.moveLeft(rect.left() - sceneRect().x());
+                rect.moveTop(rect.top()  - sceneRect().y());
                 break;
             }
         }
     } else {
-        if (!note)
-            return;
+	if (!note)
+	  return;
 
-        Note::Zone zone = note->zoneAt(contentPos - QPoint(note->x(), note->y()));
+        Note::Zone zone = note->zoneAt(contentPos - QPointF(note->x(), note->y()));
         switch (zone) {
         case Note::Resizer:       message = (note->isColumn() ?
                                                  i18n("Resize those columns") :
@@ -2714,17 +2780,17 @@ void BasketView::tooltipEvent(QHelpEvent *event)
 
         rect = note->zoneRect(zone, contentPos - QPoint(note->x(), note->y()));
 
-        rect.moveLeft(rect.left() - contentsX());
-        rect.moveTop(rect.top()  - contentsY());
+	rect.moveLeft(rect.left() - sceneRect().x());
+        rect.moveTop(rect.top()  - sceneRect().y());
 
         rect.moveLeft(rect.left() + note->x());
         rect.moveTop(rect.top()  + note->y());
     }
 
-    QToolTip::showText(pos, message, this, rect);
+    QToolTip::showText(pos, message, m_view, rect.toRect());
 }
 
-Note* BasketView::lastNote()
+Note* BasketScene::lastNote()
 {
     Note *note = firstNote();
     while (note && note->next())
@@ -2732,7 +2798,7 @@ Note* BasketView::lastNote()
     return note;
 }
 
-void BasketView::deleteNotes()
+void BasketScene::deleteNotes()
 {
     Note *note = m_firstNote;
 
@@ -2758,31 +2824,33 @@ void BasketView::deleteNotes()
     emit countsChanged(this);
 }
 
-Note* BasketView::noteAt(int x, int y)
+Note* BasketScene::noteAt(QPointF pos)
 {
+  qreal x = pos.x();
+  qreal y = pos.y();
 //NO:
 //  // Do NOT check the bottom&right borders.
 //  // Because imagine someone drag&drop a big note from the top to the bottom of a big basket (with big vertical scrollbars),
 //  // the note is first removed, and relayoutNotes() compute the new height that is smaller
 //  // Then noteAt() is called for the mouse pointer position, because the basket is now smaller, the cursor is out of boundaries!!!
 //  // Should, of course, not return 0:
-    if (x < 0 || x > contentsWidth() || y < 0 || y > contentsHeight())
-        return 0;
+    if (x < 0 || x > sceneRect().width() || y < 0 || y > sceneRect().height())
+      return 0;
 
     // When resizing a note/group, keep it highlighted:
     if (m_resizingNote)
-        return m_resizingNote;
+      return m_resizingNote;
 
     // Search and return the hovered note:
     Note *note = m_firstNote;
     Note *possibleNote;
     while (note) {
-        possibleNote = note->noteAt(x, y);
+        possibleNote = note->noteAt(pos);
         if (possibleNote) {
-            if (draggedNotes().contains(possibleNote))
-                return 0;
-            else
-                return possibleNote;
+	  if (draggedNotes().contains(possibleNote))
+	    return 0;
+	  else
+	    return possibleNote;
         }
         note = note->next();
     }
@@ -2791,9 +2859,9 @@ Note* BasketView::noteAt(int x, int y)
     if (isColumnsLayout()) {
         Note *column = m_firstNote;
         while (column) {
-            if (x >= column->x() && x < column->rightLimit())
-                return column;
-            column = column->next();
+	  if (x >= column->x() && x < column->rightLimit())
+	    return column;
+	  column = column->next();
         }
     }
 
@@ -2801,7 +2869,7 @@ Note* BasketView::noteAt(int x, int y)
     return NULL;
 }
 
-BasketView::~BasketView()
+BasketScene::~BasketScene()
 {
     if (m_decryptBox)
         delete m_decryptBox;
@@ -2809,42 +2877,83 @@ BasketView::~BasketView()
     delete m_gpg;
 #endif
     deleteNotes();
+
+	if(m_view)
+		delete m_view;
 }
 
-void BasketView::viewportResizeEvent(QResizeEvent *event)
+void BasketScene::viewportResized()
 {
     relayoutNotes(true);
-    //cornerWidget()->setShown(horizontalScrollBar()->isShown() && verticalScrollBar()->isShown());
-    if (horizontalScrollBar()->isVisible() && verticalScrollBar()->isVisible()) {
-        if (!cornerWidget())
-            setCornerWidget(m_cornerWidget);
+    //cornerWidget()->setShown( m_view->horizontalScrollBar()->isShown() &&  m_view->verticalScrollBar()->isShown());
+    if ( m_view->horizontalScrollBar()->isVisible() &&  m_view->verticalScrollBar()->isVisible()) {
+        if (!m_view->cornerWidget())
+            m_view->setCornerWidget(m_cornerWidget);
     } else {
-        if (cornerWidget())
-            cornerWidget()->hide();
+        if (m_view->cornerWidget())
+            m_view->cornerWidget()->hide();
     }
 //  if (isDuringEdit())
 //      ensureNoteVisible(editedNote());
-    Q3ScrollView::viewportResizeEvent(event);
+	//m_view->resizeEvent(event);
+
 }
 
-void BasketView::animateLoad()
+void BasketScene::animateLoad()
 {
-    const int viewHeight = contentsY() + visibleHeight();
+    const int viewHeight = sceneRect().y() + m_view->viewport()->height();
 
     QTime t = QTime::currentTime(); // Set random seed
     srand(t.hour()*12 + t.minute()*60 + t.second()*60);
 
+    bool needAnimation = false;
+    m_animationTimeLine = new QTimeLine(ANIMATION_DELAY);
+    m_animationTimeLine->setFrameRange(0, 100);
+    connect(m_animationTimeLine, SIGNAL(frameChanged(int)), this, SLOT(animationFrameChanged(int)));
+    connect(m_animationTimeLine, SIGNAL(finished()), this, SLOT(finishAnimation()));
+    
     Note *note = firstNote();
-    while (note) {
-        if ((note->finalY() < viewHeight) && note->matching())
-            note->initAnimationLoad();
+    while (note) 
+    {
+        if ((note->y() < viewHeight) && note->matching())
+	{
+            needAnimation |= note->initAnimationLoad(m_animationTimeLine);
+	}
         note = note->next();
     }
 
-    m_loaded = true;
+    if(needAnimation)
+    {
+      m_animationTimeLine->start();
+    }
+    else
+    {
+      m_loaded = true;
+      delete m_animationTimeLine;
+      m_animationTimeLine = 0;
+    }
 }
 
-QColor BasketView::selectionRectInsideColor()
+void BasketScene::animationFrameChanged(int /*frame*/)
+{
+  FOR_EACH_NOTE(note) note->unbufferizeAll();
+
+  if(!m_loaded)
+  {
+    m_loaded = true;
+    update();
+  }
+}
+
+void BasketScene::finishAnimation()
+{
+  m_animationTimeLine->deleteLater();
+  m_animationTimeLine = 0;
+  FOR_EACH_NOTE(note) note->animationFinished();
+  update();
+}
+
+QColor BasketScene::selectionRectInsideColor()
 {
     return Tools::mixColor(Tools::mixColor(backgroundColor(),
                                            palette().color(QPalette::Highlight)),
@@ -2867,43 +2976,51 @@ QColor alphaBlendColors(const QColor &bgColor, const QColor &fgColor, const int 
     return result;
 }
 
-void BasketView::unlock()
+void BasketScene::unlock()
 {
     QTimer::singleShot(0, this, SLOT(load()));
 }
 
-void BasketView::inactivityAutoLockTimeout()
+void BasketScene::inactivityAutoLockTimeout()
 {
     lock();
 }
 
-void BasketView::drawContents(QPainter *painter)
+void BasketScene::drawBackground ( QPainter * painter, const QRectF & rect )
 {
-    drawContents(painter, 0, 0, 0, 0);
+  if (!m_loadingLaunched) {
+    if (!m_locked) {
+      QTimer::singleShot(0, this, SLOT(load()));
+      return;
+    }
+    else {
+      Global::bnpView->notesStateChanged(); // Show "Locked" instead of "Loading..." in the statusbar
+    }
+  }
+  
+  if (! hasBackgroundImage()) 
+  {
+    painter->fillRect(rect, backgroundColor());
+    // It's either a background pixmap to draw or a background color to fill:
+  } else if (isTiledBackground() || (rect.x() < backgroundPixmap()->width() && rect.y() < backgroundPixmap()->height())){
+    painter->fillRect(rect, backgroundColor());
+    blendBackground(*painter, rect, 0, 0, /*opaque=*/true);
+  } else {
+    painter->fillRect(rect, backgroundColor());
+  }
 }
 
-void BasketView::drawContents(QPainter *painter, int clipX, int clipY, int clipWidth, int clipHeight)
+void BasketScene::drawForeground ( QPainter * painter, const QRectF & rect )
 {
-    // Start the load the first time the basket is shown:
-    if (!m_loadingLaunched) {
-        if (!m_locked)
-            QTimer::singleShot(0, this, SLOT(load()));
-        else {
-            Global::bnpView->notesStateChanged(); // Show "Locked" instead of "Loading..." in the statusbar
-        }
-    }
-
-    QBrush brush(backgroundColor()); // FIXME: share it for all the basket?
-    QRect clipRect(clipX, clipY, clipWidth, clipHeight);
-
-    if (m_locked) {
-        if (!m_decryptBox) {
-            m_decryptBox = new QFrame(this);
+    if (m_locked) 
+    {
+        if (!m_decryptBox) 
+	{
+            m_decryptBox = new QFrame(m_view);
             m_decryptBox->setFrameShape(QFrame::StyledPanel);
             m_decryptBox->setFrameShadow(QFrame::Plain);
             m_decryptBox->setLineWidth(1);
 
-            //QGridLayout* layout = new QGridLayout( m_decryptBox, 1, 1, 11, 6, "decryptBoxLayout");
             QGridLayout *layout = new QGridLayout(m_decryptBox);
             layout->setContentsMargins(11, 11, 11, 11);
             layout->setSpacing(6);
@@ -2934,46 +3051,41 @@ void BasketView::drawContents(QPainter *painter, int clipX, int clipY, int clipW
                                i18n("To make baskets stay unlocked, change the automatic<br>"
                                     "locking duration in the application settings.") + "</small>",
                                m_decryptBox);
-            //label->setFixedWidth(label->sizeHint().width() / 2);
             label->setAlignment(Qt::AlignTop);
             layout->addWidget(label, 2, 0, 1, 3);
 
             m_decryptBox->resize(layout->sizeHint());
         }
-        if (m_decryptBox->isHidden()) {
+        if (m_decryptBox->isHidden()) 
+	{
             m_decryptBox->show();
         }
 #ifdef HAVE_LIBGPGME
         m_button->setFocus();
 #endif
-        m_decryptBox->move((visibleWidth() - m_decryptBox->width()) / 2,
-                           (visibleHeight() - m_decryptBox->height()) / 2);
-    } else {
+        m_decryptBox->move((m_view->viewport()->width() - m_decryptBox->width()) / 2,
+                           (m_view->viewport()->height() - m_decryptBox->height()) / 2);
+    } 
+    else 
+    {
         if (m_decryptBox && !m_decryptBox->isHidden())
             m_decryptBox->hide();
     }
-
-    // Draw notes (but not when it's not loaded or locked yet):
-    Note *note = ((m_loaded || m_locked) ? m_firstNote : 0);
-    while (note) {
-        note->draw(painter, clipRect);
-        note = note->next();
-    }
-    enableActions();
-
-    // Draw loading message:
-    if (!m_loaded) {
-        QPixmap pixmap(visibleWidth(), visibleHeight()); // TODO: Clip it to asked size only!
+    
+    if (!m_loaded) 
+    {
+	QBrush brush(backgroundColor());
+        QPixmap pixmap(m_view->viewport()->width(), m_view->viewport()->height()); // TODO: Clip it to asked size only!
         QPainter painter2(&pixmap);
         QTextDocument rt;
         rt.setHtml(QString("<center>%1</center>").arg(i18n("Loading...")));
-        rt.setTextWidth(visibleWidth());
+        rt.setTextWidth(m_view->viewport()->width());
         int hrt = rt.size().height();
-        painter2.fillRect(0, 0, visibleWidth(), visibleHeight(), brush);
-        blendBackground(painter2, QRect(0, 0, visibleWidth(), visibleHeight()), -1, -1, /*opaque=*/true);
+        painter2.fillRect(0, 0, m_view->viewport()->width(), m_view->viewport()->height(), brush);
+        blendBackground(painter2, QRectF(0, 0, m_view->viewport()->width(), m_view->viewport()->height()), -1, -1, /*opaque=*/true);
         QPalette pal = palette();
         pal.setColor(QPalette::WindowText, textColor());
-        painter2.translate(0, (visibleHeight() - hrt) / 2);
+        painter2.translate(0, (m_view->viewport()->height() - hrt) / 2);
         QAbstractTextDocumentLayout::PaintContext context;
         context.palette = pal;
         rt.documentLayout()->draw(&painter2, context);
@@ -2981,108 +3093,78 @@ void BasketView::drawContents(QPainter *painter, int clipX, int clipY, int clipW
         painter->drawPixmap(0, 0, pixmap);
         return; // TODO: Clip to the wanted rectangle
     }
-
-    // We will draw blank areas below.
-    // For each rectangle to be draw there is three ways to do so:
-    // - The rectangle is full of the background COLOR  => we fill a rect directly on screen
-    // - The rectangle is full of the background PIXMAP => we draw it directly on screen (we draw m_opaqueBackgroundPixmap that is not transparent)
-    // - The rectangle contains the resizer             => We draw it on an offscreen buffer and then paint the buffer on screen
-    // If the background image is not tiled, we know that recomputeBlankRects() broken rects so that they are full of either background pixmap or color, but not a mix.
-
-    // Draw blank areas (see the last preparation above):
-    QPixmap  pixmap;
-    QPainter painter2;
-    QRect    rect;
-    for (QList<QRect>::iterator it = m_blankAreas.begin(); it != m_blankAreas.end(); ++it) {
-        rect = clipRect.intersect(*it);
-        if (rect.width() > 0 && rect.height() > 0) {
-            // If there is an inserter to draw, draw the image off screen,
-            // apply the inserter and then draw the image on screen:
-            if ((inserterShown() && rect.intersects(inserterRect()))  || (m_isSelecting && rect.intersects(m_selectionRect))) {
-                pixmap = QPixmap(rect.width(), rect.height());
-                painter2.begin(&pixmap);
-                painter2.fillRect(0, 0, rect.width(), rect.height(), backgroundColor());
-                blendBackground(painter2, rect, -1, -1, /*opaque=*/true);
-                // Draw inserter:
-                if (inserterShown() && rect.intersects(inserterRect()))
-                    drawInserter(painter2, rect.x(), rect.y());
-                // Draw selection rect:
-                if (m_isSelecting && rect.intersects(m_selectionRect)) {
-                    QRect selectionRect = m_selectionRect;
-                    selectionRect.translate(-rect.x(), -rect.y());
-                    QRect selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
-                    if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
-                        QColor insideColor = selectionRectInsideColor();
-                        painter2.fillRect(selectionRectInside, insideColor);
-                        selectionRectInside.translate(rect.x(), rect.y());
-                        blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, /*&*/m_selectedBackgroundPixmap);
-                    }
-                    painter2.setPen(palette().color(QPalette::Highlight).darker());
-                    painter2.drawRect(selectionRect);
-                    painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), backgroundColor()));
-                    painter2.drawPoint(selectionRect.topLeft());
-                    painter2.drawPoint(selectionRect.topRight());
-                    painter2.drawPoint(selectionRect.bottomLeft());
-                    painter2.drawPoint(selectionRect.bottomRight());
-                }
-                painter2.end();
-                painter->drawPixmap(rect.x(), rect.y(), pixmap);
-                // If it's only a blank rectangle to draw, draw it directly on screen (faster!!!):
-            } else if (! hasBackgroundImage()) {
-                painter->fillRect(rect, backgroundColor());
-                // It's either a background pixmap to draw or a background color to fill:
-            } else {
-                if (isTiledBackground() || (rect.x() < backgroundPixmap()->width() && rect.y() < backgroundPixmap()->height()))
-                    blendBackground(*painter, rect, 0, 0, /*opaque=*/true);
-                else
-                    painter->fillRect(rect, backgroundColor());
-            }
+    
+    enableActions();
+    
+    if ((inserterShown() && rect.intersects(inserterRect()))  || (m_isSelecting && rect.intersects(m_selectionRect))) 
+    {
+      // Draw inserter:
+      if (inserterShown() && rect.intersects(inserterRect()))
+      {
+	drawInserter(*painter, 0, 0);
+      }
+      // Draw selection rect:
+      if (m_isSelecting && rect.intersects(m_selectionRect)) 
+      {
+        QRectF selectionRect = m_selectionRect;
+        QRectF selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
+        if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
+            QColor insideColor = selectionRectInsideColor();
+            painter->fillRect(selectionRectInside, QBrush(insideColor,Qt::Dense4Pattern));
         }
-    }
+        painter->setPen(palette().color(QPalette::Highlight).darker());
+        painter->drawRect(selectionRect);
+        painter->setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), backgroundColor()));
+        painter->drawPoint(selectionRect.topLeft());
+        painter->drawPoint(selectionRect.topRight());
+        painter->drawPoint(selectionRect.bottomLeft());
+        painter->drawPoint(selectionRect.bottomRight());
+      }
+    }     
 }
 
 /*  rect(x,y,width,height)==(xBackgroundToDraw,yBackgroundToDraw,widthToDraw,heightToDraw)
  */
-void BasketView::blendBackground(QPainter &painter, const QRect &rect, int xPainter, int yPainter, bool opaque, QPixmap *bg)
+void BasketScene::blendBackground(QPainter &painter, const QRectF &rect, qreal xPainter, qreal yPainter, bool opaque, QPixmap *bg)
 {
-    if (xPainter == -1 && yPainter == -1) {
-        xPainter = rect.x();
-        yPainter = rect.y();
-    }
+  painter.save();
+  if (xPainter == -1 && yPainter == -1) 
+  {
+    xPainter = rect.x();
+    yPainter = rect.y();
+  }
 
-    if (hasBackgroundImage()) {
-        const QPixmap *bgPixmap = (bg ? /* * */bg : (opaque ? m_opaqueBackgroundPixmap : m_backgroundPixmap));
-        if (isTiledBackground())
-            painter.drawTiledPixmap(rect.x() - xPainter, rect.y() - yPainter, rect.width(), rect.height(), *bgPixmap, rect.x(), rect.y());
-        else
-            painter.drawPixmap(rect.x() - xPainter, rect.y() - yPainter, *bgPixmap, rect.x(), rect.y(), rect.width(), rect.height());
+  if (hasBackgroundImage()) 
+  {
+    const QPixmap *bgPixmap = (bg ? /* * */bg : (opaque ? m_opaqueBackgroundPixmap : m_backgroundPixmap));
+    if (isTiledBackground())
+    {
+      painter.drawTiledPixmap(rect.x() - xPainter, rect.y() - yPainter, rect.width(), rect.height(), *bgPixmap, rect.x(), rect.y());
     }
+    else
+    {
+      painter.drawPixmap(QPointF(rect.x() - xPainter, rect.y() - yPainter), *bgPixmap, rect);
+    }
+  }
+  painter.restore();
 }
 
-void BasketView::recomputeBlankRects()
+void BasketScene::recomputeBlankRects()
 {
     m_blankAreas.clear();
-    m_blankAreas.append(QRect(0, 0, contentsWidth(), contentsHeight()));
+    return;
+
+    m_blankAreas.append(QRectF(0, 0, sceneRect().width(), sceneRect().height()));
 
     FOR_EACH_NOTE(note)
     note->recomputeBlankRects(m_blankAreas);
 
-    // See the drawing of blank areas in BasketView::drawContents()
+    // See the drawing of blank areas in BasketScene::drawContents()
     if (hasBackgroundImage() && ! isTiledBackground())
-        substractRectOnAreas(QRect(0, 0, backgroundPixmap()->width(), backgroundPixmap()->height()), m_blankAreas, false);
+        substractRectOnAreas(QRectF(0, 0, backgroundPixmap()->width(), backgroundPixmap()->height()), m_blankAreas, false);
 }
 
-void BasketView::addAnimatedNote(Note *note)
-{
-    if (m_animatedNotes.isEmpty()) {
-        m_animationTimer.start(FRAME_DELAY);
-        m_lastFrameTime = QTime::currentTime();
-    }
-
-    m_animatedNotes.append(note);
-}
-
-void BasketView::unsetNotesWidth()
+void BasketScene::unsetNotesWidth()
 {
     Note *note = m_firstNote;
     while (note) {
@@ -3091,18 +3173,13 @@ void BasketView::unsetNotesWidth()
     }
 }
 
-void BasketView::relayoutNotes(bool animate)
+void BasketScene::relayoutNotes(bool animate)
 {
     if (Global::bnpView->currentBasket() != this)
         return; // Optimize load time, and basket will be relaid out when activated, anyway
 
     if (!Settings::playAnimations())
         animate = false;
-
-    if (!animate) {
-        m_animatedNotes.clear();
-        m_animationTimer.stop();
-    }
 
     int h     = 0;
     tmpWidth  = 0;
@@ -3112,14 +3189,14 @@ void BasketView::relayoutNotes(bool animate)
         if (note->matching()) {
             note->relayoutAt(0, h, animate);
             if (note->hasResizer()) {
-                int minGroupWidth = note->minRight() - note->finalX();
+                int minGroupWidth = note->minRight() - note->x();
                 if (note->groupWidth() < minGroupWidth) {
                     note->setGroupWidth(minGroupWidth);
-                    relayoutNotes(animate); // Redo the thing, but this time it should not recurse
+                    relayoutNotes(animate); // Redo the thing, but this time it should not recurse		    
                     return;
                 }
             }
-            h += note->finalHeight();
+            h += note->height();
         }
         note = note->next();
     }
@@ -3129,78 +3206,15 @@ void BasketView::relayoutNotes(bool animate)
     else
         tmpHeight += 15;
 
-    resizeContents(qMax(tmpWidth, visibleWidth()), qMax(tmpHeight, visibleHeight()));
+    setSceneRect(0, 0, qMax(tmpWidth, (qreal)m_view->viewport()->width()), qMax(tmpHeight, (qreal)m_view->viewport()->height()));
+
     recomputeBlankRects();
     placeEditor();
     doHoverEffects();
-    updateContents();
+    invalidate();
 }
 
-void BasketView::updateNote(Note *note)
-{
-    updateContents(note->rect());
-    if (note->hasResizer())
-        updateContents(note->resizerRect());
-}
-
-void BasketView::animateObjects()
-{
-    QList<Note*>::iterator it;
-    for (it = m_animatedNotes.begin(); it != m_animatedNotes.end();)
-//      if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
-//          updateNote(*it);
-        if ((*it)->advance())
-            it = m_animatedNotes.erase(it);
-        else {
-//          if ((*it)->y() >= contentsY() && (*it)->bottom() <= contentsY() + contentsWidth())
-//              updateNote(*it);
-            ++it;
-        }
-
-    if (m_animatedNotes.isEmpty()) {
-        // Stop animation timer:
-        m_animationTimer.stop();
-        // Reset all onTop notes:
-        Note* note = m_firstNote;
-        while (note) {
-            note->setOnTop(false);
-            note = note->next();
-        }
-    }
-
-    if (m_focusedNote)
-        ensureNoteVisible(m_focusedNote);
-
-    // We refresh content if it was the last frame,
-    // or if the drawing of the last frame was not too long.
-    if (!m_animationTimer.isActive() || (m_lastFrameTime.msecsTo(QTime::currentTime()) < FRAME_DELAY*11 / 10)) { // *11/10 == *1.1 : We keep a 0.1 security margin
-        m_lastFrameTime = m_lastFrameTime.addMSecs(FRAME_DELAY);                                               // because timers are not accurate and can trigger late
-        //m_lastFrameTime = QTime::currentTime();
-//kDebug() << ">>" << m_lastFrameTime.toString("hh:mm:ss.zzz");
-        if (m_underMouse)
-            doHoverEffects();
-        recomputeBlankRects();
-        //relayoutNotes(true); // In case an animated note was to the contents view boundaries, resize the view!
-        updateContents();
-        // If the drawing of the last frame was too long, we skip the drawing of the current and do the next one:
-    } else {
-        m_lastFrameTime = m_lastFrameTime.addMSecs(FRAME_DELAY);
-//kDebug() << "+=" << m_lastFrameTime.toString("hh:mm:ss.zzz");
-        animateObjects();
-    }
-
-    doHoverEffects();
-    placeEditor();
-
-    /*  int delta = m_deltaY / 3;
-        if (delta == 0       && m_deltaY != 0)
-        delta = (m_deltaY > 0 ? 1 : -1);
-        m_deltaY -= delta;
-        resizeContents(contentsWidth(), contentsHeight() + delta); //m_lastNote->y() + m_lastNote->height()
-    */
-}
-
-void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
+void BasketScene::popupEmblemMenu(Note *note, int emblemNumber)
 {
     m_tagPopupNote = note;
     State *state = note->stateForEmblemNumber(emblemNumber);
@@ -3211,7 +3225,7 @@ void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
     QKeySequence sequence = tag->shortcut().primary();
     bool sequenceOnDelete = (nextState == 0 && !tag->shortcut().isEmpty());
 
-    KMenu menu(this);
+    KMenu menu(m_view);
     if (tag->countStates() == 1) {
         menu.addTitle(/*SmallIcon(state->icon()), */tag->name());
         KAction* act;
@@ -3296,7 +3310,7 @@ void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
     menu.exec(QCursor::pos());
 }
 
-void BasketView::toggledStateInMenu(QAction* action)
+void BasketScene::toggledStateInMenu(QAction* action)
 {
     int id = action->data().toInt();
     if (id == 1) {
@@ -3309,7 +3323,7 @@ void BasketView::toggledStateInMenu(QAction* action)
         return;
     }
     if (id == 2) { // Customize this State:
-        TagsEditDialog dialog(this, m_tagPopupNote->stateOfTag(m_tagPopup));
+        TagsEditDialog dialog(m_view, m_tagPopupNote->stateOfTag(m_tagPopup));
         dialog.exec();
         return;
     }
@@ -3328,7 +3342,7 @@ void BasketView::toggledStateInMenu(QAction* action)
     save();
 }
 
-State* BasketView::stateForTagFromSelectedNotes(Tag *tag)
+State* BasketScene::stateForTagFromSelectedNotes(Tag *tag)
 {
     State *state = 0;
 
@@ -3338,7 +3352,7 @@ State* BasketView::stateForTagFromSelectedNotes(Tag *tag)
     return state;
 }
 
-void BasketView::activatedTagShortcut(Tag *tag)
+void BasketScene::activatedTagShortcut(Tag *tag)
 {
     // Compute the next state to set:
     State *state = stateForTagFromSelectedNotes(tag);
@@ -3359,11 +3373,11 @@ void BasketView::activatedTagShortcut(Tag *tag)
     save();
 }
 
-void BasketView::popupTagsMenu(Note *note)
+void BasketScene::popupTagsMenu(Note *note)
 {
     m_tagPopupNote = note;
 
-    KMenu menu(this);
+    KMenu menu(m_view);
     menu.addTitle(i18n("Tags"));
 
     Global::bnpView->populateTagsMenu(menu, note);
@@ -3372,17 +3386,17 @@ void BasketView::popupTagsMenu(Note *note)
     menu.exec(QCursor::pos());
 }
 
-void BasketView::unlockHovering()
+void BasketScene::unlockHovering()
 {
     m_lockedHovering = false;
     doHoverEffects();
 }
 
-void BasketView::toggledTagInMenu(QAction *act)
+void BasketScene::toggledTagInMenu(QAction *act)
 {
     int id = act->data().toInt();
     if (id == 1) { // Assign new Tag...
-        TagsEditDialog dialog(this, /*stateToEdit=*/0, /*addNewTag=*/true);
+        TagsEditDialog dialog(m_view, /*stateToEdit=*/0, /*addNewTag=*/true);
         dialog.exec();
         if (!dialog.addedStates().isEmpty()) {
             State::List states = dialog.addedStates();
@@ -3402,7 +3416,7 @@ void BasketView::toggledTagInMenu(QAction *act)
         return;
     }
     if (id == 3) { // Customize...
-        TagsEditDialog dialog(this);
+        TagsEditDialog dialog(m_view);
         dialog.exec();
         return;
     }
@@ -3420,74 +3434,78 @@ void BasketView::toggledTagInMenu(QAction *act)
     save();
 }
 
-void BasketView::addTagToSelectedNotes(Tag *tag)
+void BasketScene::addTagToSelectedNotes(Tag *tag)
 {
     FOR_EACH_NOTE(note)
     note->addTagToSelectedNotes(tag);
     updateEditorAppearance();
 }
 
-void BasketView::removeTagFromSelectedNotes(Tag *tag)
+void BasketScene::removeTagFromSelectedNotes(Tag *tag)
 {
     FOR_EACH_NOTE(note)
     note->removeTagFromSelectedNotes(tag);
     updateEditorAppearance();
 }
 
-void BasketView::addStateToSelectedNotes(State *state)
+void BasketScene::addStateToSelectedNotes(State *state)
 {
     FOR_EACH_NOTE(note)
     note->addStateToSelectedNotes(state);
     updateEditorAppearance();
 }
 
-void BasketView::updateEditorAppearance()
+void BasketScene::updateEditorAppearance()
 {
-    if (isDuringEdit() && m_editor->widget()) {
-        m_editor->widget()->setFont(m_editor->note()->font());
+    if (isDuringEdit() && m_editor->graphicsWidget()) {
+      m_editor->graphicsWidget()->setFont(m_editor->note()->font());
 
-        QPalette palette;
-        palette.setColor(m_editor->widget()->backgroundRole(), m_editor->note()->backgroundColor());
-        palette.setColor(m_editor->widget()->foregroundRole(), m_editor->note()->textColor());
-        m_editor->widget()->setPalette(palette);
+      if(m_editor->graphicsWidget()->widget())
+      {
+	QPalette palette;
+	palette.setColor(m_editor->graphicsWidget()->widget()->backgroundRole(), m_editor->note()->backgroundColor());
+	palette.setColor(m_editor->graphicsWidget()->widget()->foregroundRole(), m_editor->note()->textColor());
+	m_editor->graphicsWidget()->setPalette(palette);
+      }
 
-        // Uggly Hack arround Qt bugs: placeCursor() don't call any signal:
-        HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
-        if (htmlEditor) {
-            if (m_editor->textEdit()->textCursor().atStart()) {
-                m_editor->textEdit()->moveCursor(QTextCursor::Right);
-                m_editor->textEdit()->moveCursor(QTextCursor::Left);
-            } else {
-                m_editor->textEdit()->moveCursor(QTextCursor::Left);
-                m_editor->textEdit()->moveCursor(QTextCursor::Right);
-            }
-            htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
-        }
+      // Uggly Hack arround Qt bugs: placeCursor() don't call any signal:
+      HtmlEditor *htmlEditor = dynamic_cast<HtmlEditor*>(m_editor);
+      if (htmlEditor) {
+	if (m_editor->textEdit()->textCursor().atStart()) {
+	  m_editor->textEdit()->moveCursor(QTextCursor::Right);
+          m_editor->textEdit()->moveCursor(QTextCursor::Left);
+        } else {
+	  m_editor->textEdit()->moveCursor(QTextCursor::Left);
+          m_editor->textEdit()->moveCursor(QTextCursor::Right);
+	  
+	}
+        htmlEditor->cursorPositionChanged(); // Does not work anyway :-( (when clicking on a red bold text, the toolbar still show black normal text)
+      }
     }
 }
 
-void BasketView::editorPropertiesChanged()
+void BasketScene::editorPropertiesChanged()
 {
     if (isDuringEdit() && m_editor->note()->content()->type() == NoteType::Html) {
         m_editor->textEdit()->setAutoFormatting(Settings::autoBullet() ? QTextEdit::AutoAll : QTextEdit::AutoNone);
     }
 }
 
-void BasketView::changeStateOfSelectedNotes(State *state)
+void BasketScene::changeStateOfSelectedNotes(State *state)
 {
     FOR_EACH_NOTE(note)
     note->changeStateOfSelectedNotes(state);
     updateEditorAppearance();
 }
 
-void BasketView::removeAllTagsFromSelectedNotes()
+void BasketScene::removeAllTagsFromSelectedNotes()
 {
     FOR_EACH_NOTE(note)
     note->removeAllTagsFromSelectedNotes();
     updateEditorAppearance();
 }
 
-bool BasketView::selectedNotesHaveTags()
+bool BasketScene::selectedNotesHaveTags()
 {
     FOR_EACH_NOTE(note)
     if (note->selectedNotesHaveTags())
@@ -3495,7 +3513,7 @@ bool BasketView::selectedNotesHaveTags()
     return false;
 }
 
-QColor BasketView::backgroundColor()
+QColor BasketScene::backgroundColor() const
 {
     if (m_backgroundColorSetting.isValid())
         return m_backgroundColorSetting;
@@ -3503,7 +3521,7 @@ QColor BasketView::backgroundColor()
         return palette().color(QPalette::Base);
 }
 
-QColor BasketView::textColor()
+QColor BasketScene::textColor() const
 {
     if (m_textColorSetting.isValid())
         return m_textColorSetting;
@@ -3511,13 +3529,13 @@ QColor BasketView::textColor()
         return palette().color(QPalette::Text);
 }
 
-void BasketView::unbufferizeAll()
+void BasketScene::unbufferizeAll()
 {
     FOR_EACH_NOTE(note)
     note->unbufferizeAll();
 }
 
-Note* BasketView::editedNote()
+Note* BasketScene::editedNote()
 {
     if (m_editor)
         return m_editor->note();
@@ -3525,7 +3543,7 @@ Note* BasketView::editedNote()
         return 0;
 }
 
-bool BasketView::hasTextInEditor()
+bool BasketScene::hasTextInEditor()
 {
     if (!isDuringEdit() || !redirectEditActions())
         return false;
@@ -3538,7 +3556,7 @@ bool BasketView::hasTextInEditor()
         return false;
 }
 
-bool BasketView::hasSelectedTextInEditor()
+bool BasketScene::hasSelectedTextInEditor()
 {
     if (!isDuringEdit() || !redirectEditActions())
         return false;
@@ -3554,7 +3572,7 @@ bool BasketView::hasSelectedTextInEditor()
         return false;
 }
 
-bool BasketView::selectedAllTextInEditor()
+bool BasketScene::selectedAllTextInEditor()
 {
     if (!isDuringEdit() || !redirectEditActions())
         return false;
@@ -3567,12 +3585,12 @@ bool BasketView::selectedAllTextInEditor()
         return false;
 }
 
-void BasketView::selectionChangedInEditor()
+void BasketScene::selectionChangedInEditor()
 {
     Global::bnpView->notesStateChanged();
 }
 
-void BasketView::contentChangedInEditor()
+void BasketScene::contentChangedInEditor()
 {
     // Do not wait 3 seconds, because we need the note to expand as needed (if a line is too wider... the note should grow wider):
     if (m_editor->textEdit())
@@ -3586,36 +3604,36 @@ void BasketView::contentChangedInEditor()
 //  }
 }
 
-void BasketView::inactivityAutoSaveTimeout()
+void BasketScene::inactivityAutoSaveTimeout()
 {
     if (m_editor)
         m_editor->autoSave(/*toFileToo=*/true);
 }
 
-void BasketView::placeEditorAndEnsureVisible()
+void BasketScene::placeEditorAndEnsureVisible()
 {
     placeEditor(/*andEnsureVisible=*/true);
 }
 
 // TODO: [kw] Oh boy, this will probably require some tweaking.
-void BasketView::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
+void BasketScene::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 {
     if (!isDuringEdit())
         return;
 
-    QFrame    *editorQFrame = dynamic_cast<QFrame*>(m_editor->widget());
+    QFrame    *editorQFrame = dynamic_cast<QFrame*>(m_editor->graphicsWidget()->widget());
     KTextEdit *textEdit     = m_editor->textEdit();
 //  QLineEdit *lineEdit     = m_editor->lineEdit();
     Note      *note         = m_editor->note();
 
-    int frameWidth = (editorQFrame ? editorQFrame->frameWidth() : 0);
-    int x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
-    int y;
-    int maxHeight  = qMax(visibleHeight(), contentsHeight());
-    int height, width;
+    qreal frameWidth = (editorQFrame ? editorQFrame->frameWidth() : 0);
+    qreal x          = note->x() + note->contentX() + note->content()->xEditorIndent() - frameWidth;
+    qreal y;
+    qreal maxHeight  = qMax((qreal)m_view->viewport()->height(), sceneRect().height());
+    qreal height, width;
 
     if (textEdit) {
-        x -= 4;
+        //x -= 4;
         // Need to do it 2 times, because it's wrong overwise
         // (sometimes, width depends on height, and sometimes, height depends on with):
         for (int i = 0; i < 2; i++) {
@@ -3626,16 +3644,18 @@ void BasketView::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
             height = note->height() - 2 * frameWidth - 2 * Note::NOTE_MARGIN;
 //          height = /*qMax(*/height/*, note->height())*/;
 //          height = qMin(height, visibleHeight());
-            width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*frameWidth + 1;
-//width=qMax(width,textEdit->contentsWidth()+2*frameWidth);
+            width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*m_view->frameWidth + 1;
+//width=qMax(width,textEdit->contentsWidth()+2*m_view->frameWidth);
             if (y + height > maxHeight)
                 y = maxHeight - height;
             textEdit->setFixedSize(width, height);
+            textEdit->viewport()->setFixedSize(width, height);
+	    m_editor->graphicsWidget()->setMaximumSize(width,height);
         }
     } else {
         height = note->height() - 2 * Note::NOTE_MARGIN + 2 * frameWidth;
-        width  = note->x() + note->width() - x;//note->rightLimit() - x + 2*frameWidth;
-        m_editor->widget()->setFixedSize(width, height);
+        width  = note->x() + note->width() - x;//note->rightLimit() - x + 2*m_view->frameWidth;
+        m_editor->graphicsWidget()->widget()->setFixedSize(width, height);
         x -= 1;
         y = note->y() + Note::NOTE_MARGIN - frameWidth;
     }
@@ -3646,47 +3666,46 @@ void BasketView::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
     }
     m_editorWidth  = width;
     m_editorHeight = height;
-    addChild(m_editor->widget(), x, y);
+//    addChild(m_editor->widget(), x, y);
+    m_editor->graphicsWidget()->setPos(x,y);
     m_editorX = x;
     m_editorY = y;
 
-    m_leftEditorBorder->setFixedSize((m_editor->textEdit() ? 3 : 0), height);
-//  m_leftEditorBorder->raise();
-    addChild(m_leftEditorBorder,     x, y);
-    m_leftEditorBorder->setPosition(x, y);
+//    m_leftEditorBorder->setFixedSize((m_editor->textEdit() ? 3 : 0), height);
+//    addChild(m_leftEditorBorder,     x, y);
+//    m_leftEditorBorder->setPosition(x, y);
 
-    m_rightEditorBorder->setFixedSize(3, height);
-//  m_rightEditorBorder->raise();
-//  addChild(m_rightEditorBorder,     note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
-//  m_rightEditorBorder->setPosition( note->rightLimit() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN );
-    addChild(m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
-    m_rightEditorBorder->setPosition(note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
+//    m_rightEditorBorder->setFixedSize(3, height);
+//    addChild(m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
+//    m_rightEditorBorder->setPosition(note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
 
 //  if (andEnsureVisible)
 //      ensureNoteVisible(note);
 }
 
-void BasketView::editorCursorPositionChanged()
+void BasketScene::editorCursorPositionChanged()
 {
     if (!isDuringEdit())
-        return;
+      return;
+    
+    FocusedTextEdit *textEdit = dynamic_cast<FocusedTextEdit*>(m_editor->textEdit());
 
-    FocusedTextEdit *textEdit = (FocusedTextEdit*) m_editor->textEdit();
+    if( textEdit )
+    {
+      QPoint cursorPoint = textEdit->viewport()->mapToGlobal(textEdit->cursorRect().center());
 
-    QPoint cursorPoint = textEdit->viewport()->mapTo(
-                             viewport(), textEdit->cursorRect().center()
-                         );
-    QPoint contentsCursor = viewportToContents(cursorPoint);
-    ensureVisible(contentsCursor.x(), contentsCursor.y());
+      QPointF contentsCursor = m_view->mapToScene( m_view->viewport()->mapFromGlobal(cursorPoint) );
+      //m_view->ensureVisible(contentsCursor.x(), contentsCursor.y(),1,1);
+    }
 }
 
-void BasketView::closeEditorDelayed()
+void BasketScene::closeEditorDelayed()
 {
     setFocus();
     QTimer::singleShot(0, this, SLOT(closeEditor()));
 }
 
-bool BasketView::closeEditor()
+bool BasketScene::closeEditor()
 {
     if (!isDuringEdit())
         return true;
@@ -3695,27 +3714,30 @@ bool BasketView::closeEditor()
         return true;
 
     if (m_redirectEditActions) {
-        disconnect(m_editor->widget(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()));
         if (m_editor->textEdit()) {
+	    disconnect(m_editor->textEdit(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()));
             disconnect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(selectionChangedInEditor()));
             disconnect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(contentChangedInEditor()));
         } else if (m_editor->lineEdit()) {
+            disconnect(m_editor->lineEdit(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()));
             disconnect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(selectionChangedInEditor()));
             disconnect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(contentChangedInEditor()));
         }
     }
-    m_editor->widget()->disconnect();
-    m_editor->widget()->hide();
+    m_editor->graphicsWidget()->widget()->disconnect();
+    m_editor->graphicsWidget()->hide();
     m_editor->validate();
 
-    delete m_leftEditorBorder;
-    delete m_rightEditorBorder;
+//    delete m_leftEditorBorder;
+//    delete m_rightEditorBorder;
     m_leftEditorBorder  = 0;
     m_rightEditorBorder = 0;
 
     Note *note = m_editor->note();
     note->setWidth(0); // For relayoutNotes() to succeed to take care of the change
-
+    if(note->content()->graphicsItem()) note->content()->graphicsItem()->show();
+    note->setZValue(1);
+    
     // Delete the editor BEFORE unselecting the note because unselecting the note would trigger closeEditor() recursivly:
     bool isEmpty = m_editor->isEmpty();
     delete m_editor;
@@ -3760,7 +3782,7 @@ bool BasketView::closeEditor()
     return (note != 0);
 }
 
-void BasketView::closeBasket()
+void BasketScene::closeBasket()
 {
     closeEditor();
     unbufferizeAll(); // Keep the memory footprint low
@@ -3771,15 +3793,16 @@ void BasketView::closeBasket()
             m_inactivityAutoLockTimer.start(seconds * 1000);
         }
     }
+    emit closed();
 }
 
-void BasketView::openBasket()
+void BasketScene::openBasket()
 {
     if (m_inactivityAutoLockTimer.isActive())
         m_inactivityAutoLockTimer.stop();
 }
 
-Note* BasketView::theSelectedNote()
+Note* BasketScene::theSelectedNote()
 {
     if (countSelecteds() != 1) {
         kDebug() << "NO SELECTED NOTE !!!!";
@@ -3798,7 +3821,7 @@ Note* BasketView::theSelectedNote()
     return 0;
 }
 
-NoteSelection* BasketView::selectedNotes()
+NoteSelection* BasketScene::selectedNotes()
 {
     NoteSelection selection;
 
@@ -3840,20 +3863,20 @@ NoteSelection* BasketView::selectedNotes()
     }
 }
 
-void BasketView::showEditedNoteWhileFiltering()
+void BasketScene::showEditedNoteWhileFiltering()
 {
     if (m_editor) {
         Note *note = m_editor->note();
         filterAgain();
         note->setSelected(true);
         relayoutNotes(false);
-        note->setX(note->finalX());
-        note->setY(note->finalY());
+        note->setX(note->x());
+        note->setY(note->y());
         filterAgainDelayed();
     }
 }
 
-void BasketView::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint) // TODO: Remove the first parameter!!!
+void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoint) // TODO: Remove the first parameter!!!
 {
     if (!note)
         note = theSelectedNote(); // TODO: Or pick the focused note!
@@ -3875,39 +3898,41 @@ void BasketView::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint
     }
 
     doHoverEffects(note, Note::Content); // Be sure (in the case Edit was triggered by menu or Enter key...): better feedback!
-    //m_lockedHovering = true;
-
-    //m_editorWidget = note->content()->launchEdit(this);
-    NoteEditor *editor = NoteEditor::editNoteContent(note->content(), this);
-
-    if (editor->widget()) {
+   
+   NoteEditor *editor = NoteEditor::editNoteContent(note->content(),0);
+   if (editor->graphicsWidget()) {
         m_editor = editor;
-        m_leftEditorBorder  = new TransparentWidget(this);
-        m_rightEditorBorder = new TransparentWidget(this);
+	if(note->content()->graphicsItem()) note->content()->graphicsItem()->hide();
+	note->setZValue(100);
+    
+	//m_editor->graphicsWidget()->setPos();
+//        m_leftEditorBorder  = new TransparentWidget(this);
+//        m_rightEditorBorder = new TransparentWidget(this);
         //m_editor->widget()->reparent(viewport(), QPoint(0,0), true);
         //m_leftEditorBorder->reparent(viewport(), QPoint(0,0), true);
         //m_rightEditorBorder->reparent(viewport(), QPoint(0,0), true);
-        m_editor->widget()->setParent(viewport());
-        m_leftEditorBorder->setParent(viewport());
-        m_rightEditorBorder->setParent(viewport());
-        addChild(m_editor->widget(), 0, 0);
-        placeEditorAndEnsureVisible(); //       placeEditor(); // FIXME: After?
+//        m_editor->widget()->setParent(m_view->viewport());
+//        m_leftEditorBorder->setParent(m_view->viewport());
+//        m_rightEditorBorder->setParent(m_view->viewport());
+	addItem(m_editor->graphicsWidget());
+
+	placeEditorAndEnsureVisible(); //       placeEditor(); // FIXME: After?
         m_redirectEditActions = m_editor->lineEdit() || m_editor->textEdit();
         if (m_redirectEditActions) {
-            connect(m_editor->widget(), SIGNAL(selectionChanged()), this, SLOT(selectionChangedInEditor()));
             // In case there is NO text, "Select All" is disabled. But if the user press a key the there is now a text:
             // selection has not changed but "Select All" should be re-enabled:
             if (m_editor->textEdit()) {
                 connect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(selectionChangedInEditor()));
                 connect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(contentChangedInEditor()));
+		connect(m_editor->textEdit(), SIGNAL(selectionChanged()), 	   this, SLOT(selectionChangedInEditor()));
             } else if (m_editor->lineEdit()) {
                 connect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(selectionChangedInEditor()));
                 connect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(contentChangedInEditor()));
+		connect(m_editor->lineEdit(), SIGNAL(selectionChanged()), 	   this, SLOT(selectionChangedInEditor()));
             }
         }
-        m_editor->widget()->show();
-        //m_editor->widget()->raise();
-        m_editor->widget()->setFocus();
+
+	m_editor->graphicsWidget()->setFocus();
         connect(m_editor, SIGNAL(askValidation()),
                 this, SLOT(closeEditorDelayed()));
         connect(m_editor, SIGNAL(mouseEnteredEditorWidget()),
@@ -3918,21 +3943,22 @@ void BasketView::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint
             connect(textEdit, SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()));
             if (clickedPoint != QPoint()) {
                 // clickedPoint comes from the QMouseEvent, which is in this
-                // widget's coordinate system.
-                QPoint pos = textEdit->mapFrom(this, clickedPoint);
+                // item's coordinate system.
+                
                 // Do it right before the kapp->processEvents() to not have the
                 // cursor to quickly flicker at end (and sometimes stay at end
                 // AND where clicked):
-                textEdit->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
-                textEdit->ensureCursorVisible();
-                textEdit->setTextCursor(textEdit->cursorForPosition(pos));
+                //textEdit->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
+                //textEdit->ensureCursorVisible();
+                QPointF deltaPos = textEdit->pos()-m_editor->note()->pos();
+                textEdit->setTextCursor(textEdit->cursorForPosition((clickedPoint-deltaPos).toPoint()));
                 updateEditorAppearance();
             }
         }
 
 //      kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
         ensureNoteVisible(note);   //  because toolbar can create a new line and then partially hide the note
-        m_editor->widget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
+        m_editor->graphicsWidget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
         emit resetStatusBarText(); // Display "Editing. ... to validate."
     } else {
         // Delete the note user have canceled the addition:
@@ -3950,7 +3976,7 @@ void BasketView::noteEdit(Note *note, bool justAdded, const QPoint &clickedPoint
     Global::bnpView->m_actEditNote->setEnabled(false);
 }
 
-void BasketView::noteDelete()
+void BasketScene::noteDelete()
 {
     if (redirectEditActions()) {
         if (m_editor->textEdit())
@@ -3964,7 +3990,7 @@ void BasketView::noteDelete()
         return;
     int really = KMessageBox::Yes;
     if (Settings::confirmNoteDeletion())
-        really = KMessageBox::questionYesNo(this,
+        really = KMessageBox::questionYesNo(m_view,
                                             i18np("<qt>Do you really want to delete this note?</qt>",
                                                   "<qt>Do you really want to delete these <b>%1</b> notes?</qt>",
                                                   countSelecteds()),
@@ -3976,7 +4002,7 @@ void BasketView::noteDelete()
     noteDeleteWithoutConfirmation();
 }
 
-void BasketView::focusANonSelectedNoteBelow(bool inSameColumn)
+void BasketScene::focusANonSelectedNoteBelow(bool inSameColumn)
 {
     // First focus another unselected one below it...:
     if (m_focusedNote && m_focusedNote->isSelected()) {
@@ -3992,7 +4018,7 @@ void BasketView::focusANonSelectedNoteBelow(bool inSameColumn)
     }
 }
 
-void BasketView::focusANonSelectedNoteAbove(bool inSameColumn)
+void BasketScene::focusANonSelectedNoteAbove(bool inSameColumn)
 {
     // ... Or above it:
     if (m_focusedNote && m_focusedNote->isSelected()) {
@@ -4008,7 +4034,7 @@ void BasketView::focusANonSelectedNoteAbove(bool inSameColumn)
     }
 }
 
-void BasketView::focusANonSelectedNoteBelowOrThenAbove()
+void BasketScene::focusANonSelectedNoteBelowOrThenAbove()
 {
     focusANonSelectedNoteBelow(/*inSameColumn=*/true);
     focusANonSelectedNoteAbove(/*inSameColumn=*/true);
@@ -4016,7 +4042,7 @@ void BasketView::focusANonSelectedNoteBelowOrThenAbove()
     focusANonSelectedNoteAbove(/*inSameColumn=*/false);
 }
 
-void BasketView::focusANonSelectedNoteAboveOrThenBelow()
+void BasketScene::focusANonSelectedNoteAboveOrThenBelow()
 {
     focusANonSelectedNoteAbove(/*inSameColumn=*/true);
     focusANonSelectedNoteBelow(/*inSameColumn=*/true);
@@ -4024,7 +4050,7 @@ void BasketView::focusANonSelectedNoteAboveOrThenBelow()
     focusANonSelectedNoteBelow(/*inSameColumn=*/false);
 }
 
-void BasketView::noteDeleteWithoutConfirmation(bool deleteFilesToo)
+void BasketScene::noteDeleteWithoutConfirmation(bool deleteFilesToo)
 {
     // If the currently focused note is selected, it will be deleted.
     focusANonSelectedNoteBelowOrThenAbove();
@@ -4042,7 +4068,7 @@ void BasketView::noteDeleteWithoutConfirmation(bool deleteFilesToo)
     save();
 }
 
-void BasketView::doCopy(CopyMode copyMode)
+void BasketScene::doCopy(CopyMode copyMode)
 {
     QClipboard *cb = KApplication::clipboard();
     QClipboard::Mode mode = ((copyMode == CopyToSelection) ? QClipboard::Selection : QClipboard::Clipboard);
@@ -4069,7 +4095,7 @@ void BasketView::doCopy(CopyMode copyMode)
     }
 }
 
-void BasketView::noteCopy()
+void BasketScene::noteCopy()
 {
     if (redirectEditActions()) {
         if (m_editor->textEdit())
@@ -4080,7 +4106,7 @@ void BasketView::noteCopy()
         doCopy(CopyToClipboard);
 }
 
-void BasketView::noteCut()
+void BasketScene::noteCut()
 {
     if (redirectEditActions()) {
         if (m_editor->textEdit())
@@ -4091,7 +4117,7 @@ void BasketView::noteCut()
         doCopy(CutToClipboard);
 }
 
-void BasketView::noteOpen(Note *note)
+void BasketScene::noteOpen(Note *note)
 {
     /*
     GetSelectedNotes
@@ -4112,7 +4138,7 @@ void BasketView::noteOpen(Note *note)
         if (message.isEmpty())
             emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
         else {
-            int result = KMessageBox::warningContinueCancel(this, message, /*caption=*/QString::null, KGuiItem(i18n("&Edit"), "edit"));
+            int result = KMessageBox::warningContinueCancel(m_view, message, /*caption=*/QString::null, KGuiItem(i18n("&Edit"), "edit"));
             if (result == KMessageBox::Continue)
                 noteEdit(note);
         }
@@ -4124,10 +4150,10 @@ void BasketView::noteOpen(Note *note)
         if (url.url().startsWith("basket://")) {
             emit crossReference(url.url());
         } else if (customCommand.isEmpty()) {
-            KRun *run = new KRun(url, window());
+            KRun *run = new KRun(url, m_view->window());
             run->setAutoDelete(true);
         } else
-            KRun::run(customCommand, url, window());
+            KRun::run(customCommand, url, m_view->window());
     }
 }
 
@@ -4151,7 +4177,7 @@ bool KRun__displayOpenWithDialog(const KUrl::List& lst, QWidget *window, bool te
     return false;
 }
 
-void BasketView::noteOpenWith(Note *note)
+void BasketScene::noteOpenWith(Note *note)
 {
     if (!note)
         note = theSelectedNote();
@@ -4163,11 +4189,11 @@ void BasketView::noteOpenWith(Note *note)
     QString text    = note->content()->messageWhenOpening(NoteContent::OpenOneWithDialog /*NoteContent::OpenSeveralWithDialog*/);
     if (url.isEmpty())
         emit postMessage(i18n("Unable to open this note.") /*"Unable to open those notes."*/);
-    else if (KRun__displayOpenWithDialog(url, window(), false, text))
+    else if (KRun__displayOpenWithDialog(url, m_view->window(), false, text))
         emit postMessage(message); // "Opening link target with..." / "Opening note file with..."
 }
 
-void BasketView::noteSaveAs()
+void BasketScene::noteSaveAs()
 {
 //  if (!note)
 //      note = theSelectedNote();
@@ -4179,7 +4205,7 @@ void BasketView::noteSaveAs()
     if (url.isEmpty())
         return;
 
-    QString fileName = KFileDialog::getSaveFileName(url.fileName(), note->content()->saveAsFilters(), this, i18n("Save to File"));
+    QString fileName = KFileDialog::getSaveFileName(url.fileName(), note->content()->saveAsFilters(), m_view, i18n("Save to File"));
     // TODO: Ask to overwrite !
     if (fileName.isEmpty())
         return;
@@ -4188,7 +4214,7 @@ void BasketView::noteSaveAs()
     KIO::copy(url, KUrl(fileName));
 }
 
-Note* BasketView::selectedGroup()
+Note* BasketScene::selectedGroup()
 {
     FOR_EACH_NOTE(note) {
         Note *selectedGroup = note->selectedGroup();
@@ -4204,12 +4230,12 @@ Note* BasketView::selectedGroup()
     return 0;
 }
 
-bool BasketView::selectionIsOneGroup()
+bool BasketScene::selectionIsOneGroup()
 {
     return (selectedGroup() != 0);
 }
 
-Note* BasketView::firstSelected()
+Note* BasketScene::firstSelected()
 {
     Note *first = 0;
     FOR_EACH_NOTE(note) {
@@ -4220,7 +4246,7 @@ Note* BasketView::firstSelected()
     return 0;
 }
 
-Note* BasketView::lastSelected()
+Note* BasketScene::lastSelected()
 {
     Note *last = 0, *tmp = 0;
     FOR_EACH_NOTE(note) {
@@ -4231,7 +4257,7 @@ Note* BasketView::lastSelected()
     return last;
 }
 
-bool BasketView::convertTexts()
+bool BasketScene::convertTexts()
 {
     m_watcher->stopScan();
     bool convertedNotes = false;
@@ -4249,7 +4275,7 @@ bool BasketView::convertTexts()
     return convertedNotes;
 }
 
-void BasketView::noteGroup()
+void BasketScene::noteGroup()
 {
     /*  // Nothing to do?
         if (isLocked() || countSelecteds() <= 1)
@@ -4278,14 +4304,14 @@ void BasketView::noteGroup()
     // Create and insert the receiving group:
     Note *group = new Note(this);
     if (first->isFree()) {
-        insertNote(group, 0L, Note::BottomColumn, QPoint(first->finalX(), first->finalY()), /*animateNewPosition=*/false);
+        insertNote(group, 0L, Note::BottomColumn, QPointF(first->x(), first->y()), /*animateNewPosition=*/false);
     } else {
-        insertNote(group, first, Note::TopInsert, QPoint(), /*animateNewPosition=*/false);
+        insertNote(group, first, Note::TopInsert, QPointF(), /*animateNewPosition=*/false);
     }
 
     // Put a FAKE UNSELECTED note in the new group, so if the new group is inside an allSelected() group, the parent group is not moved inside the new group!
     Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
-    insertNote(fakeNote, group, Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+    insertNote(fakeNote, group, Note::BottomColumn, QPointF(), /*animateNewPosition=*/false);
 
     // Group the notes:
     Note *nextNote;
@@ -4300,6 +4326,7 @@ void BasketView::noteGroup()
 
     // Do cleanup:
     unplugNote(fakeNote);
+    delete fakeNote;
     unselectAll();
     group->setSelectedRecursively(true); // Notes were unselected by unplugging
 
@@ -4307,7 +4334,7 @@ void BasketView::noteGroup()
     save();
 }
 
-void BasketView::noteUngroup()
+void BasketScene::noteUngroup()
 {
     Note *group = selectedGroup();
     if (group && !group->isColumn())
@@ -4315,34 +4342,38 @@ void BasketView::noteUngroup()
     save();
 }
 
-void BasketView::unplugSelection(NoteSelection *selection)
+void BasketScene::unplugSelection(NoteSelection *selection)
 {
     for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked())
+    {
         unplugNote(toUnplug->note);
+	delete toUnplug->note;
+    }
 }
 
-void BasketView::insertSelection(NoteSelection *selection, Note *after)
+void BasketScene::insertSelection(NoteSelection *selection, Note *after)
 {
     for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked()) {
         if (toUnplug->note->isGroup()) {
             Note *group = new Note(this);
-            insertNote(group, after, Note::BottomInsert, QPoint(), /*animateNewPosition=*/false);
+            insertNote(group, after, Note::BottomInsert, QPointF(), /*animateNewPosition=*/false);
             Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
-            insertNote(fakeNote, group, Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+            insertNote(fakeNote, group, Note::BottomColumn, QPointF(), /*animateNewPosition=*/false);
             insertSelection(toUnplug->firstChild, fakeNote);
             unplugNote(fakeNote);
+	    delete fakeNote;
             after = group;
         } else {
             Note *note = toUnplug->note;
             note->setPrev(0);
             note->setNext(0);
-            insertNote(note, after, Note::BottomInsert, QPoint(), /*animateNewPosition=*/true);
+            insertNote(note, after, Note::BottomInsert, QPointF(), /*animateNewPosition=*/true);
             after = note;
         }
     }
 }
 
-void BasketView::selectSelection(NoteSelection *selection)
+void BasketScene::selectSelection(NoteSelection *selection)
 {
     for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked()) {
         if (toUnplug->note->isGroup())
@@ -4352,7 +4383,7 @@ void BasketView::selectSelection(NoteSelection *selection)
     }
 }
 
-void BasketView::noteMoveOnTop()
+void BasketScene::noteMoveOnTop()
 {
     // TODO: Get the group containing the selected notes and first move inside the group, then inside parent group, then in the basket
     // TODO: Move on top/bottom... of the column or basjet
@@ -4363,21 +4394,22 @@ void BasketView::noteMoveOnTop()
     Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
     if (isColumnsLayout()) {
         if (firstNote()->firstChild())
-            insertNote(fakeNote, firstNote()->firstChild(), Note::TopInsert, QPoint(), /*animateNewPosition=*/false);
+            insertNote(fakeNote, firstNote()->firstChild(), Note::TopInsert, QPointF(), /*animateNewPosition=*/false);
         else
-            insertNote(fakeNote, firstNote(), Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+            insertNote(fakeNote, firstNote(), Note::BottomColumn, QPointF(), /*animateNewPosition=*/false);
     } else {
         // TODO: Also allow to move notes on top of a group!!!!!!!
-        insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+        insertNote(fakeNote, 0, Note::BottomInsert, QPointF(0, 0), /*animateNewPosition=*/false);
     }
     insertSelection(selection, fakeNote);
     unplugNote(fakeNote);
+    delete fakeNote;
     selectSelection(selection);
     relayoutNotes(true);
     save();
 }
 
-void BasketView::noteMoveOnBottom()
+void BasketScene::noteMoveOnBottom()
 {
 
     // TODO: Duplicate code: void noteMoveOn();
@@ -4390,38 +4422,40 @@ void BasketView::noteMoveOnBottom()
     // Replug the notes:
     Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
     if (isColumnsLayout())
-        insertNote(fakeNote, firstNote(), Note::BottomColumn, QPoint(), /*animateNewPosition=*/false);
+        insertNote(fakeNote, firstNote(), Note::BottomColumn, QPointF(), /*animateNewPosition=*/false);
     else {
         // TODO: Also allow to move notes on top of a group!!!!!!!
-        insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
+        insertNote(fakeNote, 0, Note::BottomInsert, QPointF(0, 0), /*animateNewPosition=*/false);
     }
     insertSelection(selection, fakeNote);
     unplugNote(fakeNote);
+    delete fakeNote;
     selectSelection(selection);
     relayoutNotes(true);
     save();
 }
 
-void BasketView::moveSelectionTo(Note *here, bool below/* = true*/)
+void BasketScene::moveSelectionTo(Note *here, bool below/* = true*/)
 {
     NoteSelection *selection = selectedNotes();
     unplugSelection(selection);
     // Replug the notes:
     Note *fakeNote = NoteFactory::createNoteColor(Qt::red, this);
 //  if (isColumnsLayout())
-    insertNote(fakeNote, here, (below ? Note::BottomInsert : Note::TopInsert), QPoint(), /*animateNewPosition=*/false);
+    insertNote(fakeNote, here, (below ? Note::BottomInsert : Note::TopInsert), QPointF(), /*animateNewPosition=*/false);
 //  else {
 //      // TODO: Also allow to move notes on top of a group!!!!!!!
 //      insertNote(fakeNote, 0, Note::BottomInsert, QPoint(0, 0), /*animateNewPosition=*/false);
 //  }
     insertSelection(selection, fakeNote);
     unplugNote(fakeNote);
+    delete fakeNote;
     selectSelection(selection);
     relayoutNotes(true);
     save();
 }
 
-void BasketView::noteMoveNoteUp()
+void BasketScene::noteMoveNoteUp()
 {
 
     // TODO: Move between columns, even if they are empty !!!!!!!
@@ -4434,7 +4468,7 @@ void BasketView::noteMoveNoteUp()
         moveSelectionTo(previous, /*below=*/false);
 }
 
-void BasketView::noteMoveNoteDown()
+void BasketScene::noteMoveNoteDown()
 {
     Note *first = lastSelected();
     Note *next  = first->nextShownInStack();
@@ -4442,12 +4476,13 @@ void BasketView::noteMoveNoteDown()
         moveSelectionTo(next, /*below=*/true);
 }
 
-void BasketView::wheelEvent(QWheelEvent *event)
+void BasketScene::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    Q3ScrollView::wheelEvent(event);
+    //Q3ScrollView::wheelEvent(event);
+	QGraphicsScene::wheelEvent(event);
 }
 
-void BasketView::linkLookChanged()
+void BasketScene::linkLookChanged()
 {
     Note *note = m_firstNote;
     while (note) {
@@ -4457,7 +4492,7 @@ void BasketView::linkLookChanged()
     relayoutNotes(true);
 }
 
-void BasketView::slotCopyingDone2(KIO::Job *job,
+void BasketScene::slotCopyingDone2(KIO::Job *job,
                               const KUrl &/*from*/,
                               const KUrl &to)
 {
@@ -4476,7 +4511,7 @@ void BasketView::slotCopyingDone2(KIO::Job *job,
     }                                //  on bottom of the basket it's not visible entirly anymore
 }
 
-Note* BasketView::noteForFullPath(const QString &path)
+Note* BasketScene::noteForFullPath(const QString &path)
 {
     Note *note = firstNote();
     Note *found;
@@ -4489,13 +4524,13 @@ Note* BasketView::noteForFullPath(const QString &path)
     return 0;
 }
 
-void BasketView::deleteFiles()
+void BasketScene::deleteFiles()
 {
     m_watcher->stopScan();
     Tools::deleteRecursively(fullPath());
 }
 
-QList<State*> BasketView::usedStates()
+QList<State*> BasketScene::usedStates()
 {
     QList<State*> states;
     FOR_EACH_NOTE(note)
@@ -4503,7 +4538,7 @@ QList<State*> BasketView::usedStates()
     return states;
 }
 
-QString BasketView::saveGradientBackground(const QColor &color, const QFont &font, const QString &folder)
+QString BasketScene::saveGradientBackground(const QColor &color, const QFont &font, const QString &folder)
 {
     // Construct file name and return if the file already exists:
     QString fileName = "note_background_" + color.name().toLower().mid(1) + ".png";
@@ -4530,7 +4565,7 @@ QString BasketView::saveGradientBackground(const QColor &color, const QFont &fon
     return fileName;
 }
 
-void BasketView::listUsedTags(QList<Tag*> &list)
+void BasketScene::listUsedTags(QList<Tag*> &list)
 {
     if (!isLoaded()) {
         load();
@@ -4545,11 +4580,11 @@ void BasketView::listUsedTags(QList<Tag*> &list)
   * and focus the new @param note (unless it is null) if hasFocus()
   * Update m_focusedNote to the new one
   */
-void BasketView::setFocusedNote(Note *note) // void BasketView::changeFocusTo(Note *note)
+void BasketScene::setFocusedNote(Note *note) // void BasketScene::changeFocusTo(Note *note)
 {
     // Don't focus an hidden note:
     if (note != 0L && !note->isShown())
-        return;
+	return;
     // When clicking a group, this group gets focused. But only content-based notes should be focused:
     if (note && note->isGroup())
         note = note->firstRealChild();
@@ -4569,7 +4604,7 @@ void BasketView::setFocusedNote(Note *note) // void BasketView::changeFocusTo(No
 /** If no shown note is currently focused, try to find a shown note and focus it
   * Also update m_focusedNote to the new one (or null if there isn't)
   */
-void BasketView::focusANote()
+void BasketScene::focusANote()
 {
     if (countFounds() == 0) { // No note to focus
         setFocusedNote(0L);
@@ -4594,7 +4629,7 @@ void BasketView::focusANote()
 //  m_startOfShiftSelectionNote = toFocus;
 }
 
-Note* BasketView::firstNoteInStack()
+Note* BasketScene::firstNoteInStack()
 {
     if (!firstNote())
         return 0;
@@ -4605,7 +4640,7 @@ Note* BasketView::firstNoteInStack()
         return firstNote()->nextInStack();
 }
 
-Note* BasketView::lastNoteInStack()
+Note* BasketScene::lastNoteInStack()
 {
     Note *note = lastNote();
     while (note) {
@@ -4619,7 +4654,7 @@ Note* BasketView::lastNoteInStack()
     return 0;
 }
 
-Note* BasketView::firstNoteShownInStack()
+Note* BasketScene::firstNoteShownInStack()
 {
     Note *first = firstNoteInStack();
     while (first && !first->isShown())
@@ -4627,7 +4662,7 @@ Note* BasketView::firstNoteShownInStack()
     return first;
 }
 
-Note* BasketView::lastNoteShownInStack()
+Note* BasketScene::lastNoteShownInStack()
 {
     Note *last = lastNoteInStack();
     while (last && !last->isShown())
@@ -4640,11 +4675,12 @@ inline int abs(int n)
     return (n < 0 ? -n : n);
 }
 
-Note* BasketView::noteOn(NoteOn side)
+Note* BasketScene::noteOn(NoteOn side)
 {
     Note *bestNote = 0;
     int   distance = -1;
-    int   bestDistance = contentsWidth() * contentsHeight() * 10;
+//    int   bestDistance = contentsWidth() * contentsHeight() * 10;
+   int   bestDistance = sceneRect().width() * sceneRect().height() * 10;
 
     Note *note    = firstNoteShownInStack();
     Note *primary = m_focusedNote->parentPrimaryNote();
@@ -4665,7 +4701,7 @@ Note* BasketView::noteOn(NoteOn side)
     return bestNote;
 }
 
-Note* BasketView::firstNoteInGroup()
+Note* BasketScene::firstNoteInGroup()
 {
     Note *child  = m_focusedNote;
     Note *parent = (m_focusedNote ? m_focusedNote->parentNote() : 0);
@@ -4678,7 +4714,7 @@ Note* BasketView::firstNoteInGroup()
     return 0;
 }
 
-Note* BasketView::noteOnHome()
+Note* BasketScene::noteOnHome()
 {
     // First try to find the first note of the group containing the focused note:
     Note *child  = m_focusedNote;
@@ -4697,7 +4733,7 @@ Note* BasketView::noteOnHome()
         if (note)
             note = note->nextShownInStack();
         while (note) {
-            if (note->finalY() < first->finalY() || (note->finalY() == first->finalY() && note->finalX() < first->finalX()))
+            if (note->y() < first->y() || (note->y() == first->y() && note->x() < first->x()))
                 first = note;
             note = note->nextShownInStack();
         }
@@ -4706,7 +4742,7 @@ Note* BasketView::noteOnHome()
         return firstNoteShownInStack();
 }
 
-Note* BasketView::noteOnEnd()
+Note* BasketScene::noteOnEnd()
 {
     Note *child     = m_focusedNote;
     Note *parent    = (m_focusedNote ? m_focusedNote->parentNote() : 0);
@@ -4729,7 +4765,7 @@ Note* BasketView::noteOnEnd()
         last = note = firstNoteShownInStack();
         note = note->nextShownInStack();
         while (note) {
-            if (note->finalBottom() > last->finalBottom() || (note->finalBottom() == last->finalBottom() && note->finalX() > last->finalX()))
+            if (note->bottom() > last->bottom() || (note->bottom() == last->bottom() && note->x() > last->x()))
                 last = note;
             note = note->nextShownInStack();
         }
@@ -4739,17 +4775,26 @@ Note* BasketView::noteOnEnd()
 }
 
 
-void BasketView::keyPressEvent(QKeyEvent *event)
+void BasketScene::keyPressEvent(QKeyEvent *event)
 {
-    if (isDuringEdit() && event->key() == Qt::Key_Return) {
-        //if (m_editor->lineEdit())
-        //  closeEditor();
-        //else
-        m_editor->widget()->setFocus();
-    } else if (event->key() == Qt::Key_Escape) {
-        if (isDuringEdit())
-            closeEditor();
-        else if (decoration()->filterData().isFiltering)
+    if(isDuringEdit())
+    {
+      QGraphicsScene::keyPressEvent(event);      
+      /*if( event->key() == Qt::Key_Return )
+      {
+	m_editor->graphicsWidget()->setFocus();
+      }
+      else if( event->key() == Qt::Key_Escape)
+      {
+	closeEditor();
+      }*/
+      event->accept();
+      return;
+    }
+    
+    if (event->key() == Qt::Key_Escape) 
+    {
+        if (decoration()->filterData().isFiltering)
             decoration()->filterBar()->reset();
         else
             unselectAll();
@@ -4768,13 +4813,13 @@ void BasketView::keyPressEvent(QKeyEvent *event)
         toFocus = (isFreeLayout() ? noteOn(BOTTOM_SIDE) : m_focusedNote->nextShownInStack());
         if (toFocus)
             break;
-        scrollBy(0, 30); // This cases do not move focus to another note...
+//        scrollBy(0, 30); // This cases do not move focus to another note...
         return;
     case Qt::Key_Up:
         toFocus = (isFreeLayout() ? noteOn(TOP_SIDE) : m_focusedNote->prevShownInStack());
         if (toFocus)
             break;
-        scrollBy(0, -30); // This cases do not move focus to another note...
+//	scrollBy(0, -30); // This cases do not move focus to another note...
         return;
     case Qt::Key_PageDown:
         if (isFreeLayout()) {
@@ -4792,7 +4837,8 @@ void BasketView::keyPressEvent(QKeyEvent *event)
             toFocus = (isFreeLayout() ? noteOnEnd() : lastNoteShownInStack());
         if (toFocus && toFocus != m_focusedNote)
             break;
-        scrollBy(0, visibleHeight() / 2); // This cases do not move focus to another note...
+//        scrollBy(0, visibleHeight() / 2); // This cases do not move focus to another note...
+//        scrollBy(0, viewport()->height() / 2); // This cases do not move focus to another note...
         return;
     case Qt::Key_PageUp:
         if (isFreeLayout()) {
@@ -4810,7 +4856,8 @@ void BasketView::keyPressEvent(QKeyEvent *event)
             toFocus = (isFreeLayout() ? noteOnHome() : firstNoteShownInStack());
         if (toFocus && toFocus != m_focusedNote)
             break;
-        scrollBy(0, - visibleHeight() / 2); // This cases do not move focus to another note...
+//        scrollBy(0, - visibleHeight() / 2); // This cases do not move focus to another note...
+//	  scrollBy(0, - viewport()->height() / 2); // This cases do not move focus to another note...
         return;
     case Qt::Key_Home:
         toFocus = noteOnHome();
@@ -4825,14 +4872,14 @@ void BasketView::keyPressEvent(QKeyEvent *event)
             break;
         if ((toFocus = firstNoteInGroup()))
             break;
-        scrollBy(-30, 0); // This cases do not move focus to another note...
+//        scrollBy(-30, 0); // This cases do not move focus to another note...
         return;
     case Qt::Key_Right:
         if (m_focusedNote->tryExpandParent())
             return;
         if ((toFocus = noteOn(RIGHT_SIDE)))
             break;
-        scrollBy(30, 0); // This cases do not move focus to another note...
+//	scrollBy(30, 0); // This cases do not move focus to another note...
         return;
     case Qt::Key_Space:  // This case do not move focus to another note...
         if (m_focusedNote) {
@@ -4874,7 +4921,7 @@ void BasketView::keyPressEvent(QKeyEvent *event)
 /** Select a range of notes and deselect the others.
   * The order between start and end has no importance (end could be before start)
   */
-void BasketView::selectRange(Note *start, Note *end, bool unselectOthers /*= true*/)
+void BasketScene::selectRange(Note *start, Note *end, bool unselectOthers /*= true*/)
 {
     Note *cur;
     Note *realEnd = 0L;
@@ -4901,9 +4948,9 @@ void BasketView::selectRange(Note *start, Note *end, bool unselectOthers /*= tru
 
     // Free layout baskets should select range as if we were drawing a rectangle between start and end:
     if (isFreeLayout()) {
-        QRect startRect(start->finalX(), start->finalY(), start->width(), start->finalHeight());
-        QRect endRect(end->finalX(),   end->finalY(),   end->width(),   end->finalHeight());
-        QRect toSelect = startRect.unite(endRect);
+        QRectF startRect(start->x(), start->y(), start->width(), start->height());
+        QRectF endRect(end->x(),   end->y(),   end->width(),   end->height());
+        QRectF toSelect = startRect.unite(endRect);
         selectNotesIn(toSelect, /*invertSelection=*/false, unselectOthers);
         return;
     }
@@ -4938,23 +4985,28 @@ void BasketView::selectRange(Note *start, Note *end, bool unselectOthers /*= tru
         cur->setSelected(false);
 }
 
-void BasketView::focusInEvent(QFocusEvent*)
+void BasketScene::focusInEvent(QFocusEvent *event)
 {
     // Focus cannot be get with Tab when locked, but a click can focus the basket!
     if (isLocked()) {
         if (m_button)
+	{
+	    QGraphicsScene::focusInEvent(event);
             QTimer::singleShot(0, m_button, SLOT(setFocus()));
-    } else
+	}	
+    } else {
+	QGraphicsScene::focusInEvent(event);
         focusANote();      // hasFocus() is true at this stage, note will be focused
+    }
 }
 
-void BasketView::focusOutEvent(QFocusEvent*)
+void BasketScene::focusOutEvent(QFocusEvent*)
 {
     if (m_focusedNote != 0L)
         m_focusedNote->setFocused(false);
 }
 
-void BasketView::ensureNoteVisible(Note *note)
+void BasketScene::ensureNoteVisible(Note *note)
 {
     if (!note->isShown()) // Logical!
         return;
@@ -4962,25 +5014,28 @@ void BasketView::ensureNoteVisible(Note *note)
     if (note == editedNote()) // HACK: When filtering while editing big notes, etc... cause unwanted scrolls
         return;
 
-    int finalBottom = note->finalY() + qMin(note->finalHeight(),                                             visibleHeight());
-    int finalRight  = note->finalX() + qMin(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
-    ensureVisible(finalRight,     finalBottom,    0, 0);
-    ensureVisible(note->finalX(), note->finalY(), 0, 0);
+	m_view->ensureVisible(note);
+/*//    int bottom = note->y() + qMin(note->height(),                                             visibleHeight());
+//    int finalRight  = note->x() + qMin(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  visibleWidth());
+    qreal bottom = note->y() + qMin(note->height(),                                             (qreal)m_view->viewport()->height());
+    qreal finalRight  = note->x() + qMin(note->width() + (note->hasResizer() ? Note::RESIZER_WIDTH : 0),  (qreal)m_view->viewport()->width());
+    m_view->ensureVisible(finalRight,     bottom,    0, 0);
+    m_view->ensureVisible(note->x(), note->y(), 0, 0);*/
 }
 
-void BasketView::addWatchedFile(const QString &fullPath)
+void BasketScene::addWatchedFile(const QString &fullPath)
 {
 //  DEBUG_WIN << "Watcher>Add Monitoring Of : <font color=blue>" + fullPath + "</font>";
     m_watcher->addFile(fullPath);
 }
 
-void BasketView::removeWatchedFile(const QString &fullPath)
+void BasketScene::removeWatchedFile(const QString &fullPath)
 {
 //  DEBUG_WIN << "Watcher>Remove Monitoring Of : <font color=blue>" + fullPath + "</font>";
     m_watcher->removeFile(fullPath);
 }
 
-void BasketView::watchedFileModified(const QString &fullPath)
+void BasketScene::watchedFileModified(const QString &fullPath)
 {
     if (!m_modifiedFiles.contains(fullPath))
         m_modifiedFiles.append(fullPath);
@@ -4991,7 +5046,7 @@ void BasketView::watchedFileModified(const QString &fullPath)
     DEBUG_WIN << "Watcher>Modified : <font color=blue>" + fullPath + "</font>";
 }
 
-void BasketView::watchedFileDeleted(const QString &fullPath)
+void BasketScene::watchedFileDeleted(const QString &fullPath)
 {
     Note *note = noteForFullPath(fullPath);
     removeWatchedFile(fullPath);
@@ -5007,7 +5062,7 @@ void BasketView::watchedFileDeleted(const QString &fullPath)
     DEBUG_WIN << "Watcher>Removed : <font color=blue>" + fullPath + "</font>";
 }
 
-void BasketView::updateModifiedNotes()
+void BasketScene::updateModifiedNotes()
 {
     for (QList<QString>::iterator it = m_modifiedFiles.begin(); it != m_modifiedFiles.end(); ++it) {
         Note *note = noteForFullPath(*it);
@@ -5017,7 +5072,7 @@ void BasketView::updateModifiedNotes()
     m_modifiedFiles.clear();
 }
 
-bool BasketView::setProtection(int type, QString key)
+bool BasketScene::setProtection(int type, QString key)
 {
 #ifdef HAVE_LIBGPGME
     if (type == PasswordEncryption || // Ask a new password
@@ -5042,11 +5097,12 @@ bool BasketView::setProtection(int type, QString key)
 #else
     m_encryptionType = type;
     m_encryptionKey = key;
+
     return false;
 #endif
 }
 
-bool BasketView::saveAgain()
+bool BasketScene::saveAgain()
 {
     bool result = false;
 
@@ -5065,7 +5121,7 @@ bool BasketView::saveAgain()
     return result;
 }
 
-bool BasketView::loadFromFile(const QString &fullPath, QString *string, bool isLocalEncoding)
+bool BasketScene::loadFromFile(const QString &fullPath, QString *string, bool isLocalEncoding)
 {
     QByteArray array;
 
@@ -5079,12 +5135,12 @@ bool BasketView::loadFromFile(const QString &fullPath, QString *string, bool isL
         return false;
 }
 
-bool BasketView::isEncrypted()
+bool BasketScene::isEncrypted()
 {
     return (m_encryptionType != NoEncryption);
 }
 
-bool BasketView::isFileEncrypted()
+bool BasketScene::isFileEncrypted()
 {
     QFile file(fullPath() + ".basket");
 
@@ -5097,7 +5153,7 @@ bool BasketView::isFileEncrypted()
     return false;
 }
 
-bool BasketView::loadFromFile(const QString &fullPath, QByteArray *array)
+bool BasketScene::loadFromFile(const QString &fullPath, QByteArray *array)
 {
     QFile file(fullPath);
     bool encrypted = false;
@@ -5138,18 +5194,18 @@ bool BasketView::loadFromFile(const QString &fullPath, QByteArray *array)
         return false;
 }
 
-bool BasketView::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
+bool BasketScene::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
     QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
     return saveToFile(fullPath, bytes, bytes.length());
 }
 
-bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array)
+bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array)
 {
     return saveToFile(fullPath, array, array.size());
 }
 
-bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array, unsigned long length)
+bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array, unsigned long length)
 {
     bool success = true;
     QByteArray tmp;
@@ -5183,10 +5239,11 @@ bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array, un
         file.close();
     }*/
 
+
     if (success)
-        return safelySaveToFile(fullPath, tmp, length);
+      return safelySaveToFile(fullPath, tmp, length);
     else
-        return false;
+      return false;
 }
 
 /**
@@ -5195,7 +5252,7 @@ bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array, un
  * to save to another file, (e.g. the basket hierarchy), use this function
  * instead.
  */
-/*static*/ bool BasketView::safelySaveToFile(const QString& fullPath,
+/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath,
         const QByteArray& array,
         unsigned long length)
 {
@@ -5245,18 +5302,18 @@ bool BasketView::saveToFile(const QString& fullPath, const QByteArray& array, un
     return true; // Guess we can't really return a fail
 }
 
-/*static*/ bool BasketView::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
+/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
 {
     QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
     return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
 }
 
-/*static*/ bool BasketView::safelySaveToFile(const QString& fullPath, const QByteArray& array)
+/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath, const QByteArray& array)
 {
     return safelySaveToFile(fullPath, array, array.size());
 }
 
-void BasketView::lock()
+void BasketScene::lock()
 {
 #ifdef HAVE_LIBGPGME
     closeEditor();
@@ -5266,6 +5323,5 @@ void BasketView::lock()
     deleteNotes();
     m_loaded = false;
     m_loadingLaunched = false;
-    updateContents();
 #endif
 }

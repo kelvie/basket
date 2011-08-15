@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 + ***************************************************************************/
 
-#include "basketview.h"
+#include "basketscene.h"
 #include "transparentwidget.h"
 
 #include <QPainter>
@@ -28,13 +28,13 @@
 /** Class TransparentWidget */
 
 //TODO: Why was Qt::WNoAutoErase used here?
-TransparentWidget::TransparentWidget(BasketView *basket)
-        : QWidget(basket->viewport()), m_basket(basket)
+TransparentWidget::TransparentWidget(BasketScene *basket)
+        : QWidget(basket->graphicsView()->viewport()), m_basket(basket)
 {
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true); // To receive mouseMoveEvents
 
-    basket->viewport()->installEventFilter(this);
+    basket->graphicsView()->viewport()->installEventFilter(this);
 }
 
 /*void TransparentWidget::reparent(QWidget *parent, Qt::WFlags f, const QPoint &p, bool showIt)
@@ -55,7 +55,7 @@ void TransparentWidget::paintEvent(QPaintEvent*event)
 
 //  painter.save();
     painter.translate(-m_x, -m_y);
-    m_basket->drawContents(&painter, m_x, m_y, width(), height());
+    //m_basket->drawContents(&painter, m_x, m_y, width(), height());
 
 //  painter.restore();
 //  painter.setPen(Qt::blue);
@@ -64,9 +64,9 @@ void TransparentWidget::paintEvent(QPaintEvent*event)
 
 void TransparentWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    QMouseEvent *translated = new QMouseEvent(QEvent::MouseMove, event->pos() + QPoint(m_x, m_y), event->button(), event->buttons(), event->modifiers());
-    m_basket->contentsMouseMoveEvent(translated);
-    delete translated;
+//    QMouseEvent *translated = new QMouseEvent(QEvent::MouseMove, event->pos() + QPoint(m_x, m_y), event->button(), event->buttons(), event->modifiers());
+//    m_basket->contentsMouseMoveEvent(translated);
+//    delete translated;
 }
 
 bool TransparentWidget::eventFilter(QObject */*object*/, QEvent *event)

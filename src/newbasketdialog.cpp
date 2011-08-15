@@ -38,7 +38,7 @@
 #include "kicondialog.h"
 #include "newbasketdialog.h"
 #include "basketfactory.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "basketlistview.h"
 #include "variouswidgets.h"
 #include "kcolorcombo2.h"
@@ -80,7 +80,7 @@ NewBasketDefaultProperties::NewBasketDefaultProperties()
 
 /** class NewBasketDialog: */
 
-NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
+NewBasketDialog::NewBasketDialog(BasketScene *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
         : KDialog(parent)
         , m_defaultProperties(defaultProperties)
 {
@@ -242,7 +242,7 @@ NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaul
     if (parentBasket) {
         int index = 0;
 
-        for (QMap<int, BasketView*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it) {
+        for (QMap<int, BasketScene*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it) {
             if (it.value() == parentBasket) {
                 index = it.key();
                 break;
@@ -268,7 +268,7 @@ int NewBasketDialog::populateBasketsList(QTreeWidgetItem *item, int indent, int 
 {
     static const int ICON_SIZE = 16;
     // Get the basket data:
-    BasketView* basket = ((BasketListViewItem *)item)->basket();
+    BasketScene* basket = ((BasketListViewItem *)item)->basket();
     QPixmap icon = KIconLoader::global()->loadIcon(
                        basket->icon(), KIconLoader::NoGroup, ICON_SIZE,
                        KIconLoader::DefaultState, QStringList(), 0L,

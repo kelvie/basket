@@ -44,7 +44,7 @@ QMutex nepomukIntegration::instanceMutex;
  *                    Constructor / Cleanup
  */
 
-nepomukIntegration::nepomukIntegration(BasketView * basket, int idleTime = 15000) : QObject()
+nepomukIntegration::nepomukIntegration(BasketScene * basket, int idleTime = 15000) : QObject()
         , idleTime(idleTime), workerThread(this), cleanupTimer(this), mutex()
         , basketList(), isDoingUpdate(true), requestedIndexList(), isCleaningupRequestedIndexes(false)
 {
@@ -127,7 +127,7 @@ void nepomukIntegration::cleanup() {
  *                    Queue baskets and indexRequests / checkQueue
  */
 
-void nepomukIntegration::updateMetadata(BasketView * basket) {
+void nepomukIntegration::updateMetadata(BasketScene * basket) {
     DEBUG_WIN << "updateMetadata: Going to lock updaterInstanceMutex";
     QMutexLocker locker(&instanceMutex);
     if ( instance == NULL ) {
@@ -160,7 +160,7 @@ void nepomukIntegration::checkQueue() {
     DEBUG_WIN << "checkQueue: Done";
 }
 
-void nepomukIntegration::queueBasket(BasketView * basket) {
+void nepomukIntegration::queueBasket(BasketScene * basket) {
     DEBUG_WIN << "queueBasket: Going to lock";
     QMutexLocker locker(&mutex);
     basketList << basket;
@@ -259,12 +259,12 @@ void nepomukIntegration::doUpdate() {
         DEBUG_WIN << "<font color='red'>doUpdate should not be run with an empty basketList! Unlocked and Returning!</font>";
         return;
     }
-    BasketView * basket = basketList.takeFirst();
+    BasketScene * basket = basketList.takeFirst();
     QString basketFolderName = basket->folderName();
     QString basketFolderAbsolutePath = Global::basketsFolder() + basketFolderName;
     QString basketName = basket->basketName();
     //If there is another one of this basket item in the queue, that one will be processed later (instead of the current one)
-    BasketView * tmpBasket;
+    BasketScene * tmpBasket;
     foreach (tmpBasket, basketList) {
         if ( basketFolderName == tmpBasket->folderName() ) {
             mutex.unlock();

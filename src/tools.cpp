@@ -235,7 +235,7 @@ QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *export
     if(basketLink.startsWith("basket://"))
     url = basketLink.mid(9, basketLink.length() - 9);
 
-    BasketView *basket = Global::bnpView->basketForFolderName(url);
+    BasketScene *basket = Global::bnpView->basketForFolderName(url);
 
     //remove the trailing slash.
     url = url.left(url.length() - 1);

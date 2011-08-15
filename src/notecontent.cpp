@@ -28,6 +28,7 @@
 #include <QBuffer>
 #include <QStringList>
 #include <QPixmap>
+#include <QGraphicsPixmapItem>
 #include <KDE/KTextEdit>
 #include <KDE/KService>
 #include <KDE/KColorDialog>
@@ -51,7 +52,7 @@
 #include "note.h"
 #include "noteedit.h"
 #include "tag.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "filter.h"
 #include "xmlwork.h"
 #include "tools.h"
@@ -67,6 +68,29 @@
 #include "config.h"
 
 #include <KDE/KDebug>
+
+/**
+ * LinkDisplayItem definition
+ * 
+ */
+
+QRectF LinkDisplayItem::boundingRect() const
+{
+  if(m_note)
+  {
+    return QRect(0, 0, m_note->width() - m_note->contentX() - Note::NOTE_MARGIN, m_note->height() - 2*Note::NOTE_MARGIN);
+  }
+  return QRectF();  
+}
+
+void LinkDisplayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
+{
+  if(!m_note)
+    return;
+  
+  QRectF rect = boundingRect();
+  m_linkDisplay.paint(painter, 0, 0, rect.width(), rect.height(), m_note->palette(), true, m_note->isSelected(), m_note->hovered(), m_note->hovered() && m_note->hoveredZone() == Note::Custom0);
+}
 
 /** class NoteContent:
  */
@@ -88,12 +112,12 @@ void NoteContent::saveToNode(QDomDocument &doc, QDomElement &content)
     }
 }
 
-QRect NoteContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRectF NoteContent::zoneRect(int zone, const QPointF &/*pos*/)
 {
     if (zone == Note::Content)
-        return QRect(0, 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+        return QRectF(0, 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
     else
-        return QRect();
+        return QRectF();
 }
 
 KUrl NoteContent::urlToOpen(bool /*with*/)
@@ -126,7 +150,7 @@ QString NoteContent::fullPath()
         return "";
 }
 
-void NoteContent::contentChanged(int newMinWidth)
+void NoteContent::contentChanged(qreal newMinWidth)
 {
     m_minWidth = newMinWidth;
     if (note()) {
@@ -135,7 +159,7 @@ void NoteContent::contentChanged(int newMinWidth)
     }
 }
 
-BasketView* NoteContent::basket()
+BasketScene* NoteContent::basket()
 {
     if (note())
         return note()->basket();
@@ -714,7 +738,7 @@ void ImageContent::fontChanged()
 }
 void AnimationContent::fontChanged()
 {
-    updateMovie();
+    /*startMovie();*/
 }
 void FileContent::fontChanged()
 {
@@ -772,9 +796,9 @@ void ColorContent::serialize(QDataStream &stream)
     stream << color();
 }
 
-QPixmap TextContent::feedbackPixmap(int width, int height)
+QPixmap TextContent::feedbackPixmap(qreal width, qreal height)
 {
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
+    QRectF textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, height, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
     QPixmap pixmap(qMin(width, textRect.width()), qMin(height, textRect.height()));
     pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
     QPainter painter(&pixmap);
@@ -782,10 +806,11 @@ QPixmap TextContent::feedbackPixmap(int width, int height)
     painter.setFont(note()->font());
     painter.drawText(0, 0, pixmap.width(), pixmap.height(), Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, text());
     painter.end();
+
     return pixmap;
 }
 
-QPixmap HtmlContent::feedbackPixmap(int width, int height)
+QPixmap HtmlContent::feedbackPixmap(qreal width, qreal height)
 {
     QTextDocument richText;
     richText.setHtml(html());
@@ -795,30 +820,32 @@ QPixmap HtmlContent::feedbackPixmap(int width, int height)
     palette = basket()->palette();
     palette.setColor(QPalette::Text,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-    QPixmap pixmap(qMin(width, (int)richText.idealWidth()), qMin(height, (int)richText.size().height()));
+    QPixmap pixmap(qMin(width, richText.idealWidth()), qMin(height, richText.size().height()));
     pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
     QPainter painter(&pixmap);
     painter.setPen(note()->textColor());
     painter.translate(0, 0);
-    richText.drawContents(&painter, QRect(0, 0, pixmap.width(), pixmap.height()));
+    richText.drawContents(&painter, QRectF(0, 0, pixmap.width(), pixmap.height()));
     painter.end();
+
     return pixmap;
 }
 
-QPixmap ImageContent::feedbackPixmap(int width, int height)
+QPixmap ImageContent::feedbackPixmap(qreal width, qreal height)
 {
-    if (width >= m_pixmap.width() && height >= m_pixmap.height()) { // Full size
-        if (m_pixmap.hasAlpha()) {
-            QPixmap opaque(m_pixmap.width(), m_pixmap.height());
+    if (width >= m_pixmapItem.pixmap().width() && height >= m_pixmapItem.pixmap().height()) { // Full size
+        if (m_pixmapItem.pixmap().hasAlpha()) {
+            QPixmap opaque(m_pixmapItem.pixmap().width(), m_pixmapItem.pixmap().height());
             opaque.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
             QPainter painter(&opaque);
-            painter.drawPixmap(0, 0, m_pixmap);
+            painter.drawPixmap(0, 0, m_pixmapItem.pixmap());
             painter.end();
             return opaque;
-        } else
-            return m_pixmap;
+	} else{
+	   return m_pixmapItem.pixmap();
+	}
     } else { // Scalled down
-        QImage imageToScale = m_pixmap.toImage();
+        QImage imageToScale = m_pixmapItem.pixmap().toImage();
         QPixmap pmScaled;
         pmScaled = QPixmap::fromImage(imageToScale.scaled(width, height,
                                       Qt::KeepAspectRatio));
@@ -828,17 +855,18 @@ QPixmap ImageContent::feedbackPixmap(int width, int height)
             QPainter painter(&opaque);
             painter.drawPixmap(0, 0, pmScaled);
             painter.end();
-            return opaque;
-        } else
-            return pmScaled;
+	    return opaque;
+	} else {
+	  return pmScaled;
+	}
     }
 }
 
-QPixmap AnimationContent::feedbackPixmap(int width, int height)
+QPixmap AnimationContent::feedbackPixmap(qreal width, qreal height)
 {
     QPixmap pixmap = m_movie->currentPixmap();
     if (width >= pixmap.width() && height >= pixmap.height()) // Full size
-        return pixmap;
+	return pixmap;
     else { // Scalled down
         QImage imageToScale = pixmap.toImage();
         QPixmap pmScaled;
@@ -848,80 +876,80 @@ QPixmap AnimationContent::feedbackPixmap(int width, int height)
     }
 }
 
-QPixmap LinkContent::feedbackPixmap(int width, int height)
+QPixmap LinkContent::feedbackPixmap(qreal width, qreal height)
 {
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+    return m_linkDisplayItem.linkDisplay().feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
-QPixmap CrossReferenceContent::feedbackPixmap(int width, int height)
+QPixmap CrossReferenceContent::feedbackPixmap(qreal width, qreal height)
 {
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText, note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+    return m_linkDisplayItem.linkDisplay().feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
-QPixmap ColorContent::feedbackPixmap(int width, int height)
+QPixmap ColorContent::feedbackPixmap(qreal width, qreal height)
 {
     // TODO: Duplicate code: make a rect() method!
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
-    int rectHeight = (textRect.height() + 2) * 3 / 2;
-    int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
-
+    QRectF boundingRect = m_colorItem.boundingRect();
+    
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-    QPixmap pixmap(qMin(width, rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN), qMin(height, rectHeight));
+    QPixmap pixmap(qMin(width, boundingRect.width()), qMin(height, boundingRect.height()));
     pixmap.fill(note()->backgroundColor().dark(FEEDBACK_DARKING));
     QPainter painter(&pixmap);
-    paint(&painter, pixmap.width(), pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
+    m_colorItem.paint(&painter,0,0);//, pixmap.width(), pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
     painter.end();
+
     return pixmap;
 }
 
-QPixmap FileContent::feedbackPixmap(int width, int height)
+QPixmap FileContent::feedbackPixmap(qreal width, qreal height)
 {
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+    return m_linkDisplayItem.linkDisplay().feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
-QPixmap LauncherContent::feedbackPixmap(int width, int height)
+QPixmap LauncherContent::feedbackPixmap(qreal width, qreal height)
 {
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
-    return m_linkDisplay.feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
+    return m_linkDisplayItem.linkDisplay().feedbackPixmap(width, height, palette, /*isDefaultColor=*/note()->textColor() == basket()->textColor());
 }
 
-QPixmap UnknownContent::feedbackPixmap(int width, int height)
+QPixmap UnknownContent::feedbackPixmap(qreal width, qreal height)
 {
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
+    QRectF boundingRect = m_unknownItem.boundingRect();
 
     QPalette palette;
     palette = basket()->palette();
     palette.setColor(QPalette::WindowText,       note()->textColor());
     palette.setColor(QPalette::Background, note()->backgroundColor().dark(FEEDBACK_DARKING));
 
-    QPixmap pixmap(qMin(width, DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN), qMin(height, DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN));
+    QPixmap pixmap(qMin(width, boundingRect.width()), qMin(height, boundingRect.height()));
     QPainter painter(&pixmap);
-    paint(&painter, pixmap.width() + 1, pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
+    m_unknownItem.paint(&painter,0,0);//, pixmap.width() + 1, pixmap.height(), palette, false, false, false); // We don't care of the three last boolean parameters.
     painter.setPen(note()->backgroundColor().dark(FEEDBACK_DARKING));
     painter.drawPoint(0,                  0);
     painter.drawPoint(pixmap.width() - 1, 0);
     painter.drawPoint(0,                  pixmap.height() - 1);
     painter.drawPoint(pixmap.width() - 1, pixmap.height() - 1);
     painter.end();
+
     return pixmap;
 }
 
@@ -930,34 +958,26 @@ QPixmap UnknownContent::feedbackPixmap(int width, int height)
  */
 
 TextContent::TextContent(Note *parent, const QString &fileName, bool lazyLoad)
-        : NoteContent(parent, fileName), m_simpleRichText(0)
+        : NoteContent(parent, fileName), m_graphicsTextItem(parent)
 {
-    basket()->addWatchedFile(fullPath() + fileName);
+    if(parent)
+    {
+      parent->addToGroup(&m_graphicsTextItem);
+      m_graphicsTextItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
+
+    basket()->addWatchedFile(fullPath());
     loadFromFile(lazyLoad);
 }
 
 TextContent::~TextContent()
 {
-    delete m_simpleRichText;
+    if(note()) note()->removeFromGroup(&m_graphicsTextItem);
 }
 
-int TextContent::setWidthAndGetHeight(int width)
+qreal TextContent::setWidthAndGetHeight(qreal width)
 {
-    if (m_simpleRichText) {
-        width -= 1;
-        m_simpleRichText->setTextWidth(width);
-        return m_simpleRichText->size().height();
-    } else
-        return 10; // Lazy loaded
-}
-
-void TextContent::paint(QPainter *painter, int width, int height, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
-{
-    if (m_simpleRichText) {
-        width -= 1;
-        painter->translate(0, 0);
-        m_simpleRichText->drawContents(painter, QRect(0, 0, width, height));
-    }
+    return m_graphicsTextItem.boundingRect().height();
 }
 
 bool TextContent::loadFromFile(bool lazyLoad)
@@ -980,22 +1000,8 @@ bool TextContent::loadFromFile(bool lazyLoad)
 
 bool TextContent::finishLazyLoad()
 {
-    int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
-    delete m_simpleRichText;
-
-    QString convert = Tools::tagURLs(Tools::textToHTML(m_text));
-    if(note()->allowCrossReferences())
-        convert = Tools::tagCrossReferences(convert);
-
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + convert; // Don't collapse multiple spaces!
-    m_simpleRichText = new QTextDocument;
-    m_simpleRichText->setHtml(html);
-    m_simpleRichText->setDefaultFont(note()->font());
-    m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-    int minWidth = m_simpleRichText->idealWidth();
-    m_simpleRichText->setTextWidth(width);
-    contentChanged(minWidth + 1);
-
+    m_graphicsTextItem.setFont(note()->font());
+    contentChanged(m_graphicsTextItem.boundingRect().width() + 1);
     return true;
 }
 
@@ -1004,12 +1010,13 @@ bool TextContent::saveToFile()
     return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
 }
 
-QString TextContent::linkAt(const QPoint &pos)
+QString TextContent::linkAt(const QPointF &pos)
 {
-    if (m_simpleRichText)
+  return "";
+/*    if (m_simpleRichText)
         return m_simpleRichText->documentLayout()->anchorAt(pos);
     else
-        return ""; // Lazy loaded
+        return ""; // Lazy loaded*/
 }
 
 
@@ -1028,23 +1035,18 @@ QString TextContent::messageWhenOpening(OpenMessage where)
 
 void TextContent::setText(const QString &text, bool lazyLoad)
 {
-    m_text = text;
+    m_graphicsTextItem.setText(text);
     if (!lazyLoad)
         finishLazyLoad();
     else
-        contentChanged(10);
+        contentChanged(m_graphicsTextItem.boundingRect().width());
 }
 
 void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
-
-    QString convert = Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))); // Don't collapse multiple spaces!
-
-    if(note()->allowCrossReferences())
-        convert = Tools::tagCrossReferences(convert, false, exporter);
-
-    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + convert;
+    QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" +
+                   Tools::tagCrossReferences(Tools::tagURLs(Tools::textToHTMLWithoutP(text().replace("\t", "                "))), false, exporter); // Don't collapse multiple spaces!
     exporter->stream << html.replace("  ", " &nbsp;").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
@@ -1052,34 +1054,29 @@ void TextContent::exportToHTML(HTMLExporter *exporter, int indent)
  */
 
 HtmlContent::HtmlContent(Note *parent, const QString &fileName, bool lazyLoad)
-        : NoteContent(parent, fileName), m_simpleRichText(0)
+        : NoteContent(parent, fileName), m_simpleRichText(0), m_graphicsTextItem(parent)
 {
-    basket()->addWatchedFile(fullPath() + fileName);
-    loadFromFile(lazyLoad);
+  if(parent)
+  {
+      parent->addToGroup(&m_graphicsTextItem);
+      m_graphicsTextItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+  }
+  basket()->addWatchedFile(fullPath());
+  loadFromFile(lazyLoad);
 }
 
 HtmlContent::~HtmlContent()
 {
+    if(note()) note()->removeFromGroup(&m_graphicsTextItem);
+
     delete m_simpleRichText;
 }
 
-int HtmlContent::setWidthAndGetHeight(int width)
+qreal HtmlContent::setWidthAndGetHeight(qreal width)
 {
-    if (m_simpleRichText) {
-        width -= 1;
-        m_simpleRichText->setTextWidth(width);
-        return m_simpleRichText->size().height();
-    } else
-        return 10; // Lazy loaded
-}
-
-void HtmlContent::paint(QPainter *painter, int width, int height, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
-{
-    if (m_simpleRichText) {
-        width -= 1;
-        painter->translate(0, 0);
-        m_simpleRichText->drawContents(painter, QRect(0, 0, width, height));
-    }
+    width -= 1;
+    m_graphicsTextItem.setTextWidth(width);
+    return m_graphicsTextItem.boundingRect().height();
 }
 
 bool HtmlContent::loadFromFile(bool lazyLoad)
@@ -1088,11 +1085,10 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 
     QString content;
     bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
-    
+
     if (success)
         setHtml(content, lazyLoad);
     else {
-        kDebug() << "FAILED TO LOAD HtmlContent: " << fullPath();
         setHtml("", lazyLoad);
         if (!QFile::exists(fullPath()))
             saveToFile(); // Reserve the fileName so no new note will have the same name!
@@ -1102,23 +1098,22 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
 
 bool HtmlContent::finishLazyLoad()
 {
-    int width = (m_simpleRichText ? m_simpleRichText->idealWidth() : 1);
-    delete m_simpleRichText;
-    m_simpleRichText = new QTextDocument;
-
+    qreal width = m_graphicsTextItem.document()->idealWidth();
+    
+    m_graphicsTextItem.setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+    m_graphicsTextItem.setTextInteractionFlags(Qt::TextEditorInteraction);
+    
     QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
        "a:hover.cross_reference { text-decoration: underline; color: #ff8000; }";
-    m_simpleRichText->setDefaultStyleSheet(css);
-
+    m_graphicsTextItem.document()->setDefaultStyleSheet(css);
     QString convert = Tools::tagURLs(m_html);
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert);
-
-    m_simpleRichText->setHtml(convert);
-    m_simpleRichText->setDefaultFont(note()->font());
-    m_simpleRichText->setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
-    int minWidth = m_simpleRichText->idealWidth();
-    m_simpleRichText->setTextWidth(width);
+    m_graphicsTextItem.setHtml(convert);
+    m_graphicsTextItem.setFont(note()->font());
+    m_graphicsTextItem.setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
+    int minWidth = m_graphicsTextItem.document()->idealWidth();
+    m_graphicsTextItem.setTextWidth(width);
     contentChanged(minWidth + 1);
 
     return true;
@@ -1129,12 +1124,9 @@ bool HtmlContent::saveToFile()
     return basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
 }
 
-QString HtmlContent::linkAt(const QPoint &pos)
+QString HtmlContent::linkAt(const QPointF &pos)
 {
-    if (m_simpleRichText)
-        return m_simpleRichText->documentLayout()->anchorAt(pos);
-    else
-        return ""; // Lazy loaded
+    return m_graphicsTextItem.document()->documentLayout()->anchorAt(pos);
 }
 
 
@@ -1181,37 +1173,36 @@ void HtmlContent::exportToHTML(HTMLExporter *exporter, int indent)
  */
 
 ImageContent::ImageContent(Note *parent, const QString &fileName, bool lazyLoad)
-        : NoteContent(parent, fileName), m_format()
+        : NoteContent(parent, fileName), m_pixmapItem(parent), m_format()
 {
-    basket()->addWatchedFile(fullPath() + fileName);
+    if(parent)
+    {
+      parent->addToGroup(&m_pixmapItem);
+      m_pixmapItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
+
+    basket()->addWatchedFile(fullPath());
     loadFromFile(lazyLoad);
 }
 
-int ImageContent::setWidthAndGetHeight(int width)
+ImageContent::~ImageContent()
+{
+    if(note()) note()->removeFromGroup(&m_pixmapItem);
+}
+
+qreal ImageContent::setWidthAndGetHeight(qreal width)
 {
     width -= 1;
     // Don't store width: we will get it on paint!
-    if (width >= m_pixmap.width()) // Full size
-        return m_pixmap.height();
-    else { // Scalled down
-        double height = m_pixmap.height() * (double)width / m_pixmap.width();
-        return int((double)(int)height <= (height - 0.5) ? height + 1 : height);
+    if (width >= m_pixmapItem.pixmap().width()) // Full size
+    {
+        m_pixmapItem.setScale(1.0);
+        return m_pixmapItem.boundingRect().height();
     }
-}
-
-void ImageContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
-{
-    width -= 1;
-//  KPixmap pixmap = m_pixmap;
-//  if (note()->isSelected())
-//      pixmap = KPixmapEffect::selectedPixmap(m_pixmap, palette().color(QPalette::Highlight));
-
-    if (width >= m_pixmap.width()) // Full size
-        painter->drawPixmap(0, 0, m_pixmap);
     else { // Scalled down
-        double scale = ((double)width) / m_pixmap.width();
-        painter->scale(scale, scale);
-        painter->drawPixmap(0, 0, m_pixmap);  // TODO: Smooth !!!
+        qreal scaleFactor = width / m_pixmapItem.pixmap().width();
+	m_pixmapItem.setScale( scaleFactor );
+        return m_pixmapItem.boundingRect().height()*scaleFactor;
     }
 }
 
@@ -1228,7 +1219,8 @@ bool ImageContent::finishLazyLoad()
     DEBUG_WIN << "Loading ImageContent From " + basket()->folderName() + fileName();
 
     QByteArray content;
-
+    QPixmap pixmap;
+    
     if (basket()->loadFromFile(fullPath(), &content)) {
         QBuffer buffer(&content);
 
@@ -1236,18 +1228,18 @@ bool ImageContent::finishLazyLoad()
         m_format = QImageReader::imageFormat(&buffer); // See QImageIO to know what formats can be supported.
         buffer.close();
         if (!m_format.isNull()) {
-            m_pixmap.loadFromData(content);
-            setPixmap(m_pixmap);
+            pixmap.loadFromData(content);
+            setPixmap(pixmap);
             return true;
         }
     }
 
     kDebug() << "FAILED TO LOAD ImageContent: " << fullPath();
     m_format = "PNG"; // If the image is set later, it should be saved without destruction, so we use PNG by default.
-    m_pixmap = QPixmap(1, 1); // Create a 1x1 pixels image instead of an undefined one.
-    m_pixmap.fill();
-    m_pixmap.setMask(m_pixmap.createHeuristicMask());
-    setPixmap(m_pixmap);
+    pixmap = QPixmap(1, 1); // Create a 1x1 pixels image instead of an undefined one.
+    pixmap.fill();
+    pixmap.setMask(pixmap.createHeuristicMask());
+    setPixmap(pixmap);
     if (!QFile::exists(fullPath()))
         saveToFile(); // Reserve the fileName so no new note will have the same name!
     return false;
@@ -1259,7 +1251,7 @@ bool ImageContent::saveToFile()
     QBuffer buffer(&ba);
 
     buffer.open(QIODevice::WriteOnly);
-    m_pixmap.save(&buffer, m_format);
+    m_pixmapItem.pixmap().save(&buffer, m_format);
     return basket()->saveToFile(fullPath(), ba);
 }
 
@@ -1267,7 +1259,7 @@ bool ImageContent::saveToFile()
 void ImageContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
     keys->append(i18n("Size"));
-    values->append(i18n("%1 by %2 pixels", QString::number(m_pixmap.width()), QString::number(m_pixmap.height())));
+    values->append(i18n("%1 by %2 pixels", QString::number(m_pixmapItem.pixmap().width()), QString::number(m_pixmapItem.pixmap().height())));
 }
 
 QString ImageContent::messageWhenOpening(OpenMessage where)
@@ -1285,30 +1277,30 @@ QString ImageContent::messageWhenOpening(OpenMessage where)
 
 void ImageContent::setPixmap(const QPixmap &pixmap)
 {
-    m_pixmap = pixmap;
+    m_pixmapItem.setPixmap(pixmap);
     // Since it's scalled, the height is always greater or equal to the size of the tag emblems (16)
     contentChanged(16 + 1); // TODO: always good? I don't think...
 }
 
 void ImageContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
-    int width  = m_pixmap.width();
-    int height = m_pixmap.height();
-    int contentWidth = note()->width() - note()->contentX() - 1 - Note::NOTE_MARGIN;
+    qreal width  = m_pixmapItem.pixmap().width();
+    qreal height = m_pixmapItem.pixmap().height();
+    qreal contentWidth = note()->width() - note()->contentX() - 1 - Note::NOTE_MARGIN;
 
     QString imageName = exporter->copyFile(fullPath(), /*createIt=*/true);
 
-    if (contentWidth <= m_pixmap.width()) { // Scalled down
-        double scale = ((double)contentWidth) / m_pixmap.width();
-        width  = (int)(m_pixmap.width()  * scale);
-        height = (int)(m_pixmap.height() * scale);
+    if (contentWidth <= m_pixmapItem.pixmap().width()) { // Scalled down
+        qreal scale = contentWidth / m_pixmapItem.pixmap().width();
+        width  = m_pixmapItem.pixmap().width()  * scale;
+        height = m_pixmapItem.pixmap().height() * scale;
         exporter->stream << "<a href=\"" << exporter->dataFolderName << imageName << "\" title=\"" << i18n("Click for full size view") << "\">";
     }
 
     exporter->stream << "<img src=\"" << exporter->dataFolderName << imageName
     << "\" width=\"" << width << "\" height=\"" << height << "\" alt=\"\">";
 
-    if (contentWidth <= m_pixmap.width()) // Scalled down
+    if (contentWidth <= m_pixmapItem.pixmap().width()) // Scalled down
         exporter->stream << "</a>";
 }
 
@@ -1321,27 +1313,46 @@ AnimationContent::AnimationContent(Note *parent,
         : NoteContent(parent, fileName)
         , m_buffer(new QBuffer(this))
         , m_movie(new QMovie(this))
+	, m_currentWidth(0)
+	, m_graphicsPixmap(parent)
 {
-    basket()->addWatchedFile(fullPath() + fileName);
-    loadFromFile(lazyLoad);
-    connect(m_movie, SIGNAL(updated(QRect)), this, SLOT(movieUpdated()));
+    if(parent)
+    {
+      parent->addToGroup(&m_graphicsPixmap);
+      m_graphicsPixmap.setPos(parent->contentX(),Note::NOTE_MARGIN);
+      connect(parent->basket(), SIGNAL(activated()), m_movie, SLOT(start()));
+      connect(parent->basket(), SIGNAL(closed()), m_movie, SLOT(stop()));
+    }
+    
+    basket()->addWatchedFile(fullPath());
     connect(m_movie, SIGNAL(resized(QSize)), this, SLOT(movieResized()));
+    connect(m_movie, SIGNAL(frameChanged(int)), this, SLOT(movieFrameChanged()));
+
+    loadFromFile(lazyLoad);
 }
 
-int AnimationContent::setWidthAndGetHeight(int /*width*/)
+AnimationContent::~AnimationContent()
 {
-    /*width -= 1*/
-    ;
-    return  m_movie->currentPixmap().height()  ; // TODO!!!
+    note()->removeFromGroup(&m_graphicsPixmap);
 }
 
-void AnimationContent::paint(QPainter *painter, int width, int /*height*/, const QPalette &/*palette*/, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+qreal AnimationContent::setWidthAndGetHeight(qreal width)
 {
-    QPixmap frame = m_movie->currentPixmap();
-    if (width >= frame.width()) // Full size
-        painter->drawPixmap(0, 0, frame);
-    else // Scaled down
-        painter->drawPixmap(0, 0, frame);  // TODO: Scale down
+    m_currentWidth = width;
+    QPixmap pixmap = m_graphicsPixmap.pixmap();
+    if(pixmap.width() > m_currentWidth)
+    {
+      qreal scaleFactor = m_currentWidth / pixmap.width();
+      m_graphicsPixmap.setScale(scaleFactor);
+      return pixmap.height() * scaleFactor;
+    }
+    else
+    {
+      m_graphicsPixmap.setScale(1.0);
+      return pixmap.height();
+    }
+    
+    return 0;
 }
 
 bool AnimationContent::loadFromFile(bool lazyLoad)
@@ -1357,7 +1368,8 @@ bool AnimationContent::finishLazyLoad()
     QByteArray content;
     if (basket()->loadFromFile(fullPath(), &content)) {
         m_buffer->setData(content);
-        updateMovie();
+        startMovie();
+	contentChanged(16);
         return true;
     }
     m_buffer->setData(0);
@@ -1384,24 +1396,28 @@ QString AnimationContent::messageWhenOpening(OpenMessage where)
     }
 }
 
-bool AnimationContent::updateMovie()
+bool AnimationContent::startMovie()
 {
-    if (!m_buffer->data().isEmpty())
+    if (m_buffer->data().isEmpty())
         return false;
     m_movie->setDevice(m_buffer);
-    contentChanged(m_movie->currentPixmap().width() + 1); // TODO
+    m_movie->start();
     return true;
 }
 
 void AnimationContent::movieUpdated()
 {
-    note()->unbufferize();
-    note()->update();
+    m_graphicsPixmap.setPixmap(m_movie->currentPixmap());
 }
 
 void AnimationContent::movieResized()
 {
-    note()->requestRelayout(); // ?
+     m_graphicsPixmap.setPixmap(m_movie->currentPixmap());
+}
+
+void AnimationContent::movieFrameChanged()
+{
+    m_graphicsPixmap.setPixmap(m_movie->currentPixmap());
 }
 
 void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
@@ -1416,21 +1432,26 @@ void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
  */
 
 FileContent::FileContent(Note *parent, const QString &fileName)
-        : NoteContent(parent, fileName), m_previewJob(0)
+        : NoteContent(parent, fileName), m_previewJob(0), m_linkDisplayItem(parent)
 {
-    basket()->addWatchedFile(fullPath() + fileName);
+    basket()->addWatchedFile(fullPath());
     setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???
+    if(parent)
+    {
+      parent->addToGroup(&m_linkDisplayItem);
+      m_linkDisplayItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
 }
 
-int FileContent::setWidthAndGetHeight(int width)
+FileContent::~FileContent()
 {
-    m_linkDisplay.setWidth(width);
-    return m_linkDisplay.height();
+    if(note()) note()->removeFromGroup(&m_linkDisplayItem);
 }
 
-void FileContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
+qreal FileContent::setWidthAndGetHeight(qreal width)
 {
-    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+    m_linkDisplayItem.linkDisplay().setWidth(width);
+    return m_linkDisplayItem.linkDisplay().height();
 }
 
 bool FileContent::loadFromFile(bool /*lazyLoad*/)
@@ -1474,21 +1495,21 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
     }
 }
 
-int FileContent::zoneAt(const QPoint &pos)
+int FileContent::zoneAt(const QPointF &pos)
 {
-    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+    return (m_linkDisplayItem.linkDisplay().iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
-QRect FileContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRectF FileContent::zoneRect(int zone, const QPointF &/*pos*/)
 {
-    QRect linkRect = m_linkDisplay.iconButtonRect();
+    QRectF linkRect = m_linkDisplayItem.linkDisplay().iconButtonRect();
 
     if (zone == Note::Custom0)
-        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+        return QRectF(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
     else if (zone == Note::Content)
         return linkRect;
     else
-        return QRect();
+        return QRectF();
 }
 
 QString FileContent::zoneTip(int zone)
@@ -1496,16 +1517,17 @@ QString FileContent::zoneTip(int zone)
     return (zone == Note::Custom0 ? i18n("Open this file") : QString());
 }
 
-void FileContent::setCursor(QWidget *widget, int zone)
+Qt::CursorShape FileContent::cursorFromZone(int zone) const
 {
     if (zone == Note::Custom0)
-        widget->setCursor(Qt::PointingHandCursor);
+        return Qt::PointingHandCursor;
+    return Qt::ArrowCursor;
 }
 
 
 int FileContent::xEditorIndent()
 {
-    return m_linkDisplay.iconButtonRect().width() + 2;
+    return m_linkDisplayItem.linkDisplay().iconButtonRect().width() + 2;
 }
 
 
@@ -1527,11 +1549,11 @@ void FileContent::setFileName(const QString &fileName)
     NoteContent::setFileName(fileName);
     KUrl url = KUrl(fullPath());
     if (linkLook()->previewEnabled())
-        m_linkDisplay.setLink(fileName, NoteFactory::iconForURL(url),            linkLook(), note()->font()); // FIXME: move iconForURL outside of NoteFactory !!!!!
+        m_linkDisplayItem.linkDisplay().setLink(fileName, NoteFactory::iconForURL(url),            linkLook(), note()->font()); // FIXME: move iconForURL outside of NoteFactory !!!!!
     else
-        m_linkDisplay.setLink(fileName, NoteFactory::iconForURL(url), QPixmap(), linkLook(), note()->font());
+        m_linkDisplayItem.linkDisplay().setLink(fileName, NoteFactory::iconForURL(url), QPixmap(), linkLook(), note()->font());
     startFetchingUrlPreview();
-    contentChanged(m_linkDisplay.minWidth());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 }
 
 void FileContent::linkLookChanged()
@@ -1544,8 +1566,8 @@ void FileContent::linkLookChanged()
 void FileContent::newPreview(const KFileItem&, const QPixmap &preview)
 {
     LinkLook *linkLook = this->linkLook();
-    m_linkDisplay.setLink(fileName(), NoteFactory::iconForURL(KUrl(fullPath())), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
-    contentChanged(m_linkDisplay.minWidth());
+    m_linkDisplayItem.linkDisplay().setLink(fileName(), NoteFactory::iconForURL(KUrl(fullPath())), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 }
 
 void FileContent::removePreview(const KFileItem& ki)
@@ -1573,7 +1595,7 @@ void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString fileName = exporter->copyFile(fullPath(), true);
-    exporter->stream << m_linkDisplay.toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+    exporter->stream << m_linkDisplayItem.linkDisplay().toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class SoundContent:
@@ -1638,25 +1660,26 @@ QString SoundContent::messageWhenOpening(OpenMessage where)
  */
 
 LinkContent::LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
-        : NoteContent(parent), m_http(0), m_httpBuff(0), m_previewJob(0)
+        : NoteContent(parent), m_linkDisplayItem(parent), m_http(0), m_httpBuff(0), m_previewJob(0)
 {
     setLink(url, title, icon, autoTitle, autoIcon);
+    if(parent)
+    {
+      parent->addToGroup(&m_linkDisplayItem);
+      m_linkDisplayItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
 }
 LinkContent::~LinkContent()
 {
+    if(note()) note()->removeFromGroup(&m_linkDisplayItem);
     delete m_http;
     delete m_httpBuff;
 }
 
-int LinkContent::setWidthAndGetHeight(int width)
+qreal LinkContent::setWidthAndGetHeight(qreal width)
 {
-    m_linkDisplay.setWidth(width);
-    return m_linkDisplay.height();
-}
-
-void LinkContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
-{
-    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+    m_linkDisplayItem.linkDisplay().setWidth(width);
+    return m_linkDisplayItem.linkDisplay().height();
 }
 
 void LinkContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -1676,21 +1699,21 @@ void LinkContent::toolTipInfos(QStringList *keys, QStringList *values)
     values->append(m_url.prettyUrl());
 }
 
-int LinkContent::zoneAt(const QPoint &pos)
+int LinkContent::zoneAt(const QPointF &pos)
 {
-    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+    return (m_linkDisplayItem.linkDisplay().iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
-QRect LinkContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRectF LinkContent::zoneRect(int zone, const QPointF &/*pos*/)
 {
-    QRect linkRect = m_linkDisplay.iconButtonRect();
+    QRectF linkRect = m_linkDisplayItem.linkDisplay().iconButtonRect();
 
     if (zone == Note::Custom0)
-        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+        return QRectF(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
     else if (zone == Note::Content)
         return linkRect;
     else
-        return QRect();
+        return QRectF();
 }
 
 QString LinkContent::zoneTip(int zone)
@@ -1698,10 +1721,11 @@ QString LinkContent::zoneTip(int zone)
     return (zone == Note::Custom0 ? i18n("Open this link") : QString());
 }
 
-void LinkContent::setCursor(QWidget *widget, int zone)
+Qt::CursorShape LinkContent::cursorFromZone(int zone) const
 {
     if (zone == Note::Custom0)
-        widget->setCursor(Qt::PointingHandCursor);
+        return Qt::PointingHandCursor;
+    return Qt::ArrowCursor;
 }
 
 QString LinkContent::statusBarMessage(int zone)
@@ -1744,13 +1768,13 @@ void LinkContent::setLink(const KUrl &url, const QString &title, const QString &
 
     LinkLook *look = LinkLook::lookForURL(m_url);
     if (look->previewEnabled())
-        m_linkDisplay.setLink(m_title, m_icon,            look, note()->font());
+        m_linkDisplayItem.linkDisplay().setLink(m_title, m_icon,            look, note()->font());
     else
-        m_linkDisplay.setLink(m_title, m_icon, QPixmap(), look, note()->font());
+        m_linkDisplayItem.linkDisplay().setLink(m_title, m_icon, QPixmap(), look, note()->font());
     startFetchingUrlPreview();
     if (autoTitle)
         startFetchingLinkTitle();
-    contentChanged(m_linkDisplay.minWidth());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 }
 
 void LinkContent::linkLookChanged()
@@ -1761,8 +1785,8 @@ void LinkContent::linkLookChanged()
 void LinkContent::newPreview(const KFileItem&, const QPixmap &preview)
 {
     LinkLook *linkLook = LinkLook::lookForURL(url());
-    m_linkDisplay.setLink(title(), icon(), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
-    contentChanged(m_linkDisplay.minWidth());
+    m_linkDisplayItem.linkDisplay().setLink(title(), icon(), (linkLook->previewEnabled() ? preview : QPixmap()), linkLook, note()->font());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 }
 
 void LinkContent::removePreview(const KFileItem& ki)
@@ -1887,10 +1911,10 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     //            << "IsDir:"  + QString::number(fInfo.isDir());
         if (exportData.embedLinkedFiles && fInfo.isFile()) {
     //      DEBUG_WIN << "Embed file";
-            linkURL = exportData.dataFolderName + BasketView::copyFile(url().path(), exportData.dataFolderPath, true);
+            linkURL = exportData.dataFolderName + BasketScene::copyFile(url().path(), exportData.dataFolderPath, true);
         } else if (exportData.embedLinkedFolders && fInfo.isDir()) {
     //      DEBUG_WIN << "Embed folder";
-            linkURL = exportData.dataFolderName + BasketView::copyFile(url().path(), exportData.dataFolderPath, true);
+            linkURL = exportData.dataFolderName + BasketScene::copyFile(url().path(), exportData.dataFolderPath, true);
         } else {
     //      DEBUG_WIN << "Embed LINK";
     */
@@ -1900,31 +1924,28 @@ void LinkContent::exportToHTML(HTMLExporter *exporter, int indent)
     */
 
     QString spaces;
-    exporter->stream << m_linkDisplay.toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
+    exporter->stream << m_linkDisplayItem.linkDisplay().toHtml(exporter, linkURL, linkTitle).replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
 /** class CrossReferenceContent:
  */
 
 CrossReferenceContent::CrossReferenceContent(Note *parent, const KUrl &url, const QString &title, const QString &icon)
-        : NoteContent(parent)
+        : NoteContent(parent), m_linkDisplayItem(parent)
 {
     this->setCrossReference(url, title, icon);
+    if(parent) parent->addToGroup(&m_linkDisplayItem);
 }
 
 CrossReferenceContent::~CrossReferenceContent()
 {
+    if(note()) note()->removeFromGroup(&m_linkDisplayItem);
 }
 
-int CrossReferenceContent::setWidthAndGetHeight(int width)
+qreal CrossReferenceContent::setWidthAndGetHeight(qreal width)
 {
-    m_linkDisplay.setWidth(width);
-    return m_linkDisplay.height();
-}
-
-void CrossReferenceContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
-{
-    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+    m_linkDisplayItem.linkDisplay().setWidth(width);
+    return m_linkDisplayItem.linkDisplay().height();
 }
 
 void CrossReferenceContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -1941,21 +1962,21 @@ void CrossReferenceContent::toolTipInfos(QStringList *keys, QStringList *values)
     values->append(m_url.prettyUrl());
 }
 
-int CrossReferenceContent::zoneAt(const QPoint &pos)
+int CrossReferenceContent::zoneAt(const QPointF &pos)
 {
-    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+    return (m_linkDisplayItem.linkDisplay().iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
-QRect CrossReferenceContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRectF CrossReferenceContent::zoneRect(int zone, const QPointF &/*pos*/)
 {
-    QRect linkRect = m_linkDisplay.iconButtonRect();
+    QRectF linkRect = m_linkDisplayItem.linkDisplay().iconButtonRect();
 
     if (zone == Note::Custom0)
-        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+        return QRectF(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
     else if (zone == Note::Content)
         return linkRect;
     else
-        return QRect();
+        return QRectF();
 }
 
 QString CrossReferenceContent::zoneTip(int zone)
@@ -1963,10 +1984,11 @@ QString CrossReferenceContent::zoneTip(int zone)
     return (zone == Note::Custom0 ? i18n("Open this link") : QString());
 }
 
-void CrossReferenceContent::setCursor(QWidget *widget, int zone)
+Qt::CursorShape CrossReferenceContent::cursorFromZone(int zone) const
 {
     if (zone == Note::Custom0)
-        widget->setCursor(Qt::PointingHandCursor);
+        return Qt::PointingHandCursor;
+    return Qt::ArrowCursor;
 }
 
 QString CrossReferenceContent::statusBarMessage(int zone)
@@ -2005,9 +2027,9 @@ void CrossReferenceContent::setCrossReference(const KUrl &url, const QString &ti
     m_icon = icon;
 
     LinkLook *look = LinkLook::crossReferenceLook;
-    m_linkDisplay.setLink(m_title, m_icon, look, note()->font());
+    m_linkDisplayItem.linkDisplay().setLink(m_title, m_icon, look, note()->font());
 
-    contentChanged(m_linkDisplay.minWidth());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 
 }
 
@@ -2026,7 +2048,7 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
     if(url.endsWith('/'))
         url = url.left(url.length() - 1);
 
-    BasketView* basket = Global::bnpView->basketForFolderName(url);
+    BasketScene* basket = Global::bnpView->basketForFolderName(url);
 
     if(!basket)
         title = "unknown basket";
@@ -2057,21 +2079,26 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
  */
 
 LauncherContent::LauncherContent(Note *parent, const QString &fileName)
-        : NoteContent(parent, fileName)
+        : NoteContent(parent, fileName), m_linkDisplayItem(parent)
 {
-    basket()->addWatchedFile(fullPath() + fileName);
+    basket()->addWatchedFile(fullPath());
     loadFromFile(/*lazyLoad=*/false);
+    if(parent)
+    {
+      parent->addToGroup(&m_linkDisplayItem);
+      m_linkDisplayItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
 }
 
-int LauncherContent::setWidthAndGetHeight(int width)
+LauncherContent::~LauncherContent()
 {
-    m_linkDisplay.setWidth(width);
-    return m_linkDisplay.height();
+    if(note()) note()->removeFromGroup(&m_linkDisplayItem);
 }
 
-void LauncherContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered)
+qreal LauncherContent::setWidthAndGetHeight(qreal width)
 {
-    m_linkDisplay.paint(painter, 0, 0, width, height, palette, isDefaultColor, isSelected, isHovered, isHovered && note()->hoveredZone() == Note::Custom0);
+    m_linkDisplayItem.linkDisplay().setWidth(width);
+    return m_linkDisplayItem.linkDisplay().height();
 }
 
 bool LauncherContent::loadFromFile(bool /*lazyLoad*/) // TODO: saveToFile() ?? Is it possible?
@@ -2100,21 +2127,21 @@ void LauncherContent::toolTipInfos(QStringList *keys, QStringList *values)
     values->append(exec);
 }
 
-int LauncherContent::zoneAt(const QPoint &pos)
+int LauncherContent::zoneAt(const QPointF &pos)
 {
-    return (m_linkDisplay.iconButtonAt(pos) ? 0 : Note::Custom0);
+    return (m_linkDisplayItem.linkDisplay().iconButtonAt(pos) ? 0 : Note::Custom0);
 }
 
-QRect LauncherContent::zoneRect(int zone, const QPoint &/*pos*/)
+QRectF LauncherContent::zoneRect(int zone, const QPointF &/*pos*/)
 {
-    QRect linkRect = m_linkDisplay.iconButtonRect();
+    QRectF linkRect = m_linkDisplayItem.linkDisplay().iconButtonRect();
 
     if (zone == Note::Custom0)
-        return QRect(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
+        return QRectF(linkRect.width(), 0, note()->width(), note()->height()); // Too wide and height, but it will be clipped by Note::zoneRect()
     else if (zone == Note::Content)
         return linkRect;
     else
-        return QRect();
+        return QRectF();
 }
 
 QString LauncherContent::zoneTip(int zone)
@@ -2122,12 +2149,12 @@ QString LauncherContent::zoneTip(int zone)
     return (zone == Note::Custom0 ? i18n("Launch this application") : QString());
 }
 
-void LauncherContent::setCursor(QWidget *widget, int zone)
+Qt::CursorShape LauncherContent::cursorFromZone(int zone) const
 {
     if (zone == Note::Custom0)
-        widget->setCursor(Qt::PointingHandCursor);
+        return Qt::PointingHandCursor;
+    return Qt::ArrowCursor;
 }
-
 
 KUrl LauncherContent::urlToOpen(bool with)
 {
@@ -2159,42 +2186,46 @@ void LauncherContent::setLauncher(const QString &name, const QString &icon, cons
     m_icon = icon;
     m_exec = exec;
 
-    m_linkDisplay.setLink(name, icon, LinkLook::launcherLook, note()->font());
-    contentChanged(m_linkDisplay.minWidth());
+    m_linkDisplayItem.linkDisplay().setLink(name, icon, LinkLook::launcherLook, note()->font());
+    contentChanged(m_linkDisplayItem.linkDisplay().minWidth());
 }
 
 void LauncherContent::exportToHTML(HTMLExporter *exporter, int indent)
 {
     QString spaces;
     QString fileName = exporter->copyFile(fullPath(), /*createIt=*/true);
-    exporter->stream << m_linkDisplay.toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
+    exporter->stream << m_linkDisplayItem.linkDisplay().toHtml(exporter, KUrl(exporter->dataFolderName + fileName), "").replace("\n", "\n" + spaces.fill(' ', indent + 1));
 }
 
-/** class ColorContent:
+/** class ColorItem:
  */
+const int ColorItem::RECT_MARGIN = 2;
 
-const int ColorContent::RECT_MARGIN = 2;
-
-ColorContent::ColorContent(Note *parent, const QColor &color)
-        : NoteContent(parent)
+ColorItem::ColorItem(Note *parent, const QColor &color)
+  :QGraphicsItem()
+  , m_note(parent)
 {
-    setColor(color);
+  setColor(color);
 }
 
-int ColorContent::setWidthAndGetHeight(int /*width*/) // We do not need width because we can't word-break, and width is always >= minWidth()
+void ColorItem::setColor(const QColor &color)
 {
-    // FIXME: Duplicate from setColor():
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
-    int rectHeight = (textRect.height() + 2) * 3 / 2;
-    return rectHeight;
+    m_color = color;
+    m_textRect = QFontMetrics(m_note->font()).boundingRect(m_color.name());
 }
 
-void ColorContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+QRectF ColorItem::boundingRect() const
 {
-    // FIXME: Duplicate from setColor():
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
-    int rectHeight = (textRect.height() + 2) * 3 / 2;
-    int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
+    qreal rectHeight = (m_textRect.height() + 2) * 3 / 2;
+    qreal rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
+    return QRectF(0, 0, rectWidth + RECT_MARGIN + m_textRect.width() + RECT_MARGIN, rectHeight);
+}
+
+void ColorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
+{
+    QRectF boundingRect = this->boundingRect();
+    qreal rectHeight = (m_textRect.height() + 2) * 3 / 2;
+    qreal rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
     // FIXME: Duplicate from CommonColorSelector::drawColorRect:
     // Fill:
@@ -2214,9 +2245,32 @@ void ColorContent::paint(QPainter *painter, int width, int height, const QPalett
     painter->drawPoint(rectWidth - 2, 1);
 
     // Draw the text:
-    painter->setFont(note()->font());
-    painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
-    painter->drawText(rectWidth + RECT_MARGIN, 0, width - rectWidth - RECT_MARGIN, height, Qt::AlignLeft | Qt::AlignVCenter, color().name());
+    painter->setFont(m_note->font());
+    painter->setPen(m_note->palette().color(QPalette::Active, QPalette::WindowText));
+    painter->drawText(rectWidth + RECT_MARGIN, 0, m_textRect.width(), boundingRect.height(), Qt::AlignLeft | Qt::AlignVCenter, color().name());
+}
+
+/** class ColorContent:
+ */
+
+ColorContent::ColorContent(Note *parent, const QColor &color)
+        : NoteContent(parent), m_colorItem(parent, color)
+{
+    if(parent)
+    {
+      parent->addToGroup(&m_colorItem);
+      m_colorItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
+}
+
+ColorContent::~ColorContent()
+{
+  if(note()) note()->removeFromGroup(&m_colorItem);
+}
+
+qreal ColorContent::setWidthAndGetHeight(qreal /*width*/) // We do not need width because we can't word-break, and width is always >= minWidth()
+{
+    return m_colorItem.boundingRect().height();
 }
 
 void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
@@ -2225,14 +2279,13 @@ void ColorContent::saveToNode(QDomDocument &doc, QDomElement &content)
     content.appendChild(textNode);
 }
 
-
 void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 {
     int hue, saturation, value;
-    m_color.getHsv(&hue, &saturation, &value);
+    color().getHsv(&hue, &saturation, &value);
 
     keys->append(i18nc("RGB Colorspace: Red/Green/Blue", "RGB"));
-    values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,", QString::number(m_color.red()), QString::number(m_color.green()), QString::number(m_color.blue())));
+    values->append(i18n("<i>Red</i>: %1, <i>Green</i>: %2, <i>Blue</i>: %3,", QString::number(color().red()), QString::number(color().green()), QString::number(color().blue())));
 
     keys->append(i18nc("HSV Colorspace: Hue/Saturation/Value", "HSV"));
     values->append(i18n("<i>Hue</i>: %1, <i>Saturation</i>: %2, <i>Value</i>: %3,", QString::number(hue), QString::number(saturation), QString::number(value)));
@@ -2411,12 +2464,8 @@ void ColorContent::toolTipInfos(QStringList *keys, QStringList *values)
 
 void ColorContent::setColor(const QColor &color)
 {
-    m_color = color;
-
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(color.name());
-    int rectHeight = (textRect.height() + 2) * 3 / 2;
-    int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
-    contentChanged(rectWidth + RECT_MARGIN + textRect.width() + RECT_MARGIN); // The second RECT_MARGIN is because textRect.width() is too short. I done a bug? Can't figure out.
+    m_colorItem.setColor(color);
+    contentChanged(m_colorItem.boundingRect().width());
 }
 
 void ColorContent::addAlternateDragObjects(QMimeData *dragObject)
@@ -2427,7 +2476,7 @@ void ColorContent::addAlternateDragObjects(QMimeData *dragObject)
 void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
 {
     // FIXME: Duplicate from setColor(): TODO: rectSize()
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(color().name());
+    QRectF textRect = QFontMetrics(note()->font()).boundingRect(color().name());
     int rectHeight = (textRect.height() + 2) * 3 / 2;
     int rectWidth  = rectHeight * 14 / 10; // 1.4 times the height, like A4 papers.
 
@@ -2444,40 +2493,36 @@ void ColorContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
     exporter->stream << iconHtml + " " + color().name();
 }
 
-
-
-/** class UnknownContent:
+/** class UnknownItem:
  */
-
-const int UnknownContent::DECORATION_MARGIN = 2;
-
-UnknownContent::UnknownContent(Note *parent, const QString &fileName)
-        : NoteContent(parent, fileName)
-{
-    basket()->addWatchedFile(fullPath() + fileName);
-    loadFromFile(/*lazyLoad=*/false);
-}
-
-int UnknownContent::setWidthAndGetHeight(int width)
-{
-    width -= 1;
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
-    return DECORATION_MARGIN + textRect.height() + DECORATION_MARGIN;
-}
-
 // TODO: Move this function from note.cpp to class Tools:
 extern void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
-                         int x, int y, int w, int h,
+                         qreal x, qreal y, qreal w, qreal h,
                          bool sunken, bool horz, bool flat);   /*const*/
 
-void UnknownContent::paint(QPainter *painter, int width, int height, const QPalette &palette, bool /*isDefaultColor*/, bool /*isSelected*/, bool /*isHovered*/)
+const qreal UnknownItem::DECORATION_MARGIN = 2;
+
+UnknownItem::UnknownItem(Note *parent)
+  :QGraphicsItem()
+  , m_note(parent)
 {
-    width -= 1;
+}
+
+QRectF UnknownItem::boundingRect() const
+{
+    return QRectF(0, 0, m_textRect.width()+2*DECORATION_MARGIN, m_textRect.height()+2*DECORATION_MARGIN);
+}
+
+void UnknownItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
+{
+    QPalette palette = m_note->basket()->palette();
+    qreal width = boundingRect().width();
+    qreal height = boundingRect().height();
     painter->setPen(palette.color(QPalette::Active, QPalette::WindowText));
 
     // FIXME: Duplicate from ColorContent::paint() and CommonColorSelector::drawColorRect:
     // Fill with gradient:
-    drawGradient(painter, palette.color(QPalette::Active, QPalette::WindowText), palette.color(QPalette::Active, QPalette::WindowText).dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    //drawGradient(painter, palette.color(QPalette::Active, QPalette::WindowText), palette.color(QPalette::Active, QPalette::WindowText).dark(110), 1, 1, width - 2, height - 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
     // Stroke:
     QColor stroke = Tools::mixColor(palette.color(QPalette::Active, QPalette::Background), palette.color(QPalette::Active, QPalette::WindowText));
     painter->setPen(stroke);
@@ -2497,31 +2542,72 @@ void UnknownContent::paint(QPainter *painter, int width, int height, const QPale
                       Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_mimeTypes);
 }
 
+void UnknownItem::setMimeTypes(QString mimeTypes)
+{
+    m_mimeTypes = mimeTypes;
+    m_textRect = QFontMetrics(m_note->font()).boundingRect(0, 0, 1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
+}
+
+void UnknownItem::setWidth(qreal width)
+{
+    prepareGeometryChange();
+    m_textRect = QFontMetrics(m_note->font()).boundingRect(0, 0, width, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);  
+}
+
+/** class UnknownContent:
+ */
+
+UnknownContent::UnknownContent(Note *parent, const QString &fileName)
+        : NoteContent(parent, fileName)
+	, m_unknownItem(parent)
+{
+    if(parent)
+    {
+      parent->addToGroup(&m_unknownItem);
+      m_unknownItem.setPos(parent->contentX(),Note::NOTE_MARGIN);
+    }
+
+    basket()->addWatchedFile(fullPath());
+    loadFromFile(/*lazyLoad=*/false);
+}
+
+UnknownContent::~UnknownContent()
+{
+    if(note()) note()->removeFromGroup(&m_unknownItem);
+}
+
+qreal UnknownContent::setWidthAndGetHeight(qreal width)
+{
+    m_unknownItem.setWidth(width);
+    return m_unknownItem.boundingRect().height();
+}
+
 bool UnknownContent::loadFromFile(bool /*lazyLoad*/)
 {
     DEBUG_WIN << "Loading UnknownContent From " + basket()->folderName() + fileName();
+    QString mimeTypes;
     QFile file(fullPath());
-    if (file.open(QIODevice::ReadOnly)) {
-        QDataStream stream(&file);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
         QString line;
-        m_mimeTypes = "";
         // Get the MIME-types names:
         do {
             if (!stream.atEnd()) {
-                stream >> line;
+                line = stream.readLine();
                 if (!line.isEmpty()) {
-                    if (m_mimeTypes.isEmpty())
-                        m_mimeTypes += line;
+                    if (mimeTypes.isEmpty())
+                        mimeTypes += line;
                     else
-                        m_mimeTypes += QString("\n") + line;
+                        mimeTypes += QString("\n") + line;
                 }
             }
         } while (!line.isEmpty() && !stream.atEnd());
         file.close();
     }
 
-    QRect textRect = QFontMetrics(note()->font()).boundingRect(0, 0, /*width=*/1, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_mimeTypes);
-    contentChanged(DECORATION_MARGIN + textRect.width() + DECORATION_MARGIN + 1);
+    m_unknownItem.setMimeTypes(mimeTypes);
+    contentChanged( m_unknownItem.boundingRect().width()+1 );
+
     return true;
 }
 

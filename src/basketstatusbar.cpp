@@ -27,7 +27,7 @@
 #include "basketstatusbar.h"
 #include "global.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "tools.h"
 #include <KDE/KIconLoader>
 #include <QToolTip>

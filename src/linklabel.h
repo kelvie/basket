@@ -172,29 +172,29 @@ public:
     // Configure the link displayer:
     void    setLink(const QString &title, const QString &icon, LinkLook *look, const QFont &font);  /// << Change the content and disposition. minWidth(), width() & height() can have changed. Keep the old preview (if any)
     void    setLink(const QString &title, const QString &icon, const QPixmap &preview, LinkLook *look, const QFont &font);  /// << Idem but change the preview too (or remove it if it is invalid)
-    void    setWidth(int width);                                                 /// << Set a new width. @see height() that will be computed.
+    void    setWidth(qreal width);                                                 /// << Set a new width. @see height() that will be computed.
     // Get its properties:
-    int     minWidth() const {
+    qreal     minWidth() const {
         return m_minWidth;
     }                              /// << @return the minimum width to display this link.
-    int     maxWidth() const {
+    qreal     maxWidth() const {
         return m_maxWidth;
     }                              /// << @return the maximum width to display this link.
-    int     width()    const {
+    qreal     width()    const {
         return m_width;
     }                              /// << @return the width of the link. It is never less than minWidth()!
-    int     height()   const {
+    qreal     height()   const {
         return m_height;
     }                              /// << @return the height if the link after having set it a width.
     // And finaly, use it:
-    void    paint(QPainter *painter, int x, int y, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const; /// << Draw the link on a painter. Set textColor to be !isValid() to use the LinkLook color. Otherwise it will use this color!
-    QPixmap feedbackPixmap(int width, int height, const QPalette &palette, bool isDefaultColor); /// << @return the pixmap to put under the cursor while dragging this object.
+    void    paint(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const; /// << Draw the link on a painter. Set textColor to be !isValid() to use the LinkLook color. Otherwise it will use this color!
+    QPixmap feedbackPixmap(qreal width, qreal height, const QPalette &palette, bool isDefaultColor); /// << @return the pixmap to put under the cursor while dragging this object.
     // Eventually get some information about the link display:
-    bool    iconButtonAt(const QPoint &pos) const;                               /// << @return true if the icon button is under point @p pos.
-    QRect   iconButtonRect() const;                                              /// << @return the rectangle of the icon button.
+    bool    iconButtonAt(const QPointF &pos) const;                               /// << @return true if the icon button is under point @p pos.
+    QRectF   iconButtonRect() const;                                              /// << @return the rectangle of the icon button.
     // Utility function:
     QFont   labelFont(QFont font, bool isIconButtonHovered) const;               /// << @return the font for this link, according to parent font AND LinkLook!
-    int     heightForWidth(int width) const;                                     /// << @return the needed height to display the link in function of a width.
+    qreal     heightForWidth(qreal width) const;                                     /// << @return the needed height to display the link in function of a width.
     QString toHtml(const QString &imageName) const;                              /// << Convert the link to HTML code, using the LinkLook to style it.
     QString toHtml(HTMLExporter *exporter, const KUrl &url, const QString &title = "");
 private:
@@ -203,10 +203,10 @@ private:
     QPixmap   m_preview;
     LinkLook *m_look;
     QFont     m_font;
-    int       m_minWidth;
-    int       m_maxWidth;
-    int       m_width;
-    int       m_height;
+    qreal       m_minWidth;
+    qreal       m_maxWidth;
+    qreal       m_width;
+    qreal       m_height;
 };
 
 /** A widget to edit a LinkLook, showing a live example to the user.

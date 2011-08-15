@@ -32,20 +32,20 @@
 #include <QDragLeaveEvent>
 #include <QItemDelegate>
 
-class BasketView;
+class BasketScene;
 
 
 class BasketListViewItem : public QTreeWidgetItem
 {
 public:
     /// CONSTRUCTOR AND DESTRUCTOR:
-    BasketListViewItem(QTreeWidget *parent, BasketView *basket);
-    BasketListViewItem(QTreeWidgetItem *parent, BasketView *basket);
-    BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketView *basket);
-    BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketView *basket);
+    BasketListViewItem(QTreeWidget *parent, BasketScene *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, BasketScene *basket);
+    BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketScene *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketScene *basket);
     ~BasketListViewItem();
 
-    BasketView *basket() {
+    BasketScene *basket() {
         return m_basket;
     }
     void setup();
@@ -72,7 +72,7 @@ public:
     void setAbbreviated(bool b);
 
 private:
-    BasketView *m_basket;
+    BasketScene *m_basket;
     int     m_width;
     bool m_isUnderDrag;
     bool m_isAbbreviated;

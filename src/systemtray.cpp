@@ -29,7 +29,7 @@
 #include <KDE/KIconEffect>
 
 // Local
-#include "basketview.h"
+#include "basketscene.h"
 #include "settings.h"
 #include "global.h"
 #include "tools.h"
@@ -109,7 +109,7 @@ SystemTray::~SystemTray()
 /** Updates the icon and tooltip in the system tray */
 void SystemTray::updateDisplay()
 {
-    BasketView *basket = Global::bnpView->currentBasket();
+    BasketScene *basket = Global::bnpView->currentBasket();
     if (!basket)
         return;
 
@@ -263,13 +263,13 @@ void SystemTray::dragEnterEvent(QDragEnterEvent *event)
 {
     m_showTimer->start(Settings::dropTimeToShow() * 100, true);
     Global::bnpView->currentBasket()->showFrameInsertTo();
-/// m_parentContainer->setStatusBarDrag(); // FIXME: move this line in BasketView::showFrameInsertTo() ?
-    BasketView::acceptDropEvent(event);
+/// m_parentContainer->setStatusBarDrag(); // FIXME: move this line in BasketScene::showFrameInsertTo() ?
+    BasketScene::acceptDropEvent(event);
 }
 
 void SystemTray::dragMoveEvent(QDragMoveEvent *event)
 {
-    BasketView::acceptDropEvent(event);
+    BasketScene::acceptDropEvent(event);
 }
 
 void SystemTray::dragLeaveEvent(QDragLeaveEvent*)
@@ -288,7 +288,7 @@ void SystemTray::dropEvent(QDropEvent *event)
 
     Global::bnpView->currentBasket()->blindDrop(event);
 
-    /*  BasketView *basket = Global::bnpView->currentBasket();
+    /*  BasketScene *basket = Global::bnpView->currentBasket();
         if (!basket->isLoaded()) {
             Global::bnpView->showPassiveLoading(basket);
             basket->load();
@@ -304,7 +304,7 @@ void SystemTray::updateToolTip()
 {
 //  return; /////////////////////////////////////////////////////
 
-    BasketView *basket = Global::bnpView->currentBasket();
+    BasketScene *basket = Global::bnpView->currentBasket();
     if (!basket)
         return;
 
@@ -336,7 +336,7 @@ void SystemTray::updateToolTip()
 
 void SystemTray::updateToolTipDelayed()
 {
-    BasketView *basket = Global::bnpView->currentBasket();
+    BasketScene *basket = Global::bnpView->currentBasket();
 
     QString tip = "<p><nobr>" + (basket->isLocked() ? KDialog::makeStandardCaption(i18n("%1 (Locked)"))
                                  : KDialog::makeStandardCaption("%1"))

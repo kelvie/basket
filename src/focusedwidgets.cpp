@@ -21,11 +21,11 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <KDE/KLocale>
-
+#include <QScrollBar>
 #include "focusedwidgets.h"
 #include "bnpview.h"
 #include "global.h"
-#include "basketview.h"
+#include "basketscene.h"
 
 #ifdef KeyPress
 #undef KeyPress
@@ -81,8 +81,8 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
     if ((event->delta() > 0 && sb->value() > sb->minimum())
             || (event->delta() < 0 && sb->value() < sb->maximum()))
         KTextEdit::wheelEvent(event);
-    else
-        Global::bnpView->currentBasket()->wheelEvent(event);
+    //else
+    //    Global::bnpView->currentBasket()->graphicsView()->wheelEvent(event);
 }
 
 void FocusedTextEdit::enterEvent(QEvent *event)
