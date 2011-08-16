@@ -22,7 +22,7 @@
 #include "global.h"
 #include "tag.h"
 #include "debugwindow.h"
-#include "basketview.h"
+#include "basketscene.h"
 
 #include <Nepomuk/ResourceManager>
 #include <Nepomuk/Variant>

@@ -538,7 +538,7 @@ void BasketScene::loadNotes(const QDomElement &notes, Note *parent)
                 note->setGroupWidth(e.attribute("width", "200").toInt());
             // Group Properties:
             if (note->isGroup() && !note->isColumn() && XMLWork::trueOrFalse(e.attribute("folded", "false")))
-                note->toggleFolded(false);
+                note->toggleFolded();
             // Tags:
             if (note->content()) {
                 QString tagsString = XMLWork::getElementText(e, "tags", "");

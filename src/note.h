@@ -137,7 +137,7 @@ public:
         m_firstChild = note;
     }
     bool isShown();
-    bool  toggleFolded(QTimeLine *timeLine = 0);
+    bool  toggleFolded();
     
     Note* noteAt(QPointF pos);
     Note* firstRealChild();

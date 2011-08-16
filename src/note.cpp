@@ -1079,7 +1079,7 @@ qreal Note::minRight()
 }*/
 
 
-bool Note::toggleFolded(QTimeLine *timeLine)
+bool Note::toggleFolded()
 {
     // Close the editor if it was editing a note that we are about to hide after collapsing:
     if (!m_isFolded && basket() && basket()->isDuringEdit()) {
