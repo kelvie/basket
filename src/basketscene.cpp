@@ -1185,6 +1185,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
 {
     m_view = new QGraphicsView(this);
     m_view->setFocusPolicy(Qt::StrongFocus);
+    m_view->setAlignment(Qt::AlignLeft|Qt::AlignTop);
 
     m_action = new KAction(this);
     connect(m_action, SIGNAL(triggered()), this, SLOT(activatedShortcut()));
@@ -3074,6 +3075,7 @@ void BasketScene::drawForeground ( QPainter * painter, const QRectF & rect )
     
     if (!m_loaded) 
     {
+	setSceneRect(0,0,m_view->viewport()->width(),m_view->viewport()->height());
 	QBrush brush(backgroundColor());
         QPixmap pixmap(m_view->viewport()->width(), m_view->viewport()->height()); // TODO: Clip it to asked size only!
         QPainter painter2(&pixmap);
@@ -3182,8 +3184,6 @@ void BasketScene::relayoutNotes(bool animate)
         animate = false;
 
     int h     = 0;
-    tmpWidth  = 0;
-    tmpHeight = 0;
     Note *note = m_firstNote;
     while (note) {
         if (note->matching()) {
@@ -3201,13 +3201,10 @@ void BasketScene::relayoutNotes(bool animate)
         note = note->next();
     }
 
-    if (isFreeLayout())
-        tmpHeight += 100;
-    else
-        tmpHeight += 15;
-
-    setSceneRect(0, 0, qMax(tmpWidth, (qreal)m_view->viewport()->width()), qMax(tmpHeight, (qreal)m_view->viewport()->height()));
-
+    QRectF boundingRect = itemsBoundingRect();
+    setSceneRect(0,0,boundingRect.x()+boundingRect.width(),
+		 boundingRect.y()+itemsBoundingRect().height());
+    
     recomputeBlankRects();
     placeEditor();
     doHoverEffects();
