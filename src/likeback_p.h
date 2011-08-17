@@ -32,6 +32,8 @@ class QTextEdit;
 class QRadioButton;
 class QCheckBox;
 class QGroupBox;
+class QNetworkReply;
+
 class Kaction;
 
 class LikeBackBar;
@@ -106,7 +108,7 @@ private slots:
     void changeButtonBarVisible();
     void commentChanged();
     void send();
-    void requestFinished(int id, bool error);
+    void requestFinished(QNetworkReply* reply);
 };
 
 #endif // LIKEBACK_PRIVATE_H

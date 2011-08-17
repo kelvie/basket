@@ -38,6 +38,9 @@
 #include <KDE/KGlobal>
 #include <KDE/KUser>
 
+#include <KDE/KIO/AccessManager>
+
+#include <QtCore/QBuffer>
 #include <QtCore/QPointer>
 #include <QtGui/QToolButton>
 #include <QtGui/QHBoxLayout>
@@ -49,7 +52,8 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QTextEdit>
 #include <QtGui/QLabel>
-#include <QtNetwork/QHttp>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 #include <QtGui/QAction>
 #include <QtGui/QValidator>
 #include <QtGui/QDesktopWidget>
@@ -794,27 +798,33 @@ void LikeBackDialog::send()
         "context="  + QUrl::toPercentEncoding(m_context)                          + '&' +
         "comment="  + QUrl::toPercentEncoding(m_comment->toPlainText())           + '&' +
         "email="    + QUrl::toPercentEncoding(emailAddress);
-    QHttp *http = new QHttp(m_likeBack->hostName(), m_likeBack->hostPort());
+
+    QByteArray dataUtf8 = data.toUtf8();
+    QBuffer buffer(&dataUtf8);
+
+    KIO::Integration::AccessManager *http = new KIO::Integration::AccessManager(this);
+    QString urlString;
+    urlString = "http://" + m_likeBack->hostName() + ":" + m_likeBack->hostPort() + m_likeBack->remotePath();
+    KUrl url(urlString);
+    QNetworkRequest request(url);
+    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     kDebug() << "http://" << m_likeBack->hostName() << ":" << m_likeBack->hostPort() << m_likeBack->remotePath();
     kDebug() << data;
-    connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
 
-    QHttpRequestHeader header("POST", m_likeBack->remotePath());
-    header.setValue("Host", m_likeBack->hostName());
-    header.setValue("Content-Type", "application/x-www-form-urlencoded");
-    http->setHost(m_likeBack->hostName());
-    http->request(header, data.toUtf8());
+    connect(http, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
+
+    http->post(request, &buffer);
 
     m_comment->setEnabled(false);
 }
 
-void LikeBackDialog::requestFinished(int /*id*/, bool error)
+void LikeBackDialog::requestFinished(QNetworkReply *reply)
 {
     // TODO: Save to file if error (connection not present at the moment)
     m_comment->setEnabled(true);
     m_likeBack->disableBar();
-    if (error) {
+    if (reply->error() != QNetworkReply::NoError) {
         KMessageBox::error(this, i18n("<p>Error while trying to send the report.</p><p>Please retry later.</p>"), i18n("Transfer Error"));
     } else {
         KMessageBox::information(
@@ -827,4 +837,5 @@ void LikeBackDialog::requestFinished(int /*id*/, bool error)
     m_likeBack->enableBar();
 
     KDialog::accept();
+    reply->deleteLater();
 }
