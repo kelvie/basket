@@ -27,7 +27,6 @@ set(basketcommon_LIB_SRCS
     htmlexporter.cpp
     history.cpp
     kcolorcombo2.cpp
-    keyboard.cpp
     kgpgme.cpp
     likeback.cpp
     linklabel.cpp

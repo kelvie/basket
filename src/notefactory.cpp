@@ -35,6 +35,7 @@
 #include <QtGui/QMovie>
 #include <QtGui/QTextDocument> //For Qt::mightBeRichText(...)
 #include <QtGui/QBitmap> //For createHeuristicMask
+#include <QtCore/qnamespace.h>
 
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
@@ -47,6 +48,7 @@
 #include <KDE/KMenu>
 #include <KDE/KUriFilter>
 #include <KDE/KIconDialog>
+#include <KDE/KModifierKeyInfo>
 #include <KDE/KAboutData> //For KGlobal::mainComponent().aboutData(...)
 
 #include <KDE/KIO/CopyJob>
@@ -57,7 +59,6 @@
 #include "notedrag.h"
 #include "global.h"
 #include "settings.h"
-#include "keyboard.h"
 #include "variouswidgets.h" //For IconSizeDialog
 #include "tools.h"
 
@@ -514,9 +515,10 @@ Note* NoteFactory::createNoteUnknown(const QMimeData *source, BasketView *parent
 
 Note* NoteFactory::dropURLs(KUrl::List urls, BasketView *parent, Qt::DropAction action, bool fromDrop)
 {
+    KModifierKeyInfo keyinfo;
     int  shouldAsk    = 0; // shouldAsk==0: don't ask ; shouldAsk==1: ask for "file" ; shouldAsk>=2: ask for "files"
-    bool shiftPressed = Keyboard::shiftPressed();
-    bool ctrlPressed  = Keyboard::controlPressed();
+    bool shiftPressed = keyinfo.isKeyPressed(Qt::Key_Shift);
+    bool ctrlPressed  = keyinfo.isKeyPressed(Qt::Key_Control);
     bool modified     = fromDrop && (shiftPressed || ctrlPressed);
 
     if (modified) // Then no menu + modified action
