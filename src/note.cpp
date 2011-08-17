@@ -38,10 +38,6 @@
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
 
-#ifdef None
-#undef None
-#endif
-
 #include "basketview.h"
 #include "filter.h"
 #include "tag.h"
