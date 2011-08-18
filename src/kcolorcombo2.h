@@ -34,39 +34,6 @@ class QPaintEvent;
 
 class KColorPopup;
 
-#ifdef USE_OLD_KCOLORCOMBO
-#include <KColorCombo>
-
-// A temporary class for backwards compatibiility until KColorCombo2 gets
-// ported.
-class KColorCombo2 : public KColorCombo
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(KColorCombo2);
-
-public:
-    KColorCombo2(const QColor &color,
-                 const QColor &defaultColor,
-                 QWidget *parent = 0)
-            : KColorCombo(parent) {
-        setColor(color);
-        setDefaultColor(defaultColor);
-    }
-
-    explicit KColorCombo2(const QColor &color,
-                 QWidget *parent = 0)
-            : KColorCombo(parent) {
-        setColor(color);
-    }
-
-    KColorCombo2(QWidget *parent = 0)
-            : KColorCombo(parent) {}
-
-    void setDefaultColor(const QColor &) { /* noop */ }
-};
-
-
-#else /* USE_OLD_KCOLORCOMBO */
 /**
  * @short A combobox to display or allow user selection of a color in a user-friendly way.
  *
@@ -342,8 +309,6 @@ private:
     KColorCombo2Private *d;
 };
 
-
-
 // TODO: setColorArray(QColor **, int, int) and use signals/slots ??
 
 class KColorPopup : public QWidget
@@ -377,7 +342,5 @@ private:
     static const int MARGIN;
     static const int FRAME_WIDTH;
 };
-
-#endif // USE_OLD_KCOLORCOMBO
 
 #endif // KCOLORCOMBO2_H
