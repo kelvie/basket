@@ -23,7 +23,6 @@
 #include <QtCore/QList>
 #include <QtCore/QPointer>
 #include <QtCore/QString>
-#include <QtGui/QLineEdit>
 #include <QtGui/QLabel>
 #include <QtGui/QSizeGrip>
 #include <QtGui/QPushButton>
@@ -36,6 +35,7 @@
 #include <QtGui/QDrag>
 #include <QtGui/QFontDatabase>
 
+#include <KDE/KLineEdit>
 #include <KDE/KListWidget>
 #include <KDE/KLocale>
 #include <KDE/KOpenWithDialog>
@@ -49,7 +49,7 @@ RunCommandRequester::RunCommandRequester(const QString &runCommand, const QStrin
     m_message = message;
 
     QHBoxLayout *layout = new QHBoxLayout(this);
-    m_runCommand        = new QLineEdit(runCommand, this);
+    m_runCommand        = new KLineEdit(runCommand, this);
     QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
     pb->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -85,7 +85,7 @@ void RunCommandRequester::setRunCommand(const QString &runCommand)
 /** class IconSizeCombo: */
 
 IconSizeCombo::IconSizeCombo(QWidget *parent)
-        : QComboBox(parent)
+        : KComboBox(parent)
 {
     addItem(i18n("16 by 16 pixels"));
     addItem(i18n("22 by 22 pixels"));

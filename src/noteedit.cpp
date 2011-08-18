@@ -21,7 +21,6 @@
 #include "noteedit.h"
 
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QTextCharFormat>
 #include <QtGui/QKeyEvent>
@@ -126,7 +125,7 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
     if (textEdit)
         m_textEdit = textEdit;
     else {
-        QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(inlineEditor);
+        KLineEdit *lineEdit = dynamic_cast<KLineEdit*>(inlineEditor);
         if (lineEdit)
             m_lineEdit = lineEdit;
     }
@@ -557,7 +556,7 @@ UnknownEditor::UnknownEditor(UnknownContent *unknownContent, QWidget *parent)
 /** class DebuggedLineEdit: */
 
 DebuggedLineEdit::DebuggedLineEdit(const QString &text, QWidget *parent)
-        : QLineEdit(text, parent)
+        : KLineEdit(text, parent)
 {
 }
 
@@ -568,7 +567,7 @@ DebuggedLineEdit::~DebuggedLineEdit()
 void DebuggedLineEdit::keyPressEvent(QKeyEvent *event)
 {
     QString oldText = text();
-    QLineEdit::keyPressEvent(event);
+    KLineEdit::keyPressEvent(event);
     if (oldText != text())
         emit textChanged(text());
 }
@@ -899,7 +898,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
     KService service(contentNote->fullPath());
 
     m_command = new RunCommandRequester(service.exec(), i18n("Choose a command to run:"), page);
-    m_name    = new QLineEdit(service.name(), page);
+    m_name    = new KLineEdit(service.name(), page);
 
     QWidget *wid = new QWidget(page);
     QHBoxLayout *hLay = new QHBoxLayout(wid);

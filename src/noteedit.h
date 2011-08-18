@@ -22,8 +22,7 @@
 #define NOTEEDIT_H
 
 #include <KDE/KDialog>
-
-#include <QLineEdit>
+#include <KDE/KLineEdit>
 
 #include "notecontent.h"
 
@@ -83,7 +82,7 @@ public:
     KTextEdit*  textEdit() {
         return m_textEdit;
     }
-    QLineEdit*  lineEdit() {
+    KLineEdit*  lineEdit() {
         return m_lineEdit;
     }
 
@@ -92,7 +91,7 @@ private:
     bool         m_canceled;
     QWidget     *m_widget;
     KTextEdit   *m_textEdit;
-    QLineEdit   *m_lineEdit;
+    KLineEdit   *m_lineEdit;
     NoteContent *m_noteContent;
 
 public:
@@ -215,12 +214,12 @@ public:
     UnknownEditor(UnknownContent *unknownContent, QWidget *parent);
 };
 
-/** QLineEdit behavior:
-  * Create a new QLineEdit with a text, then the user select a part of it and press ONE letter key.
+/** KLineEdit behavior:
+  * Create a new KLineEdit with a text, then the user select a part of it and press ONE letter key.
   * The signal editTextChanged() is not emitted!
   * This class correct that!
   */
-class DebuggedLineEdit : public QLineEdit
+class DebuggedLineEdit : public KLineEdit
 {
     Q_OBJECT
 public:
@@ -252,7 +251,7 @@ private:
     LinkContent   *m_noteContent;
     bool           m_isAutoModified;
     KUrlRequester *m_url;
-    QLineEdit     *m_title;
+    KLineEdit     *m_title;
     KIconButton   *m_icon;
     QPushButton   *m_autoTitle;
     QPushButton   *m_autoIcon;
@@ -294,7 +293,7 @@ protected slots:
 private:
     LauncherContent     *m_noteContent;
     RunCommandRequester *m_command;
-    QLineEdit           *m_name;
+    KLineEdit           *m_name;
     KIconButton         *m_icon;
 };
 

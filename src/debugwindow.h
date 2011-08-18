@@ -24,7 +24,7 @@
 #include <QtGui/QWidget>
 
 class QVBoxLayout;
-class QTextBrowser;
+class KTextBrowser;
 class QString;
 class QCloseEvent;
 
@@ -47,7 +47,7 @@ protected:
     virtual void closeEvent(QCloseEvent *event);
 private:
     QVBoxLayout  *layout;
-    QTextBrowser *textBrowser;
+    KTextBrowser *textBrowser;
 };
 
 #define DEBUG_WIN if (Global::debugWindow) *Global::debugWindow

@@ -31,13 +31,13 @@
 #include <QtGui/QFrame>
 #include <QtGui/QCursor>
 #include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QGroupBox>
 
 #include <KDE/KApplication>
 #include <KDE/KAboutData>
+#include <KDE/KComboBox>
 #include <KDE/KLocale>
 #include <KDE/KIconLoader>
 #include <KDE/KUrl>
@@ -588,7 +588,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
     layout->addLayout(gl);
     gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
-    m_underlining = new QComboBox(this);
+    m_underlining = new KComboBox(this);
     m_underlining->addItem(i18n("Always"));
     m_underlining->addItem(i18n("Never"));
     m_underlining->addItem(i18n("On mouse hovering"));
@@ -622,7 +622,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
     gl->addWidget(label,  3, 0);
     gl->addItem(icoLay, 3, 1);
 
-    m_preview = new QComboBox(this);
+    m_preview = new KComboBox(this);
     m_preview->addItem(i18n("None"));
     m_preview->addItem(i18n("Icon size"));
     m_preview->addItem(i18n("Twice the icon size"));

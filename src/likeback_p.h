@@ -28,7 +28,7 @@
 #include <QtCore/QTimer>
 
 class QToolButton;
-class QTextEdit;
+class KTextEdit;
 class QRadioButton;
 class QCheckBox;
 class QGroupBox;
@@ -94,7 +94,7 @@ private:
     LikeBack     *m_likeBack;
     QString       m_windowPath;
     QString       m_context;
-    QTextEdit    *m_comment;
+    KTextEdit    *m_comment;
     QRadioButton *likeButton;
     QRadioButton *dislikeButton;
     QRadioButton *bugButton;

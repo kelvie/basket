@@ -30,6 +30,7 @@
 #include <KDE/KLocale>
 #include <KDE/KDebug>
 #include <KDE/KMessageBox>
+#include <KDE/KTextEdit>
 
 #include <KDE/KPushButton>
 #include <KDE/KGuiItem>
@@ -50,7 +51,6 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QRadioButton>
 #include <QtGui/QGroupBox>
-#include <QtGui/QTextEdit>
 #include <QtGui/QLabel>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
@@ -694,7 +694,7 @@ LikeBackDialog::LikeBackDialog(LikeBack::Button reason, const QString &initialCo
     }
 
     // The comment text box:
-    m_comment = new QTextEdit(box);
+    m_comment = new KTextEdit(box);
     boxLayout->addWidget(m_comment);
     m_comment->setTabChangesFocus(true);
     m_comment->setPlainText(initialComment);

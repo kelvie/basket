@@ -27,9 +27,9 @@
 #include <QtGui/QListWidget>
 
 class KIconButton;
-class QLineEdit;
+class KLineEdit;
 class QMimeData;
-class QComboBox;
+class KComboBox;
 class QTreeWidgetItem;
 
 class BasketView;
@@ -92,10 +92,10 @@ private:
     int populateBasketsList(QTreeWidgetItem *item, int indent, int index);
     NewBasketDefaultProperties  m_defaultProperties;
     KIconButton                *m_icon;
-    QLineEdit                  *m_name;
+    KLineEdit                  *m_name;
     KColorCombo2               *m_backgroundColor;
     QListWidget                 *m_templates;
-    QComboBox                  *m_createIn;
+    KComboBox                  *m_createIn;
     QMap<int, BasketView*>          m_basketsMap;
 };
 

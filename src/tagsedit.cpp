@@ -32,12 +32,12 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPainter>
 #include <QtGui/QVBoxLayout>
 
 #include <KDE/KApplication>
+#include <KDE/KLineEdit>
 #include <KDE/KIconButton>
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
@@ -379,7 +379,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QWidget   *tagWidget = new QWidget;
     m_tagBoxLayout->addWidget(tagWidget);
 
-    m_tagName = new QLineEdit(tagWidget);
+    m_tagName = new KLineEdit(tagWidget);
     QLabel *tagNameLabel = new QLabel(i18n("&Name:"), tagWidget);
     tagNameLabel->setBuddy(m_tagName);
 
@@ -420,7 +420,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QWidget *stateWidget = new QWidget;
     m_stateBoxLayout->addWidget(stateWidget);
 
-    m_stateName = new QLineEdit(stateWidget);
+    m_stateName = new KLineEdit(stateWidget);
     m_stateNameLabel = new QLabel(i18n("Na&me:"), stateWidget);
     m_stateNameLabel->setBuddy(m_stateName);
 
@@ -505,7 +505,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QLabel *fontSizeLabel = new QLabel(i18n("&Size:"), stateWidget);
     fontSizeLabel->setBuddy(m_fontSize);
 
-    m_textEquivalent = new QLineEdit(stateWidget);
+    m_textEquivalent = new KLineEdit(stateWidget);
     QLabel *textEquivalentLabel = new QLabel(i18n("Te&xt equivalent:"), stateWidget);
     textEquivalentLabel->setBuddy(m_textEquivalent);
     QFont font = m_textEquivalent->font();

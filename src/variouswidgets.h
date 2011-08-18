@@ -28,14 +28,14 @@
 #include <KDE/KComboBox>
 #include <KDE/KUrlLabel>
 
-class QLineEdit;
+class KLineEdit;
 class QListWidgetItem;
 class QResizeEvent;
 class QString;
 class QKeyEvent;
 
 /** A widget to select a command to run,
-  * with a QLineEdit and a QPushButton.
+  * with a KLineEdit and a QPushButton.
   * @author Sébastien Laoût
   */
 class RunCommandRequester : public QWidget
@@ -46,20 +46,20 @@ public:
     ~RunCommandRequester();
     QString runCommand();
     void setRunCommand(const QString &runCommand);
-    QLineEdit *lineEdit() {
+    KLineEdit *lineEdit() {
         return m_runCommand;
     }
 private slots:
     void slotSelCommand();
 private:
-    QLineEdit *m_runCommand;
+    KLineEdit *m_runCommand;
     QString    m_message;
 };
 
-/** QComboBox to ask icon size
+/** KComboBox to ask icon size
   * @author Sébastien Laoût
   */
-class IconSizeCombo : public QComboBox
+class IconSizeCombo : public KComboBox
 {
     Q_OBJECT
 public:

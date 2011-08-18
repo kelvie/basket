@@ -27,13 +27,13 @@
 #include "ui_basketproperties.h"
 
 class KIconButton;
-class QLineEdit;
-class QComboBox;
+class KLineEdit;
 class QGroupBox;
 class QVBoxLayout;
 class QRadioButton;
 class QString;
 
+class KComboBox;
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
@@ -60,6 +60,10 @@ protected slots:
     void selectColumnsLayout();
 
 private:
+    BasketView    *m_basket;
+    KIconButton   *m_icon;
+    KLineEdit     *m_name;
+    KComboBox     *m_backgroundImage;
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
     BasketView    *m_basket;

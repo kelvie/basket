@@ -28,13 +28,13 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QRadioButton>
-#include <QtGui/QTextEdit>
 #include <QtXml/QDomDocument>
 
 #include <KDE/KStandardDirs>
 #include <KDE/KLocale>
 #include <KDE/KFileDialog>
 #include <KDE/KMessageBox>
+#include <KDE/KTextEdit>
 
 #include "basketview.h"
 #include "basketfactory.h"
@@ -131,7 +131,7 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 
     QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit);
     hLayout->addSpacing(20);
-    m_customSeparator = new QTextEdit(indentedTextEdit);
+    m_customSeparator = new KTextEdit(indentedTextEdit);
     hLayout->addWidget(m_customSeparator);
 
     m_all_in_one_choice = new QRadioButton(i18n("&All in one note"),                  m_choices);
@@ -212,7 +212,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     tomboy.replace("<strikethrough>",  "<span style='text-decoration: line-through'>");
     tomboy.replace("</strikethrough>", "</span>");
 
-    // Highlight not supported by QTextEdit:
+    // Highlight not supported by KTextEdit:
     tomboy.replace("<highlight>",      "<span style='color:#ff0080'>");
     tomboy.replace("</highlight>",     "</span>");
 

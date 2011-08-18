@@ -320,7 +320,7 @@ class KColorCombo2::KColorCombo2Private
  */
 
 KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent)
-        : QComboBox(parent),
+        : KComboBox(parent),
         m_color(color), m_defaultColor(defaultColor)
 {
     setEditable(false);
@@ -328,7 +328,7 @@ KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWid
 }
 
 KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent)
-        : QComboBox(parent),
+        : KComboBox(parent),
         m_color(color), m_defaultColor()
 {
     setEditable(false);
@@ -730,14 +730,14 @@ void KColorCombo2::keyPressEvent(QKeyEvent *event)
         color = qvariant_cast<QColor>(QApplication::clipboard()->mimeData(QClipboard::Clipboard)->colorData());
         setColor(color);
     } else
-        QComboBox::keyPressEvent(event);
+        KComboBox::keyPressEvent(event);
 }
 
 void KColorCombo2::fontChange(const QFont &oldFont)
 {
     // Since the color-rectangle is the same height of the text, we should resize it if the font change:
     updateComboBox();
-    QComboBox::fontChange(oldFont); // To update geometry.
+    KComboBox::fontChange(oldFont); // To update geometry.
 }
 
 void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)

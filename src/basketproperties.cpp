@@ -21,8 +21,6 @@
 #include "basketproperties.h"
 
 #include <QtCore/QStringList>
-#include <QtGui/QLineEdit>
-#include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QGridLayout>
@@ -33,6 +31,8 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QStyle>
 
+#include <KDE/KComboBox>
+#include <KDE/KLineEdit>
 #include <KDE/KLocale>
 #include <KDE/KShortcutWidget>
 #include <KDE/KNumInput>
@@ -65,32 +65,62 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *pare
     setModal(true);
     showButtonSeparator(false);
 
-    icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
-    icon->setIconSize(16);
-    icon->setIcon(m_basket->icon());
-    
-    int size = qMax(icon->sizeHint().width(), icon->sizeHint().height());
-    icon->setFixedSize(size, size); // Make it square!
-    icon->setToolTip(i18n("Icon"));
-    name->setText(m_basket->basketName());
-    name->setMinimumWidth(name->fontMetrics().maxWidth()*20);
-    name->setToolTip(i18n("Name"));
+    QWidget *page = new QWidget(this);
+    QVBoxLayout *topLayout = new QVBoxLayout(page);
 
-    // Appearance:    
-    m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceGroup);
-    m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceGroup);
-    
-    bgColorLbl->setBuddy(m_backgroundColor);
-    txtColorLbl->setBuddy(m_textColor);
-    
-    appearanceLayout->addWidget(m_backgroundColor, 1, 2);
-    appearanceLayout->addWidget(m_textColor, 2, 2);
-    
-    setTabOrder(backgroundImage, m_backgroundColor);
-    setTabOrder(m_backgroundColor, m_textColor);
-    setTabOrder(m_textColor, columnForm);
-    
-    backgroundImage->addItem(i18n("(None)"));
+    // Icon and Name:
+    QHBoxLayout *nameLayout = new QHBoxLayout(0);
+    int margin = marginHint() * 2 / 3;
+    nameLayout->setContentsMargins(margin, margin, margin, margin);
+    m_icon = new KIconButton(page);
+    m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
+    m_icon->setIconSize(16);
+    m_icon->setIcon(m_basket->icon());
+    int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
+    m_icon->setFixedSize(size, size); // Make it square!
+    m_icon->setToolTip(i18n("Icon"));
+    m_name = new KLineEdit(m_basket->basketName(), page);
+    m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
+    m_name->setToolTip(i18n("Name"));
+    nameLayout->addWidget(m_icon);
+    nameLayout->addWidget(m_name);
+    topLayout->addLayout(nameLayout);
+
+    // Appearance:
+    QGroupBox *appearance = new QGroupBox(i18n("Appearance"), page);
+    QVBoxLayout* appearanceLayout = new QVBoxLayout;
+    appearance->setLayout(appearanceLayout);
+    QWidget *appearanceWidget = new QWidget;
+    appearanceLayout->addWidget(appearanceWidget);
+
+    //QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
+    QGridLayout *grid = new QGridLayout(appearanceWidget);
+
+    m_backgroundImage = new KComboBox(appearanceWidget);
+    m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceWidget);
+    m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceWidget);
+
+    QLabel *label1 = new QLabel(appearanceWidget);
+    label1->setBuddy(m_backgroundImage);
+    label1->setText(i18n("Background &image:"));
+
+    QLabel *label2 = new QLabel(appearanceWidget);
+    label2->setBuddy(m_backgroundColor);
+    label2->setText(i18n("&Background color:"));
+
+    QLabel *label3 = new QLabel(appearanceWidget);
+    label3->setBuddy(m_textColor);
+    label3->setText(i18n("&Text color:"));
+
+    grid->addWidget(label1,            0, 0, Qt::AlignVCenter);
+    grid->addWidget(label2,            1, 0, Qt::AlignVCenter);
+    grid->addWidget(label3,            2, 0, Qt::AlignVCenter);
+    grid->addWidget(m_backgroundImage, 0, 1, Qt::AlignVCenter);
+    grid->addWidget(m_backgroundColor, 1, 1, Qt::AlignVCenter);
+    grid->addWidget(m_textColor,       2, 1, Qt::AlignVCenter);
+    topLayout->addWidget(appearance);
+
+    m_backgroundImage->addItem(i18n("(None)"));
     m_backgroundImagesMap.insert(0, "");
     backgroundImage->setIconSize(QSize(100, 75));
     QStringList backgrounds = Global::backgroundManager->imageNames();
