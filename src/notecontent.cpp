@@ -1830,7 +1830,6 @@ void LinkContent::startFetchingLinkTitle()
         if (m_access_manager == 0) {
             m_access_manager = new KIO::Integration::AccessManager(this);
             connect(m_access_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(httpDone(QNetworkReply*)));
-            connect(m_access_manager, SIGNAL(readyRead()), this, SLOT(httpReadyRead()));
         }
 
         //If no explicit port, default to port 80.
@@ -1843,6 +1842,7 @@ void LinkContent::startFetchingLinkTitle()
 
         //Issue request
         m_reply = m_access_manager->get(QNetworkRequest(newUrl));
+        connect(m_reply, SIGNAL(readyRead()), this, SLOT(httpReadyRead()));
     }
 }
 
