@@ -628,7 +628,7 @@ void KColorCombo2::updateComboBox()
     setItemIcon(/*index=*/0, pixmap);
     setItemText(/*index=*/0,
                 (m_color.isValid()
-                 ? QString(i18n("R:%1, G:%2, B:%3")).arg(m_color.red()).arg(m_color.green()).arg(m_color.blue())
+                 ? QString(i18n( "R:%1, G:%2, B:%3", m_color.red(), m_color.green(), m_color.blue() ))
                  : i18nc("color", "(Default)")));
 }
 
