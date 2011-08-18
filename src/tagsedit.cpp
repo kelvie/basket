@@ -1294,6 +1294,6 @@ void TagListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
                             const QModelIndex &index) const
 {
     TagListViewItem* thisItem  = qvariant_cast<TagListViewItem*>(index.data());
-    kDebug() << "Pointer is: " << thisItem << endl;
+//    kDebug() << "Pointer is: " << thisItem << endl;
     QItemDelegate::paint(painter, option, index);
 }
