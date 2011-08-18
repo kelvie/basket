@@ -344,7 +344,7 @@ Note* NoteFactory::dropNote(const QMimeData *source, BasketScene *parent, bool f
     /* Debug */
     if (Global::debugWindow) {
         *Global::debugWindow << "<b>Drop :</b>";
-        for (int i = 0; formats.size(); ++i)
+        for (int i = 0; i < formats.size(); ++i)
             *Global::debugWindow << "\t[" + QString::number(i) + "] " + formats[i];
         switch (action) { // The source want that we:
         case Qt::CopyAction:       *Global::debugWindow << ">> Drop action: Copy";       break;

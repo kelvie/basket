@@ -70,7 +70,13 @@ NoteEditor::NoteEditor(NoteContent *noteContent)
 NoteEditor::~NoteEditor()
 {
   if(m_widget)
+  {
+    if(m_widget->scene())
+    {
+      m_widget->scene()->removeItem(m_widget);
+    }
     delete m_widget;
+  }
 }
 
 Note* NoteEditor::note()
@@ -125,23 +131,29 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
 
 void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 {
-	if(m_widget) delete m_widget;
-
-    m_widget   = new QGraphicsProxyWidget();
+    if(!m_widget)
+    {
+      m_widget   = new QGraphicsProxyWidget();
+    }
     m_widget->setWidget(inlineEditor);
     m_widget->setZValue(500);
     //m_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     m_textEdit = 0;
     m_lineEdit = 0;
-
     KTextEdit *textEdit = dynamic_cast<KTextEdit*>(inlineEditor);
     if (textEdit)
+    {
         m_textEdit = textEdit;
-    else {
+    }
+    else 
+    {
         QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(inlineEditor);
         if (lineEdit)
-            m_lineEdit = lineEdit;
+	{
+	  m_lineEdit = lineEdit;
+	}
     }
 }
 
@@ -220,8 +232,7 @@ void TextEditor::validate()
     m_textContent->saveToFile();
     m_textContent->setEdited();
 
-  delete graphicsWidget()->widget();
-  setInlineEditor(0);
+    note()->setWidth(0);
 }
 
 /** class HtmlEditor: */
@@ -409,8 +420,13 @@ void HtmlEditor::validate()
 //      if (InlineEditors::instance()->richTextToolBar())
 //          InlineEditors::instance()->richTextToolBar()->hide();
     }
-    delete graphicsWidget()->widget();
-    setInlineEditor(0);
+    
+    if( graphicsWidget() )
+    {
+      note()->setZValue(1);
+      delete graphicsWidget()->widget();
+      setInlineEditor(0);
+    }
 }
 
 /** class ImageEditor: */

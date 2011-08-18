@@ -331,7 +331,10 @@ public:
 
 /// ADDED:
 public:
-    void deleteSelectedNotes(bool deleteFilesToo = true);
+    /**
+     * @return true if this note could be deleted
+     **/
+    bool deleteSelectedNotes(bool deleteFilesToo = true);
     int count();
     int countDirectChilds();
 

@@ -113,9 +113,14 @@ Note::Note(BasketScene *parent)
 
 Note::~Note()
 {
+    if(m_basket)
+    {
+        if(m_content && m_content->graphicsItem()) 
+            m_basket->removeItem(m_content->graphicsItem());
+        m_basket->removeItem(this);
+    }    
     delete m_animation;
     delete m_content;
-    if(m_basket) m_basket->removeItem(this);
     deleteChilds();
 }
 
@@ -239,23 +244,33 @@ int Note::newFilter(const FilterData &data)
     return countMatches;
 }
 
-void Note::deleteSelectedNotes(bool deleteFilesToo)
+bool Note::deleteSelectedNotes(bool deleteFilesToo)
 {
     if (content() && isSelected()) {
-        basket()->unplugNote(this);
-        if (deleteFilesToo && content() && content()->useFile())
+        basket()->unplugNote(this);                
+        if (deleteFilesToo && content()->useFile())
             Tools::deleteRecursively(fullPath());//basket()->deleteFiles(fullPath()); // Also delete the folder if it's a folder
-        //delete this;
-        return;
+
+        return true;
     }
 
+    int notesRemaining = 0;
     Note *child = firstChild();
     Note *next;
     while (child) {
         next = child->next(); // If we delete 'child' on the next line, child->next() will be 0!
-        child->deleteSelectedNotes(deleteFilesToo);
+        
+        if(child->deleteSelectedNotes(deleteFilesToo))
+        {
+            delete child;
+        }
+        else ++notesRemaining;
+        
         child = next;
     }
+    
+    // if it remains at least two notes, the group must not be deleted
+    return notesRemaining < 2;
 }
 
 int Note::count()
@@ -1429,8 +1444,8 @@ void Note::drawHandle(QPainter *painter, qreal x, qreal y, qreal width, qreal he
     painter->drawLine(0,         height - 1, width - 1, height - 1);
 
     // Draw the gradients:
-    drawGradient(painter, light, dark,       1 + x, 1 + y,                width - 2, (height - 2) / 2,            /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-    drawGradient(painter, dark,  foreground, 1 + x, 1 + y + (height - 2) / 2, width - 2, (height - 2) - (height - 2) / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    drawGradient(painter, light, dark,       1 + x, 1 + y,                width - 2, (height - 1) / 2,            /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    drawGradient(painter, dark,  foreground, 1 + x, 1 + y + (height - 1) / 2, width - 2, (height - 1) - (height - 1) / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 
     // Round the top corner with background color:
     painter->setPen(backgroundPen);
@@ -1702,7 +1717,7 @@ void substractRectOnAreas(const QRectF &rectToSubstract, QList<QRectF> &areas, b
             }
             // Create the bottom rectangle:
             if (rectToSubstract.bottom() < rect.bottom()) {
-                areas.insert(i++, QRectF(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
+                areas.insert(i++, QRectF(rect.left(), rectToSubstract.bottom(), rect.width(), rect.bottom() - rectToSubstract.bottom()));
                 rect.setBottom(rectToSubstract.bottom());
             }
             // Create the left rectangle:
@@ -1712,7 +1727,7 @@ void substractRectOnAreas(const QRectF &rectToSubstract, QList<QRectF> &areas, b
             }
             // Create the right rectangle:
             if (rectToSubstract.right() < rect.right()) {
-                areas.insert(i++, QRectF(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
+                areas.insert(i++, QRectF(rectToSubstract.right(), rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
                 rect.setRight(rectToSubstract.right());
             }
             // Remove the rectangle if it's entirely contained:
@@ -1898,6 +1913,7 @@ void Note::draw(QPainter *painter, const QRectF &clipRect)
     {
         background = m_computedState.backgroundColor();
     }
+    
     QColor bgColor;
     QColor darkBgColor;
     getGradientColors(background, &darkBgColor, &bgColor);
@@ -2019,12 +2035,12 @@ void Note::paint(QPainter *painter,
  {
     if(!m_basket->isLoaded())
         return;
-     
+
     if(boundingRect().width()<=0.1 || boundingRect().height()<=0.1)
         return;
     
     draw(painter,boundingRect());
-         
+
     if (hasResizer()) 
     {
        qreal right = rightLimit()-x();

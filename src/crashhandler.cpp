@@ -16,6 +16,7 @@
 //#include "debug.h"
 #include "config.h"
 
+#include <KDE/KCmdLineArgs>
 #include <kapplication.h> //invokeMailer()
 #include <kaboutdata.h>
 #include <kdeversion.h>
@@ -69,6 +70,7 @@ runCommand(const QByteArray &command)
 void
 Crash::crashHandler(int /*signal*/)
 {
+  
     // we need to fork to be able to get a
     // semi-decent bt - I dunno why
     const pid_t pid = ::fork();
@@ -109,7 +111,8 @@ Crash::crashHandler(int /*signal*/)
 
         /// obtain the backtrace with gdb
 
-        KTemporaryFile temp;
+	KTemporaryFile temp;
+	temp.open();	
         temp.setAutoRemove(true);
 
         const int handle = temp.handle();
@@ -134,14 +137,16 @@ Crash::crashHandler(int /*signal*/)
         // so we can read stderr too
         ::dup2(fileno(stdout), fileno(stderr));
 
-
         QByteArray gdb;
         gdb  = "gdb --nw -n --batch -x ";
         gdb += temp.fileName().toLatin1();
-        gdb += " basket ";
+        gdb += " ";
+	gdb += KCmdLineArgs::qtArgv()[0];
+	gdb += " ";
         gdb += QByteArray().setNum(::getppid());
 
-        QString bt = runCommand(gdb);
+ 
+       QString bt = runCommand(gdb);
 
         /// clean up
         bt.remove("(no debugging symbols found)...");
@@ -179,7 +184,6 @@ Crash::crashHandler(int /*signal*/)
 
 //            debug() << subject << endl;
 
-
         //TODO -fomit-frame-pointer buggers up the backtrace, so detect it
         //TODO -O optimization can rearrange execution and stuff so show a warning for the developer
         //TODO pass the CXXFLAGS used with the email
@@ -216,7 +220,7 @@ Crash::crashHandler(int /*signal*/)
 
     else {
         // we are the process that crashed
-
+        
         ::alarm(0);
 
         // wait for child to exit

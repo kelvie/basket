@@ -13,6 +13,7 @@ set(basketcommon_LIB_SRCS
     basketproperties.cpp
     basketscene.cpp
     basketstatusbar.cpp
+    basketview.cpp
     bnpview.cpp
     colorpicker.cpp
     crashhandler.cpp

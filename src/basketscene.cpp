@@ -85,6 +85,7 @@
 #include <QDateTime>  // seed for rand()
 
 #include "basketscene.h"
+#include "basketview.h"
 #include "decoratedbasket.h"
 #include "diskerrordialog.h"
 #include "note.h"
@@ -370,8 +371,8 @@ void BasketScene::unplugNote(Note *note)
     note->setParentNote(0);
     note->setPrev(0);
     note->setNext(0);
-//     note->deleteLater();
-//  recomputeBlankRects(); // FIXME: called too much time. It's here because when dragging and moving a note to another basket and then go back to the original basket, the note is deleted but the note rect is not painter anymore.
+
+    //  recomputeBlankRects(); // FIXME: called too much time. It's here because when dragging and moving a note to another basket and then go back to the original basket, the note is deleted but the note rect is not painter anymore.
 }
 
 void BasketScene::ungroupNote(Note *group)
@@ -1183,7 +1184,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
         , m_relayoutOnNextShow(false)
 	, m_animationTimeLine(0)
 {
-    m_view = new QGraphicsView(this);
+    m_view = new BasketView(this);
     m_view->setFocusPolicy(Qt::StrongFocus);
     m_view->setAlignment(Qt::AlignLeft|Qt::AlignTop);
 
@@ -3184,6 +3185,8 @@ void BasketScene::relayoutNotes(bool animate)
         animate = false;
 
     int h     = 0;
+    tmpWidth = 0;
+    tmpHeight = 0;
     Note *note = m_firstNote;
     while (note) {
         if (note->matching()) {
@@ -3201,10 +3204,14 @@ void BasketScene::relayoutNotes(bool animate)
         note = note->next();
     }
 
-    QRectF boundingRect = itemsBoundingRect();
-    setSceneRect(0,0,boundingRect.x()+boundingRect.width(),
-		 boundingRect.y()+itemsBoundingRect().height());
-    
+    if (isFreeLayout())
+        tmpHeight += 100;
+    else
+        tmpHeight += 15;
+
+    setSceneRect(0,0,qMax((qreal)m_view->viewport()->width(), tmpWidth),
+		 qMax((qreal)m_view->viewport()->height(), tmpHeight));
+
     recomputeBlankRects();
     placeEditor();
     doHoverEffects();
@@ -3722,22 +3729,15 @@ bool BasketScene::closeEditor()
         }
     }
     m_editor->graphicsWidget()->widget()->disconnect();
-    m_editor->graphicsWidget()->hide();
+    removeItem(m_editor->graphicsWidget());
     m_editor->validate();
 
-//    delete m_leftEditorBorder;
-//    delete m_rightEditorBorder;
-    m_leftEditorBorder  = 0;
-    m_rightEditorBorder = 0;
-
     Note *note = m_editor->note();
-    note->setWidth(0); // For relayoutNotes() to succeed to take care of the change
-    if(note->content()->graphicsItem()) note->content()->graphicsItem()->show();
-    note->setZValue(1);
     
     // Delete the editor BEFORE unselecting the note because unselecting the note would trigger closeEditor() recursivly:
     bool isEmpty = m_editor->isEmpty();
     delete m_editor;
+    
     m_editor = 0;
     m_redirectEditActions = false;
     m_editorWidth  = -1;
@@ -3748,7 +3748,12 @@ bool BasketScene::closeEditor()
     if (isEmpty) {
         focusANonSelectedNoteAboveOrThenBelow();
         note->setSelected(true);
-        note->deleteSelectedNotes();
+        if(note->deleteSelectedNotes())
+	{
+	  if( m_hoveredNote == note ) m_hoveredNote = 0;
+	  if( m_focusedNote == note ) m_focusedNote = 0;
+	  delete note;
+	}
         save();
         note = 0;
     }
@@ -3899,18 +3904,7 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
    NoteEditor *editor = NoteEditor::editNoteContent(note->content(),0);
    if (editor->graphicsWidget()) {
         m_editor = editor;
-	if(note->content()->graphicsItem()) note->content()->graphicsItem()->hide();
-	note->setZValue(100);
     
-	//m_editor->graphicsWidget()->setPos();
-//        m_leftEditorBorder  = new TransparentWidget(this);
-//        m_rightEditorBorder = new TransparentWidget(this);
-        //m_editor->widget()->reparent(viewport(), QPoint(0,0), true);
-        //m_leftEditorBorder->reparent(viewport(), QPoint(0,0), true);
-        //m_rightEditorBorder->reparent(viewport(), QPoint(0,0), true);
-//        m_editor->widget()->setParent(m_view->viewport());
-//        m_leftEditorBorder->setParent(m_view->viewport());
-//        m_rightEditorBorder->setParent(m_view->viewport());
 	addItem(m_editor->graphicsWidget());
 
 	placeEditorAndEnsureVisible(); //       placeEditor(); // FIXME: After?
@@ -3962,7 +3956,12 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
         if ((justAdded && editor->canceled()) || editor->isEmpty() /*) && editor->note()->states().count() <= 0*/) {
             focusANonSelectedNoteAboveOrThenBelow();
             editor->note()->setSelected(true);
-            editor->note()->deleteSelectedNotes();
+            if(editor->note()->deleteSelectedNotes())
+	    {
+	      if( m_hoveredNote == editor->note() ) m_hoveredNote = 0;
+	      if( m_focusedNote == editor->note() ) m_focusedNote = 0;
+	      delete editor->note();
+	    }
             save();
         }
         editor->deleteLater();
@@ -4057,7 +4056,12 @@ void BasketScene::noteDeleteWithoutConfirmation(bool deleteFilesToo)
     Note *next;
     while (note) {
         next = note->next(); // If we delete 'note' on the next line, note->next() will be 0!
-        note->deleteSelectedNotes(deleteFilesToo);
+        if(note->deleteSelectedNotes(deleteFilesToo))
+	{
+	  if( m_hoveredNote == note ) m_hoveredNote = 0;
+	  if( m_focusedNote == note ) m_focusedNote = 0;
+	  delete note;
+	}
         note = next;
     }
 
