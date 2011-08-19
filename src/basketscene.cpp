@@ -3627,7 +3627,6 @@ void BasketScene::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
 
     QFrame    *editorQFrame = dynamic_cast<QFrame*>(m_editor->graphicsWidget()->widget());
     KTextEdit *textEdit     = m_editor->textEdit();
-//  QLineEdit *lineEdit     = m_editor->lineEdit();
     Note      *note         = m_editor->note();
 
     qreal frameWidth = (editorQFrame ? editorQFrame->frameWidth() : 0);
@@ -3637,7 +3636,6 @@ void BasketScene::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
     qreal height, width;
 
     if (textEdit) {
-        //x -= 4;
         // Need to do it 2 times, because it's wrong overwise
         // (sometimes, width depends on height, and sometimes, height depends on with):
         for (int i = 0; i < 2; i++) {
@@ -3646,20 +3644,19 @@ void BasketScene::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
             //      editor->sync();
             y = note->y() + Note::NOTE_MARGIN - frameWidth;
             height = note->height() - 2 * frameWidth - 2 * Note::NOTE_MARGIN;
-//          height = /*qMax(*/height/*, note->height())*/;
-//          height = qMin(height, visibleHeight());
-            width  = note->x() + note->width() - x + 1;//      /*note->x() + note->width()*/note->rightLimit() - x + 2*m_view->frameWidth + 1;
-//width=qMax(width,textEdit->contentsWidth()+2*m_view->frameWidth);
+            width  = note->x() + note->width() - x + 1;
             if (y + height > maxHeight)
                 y = maxHeight - height;
-            textEdit->setFixedSize(width, height);
+	    
+            m_editor->graphicsWidget()->setMaximumSize(width,height);
+	    textEdit->setFixedSize(width, height);
             textEdit->viewport()->setFixedSize(width, height);
-	    m_editor->graphicsWidget()->setMaximumSize(width,height);
         }
     } else {
         height = note->height() - 2 * Note::NOTE_MARGIN + 2 * frameWidth;
         width  = note->x() + note->width() - x;//note->rightLimit() - x + 2*m_view->frameWidth;
-        m_editor->graphicsWidget()->widget()->setFixedSize(width, height);
+        if(m_editor->graphicsWidget())
+	  m_editor->graphicsWidget()->widget()->setFixedSize(width, height);
         x -= 1;
         y = note->y() + Note::NOTE_MARGIN - frameWidth;
     }
@@ -3670,18 +3667,9 @@ void BasketScene::placeEditor(bool /*andEnsureVisible*/ /*= false*/)
     }
     m_editorWidth  = width;
     m_editorHeight = height;
-//    addChild(m_editor->widget(), x, y);
     m_editor->graphicsWidget()->setPos(x,y);
     m_editorX = x;
     m_editorY = y;
-
-//    m_leftEditorBorder->setFixedSize((m_editor->textEdit() ? 3 : 0), height);
-//    addChild(m_leftEditorBorder,     x, y);
-//    m_leftEditorBorder->setPosition(x, y);
-
-//    m_rightEditorBorder->setFixedSize(3, height);
-//    addChild(m_rightEditorBorder,     note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
-//    m_rightEditorBorder->setPosition(note->x() + note->width() - Note::NOTE_MARGIN, note->y() + Note::NOTE_MARGIN);
 
 //  if (andEnsureVisible)
 //      ensureNoteVisible(note);
