@@ -1460,8 +1460,8 @@ msgstr ""
 "havde en testversion af det, så forsøg at fjerne filen %5basketui.rc</p>"
 
 #: src/bnpview.cpp:1831
-msgid "Ressource not Found"
-msgstr "Ressource ikke fundet"
+msgid "Resource not Found"
+msgstr "Resource ikke fundet"
 
 #: src/bnpview.cpp:1855 src/bnpview.cpp:1864
 msgid "Cannot add note."

@@ -18,39 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPainter>
-#include <QPixmap>
-#include <QList>
-#include <QStyle>
-#include <QGraphicsItemAnimation>
-#include <KDE/KApplication>
-#include <KDE/KStyle>
-#include <QCursor>
-#include <KDE/KIconLoader>
+#include "note.h"
 
+#include <QtCore/QList>
+#include <QtGui/QGraphicsItemAnimation>
+#include <QtGui/QGraphicsView>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOption>
+#include <QtGui/QImage>
+
+#include <qimageblitz/qimageblitz.h>        //For Blitz::fade(...)
+
+#include <KDE/KDebug>
+#include <KDE/KApplication>
+#include <KDE/KIconLoader>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KUriFilter>
-#include <QFile>
+#include <KDE/KLocale>  //For KGLobal::locale(
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
 
-#ifdef None
-#undef None
-#endif
-
 #include "basketscene.h"
+#include "filter.h"
 #include "tag.h"
-#include "note.h"
 #include "noteselection.h"
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
-
-#include <KDE/KDebug>
-#include <QImage>
-#include <qimageblitz/qimageblitz.h>
 
 /** class Note: */
 
@@ -171,7 +167,7 @@ QString Note::toText(const QString &cuttedFullPath)
     if (content()) {
         // Convert note to text:
         QString text = content()->toText(cuttedFullPath);
-        // If we should not export tags with the text, return immediatly:
+        // If we should not export tags with the text, return immediately:
         if (!Settings::exportTextTags())
             return text;
         // Compute the text equivalent of the tag states:
@@ -650,7 +646,7 @@ Note::Zone Note::zoneAt(const QPointF &pos, bool toAdd)
     if (basket()->resizingNote() == this)
         return Resizer;
 
-    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it whith the whole column:
+    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it with the whole column:
     if (toAdd && isColumn() && hasResizer()) {
         qreal right = rightLimit() - x();
         if ((pos.x() >= right) && (pos.x() < right + RESIZER_WIDTH) && (pos.y() >= 0) && (pos.y() < resizerHeight())) // Code copied from below
@@ -761,7 +757,7 @@ Note::Zone Note::zoneAt(const QPointF &pos, bool toAdd)
 QString Note::linkAt(const QPointF &pos)
 {
     QString link = m_content->linkAt(pos - QPointF(contentX(), NOTE_MARGIN));
-    if (link.isEmpty() || link.startsWith("basket://"))
+    if (link.isEmpty() || link.startsWith(QLatin1String("basket://")))
         return link;
     else
         return NoteFactory::filteredURL(KUrl(link)).prettyUrl();//KURIFilter::self()->filteredURI(link);
@@ -1400,7 +1396,7 @@ void Note::drawExpander(QPainter *painter, qreal x, qreal y,
 
 QColor expanderBackground(qreal height, qreal y, const QColor &foreground)
 {
-    // We will divide height per two, substract one and use that below a division bar:
+    // We will divide height per two, subtract one and use that below a division bar:
     // To avoid division by zero error, height should be bigger than 3.
     // And to avoid y errors or if y is on the borders, we return the border color: the background color.
     if (height <= 3 || y <= 0 || y >= height - 1)
@@ -2408,6 +2404,14 @@ QRectF Note::visibleRect()
     QList<QRectF> areas;
     areas.append(QRectF(x(),y(),width(),height()));
 
+    // When we are folding a parent group, if this note is bigger than the first real note of the group, cut the top of this:
+    /*Note *parent = parentNote();
+    while (parent) {
+        if (parent->expandingOrCollapsing())
+            subtractRectOnAreasF(QRect(x(), parent->y() - height(), width(), height()), areas, true);
+        parent = parent->parentNote();
+    }*/
+
     if (areas.count() > 0)
         return areas.first();
     else
@@ -2491,7 +2495,7 @@ void Note::usedStates(QList<State*> &states)
 
 Note* Note::nextInStack()
 {
-    // First, search in the childs:
+    // First, search in the children:
     if (firstChild()) {
         if (firstChild()->content())
             return firstChild();

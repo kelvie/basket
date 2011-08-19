@@ -21,9 +21,10 @@
 #include "basketscene.h"
 #include "transparentwidget.h"
 
-#include <QPainter>
-#include <QPaintEvent>
-#include <QMouseEvent>
+#include <QtGui/QGraphicsView>
+#include <QtGui/QPainter>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QMouseEvent>
 
 /** Class TransparentWidget */
 

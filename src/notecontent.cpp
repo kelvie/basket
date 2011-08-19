@@ -18,56 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
-#include <QDir>
-#include <QtXml>
-#include <QPainter>
-#include <QFontMetrics>
-#include <QWidget>
-#include <QCursor>
-#include <QBuffer>
-#include <QStringList>
-#include <QPixmap>
-#include <QGraphicsPixmapItem>
-#include <KDE/KTextEdit>
-#include <KDE/KService>
-#include <KDE/KColorDialog>
-#include <KDE/KMessageBox>
-#include <KDE/KLocale>
-#include <QAbstractTextDocumentLayout>
-
-#include <QBitmap>
-#include <KDE/KUriFilter>
-#include <QRegExp>
-#include <KDE/KFileMetaInfo>
-#include <QDateTime>
-#include <QDrag>
-
-#include <QFileInfo>
-#include <KDE/KFileItem>
-#include <KDE/KIO/PreviewJob>
-#include <kio/global.h>
-
 #include "notecontent.h"
+
+#include <QtCore/QBuffer>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QRegExp>
+#include <QtCore/QStringList>
+#include <QtGui/QAbstractTextDocumentLayout>    //For m_simpleRichText->documentLayout()
+#include <QtGui/QBitmap>                        //For QPixmap::createHeuristicMask()
+#include <QtGui/QFontMetrics>
+#include <QtGui/QMovie>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QWidget>
+#include <QtXml/QDomDocument>
+#include <QtNetwork/QNetworkReply>
+#include <KDE/KIO/AccessManager>
+
+#include <KDE/KDebug>
+#include <KDE/KService>
+#include <KDE/KLocale>
+#include <KDE/KFileMetaInfo>
+#include <KDE/KFileItem>
+#include <KDE/KIO/PreviewJob>                   //For KIO::file_preview(...)
+
+#include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
+
 #include "note.h"
-#include "noteedit.h"
-#include "tag.h"
 #include "basketscene.h"
 #include "filter.h"
 #include "xmlwork.h"
 #include "tools.h"
 #include "notefactory.h"
-#include "linklabel.h"
 #include "global.h"
 #include "settings.h"
-#include "focusedwidgets.h"
 #include "debugwindow.h"
-#include "kcolorcombo2.h"
 #include "htmlexporter.h"
-
 #include "config.h"
-
-#include <KDE/KDebug>
 
 /**
  * LinkDisplayItem definition
@@ -139,7 +130,7 @@ bool NoteContent::trySetFileName(const QString &fileName)
         return true;
     }
 
-    return false; // !useFile() or unsuccesful rename
+    return false; // !useFile() or unsuccessful rename
 }
 
 QString NoteContent::fullPath()
@@ -429,7 +420,7 @@ void NoteContent::toLink(KUrl *url, QString *title, const QString &cuttedFullPat
         *title = (cuttedFullPath.isEmpty() ? fullPath() : cuttedFullPath);
     } else {
         *url   = KUrl();
-        *title = QString();
+        title->clear();
     }
 }
 void LinkContent::toLink(KUrl *url, QString *title, const QString &/*cuttedFullPath*/)
@@ -1475,14 +1466,14 @@ void FileContent::toolTipInfos(QStringList *keys, QStringList *values)
         values->append(mime->comment());
     }
 
-    KFileMetaInfo infos = KFileMetaInfo(KUrl(fullPath()));
-    if (infos.isValid()) {
-        QStringList groups = infos.preferredKeys();
+    KFileMetaInfo info = KFileMetaInfo(KUrl(fullPath()));
+    if (info.isValid()) {
+        QStringList groups = info.preferredKeys();
         int i = 0;
         for (QStringList::Iterator it = groups.begin();
                 i < 6 && it != groups.end();
                 ++it) {
-            KFileMetaInfoItem item = infos.item(*it);
+            KFileMetaInfoItem item = info.item(*it);
             QString value = item.value().toString();
             if (!value.isEmpty()) {
                 keys->append(item.name());
@@ -1577,6 +1568,7 @@ void FileContent::removePreview(const KFileItem& ki)
 
 void FileContent::startFetchingUrlPreview()
 {
+    /*
     KUrl url(fullPath());
     LinkLook *linkLook = this->linkLook();
 
@@ -1589,6 +1581,7 @@ void FileContent::startFetchingUrlPreview()
         connect(m_previewJob, SIGNAL(gotPreview(const KFileItem&, const QPixmap&)), this, SLOT(newPreview(const KFileItem&, const QPixmap&)));
         connect(m_previewJob, SIGNAL(failed(const KFileItem&)),                     this, SLOT(removePreview(const KFileItem&)));
     }
+    */
 }
 
 void FileContent::exportToHTML(HTMLExporter *exporter, int indent)
@@ -1660,7 +1653,7 @@ QString SoundContent::messageWhenOpening(OpenMessage where)
  */
 
 LinkContent::LinkContent(Note *parent, const KUrl &url, const QString &title, const QString &icon, bool autoTitle, bool autoIcon)
-        : NoteContent(parent), m_linkDisplayItem(parent), m_http(0), m_httpBuff(0), m_previewJob(0)
+        : NoteContent(parent), m_linkDisplayItem(parent), m_access_manager(0), m_httpBuff(0), m_previewJob(0)
 {
     setLink(url, title, icon, autoTitle, autoIcon);
     if(parent)
@@ -1672,7 +1665,7 @@ LinkContent::LinkContent(Note *parent, const KUrl &url, const QString &title, co
 LinkContent::~LinkContent()
 {
     if(note()) note()->removeFromGroup(&m_linkDisplayItem);
-    delete m_http;
+    delete m_access_manager;
     delete m_httpBuff;
 }
 
@@ -1797,13 +1790,14 @@ void LinkContent::removePreview(const KFileItem& ki)
 // QHttp slots for getting link title
 void LinkContent::httpReadyRead()
 {
-    unsigned long bytesAvailable = m_http->bytesAvailable();
+    //Check for availability
+    unsigned long bytesAvailable = m_reply->bytesAvailable();
     if (bytesAvailable <= 0)
         return;
 
     char* buf = new char[bytesAvailable+1];
 
-    long bytes_read = m_http->read(buf, bytesAvailable);
+    long bytes_read = m_reply->read(buf, bytesAvailable);
     if (bytes_read > 0) {
 
         // m_httpBuff will keep data if title is not found in initial read
@@ -1815,7 +1809,7 @@ void LinkContent::httpReadyRead()
 
         // todo: this should probably strip odd html tags like &nbsp; etc
         QRegExp reg("<title>[\\s]*(&nbsp;)?([^<]+)[\\s]*</title>", Qt::CaseInsensitive);
-        reg.setMinimal(TRUE);
+        reg.setMinimal(true);
         int offset = 0;
         //kDebug() << *m_httpBuff << " bytes: " << bytes_read;
 
@@ -1829,45 +1823,50 @@ void LinkContent::httpReadyRead()
             setLink(url(), title(), icon(), autoTitle(), autoIcon());
 
             // stop the http connection
-            m_http->abort();
+            m_reply->abort();
 
             delete m_httpBuff;
             m_httpBuff = 0;
         }
         // Stop at 10k bytes
         else if (m_httpBuff->length() > 10000)   {
-            m_http->abort();
+            m_reply->abort();
             delete m_httpBuff;
             m_httpBuff = 0;
         }
     }
     delete buf;
 }
-void LinkContent::httpDone(bool)
-{
-    m_http->closeConnection();
+
+void LinkContent::httpDone(QNetworkReply* reply) {
+    //If all done, close and delete the reply.
+    reply->deleteLater();
 }
 
 void LinkContent::startFetchingLinkTitle()
 {
-    if (this->url().protocol() == "http") {
-        // delete old m_http, for some reason it will not connect a second time...
-        if (m_http != 0) {
-            delete m_http;
-            m_http = 0;
+    KUrl newUrl = this->url();
+
+    //If this is not an HTTP request, just ignore it.
+    if (newUrl.protocol() == "http") {
+
+        //If we have no access_manager, create one.
+        if (m_access_manager == 0) {
+            m_access_manager = new KIO::Integration::AccessManager(this);
+            connect(m_access_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(httpDone(QNetworkReply*)));
         }
-        if (m_http == 0) {
-            m_http = new QHttp(this);
-            connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
-            connect(m_http, SIGNAL(readyRead(QHttpResponseHeader)), this,
-                    SLOT(httpReadyRead()));
-        }
-        m_http->setHost(this->url().host(), this->url().port() == 0 ? 80 : this->url().port());
-        QString path = this->url().encodedPathAndQuery(KUrl::AddTrailingSlash);
-        if (path == "")
-            path = "/";
-        //kDebug()  <<  "path: " << path;
-        m_http->get(path);
+
+        //If no explicit port, default to port 80.
+        if (newUrl.port() == 0)
+            newUrl.setPort(80);
+
+        //If no path or query part, default to /
+        if (newUrl.encodedPathAndQuery(KUrl::AddTrailingSlash).isEmpty())
+            newUrl.setPath("/");
+
+        //Issue request
+        m_reply = m_access_manager->get(QNetworkRequest(newUrl));
+        connect(m_reply, SIGNAL(readyRead()), this, SLOT(httpReadyRead()));
     }
 }
 
@@ -2043,7 +2042,7 @@ void CrossReferenceContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
     QString url = m_url.url();
     QString title;
 
-    if(url.startsWith("basket://"))
+    if(url.startsWith(QLatin1String("basket://")))
         url = url.mid(9, url.length() -9);
     if(url.endsWith('/'))
         url = url.left(url.length() - 1);
@@ -2632,7 +2631,7 @@ void UnknownContent::addAlternateDragObjects(QMimeData *dragObject)
         for (int i = 0; i < mimes.count(); ++i) {
             // Get the size:
             stream >> size;
-            // Allocate memory to retreive size bytes and store them:
+            // Allocate memory to retrieve size bytes and store them:
             array = new QByteArray;
             array->resize(size);
             stream.readRawData(array->data(), size);

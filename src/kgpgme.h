@@ -24,9 +24,10 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <QList>
 #include <gpgme.h>
-#include <qstringlist.h>
+
+#include <QtCore/QList>
+#include <QtCore/QString>
 
 /**
     @author Petri Damsten <damu@iki.fi>

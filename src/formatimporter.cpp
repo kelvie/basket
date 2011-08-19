@@ -18,19 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QStringList>
-#include <QDir>
-#include <QFileInfo>
-#include <QtXml>
-#include <QTextStream>
+#include "formatimporter.h"
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
 #include <KIO/CopyJob>
 #include <KDE/KApplication>
 #include "KDE/KDebug"
 
-#include "formatimporter.h"
 #include "notecontent.h"
 #include "notefactory.h"
 #include "bnpview.h"
@@ -60,7 +61,7 @@ bool FormatImporter::shouldImportBaskets()
 void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 {
     copyFinished = false;
-    KIO::CopyJob *copyJob = KIO::copyAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
+    KIO::CopyJob *copyJob = KIO::copyAs(KUrl(folder), KUrl(newFolder), KIO::HideProgressInfo);
     connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
             this, SLOT(slotCopyingDone(KIO::Job*)));
     while (!copyFinished)
@@ -70,7 +71,7 @@ void FormatImporter::copyFolder(const QString &folder, const QString &newFolder)
 void FormatImporter::moveFolder(const QString &folder, const QString &newFolder)
 {
     copyFinished = false;
-    KIO::CopyJob *copyJob = KIO::moveAs(KUrl(folder), KUrl(newFolder), /*showProgressInfo=*/false);
+    KIO::CopyJob *copyJob = KIO::moveAs(KUrl(folder), KUrl(newFolder), KIO::HideProgressInfo);
     connect(copyJob,  SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
             this, SLOT(slotCopyingDone(KIO::Job*)));
     while (!copyFinished)
@@ -131,14 +132,14 @@ void FormatImporter::importBaskets()
 
         // Move the folder to the new repository (normal basket) or copy the folder (mirorred folder):
         QString folderName = *it;
-        if (folderName.startsWith("/")) { // It was a folder mirror:
+        if (folderName.startsWith('/')) { // It was a folder mirror:
             KMessageBox::information(0, i18n("<p>Folder mirroring is not possible anymore (see <a href='http://basket.kde.org/'>basket.kde.org</a> for more information).</p>"
                                              "<p>The folder <b>%1</b> has been copied for the basket needs. You can either delete this folder or delete the basket, or use both. But remember that "
                                              "modifying one will not modify the other anymore as they are now separate entities.</p>", folderName), i18n("Folder Mirror Import"),
                                      "", KMessageBox::AllowLink);
             // Also modify folderName to be only the folder name and not the full path anymore:
             QString newFolderName = folderName;
-            if (newFolderName.endsWith("/"))
+            if (newFolderName.endsWith('/'))
                 newFolderName = newFolderName.left(newFolderName.length() - 1);
             newFolderName = newFolderName.mid(newFolderName.lastIndexOf('/') + 1);
             newFolderName = Tools::fileNameForNewFile(newFolderName, Global::basketsFolder());
@@ -200,7 +201,7 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
     disposition.setAttribute("mindMap",     "false");
     disposition.setAttribute("columnCount", "1");
     disposition.setAttribute("free",        "false");
-    bool isCheckList = XMLWork::trueOrFalse(XMLWork::getElementText(properties, "showCheckBoxes", false));
+    bool isCheckList = XMLWork::trueOrFalse(XMLWork::getElementText(properties, "showCheckBoxes"), false);
 
     // Insert all notes in a group (column): 1/ rename "items" to "group", 2/ add "notes" to root, 3/ move "group" into "notes"
     QDomElement column = XMLWork::getElement(docElem, "items");

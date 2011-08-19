@@ -21,23 +21,22 @@
 #ifndef NOTE_H
 #define NOTE_H
 
-#include <QString>
+#include <QtCore/QList>
+#include <QtCore/QDateTime>
+#include <QtGui/QGraphicsItemGroup>
 
-#include <QList>
-#include <QPixmap>
-#include <QDateTime>
-#include <QGraphicsItemGroup>
 #include "basket_export.h"
-#include "notecontent.h"
 #include "tag.h"
-
 
 class BasketScene;
 class FilterData;
 
+class NoteContent;
 class NoteSelection;
 
 class QPainter;
+class QPixmap;
+class QString;
 
 class QGraphicsItemAnimation;
 class QTimeLine;

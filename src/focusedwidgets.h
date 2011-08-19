@@ -22,15 +22,10 @@
 #define FOCUSEDWIDGETS_H
 
 #include <KDE/KTextEdit>
-#include <KDE/KColorCombo>
-#include <QFontComboBox>
-#include <KComboBox>
-#include <KDE/KLineEdit>
-#include <KDE/KApplication>
-#include <QClipboard>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QWheelEvent>
+
+class QEvent;
+class QKeyEvent;
+class QWheelEvent;
 
 class KMenu;
 
@@ -38,7 +33,7 @@ class FocusedTextEdit : public KTextEdit
 {
     Q_OBJECT
 public:
-    FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0);
+    explicit FocusedTextEdit(bool disableUpdatesOnKeyPress, QWidget *parent = 0);
     ~FocusedTextEdit();
 protected:
     void keyPressEvent(QKeyEvent *event);

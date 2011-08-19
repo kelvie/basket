@@ -18,41 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QToolTip>
-#include <QLabel>
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QVBoxLayout>
-#include <QLayout>
-#include <KDE/KIconLoader>
-#include <KDE/KApplication>
-#include <QCheckBox>
-#include <KDE/KPushButton>
-#include <QGroupBox>
-#include <QList>
-#include <KDE/KLocale>
-#include <KDE/KStandardDirs>
-#include <KDE/KSeparator>
-#include <KDE/KStringHandler>
-#include <QPainter>
-#include <QAction>
-#include <KDE/KMessageBox>
-#include <QTimer>
-#include <QHeaderView>
-
-#include <kshortcutwidget.h>
-#include <QFontComboBox>
-
-#include "KDE/KIconDialog"
-#include "tag.h"
 #include "tagsedit.h"
+
+#include <QtCore/QEvent>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtGui/QAction>
+#include <QtGui/QCheckBox>
+#include <QtGui/QFontComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHeaderView>    //For m_tags->header()
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QVBoxLayout>
+
+#include <KDE/KApplication>
+#include <KDE/KLineEdit>
+#include <KDE/KIconButton>
+#include <KDE/KIconLoader>
+#include <KDE/KLocale>
+#include <KDE/KMessageBox>
+#include <KDE/KPushButton>
+#include <KDE/KSeparator>
+#include <kshortcutwidget.h>
+
+#include "tag.h"
 #include "kcolorcombo2.h"
-#include "variouswidgets.h"
+#include "variouswidgets.h"         //For FontSizeCombo
 #include "global.h"
 #include "bnpview.h"
 
@@ -383,7 +379,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QWidget   *tagWidget = new QWidget;
     m_tagBoxLayout->addWidget(tagWidget);
 
-    m_tagName = new QLineEdit(tagWidget);
+    m_tagName = new KLineEdit(tagWidget);
     QLabel *tagNameLabel = new QLabel(i18n("&Name:"), tagWidget);
     tagNameLabel->setBuddy(m_tagName);
 
@@ -424,7 +420,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QWidget *stateWidget = new QWidget;
     m_stateBoxLayout->addWidget(stateWidget);
 
-    m_stateName = new QLineEdit(stateWidget);
+    m_stateName = new KLineEdit(stateWidget);
     m_stateNameLabel = new QLabel(i18n("Na&me:"), stateWidget);
     m_stateNameLabel->setBuddy(m_stateName);
 
@@ -509,7 +505,7 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     QLabel *fontSizeLabel = new QLabel(i18n("&Size:"), stateWidget);
     fontSizeLabel->setBuddy(m_fontSize);
 
-    m_textEquivalent = new QLineEdit(stateWidget);
+    m_textEquivalent = new KLineEdit(stateWidget);
     QLabel *textEquivalentLabel = new QLabel(i18n("Te&xt equivalent:"), stateWidget);
     textEquivalentLabel->setBuddy(m_textEquivalent);
     QFont font = m_textEquivalent->font();
@@ -621,22 +617,20 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     }
 
     // Connect Signals:
-    connect(m_tagName,         SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_tagName,         SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
     connect(m_shortcut,        SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(modified()));
     connect(m_inherit,         SIGNAL(stateChanged(int)),                  this, SLOT(modified()));
-    connect(m_allowCrossRefernce, SIGNAL(clicked(bool)),                   this, SLOT(modified()));
-    connect(m_stateName,       SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_stateName,       SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
     connect(m_emblem,          SIGNAL(iconChanged(QString)),               this, SLOT(modified()));
     connect(m_backgroundColor, SIGNAL(changed(const QColor&)),             this, SLOT(modified()));
     connect(m_bold,            SIGNAL(toggled(bool)),                      this, SLOT(modified()));
     connect(m_underline,       SIGNAL(toggled(bool)),                      this, SLOT(modified()));
     connect(m_italic,          SIGNAL(toggled(bool)),                      this, SLOT(modified()));
     connect(m_strike,          SIGNAL(toggled(bool)),                      this, SLOT(modified()));
-    connect(m_textColor,       SIGNAL(changed(const QColor&)),             this, SLOT(modified()));
-    //connect(m_font,            SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
-    connect(m_font,            SIGNAL(currentFontChanged(const QFont&)),        this, SLOT(modified()));
-    connect(m_fontSize,        SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
-    connect(m_textEquivalent,  SIGNAL(textChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_textColor,       SIGNAL(activated(int)),             this, SLOT(modified()));
+    connect(m_font,            SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_fontSize,        SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
+    connect(m_textEquivalent,  SIGNAL(editTextChanged(const QString&)),        this, SLOT(modified()));
     connect(m_onEveryLines,    SIGNAL(stateChanged(int)),                  this, SLOT(modified()));
 
     connect(m_tags,            SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),     this,
@@ -673,31 +667,31 @@ TagsEditDialog::TagsEditDialog(QWidget *parent, State *stateToEdit, bool addNewT
     // Some keyboard shortcuts:       // Ctrl+arrows instead of Alt+arrows (same as Go menu in the main window) because Alt+Down is for combo boxes
     QAction *selectAbove = new QAction(this);
     selectAbove->setShortcut(Qt::CTRL + Qt::Key_Up);
-    connect(selectAbove, SIGNAL(activated()), this, SLOT(selectUp()));
+    connect(selectAbove, SIGNAL(triggered()), this, SLOT(selectUp()));
 
     QAction *selectBelow = new QAction(this);
     selectBelow->setShortcut(Qt::CTRL + Qt::Key_Down);
-    connect(selectBelow, SIGNAL(activated()), this, SLOT(selectDown()));
+    connect(selectBelow, SIGNAL(triggered()), this, SLOT(selectDown()));
 
     QAction *selectLeft = new QAction(this);
     selectLeft->setShortcut(Qt::CTRL + Qt::Key_Left);
-    connect(selectLeft, SIGNAL(activated()), this, SLOT(selectLeft()));
+    connect(selectLeft, SIGNAL(triggered()), this, SLOT(selectLeft()));
 
     QAction *selectRight = new QAction(this);
     selectRight->setShortcut(Qt::CTRL + Qt::Key_Right);
-    connect(selectRight, SIGNAL(activated()), this, SLOT(selectRight()));
+    connect(selectRight, SIGNAL(triggered()), this, SLOT(selectRight()));
 
     QAction *moveAbove = new QAction(this);
     moveAbove->setShortcut(Qt::CTRL + Qt::Key_Up);
-    connect(moveAbove, SIGNAL(activated()), this, SLOT(moveUp()));
+    connect(moveAbove, SIGNAL(triggered()), this, SLOT(moveUp()));
 
     QAction *moveBelow = new QAction(this);
     moveBelow->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_Down);
-    connect(moveBelow, SIGNAL(activated()), this, SLOT(moveDown()));
+    connect(moveBelow, SIGNAL(triggered()), this, SLOT(moveDown()));
 
     QAction *rename = new QAction(this);
     rename->setShortcut(Qt::Key_F2);
-    connect(rename, SIGNAL(activated()), this, SLOT(renameIt()));
+    connect(rename, SIGNAL(triggered()), this, SLOT(renameIt()));
 
     if (addNewTag)
         QTimer::singleShot(0, this, SLOT(newTag()));
@@ -767,7 +761,7 @@ void TagsEditDialog::newTag()
     m_deleteTag->setEnabled(true);
     m_tagBox->setEnabled(true);
 
-    // Add to the "controler":
+    // Add to the "controller":
     m_tags->setCurrentItem(item);
     currentItemChanged(item);
     item->setSelected(true);
@@ -803,7 +797,7 @@ void TagsEditDialog::newState()
     // Add to the "view":
     TagListViewItem *item = new TagListViewItem(tagItem, tagItem->lastChild(), newStateCopy);
 
-    // Add to the "controler":
+    // Add to the "controller":
     m_tags->setCurrentItem(item);
     currentItemChanged(item);
     m_stateName->setFocus();
@@ -1291,6 +1285,6 @@ void TagListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
                             const QModelIndex &index) const
 {
     TagListViewItem* thisItem  = qvariant_cast<TagListViewItem*>(index.data());
-    kDebug() << "Pointer is: " << thisItem << endl;
+//    kDebug() << "Pointer is: " << thisItem << endl;
     QItemDelegate::paint(painter, option, index);
 }

@@ -21,31 +21,32 @@
 #ifndef TAGEDIT_H
 #define TAGEDIT_H
 
-#include <KDialog>
-#include <KDE/KComboBox>
-#include <QTreeWidget>
-#include <QList>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QItemDelegate>
+#include <KDE/KDialog>
+
+#include <QtCore/QList>
+#include <QtGui/QItemDelegate>
+#include <QtGui/QTreeWidgetItem>
 
 #include "tag.h"
 
-class QGroupBox;
-class QLineEdit;
 class QCheckBox;
-class KPushButton;
-class KIconButton;
 class QFontComboBox;
+class QGroupBox;
+class QHBoxLayout;
 class QLabel;
+class KLineEdit;
+class QTreeWidget;
+
+class QKeyEvent;
+class QMouseEvent;
+
+class KIconButton;
+class KPushButton;
 class KShortcut;
 class KShortcutWidget;
 
-class KColorCombo2;
-
 class FontSizeCombo;
+class KColorCombo2;
 
 class StateCopy
 {
@@ -130,7 +131,7 @@ class TagsEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    TagsEditDialog(QWidget *parent = 0, State *stateToEdit = 0, bool addNewTag = false);
+    explicit TagsEditDialog(QWidget *parent = 0, State *stateToEdit = 0, bool addNewTag = false);
     ~TagsEditDialog();
     State::List deletedStates() {
         return m_deletedStates;
@@ -170,7 +171,7 @@ private:
     KPushButton   *m_moveUp;
     KPushButton   *m_moveDown;
     KPushButton   *m_deleteTag;
-    QLineEdit     *m_tagName;
+    KLineEdit     *m_tagName;
     KShortcutWidget *m_shortcut;
     QPushButton   *m_removeShortcut;
     QCheckBox     *m_inherit;
@@ -179,7 +180,7 @@ private:
     QGroupBox     *m_stateBox;
     QHBoxLayout   *m_stateBoxLayout;
     QLabel        *m_stateNameLabel;
-    QLineEdit     *m_stateName;
+    KLineEdit     *m_stateName;
     KIconButton   *m_emblem;
     QPushButton   *m_removeEmblem;
     QPushButton   *m_bold;
@@ -190,7 +191,7 @@ private:
     QFontComboBox *m_font;
     FontSizeCombo *m_fontSize;
     KColorCombo2  *m_backgroundColor;
-    QLineEdit     *m_textEquivalent;
+    KLineEdit     *m_textEquivalent;
     QCheckBox     *m_onEveryLines;
     QCheckBox     *m_allowCrossRefernce;
 

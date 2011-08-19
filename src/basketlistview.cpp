@@ -19,29 +19,33 @@
  ***************************************************************************/
 
 #include "basketlistview.h"
-#include <QRegExp>
-#include <QDragLeaveEvent>
-#include <QPixmap>
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QResizeEvent>
-#include <QFocusEvent>
+
+#include <QtCore/QRegExp>
+#include <QtGui/QApplication>
+#include <QtGui/QStandardItemModel>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QBitmap>
+#include <QtGui/QPixmapCache>
+#include <QtGui/QToolTip>
+
 #include <KDE/KIconLoader>
 #include <KDE/KLocale>
 #include <KDE/KStringHandler>
-#include <QPainter>
-#include <QBitmap>
-#include <QPixmapCache>
-#include <QToolTip>
 #include <KDE/KDebug>
+
 #include "global.h"
 #include "bnpview.h"
 #include "basketscene.h"
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
-#include <QStandardItemModel>
 
 /** class BasketListViewItem: */
 
@@ -264,7 +268,7 @@ QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, c
     return pmScaled;
 }
 
-QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height)
+QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height)
 {
     if (isLoading)
         return QPixmap();
@@ -273,7 +277,7 @@ QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, boo
     boldFont.setBold(true);
 
     QString text;
-    if (childsAreLoading) {
+    if (childrenAreLoading) {
         if (countChildsFound > 0)
             text = i18n("%1+%2+", QString::number(countFound), QString::number(countChildsFound));
         else
@@ -456,6 +460,9 @@ void BasketTreeListView::dragEnterEvent(QDragEnterEvent *event)
     kDebug() << event->format();
     event->acceptProposedAction();
     QTreeWidget::dragEnterEvent(event);
+    if (event->mimeData()->hasFormat("application/x-basket-note")) {
+	    event->acceptProposedAction();
+    }
 
 }
 
@@ -488,6 +495,7 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
         QTreeWidget::dropEvent(event);
     } else { // this handels application/x-basket-note drag events.
         kDebug() << "Forwarding dropped data to the basket";
+        event->setDropAction(Qt::MoveAction);
         QTreeWidgetItem *item = itemAt(event->pos());
         BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
         if (bitem) {
@@ -507,18 +515,28 @@ void BasketTreeListView::dropEvent(QDropEvent *event)
 
 void BasketTreeListView::dragMoveEvent(QDragMoveEvent *event)
 {
-    QTreeWidgetItem *item = itemAt(event->pos());
-    BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
-    if (m_autoOpenItem != item) {
-        m_autoOpenItem = item;
-        m_autoOpenTimer.setSingleShot(true);
-        m_autoOpenTimer.start(1700);
-    }
-    if (item) {
-        event->accept();
-    }
-    setItemUnderDrag(bitem);
+    kDebug() << "BasketTreeListView::dragMoveEvent";
+    if (event->provides("application/x-qabstractitemmodeldatalist"))
+        QTreeWidget::dragMoveEvent(event);
+    else {
+        QTreeWidgetItem *item = itemAt(event->pos());
+        BasketListViewItem* bitem = dynamic_cast<BasketListViewItem*>(item);
+        if (m_autoOpenItem != item) {
+            m_autoOpenItem = item;
+            m_autoOpenTimer.setSingleShot(true);
+            m_autoOpenTimer.start(1700);
+        }
+        QTreeWidget::dragMoveEvent(event); // FIXME: ADDED
+        if (item) {
+            event->accept();
+        }
+        setItemUnderDrag(bitem);
 
+        if (item) {
+            event->accept();
+        }
+        setItemUnderDrag(bitem);
+    }
     QTreeWidget::dragMoveEvent(event);
 }
 

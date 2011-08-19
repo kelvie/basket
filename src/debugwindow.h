@@ -21,14 +21,14 @@
 #ifndef DEBUGWINDOW_H
 #define DEBUGWINDOW_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class QVBoxLayout;
-class QTextBrowser;
+class KTextBrowser;
 class QString;
 class QCloseEvent;
 
-/**A simple window that display text through debuging messages.
+/**A simple window that display text through debugging messages.
   *@author Sébastien Laoût
   */
 
@@ -47,7 +47,7 @@ protected:
     virtual void closeEvent(QCloseEvent *event);
 private:
     QVBoxLayout  *layout;
-    QTextBrowser *textBrowser;
+    KTextBrowser *textBrowser;
 };
 
 #define DEBUG_WIN if (Global::debugWindow) *Global::debugWindow

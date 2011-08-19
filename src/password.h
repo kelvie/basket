@@ -25,7 +25,7 @@
 #ifdef HAVE_LIBGPGME
 
 #include "ui_passwordlayout.h"
-#include <KDialog>
+#include <KDE/KDialog>
 
 /**
     @author Petri Damsten <damu@iki.fi>

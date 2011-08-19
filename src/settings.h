@@ -21,43 +21,34 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QString>
-#include <QLabel>
-#include <KDialog>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QToolTip>
-#include <QColor>
-#include <QPoint>
-#include <QSize>
 #include <KDE/KCModule>
-#include <KDE/KAction>
-#include <KDE/KMainWindow>
-#include <QDateTime>
+#include <KDE/KAction>          //For UseSysTray
+#include <KDE/KMainWindow>      //For Global::mainWindow()
+
+#include <QtCore/QDate>
 
 #include "basket_export.h"
-#include "global.h"
 #include "bnpview.h"
 #include "systemtray.h"
 
-class KColorCombo;
 class KIntNumInput;
-class KGlobalAccel;
-class QLabel;
+class KComboBox;
 
-class Container;
-class SystemTray;
-class DebugWindow;
+class QString;
+class QCheckBox;
+class QPushButton;
+class QPoint;
+class QSize;
+
 class LinkLook;
 class LinkLookEditWidget;
 class RunCommandRequester;
-class IconSizeCombo;
 
 class BASKET_EXPORT GeneralPage : public KCModule
 {
     Q_OBJECT
 public:
-    GeneralPage(QWidget * parent = 0, const char * name = 0);
+    explicit GeneralPage(QWidget * parent = 0, const char * name = 0);
     virtual ~GeneralPage() {}
 
     virtual void load();
@@ -66,8 +57,8 @@ public:
 
 private:
     // General
-    QComboBox           *m_treeOnLeft;
-    QComboBox           *m_filterOnTop;
+    KComboBox           *m_treeOnLeft;
+    KComboBox           *m_filterOnTop;
     QCheckBox           *m_usePassivePopup;
 
     // System Tray Icon
@@ -84,7 +75,7 @@ class BASKET_EXPORT BasketsPage : public KCModule
 {
     Q_OBJECT
 public:
-    BasketsPage(QWidget * parent = 0, const char * name = 0);
+    explicit BasketsPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -102,7 +93,7 @@ private:
     QCheckBox           *m_exportTextTags;
     QWidget             *m_groupOnInsertionLineWidget;
     QCheckBox           *m_groupOnInsertionLine;
-    QComboBox           *m_middleAction;
+    KComboBox           *m_middleAction;
 
     // Protection
     QCheckBox           *m_useGnuPGAgent;
@@ -114,7 +105,7 @@ class BASKET_EXPORT NewNotesPage : public KCModule
 {
     Q_OBJECT
 public:
-    NewNotesPage(QWidget * parent = 0, const char * name = 0);
+    explicit NewNotesPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -130,7 +121,7 @@ private:
     QPushButton         *m_pushVisualize;
 
     // Note Addition
-    QComboBox           *m_newNotesPlace;
+    KComboBox           *m_newNotesPlace;
     QCheckBox           *m_viewTextFileContent;
     QCheckBox           *m_viewHtmlFileContent;
     QCheckBox           *m_viewImageFileContent;
@@ -141,7 +132,7 @@ class BASKET_EXPORT NotesAppearancePage : public KCModule
 {
     Q_OBJECT
 public:
-    NotesAppearancePage(QWidget * parent = 0, const char * name = 0);
+    explicit NotesAppearancePage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();
@@ -161,7 +152,7 @@ class BASKET_EXPORT ApplicationsPage : public KCModule
 {
     Q_OBJECT
 public:
-    ApplicationsPage(QWidget * parent = 0, const char * name = 0);
+    explicit ApplicationsPage(QWidget * parent = 0, const char * name = 0);
 
     virtual void load();
     virtual void save();

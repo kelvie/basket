@@ -18,26 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QPainter>
-#include <QTextCodec>
-#include <QBuffer>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
+#include "notedrag.h"
+
+#include <QtCore/QDir>
+#include <QtCore/QTextCodec>
+#include <QtCore/QBuffer>
+#include <QtCore/QTextStream>
+#include <QtCore/QList>
+#include <QtCore/QMimeData>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QDesktopWidget>       //For kapp->desktop()
+#include <QtGui/QDragEnterEvent>
+
 #include <kdeversion.h>
 #include <KDE/KApplication>
-#include <QDesktopWidget>
-#include <KDebug>
+
+#include <KIO/CopyJob>
 
 #include "basketscene.h"
-#include "notedrag.h"
 #include "notefactory.h"
 #include "noteselection.h"
 #include "tools.h"
 #include "global.h"
-
-#include <KIO/CopyJob>
 
 /** NoteDrag */
 
@@ -84,13 +87,13 @@ QDrag* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *sour
         mimeData->setData(NOTE_MIME_STRING,  buffer.buffer());
     }
 
-    // The "Other Flavours" Serialization:
+    // The "Other Flavors" Serialization:
     serializeText(noteList, multipleDrag);
     serializeHtml(noteList, multipleDrag);
     serializeImage(noteList, multipleDrag);
     serializeLinks(noteList, multipleDrag, cutting);
 
-    // The Alternate Flavours:
+    // The Alternate Flavors:
     if (noteList->count() == 1)
         noteList->firstStacked()->note->content()->addAlternateDragObjects(mimeData);
 
@@ -471,16 +474,16 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketScene *parent, bool m
             if (isFolded)
                 note->toggleFolded();
             if (moveNotes) {
-                note->setX(oldNote->x()); // We don't move groups but re-create them (every childs can to not be selected)
+                note->setX(oldNote->x()); // We don't move groups but re-create them (every children can to not be selected)
                 note->setY(oldNote->y()); // We just set the position of the copied group so the animation seems as if the group is the same as (or a copy of) the old.
                 note->setHeight(oldNote->height()); // Idem: the only use of Note::setHeight()
                 parent->removeItem(oldNote);		
             }
-            Note* childs = decodeHierarchy(stream, parent, moveFiles, moveNotes, originalBasket);
-            if (childs) {
-                for (Note *n = childs; n; n = n->next())
+            Note* children = decodeHierarchy(stream, parent, moveFiles, moveNotes, originalBasket);
+            if (children) {
+                for (Note *n = children; n; n = n->next())
                     n->setParentNote(note);
-                note->setFirstChild(childs);
+                note->setFirstChild(children);
             }
         } else {
             stream >> fileName >> fullPath >> addedDate >> lastModificationDate;
@@ -495,7 +498,7 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketScene *parent, bool m
                     KIO::CopyJob *copyJob = KIO::move(KUrl(fullPath), KUrl(parent->fullPath() + newFileName),
 				    KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                     parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                                    parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
+                                    parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
                 }
                 note->setGroupWidth(groupWidth);
                 note->setParentNote(0);
@@ -522,15 +525,13 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketScene *parent, bool m
                         KIO::Overwrite | KIO::Resume | KIO::HideProgressInfo);
                 }
                 parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
-                                parent, SLOT(slotCopyingDone2(KIO::Job *, KUrl, KUrl)));
-
-                note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
+                parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
                 note->setGroupWidth(groupWidth);
                 note->setAddedDate(addedDate);
                 note->setLastModificationDate(lastModificationDate);
             }
         }
-        // Retreive the states (tags) and assign them to the note:
+        // Retrieve the states (tags) and assign them to the note:
         if (note && note->content()) {
             quint64 statePointer;
             do {

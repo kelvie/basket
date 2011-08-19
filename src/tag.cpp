@@ -18,20 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KApplication>
-#include <KDE/KStyle>
+#include "tag.h"
+
 #include <KDE/KIconLoader>
-#include <QPainter>
-#include <QFont>
-#include <QtXml>
-#include <QDir>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 
-#include "tag.h"
+#include <QtCore/QDir>
+#include <QtCore/QList>
+#include <QtCore/QTextStream>
+#include <QtGui/QFont>
+#include <QtXml/QDomDocument>
+
 #include "xmlwork.h"
 #include "global.h"
 #include "debugwindow.h"
@@ -385,8 +383,8 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
 Tag* Tag::tagSimilarTo(Tag *tagToTest)
 {
     // Tags are considered similar if they have the same name, the same number of states, in the same order, and the same look.
-    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparision.
-    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparision.
+    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparison.
+    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparison.
     // Default tags are equal only if they have the same number of states, in the same order, and the same look.
     // This is because default tag names are translated differently in every countries, but they are essentialy the same!
     // User tags begins with "tag_state_" followed by a number. Default tags are the other ones.
@@ -406,7 +404,7 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
         for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2, ++itTest) {
             State *state       = *it2;
             State *stateToTest = *itTest;
-            if (state->id().startsWith("tag_state_") || stateToTest->id().startsWith("tag_state_")) {
+            if (state->id().startsWith(QLatin1String("tag_state_")) || stateToTest->id().startsWith(QLatin1String("tag_state_"))) {
                 defaultTag = false;
             }
             if (state->name()            != stateToTest->name())            {
@@ -733,16 +731,6 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
     } else
         DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
 }
-
-#include <kapplication.h>
-#include <qrect.h>
-#include <qstyle.h>
-#include <qcheckbox.h>
-#include <qbitmap.h>
-#include <qimage.h>
-#include <qradiobutton.h>
-#include <kiconeffect.h>
-
 
 // StateAction
 StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* parent, bool withTagName)

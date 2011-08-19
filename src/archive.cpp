@@ -18,28 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QStringList>
-#include <QList>
-#include <QMap>
-#include <QDir>
-#include <QTextStream>
-#include <KDE/KTar>
-#include <QtXml>
-#include <KDE/KMessageBox>
-#include <QPixmap>
-#include <QPainter>
-#include <KDE/KStandardDirs>
-#include <KDE/KApplication>
+#include "archive.h"
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtGui/QPixmap>
+#include <QtGui/QPainter>
+#include <QtGui/QProgressBar>
+#include <QtXml/QDomDocument>
+
+#include <KDE/KDebug>
+#include <KDE/KLocale>
+#include <KDE/KAboutData>
+#include <KDE/KStandardDirs>        //For KGlobal::dirs()
+#include <KDE/KMainWindow>          //For Global::MainWindow()
+#include <KDE/KComponentData>       //For KGlobal::mainComponent aboutData
 #include <KDE/KIconLoader>
 #include <KDE/KProgressDialog>
-#include <KDE/KMainWindow>
+#include <KDE/KMessageBox>
+#include <KDE/KTar>
 
-#include <QProgressBar>
-#include "kdebug.h"
-
-
-#include "archive.h"
 #include "global.h"
 #include "bnpview.h"
 #include "basketscene.h"
@@ -54,7 +56,7 @@
 void Archive::save(BasketScene *basket, bool withSubBaskets, const QString &destination)
 {
     QDir dir;
-    KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."), /*Not modal, for password dialogs!*/false);
+    KProgressDialog dialog(0, i18n("Save as Basket Archive"), i18n("Saving as basket archive. Please wait..."));
     dialog.showCancelButton(false);
     dialog.setAutoClose(true);
     dialog.show();
@@ -176,7 +178,7 @@ void Archive::save(BasketScene *basket, bool withSubBaskets, const QString &dest
                 file.write(buffer, sizeRead);
         }
         // Clean Up:
-        delete buffer;
+        delete[] buffer;
         buffer = 0;
         file.close();
     }
@@ -359,7 +361,7 @@ void Archive::open(const QString &path)
                         size -= sizeRead;
                     }
                     archiveFile.close();
-                    delete buffer;
+                    delete[] buffer;
 
                     // Extract the Archive:
                     QString extractionFolder = tempFolder + "extraction/";
@@ -386,7 +388,7 @@ void Archive::open(const QString &path)
                     stream.seek(file.pos());
 
                 }
-            } else if (key.endsWith("*")) {
+            } else if (key.endsWith('*')) {
                 // We do not know what it is, but we should read the embedded-file in order to discard it:
                 bool ok;
                 qint64 size = value.toULong(&ok);
@@ -402,11 +404,11 @@ void Archive::open(const QString &path)
                 while ((sizeRead = file.read(buffer, qMin(BUFFER_SIZE, size))) > 0) {
                     size -= sizeRead;
                 }
-                delete buffer;
+                delete[] buffer;
             } else {
                 // We do not know what it is, and we do not care.
             }
-            // Analyse the Value, if Understood:
+            // Analyze the Value, if Understood:
         }
         file.close();
     }

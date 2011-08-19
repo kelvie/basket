@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "colorpicker.h"
-#include "QTimer"
-#include <QKeyEvent>
-#include <QMouseEvent>
+
+#include <QtCore/QTimer>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QMouseEvent>
+
 #include <KDE/KColorDialog>
 
 /// ///

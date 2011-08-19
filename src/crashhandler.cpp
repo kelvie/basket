@@ -10,47 +10,25 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include "amarok.h"
-//#include "amarokconfig.h"
 #include "crashhandler.h"
-//#include "debug.h"
 #include "config.h"
 
+#include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
-#include <kapplication.h> //invokeMailer()
-#include <kaboutdata.h>
-#include <kdeversion.h>
-#include <klocale.h>
-#include <ktemporaryfile.h>
+#include <KDE/KComponentData>
+#include <KDE/KTemporaryFile>
+#include <KDE/KToolInvocation>
+#include <KDE/KDebug>
 
-#include <qfile.h>
-#include <qregexp.h>
-#include <QTextStream>
-//Added by qt3to4:
+#include <kdeversion.h>
+
+#include <QtCore/QRegExp>
 
 #include <cstdio>         //popen, fread
-#include <iostream>
 #include <sys/types.h>    //pid_t
 #include <sys/wait.h>     //waitpid
-//#include <taglib/taglib.h>
-#include <unistd.h>       //write, getpid
-#include <ktoolinvocation.h>
-#include <kdebug.h>
+#include <unistd.h>       //write, getppid
 
-
-//#ifndef TAGLIB_PATCH_VERSION
-//// seems to be wheel's style
-//#define TAGLIB_PATCH_VERSION 0
-//#endif
-
-
-#if 0
-class CrashHandlerWidget : public KDialog
-{
-public:
-    CrashHandlerWidget();
-};
-#endif
 
 static QString
 runCommand(const QByteArray &command)

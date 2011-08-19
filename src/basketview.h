@@ -31,7 +31,7 @@ class BasketView : public QGraphicsView
 public:
   BasketView( BasketScene *scene, QWidget * parent = 0 );
   virtual ~BasketView();
-protected:  
+protected:
   virtual void resizeEvent( QResizeEvent * event );
 };
 

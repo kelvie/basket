@@ -21,12 +21,13 @@
 #ifndef FILTER_H
 #define FILTER_H
 
-#include <QWidget>
-#include <QMap>
-
-#include "focusedwidgets.h"
+#include <QtCore/QMap>
+#include <QtGui/QWidget>
 
 class QToolButton;
+
+class KLineEdit;
+class KComboBox;
 
 class Tag;
 class State;

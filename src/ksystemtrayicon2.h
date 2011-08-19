@@ -29,14 +29,14 @@ class KSystemTray2 : public KSystemTrayIcon
 {
     Q_OBJECT
 public:
-    KSystemTray2(QWidget *parent = 0, const char *name = 0);
+    explicit KSystemTray2(QWidget *parent = 0, const char *name = 0);
     ~KSystemTray2();
     /**
       * Call this method when the user clicked the close button of the window
       * (the [x]) to inform him that the application sit in the system tray
       * and willn't be closed (as he is used to).
       *
-      * You usualy call it from reimplemented KMainWindow::queryClose()
+      * You usually call it from reimplemented KMainWindow::queryClose()
       *
       * @since 3.4
       */

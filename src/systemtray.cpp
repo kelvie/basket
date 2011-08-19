@@ -22,19 +22,19 @@
 #include "systemtray.h"
 
 // Qt
-#include <QImage>
-#include <QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QPixmap>
 
 // KDE
-#include <KDE/KIconEffect>
+#include <KDE/KLocale>
+#include <KDE/KIconEffect>  //Port to Blitz/Quasar?
+#include <KDE/KDialog>
 
 // Local
 #include "basketscene.h"
 #include "settings.h"
 #include "global.h"
 #include "tools.h"
-#include "linklabel.h"
-#include "note.h"
 
 
 /* This function comes directly from JuK: */
@@ -121,7 +121,6 @@ void SystemTray::updateDisplay()
     else {
         // Code that comes from JuK:
         QPixmap bgPix = loadIcon("basket").pixmap(22);
-        int smallIconSize = kapp->style()->pixelMetric(QStyle::PM_SmallIconSize);
         QPixmap fgPix = loadIcon(basket->icon()).pixmap(16);
 
         QImage bgImage = bgPix.toImage(); // Probably 22x22

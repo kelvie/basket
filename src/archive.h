@@ -21,8 +21,8 @@
 #ifndef ARCHIVE_H
 #define ARCHIVE_H
 
-#include <QList>
-#include <QMap>
+#include <QtCore/QList>
+#include <QtCore/QMap>
 
 class BasketScene;
 class Tag;
@@ -30,6 +30,9 @@ class Tag;
 class QString;
 class QStringList;
 class QDomNode;
+class QProgressBar;
+class QDomElement;
+
 class KTar;
 class KProgress;
 

@@ -18,35 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KDebug>
-#include <QString>
-#include <QPixmap>
-#include <QImage>
-#include <QRegExp>
-#include <QList>
-#include <QFileInfo>
-#include <QDir>
-#include <QMimeData>
-#include <QFont>
-#include <QFontInfo>
-#include <QObject>
-
-#include <QTextDocument>
-#include <QTime>
-
 #include "tools.h"
+
+#include <QtCore/QString>
+#include <QtCore/QRegExp>
+#include <QtCore/QList>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QMimeData>
+#include <QtCore/QObject>
+#include <QtCore/QTime>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QFont>
+#include <QtGui/QFontInfo>
+#include <QtGui/QTextDocument>  //For Qt::convertFromPlainText and Qt::WhiteSpaceNormal.
+
+#include <KDE/KDebug>
+#include <KDE/KIO/CopyJob>      //For KIO::trash
+#include <KDE/KUrl>
+
 #include "debugwindow.h"
 #include "config.h"
-#ifdef HAVE_NEPOMUK
-#include "nepomukintegration.h"
-#endif
 
 //cross reference
 #include "global.h"
 #include "bnpview.h"
-#include <KUrl>
 #include "htmlexporter.h"
 #include "linklabel.h"
+
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
 
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
@@ -144,7 +147,7 @@ QString Tools::tagURLs(const QString &text)
         }
 
         QString href = richText.mid(urlPos, urlLen);
-        //we handle basket links seperately...
+        //we handle basket links separately...
         if(href.contains("basket://")) {
             urlPos += urlLen;
             continue;
@@ -232,7 +235,7 @@ QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *export
     title = linkParts.last().trimmed();
 
     QString url;
-    if(basketLink.startsWith("basket://"))
+    if(basketLink.startsWith(QLatin1String("basket://")))
     url = basketLink.mid(9, basketLink.length() - 9);
 
     BasketScene *basket = Global::bnpView->basketForFolderName(url);
@@ -270,7 +273,7 @@ QString Tools::crossReferenceForConversion(QStringList linkParts)
     QString basketLink = linkParts.first();
     QString title;
 
-    if(basketLink.startsWith("basket://"))
+    if(basketLink.startsWith(QLatin1String("basket://")))
         return QString("[[%1|%2]]").arg(basketLink, linkParts.last());
 
     if(basketLink.endsWith('/'))
@@ -516,8 +519,6 @@ QPixmap Tools::indentPixmap(const QPixmap &source, int depth, int deltaX)
     return result;
 }
 
-#include <QTextDocument>
-
 void Tools::deleteRecursively(const QString &folderOrFile)
 {
     if (folderOrFile.isEmpty())
@@ -543,7 +544,6 @@ void Tools::deleteRecursively(const QString &folderOrFile)
 #endif
 }
 
-#include <kio/copyjob.h>
 void Tools::deleteMetadataRecursively(const QString &folderOrFile)
 {
     QFileInfo fileInfo(folderOrFile);

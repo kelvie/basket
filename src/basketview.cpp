@@ -22,15 +22,15 @@
 #include "basketscene.h"
 
 BasketView::BasketView( BasketScene *scene, QWidget * parent )
-  : QGraphicsView(scene, parent) 
+  : QGraphicsView(scene, parent)
 {
 }
 
-BasketView::~BasketView() 
+BasketView::~BasketView()
 {
 }
 
 void BasketView::resizeEvent( QResizeEvent * event )
-{ 
+{
   static_cast<BasketScene*>(scene())->relayoutNotes(true);
 }

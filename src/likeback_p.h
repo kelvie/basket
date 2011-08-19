@@ -21,17 +21,22 @@
 #ifndef LIKEBACK_PRIVATE_H
 #define LIKEBACK_PRIVATE_H
 
-#include <KDE/KDialog>
-#include <QTimer>
-#include <QRadioButton>
-
 #include "likeback.h"
 
+#include <KDE/KDialog>
+
+#include <QtCore/QTimer>
+
 class QToolButton;
-class QTextEdit;
+class KTextEdit;
+class QRadioButton;
 class QCheckBox;
 class QGroupBox;
+class QNetworkReply;
+
 class Kaction;
+
+class LikeBackBar;
 
 class LikeBackPrivate
 {
@@ -89,7 +94,7 @@ private:
     LikeBack     *m_likeBack;
     QString       m_windowPath;
     QString       m_context;
-    QTextEdit    *m_comment;
+    KTextEdit    *m_comment;
     QRadioButton *likeButton;
     QRadioButton *dislikeButton;
     QRadioButton *bugButton;
@@ -103,7 +108,7 @@ private slots:
     void changeButtonBarVisible();
     void commentChanged();
     void send();
-    void requestFinished(int id, bool error);
+    void requestFinished(QNetworkReply* reply);
 };
 
 #endif // LIKEBACK_PRIVATE_H

@@ -21,12 +21,9 @@
 #ifndef LINKLABEL_H
 #define LINKLABEL_H
 
-#include <QFrame>
-#include <QBoxLayout>
-#include <QPixmap>
-#include <QLabel>
-#include <QEvent>
+#include <QtGui/QFrame>
 
+class QPixmap;
 class QString;
 class KUrl;
 class QColor;
@@ -35,8 +32,9 @@ class QBoxLayout;
 class QSpacerItem;
 class QPushButton;
 class QCheckBox;
-class QComboBox;
+class QEvent;
 
+class KComboBox;
 class KColorCombo2;
 class IconSizeCombo;
 
@@ -52,7 +50,7 @@ class LinkLook
 public:
     enum Underlining { Always = 0, Never, OnMouseHover, OnMouseOutside };
     enum Preview { None = 0, IconSize, TwiceIconSize, ThreeIconSize };
-    LinkLook(bool useLinkColor = true, bool canPreview = true);
+    explicit LinkLook(bool useLinkColor = true, bool canPreview = true);
     LinkLook(const LinkLook &other);
     void setLook(bool italic, bool bold, int underlining,
                  QColor color, QColor hoverColor,
@@ -228,11 +226,11 @@ protected:
     LinkLook      *m_look;
     QCheckBox     *m_italic;
     QCheckBox     *m_bold;
-    QComboBox     *m_underlining;
+    KComboBox     *m_underlining;
     KColorCombo2  *m_color;
     KColorCombo2  *m_hoverColor;
     IconSizeCombo *m_iconSize;
-    QComboBox     *m_preview;
+    KComboBox     *m_preview;
     LinkLook      *m_exLook;
     LinkLabel     *m_example;
     QString        m_exTitle;

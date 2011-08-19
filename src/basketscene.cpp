@@ -18,73 +18,65 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDrag>
-#include <QtXml>
-#include <QPainter>
-#include <QStyle>
-#include <QWheelEvent>
-#include <QContextMenuEvent>
-#include <QFocusEvent>
-#include <QPaintEvent>
-#include <QDragMoveEvent>
-#include <QVBoxLayout>
-#include <QDragLeaveEvent>
-#include <QKeyEvent>
-#include <QFrame>
-#include <QResizeEvent>
-#include <QLabel>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QHBoxLayout>
-#include <QList>
-#include <QMouseEvent>
-#include <QCloseEvent>
-#include <QGridLayout>
-#include <QGraphicsProxyWidget>
-#include <KDE/KStyle>
-#include <QToolTip>
-#include <QCursor>
-#include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
-#include <QPushButton>
+#include "basketscene.h"
+
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QPoint>
+#include <QtCore/QList>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>  // seed for rand()
+#include <QtCore/QTimeLine>
+#include <QtGui/QApplication>
+#include <QtGui/QDrag>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QWheelEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QTextDocument>
+#include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QToolTip>
+#include <QtGui/QCursor>
+#include <QtGui/QClipboard>
+#include <QtGui/QInputDialog>
+#include <QtGui/QGraphicsProxyWidget>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KTextEdit>
-#include <QPoint>
-#include <QStringList>
+#include <KDE/KStyle>
 #include <KDE/KApplication>
 #include <KDE/KColorScheme> // for KStatefulBrush
 #include <KDE/KOpenWithDialog>
 #include <KDE/KService>
 #include <KDE/KLocale>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <KFileDialog>
+#include <KDE/KFileDialog>
 #include <KDE/KAboutData>
 #include <KDE/KLineEdit>
 #include <KDE/KSaveFile>
 #include <KDE/KDebug>
-
-#include <KAuthorized>
-#include <KIO/CopyJob>
-
-#include <unistd.h> // For sleep()
-
+#include <KDE/KAuthorized>
 #include <KDE/KMenu>
 #include <KDE/KIconLoader>
 #include <KDE/KRun>
-
-#include <QClipboard>
-#include <QScrollBar>
-
 #include <KDE/KMessageBox>
-#include <QInputDialog>
+#include <KDE/KDirWatch>
 
-#include <QLayout>
+#include <KIO/CopyJob>
 
 #include <stdlib.h>     // rand() function
-#include <QDateTime>  // seed for rand()
 
-#include "basketscene.h"
 #include "basketview.h"
 #include "decoratedbasket.h"
 #include "diskerrordialog.h"
@@ -102,7 +94,10 @@
 #include "tools.h"
 #include "debugwindow.h"
 #include "exporterdialog.h"
+#include "focusedwidgets.h"
+
 #include "config.h"
+
 #ifdef HAVE_LIBGPGME
 #include "kgpgme.h"
 #endif
@@ -695,7 +690,7 @@ void BasketScene::unsubscribeBackgroundImages()
         m_selectedBackgroundPixmap = 0;
     }
 }
-#include <QBitmap>
+
 void BasketScene::setAppearance(const QString &icon, const QString &name, const QString &backgroundImage, const QColor &backgroundColor, const QColor &textColor)
 {
     unsubscribeBackgroundImages();
@@ -934,8 +929,6 @@ void BasketScene::aboutToBeActivated()
 
         m_finishLoadOnFirstShow = false;
     }
-    
-    emit activated();
 }
 
 void BasketScene::reload()
@@ -2884,22 +2877,22 @@ BasketScene::~BasketScene()
 		delete m_view;
 }
 
-void BasketScene::viewportResized()
+/*void BasketScene::viewportResized()
 {
     relayoutNotes(true);
     //cornerWidget()->setShown( m_view->horizontalScrollBar()->isShown() &&  m_view->verticalScrollBar()->isShown());
-    if ( m_view->horizontalScrollBar()->isVisible() &&  m_view->verticalScrollBar()->isVisible()) {
+/*    if ( m_view->horizontalScrollBar()->isVisible() &&  m_view->verticalScrollBar()->isVisible()) {
         if (!m_view->cornerWidget())
             m_view->setCornerWidget(m_cornerWidget);
     } else {
         if (m_view->cornerWidget())
             m_view->cornerWidget()->hide();
-    }
+    }*/
 //  if (isDuringEdit())
 //      ensureNoteVisible(editedNote());
 	//m_view->resizeEvent(event);
 
-}
+//}*/
 
 void BasketScene::animateLoad()
 {
@@ -3783,7 +3776,6 @@ void BasketScene::closeBasket()
             m_inactivityAutoLockTimer.start(seconds * 1000);
         }
     }
-    emit closed();
 }
 
 void BasketScene::openBasket()
@@ -5277,7 +5269,6 @@ bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array, u
             static const uint sleepDelay = 50; // ms
             for (uint i = 0; i < retryDelay / sleepDelay; ++i) {
                 kapp->processEvents();
-                usleep(sleepDelay * 1000); // usec
             }
             // Double the retry delay, but don't go over the max.
             retryDelay = qMin(maxDelay, retryDelay * 2); // ms

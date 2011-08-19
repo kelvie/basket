@@ -21,10 +21,12 @@
 #ifndef BACKUP_H
 #define BACKUP_H
 
-#include <KDialog>
-#include <QApplication>
-#include <QThread>
-#include <QLabel>
+#include <KDE/KDialog>
+
+#include <QtCore/QThread>
+
+class QApplication;
+class QLabel;
 
 #include "basket_export.h"
 
@@ -35,7 +37,7 @@ class BackupDialog : public KDialog
 {
     Q_OBJECT
 public:
-    BackupDialog(QWidget *parent = 0, const char *name = 0);
+    explicit BackupDialog(QWidget *parent = 0, const char *name = 0);
     ~BackupDialog();
 private slots:
     void moveToAnotherFolder();

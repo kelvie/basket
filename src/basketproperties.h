@@ -22,32 +22,31 @@
 #define BASKETPROPERTIES_H
 
 #include <KDE/KDialog>
-#include <QMap>
-#include <QString>
-
-#include "ui_basketproperties.h"
+#include <QtCore/QMap>
 
 class KIconButton;
-class QLineEdit;
-class QComboBox;
+class KLineEdit;
 class QGroupBox;
 class QVBoxLayout;
 class QRadioButton;
+class QString;
+
+class KComboBox;
 class KIntNumInput;
 class KShortcutWidget;
 class KShortcut;
+class KColorCombo2;
 
 class BasketScene;
-class KColorCombo2;
 
 /** The dialog that hold basket settings.
   * @author Sébastien Laoût
   */
-class BasketPropertiesDialog : public KDialog, private Ui::BasketPropertiesUi
+class BasketPropertiesDialog : public KDialog
 {
     Q_OBJECT
 public:
-    BasketPropertiesDialog(BasketScene *basket, QWidget *parent = 0);
+    explicit BasketPropertiesDialog(BasketScene *basket, QWidget *parent = 0);
     ~BasketPropertiesDialog();
     void ensurePolished();
 
@@ -59,9 +58,23 @@ protected slots:
     void selectColumnsLayout();
 
 private:
+    BasketScene    *m_basket;
+    KIconButton   *m_icon;
+    KLineEdit     *m_name;
+    KComboBox     *m_backgroundImage;
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
-    BasketScene    *m_basket;
+    QGroupBox     *m_disposition;
+    QRadioButton  *columnForm;
+    QRadioButton  *mindMap;
+    QRadioButton  *freeForm;
+    KIntNumInput  *m_columnCount;
+    KShortcutWidget *m_shortcut;
+    QGroupBox *m_shortcutRole;
+    QVBoxLayout *m_shortcutRoleLayout;
+    QRadioButton * m_showButton;
+    QRadioButton * m_globalButton;
+    QRadioButton * m_switchButton;
     QMap<int, QString> m_backgroundImagesMap;
 };
 

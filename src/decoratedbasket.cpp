@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "basketscene.h"
 #include "decoratedbasket.h"
+
+#include <QtGui/QGraphicsView>
+#include <QtGui/QVBoxLayout>
+
+#include "basketscene.h"
 #include "filter.h"
 #include "settings.h"
-
-#include <QVBoxLayout>
 
 /** Class DecoratedBasket: */
 
@@ -91,5 +93,5 @@ void DecoratedBasket::resetFilter()
 void DecoratedBasket::resizeEvent(QResizeEvent *event)
 {
 	QWidget::resizeEvent(event);
-	m_basket->viewportResized();
+	m_basket->relayoutNotes(true);
 }

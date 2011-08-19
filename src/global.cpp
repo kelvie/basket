@@ -18,17 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "global.h"
+
 #include <KDE/KGlobal>
 #include <KDE/KStandardDirs>
-#include <QString>
-#include <KDE/KAction>
+
 #include <KDE/KApplication>
 #include <KDE/KMainWindow>
-#include <QDir>
-#include <KDE/KDebug>
 #include <KDE/KConfig>
 
-#include "global.h"
+#include <QtCore/QString>
+#include <QtCore/QDir>
+
+#include "aboutdata.h"
 #include "bnpview.h"
 #include "settings.h"
 
@@ -106,3 +108,7 @@ KConfig* Global::config()
     //The correct solution is to go and replace all KConfig* with KSharedConfig::Ptr, but that seems awfully annoying to do right now
     return Global::basketConfig.data();
 }
+
+KAboutData* Global::about() {
+    return &basketAbout;
+};

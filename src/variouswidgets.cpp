@@ -18,31 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLayout>
-#include <QLineEdit>
-#include <QLabel>
-#include <QSizeGrip>
-#include <QPushButton>
-#include <QString>
-#include <QSizePolicy>
-
-#include <KListWidget>
-
-#include <QHBoxLayout>
-#include <QResizeEvent>
-#include <QList>
-#include <QKeyEvent>
-#include <QVBoxLayout>
-#include <KDE/KOpenWithDialog>
-#include <KDE/KLocale>
-#include <QWhatsThis>
-#include <KDE/KIconLoader>
-#include <QDrag>
-#include <QFontDatabase>
-#include <KDE/KPushButton>
-
 #include "variouswidgets.h"
 
+#include <QtCore/QList>
+#include <QtCore/QPointer>
+#include <QtCore/QString>
+#include <QtGui/QLabel>
+#include <QtGui/QSizeGrip>
+#include <QtGui/QPushButton>
+#include <QtGui/QSizePolicy>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QWhatsThis>
+#include <QtGui/QDrag>
+#include <QtGui/QFontDatabase>
+
+#include <KDE/KLineEdit>
+#include <KDE/KListWidget>
+#include <KDE/KLocale>
+#include <KDE/KOpenWithDialog>
+#include <KDE/KPushButton>
 
 /** class RunCommandRequester: */
 
@@ -52,7 +49,7 @@ RunCommandRequester::RunCommandRequester(const QString &runCommand, const QStrin
     m_message = message;
 
     QHBoxLayout *layout = new QHBoxLayout(this);
-    m_runCommand        = new QLineEdit(runCommand, this);
+    m_runCommand        = new KLineEdit(runCommand, this);
     QPushButton *pb     = new QPushButton(/*"C&hoose..."*/i18n("..."), this);
 
     pb->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -69,7 +66,7 @@ RunCommandRequester::~RunCommandRequester()
 
 void RunCommandRequester::slotSelCommand()
 {
-    KOpenWithDialog *dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
+    QPointer<KOpenWithDialog> dlg =  new KOpenWithDialog(KUrl::List(), m_message, m_runCommand->text(), this);
     dlg->exec();
     if (! dlg->text().isEmpty())
         m_runCommand->setText(dlg->text());
@@ -88,7 +85,7 @@ void RunCommandRequester::setRunCommand(const QString &runCommand)
 /** class IconSizeCombo: */
 
 IconSizeCombo::IconSizeCombo(QWidget *parent)
-        : QComboBox(parent)
+        : KComboBox(parent)
 {
     addItem(i18n("16 by 16 pixels"));
     addItem(i18n("22 by 22 pixels"));
@@ -299,7 +296,7 @@ FontSizeCombo::FontSizeCombo(bool rw, bool withDefault, QWidget *parent)
         addItem(QString::number(*it));
 
 //  connect( this, SIGNAL(acivated(const QString&)), this, SLOT(textChangedInCombo(const QString&)) );
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)));
+    connect(this, SIGNAL(editTextChanged(const QString&)), this, SLOT(textChangedInCombo(const QString&)));
 
     // TODO: 01617 void KFontSizeAction::setFontSize( int size )
 }

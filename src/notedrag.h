@@ -21,14 +21,14 @@
 #ifndef NOTEDRAG_H
 #define NOTEDRAG_H
 
-#include <QString>
-#include <QDataStream>
-#include <QPixmap>
 #include <QList>
 #include <QDrag>
 #include <QGraphicsSceneDragDropEvent>
 
 class QDataStream;
+class QDragEnterEvent;
+class QPixmap;
+class QString;
 
 class BasketScene;
 class Note;
@@ -42,9 +42,9 @@ class NoteSelection;
   *   - This give the MIME type "application/x-basket-note" that will be used by the application to paste the notes exactly as they were.
   *   - Then the method try to set alterante formats for the dragged objects:
   *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the QDrag object
-  *   - It do the same with toHtml(), toImage() and toLink() to have those flavours as well, if possible...
+  *   - It do the same with toHtml(), toImage() and toLink() to have those flavors as well, if possible...
   *   - If there is only ONE copied note, addAlternateDragObjects() is called on it, so that Unknown objects can be dragged "as is".
-  *   - It's OK for the flavours. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
+  *   - It's OK for the flavors. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
   *   - The pixmaps are joined to one big pixmap (but it should not exceed a defined size) and a border is drawn on this image.
   *
   * Pasting/Dropping Scenario:

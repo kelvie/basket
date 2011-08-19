@@ -21,43 +21,48 @@
 #ifndef NOTECONTENT_H
 #define NOTECONTENT_H
 
-#include <QObject>
-#include <QString>
-#include <QTextDocument>
-#include <QPixmap>
-#include <QMovie>
-#include <QColor>
+#include <QtCore/QObject>
+#include <QtGui/QGraphicsItem>
+
 #include <KDE/KUrl>
-#include <QHttp>
-#include <QGraphicsItem>
+#include <KDE/KIO/AccessManager>
+
+#include <phonon/phononnamespace.h>
 
 #include "linklabel.h"
-#include <Phonon/AudioOutput>
-#include <Phonon/SeekSlider>
-#include <Phonon/MediaObject>
-#include <Phonon/VolumeSlider>
-#include <Phonon/BackendCapabilities>
+
 class QDomDocument;
 class QDomElement;
+
+class QBuffer;
+class QColor;
+class QMimeData;
+class QMovie;
 class QPainter;
-class QWidget;
+class QPixmap;
 class QPoint;
 class QRect;
+class QString;
 class QStringList;
-class QBuffer;
-
-class QMimeData;
+class QTextDocument;
+class QWidget;
 
 class KFileItem;
+class KUrl;
+
 namespace KIO
 {
-class PreviewJob;
+    class PreviewJob;
 }
 
-class Note;
+namespace Phonon
+{
+    class MediaObject;
+}
+
 class BasketScene;
 class FilterData;
-class HtmlExporter;
+class Note;
 
 /**
  * LinkDisplayItem is a QGraphicsItem using a LinkDisplay
@@ -93,14 +98,14 @@ class NoteContent
 {
 public:
     // Constructor and destructor:
-    NoteContent(Note *parent, const QString &fileName = "");              /// << Constructor. Inherited notes should call it to initialize the parent note.
+    explicit NoteContent(Note *parent, const QString &fileName = "");     /// << Constructor. Inherited notes should call it to initialize the parent note.
     virtual ~NoteContent()                                             {} /// << Virtual destructor. Reimplement it if you should destroy some data your custom types.
     // Simple Abstract Generic Methods:
     virtual NoteType::Id type() const                                = 0; /// << @return the internal number that identify that note type.
     virtual QString typeName() const                                 = 0; /// << @return the translated type name to display in the user interface.
     virtual QString lowerTypeName() const                            = 0; /// << @return the type name in lowercase without space, for eg. saving.
     virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
-    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
+    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt resource.
     virtual QPixmap toPixmap()                      {
         return QPixmap();
     } /// << @return an image equivalent of the content.
@@ -173,7 +178,7 @@ public:
     virtual QString customOpenCommand() {
         return QString();
     }  /// << Reimplement this if your urlToOpen() should be opened with another application instead of the default KDE one. This choice should be left to the users in the setting (choice to use a custom app or not, and which app).
-    // Common File Management:                                            ///    (and do save changes) and optionnaly hide the toolbar.
+    // Common File Management:                                            ///    (and do save changes) and optionaly hide the toolbar.
     virtual void setFileName(const QString &fileName); /// << Set the filename. Reimplement it if you eg. want to update the view when the filename is changed.
     bool trySetFileName(const QString &fileName);      /// << Set the new filename and return true. Can fail and return false if a file with this fileName already exists.
     QString  fullPath();                               /// << Get the absolute path of the file where this content is stored on disk.
@@ -565,12 +570,13 @@ protected:
     bool        m_autoTitle;
     bool        m_autoIcon;
     LinkDisplayItem m_linkDisplayItem;
-    QHttp*      m_http;
+    KIO::Integration::AccessManager*      m_access_manager;
+    QNetworkReply*      m_reply;
     QString*    m_httpBuff;
     // File Preview Management:
 protected slots:
-    void httpDone(bool err);
     void httpReadyRead();
+    void httpDone(QNetworkReply* reply);
     void newPreview(const KFileItem&, const QPixmap &preview);
     void removePreview(const KFileItem&);
     void startFetchingUrlPreview();

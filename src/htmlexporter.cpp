@@ -19,31 +19,35 @@
  ***************************************************************************/
 
 #include "htmlexporter.h"
+
 #include "bnpview.h"
 #include "basketlistview.h"
 #include "basketscene.h"
 #include "note.h"
 #include "tools.h"
 #include "config.h"
-#include "tag.h"
+#include "linklabel.h"
+#include "notecontent.h"
 
 #include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KDebug>
+#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
-#include <KDE/KIconLoader>
 #include <KDE/KFileDialog>
 #include <KDE/KMessageBox>
-#include <QDir>
-#include <QFile>
-#include <QPainter>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
 #include <KDE/KProgressDialog>
-#include <QProgressBar>
-#include <KDE/KDebug>
-#include <KDE/KColorScheme>
-#include <KDE/KIO/CopyJob>
+
+#include <KDE/KIO/Job>      //For KIO::file_copy
+#include <KDE/KIO/CopyJob>  //For KIO::copy
+
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QList>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
 
 HTMLExporter::HTMLExporter(BasketScene *basket)
 {
@@ -81,7 +85,7 @@ HTMLExporter::HTMLExporter(BasketScene *basket)
     }
 
     // Create the progress dialog that will always be shown during the export:
-    KProgressDialog dialog(0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."), /*Not modal, for password dialogs!*/false);
+    KProgressDialog dialog(0, i18n("Export to HTML"), i18n("Exporting to HTML. Please wait..."));
     dialog.showCancelButton(false);
     dialog.setAutoClose(true);
     dialog.show();
@@ -107,7 +111,7 @@ void HTMLExporter::prepareExport(BasketScene *basket, const QString &fullPath)
     progress->setValue(0);
     kapp->processEvents();
 
-    // Remember the file path choosen by the user:
+    // Remember the file path chozen by the user:
     filePath = fullPath;
     fileName = KUrl(fullPath).fileName();
     exportedBasket = basket;
@@ -444,15 +448,15 @@ void HTMLExporter::exportNote(Note *note, int indent)
         }
         stream << '\n' << spaces.fill(' ', indent) << "</table>\n" /*<< spaces.fill(' ', indent - 1)*/;
     } else {
-        // Additionnal class for the content (link, netword, color...):
-        QString additionnalClasses = note->content()->cssClass();
-        if (!additionnalClasses.isEmpty())
-            additionnalClasses = " " + additionnalClasses;
+        // Additional class for the content (link, netword, color...):
+        QString additionalClasses = note->content()->cssClass();
+        if (!additionalClasses.isEmpty())
+            additionalClasses = " " + additionalClasses;
         // Assign the style of each associted tags:
         for (State::List::Iterator it = note->states().begin(); it != note->states().end(); ++it)
-            additionnalClasses += " tag_" + (*it)->id();
+            additionalClasses += " tag_" + (*it)->id();
         //stream << spaces.fill(' ', indent);
-        stream << "<table class=\"note" << additionnalClasses << "\"" << freeStyle << "><tr>";
+        stream << "<table class=\"note" << additionalClasses << "\"" << freeStyle << "><tr>";
         if (note->emblemsCount() > 0) {
             stream << "<td class=\"tags\"><nobr>";
             for (State::List::Iterator it = note->states().begin(); it != note->states().end(); ++it)

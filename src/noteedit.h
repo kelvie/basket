@@ -21,34 +21,33 @@
 #ifndef NOTEEDIT_H
 #define NOTEEDIT_H
 
-#include <KDialog>
-#include <QTextEdit>
-#include <QLineEdit>
-#include <QKeyEvent>
+#include <KDE/KDialog>
+#include <KDE/KLineEdit>
+
+#include "notecontent.h"
 
 class QGraphicsProxyWidget;
-//class QLineEdit;
+class QWidget;
 class QPushButton;
+class QKeyEvent;
+class QFontComboBox;
+class QTextCharFormat;
+
 class KIconButton;
 class KUrlRequester;
 class KTextEdit;
-class KMainWindow;
-class KToolBar;
 class KToggleAction;
-class KActionCollection;
+class KToolBar;
 class KAction;
+class KActionCollection;
+class KComboBox;
+class KColorCombo;
 
 class FontSizeCombo;
-
 class Note;
 class RunCommandRequester;
-class QFontComboBox;
-class KColorCombo;
 class FocusWidgetFilter;
 class BasketListViewItem;
-class KComboBox;
-
-#include "notecontent.h"
 
 /** The base class for every note editor.
   * Scenario:
@@ -86,7 +85,7 @@ public:
     KTextEdit*  textEdit() {
         return m_textEdit;
     }
-    QLineEdit*  lineEdit() {
+    KLineEdit*  lineEdit() {
         return m_lineEdit;
     }
 
@@ -95,7 +94,7 @@ private:
     bool         m_canceled;
     QGraphicsProxyWidget     *m_widget;
     KTextEdit   *m_textEdit;
-    QLineEdit   *m_lineEdit;
+    KLineEdit   *m_lineEdit;
     NoteContent *m_noteContent;
 
 public:
@@ -147,10 +146,9 @@ protected:
     HtmlContent *m_htmlContent;
 public slots:
     void cursorPositionChanged();
-    void textChanged();
-    void fontChanged(const QFont &font);
+    void editTextChanged();
+    void charFormatChanged(const QTextCharFormat &format);
 protected slots:
-//  void slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align);
     void setBold(bool isChecked);
     void setLeft();
     void setCentered();
@@ -219,16 +217,16 @@ public:
     UnknownEditor(UnknownContent *unknownContent, QWidget *parent);
 };
 
-/** QLineEdit behavior:
-  * Create a new QLineEdit with a text, then the user select a part of it and press ONE letter key.
-  * The signal textChanged() is not emitted!
+/** KLineEdit behavior:
+  * Create a new KLineEdit with a text, then the user select a part of it and press ONE letter key.
+  * The signal editTextChanged() is not emitted!
   * This class correct that!
   */
-class DebuggedLineEdit : public QLineEdit
+class DebuggedLineEdit : public KLineEdit
 {
     Q_OBJECT
 public:
-    DebuggedLineEdit(const QString &text, QWidget *parent = 0);
+    explicit DebuggedLineEdit(const QString &text, QWidget *parent = 0);
     ~DebuggedLineEdit();
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -241,7 +239,7 @@ class LinkEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
+    explicit LinkEditDialog(LinkContent *contentNote, QWidget *parent = 0);
     ~LinkEditDialog();
     void ensurePolished();
 
@@ -256,7 +254,7 @@ private:
     LinkContent   *m_noteContent;
     bool           m_isAutoModified;
     KUrlRequester *m_url;
-    QLineEdit     *m_title;
+    KLineEdit     *m_title;
     KIconButton   *m_icon;
     QPushButton   *m_autoTitle;
     QPushButton   *m_autoIcon;
@@ -269,7 +267,7 @@ class CrossReferenceEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
+    explicit CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
     ~CrossReferenceEditDialog();
 
 protected slots:
@@ -289,7 +287,7 @@ class LauncherEditDialog : public KDialog
 {
     Q_OBJECT
 public:
-    LauncherEditDialog(LauncherContent *contentNote, QWidget *parent = 0);
+    explicit LauncherEditDialog(LauncherContent *contentNote, QWidget *parent = 0);
     ~LauncherEditDialog();
     void ensurePolished();
 protected slots:
@@ -298,7 +296,7 @@ protected slots:
 private:
     LauncherContent     *m_noteContent;
     RunCommandRequester *m_command;
-    QLineEdit           *m_name;
+    KLineEdit           *m_name;
     KIconButton         *m_icon;
 };
 
@@ -322,9 +320,9 @@ public:
     void enableRichTextToolBar();
     void disableRichTextToolBar();
     QPalette palette() const;
-    QFontComboBox *richTextFont;
+    QFontComboBox     *richTextFont;
     FontSizeCombo     *richTextFontSize;
-    KColorCombo *richTextColor;
+    KColorCombo       *richTextColor;
     KToggleAction     *richTextBold;
     KToggleAction     *richTextItalic;
     KToggleAction     *richTextUnderline;

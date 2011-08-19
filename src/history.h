@@ -21,14 +21,14 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QUndoCommand>
+#include <QtGui/QUndoCommand>
 
 class BasketScene;
 
 class HistorySetBasket : public QUndoCommand
 {
 public:
-    HistorySetBasket(BasketScene *basket, QUndoCommand *parent = 0);
+    explicit HistorySetBasket(BasketScene *basket, QUndoCommand *parent = 0);
     void undo();
     void redo();
 

@@ -1276,9 +1276,15 @@ msgstr ""
 "sind, dass die Anwendung richtig installiert wurde, sollten Sie versuchen "
 "die Datei %5basketui.rc zu entfernen.</p>"
 
+<<<<<<< HEAD
 #: src/bnpview.cpp:1901
 msgid "Ressource not Found"
 msgstr "Ressource nicht gefunden"
+=======
+#: src/bnpview.cpp:1831
+msgid "Resource not Found"
+msgstr "Resource nicht gefunden"
+>>>>>>> 77b3732336202f645d05e84bb8ee59eb3cb0d41a
 
 #: src/bnpview.cpp:1925 src/bnpview.cpp:1934
 msgid "Cannot add note."

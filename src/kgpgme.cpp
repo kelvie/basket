@@ -18,27 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kgpgme.h"
+#include "config.h"
 
 #ifdef HAVE_LIBGPGME
 
-#include <QTreeWidget>
-#include <kapplication.h>
-#include <kmessagebox.h>
-#include <kpassworddialog.h>
-#include <kiconloader.h>
-#include <kdebug.h>
-#include <qcheckbox.h>
-#include <qlayout.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QVBoxLayout>
-#include <klocale.h>
-#include <locale.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "kgpgme.h"
+
+#include <QtCore/QPointer>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QLabel>
+#include <QtGui/QPixmap>
+#include <QtGui/QVBoxLayout>
+
+#include <KDE/KApplication>
+#include <KDE/KLocale>
+#include <KDE/KMessageBox>
+#include <KDE/KPasswordDialog>
+
+#include <locale.h>         //For LC_ALL, etc.
+#include <errno.h>          //For errno
+#include <unistd.h>         //For write
 
 // KGpgSelKey class based on class in KGpg with the same name
 
@@ -63,7 +62,6 @@ public:
         QVBoxLayout* vbox;
         QWidget* page = new QWidget(this);
         QLabel* labeltxt;
-        //  KIconLoader* loader = KIconLoader::global();
         QPixmap keyPair = KIcon("kgpg_key2").pixmap(20, 20);
 
         setMinimumSize(350, 100);
@@ -187,10 +185,10 @@ QString KGpgMe::checkForUtf8(QString txt)
 
 QString KGpgMe::selectKey(QString previous)
 {
-    KGpgSelKey dlg(kapp->activeWindow(), "", previous, *this);
+    QPointer<KGpgSelKey> dlg = new KGpgSelKey(kapp->activeWindow(), "", previous, *this);
 
-    if (dlg.exec())
-        return dlg.key();
+    if (dlg->exec())
+        return dlg->key();
     return "";
 }
 
@@ -363,7 +361,7 @@ gpgme_error_t KGpgMe::readToBuffer(gpgme_data_t in, QByteArray* outBuffer) const
 
 bool KGpgMe::isGnuPGAgentAvailable()
 {
-    QString agent_info = getenv("GPG_AGENT_INFO");
+    QString agent_info = qgetenv("GPG_AGENT_INFO");
 
     if (agent_info.indexOf(':') > 0)
         return true;
@@ -375,15 +373,15 @@ void KGpgMe::setPassphraseCb()
     bool agent = false;
     QString agent_info;
 
-    agent_info = getenv("GPG_AGENT_INFO");
+    agent_info = qgetenv("GPG_AGENT_INFO");
 
     if (m_useGnuPGAgent) {
         if (agent_info.indexOf(':'))
             agent = true;
-        if (agent_info.startsWith("disable:"))
+        if (agent_info.startsWith(QLatin1String("disable:")))
             setenv("GPG_AGENT_INFO", agent_info.mid(8).toAscii(), 1);
     } else {
-        if (!agent_info.startsWith("disable:"))
+        if (!agent_info.startsWith(QLatin1String("disable:")))
             setenv("GPG_AGENT_INFO", "disable:" + agent_info.toAscii(), 1);
     }
     if (agent)

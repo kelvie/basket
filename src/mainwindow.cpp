@@ -18,84 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QTabWidget>
-#include <QLayout>
-#include <QToolTip>
-#include <QCursor>
-#include <QWhatsThis>
-#include <QList>
-#include <QRegExp>
-#include <QMoveEvent>
-#include <QResizeEvent>
-#include <KDE/KStringHandler>
+#include "mainwindow.h"
 
-#include <KDE/KSqueezedTextLabel>
-#include <QPoint>
-#include <QPixmap>
-#include <QInputDialog>
-#include <KDE/KMenu>
-#include <KDE/KIconLoader>
-#include <KDE/KIconEffect>
-#include <QIcon>
+#include <QtGui/QMoveEvent>
+#include <QtGui/QResizeEvent>
+
 #include <KDE/KAction>
 #include <KDE/KApplication>
 #include <KDE/KLocale>
-#include <KDE/KMenuBar>
 #include <KDE/KEditToolBar>
+#include <KDE/KStatusBar>
 #include <KDE/KDebug>
-#include <QSignalMapper>
-#include <QStringList>
-
-#include <QPainter>
-#include <QStyle>
-#include <KStandardDirs>
-#include <QDir>
-#include <QStringList>
-#include <KMessageBox>
-#include <KStatusBar>
-#include <QTimer>
-#include <QAction>
-#include <kstdaccel.h>
-#include <KDE/KGlobalAccel>
-#include <KDE/KPassivePopup>
+#include <KDE/KMessageBox>
 #include <KDE/KConfig>
-#include <KDE/KColorDialog>
 #include <KDE/KAboutData>
-
-#include <kdeversion.h>
-#include <QDesktopWidget>
-#include <KDE/KWindowSystem>
-
-#include <KDE/KProgressDialog>
-
-#include "mainwindow.h"
-#include "basketscene.h"
-#include "basketproperties.h"
-#include "note.h"
-#include "noteedit.h"
-#include "settings.h"
-#include "global.h"
-#include "newbasketdialog.h"
-#include "basketfactory.h"
-#include "xmlwork.h"
-#include "debugwindow.h"
-#include "notefactory.h"
-#include "notedrag.h"
-#include "tools.h"
-#include "tag.h"
-#include "formatimporter.h"
-#include "softwareimporters.h"
-#include "regiongrabber.h"
-#include "password.h"
-#include "bnpview.h"
-#include "systemtray.h"
-#include "basketstatusbar.h"
-#include <KDE/KSettings/Dialog>
-#include <KDE/KCMultiDialog>
-
 #include <KDE/KShortcutsDialog>
 #include <KDE/KActionCollection>
 #include <KDE/KToggleAction>
+
+#include <KDE/KSettings/Dialog>
+
+#include <kdeversion.h>
+
+#include <QtGui/QDesktopWidget>
+
+#include "settings.h"
+#include "global.h"
+#include "bnpview.h"
+#include "basketstatusbar.h"
 
 /** Container */
 

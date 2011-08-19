@@ -20,7 +20,7 @@
 
 // This must be first
 #include <config.h>
-#include "settings.h"
+#include "settings.h"   //For GeneralPage, etc.
 #include <KDE/KCModule>
 
 //----------------------------

@@ -18,22 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QString>
-#include <QDir>
-#include <QTextStream>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include "softwareimporters.h"
+
+#include <QtCore/QString>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtCore/QStack>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QRadioButton>
+#include <QtXml/QDomDocument>
+
 #include <KDE/KStandardDirs>
 #include <KDE/KLocale>
 #include <KDE/KFileDialog>
-#include <QStack>
-#include <QLayout>
-#include <QRadioButton>
 #include <KDE/KMessageBox>
-#include <QTextEdit>
-#include <QDomDocument>
+#include <KDE/KTextEdit>
 
-#include "softwareimporters.h"
 #include "basketscene.h"
 #include "basketfactory.h"
 #include "notefactory.h"
@@ -41,7 +43,6 @@
 #include "bnpview.h"
 #include "xmlwork.h"
 #include "tools.h"
-#include <QGroupBox>
 
 /** class TreeImportDialog: */
 
@@ -130,7 +131,7 @@ TextFileImportDialog::TextFileImportDialog(QWidget *parent)
 
     QHBoxLayout *hLayout = new QHBoxLayout(indentedTextEdit);
     hLayout->addSpacing(20);
-    m_customSeparator = new QTextEdit(indentedTextEdit);
+    m_customSeparator = new KTextEdit(indentedTextEdit);
     hLayout->addWidget(m_customSeparator);
 
     m_all_in_one_choice = new QRadioButton(i18n("&All in one note"),                  m_choices);
@@ -211,7 +212,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     tomboy.replace("<strikethrough>",  "<span style='text-decoration: line-through'>");
     tomboy.replace("</strikethrough>", "</span>");
 
-    // Highlight not supported by QTextEdit:
+    // Highlight not supported by KTextEdit:
     tomboy.replace("<highlight>",      "<span style='color:#ff0080'>");
     tomboy.replace("</highlight>",     "</span>");
 
@@ -326,7 +327,7 @@ void SoftwareImporters::importKJots()
                 finishImport(basket);
 
                 // IT IS A NOTEBOOK XML FILE, AT THE VERION 0.7.0 and later:
-            } else if ((*it).endsWith(".book") /*&& !buf.isNull() && (buf.left(2) == "<!" / *<!DOCTYPE...* / || buf.left(2) == "<?" / *<?xml...* /)*/) {
+            } else if ((*it).endsWith(QLatin1String(".book")) /*&& !buf.isNull() && (buf.left(2) == "<!" / *<!DOCTYPE...* / || buf.left(2) == "<?" / *<?xml...* /)*/) {
 
                 QDomDocument *doc = XMLWork::openFile("KJots", dirPath + *it);
                 if (doc == 0)
@@ -361,7 +362,7 @@ void SoftwareImporters::importKNotes()
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(".ics"))    // Don't process *.ics~ and otehr files
+        if (!(*it).endsWith(QLatin1String(".ics")))    // Don't process *.ics~ and other files
             continue;
         QFile file(dirPath + *it);
         if (file.open(QIODevice::ReadOnly)) {
@@ -385,14 +386,14 @@ void SoftwareImporters::importKNotes()
 
                 if (!buf.isNull() && buf == "BEGIN:VJOURNAL") {
                     inVJournal = true;
-                } else if (inVJournal && buf.startsWith("SUMMARY:")) {
+                } else if (inVJournal && buf.startsWith(QLatin1String("SUMMARY:"))) {
                     title = buf.mid(8, buf.length());
-                } else if (inVJournal && buf.startsWith("DESCRIPTION:")) {
+                } else if (inVJournal && buf.startsWith(QLatin1String("DESCRIPTION:"))) {
                     body = buf.mid(12, buf.length());
                     inDescription = true;
-                } else if (inDescription && buf.startsWith(" ")) {
+                } else if (inDescription && buf.startsWith(QLatin1String(" "))) {
                     body += buf.mid(1, buf.length());
-                } else if (buf.startsWith("X-KDE-KNotes-RichText:")) {
+                } else if (buf.startsWith(QLatin1String("X-KDE-KNotes-RichText:"))) {
                     isRichText = XMLWork::trueOrFalse(buf.mid(22, buf.length() - 22).trimmed(), "false");
                 } else if (buf == "END:VJOURNAL") {
                     insertTitledNote(basket, fromICS(title), fromICS(body), (isRichText ? Qt::RichText : Qt::PlainText));
@@ -482,7 +483,7 @@ void SoftwareImporters::importTomboy()
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(".note"))
+        if (!(*it).endsWith(QLatin1String(".note")))
             continue;
         QDomDocument *doc = XMLWork::openFile("note", dirPath + *it);
         if (doc == 0)
@@ -653,8 +654,8 @@ void SoftwareImporters::importKnowIt()
             while (1) {
                 line = stream.readLine();
 
-                if (line.startsWith("\\NewEntry") ||
-                        line.startsWith("\\CurrentEntry") || stream.atEnd()) {
+                if (line.startsWith(QLatin1String("\\NewEntry")) ||
+                        line.startsWith(QLatin1String("\\CurrentEntry")) || stream.atEnd()) {
                     while (level + 1 < baskets.size() - baskets.count(0))
                         baskets.pop();
                     if (level + 1 > baskets.size() - baskets.count(0))
@@ -700,9 +701,9 @@ void SoftwareImporters::importKnowIt()
                     text = "";
                     links.clear();
                     descriptions.clear();
-                } else if (line.startsWith("\\Link")) {
+                } else if (line.startsWith(QLatin1String("\\Link"))) {
                     links.append(line.mid(6));
-                } else if (line.startsWith("\\Descr")) {
+                } else if (line.startsWith(QLatin1String("\\Descr"))) {
                     while (descriptions.count() < links.count() - 1)
                         descriptions.append("");
                     descriptions.append(line.mid(7));

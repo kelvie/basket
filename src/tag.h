@@ -21,15 +21,16 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <QString>
-#include <QColor>
-#include <QFont>
-#include <QList>
+#include <QtCore/QList>
 
 #include <KDE/KAction>
-#include <KDE/KShortcut>
 
+class QColor;
+class QFont;
 class QPainter;
+class QString;
+
+class KShortcut;
 
 class Tag;
 
@@ -44,7 +45,7 @@ public:
 
 public:
     /// CONSTRUCTOR AND DESTRUCTOR:
-    State(const QString &id = QString(), Tag *tag = 0);
+    explicit State(const QString &id = QString(), Tag *tag = 0);
     ~State();
     /// SET PROPERTIES:
     void setId(const QString &id)                {

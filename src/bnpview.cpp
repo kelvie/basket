@@ -18,29 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/// NEW:
+#include "bnpview.h"
 
-#include <QStackedWidget>
-#include <QRegExp>
-#include <QPixmap>
-#include <QPainter>
-#include <QImage>
-#include <QBitmap>
-#include <QWhatsThis>
-#include <QResizeEvent>
-#include <QShowEvent>
-#include <QList>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QHideEvent>
-#include <kmenu.h>
-#include <QSignalMapper>
-#include <QDir>
-#include <QUndoStack>
-#include <KDE/KIconTheme>
+#include <QtCore/QList>
+#include <QtCore/QRegExp>
+#include <QtCore/QEvent>
+#include <QtGui/QStackedWidget>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QShowEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QHideEvent>
+#include <QtGui/QGraphicsView>
+#include <QtCore/QSignalMapper>
+#include <QtCore/QDir>
+#include <QtGui/QUndoStack>
+#include <QtXml/QDomDocument>
+
+#include <KDE/KApplication>
+#include <KDE/KMenu>
 #include <KDE/KIconLoader>
-#include <KDE/KLocale>
-#include <KDE/KStringHandler>
 #include <KDE/KMessageBox>
 #include <KDE/KFileDialog>
 #include <KDE/KProgressDialog>
@@ -50,18 +48,21 @@
 #include <KDE/KPassivePopup>
 #include <KDE/KXMLGUIFactory>
 #include <KDE/KCmdLineArgs>
-#include <KDE/KGlobalAccel>
-#include <KDE/KApplication>
-#include <KDE/KShortcutsDialog>
-#include <KDE/KDebug>
 #include <KDE/KAction>
 #include <KDE/KActionMenu>
 #include <KDE/KActionCollection>
 #include <KDE/KStandardShortcut>
 #include <KDE/KToggleAction>
-#include <cstdlib>
 
-#include "bnpview.h"
+#include <kdeversion.h>
+
+#ifndef BASKET_USE_DRKONQI
+#include <KDE/KCrash>
+#endif //BASKET_USE_DRKONQI
+
+#include <cstdlib>
+#include <unistd.h> // usleep
+
 #include "basketscene.h"
 #include "decoratedbasket.h"
 #include "tools.h"
@@ -87,11 +88,10 @@
 #include "likeback.h"
 #include "backup.h"
 #include "notefactory.h"
-#include "notecontent.h"
-#include "unistd.h" // usleep
 #include "history.h"
 
 #include "bnpviewadaptor.h"
+
 /** class BNPView: */
 
 const int BNPView::c_delayTooltipTime = 275;
@@ -437,7 +437,9 @@ void BNPView::initialize()
 
     /// Configure the List View Drag and Drop:
     m_tree->setDragEnabled(true);
+    m_tree->setDragDropMode(QAbstractItemView::DragDrop);
     m_tree->setAcceptDrops(true);
+    m_tree->viewport()->setAcceptDrops(true);
 
     /// Configure the Splitter:
     m_stack = new QStackedWidget(this);
@@ -730,13 +732,12 @@ void BNPView::setupActions()
     a->setIcon(KIcon("document-import"));
     m_actLoadFile = a;
 
-//  connect( m_actInsertText,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()) );
-    connect(m_actInsertHtml,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertImage,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertLink,     SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertCrossReference,SIGNAL(activated()),insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertColor,    SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
-    connect(m_actInsertLauncher, SIGNAL(activated()), insertEmptyMapper, SLOT(map()));
+//  connect( m_actInsertText,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()) );
+    connect(m_actInsertHtml,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertImage,    SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertLink,     SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertColor,    SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
+    connect(m_actInsertLauncher, SIGNAL(triggered()), insertEmptyMapper, SLOT(map()));
 //  insertEmptyMapper->setMapping(m_actInsertText,     NoteType::Text    );
     insertEmptyMapper->setMapping(m_actInsertHtml,     NoteType::Html);
     insertEmptyMapper->setMapping(m_actInsertImage,    NoteType::Image);
@@ -745,9 +746,9 @@ void BNPView::setupActions()
     insertEmptyMapper->setMapping(m_actInsertColor,    NoteType::Color);
     insertEmptyMapper->setMapping(m_actInsertLauncher, NoteType::Launcher);
 
-    connect(m_actImportKMenu, SIGNAL(activated()), insertWizardMapper, SLOT(map()));
-    connect(m_actImportIcon,  SIGNAL(activated()), insertWizardMapper, SLOT(map()));
-    connect(m_actLoadFile,    SIGNAL(activated()), insertWizardMapper, SLOT(map()));
+    connect(m_actImportKMenu, SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
+    connect(m_actImportIcon,  SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
+    connect(m_actLoadFile,    SIGNAL(triggered()), insertWizardMapper, SLOT(map()));
     insertWizardMapper->setMapping(m_actImportKMenu,  1);
     insertWizardMapper->setMapping(m_actImportIcon,   2);
     insertWizardMapper->setMapping(m_actLoadFile,     3);
@@ -821,7 +822,7 @@ void BNPView::setupActions()
     newBasketMenu->addAction(actNewBasket);
     newBasketMenu->addAction(actNewSubBasket);
     newBasketMenu->addAction(actNewSiblingBasket);
-    connect(newBasketMenu, SIGNAL(activated()), this, SLOT(askNewBasket()));
+    connect(newBasketMenu, SIGNAL(triggered()), this, SLOT(askNewBasket()));
 
     a = ac->addAction("basket_properties", this, SLOT(propBasket()));
     a->setText(i18n("&Properties..."));
@@ -1094,12 +1095,12 @@ void BNPView::load()
     //END
     if (doc != 0) {
         QDomElement docElem = doc->documentElement();
-        load(m_tree, 0L, docElem);
+        load(0L, docElem);
     }
     m_loading = false;
 }
 
-void BNPView::load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets)
+void BNPView::load(QTreeWidgetItem *item, const QDomElement &baskets)
 {
     QDomNode n = baskets.firstChild();
     while (! n.isNull()) {
@@ -1114,7 +1115,7 @@ void BNPView::load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomEleme
                 if (XMLWork::trueOrFalse(element.attribute("lastOpened", element.attribute("lastOpened", "false")), false)) // Compat with 0.6.0-Alphas
                     setCurrentBasket(basket);
                 // Load Sub-baskets:
-                load(/*(QListView*)*/0L, basketItem, element);
+                load(basketItem, element);
             }
         }
         n = n.nextSibling();
@@ -1565,8 +1566,8 @@ void BNPView::needSave(QTreeWidgetItem *)
 
 void BNPView::slotPressed(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
     BasketScene *basket = currentBasket();
-
     if (basket == 0)
         return;
 
@@ -2032,7 +2033,7 @@ KMenu* BNPView::popupMenu(const QString &menuName)
                                    "file %5basketui.rc</p>",
                                    aboutData->programName(), aboutData->programName(),
                                    stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/"), stdDirs.saveLocation("data", "basket/")),
-                               i18n("Ressource not Found"), KMessageBox::AllowLink);
+                               i18n("Resource not Found"), KMessageBox::AllowLink);
         }
         if (!isPart())
             exit(1); // We SHOULD exit right now and abord everything because the caller except menu != 0 to not crash.
@@ -2140,8 +2141,8 @@ BasketScene* BNPView::basketForFolderName(const QString &folderName)
     */
 
     QString name = folderName;
-    if (!name.endsWith("/"))
-        name += "/";
+    if (!name.endsWith('/'))
+        name += '/';
 
     QTreeWidgetItemIterator it(m_tree);
     while (*it) {
@@ -2264,14 +2265,14 @@ void BNPView::doBasketDeletion(BasketScene *basket)
 void BNPView::password()
 {
 #ifdef HAVE_LIBGPGME
-    PasswordDlg dlg(kapp->activeWindow());
+    QPointer<PasswordDlg> dlg = new PasswordDlg(kapp->activeWindow());
     BasketScene *cur = currentBasket();
 
-    dlg.setType(cur->encryptionType());
-    dlg.setKey(cur->encryptionKey());
-    if (dlg.exec()) {
-        cur->setProtection(dlg.type(), dlg.key());
-        if (cur->encryptionType() != BasketScene::NoEncryption)
+    dlg->setType(cur->encryptionType());
+    dlg->setKey(cur->encryptionKey());
+    if (dlg->exec()) {
+        cur->setProtection(dlg->type(), dlg->key());
+        if (cur->encryptionType() != BasketView::NoEncryption)
             cur->lock();
     }
 #endif
@@ -2667,7 +2668,7 @@ void BNPView::setActive(bool active)
 
     if (active == isMainWindowActive())
         return;
-    kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag throught systray"
+    kapp->updateUserTimestamp(); // If "activate on mouse hovering systray", or "on drag through systray"
     Global::systemTray->toggleActive();
 }
 
@@ -3042,11 +3043,11 @@ QString BNPView::folderFromBasketNameLink(QStringList pages, QTreeWidgetItem *pa
         else
             p = m_tree->currentItem()->parent();
         found = this->folderFromBasketNameLink(pages, p);
-    } else if(!parent && page == "") {
+    } else if(!parent && page.isEmpty()) {
         parent = m_tree->invisibleRootItem();
         found = this->folderFromBasketNameLink(pages, parent);
     } else {
-        if(!parent && (page == "." || page != "")) {
+        if(!parent && (page == "." || !page.isEmpty())) {
             parent = m_tree->currentItem();
         }
         QRegExp re(":\\{([0-9]+)\\}");

@@ -21,28 +21,29 @@
 #ifndef BNPVIEW_H
 #define BNPVIEW_H
 
-#include <QTreeWidget>
+#include <QtCore/QList>
+#include <QtGui/QClipboard>
+#include <QtGui/QSplitter>
+
 #include <KDE/KXMLGUIClient>
-#include <QTimer>
-#include <QClipboard>
-#include <QSplitter>
-#include <QTreeWidget>
-#include <QList>
-#include <QPixmap>
-#include <QHideEvent>
-#include <QEvent>
-#include <QShowEvent>
 
 #include "global.h"
 #include "basket_export.h"
-#include "basketlistview.h"
 
-/// NEW:
-
-class QStackedWidget;
 class QDomDocument;
 class QDomElement;
+
+class QStackedWidget;
+class QPixmap;
+class QTimer;
+class QTreeWidget;
+class QTreeWidgetItem;
 class QUndoStack;
+
+class QEvent;
+class QHideEvent;
+class QShowEvent;
+
 class KAction;
 class KToggleAction;
 class KMenu;
@@ -53,7 +54,9 @@ class RegionGrabber;
 
 class BasketScene;
 class DecoratedBasket;
+class BasketListView;
 class BasketListViewItem;
+class BasketTreeListView;
 class NoteSelection;
 class BasketStatusBar;
 class Tag;
@@ -104,7 +107,7 @@ public slots:
     void save(QTreeWidget* listView, QTreeWidgetItem *firstItem, QDomDocument &document, QDomElement &parentElement);
     void saveSubHierarchy(QTreeWidgetItem *item, QDomDocument &document, QDomElement &parentElement, bool recursive);
     void load();
-    void load(QTreeWidget *listView, QTreeWidgetItem *item, const QDomElement &baskets);
+    void load(QTreeWidgetItem *item, const QDomElement &baskets);
     void loadNewBasket(const QString &folderName, const QDomElement &properties, BasketScene *parent);
     void goToPreviousBasket();
     void goToNextBasket();
