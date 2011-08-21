@@ -2272,7 +2272,7 @@ void BNPView::password()
     dlg->setKey(cur->encryptionKey());
     if (dlg->exec()) {
         cur->setProtection(dlg->type(), dlg->key());
-        if (cur->encryptionType() != BasketView::NoEncryption)
+        if (cur->encryptionType() != BasketScene::NoEncryption)
             cur->lock();
     }
 #endif
