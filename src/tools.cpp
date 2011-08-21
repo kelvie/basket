@@ -555,8 +555,10 @@ void Tools::deleteMetadataRecursively(const QString &folderOrFile)
             if (*it != "." && *it != "..")
                 deleteMetadataRecursively(folderOrFile + "/" + *it);
     }
+#ifdef HAVE_NEPOMUK
     DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
     nepomukIntegration::deleteMetadata(folderOrFile);
+#endif
 }
 
 void Tools::trashRecursively(const QString &folderOrFile)
