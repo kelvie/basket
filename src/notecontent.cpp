@@ -2201,7 +2201,7 @@ void LauncherContent::exportToHTML(HTMLExporter *exporter, int indent)
 const int ColorItem::RECT_MARGIN = 2;
 
 ColorItem::ColorItem(Note *parent, const QColor &color)
-  :QGraphicsItem()
+  :QGraphicsItem(parent)
   , m_note(parent)
 {
   setColor(color);
@@ -2502,7 +2502,7 @@ extern void drawGradient(QPainter *p, const QColor &colorTop, const QColor & col
 const qreal UnknownItem::DECORATION_MARGIN = 2;
 
 UnknownItem::UnknownItem(Note *parent)
-  :QGraphicsItem()
+  :QGraphicsItem(parent)
   , m_note(parent)
 {
 }
