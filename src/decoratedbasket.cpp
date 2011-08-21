@@ -77,12 +77,12 @@ void DecoratedBasket::setFilterBarVisible(bool show, bool switchFocus)
     //  will call resetFilter() that will update actions, and then check the
     //  Ctrl+F action whereas it should be unchecked
     //  FIXME: It's very uggly all those things
-/*    m_filter->setVisible(show);
+    m_filter->setVisible(show);
     if (show) {
         if (switchFocus)
             m_filter->setEditFocus();
     } else if (m_filter->hasEditFocus())
-        m_basket->setFocus();*/
+        m_basket->setFocus();
 }
 
 void DecoratedBasket::resetFilter()
