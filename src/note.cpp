@@ -1242,7 +1242,6 @@ void Note::hideRecursively()
     FOR_EACH_CHILD(child)
     child->hideRecursively();
 }
-
 void Note::setGroupWidth(qreal width)
 {
     m_groupWidth = width;
