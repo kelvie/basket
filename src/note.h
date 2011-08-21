@@ -78,7 +78,6 @@ public:
 
     void setXRecursively(qreal ax);
     void setYRecursively(qreal ay);
-    void hideRecursively();
     qreal width() const;
     qreal height() const;
     qreal bottom() const;

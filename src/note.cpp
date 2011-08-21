@@ -229,7 +229,14 @@ int Note::newFilter(const FilterData &data)
     m_matching = computeMatching(data);
     setOnTop(wasMatching && matching());
     if (!matching())
-        setSelected(false);
+    {
+      setSelected(false);
+      hide();
+    }
+    else if(!wasMatching)
+    {
+      show();  
+    }
 
     int countMatches = (content() && matching() ? 1 : 0);
 
@@ -1047,49 +1054,6 @@ qreal Note::minRight()
         return x() + minWidth();
 }
 
-/*void Note::setX(int ax)
-{
-    if (x() == ax)
-        return;
-
-    if (isBufferized() && basket()->hasBackgroundImage()) {
-        // Unbufferize only if the background change:
-        if (basket()->isTiledBackground())
-            unbufferize();
-        else {
-            int bgw = basket()->backgroundPixmap()->width();
-            if (x() >= bgw && ax < bgw) // Was not in the background image and is now inside it:
-                unbufferize();
-            else if (x() < bgw) // Was in the background image and is now at another position of the background image or is now outside:
-                unbufferize();
-        }
-    }
-
-    x() = ax;
-}*/
-
-/*void Note::setY(int ay)
-{
-    if (y() == ay)
-        return;
-
-    if (isBufferized() && basket()->hasBackgroundImage()) {
-        // Unbufferize only if the background change:
-        if (basket()->isTiledBackground())
-            unbufferize();
-        else {
-            int bgh = basket()->backgroundPixmap()->height();
-            if (y() >= bgh && ay < bgh) // Was not in the background image and is now inside it:
-                unbufferize();
-            else if (y() < bgh) // Was in the background image and is now at another position of the background image or is now outside:
-                unbufferize();
-        }
-    }
-
-    y() = ay;
-}*/
-
-
 bool Note::toggleFolded()
 {
     // Close the editor if it was editing a note that we are about to hide after collapsing:
@@ -1212,10 +1176,8 @@ void Note::relayoutAt(qreal ax, qreal ay, bool animate)
             if (child->matching() && (!m_isFolded || first || basket()->isFiltering())) { // Don't use showSubNotes() but use !m_isFolded because we don't want a relayout for the animated collapsing notes
                 child->relayoutAt(ax + width(), ay + h, animate);
                 h += child->height();
-                child->show();
             } else {                                 // In case the user collapse a group, then move it and then expand it:
                 child->setXRecursively(x() + width()); //  notes SHOULD have a good X coordonate, and not the old one!
-                child->hideRecursively();
             }
             // For future animation when re-match, but on bottom of already matched notes!
             // Find parent primary note and set the Y to THAT y:
@@ -1234,9 +1196,9 @@ void Note::relayoutAt(qreal ax, qreal ay, bool animate)
             //}
         }
     } else {
-        setWidth(finalRightLimit() - x());
         // If rightLimit is excedded, set the top-level right limit!!!
         // and NEED RELAYOUT
+        setWidth(finalRightLimit() - x());            
     }
 
     // Set the basket area limits (but not for child notes: no need, because they will look for theire parent note):
@@ -1268,14 +1230,6 @@ void Note::setYRecursively(qreal y)
 
     FOR_EACH_CHILD(child)
     child->setYRecursively(y);
-}
-
-void Note::hideRecursively()
-{
-    hide();
-
-    FOR_EACH_CHILD(child)
-    child->hideRecursively();
 }
 
 void Note::setGroupWidth(qreal width)
