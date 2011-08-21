@@ -51,7 +51,7 @@ set(basketcommon_LIB_SRCS
     xmlwork.cpp
 )
 
-IF(NOT_HAVE_NEPOMUK)
+IF(HAVE_NEPOMUK)
   include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src" ${NEPOMUK_INCLUDES} ${SOPRANO_INCLUDE_DIR})
   include(SopranoAddOntology)
   soprano_add_ontology(basketcommon_LIB_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nie.trig "NIE" "Soprano::Vocabulary" "trig")
