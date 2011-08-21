@@ -48,7 +48,7 @@ runCommand(const QByteArray &command)
 void
 Crash::crashHandler(int /*signal*/)
 {
-  
+#ifndef Q_WS_WIN 
     // we need to fork to be able to get a
     // semi-decent bt - I dunno why
     const pid_t pid = ::fork();
@@ -205,4 +205,5 @@ Crash::crashHandler(int /*signal*/)
         ::waitpid(pid, NULL, 0);
         ::_exit(253);
     }
+#endif //#ifndef Q_WS_WIN 
 }
