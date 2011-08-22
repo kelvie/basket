@@ -22,6 +22,7 @@
 #define NOTE_H
 
 #include <QtCore/QList>
+#include <QtCore/QSet>
 #include <QtCore/QDateTime>
 #include <QtGui/QGraphicsItemGroup>
 
@@ -37,7 +38,6 @@ class NoteSelection;
 class QPainter;
 class QPixmap;
 class QString;
-
 class QGraphicsItemAnimation;
 class QTimeLine;
 
@@ -333,7 +333,7 @@ public:
     /**
      * @return true if this note could be deleted
      **/
-    bool deleteSelectedNotes(bool deleteFilesToo = true);
+    void deleteSelectedNotes(bool deleteFilesToo = true, QSet<Note*> *notesToBeDeleted = 0);
     int count();
     int countDirectChilds();
 

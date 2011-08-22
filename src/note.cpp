@@ -247,33 +247,41 @@ int Note::newFilter(const FilterData &data)
     return countMatches;
 }
 
-bool Note::deleteSelectedNotes(bool deleteFilesToo)
+void Note::deleteSelectedNotes(bool deleteFilesToo, QSet<Note *> *notesToBeDeleted)
 {
-    if (content() && isSelected()) {
-        basket()->unplugNote(this);                
-        if (deleteFilesToo && content()->useFile())
-            Tools::deleteRecursively(fullPath());//basket()->deleteFiles(fullPath()); // Also delete the folder if it's a folder
-
-        return true;
+    if (content())
+    {
+        if(isSelected()) {
+            basket()->unplugNote(this);
+            if (deleteFilesToo && content()->useFile())
+            {
+                Tools::deleteRecursively(fullPath());//basket()->deleteFiles(fullPath()); // Also delete the folder if it's a folder
+            }
+            if(notesToBeDeleted)
+            {
+                notesToBeDeleted->insert(this);
+            }
+        }
+        return;
     }
 
-    int notesRemaining = 0;
+    bool isColumn = this->isColumn();      
     Note *child = firstChild();
     Note *next;
     while (child) {
         next = child->next(); // If we delete 'child' on the next line, child->next() will be 0!
-        
-        if(child->deleteSelectedNotes(deleteFilesToo))
-        {
-            delete child;
-        }
-        else ++notesRemaining;
-        
+        child->deleteSelectedNotes(deleteFilesToo, notesToBeDeleted);
         child = next;
     }
     
     // if it remains at least two notes, the group must not be deleted
-    return notesRemaining < 2;
+    if(!isColumn && !(firstChild() && firstChild()->next()))
+    {
+        if(notesToBeDeleted)
+        {
+            notesToBeDeleted->insert(this);
+        }
+    }
 }
 
 int Note::count()

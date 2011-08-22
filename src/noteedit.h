@@ -89,6 +89,9 @@ public:
         return m_lineEdit;
     }
 
+    void mousePress(QPointF clicked);
+    void connectActions(BasketScene *scene);
+    
 private:
     bool         m_isEmpty;
     bool         m_canceled;

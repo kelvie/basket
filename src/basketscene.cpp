@@ -354,19 +354,27 @@ void BasketScene::unplugNote(Note *note)
             // Delete parent if now 0 notes inside parent group:
             if (! note->parentNote()->firstChild())
 	    {
-                unplugNote(note->parentNote()); // TODO delete
-		delete note->parentNote();
+                unplugNote(note->parentNote());
+		// a group could call this method for one or more of its children,
+		// each children could call this method for its parent's group...
+		// we have to do the deletion later otherwise we may corrupt the current process
+		m_notesToBeDeleted << note;
+		if(m_notesToBeDeleted.count() == 1)
+		{
+		  QTimer::singleShot(0, this, SLOT(doCleanUp()));
+		}    
 	    }
             // Ungroup if still 1 note inside parent group:
             else if (! note->parentNote()->firstChild()->next())
+	    {
                 ungroupNote(note->parentNote());
+	    }
         }
     }
 
     note->setParentNote(0);
     note->setPrev(0);
     note->setNext(0);
-
     //  recomputeBlankRects(); // FIXME: called too much time. It's here because when dragging and moving a note to another basket and then go back to the original basket, the note is deleted but the note rect is not painter anymore.
 }
 
@@ -394,9 +402,15 @@ void BasketScene::ungroupNote(Note *group)
 
     // Unplug the group:
     group->setFirstChild(0);
-    unplugNote(group); // TODO: delete
-    delete group;
-    relayoutNotes(true);
+    unplugNote(group);
+    // a group could call this method for one or more of its children,
+    // each children could call this method for its parent's group...
+    // we have to do the deletion later otherwise we may corrupt the current process
+    m_notesToBeDeleted << group;
+    if(m_notesToBeDeleted.count() == 1)
+    {
+      QTimer::singleShot(0, this, SLOT(doCleanUp()));
+    }    
 }
 
 void BasketScene::groupNoteBefore(Note *note, Note *with)
@@ -485,6 +499,18 @@ void BasketScene::groupNoteAfter(Note *note, Note *with)
 
     if (m_loaded)
         signalCountsChanged();
+}
+
+void BasketScene::doCleanUp()
+{
+    QSet<Note *>::iterator it = m_notesToBeDeleted.begin(); 
+    while(it != m_notesToBeDeleted.end())
+    {
+      if(*it == m_hoveredNote) m_hoveredNote = 0;
+      if(*it == m_focusedNote) m_focusedNote = 0;
+      delete *it;
+      it = m_notesToBeDeleted.erase(it);
+    }
 }
 
 void BasketScene::loadNotes(const QDomElement &notes, Note *parent)
@@ -1128,6 +1154,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
         , m_pickedResizer(0)
         , m_movingNote(0L)
         , m_pickedHandle(0 , 0)
+	, m_notesToBeDeleted()
         , m_clickedToInsert(0)
         , m_zoneToInsert(0)
         , m_posToInsert(-1 , -1)
@@ -1215,6 +1242,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
     connect(&m_timerCountsChanged,       SIGNAL(timeout()),   this, SLOT(countsChangedTimeOut()));
     connect(&m_inactivityAutoSaveTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoSaveTimeout()));
     connect(&m_inactivityAutoLockTimer,  SIGNAL(timeout()),   this, SLOT(inactivityAutoLockTimeout()));
+
 #ifdef HAVE_LIBGPGME
     m_gpg = new KGpgMe();
 #endif
@@ -1286,7 +1314,6 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // Figure out what is the clicked note and zone:
     Note *clicked = noteAt(event->scenePos());
     Note::Zone zone = (clicked ? clicked->zoneAt(event->scenePos() - QPointF(clicked->x(), clicked->y())) : Note::None);
-
     // Popup Tags menu:
     if (zone == Note::TagsArrow && !controlPressed && !shiftPressed && event->button() != Qt::MidButton) {
         if (!clicked->allSelected())
@@ -2224,12 +2251,21 @@ void BasketScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             break;
         } // If there is no link, edit note content
     case Note::Content:
-        closeEditor();
-        unselectAllBut(clicked);
-        noteEdit(clicked, /*justAdded=*/false, clicked->mapFromScene(event->scenePos()));
-        QGraphicsScene::mouseReleaseEvent(event);
+    {
+	QPointF clickedPoint = clicked->mapFromScene(event->scenePos());
+	if(m_editor && m_editor->note() == clicked && m_editor->graphicsWidget())
+	{
+	  m_editor->mousePress(clickedPoint);
+	}
+	else
+	{
+	  closeEditor();
+	  unselectAllBut(clicked);
+	  noteEdit(clicked, /*justAdded=*/false, clickedPoint);
+	  QGraphicsScene::mouseReleaseEvent(event);
+	}
         break;
-
+    }
     case Note::TopInsert:
     case Note::TopGroup:
     case Note::BottomInsert:
@@ -3729,13 +3765,11 @@ bool BasketScene::closeEditor()
     if (isEmpty) {
         focusANonSelectedNoteAboveOrThenBelow();
         note->setSelected(true);
-        if(note->deleteSelectedNotes())
-	{
-	  if( m_hoveredNote == note ) m_hoveredNote = 0;
-	  if( m_focusedNote == note ) m_focusedNote = 0;
-	  delete note;
-	}
-        save();
+        note->deleteSelectedNotes();
+	if( m_hoveredNote == note ) m_hoveredNote = 0;
+	if( m_focusedNote == note ) m_focusedNote = 0;
+	delete note;
+	save();
         note = 0;
     }
 
@@ -3881,8 +3915,8 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
 
     doHoverEffects(note, Note::Content); // Be sure (in the case Edit was triggered by menu or Enter key...): better feedback!
    
-   NoteEditor *editor = NoteEditor::editNoteContent(note->content(),0);
-   if (editor->graphicsWidget()) {
+    NoteEditor *editor = NoteEditor::editNoteContent(note->content(),0);
+    if (editor->graphicsWidget()) {
         m_editor = editor;
     
 	addItem(m_editor->graphicsWidget());
@@ -3892,15 +3926,7 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
         if (m_redirectEditActions) {
             // In case there is NO text, "Select All" is disabled. But if the user press a key the there is now a text:
             // selection has not changed but "Select All" should be re-enabled:
-            if (m_editor->textEdit()) {
-                connect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(selectionChangedInEditor()));
-                connect(m_editor->textEdit(), SIGNAL(textChanged()),               this, SLOT(contentChangedInEditor()));
-		connect(m_editor->textEdit(), SIGNAL(selectionChanged()), 	   this, SLOT(selectionChangedInEditor()));
-            } else if (m_editor->lineEdit()) {
-                connect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(selectionChangedInEditor()));
-                connect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(contentChangedInEditor()));
-		connect(m_editor->lineEdit(), SIGNAL(selectionChanged()), 	   this, SLOT(selectionChangedInEditor()));
-            }
+            m_editor->connectActions(this);
         }
 
 	m_editor->graphicsWidget()->setFocus();
@@ -3909,24 +3935,11 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
         connect(m_editor, SIGNAL(mouseEnteredEditorWidget()),
                 this, SLOT(mouseEnteredEditorWidget()));
 
-        KTextEdit *textEdit = m_editor->textEdit();
-        if (textEdit) {
-            connect(textEdit, SIGNAL(textChanged()), this, SLOT(placeEditorAndEnsureVisible()));
-            if (clickedPoint != QPoint()) {
-                // clickedPoint comes from the QMouseEvent, which is in this
-                // item's coordinate system.
-                
-                // Do it right before the kapp->processEvents() to not have the
-                // cursor to quickly flicker at end (and sometimes stay at end
-                // AND where clicked):
-                //textEdit->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
-                //textEdit->ensureCursorVisible();
-                QPointF deltaPos = textEdit->pos()-m_editor->note()->pos();
-                textEdit->setTextCursor(textEdit->cursorForPosition((clickedPoint-deltaPos).toPoint()));
-                updateEditorAppearance();
-            }
-        }
-
+        if (clickedPoint != QPoint()) {
+	  m_editor->mousePress(clickedPoint);
+          updateEditorAppearance();
+	}
+	
 //      kapp->processEvents();     // Show the editor toolbar before ensuring the note is visible
         ensureNoteVisible(note);   //  because toolbar can create a new line and then partially hide the note
         m_editor->graphicsWidget()->setFocus(); // When clicking in the basket, a QTimer::singleShot(0, ...) focus the basket! So we focus the the widget after kapp->processEvents()
@@ -3936,12 +3949,10 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
         if ((justAdded && editor->canceled()) || editor->isEmpty() /*) && editor->note()->states().count() <= 0*/) {
             focusANonSelectedNoteAboveOrThenBelow();
             editor->note()->setSelected(true);
-            if(editor->note()->deleteSelectedNotes())
-	    {
-	      if( m_hoveredNote == editor->note() ) m_hoveredNote = 0;
-	      if( m_focusedNote == editor->note() ) m_focusedNote = 0;
-	      delete editor->note();
-	    }
+            editor->note()->deleteSelectedNotes();
+	    if( m_hoveredNote == editor->note() ) m_hoveredNote = 0;
+	    if( m_focusedNote == editor->note() ) m_focusedNote = 0;
+	    delete editor->note();
             save();
         }
         editor->deleteLater();
@@ -4036,15 +4047,15 @@ void BasketScene::noteDeleteWithoutConfirmation(bool deleteFilesToo)
     Note *next;
     while (note) {
         next = note->next(); // If we delete 'note' on the next line, note->next() will be 0!
-        if(note->deleteSelectedNotes(deleteFilesToo))
-	{
-	  if( m_hoveredNote == note ) m_hoveredNote = 0;
-	  if( m_focusedNote == note ) m_focusedNote = 0;
-	  delete note;
-	}
+        note->deleteSelectedNotes(deleteFilesToo, &m_notesToBeDeleted);
         note = next;
     }
 
+    if(!m_notesToBeDeleted.isEmpty())
+    {
+      doCleanUp();
+    }
+    
     relayoutNotes(true); // FIXME: filterAgain()?
     save();
 }
@@ -4319,7 +4330,10 @@ void BasketScene::noteUngroup()
 {
     Note *group = selectedGroup();
     if (group && !group->isColumn())
+    {
         ungroupNote(group);
+	relayoutNotes(true);
+    }
     save();
 }
 
@@ -4328,7 +4342,6 @@ void BasketScene::unplugSelection(NoteSelection *selection)
     for (NoteSelection *toUnplug = selection->firstStacked(); toUnplug; toUnplug = toUnplug->nextStacked())
     {
         unplugNote(toUnplug->note);
-	delete toUnplug->note;
     }
 }
 

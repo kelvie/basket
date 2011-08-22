@@ -84,6 +84,31 @@ Note* NoteEditor::note()
     return m_noteContent->note();
 }
 
+void NoteEditor::mousePress(QPointF clicked)
+{
+  // clicked comes from the QMouseEvent, which is in item's coordinate system.
+  if(m_textEdit)
+  {
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((clicked-deltaPos).toPoint()));
+  }
+}
+
+void NoteEditor::connectActions(BasketScene *scene)
+{
+    if (m_textEdit) {
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(selectionChangedInEditor()));
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(contentChangedInEditor()));
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(placeEditorAndEnsureVisible()));
+      connect(m_textEdit, SIGNAL(selectionChanged()), scene, SLOT(selectionChangedInEditor()));
+
+    } else if(m_lineEdit) {
+      connect(m_lineEdit, SIGNAL(textChanged(const QString&)), scene, SLOT(selectionChangedInEditor()));
+      connect(m_lineEdit, SIGNAL(textChanged(const QString&)), scene, SLOT(contentChangedInEditor()));
+      connect(m_lineEdit, SIGNAL(selectionChanged()), 	       scene, SLOT(selectionChangedInEditor()));
+    }    
+}
+
 NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *parent)
 {
     TextContent *textContent = dynamic_cast<TextContent*>(noteContent);
@@ -162,7 +187,8 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
         : NoteEditor(textContent), m_textContent(textContent)
 {
-    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
+    //FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
+    KTextEdit *textEdit = new KTextEdit(parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);

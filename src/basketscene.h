@@ -22,6 +22,7 @@
 #define BASKET_H
 
 #include <QtCore/QList>
+#include <QtCore/QSet>
 #include <QtCore/QTimer>
 #include <QtGui/QTextCursor>
 #include <QtGui/QClipboard>
@@ -120,6 +121,8 @@ private:
     int     m_pickedResizer;
     Note   *m_movingNote;
     QPoint  m_pickedHandle;
+    QSet<Note*> m_notesToBeDeleted;
+    
 public:
     qreal tmpWidth;
     qreal tmpHeight;
@@ -169,6 +172,9 @@ public:
     void unplugSelection(NoteSelection *selection);
     void insertSelection(NoteSelection *selection, Note *after);
     void selectSelection(NoteSelection *selection);
+protected slots:
+    void doCleanUp();
+  
 private:
     void preparePlug(Note *note);
 private:
