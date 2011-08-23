@@ -187,8 +187,7 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
         : NoteEditor(textContent), m_textContent(textContent)
 {
-    //FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
-    KTextEdit *textEdit = new KTextEdit(parent);
+    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);
