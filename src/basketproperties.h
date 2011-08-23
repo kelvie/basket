@@ -66,7 +66,6 @@ private:
     KComboBox     *m_backgroundImage;
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
-    BasketView    *m_basket;
     QMap<int, QString> m_backgroundImagesMap;
 };
 
