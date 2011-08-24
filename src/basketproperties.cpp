@@ -38,7 +38,7 @@
 #include <KDE/KApplication>
 #include <KDE/KIconLoader>
 #include <KDE/KIconDialog>
-#include <kshortcutWidget.h>
+#include <kshortcutwidget.h>
 
 #include "basketscene.h"
 #include "kcolorcombo2.h"
