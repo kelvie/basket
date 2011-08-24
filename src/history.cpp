@@ -22,11 +22,11 @@
 #include "global.h"
 
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 
 #include <KDE/KLocale>
 
-HistorySetBasket::HistorySetBasket(BasketView *basket, QUndoCommand *parent)
+HistorySetBasket::HistorySetBasket(BasketScene *basket, QUndoCommand *parent)
         :QUndoCommand(parent)
 {
     setText(i18n("Set current basket to %1").arg(basket->basketName()));
@@ -36,13 +36,13 @@ HistorySetBasket::HistorySetBasket(BasketView *basket, QUndoCommand *parent)
 
 void HistorySetBasket::undo()
 {
-    BasketView *oldBasket = Global::bnpView->basketForFolderName(m_folderNameOld);
+    BasketScene *oldBasket = Global::bnpView->basketForFolderName(m_folderNameOld);
     Global::bnpView->setCurrentBasket(oldBasket);
 }
 
 void HistorySetBasket::redo()
 {
-    BasketView *curBasket = Global::bnpView->basketForFolderName(m_folderNameNew);
+    BasketScene *curBasket = Global::bnpView->basketForFolderName(m_folderNameNew);
     Global::bnpView->setCurrentBasket(curBasket);
 }
 

@@ -35,7 +35,7 @@
 #include "notecontent.h"
 #include "notefactory.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "global.h"
 #include "xmlwork.h"
 #include "tools.h"
@@ -235,8 +235,8 @@ QDomElement FormatImporter::importBasket(const QString &folderName)
                 QDomElement annotNote = document->createElement("note");
                 annotNote.setAttribute("type", "text");
                 annotGroup.appendChild(annotNote);
-                QString annotFileName = Tools::fileNameForNewFile("annotations1.txt", BasketView::fullPathForFolderName(folderName));
-                QString annotFullPath = BasketView::fullPathForFolderName(folderName) + "/" + annotFileName;
+                QString annotFileName = Tools::fileNameForNewFile("annotations1.txt", BasketScene::fullPathForFolderName(folderName));
+                QString annotFullPath = BasketScene::fullPathForFolderName(folderName) + "/" + annotFileName;
                 QFile file(annotFullPath);
                 if (file.open(QIODevice::WriteOnly)) {
                     QTextStream stream(&file);

@@ -22,12 +22,14 @@
 #define NOTE_H
 
 #include <QtCore/QList>
+#include <QtCore/QSet>
 #include <QtCore/QDateTime>
+#include <QtGui/QGraphicsItemGroup>
 
 #include "basket_export.h"
 #include "tag.h"
 
-class BasketView;
+class BasketScene;
 class FilterData;
 
 class NoteContent;
@@ -36,6 +38,8 @@ class NoteSelection;
 class QPainter;
 class QPixmap;
 class QString;
+class QGraphicsItemAnimation;
+class QTimeLine;
 
 class NotePrivate;
 
@@ -49,11 +53,11 @@ class NotePrivate;
   * @endcode
   * @author Sébastien Laoût
   */
-class BASKET_EXPORT Note
+class BASKET_EXPORT Note : public QGraphicsItemGroup
 {
 /// CONSTRUCTOR AND DESTRUCTOR:
 public:
-    Note(BasketView *parent = 0);
+    Note(BasketScene *parent = 0);
     ~Note();
 
 private:
@@ -67,44 +71,44 @@ public:
     Note* prev() const;
 
 public:
-    void setWidth(int width);
-    void setWidthForceRelayout(int width);
+    void setWidth(qreal width);
+    void setWidthForceRelayout(qreal width);
     //! Do not use it unless you know what you do!
-    void setInitialHeight(int height);
-    int x() const;
-    void setX(int x);
+    void setInitialHeight(qreal height);
 
-    int y() const;
-    void setY(int y);
-    void setXRecursively(int x);
-    void setYRecursively(int y);
-    int width() const;
-    int height() const;
-    int bottom() const;
-    QRect rect();
-    QRect resizerRect();
-    QRect visibleRect();
-    void relayoutAt(int x, int y, bool animate);
-    int contentX();
-    int minWidth();
-    int minRight();
+    void setXRecursively(qreal ax);
+    void setYRecursively(qreal ay);
+    void hideRecursively();
+    qreal width() const;
+    qreal height() const;
+    qreal bottom() const;
+    QRectF rect();
+    QRectF resizerRect();
+    QRectF visibleRect();
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget);
+    void relayoutAt(qreal ax, qreal ay, bool animate);
+    qreal contentX() const;
+    qreal minWidth() const;
+    qreal minRight();
     void unsetWidth();
     void requestRelayout();
     /** << DO NEVER USE IT!!! Only available when moving notes, groups should be recreated with the exact same state as before! */
-    void setHeight(int height);
+    void setHeight(qreal height);
 
 /// FREE AND COLUMN LAYOUTS MANAGEMENT:
 private:
-    int m_groupWidth;
+    qreal m_groupWidth;
 public:
-    int  groupWidth();
-    void setGroupWidth(int width);
-    int  rightLimit();
-    int  finalRightLimit();
-    bool isFree();
+    qreal  groupWidth() const;
+    void setGroupWidth(qreal width);
+    qreal rightLimit() const;
+    qreal  finalRightLimit() const;
+    bool isFree() const;
     bool isColumn() const;
-    bool hasResizer();
-    int  resizerHeight();
+    bool hasResizer() const;
+    qreal resizerHeight() const;
 
 /// GROUPS MANAGEMENT:
 private:
@@ -132,24 +136,25 @@ public:
         m_firstChild = note;
     }
     bool isShown();
-    void  toggleFolded(bool animate);
-    Note* noteAt(int x, int y);
+    bool  toggleFolded();
+    
+    Note* noteAt(QPointF pos);
     Note* firstRealChild();
     Note* lastRealChild();
     Note* lastChild();
     Note* lastSibling();
-    int   yExpander();
+    qreal yExpander();
     bool  isAfter(Note *note);
-    bool  contains(Note *note);
+    bool  containsNote(Note *note);
 
 /// NOTES VARIOUS PROPERTIES:       // CONTENT MANAGEMENT?
 private:
-    BasketView  *m_basket;
+    BasketScene  *m_basket;
     NoteContent *m_content;
     QDateTime    m_addedDate;
     QDateTime    m_lastModificationDate;
 public:
-    inline BasketView*      basket() const {
+    inline BasketScene*      basket() const {
         return m_basket;
     }
     inline NoteContent* content() {
@@ -161,9 +166,9 @@ public:
     inline void setLastModificationDate(const QDateTime &dateTime) {
         m_lastModificationDate = dateTime;
     }
-    inline void setParentBasket(BasketView *basket) {
-        m_basket = basket;
-    }
+    
+    void setParentBasket(BasketScene *basket);
+    
     QDateTime addedDate()            {
         return m_addedDate;
     }
@@ -186,13 +191,13 @@ private:
     QPixmap m_bufferedPixmap;
     QPixmap m_bufferedSelectionPixmap;
 public:
-    void draw(QPainter *painter, const QRect &clipRect);
+    void draw(QPainter *painter, const QRectF &clipRect);
     void drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap);
     static void getGradientColors(const QColor &originalBackground, QColor *colorTop, QColor *colorBottom);
-    static void drawExpander(QPainter *painter, int x, int y, const QColor &background, bool expand, BasketView *basket);
-    void drawHandle(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground);
-    void drawResizer(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground, bool rounded);
-    void drawRoundings(QPainter *painter, int x, int y, int type, int width = 0, int height = 0);
+    static void drawExpander(QPainter *painter, qreal x, qreal y, const QColor &background, bool expand, BasketScene *basket);
+    void drawHandle(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QColor &background, const QColor &foreground);
+    void drawResizer(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QColor &background, const QColor &foreground, bool rounded);
+    void drawRoundings(QPainter *painter, qreal x, qreal y, int type, qreal width = 0, qreal height = 0);
     void unbufferizeAll();
     void bufferizeSelectionPixmap();
     inline void unbufferize()  {
@@ -201,13 +206,13 @@ public:
     inline bool isBufferized() {
         return !m_bufferedPixmap.isNull();
     }
-    void recomputeBlankRects(QList<QRect> &blankAreas);
-    static void drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column);
+    void recomputeBlankRects(QList<QRectF> &blankAreas);
+    static void drawInactiveResizer(QPainter *painter, qreal x, qreal y, qreal height, const QColor &background, bool column);
     QPalette palette() const;
 
 /// VISIBLE AREAS COMPUTATION:
 private:
-    QList<QRect> m_areas;
+    QList<QRectF> m_areas;
     bool              m_computedAreas;
     bool              m_onTop;
     void recomputeAreas();
@@ -221,41 +226,11 @@ public:
 
 /// MANAGE ANIMATION:
 private:
-    int  m_deltaX;
-    int  m_deltaY;
-    int  m_deltaHeight;
-    bool m_collapseFinished;
-    bool m_expandingFinished;
+    QGraphicsItemAnimation *m_animation;
 public:
-    inline int  deltaX()          {
-        return m_deltaX;
-    }
-    inline int  deltaY()          {
-        return m_deltaY;
-    }
-    inline int  deltaHeight()     {
-        return m_deltaHeight;
-    }
-    int finalX() const;
-    int finalY() const;
-    inline int  finalHeight()     {
-        return height() + m_deltaHeight;
-    }
-    inline int  finalBottom()     {
-        return finalY() + finalHeight() - 1;
-    }
-    inline void cancelAnimation() {
-        m_deltaX = 0; m_deltaY = 0; m_deltaHeight = 0;
-    }
-    inline bool expandingOrCollapsing() {
-        return !m_collapseFinished || !m_expandingFinished;
-    }
-    void addAnimation(int deltaX, int deltaY, int deltaHeight = 0);
-    void setFinalPosition(int x, int y); /// << Convenient method for addAnimation()
-    bool advance();
-    void initAnimationLoad();
-    void setRecursivelyUnder(Note *under, bool animate);
-
+    bool initAnimationLoad(QTimeLine *timeLine);
+    void animationFinished();
+    
 /// USER INTERACTION:
 public:
     enum Zone { None = 0,
@@ -275,10 +250,10 @@ public:
     inline Zone hoveredZone()             {
         return m_hoveredZone;
     }
-    Zone zoneAt(const QPoint &pos, bool toAdd = false);
-    QRect zoneRect(Zone zone, const QPoint &pos);
-    void setCursor(Zone zone);
-    QString linkAt(const QPoint &pos);
+    Zone zoneAt(const QPointF &pos, bool toAdd = false);
+    QRectF zoneRect(Zone zone, const QPointF &pos);
+    Qt::CursorShape cursorFromZone(Zone zone) const;
+    QString linkAt(const QPointF &pos);
 private:
     bool m_hovered;
     Zone m_hoveredZone;
@@ -289,7 +264,7 @@ public:
     void setSelected(bool selected);
     void setSelectedRecursively(bool selected);
     void invertSelectionRecursively();
-    void selectIn(const QRect &rect, bool invertSelection, bool unselectOthers = true);
+    void selectIn(const QRectF &rect, bool invertSelection, bool unselectOthers = true);
     void setFocused(bool focused);
     inline bool isFocused()  {
         return m_focused;
@@ -333,7 +308,7 @@ public:
     bool hasTag(Tag *tag);
     bool hasState(State *state);
     State* stateOfTag(Tag *tag);
-    State* stateForEmblemNumber(int number);
+    State* stateForEmblemNumber(int number) const;
     bool stateForTagFromSelectedNotes(Tag *tag, State **state);
     void   recomputeStyle();
     void   recomputeAllStyles();
@@ -355,14 +330,17 @@ public:
 
 /// ADDED:
 public:
-    void deleteSelectedNotes(bool deleteFilesToo = true);
+    /**
+     * @return true if this note could be deleted
+     **/
+    void deleteSelectedNotes(bool deleteFilesToo = true, QSet<Note*> *notesToBeDeleted = 0);
     int count();
     int countDirectChilds();
 
     QString fullPath();
     Note* noteForFullPath(const QString &path);
 
-    void update();
+    //void update();
     void linkLookChanged();
 
     void usedStates(QList<State*> &states);
@@ -385,8 +363,8 @@ public:
     bool tryExpandParent();
     bool tryFoldParent();
 
-    int distanceOnLeftRight(Note *note, int side);
-    int distanceOnTopBottom(Note *note, int side);
+    qreal distanceOnLeftRight(Note *note, int side);
+    qreal distanceOnTopBottom(Note *note, int side);
 
     bool convertTexts();
 
@@ -399,27 +377,26 @@ public:
 public:
     // Values are provided here as info:
     // Please see Settings::setBigNotes() to know whats values are assigned.
-    static int NOTE_MARGIN      /*= 2*/;
-    static int INSERTION_HEIGHT /*= 5*/;
-    static int EXPANDER_WIDTH   /*= 9*/;
-    static int EXPANDER_HEIGHT  /*= 9*/;
-    static int GROUP_WIDTH      /*= 2*NOTE_MARGIN + EXPANDER_WIDTH*/;
-    static int HANDLE_WIDTH     /*= GROUP_WIDTH*/;
-    static int RESIZER_WIDTH    /*= GROUP_WIDTH*/;
-    static int TAG_ARROW_WIDTH  /*= 5*/;
-    static int EMBLEM_SIZE      /*= 16*/;
-    static int MIN_HEIGHT       /*= 2*NOTE_MARGIN + EMBLEM_SIZE*/;
+    static qreal NOTE_MARGIN      /*= 2*/;
+    static qreal INSERTION_HEIGHT /*= 5*/;
+    static qreal EXPANDER_WIDTH   /*= 9*/;
+    static qreal EXPANDER_HEIGHT  /*= 9*/;
+    static qreal GROUP_WIDTH      /*= 2*NOTE_MARGIN + EXPANDER_WIDTH*/;
+    static qreal HANDLE_WIDTH     /*= GROUP_WIDTH*/;
+    static qreal RESIZER_WIDTH    /*= GROUP_WIDTH*/;
+    static qreal TAG_ARROW_WIDTH  /*= 5*/;
+    static qreal EMBLEM_SIZE      /*= 16*/;
+    static qreal MIN_HEIGHT       /*= 2*NOTE_MARGIN + EMBLEM_SIZE*/;
 };
 
 /*
  * Convenience functions:
  */
 void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
-		  int x, int y, int w, int h,
+		  qreal x, qreal y, qreal w, qreal h,
 		  bool sunken, bool horz, bool flat);
 
-extern void subtractRectOnAreas(const QRect &rectToSubstract,
-		QList<QRect> &areas, bool andRemove = true);
-
+extern void substractRectOnAreas(const QRectF &rectToSubstract,
+		QList<QRectF> &areas, bool andRemove = true);
 
 #endif // NOTE_H

@@ -238,7 +238,7 @@ QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *export
     if(basketLink.startsWith(QLatin1String("basket://")))
     url = basketLink.mid(9, basketLink.length() - 9);
 
-    BasketView *basket = Global::bnpView->basketForFolderName(url);
+    BasketScene *basket = Global::bnpView->basketForFolderName(url);
 
     //remove the trailing slash.
     url = url.left(url.length() - 1);
@@ -555,8 +555,10 @@ void Tools::deleteMetadataRecursively(const QString &folderOrFile)
             if (*it != "." && *it != "..")
                 deleteMetadataRecursively(folderOrFile + "/" + *it);
     }
+#ifdef HAVE_NEPOMUK
     DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
     nepomukIntegration::deleteMetadata(folderOrFile);
+#endif
 }
 
 void Tools::trashRecursively(const QString &folderOrFile)

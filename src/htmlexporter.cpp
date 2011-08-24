@@ -22,7 +22,7 @@
 
 #include "bnpview.h"
 #include "basketlistview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "note.h"
 #include "tools.h"
 #include "config.h"
@@ -49,7 +49,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 
-HTMLExporter::HTMLExporter(BasketView *basket)
+HTMLExporter::HTMLExporter(BasketScene *basket)
 {
     QDir dir;
 
@@ -96,7 +96,7 @@ HTMLExporter::HTMLExporter(BasketView *basket)
     config.sync();
 
     prepareExport(basket, destination);
-    exportBasket(basket, /*isSubBasketView*/false);
+    exportBasket(basket, /*isSubBasketScene*/false);
 
     progress->setValue(progress->value() + 1); // Finishing finished
 }
@@ -105,7 +105,7 @@ HTMLExporter::~HTMLExporter()
 {
 }
 
-void HTMLExporter::prepareExport(BasketView *basket, const QString &fullPath)
+void HTMLExporter::prepareExport(BasketScene *basket, const QString &fullPath)
 {
     progress->setRange(0,/*Preparation:*/1 + /*Finishing:*/1 + /*Basket:*/1 + /*SubBaskets:*/Global::bnpView->basketCount(Global::bnpView->listViewItemForBasket(basket)));
     progress->setValue(0);
@@ -137,7 +137,7 @@ void HTMLExporter::prepareExport(BasketView *basket, const QString &fullPath)
     progress->setValue(progress->value() + 1); // Preparation finished
 }
 
-void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
+void HTMLExporter::exportBasket(BasketScene *basket, bool isSubBasket)
 {
     if (!basket->isLoaded()) {
         basket->load();
@@ -215,7 +215,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     QColor bottomBgColor;
     Note::getGradientColors(basket->backgroundColor(), &topBgColor, &bottomBgColor);
     // Compute the gradient image for notes:
-    QString gradientImageFileName = BasketView::saveGradientBackground(basket->backgroundColor(), basket->Q3ScrollView::font(), imagesFolderPath);
+    QString gradientImageFileName = BasketScene::saveGradientBackground(basket->backgroundColor(), basket->QGraphicsScene::font(), imagesFolderPath);
 
     // Output the header:
     QString borderColor = Tools::mixColor(basket->backgroundColor(), basket->textColor()).name();
@@ -248,7 +248,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     }
     stream <<
     "   .basket { background-color: " << basket->backgroundColor().name() << "; border: solid " << borderColor << " 1px; "
-    "font: " << Tools::cssFontDefinition(basket->Q3ScrollView::font()) << "; color: " << basket->textColor().name() << "; padding: 1px; width: 100%; }\n"
+    "font: " << Tools::cssFontDefinition(basket->QGraphicsScene::font()) << "; color: " << basket->textColor().name() << "; padding: 1px; width: 100%; }\n"
     "   table.basket { border-collapse: collapse; }\n"
     "   .basket * { padding: 0; margin: 0; }\n"
     "   .basket table { width: 100%; border-spacing: 0; _border-collapse: collapse; }\n"
@@ -273,7 +273,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     QList<State*> states = basket->usedStates();
     QString statesCss;
     for (State::List::Iterator it = states.begin(); it != states.end(); ++it)
-        statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->Q3ScrollView::font());
+        statesCss += (*it)->toCSS(imagesFolderPath, imagesFolderName, basket->QGraphicsScene::font());
     stream <<
     statesCss <<
     "   .credits { text-align: right; margin: 3px 0 0 0; _margin-top: -17px; font-size: 80%; color: " << borderColor << "; }\n"
@@ -311,7 +311,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
         "    <tr>\n";
     else
         stream <<
-        "   <div class=\"basket\" style=\"position: relative; height: " << basket->contentsHeight() << "px; width: " << basket->contentsWidth() << "px; min-width: 100%;\">\n";
+        "   <div class=\"basket\" style=\"position: relative; height: " << basket->sceneRect().height() << "px; width: " << basket->sceneRect().width() << "px; min-width: 100%;\">\n";
 
     for (Note *note = basket->firstNote(); note; note = note->next())
         exportNote(note, /*indent=*/(basket->isFreeLayout() ? 4 : 5));
@@ -395,7 +395,7 @@ void HTMLExporter::exportNote(Note *note, int indent)
             // we output a percentage that is approximatively correct.
             // For instance, we compute the currently used percentage of width in the basket
             // and try make make it the same on a 1024*768 display in a Web browser:
-            int availableSpaceForColumnsInThisBasket = note->basket()->contentsWidth() - (note->basket()->columnsCount() - 1) * Note::RESIZER_WIDTH;
+            int availableSpaceForColumnsInThisBasket = note->basket()->sceneRect().width() - (note->basket()->columnsCount() - 1) * Note::RESIZER_WIDTH;
             int availableSpaceForColumnsInBrowser    = 1024    /* typical screen width */
                     - 25    /* window border and scrollbar width */
                     - 2 * 5 /* page margin */
@@ -475,14 +475,14 @@ void HTMLExporter::exportNote(Note *note, int indent)
     }
 }
 
-void HTMLExporter::writeBasketTree(BasketView *currentBasket)
+void HTMLExporter::writeBasketTree(BasketScene *currentBasket)
 {
     stream << "  <ul class=\"tree\">\n";
     writeBasketTree(currentBasket, exportedBasket, 3);
     stream << "  </ul>\n";
 }
 
-void HTMLExporter::writeBasketTree(BasketView *currentBasket, BasketView *basket, int indent)
+void HTMLExporter::writeBasketTree(BasketScene *currentBasket, BasketScene *basket, int indent)
 {
     // Compute variable HTML code:
     QString spaces;

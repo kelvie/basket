@@ -11,20 +11,20 @@
 
 class QString;
 class KUrl;
-class BasketView;
+class BasketScene;
 
 class nepomukIntegration : public QObject
 {
     Q_OBJECT
 public:
-    static void updateMetadata(BasketView * basket);
+    static void updateMetadata(BasketScene * basket);
     static void deleteMetadata(const QString &fullPath);
     static bool doDelete(const QString &fullPath);
 private:
     static nepomukIntegration *instance;
     static QMutex instanceMutex;
 
-    nepomukIntegration(BasketView * basket, int idleTime);
+    nepomukIntegration(BasketScene * basket, int idleTime);
     ~nepomukIntegration() {
         //I hope deletion is handled automatically
         //delete workerThread;
@@ -36,11 +36,11 @@ private:
     QThread workerThread;
     QTimer cleanupTimer;
     QMutex mutex;
-    QList<BasketView *> basketList;
+    QList<BasketScene *> basketList;
     bool isDoingUpdate;
     QList<KUrl> requestedIndexList;
     bool isCleaningupRequestedIndexes;
-    void queueBasket(BasketView * basket);
+    void queueBasket(BasketScene * basket);
     void queueIndexRequest(KUrl file);
 signals:
     void updateCompleted(QString basketFolderName, bool successful);

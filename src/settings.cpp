@@ -40,7 +40,7 @@
 #include <KDE/KTabWidget>
 
 #include "kgpgme.h"
-#include "basketview.h"     //For Global::bnpview::currentBasket()
+#include "basketscene.h"
 #include "linklabel.h"
 #include "variouswidgets.h"
 

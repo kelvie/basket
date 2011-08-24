@@ -35,7 +35,7 @@
 #include "debugwindow.h"
 #include "bnpview.h"
 #include "tools.h"
-#include "basketview.h"
+#include "basketscene.h"
 
 /** class State: */
 
@@ -125,7 +125,7 @@ QString State::toCSS(const QString &gradientFolderPath, const QString &gradientF
         QColor bottomBgColor;
         Note::getGradientColors(backgroundColor(), &topBgColor, &bottomBgColor);
         // Produce the CSS code:
-        QString gradientFileName = BasketView::saveGradientBackground(backgroundColor(), font(baseFont), gradientFolderPath);
+        QString gradientFileName = BasketScene::saveGradientBackground(backgroundColor(), font(baseFont), gradientFolderPath);
         css += " background: " + bottomBgColor.name() + " url('" + gradientFolderName + gradientFileName + "') repeat-x;";
         css += " border-top: solid " + topBgColor.name() + " 1px;";
         css += " border-bottom: solid " + Tools::mixColor(topBgColor, bottomBgColor).name() + " 1px;";
@@ -505,7 +505,7 @@ void Tag::saveTagsTo(QList<Tag*> &list, const QString &fullPath)
     }
 
     // Write to Disk:
-    if (!BasketView::safelySaveToFile(fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+    if (!BasketScene::safelySaveToFile(fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
         DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 

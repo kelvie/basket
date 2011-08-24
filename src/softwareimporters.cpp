@@ -36,7 +36,7 @@
 #include <KDE/KMessageBox>
 #include <KDE/KTextEdit>
 
-#include "basketview.h"
+#include "basketscene.h"
 #include "basketfactory.h"
 #include "notefactory.h"
 #include "global.h"
@@ -235,7 +235,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     return "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
 }
 
-Note* SoftwareImporters::insertTitledNote(BasketView *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
+Note* SoftwareImporters::insertTitledNote(BasketScene *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
 {
     Note *nGroup = new Note(parent);
 
@@ -257,7 +257,7 @@ Note* SoftwareImporters::insertTitledNote(BasketView *parent, const QString &tit
     return nGroup;
 }
 
-void SoftwareImporters::finishImport(BasketView *basket)
+void SoftwareImporters::finishImport(BasketScene *basket)
 {
     // Unselect the last inserted group:
     basket->unselectAll();
@@ -284,7 +284,7 @@ void SoftwareImporters::importKJots()
         return;
 
     BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/i18n("From KJots"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-    BasketView *kjotsBasket = Global::bnpView->currentBasket();
+    BasketScene *kjotsBasket = Global::bnpView->currentBasket();
 
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
         QFile file(dirPath + *it);
@@ -297,7 +297,7 @@ void SoftwareImporters::importKJots()
 
                 // First create a basket for it:
                 BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/KUrl(file.fileName()).fileName(), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
-                BasketView *basket = Global::bnpView->currentBasket();
+                BasketScene *basket = Global::bnpView->currentBasket();
                 basket->load();
 
                 QString title, body;
@@ -337,7 +337,7 @@ void SoftwareImporters::importKJots()
 
                 // First create a basket for it:
                 BasketFactory::newBasket(/*icon=*/"kjots", /*name=*/bookTitle, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/kjotsBasket);
-                BasketView *basket = Global::bnpView->currentBasket();
+                BasketScene *basket = Global::bnpView->currentBasket();
                 basket->load();
 
                 QDomElement docElem = XMLWork::getElement(doc->documentElement(), "KJotsBook");
@@ -371,7 +371,7 @@ void SoftwareImporters::importKNotes()
 
             // First create a basket for it:
             BasketFactory::newBasket(/*icon=*/"knotes", /*name=*/i18n("From KNotes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-            BasketView *basket = Global::bnpView->currentBasket();
+            BasketScene *basket = Global::bnpView->currentBasket();
             basket->load();
 
             bool inVJournal    = false;
@@ -442,7 +442,7 @@ void SoftwareImporters::importStickyNotes()
 
         // First create a basket for it:
         BasketFactory::newBasket(/*icon=*/"gnome", /*name=*/i18n("From Sticky Notes"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-        BasketView *basket = Global::bnpView->currentBasket();
+        BasketScene *basket = Global::bnpView->currentBasket();
         basket->load();
 
         QDomElement docElem = doc->documentElement();
@@ -479,7 +479,7 @@ void SoftwareImporters::importTomboy()
     QString dirPath = QDir::home().absolutePath() + "/.tomboy/"; // I thing the assumption is good
     QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
 
-    BasketView *basket = 0; // Create the basket ONLY if we found at least one note to add!
+    BasketScene *basket = 0; // Create the basket ONLY if we found at least one note to add!
 
     QStringList list = dir.entryList();
     for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
@@ -518,7 +518,7 @@ void SoftwareImporters::importTomboy()
 }
 
 void SoftwareImporters::importJreepadFile(){
-    typedef QPair<BasketView *, QDomElement> basketAndElementPair;
+    typedef QPair<BasketScene *, QDomElement> basketAndElementPair;
 
     QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportJreepadFile"),
                                                     "*.xml|XML files");
@@ -529,12 +529,12 @@ void SoftwareImporters::importJreepadFile(){
     basketAndElementPair newElement;
     basketAndElementPair currentElement;
     QList<basketAndElementPair> elements;
-    QList<BasketView*> basketList;
+    QList<BasketScene*> basketList;
 
     QDomDocument *doc = XMLWork::openFile("node", fileName);
     newElement.second = doc->documentElement();
 
-    BasketView *basket = 0;
+    BasketScene *basket = 0;
     BasketFactory::newBasket(/*icon=*/"xml", /*name=*/doc->documentElement().attribute("title"), 
                              /*backgroundImage=*/"", /*backgroundColor=*/QColor(), 
                              /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
@@ -597,7 +597,7 @@ void SoftwareImporters::importTextFile()
         // First create a basket for it:
         QString title = i18nc("From TextFile.txt", "From %1", KUrl(fileName).fileName());
         BasketFactory::newBasket(/*icon=*/"txt", title, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-        BasketView *basket = Global::bnpView->currentBasket();
+        BasketScene *basket = Global::bnpView->currentBasket();
         basket->load();
 
         // Import every notes:
@@ -620,8 +620,8 @@ void SoftwareImporters::importKnowIt()
     if (!url.isEmpty()) {
         QFile file(url.path());
         QFileInfo info(url.path());
-        BasketView* basket = 0;
-        QStack<BasketView*> baskets;
+        BasketScene* basket = 0;
+        QStack<BasketScene*> baskets;
         QString text;
         int hierarchy = 0;
 
@@ -741,7 +741,7 @@ void SoftwareImporters::importTuxCards()
 
 // TODO: <InformationElement isOpen="true" isEncripted="false"
 
-void SoftwareImporters::importTuxCardsNode(const QDomElement &element, BasketView *parentBasket, Note *parentNote, int remainingHierarchy)
+void SoftwareImporters::importTuxCardsNode(const QDomElement &element, BasketScene *parentBasket, Note *parentNote, int remainingHierarchy)
 {
     for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
         QDomElement e = n.toElement();
@@ -765,7 +765,7 @@ void SoftwareImporters::importTuxCardsNode(const QDomElement &element, BasketVie
 
         if (remainingHierarchy > 0) {
             BasketFactory::newBasket(icon, name, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", parentBasket);
-            BasketView *basket = Global::bnpView->currentBasket();
+            BasketScene *basket = Global::bnpView->currentBasket();
             basket->load();
 
             if (isRichText)

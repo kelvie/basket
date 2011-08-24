@@ -23,12 +23,12 @@
 
 #include <QtGui/QUndoCommand>
 
-class BasketView;
+class BasketScene;
 
 class HistorySetBasket : public QUndoCommand
 {
 public:
-    explicit HistorySetBasket(BasketView *basket, QUndoCommand *parent = 0);
+    explicit HistorySetBasket(BasketScene *basket, QUndoCommand *parent = 0);
     void undo();
     void redo();
 

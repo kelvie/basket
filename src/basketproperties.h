@@ -39,7 +39,7 @@ class KShortcutWidget;
 class KShortcut;
 class KColorCombo2;
 
-class BasketView;
+class BasketScene;
 
 /** The dialog that hold basket settings.
   * @author Sébastien Laoût
@@ -48,7 +48,7 @@ class BasketPropertiesDialog : public KDialog, private Ui::BasketPropertiesUi
 {
     Q_OBJECT
 public:
-    explicit BasketPropertiesDialog(BasketView *basket, QWidget *parent = 0);
+    explicit BasketPropertiesDialog(BasketScene *basket, QWidget *parent = 0);
     ~BasketPropertiesDialog();
     void ensurePolished();
 
@@ -60,12 +60,13 @@ protected slots:
     void selectColumnsLayout();
 
 private:
-    BasketView    *m_basket;
+    BasketScene   *m_basket;
     KIconButton   *m_icon;
     KLineEdit     *m_name;
     KComboBox     *m_backgroundImage;
     KColorCombo2  *m_backgroundColor;
     KColorCombo2  *m_textColor;
+
     QMap<int, QString> m_backgroundImagesMap;
 };
 

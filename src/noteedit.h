@@ -26,6 +26,7 @@
 
 #include "notecontent.h"
 
+class QGraphicsProxyWidget;
 class QWidget;
 class QPushButton;
 class QKeyEvent;
@@ -67,6 +68,8 @@ class NoteEditor : public QObject
     Q_OBJECT
 public:
     NoteEditor(NoteContent *noteContent);
+    virtual ~NoteEditor();
+
     bool        isEmpty()  {
         return m_isEmpty;
     }
@@ -76,7 +79,7 @@ public:
     bool        isInline() {
         return m_widget != 0;
     }
-    QWidget*    widget()   {
+    QGraphicsProxyWidget*    graphicsWidget()   {
         return m_widget;
     }
     KTextEdit*  textEdit() {
@@ -86,10 +89,13 @@ public:
         return m_lineEdit;
     }
 
+    void mousePress(QPointF clicked);
+    void connectActions(BasketScene *scene);
+    
 private:
     bool         m_isEmpty;
     bool         m_canceled;
-    QWidget     *m_widget;
+    QGraphicsProxyWidget     *m_widget;
     KTextEdit   *m_textEdit;
     KLineEdit   *m_lineEdit;
     NoteContent *m_noteContent;

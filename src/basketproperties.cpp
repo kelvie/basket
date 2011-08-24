@@ -34,13 +34,13 @@
 #include <KDE/KComboBox>
 #include <KDE/KLineEdit>
 #include <KDE/KLocale>
-#include <KDE/KShortcutWidget>
 #include <KDE/KNumInput>
 #include <KDE/KApplication>
 #include <KDE/KIconLoader>
 #include <KDE/KIconDialog>
+#include <kshortcutWidget.h>
 
-#include "basketview.h"
+#include "basketscene.h"
 #include "kcolorcombo2.h"
 #include "variouswidgets.h"
 #include "global.h"
@@ -48,7 +48,7 @@
 
 #include "ui_basketproperties.h"
 
-BasketPropertiesDialog::BasketPropertiesDialog(BasketView *basket, QWidget *parent)
+BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *parent)
         : KDialog(parent)
         , Ui::BasketPropertiesUi()
         , m_basket(basket)

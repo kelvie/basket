@@ -32,7 +32,7 @@ class QMimeData;
 class KComboBox;
 class QTreeWidgetItem;
 
-class BasketView;
+class BasketScene;
 
 class KColorCombo2;
 
@@ -80,7 +80,7 @@ class NewBasketDialog : public KDialog
 {
     Q_OBJECT
 public:
-    NewBasketDialog(BasketView *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
+    NewBasketDialog(BasketScene *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent = 0);
     ~NewBasketDialog();
     void ensurePolished();
 protected slots:
@@ -96,7 +96,7 @@ private:
     KColorCombo2               *m_backgroundColor;
     QListWidget                 *m_templates;
     KComboBox                  *m_createIn;
-    QMap<int, BasketView*>          m_basketsMap;
+    QMap<int, BasketScene*>     m_basketsMap;
 };
 
 #endif // NEWBASKETDIALOG_H

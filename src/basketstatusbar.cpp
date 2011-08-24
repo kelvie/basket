@@ -31,7 +31,7 @@
 
 #include "global.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "tools.h"
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)

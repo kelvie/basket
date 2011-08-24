@@ -44,7 +44,7 @@
 #include <KDE/KMessageBox>
 #include <KDE/KPushButton>
 #include <KDE/KSeparator>
-#include <KDE/KShortcutWidget>
+#include <kshortcutwidget.h>
 
 #include "tag.h"
 #include "kcolorcombo2.h"

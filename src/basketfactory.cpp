@@ -22,13 +22,14 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
+#include <QtGui/QGraphicsView>
 #include <QtXml/QDomElement>
 
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
 
 #include "global.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "xmlwork.h"
 #include "note.h" // For balanced column width computation
 #include "bnpview.h"
@@ -72,8 +73,8 @@ QString BasketFactory::unpackTemplate(const QString &templateName)
         QTextStream stream(&file);
         stream.setCodec("UTF-8");
         int nbColumns = (templateName == "mindmap" || templateName == "free" ? 0 : templateName.left(1).toInt());
-        BasketView *currentBasket = Global::bnpView->currentBasket();
-        int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->visibleWidth() - (nbColumns - 1) * Note::RESIZER_WIDTH) / nbColumns : 0);
+        BasketScene *currentBasket = Global::bnpView->currentBasket();
+        int columnWidth = (currentBasket && nbColumns > 0 ? (currentBasket->graphicsView()->viewport()->width() - (nbColumns - 1) * Note::RESIZER_WIDTH) / nbColumns : 0);
         stream << QString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
                           "<!DOCTYPE basket>\n"
                           "<basket>\n"
@@ -102,7 +103,7 @@ void BasketFactory::newBasket(const QString &icon,
                               const QColor  &backgroundColor,
                               const QColor  &textColor,
                               const QString &templateName,
-                              BasketView *parent)
+                              BasketScene *parent)
 {
     // Unpack the templateName file to a new basket folder:
     QString folderName = unpackTemplate(templateName);
