@@ -40,8 +40,8 @@ void NoteTest::testCreation()
     QVERIFY(n->next() == 0);
     QVERIFY(n->prev() == 0);
     QVERIFY(n->content() == 0);
-    QCOMPARE(n->x(), 0);
-    QCOMPARE(n->y(), -1);
+    QCOMPARE(n->x(), 0.0);
+    QCOMPARE(n->y(), 0.0);
     QCOMPARE(n->width(), Note::GROUP_WIDTH);
     QCOMPARE(n->height(), Note::MIN_HEIGHT);
     delete n;
