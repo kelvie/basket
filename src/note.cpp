@@ -112,11 +112,13 @@ Note::~Note()
     if(m_basket)
     {
         if(m_content && m_content->graphicsItem()) 
+        {
             m_basket->removeItem(m_content->graphicsItem());
+        }
         m_basket->removeItem(this);
     }    
-    delete m_animation;
     delete m_content;
+    delete m_animation;
     deleteChilds();
 }
 

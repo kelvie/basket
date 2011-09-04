@@ -89,8 +89,12 @@ public:
         return m_lineEdit;
     }
 
-    void mousePress(QPointF clicked);
+    void setCursorTo(const QPointF &pos);
     void connectActions(BasketScene *scene);
+    void startSelection(const QPointF &pos);
+    void updateSelection(const QPointF &pos);
+    void endSelection(const QPointF &pos);    
+    void paste(const QPointF &pos);
     
 private:
     bool         m_isEmpty;

@@ -375,6 +375,11 @@ void BasketScene::unplugNote(Note *note)
     note->setParentNote(0);
     note->setPrev(0);
     note->setNext(0);
+    
+    // Reste focus and hover note if necessary
+    if(m_focusedNote == note) m_focusedNote = 0;
+    if(m_hoveredNote == note) m_hoveredNote = 0;
+    
     //  recomputeBlankRects(); // FIXME: called too much time. It's here because when dragging and moving a note to another basket and then go back to the original basket, the note is deleted but the note rect is not painter anymore.
 }
 
@@ -506,8 +511,6 @@ void BasketScene::doCleanUp()
     QSet<Note *>::iterator it = m_notesToBeDeleted.begin(); 
     while(it != m_notesToBeDeleted.end())
     {
-      if(*it == m_hoveredNote) m_hoveredNote = 0;
-      if(*it == m_focusedNote) m_focusedNote = 0;
       delete *it;
       it = m_notesToBeDeleted.erase(it);
     }
@@ -1193,6 +1196,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
         , m_leftEditorBorder(0)
         , m_rightEditorBorder(0)
         , m_redirectEditActions(false)
+	, m_editorTrackMouseEvent(false)
         , m_editorWidth(-1)
         , m_editorHeight(-1)
         , m_doNotCloseEditor(false)
@@ -1310,7 +1314,32 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         return;
     }
-
+    
+      kWarning()<<"mousePress track="<<m_editorTrackMouseEvent;
+    // if we are editing and no control key are pressed
+    if( m_editor && !shiftPressed && !controlPressed )
+    {
+	//if the mouse is over the editor
+	QGraphicsWidget *widget = dynamic_cast<QGraphicsWidget*>(m_view->itemAt(event->scenePos().toPoint()));
+	if(widget && m_editor->graphicsWidget() == widget)
+	{
+      kWarning()<<"mousePress on editor ";
+	    if(event->button() == Qt::LeftButton)
+	    {
+      kWarning()<<"mousePress on editor left click";
+	      m_editorTrackMouseEvent = true;
+	      m_editor->startSelection(event->scenePos());
+	      return;
+	    }
+	    else if(event->button() == Qt::MiddleButton)
+	    {
+      kWarning()<<"mousePress on editor right click";
+	      m_editor->paste(event->scenePos());
+	      return;
+	    }
+	}
+    }
+		
     // Figure out what is the clicked note and zone:
     Note *clicked = noteAt(event->scenePos());
     Note::Zone zone = (clicked ? clicked->zoneAt(event->scenePos() - QPointF(clicked->x(), clicked->y())) : Note::None);
@@ -1333,13 +1362,14 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  (zone == Note::TagsArrow || zone == Note::Custom0 || zone == Note::Content || zone == Note::Link /**/ || zone >= Note::Emblem0 /**/))) {
             if (!shiftPressed && !controlPressed) {
                 m_pressPos = event->scenePos(); // TODO: Allow to drag emblems to assign them to other notes. Then don't allow drag at Emblem0!!
-                m_canDrag  = true;
 
+		m_canDrag  = true;		  
+		
                // Saving where we were editing, because during a drag, the mouse can fly over the text edit and move the cursor position:
-                if (m_editor && m_editor->textEdit()) {
-                    KTextEdit *editor = m_editor->textEdit();
-                    m_textCursor = editor->textCursor();
-                }
+                 if (m_editor && m_editor->textEdit()) {
+                     KTextEdit *editor = m_editor->textEdit();
+                     m_textCursor = editor->textCursor();
+                 }
             }
         }
 
@@ -1355,6 +1385,7 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         // Select note(s):
         if (zone == Note::Handle || zone == Note::Group || (zone == Note::GroupExpander && (controlPressed || shiftPressed))) {
+	    closeEditor();
             Note *end = clicked;
             if (clicked->isGroup() && shiftPressed) {
                 if (clicked->containsNote(m_startOfShiftSelectionNote)) {
@@ -2040,9 +2071,16 @@ void BasketScene::acceptDropEvent(QGraphicsSceneDragDropEvent *event, bool preCo
 
 void BasketScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    // Now disallow drag:
+    // Now disallow drag and mouse redirection
     m_canDrag = false;
-
+    
+    if(m_editorTrackMouseEvent)
+    {
+      m_editorTrackMouseEvent = false;
+      m_editor->endSelection(m_pressPos);
+      return;
+    }
+    
     // Cancel Resizer move:
     if (m_resizingNote) {
         m_resizingNote  = 0;
@@ -2252,16 +2290,15 @@ void BasketScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         } // If there is no link, edit note content
     case Note::Content:
     {
-	QPointF clickedPoint = clicked->mapFromScene(event->scenePos());
 	if(m_editor && m_editor->note() == clicked && m_editor->graphicsWidget())
 	{
-	  m_editor->mousePress(clickedPoint);
+	  m_editor->setCursorTo(event->scenePos());
 	}
 	else
 	{
 	  closeEditor();
 	  unselectAllBut(clicked);
-	  noteEdit(clicked, /*justAdded=*/false, clickedPoint);
+	  noteEdit(clicked, /*justAdded=*/false, event->scenePos());
 	  QGraphicsScene::mouseReleaseEvent(event);
 	}
         break;
@@ -2298,11 +2335,18 @@ void BasketScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void BasketScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    // Redict mouse event to editor
+    if (m_editorTrackMouseEvent && (m_pressPos - event->scenePos()).manhattanLength() > KApplication::startDragDistance()) {
+	m_editor->updateSelection(event->scenePos());	
+	return;
+    }
+    
     // Drag the notes:
     if (m_canDrag && (m_pressPos - event->scenePos()).manhattanLength() > KApplication::startDragDistance()) {
         m_canDrag          = false;
         m_isSelecting      = false; // Don't draw selection rectangle ater drag!
         m_selectionStarted = false;
+	
         NoteSelection *selection = selectedNotes();
         if (selection->firstStacked()) {
             QDrag *d = NoteDrag::dragObject(selection, /*cutting=*/false, /*source=*/m_view); // d will be deleted by QT
@@ -2912,23 +2956,6 @@ BasketScene::~BasketScene()
 	if(m_view)
 		delete m_view;
 }
-
-/*void BasketScene::viewportResized()
-{
-    relayoutNotes(true);
-    //cornerWidget()->setShown( m_view->horizontalScrollBar()->isShown() &&  m_view->verticalScrollBar()->isShown());
-/*    if ( m_view->horizontalScrollBar()->isVisible() &&  m_view->verticalScrollBar()->isVisible()) {
-        if (!m_view->cornerWidget())
-            m_view->setCornerWidget(m_cornerWidget);
-    } else {
-        if (m_view->cornerWidget())
-            m_view->cornerWidget()->hide();
-    }*/
-//  if (isDuringEdit())
-//      ensureNoteVisible(editedNote());
-	//m_view->resizeEvent(event);
-
-//}*/
 
 void BasketScene::animateLoad()
 {
@@ -3745,6 +3772,7 @@ bool BasketScene::closeEditor()
             disconnect(m_editor->lineEdit(), SIGNAL(textChanged(const QString&)), this, SLOT(contentChangedInEditor()));
         }
     }
+    m_editorTrackMouseEvent = false;
     m_editor->graphicsWidget()->widget()->disconnect();
     removeItem(m_editor->graphicsWidget());
     m_editor->validate();
@@ -3936,7 +3964,7 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
                 this, SLOT(mouseEnteredEditorWidget()));
 
         if (clickedPoint != QPoint()) {
-	  m_editor->mousePress(clickedPoint);
+	  m_editor->setCursorTo(clickedPoint);
           updateEditorAppearance();
 	}
 	
@@ -4076,7 +4104,10 @@ void BasketScene::doCopy(CopyMode copyMode)
 //          note->slotDelete();
 
         if (copyMode == CutToClipboard)
+	{
             noteDeleteWithoutConfirmation(/*deleteFilesToo=*/false);
+	    focusANote();
+	}
 
         switch (copyMode) {
         default:

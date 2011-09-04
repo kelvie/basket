@@ -88,6 +88,7 @@ public:
     BasketScene(QWidget *parent, const QString &folderName);
     ~BasketScene();
 
+    void trace();
 /// USER INTERACTION:
 private:
     bool   m_noActionOnMouseRelease;
@@ -521,8 +522,9 @@ private:
     TransparentWidget *m_leftEditorBorder;
     TransparentWidget *m_rightEditorBorder;
     bool        m_redirectEditActions;
-    qreal         m_editorWidth;
-    qreal         m_editorHeight;
+    bool	m_editorTrackMouseEvent;
+    qreal       m_editorWidth;
+    qreal       m_editorHeight;
     QTimer      m_inactivityAutoSaveTimer;
     bool        m_doNotCloseEditor;
     QTextCursor m_textCursor;
