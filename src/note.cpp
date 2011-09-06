@@ -1789,7 +1789,7 @@ void Note::getGradientColors(const QColor &originalBackground, QColor *colorTop,
  *   small and fast to draw, so we don't complexify code for that
  */
 
-void Note::draw(QPainter *painter, const QRectF &clipRect)
+void Note::draw(QPainter *painter, const QRectF &/*clipRect*/)
 {
     if (!matching())
         return;
@@ -2000,8 +2000,8 @@ void Note::draw(QPainter *painter, const QRectF &clipRect)
 }
 
 void Note::paint(QPainter *painter,
-                           const QStyleOptionGraphicsItem *option,
-                           QWidget *widget)
+                           const QStyleOptionGraphicsItem */*option*/,
+                           QWidget */*widget*/)
  {
     if(!m_basket->isLoaded())
         return;

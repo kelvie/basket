@@ -85,15 +85,12 @@ void NoteEditor::setCursorTo(const QPointF &pos)
   {
     QPointF currentPos = note()->mapFromScene(pos);
     QPointF deltaPos = m_textEdit->pos()-note()->pos();
-    kWarning()<<"pos="<<pos<<" currentPos="<<currentPos<<" delta="<<deltaPos;
-    kWarning()<<"point="<<(currentPos-deltaPos)<<" place cursor="<<m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()).position();
     m_textEdit->setTextCursor(m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()));
   }
 }
 
 void NoteEditor::startSelection(const QPointF &pos)
 {
-  kWarning()<<pos;
   if(m_textEdit)
   {
     QPointF currentPos = note()->mapFromScene(pos);
@@ -104,8 +101,6 @@ void NoteEditor::startSelection(const QPointF &pos)
 
 void NoteEditor::updateSelection(const QPointF &pos)
 {
-  kWarning()<<pos;
-  
   if(m_textEdit)
   {
     QPointF currentPos = note()->mapFromScene(pos);
@@ -122,15 +117,14 @@ void NoteEditor::updateSelection(const QPointF &pos)
   }
 }
 
-void NoteEditor::endSelection(const QPointF &pos)
+void NoteEditor::endSelection(const QPointF &/*pos*/)
 {
-  kWarning()<<pos;
-  
+    // nothing to do yet
+    // we could copy the selected text to the QClipboard with QClipboard::Selection mode
 }
 
 void NoteEditor::paste(const QPointF &pos)
 {
-  kWarning()<<pos;
   if(m_textEdit)
   {
     setCursorTo(pos);

@@ -334,6 +334,11 @@ bool NoteFactory::movingNotesInTheSameBasket(const QMimeData *source, BasketScen
 
 Note* NoteFactory::dropNote(const QMimeData *source, BasketScene *parent, bool fromDrop, Qt::DropAction action, Note */*noteSource*/)
 {
+    if (source == 0)
+    {
+        return 0;
+    }
+
     Note *note = 0L;
 
     QStringList formats = source->formats();

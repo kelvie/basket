@@ -1163,6 +1163,7 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
         , m_posToInsert(-1 , -1)
         , m_isInsertPopupMenu(false)
         , m_insertMenuTitle(0)
+        , m_animationTimeLine(0)
         , m_loaded(false)
         , m_loadingLaunched(false)
         , m_locked(false)
@@ -1206,7 +1207,6 @@ BasketScene::BasketScene(QWidget *parent, const QString &folderName)
         , m_startOfShiftSelectionNote(0)
         , m_finishLoadOnFirstShow(false)
         , m_relayoutOnNextShow(false)
-	, m_animationTimeLine(0)
 {
     m_view = new BasketView(this);
     m_view->setFocusPolicy(Qt::StrongFocus);
@@ -1315,7 +1315,6 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         return;
     }
     
-      kWarning()<<"mousePress track="<<m_editorTrackMouseEvent;
     // if we are editing and no control key are pressed
     if( m_editor && !shiftPressed && !controlPressed )
     {
@@ -1323,17 +1322,14 @@ void BasketScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsWidget *widget = dynamic_cast<QGraphicsWidget*>(m_view->itemAt(event->scenePos().toPoint()));
 	if(widget && m_editor->graphicsWidget() == widget)
 	{
-      kWarning()<<"mousePress on editor ";
 	    if(event->button() == Qt::LeftButton)
 	    {
-      kWarning()<<"mousePress on editor left click";
 	      m_editorTrackMouseEvent = true;
 	      m_editor->startSelection(event->scenePos());
 	      return;
 	    }
 	    else if(event->button() == Qt::MiddleButton)
 	    {
-      kWarning()<<"mousePress on editor right click";
 	      m_editor->paste(event->scenePos());
 	      return;
 	    }
@@ -3316,7 +3312,7 @@ void BasketScene::popupEmblemMenu(Note *note, int emblemNumber)
             if (currentState == nextState && !tag->shortcut().isEmpty())
                 sequence = tag->shortcut().primary();
 
-            StateAction *sa = new StateAction(currentState, KShortcut(sequence), false);
+            StateAction *sa = new StateAction(currentState, KShortcut(sequence), 0, false);
             sa->setChecked(state == currentState);
             sa->setActionGroup(emblemGroup);
             sa->setData(i);
