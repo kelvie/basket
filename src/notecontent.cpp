@@ -966,7 +966,7 @@ TextContent::~TextContent()
     if(note()) note()->removeFromGroup(&m_graphicsTextItem);
 }
 
-qreal TextContent::setWidthAndGetHeight(qreal width)
+qreal TextContent::setWidthAndGetHeight(qreal /*width*/)
 {
     return m_graphicsTextItem.boundingRect().height();
 }
@@ -1001,7 +1001,7 @@ bool TextContent::saveToFile()
     return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
 }
 
-QString TextContent::linkAt(const QPointF &pos)
+QString TextContent::linkAt(const QPointF &/*pos*/)
 {
   return "";
 /*    if (m_simpleRichText)
@@ -1423,7 +1423,7 @@ void AnimationContent::exportToHTML(HTMLExporter *exporter, int /*indent*/)
  */
 
 FileContent::FileContent(Note *parent, const QString &fileName)
-        : NoteContent(parent, fileName), m_previewJob(0), m_linkDisplayItem(parent)
+        : NoteContent(parent, fileName), m_linkDisplayItem(parent), m_previewJob(0)
 {
     basket()->addWatchedFile(fullPath());
     setFileName(fileName); // FIXME: TO THAT HERE BECAUSE NoteContent() constructor seems to don't be able to call virtual methods???

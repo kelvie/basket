@@ -73,13 +73,7 @@ QDrag* NoteDrag::dragObject(NoteSelection *noteList, bool cutting, QWidget *sour
         QDataStream stream(&buffer);
         // First append a pointer to the basket:
         stream << (quint64)(noteList->firstStacked()->note->basket());
-        // Then a list of pointers to all notes, and parent groups:
-        for (NoteSelection *node = noteList->firstStacked(); node; node = node->nextStacked())
-            stream << (quint64)(node->note);
-        QList<Note*> groups = noteList->parentGroups();
-        for (QList<Note*>::iterator it = groups.begin(); it != groups.end(); ++it)
-            stream << (quint64)(*it);
-        stream << (quint64)0;
+	
         // And finally the notes themselves:
         serializeNotes(noteList, stream, cutting);
         // Append the object:
@@ -426,14 +420,6 @@ Note* NoteDrag::decode(const QMimeData *source, BasketScene *parent, bool moveFi
         quint64 basketPointer;
         stream >> (quint64&)basketPointer;
         BasketScene *basket = (BasketScene*)basketPointer;
-        // Get the note list:
-        quint64          notePointer;
-        QList<Note*> notes;
-        do {
-            stream >> notePointer;
-            if (notePointer != 0)
-                notes.append((Note*)notePointer);
-        } while (notePointer);
         // Decode the note hierarchy:
         Note *hierarchy = decodeHierarchy(stream, parent, moveFiles, moveNotes, basket);
         // In case we moved notes from one basket to another, save the source basket where notes were removed:
@@ -526,6 +512,8 @@ Note* NoteDrag::decodeHierarchy(QDataStream &stream, BasketScene *parent, bool m
                 }
                 parent->connect(copyJob, SIGNAL(copyingDone(KIO::Job *, KUrl, KUrl, time_t, bool, bool)),
                                 parent, SLOT(slotCopyingDone2(KIO::Job *, const KUrl&, const KUrl&)));
+		
+		note = NoteFactory::loadFile(newFileName, (NoteType::Id)type, parent);
                 note->setGroupWidth(groupWidth);
                 note->setAddedDate(addedDate);
                 note->setLastModificationDate(lastModificationDate);

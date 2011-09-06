@@ -139,11 +139,11 @@ public:
     virtual int	zoneAt(const QPointF &/*pos*/)           {
         return 0;
     } /// << If your note-type have custom zones, @return the zone at @p pos or 0 if it's not a custom zone!
-    virtual QRectF   zoneRect(int zone, const QPointF &/*pos*/);            /// << Idem, @return the rect of the custom zone
+    virtual QRectF   zoneRect(int /*zone*/, const QPointF &/*pos*/);            /// << Idem, @return the rect of the custom zone
     virtual QString zoneTip(int /*zone*/)                  {
         return "";
     } /// << Idem, @return the toolTip of the custom zone
-    virtual Qt::CursorShape cursorFromZone(int zone) const   { return Qt::ArrowCursor; } /// << Idem, @return the mouse cursor when it is over zone @p zone!
+    virtual Qt::CursorShape cursorFromZone(int /*zone*/) const   { return Qt::ArrowCursor; } /// << Idem, @return the mouse cursor when it is over zone @p zone!
     virtual void    setHoveredZone(int /*oldZone*/, int /*newZone*/)   {} /// << If your note type need some feedback, you get notified of hovering changes here.
     virtual QString statusBarMessage(int /*zone*/)         {
         return "";

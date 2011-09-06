@@ -44,6 +44,7 @@
 #include <KDE/KIconButton>
 #include <KDE/KToggleAction>
 #include <KDE/KDesktopFile>
+#include <KDE/KDebug>
 
 #include "notecontent.h"
 #include "notefactory.h"
@@ -69,14 +70,7 @@ NoteEditor::NoteEditor(NoteContent *noteContent)
 
 NoteEditor::~NoteEditor()
 {
-  if(m_widget)
-  {
-    if(m_widget->scene())
-    {
-      m_widget->scene()->removeItem(m_widget);
-    }
-    delete m_widget;
-  }
+  delete m_widget;
 }
 
 Note* NoteEditor::note()
@@ -84,13 +78,57 @@ Note* NoteEditor::note()
     return m_noteContent->note();
 }
 
-void NoteEditor::mousePress(QPointF clicked)
+void NoteEditor::setCursorTo(const QPointF &pos)
 {
   // clicked comes from the QMouseEvent, which is in item's coordinate system.
   if(m_textEdit)
   {
+    QPointF currentPos = note()->mapFromScene(pos);
     QPointF deltaPos = m_textEdit->pos()-note()->pos();
-    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((clicked-deltaPos).toPoint()));
+    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()));
+  }
+}
+
+void NoteEditor::startSelection(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    QPointF currentPos = note()->mapFromScene(pos);
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()));
+  }  
+}
+
+void NoteEditor::updateSelection(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    QPointF currentPos = note()->mapFromScene(pos);
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    
+    QTextCursor cursor = m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint());
+    QTextCursor currentCursor = m_textEdit->textCursor();
+    //select the text 
+    currentCursor.setPosition(cursor.position(), QTextCursor::KeepAnchor);
+    //update the cursor
+    m_textEdit->setTextCursor(currentCursor);
+    //copy to clipboard
+    m_textEdit->copy();    
+  }
+}
+
+void NoteEditor::endSelection(const QPointF &/*pos*/)
+{
+    // nothing to do yet
+    // we could copy the selected text to the QClipboard with QClipboard::Selection mode
+}
+
+void NoteEditor::paste(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    setCursorTo(pos);
+    m_textEdit->paste();
   }
 }
 
