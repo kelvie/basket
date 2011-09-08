@@ -338,9 +338,9 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(textEdit,  SIGNAL(currentCharFormatChanged(const QTextCharFormat&)), this, SLOT(charFormatChanged(const QTextCharFormat&)));
 //  connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
-    connect(InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    this, SLOT(setBold(bool)));
-    connect(InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setFontItalic(bool)));
-    connect(InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setFontUnderline(bool)));
+    connect(InlineEditors::instance()->richTextBold,      SIGNAL(triggered(bool)),    this, SLOT(setBold(bool)));
+    connect(InlineEditors::instance()->richTextItalic,    SIGNAL(triggered(bool)),    textEdit, SLOT(setFontItalic(bool)));
+    connect(InlineEditors::instance()->richTextUnderline, SIGNAL(triggered(bool)),    textEdit, SLOT(setFontUnderline(bool)));
     connect(InlineEditors::instance()->richTextLeft,      SIGNAL(triggered()), this, SLOT(setLeft()));
     connect(InlineEditors::instance()->richTextCenter,    SIGNAL(triggered()), this, SLOT(setCentered()));
     connect(InlineEditors::instance()->richTextRight,     SIGNAL(triggered()), this, SLOT(setRight()));
@@ -447,6 +447,7 @@ void HtmlEditor::setBlock()
 
 void HtmlEditor::setBold(bool isChecked)
 {
+    kWarning()<<"setBold "<<isChecked;
     textEdit()->setFontWeight(isChecked ? QFont::Bold : QFont::Normal);
 }
 
