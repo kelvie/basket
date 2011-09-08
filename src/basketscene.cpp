@@ -2331,7 +2331,7 @@ void BasketScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void BasketScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    // Redict mouse event to editor
+    // redirect this event to the editor if track mouse event is active
     if (m_editorTrackMouseEvent && (m_pressPos - event->scenePos()).manhattanLength() > KApplication::startDragDistance()) {
 	m_editor->updateSelection(event->scenePos());	
 	return;

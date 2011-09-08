@@ -65,62 +65,32 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
     setModal(true);
     showButtonSeparator(false);
 
-    QWidget *page = new QWidget(this);
-    QVBoxLayout *topLayout = new QVBoxLayout(page);
+    icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
+    icon->setIconSize(16);
+    icon->setIcon(m_basket->icon());
 
-    // Icon and Name:
-    QHBoxLayout *nameLayout = new QHBoxLayout(0);
-    int margin = marginHint() * 2 / 3;
-    nameLayout->setContentsMargins(margin, margin, margin, margin);
-    m_icon = new KIconButton(page);
-    m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
-    m_icon->setIconSize(16);
-    m_icon->setIcon(m_basket->icon());
-    int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
-    m_icon->setFixedSize(size, size); // Make it square!
-    m_icon->setToolTip(i18n("Icon"));
-    m_name = new KLineEdit(m_basket->basketName(), page);
-    m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
-    m_name->setToolTip(i18n("Name"));
-    nameLayout->addWidget(m_icon);
-    nameLayout->addWidget(m_name);
-    topLayout->addLayout(nameLayout);
+    int size = qMax(icon->sizeHint().width(), icon->sizeHint().height());
+    icon->setFixedSize(size, size); // Make it square!
+    icon->setToolTip(i18n("Icon"));
+    name->setText(m_basket->basketName());
+    name->setMinimumWidth(name->fontMetrics().maxWidth()*20);
+    name->setToolTip(i18n("Name"));
 
     // Appearance:
-    QGroupBox *appearance = new QGroupBox(i18n("Appearance"), page);
-    QVBoxLayout* appearanceLayout = new QVBoxLayout;
-    appearance->setLayout(appearanceLayout);
-    QWidget *appearanceWidget = new QWidget;
-    appearanceLayout->addWidget(appearanceWidget);
+    m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceGroup);
+    m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceGroup);
 
-    //QGridLayout *grid = new QGridLayout(appearanceWidget, /*nRows=*/3, /*nCols=*/2, /*margin=*/0, spacingHint());
-    QGridLayout *grid = new QGridLayout(appearanceWidget);
+    bgColorLbl->setBuddy(m_backgroundColor);
+    txtColorLbl->setBuddy(m_textColor);
 
-    m_backgroundImage = new KComboBox(appearanceWidget);
-    m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceWidget);
-    m_textColor       = new KColorCombo2(m_basket->textColorSetting(),       palette().color(QPalette::Text), appearanceWidget);
+    appearanceLayout->addWidget(m_backgroundColor, 1, 2);
+    appearanceLayout->addWidget(m_textColor, 2, 2);
 
-    QLabel *label1 = new QLabel(appearanceWidget);
-    label1->setBuddy(m_backgroundImage);
-    label1->setText(i18n("Background &image:"));
+    setTabOrder(backgroundImage, m_backgroundColor);
+    setTabOrder(m_backgroundColor, m_textColor);
+    setTabOrder(m_textColor, columnForm);
 
-    QLabel *label2 = new QLabel(appearanceWidget);
-    label2->setBuddy(m_backgroundColor);
-    label2->setText(i18n("&Background color:"));
-
-    QLabel *label3 = new QLabel(appearanceWidget);
-    label3->setBuddy(m_textColor);
-    label3->setText(i18n("&Text color:"));
-
-    grid->addWidget(label1,            0, 0, Qt::AlignVCenter);
-    grid->addWidget(label2,            1, 0, Qt::AlignVCenter);
-    grid->addWidget(label3,            2, 0, Qt::AlignVCenter);
-    grid->addWidget(m_backgroundImage, 0, 1, Qt::AlignVCenter);
-    grid->addWidget(m_backgroundColor, 1, 1, Qt::AlignVCenter);
-    grid->addWidget(m_textColor,       2, 1, Qt::AlignVCenter);
-    topLayout->addWidget(appearance);
-
-    m_backgroundImage->addItem(i18n("(None)"));
+    backgroundImage->addItem(i18n("(None)"));
     m_backgroundImagesMap.insert(0, "");
     backgroundImage->setIconSize(QSize(100, 75));
     QStringList backgrounds = Global::backgroundManager->imageNames();
@@ -151,16 +121,16 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
 
     int height = qMax(mindMap->sizeHint().height(), columnCount->sizeHint().height()); // Make all radioButtons vertically equaly-spaced!
     mindMap->setMinimumSize(mindMap->sizeHint().width(), height); // Because the m_columnCount can be heigher, and make radio1 and radio2 more spaced than radio2 and radio3.
-    
+
     if (!m_basket->isFreeLayout())
         columnForm->setChecked(true);
     else if (m_basket->isMindMap())
         mindMap->setChecked(true);
     else
         freeForm->setChecked(true);
-    
+
     mindMap->hide();
-  
+
     // Keyboard Shortcut:
     shortcut->setShortcut(m_basket->shortcut());
 
@@ -178,11 +148,11 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
 
     shortcutLayout->addWidget(helpLabel);
     connect(shortcut, SIGNAL(shortcutChanged(const KShortcut&)), this, SLOT(capturedShortcut(const KShortcut&)));
-    
+
     setTabOrder(columnCount, shortcut);
     setTabOrder(shortcut, helpLabel);
     setTabOrder(helpLabel, showBasket);
-    
+
     switch (m_basket->shortcutAction()) {
         default:
         case 0: showBasket->setChecked(true); break;
@@ -190,7 +160,7 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
         case 2: switchButton->setChecked(true); break;
     }
 
-   
+
     // Connect the Ok and Apply buttons to actually apply the changes
     connect(this, SIGNAL(okClicked()), SLOT(applyChanges()));
     connect(this, SIGNAL(applyClicked()), SLOT(applyChanges()));

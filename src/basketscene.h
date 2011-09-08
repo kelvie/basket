@@ -88,7 +88,6 @@ public:
     BasketScene(QWidget *parent, const QString &folderName);
     ~BasketScene();
 
-    void trace();
 /// USER INTERACTION:
 private:
     bool   m_noActionOnMouseRelease;
