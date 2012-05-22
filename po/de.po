@@ -8,19 +8,21 @@
 # Patrick Haas <p@trickhaas.de>, 2004.
 # Florian Sievert <kde@floriansievert.de>, 2005, 2006, 2007.
 # Sébastien Laoût <slaout@linux62.org>, 2005.
+# Michael Skiba <trans@michael-skiba.de>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-17 22:39+0200\n"
-"PO-Revision-Date: 2007-01-27 14:17+0100\n"
-"Last-Translator: Florian Sievert <kde@floriansievert.de>\n"
-"Language-Team: Deutsch <de@li.org>\n"
+"PO-Revision-Date: 2012-05-22 11:06+0200\n"
+"Last-Translator: Michael Skiba <trans@michael-skiba.de>\n"
+"Language-Team: German <basket-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
+"Language: de\n"
 
 #. i18n: file: src/passwordlayout.ui:13
 #. i18n: ectx: property (windowTitle), widget (QWidget, PasswordLayout)
@@ -2174,7 +2176,7 @@ msgstr "Vorlagen ver&walten ..."
 
 #: src/newbasketdialog.cpp:161 src/newbasketdialog.cpp:306
 msgid "One column"
-msgstr "einspalting"
+msgstr "einspaltig"
 
 #: src/newbasketdialog.cpp:172 src/newbasketdialog.cpp:308
 msgid "Two columns"
