@@ -58,6 +58,7 @@ class BasketStatusBar;
 class Tag;
 class State;
 class Note;
+class KMainWindow;
 
 class BASKET_EXPORT BNPView : public QSplitter
 {
@@ -342,6 +343,9 @@ protected:
     void enterEvent(QEvent*);
     void leaveEvent(QEvent*);
 
+protected:
+    void hideMainWindow();
+
 private:
     BasketTreeListView *m_tree;
     QStackedWidget *m_stack;
@@ -360,6 +364,7 @@ private:
     BasketStatusBar *m_statusbar;
     QTimer             *m_tryHideTimer;
     QTimer             *m_hideTimer;
+    KMainWindow *m_HiddenMainWindow;
 };
 
 #endif // BNPVIEW_H

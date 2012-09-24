@@ -33,6 +33,7 @@ class SystemTray;
 class BNPView;
 class KMainWindow;
 class KAboutData;
+class QDesktopWidget;
 
 /** Handle all global variables of the application.
   * This file only declare classes : developer should include
@@ -64,6 +65,8 @@ public:
     // Various Things:
     static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
     static KMainWindow* mainWindow();
+    static QDesktopWidget* desktopWidget();
+    static QWidgetList allWidgets();
     static KConfig* config();
     static KAboutData* about() {
         return &basketAbout;

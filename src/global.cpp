@@ -21,6 +21,7 @@
 #include <KDE/KGlobal>
 #include <KDE/KStandardDirs>
 #include <QString>
+#include <QDesktopWidget>
 #include <KDE/KAction>
 #include <KDE/KApplication>
 #include <KDE/KMainWindow>
@@ -89,6 +90,16 @@ QString Global::tempCutFolder()
 QString Global::openNoteIcon() // FIXME: Now an edit icon
 {
     return QVariant(Global::bnpView->m_actEditNote->icon()).toString();
+}
+
+QWidgetList Global::allWidgets()
+{
+    return kapp->allWidgets();
+}
+
+QDesktopWidget* Global::desktopWidget() 
+{
+    return kapp->desktop();
 }
 
 KMainWindow* Global::mainWindow()
