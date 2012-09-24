@@ -104,6 +104,10 @@
 #include "kgpgme.h"
 #endif
 
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
+
 /** Class BasketView: */
 
 const int BasketView::FRAME_DELAY = 50/*1500*/; // Delay between two animation "frames" in milliseconds
@@ -901,6 +905,12 @@ bool BasketView::save()
     if (!saveToFile(fullPath() + ".basket", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString())) {
         DEBUG_WIN << "Basket[" + folderName() + "]: <font color=red>FAILED to save</font>!";
         return false;
+#ifdef HAVE_NEPOMUK
+    } else {
+        //The .basket file is saved; now updating the Metadata in Nepomuk
+        DEBUG_WIN << "NepomukIntegration: Updating Basket[" + folderName() + "]:"; // <font color=red>Updating Metadata</font>!";
+        nepomukIntegration::updateMetadata(this);
+#endif
     }
 
     Global::bnpView->setUnsavedStatus(false);
@@ -1172,6 +1182,7 @@ BasketView::BasketView(QWidget *parent, const QString &folderName)
 {
     m_action = new KAction(this);
     connect(m_action, SIGNAL(triggered()), this, SLOT(activatedShortcut()));
+    m_action->setObjectName(folderName);
     m_action->setGlobalShortcut(KShortcut());
     // We do this in the basket properties dialog (and keep it in sync with the
     // global one)
@@ -1379,28 +1390,30 @@ void BasketView::contentsMousePressEvent(QMouseEvent *event)
         m_zoneToInsert    = zone;
         m_posToInsert     = event->pos();
 
-        KMenu* menu = Global::bnpView->popupMenu("insert_popup");
+        KMenu menu(this);
+        menu.addActions(Global::bnpView->popupMenu("insert_popup")->actions());
+
         // If we already added a title, remove it because it would be kept and
         // then added several times.
-        if (m_insertMenuTitle && menu->actions().contains(m_insertMenuTitle))
-            menu->removeAction(m_insertMenuTitle);
+        if (m_insertMenuTitle && menu.actions().contains(m_insertMenuTitle))
+            menu.removeAction(m_insertMenuTitle);
 
-        QAction *first = menu->actions().value(0);
+        QAction *first = menu.actions().value(0);
 
         // i18n: Verbs (for the "insert" menu)
         if (zone == Note::TopGroup || zone == Note::BottomGroup)
-            m_insertMenuTitle = menu->addTitle(i18n("Group"), first);
+            m_insertMenuTitle = menu.addTitle(i18n("Group"), first);
         else
-            m_insertMenuTitle = menu->addTitle(i18n("Insert"), first);
+            m_insertMenuTitle = menu.addTitle(i18n("Insert"), first);
 
         setInsertPopupMenu();
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
-        connect(menu, SIGNAL(aboutToHide()),  this, SLOT(hideInsertPopupMenu()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(delayedCancelInsertPopupMenu()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(unlockHovering()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(disableNextClick()));
+        connect(&menu, SIGNAL(aboutToHide()),  this, SLOT(hideInsertPopupMenu()));
         doHoverEffects(clicked, zone); // In the case where another popup menu was open, we should do that manually!
         m_lockedHovering = true;
-        menu->exec(QCursor::pos());
+        menu.exec(QCursor::pos());
         m_noActionOnMouseRelease = true;
         return;
     }
@@ -2162,6 +2175,8 @@ void BasketView::contentsMouseReleaseEvent(QMouseEvent *event)
             } else if (link == "basket-internal-import") {
                 KMenu *menu = Global::bnpView->popupMenu("fileimport");
                 menu->exec(event->globalPos());
+            } else if (link.startsWith("basket://")) {
+                emit crossReference(link);
             } else {
                 KRun *run = new KRun(KUrl(link), window()); //  open the URL.
                 run->setAutoDelete(true);
@@ -3268,7 +3283,7 @@ void BasketView::popupEmblemMenu(Note *note, int emblemNumber)
         act->setData(4);
         menu.addAction(act);
     }
-    if (sequenceOnDelete) {
+    if (sequenceOnDelete && tag->countStates() != 1) {
         // Not sure if this is equivalent to menu.setAccel(sequence, 1);
         menu.actionAt(QPoint(0, 1))->setShortcut(sequence);
     }
@@ -3954,11 +3969,7 @@ void BasketView::noteDelete()
                                                   "<qt>Do you really want to delete these <b>%1</b> notes?</qt>",
                                                   countSelecteds()),
                                             i18np("Delete Note", "Delete Notes", countSelecteds())
-#if KDE_IS_VERSION( 3, 2, 90 )   // KDE 3.3.x
                                             , KStandardGuiItem::del(), KStandardGuiItem::cancel());
-#else
-                                           );
-#endif
     if (really == KMessageBox::No)
         return;
 
@@ -4109,7 +4120,10 @@ void BasketView::noteOpen(Note *note)
         emit postMessage(message); // "Openning link target..." / "Launching application..." / "Openning note file..."
         // Finally do the opening job:
         QString customCommand = note->content()->customOpenCommand();
-        if (customCommand.isEmpty()) {
+
+        if (url.url().startsWith("basket://")) {
+            emit crossReference(url.url());
+        } else if (customCommand.isEmpty()) {
             KRun *run = new KRun(url, window());
             run->setAutoDelete(true);
         } else

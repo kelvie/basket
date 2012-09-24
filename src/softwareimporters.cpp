@@ -29,6 +29,7 @@
 #include <QStack>
 #include <QLayout>
 #include <QRadioButton>
+#include <QCheckBox>
 #include <KDE/KMessageBox>
 #include <QTextEdit>
 #include <QDomDocument>
@@ -90,6 +91,63 @@ int TreeImportDialog::choice()
         return 2;
     else
         return 3;
+}
+
+/** class OneNoteImportDialog: */
+
+OneNoteImportDialog::OneNoteImportDialog(QWidget *parent)
+        : KDialog(parent)
+{
+    QWidget *page = new QWidget(this);
+    QVBoxLayout *topLayout = new QVBoxLayout(page);
+
+    // KDialog options
+    setCaption(i18n("Import Option"));
+    setButtons(Ok | Cancel);
+    setDefaultButton(Ok);
+    setObjectName("ImportHeirachy");
+    setModal(true);
+    showButtonSeparator(false);
+
+    m_choices = new QGroupBox(i18n("How to Import the OneNote Page?"), page);
+    m_choiceLayout = new QVBoxLayout();
+    m_choices->setLayout(m_choiceLayout);
+
+    m_root_new_choice = new QRadioButton(i18n("Create New Basket At &Root"), m_choices);
+    m_child_new_choice = new QRadioButton(i18n("Create New Basket Below &Selected Basket"),   m_choices);
+    //m_childsub_new_choice = new QRadioButton(i18n("Create New S&ub-Basket Below Selected Basket"),   m_choices);
+	m_add_author_meta_choice = new QCheckBox (i18n("Add Note on OneNote Page Author/Timeline metadata"),  m_choices);
+
+    m_child_new_choice->setChecked(true);
+    m_add_author_meta_choice->setChecked(false);
+    m_choiceLayout->addWidget(m_root_new_choice);
+    m_choiceLayout->addWidget(m_child_new_choice);
+    //m_choiceLayout->addWidget(m_childsub_new_choice);
+    m_choiceLayout->addWidget(m_add_author_meta_choice);
+
+    topLayout->addWidget(m_choices);
+    topLayout->addStretch(10);
+
+    setMainWidget(page);
+}
+
+OneNoteImportDialog::~OneNoteImportDialog()
+{
+}
+
+int OneNoteImportDialog::choice()
+{
+    if (m_root_new_choice->isChecked())
+        return 1;
+    else if (m_child_new_choice->isChecked())
+        return 2;
+    else
+        return 3;
+}
+
+bool OneNoteImportDialog::addAuthorNote()
+{
+    return m_add_author_meta_choice->isChecked();
 }
 
 /** class TextFileImportDialog: */
@@ -657,6 +715,339 @@ void SoftwareImporters::importKnowIt()
             file.close();
         }
     }
+}
+
+/** @author Suchitra Subbakrishna <Suchitra.Subbakrishna@montgomerycountymd.gov>
+  */
+void SoftwareImporters::importOneNoteXml()
+{
+    QString fileName = KFileDialog::getOpenFileName(KUrl("kfiledialog:///:ImportOneNoteXml"),  "*.xml|Xml files");
+    if (fileName.isEmpty())
+        return;
+
+    OneNoteImportDialog dialog;
+    if (dialog.exec() == QDialog::Rejected)
+        return;
+
+
+    int importOpt = dialog.choice();
+    bool addAuthorNote = dialog.addAuthorNote();
+
+    QDomDocument *document = XMLWork::openFile("Page", fileName);
+    if (document == 0) {
+        KMessageBox::error(0, i18n("Can not import that file. It is either corrupted or not a OneNote xml file."), i18n("Bad File Format"));
+        return;
+    }
+
+    QDomElement collection = document->documentElement();
+
+    QString icon        = "onenote";
+    bool    isRichText  = true;
+
+    BasketView *parentBasket = 0;
+    if (importOpt == 2) {
+	parentBasket = Global::bnpView->currentBasket();
+    }
+	
+    QString name        = "OneNote Imported Page";
+    QString content     = "OneNote Imported Page Information";
+
+    QDomElement titleElt = XMLWork::getElement(collection, "one:Title/one:OE");
+    if ( !titleElt.isNull()) {
+	name        = XMLWork::getElementText(titleElt, "one:T", "OneNote Imported Page");
+	content = "Author:\t" + titleElt.attribute("author") + "\nlastModifiedBy:\t" + titleElt.attribute("lastModifiedBy") + "\ncreationTime:\t" + titleElt.attribute("creationTime") + "\nlastModifiedTime:\t" + titleElt.attribute("lastModifiedTime") ;
+    }
+
+    BasketFactory::newBasket(icon, name, /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"free", parentBasket);
+    BasketView *basket = Global::bnpView->currentBasket();
+    basket->load();
+	
+    if ( addAuthorNote ) {
+        Note *nContent;
+	nContent = NoteFactory::createNoteText(content, basket);
+	basket->insertNote(nContent, basket->firstNote(), Note::BottomColumn, QPoint(), /*animate=*/false);
+    }
+	importOneNoteNode(collection,  basket, isRichText);
+
+	finishImport(basket);
+
+}
+
+void SoftwareImporters::importOneNoteNode(const QDomElement &element, BasketView *basket, bool isRichText)
+{
+    for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        QDomElement e = n.toElement();
+	
+	if ( e.isNull() || e.tagName() == "" ) {
+	    continue;
+	}
+	    
+	if (e.tagName() != "one:Outline") { // Cannot handle that!
+            continue;
+        }
+	
+	QString outlineStyle = e.attribute("style");
+	
+	// OneNote coor, dimensions are in 70dpi spec. Apply 'common-sense' multiplicator to change to 96 dpi screen
+	//const float dpiMulitplicator=1.37143;
+	const float dpiMulitplicator=1.42857;
+	int x = 0;
+	int y = 0;
+	int width = -1;
+	int height = -1;
+	QString ts;
+	QDomElement te;
+        QString content   = "";
+        Note *nContent;
+	
+	QString strMsg = "";
+
+	te = XMLWork::getElement(e, "one:Position");
+	if ( !te.isNull()) {
+		ts = te.attribute("x");
+		strMsg.append(ts);
+		strMsg.append(",");
+		if ( !ts.isNull() ) {
+			x = (int)(ts.toFloat()*dpiMulitplicator);
+		}
+		ts = te.attribute("y");
+		strMsg.append(ts);
+		strMsg.append("|   ");
+		if ( !ts.isNull() ) {
+			y = (int)(ts.toFloat()*dpiMulitplicator);
+		}
+	}
+
+	te = XMLWork::getElement(e, "one:Size");
+	if ( !te.isNull()) {
+		ts = te.attribute("width");
+		strMsg.append(ts);
+		strMsg.append(",");
+		if ( !ts.isNull() ) {
+			width = (int)(ts.toFloat()*dpiMulitplicator);
+		}
+		ts = te.attribute("height");
+		strMsg.append(ts);
+		strMsg.append("|");
+		if ( !ts.isNull() ) {
+			height = (int)(ts.toFloat()*dpiMulitplicator);
+		}
+	}
+	
+	te = XMLWork::getElement(e, "one:OEChildren");
+	int sectionStatus = -1;
+	if ( !te.isNull()) {
+		QString childStyle = te.attribute("style");
+		if ( childStyle.isEmpty() ) {
+			childStyle = outlineStyle;
+		}
+		sectionStatus = collectOneNoteSectionContents(te, &content, childStyle, 0, 0);
+	}
+
+
+		if (isRichText) {
+                nContent = NoteFactory::createNoteHtml(content, basket);
+	    }
+            else {
+                nContent = NoteFactory::createNoteText(content, basket);
+		QString addMsg;
+		addMsg.sprintf("Text Note at: %d,%d of size (%d,%d) for ", x, y, width, height);
+		addMsg.append(strMsg);
+		//KMessageBox::information(0, addMsg, i18n("Text Note"));
+	    }
+	
+	if (width > 0 && height > 0 && x > 0 && y > 0) {
+	        nContent->setWidth(width);
+	        nContent->setInitialHeight(height);
+	        nContent->setXRecursively(x);
+	        nContent->setYRecursively(y);
+	        basket->appendNoteAfter(nContent, basket->lastNote());
+	        basket->relayoutNotes(true);
+	}
+	else {
+	        basket->insertNote(nContent, /*clickedNote=*/0, /*Zone=*/Note::None, QPoint(x,y), /*animate=*/false);
+	}
+	    
+	if (height > 0) nContent->setHeight(height);
+	/*
+	if (width > 0) {
+		int newHeight = nContent->content()->setWidthAndGetHeight(width);
+		nContent->setWidthForceRelayout(width);
+	    if ( newHeight == 10 ) { // content.indexOf("EBS Security") >= 0
+		QString addMsg;
+		addMsg.sprintf("Note dimension: min: %d, wid: %d -- %d,%d of size (%d,%d) for: ", nContent->minWidth(), nContent->width(), x, y, width, height);
+		addMsg.append(strMsg);
+                KMessageBox::information(0, addMsg, i18n("Width Issue"));
+            }
+
+	}
+	 */ 
+
+	
+    } // of for
+}
+
+int SoftwareImporters::collectOneNoteSectionContents(const QDomElement &element, QString *content,  const QString childStyle, int entryType, int tabs)
+{
+	QString tabPrefix = "";
+	
+	for ( int i = 0; i < tabs; i++ ) {
+		tabPrefix.append("\t");
+	}
+	
+	bool afterTable = false;
+
+	for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+		QDomElement e = n.toElement();
+		
+		    if ( e.isNull() || e.tagName() == "" ) {
+		    continue;
+		}
+		    
+
+		if (e.tagName() != "one:OE") { // Cannot handle that!
+		    continue;
+		}
+		
+		QString oeStyle = e.attribute("style");
+		if ( oeStyle.isEmpty() ) {
+			oeStyle = childStyle;
+		}
+		
+		QDomElement tablee = XMLWork::getElement(e, "one:Table");
+		if ( !tablee.isNull() ) {
+			collectOneNoteTableContents(tablee, content, oeStyle, tabs);
+			afterTable = true;
+			continue;
+		}
+		
+		QString sectionContent = "";
+		QDomElement oneT = XMLWork::getElement(e, "one:T");
+		if ( !oneT.isNull() ) {
+			sectionContent = oneT.text();
+		}
+		
+		bool isInheritedStyle = ( !oeStyle.isEmpty() && (sectionContent.isEmpty()  || sectionContent.indexOf("<span style=") != 0) );
+		if ( isInheritedStyle  ) {
+			QString tmp = "<span style=\"";
+			tmp.append(oeStyle);
+			tmp.append("\">");
+			sectionContent.insert(0, tmp);
+		}
+		
+		if ( entryType != 1) {
+			content->append("<pre style=\"white-space: pre-wrap;\">");
+			content->append(tabPrefix);
+		}
+		content->append(sectionContent);
+		if ( isInheritedStyle  ) {
+			content->append("</span>");
+		}
+		if ( entryType != 1) {
+			content->append("</pre>\n");
+		}
+		
+		QDomElement te = XMLWork::getElement(e, "one:OEChildren");
+		if ( !te.isNull() ) {
+			QString innerChildStyle = te.attribute("style");
+			if ( innerChildStyle.isEmpty() ) {
+				innerChildStyle = oeStyle;
+			}
+			collectOneNoteSectionContents(te, content, innerChildStyle, 0, tabs+1);
+		}
+	} // for loop
+		
+	return afterTable ? 1 : 0;
+}
+
+void SoftwareImporters::collectOneNoteTableContents(const QDomElement &element, QString *content, QString childStyle, int tabs)
+{
+	QString tabPrefix = "";
+	
+	for ( int i = 0; i < tabs; i++ ) {
+		tabPrefix.append("\t");
+	}
+
+	content->append("<pre style=\"white-space: pre-wrap;\">");
+	content->append(tabPrefix);
+	
+	QString border = "1";
+	if ( element.attribute("bordersVisible") == "false" ) {
+		border = "0";
+	}
+
+	content->append("<table border=\"");
+	content->append(border);
+	content->append("\">");
+
+	/*
+	QDomElement cols = XMLWork::getElement(element, "one:Columns");
+	if ( !cols.isNull() ) {
+		content->append("<tr>");
+		for (QDomNode n = cols.firstChild(); !n.isNull(); n = n.nextSibling()) {
+			QDomElement e = n.toElement();
+			
+			    if ( e.isNull() || e.tagName() == "" ) {
+			    continue;
+			}
+			    
+			if (e.tagName() != "one:Column") { // Cannot handle that!
+			    continue;
+			}
+			
+			int width = e.attribute("width").toInt();
+			content->append("<th width=\">");
+			content->append(width);
+			content->append("\">&nbsp;</th>");
+			
+		} // for of column elements
+		content->append("</tr>");
+	}
+	*/
+
+	for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+		QDomElement e = n.toElement();
+		
+		    if ( e.isNull() || e.tagName() == "" ) {
+		    continue;
+		}
+		    
+		if (e.tagName() != "one:Row") { // Cannot handle that!
+		    continue;
+		}
+		
+		content->append("<tr>");
+		for (QDomNode nn = e.firstChild(); !nn.isNull(); nn = nn.nextSibling()) {
+			QDomElement ee = nn.toElement();
+			
+			    if ( ee.isNull() || ee.tagName() == "" ) {
+			    continue;
+			}
+			    
+			if (ee.tagName() != "one:Cell") { // Cannot handle that!
+			    continue;
+			}
+			
+			QString innerContent = "";
+			QDomElement cellChild = XMLWork::getElement(ee, "one:OEChildren");
+			if ( !cellChild.isNull() ) {
+				QString innerChildStyle = cellChild.attribute("style");
+				if ( innerChildStyle.isEmpty() ) {
+					innerChildStyle = childStyle;
+				}
+				collectOneNoteSectionContents(cellChild, &innerContent, innerChildStyle, 1, 0);
+			}
+			
+			content->append("<td>");
+			content->append(innerContent);
+			content->append("</td>");
+		} // for of a row cells
+		content->append("</tr>");
+		
+	} // for of all rows
+	
+	content->append("</table>");
+	content->append("</pre>\n");
 }
 
 void SoftwareImporters::importTuxCards()

@@ -119,6 +119,7 @@ public slots:
     void importKNotes();
     void importKJots();
     void importKnowIt();
+    void importOneNoteXml();
     void importTuxCards();
     void importStickyNotes();
     void importTomboy();

@@ -30,6 +30,7 @@ class KTextEdit;
 class QRadioButton;
 class QTextEdit;
 class QVBoxLayout;
+class QCheckBox;
 
 class BasketView;
 class Note;
@@ -76,6 +77,26 @@ private:
     QTextEdit     *m_customSeparator;
 };
 
+/** The dialog to ask how to import OneNote data.
+  * @author Suchitra Subbakrishna
+  */
+class OneNoteImportDialog : public KDialog
+{
+    Q_OBJECT
+public:
+    OneNoteImportDialog(QWidget *parent = 0);
+    ~OneNoteImportDialog();
+    int choice();
+    bool addAuthorNote();
+private:
+    QGroupBox *m_choices;
+    QVBoxLayout* m_choiceLayout;
+    QRadioButton *m_root_new_choice;
+    QRadioButton *m_child_new_choice;
+    QRadioButton *m_childsub_new_choice;
+    QCheckBox *m_add_author_meta_choice;
+};
+
 /** Functions that import data from other softwares.
   * @author Sébastien Laoût
   */
@@ -91,6 +112,7 @@ void finishImport(BasketView *basket);
 void importKNotes();
 void importKJots();
 void importKnowIt();
+void importOneNoteXml();
 void importTuxCards();
 void importStickyNotes();
 void importTomboy();
@@ -98,6 +120,9 @@ void importTextFile();
 
 //
 void importTuxCardsNode(const QDomElement &element, BasketView *parentBasket, Note *parentNote, int remainingHierarchy);
+void importOneNoteNode(const QDomElement &element, BasketView *parentBasket, bool isRichText);
+int collectOneNoteSectionContents(const QDomElement &element, QString *content, const QString childStyle, int entryType, int tabs);
+void collectOneNoteTableContents(const QDomElement &element, QString *content, const QString childStyle, int tabs);
 }
 
 #endif // SOFTWAREIMPORTERS_H
