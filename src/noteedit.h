@@ -45,6 +45,8 @@ class RunCommandRequester;
 class QFontComboBox;
 class KColorCombo;
 class FocusWidgetFilter;
+class BasketListViewItem;
+class KComboBox;
 
 #include "notecontent.h"
 
@@ -187,6 +189,13 @@ public:
     LinkEditor(LinkContent *linkContent, QWidget *parent);
 };
 
+class CrossReferenceEditor : public NoteEditor
+{
+    Q_OBJECT
+public:
+    CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent);
+};
+
 class LauncherEditor : public NoteEditor
 {
     Q_OBJECT
@@ -251,6 +260,25 @@ private:
     QPushButton   *m_autoIcon;
 };
 
+/** The dialog to edit cross reference content.
+  * @author Brian C. Milco
+  */
+class CrossReferenceEditDialog : public KDialog
+{
+    Q_OBJECT
+public:
+    CrossReferenceEditDialog(CrossReferenceContent *contentNote, QWidget *parent = 0);
+    ~CrossReferenceEditDialog();
+
+protected slots:
+    void slotOk();
+    void urlChanged(const int index);
+protected:
+    void generateBasketList(KComboBox *targetList, BasketListViewItem *item = 0, int indent = 0);
+private:
+    CrossReferenceContent   *m_noteContent;
+    KComboBox     *m_targetBasket;
+};
 
 /** The dialog to edit Launcher Note content.
   * @author Sébastien Laoût

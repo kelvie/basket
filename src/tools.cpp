@@ -35,6 +35,18 @@
 #include <QTime>
 
 #include "tools.h"
+#include "debugwindow.h"
+#include "config.h"
+#ifdef HAVE_NEPOMUK
+#include "nepomukintegration.h"
+#endif
+
+//cross reference
+#include "global.h"
+#include "bnpview.h"
+#include <KUrl>
+#include "htmlexporter.h"
+#include "linklabel.h"
 
 QVector<QTime>  StopWatch::starts;
 QVector<double> StopWatch::totals;
@@ -121,20 +133,167 @@ QString Tools::tagURLs(const QString &text)
         urlPos += urlEx.matchedLength();
     else
         urlPos = 0;
-    urlEx.setPattern("(www\\.(?!\\.)|([a-zA-z]+)://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
+    urlEx.setPattern("(www\\.(?!\\.)|(fish|(f|ht)tp(|s))://)[\\d\\w\\./,:_~\\?=&;#@\\-\\+\\%\\$]+[\\d\\w/]");
     while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
         urlLen = urlEx.matchedLength();
+
+        //if this match is already a link don't convert it.
+        if(richText.mid(urlPos - 6, 6) == "href=\"") {
+            urlPos += urlLen;
+            continue;
+        }
+
         QString href = richText.mid(urlPos, urlLen);
+        //we handle basket links seperately...
+        if(href.contains("basket://")) {
+            urlPos += urlLen;
+            continue;
+        }
         // Qt doesn't support (?<=pattern) so we do it here
         if ((urlPos > 0) && richText[urlPos-1].isLetterOrNumber()) {
             urlPos++;
             continue;
         }
+        // Don't use QString::arg since %01, %20, etc could be in the string
         QString anchor = "<a href=\"" + href + "\">" + href + "</a>";
         richText.replace(urlPos, urlLen, anchor);
         urlPos += anchor.length();
     }
     return richText;
+}
+
+QString Tools::tagCrossReferences(const QString &text, bool userLink, HTMLExporter *exporter)
+{
+    QString richText(text);
+
+    int urlPos = 0;
+    int urlLen;
+
+    QRegExp urlEx("\\[\\[(.+)\\]\\]");
+    urlEx.setMinimal(true);
+    while ((urlPos = urlEx.indexIn(richText, urlPos)) >= 0) {
+        urlLen = urlEx.matchedLength();
+        QString href = urlEx.cap(1);
+
+        QStringList hrefParts = href.split('|');
+        QString anchor;
+
+        if(exporter)
+            anchor = crossReferenceForHtml(hrefParts, exporter);
+        else if(userLink)
+            anchor = crossReferenceForConversion(hrefParts);
+        else
+            anchor = crossReferenceForBasket(hrefParts);
+
+
+        richText.replace(urlPos, urlLen, anchor);
+        urlPos += anchor.length();
+    }
+    return richText;
+}
+
+
+QString Tools::crossReferenceForBasket(QStringList linkParts)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    bool linkIsEmpty = false;
+
+    if(basketLink == "basket://" || basketLink.isEmpty())
+        linkIsEmpty = true;
+
+    title = linkParts.last().trimmed();
+
+    QString css = LinkLook::crossReferenceLook->toCSS("cross_reference", QColor());
+    QString classes =  "cross_reference";
+    classes += (linkIsEmpty ? " xref_empty" : "");
+
+    css += (linkIsEmpty ?
+        " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+        " a:hover.xref_empty { color: #A55858; }"
+        : "");
+
+    QString anchor = "<style>" + css + "</style><a href=\"" + basketLink + "\" class=\"" + classes + "\">"
+                + QUrl::fromPercentEncoding(title.toLatin1()); + "</a>";
+    return anchor;
+}
+
+QString Tools::crossReferenceForHtml(QStringList linkParts, HTMLExporter *exporter)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    bool linkIsEmpty = false;
+
+    if(basketLink == "basket://" || basketLink.isEmpty())
+        linkIsEmpty = true;
+
+    title = linkParts.last().trimmed();
+
+    QString url;
+    if(basketLink.startsWith("basket://"))
+    url = basketLink.mid(9, basketLink.length() - 9);
+
+    BasketView *basket = Global::bnpView->basketForFolderName(url);
+
+    //remove the trailing slash.
+    url = url.left(url.length() - 1);
+
+    //if the basket we're trying to link to is the basket that was exported then
+    //we have to use a special way to refer to it for the links.
+    if(basket == exporter->exportedBasket)
+        url = "../../" + exporter->fileName;
+    else {
+        //if we're in the exported basket then the links have to include
+        // the sub directories.
+        if(exporter->currentBasket == exporter->exportedBasket)
+            url.prepend(exporter->basketsFolderName);
+        if(!url.isEmpty())
+            url.append(".html");
+    }
+
+    QString classes =  "cross_reference";
+    classes += (linkIsEmpty ? " xref_empty" : "");
+
+    QString css = (linkIsEmpty ?
+            " a.xref_empty { display: block; width: 100%; text-decoration: underline; color: #CC2200; }"
+            " a:hover.xref_empty { color: #A55858; }"
+            : "");
+
+    QString anchor = "<style>" + css + "</style><a href=\"" + url + "\" class=\"" + classes + "\">" + QUrl::fromPercentEncoding(title.toLatin1()); + "</a>";
+    return anchor;
+}
+
+QString Tools::crossReferenceForConversion(QStringList linkParts)
+{
+    QString basketLink = linkParts.first();
+    QString title;
+
+    if(basketLink.startsWith("basket://"))
+        return QString("[[%1|%2]]").arg(basketLink, linkParts.last());
+
+    if(basketLink.endsWith('/'))
+        basketLink = basketLink.left(basketLink.length() - 1);
+
+    QStringList pages = basketLink.split('/');
+
+    if(linkParts.count()<= 1)
+        title = pages.last();
+    else
+        title = linkParts.last().trimmed();
+
+    QString url = Global::bnpView->folderFromBasketNameLink(pages);
+
+    url.prepend("basket://");
+    QString anchor;
+
+    if(url == "basket://" || url.isEmpty()) {
+        anchor = linkParts.first();
+    } else
+        anchor = QString("[[%1|%2]]").arg(url, title);
+
+    return anchor;
 }
 
 QString Tools::htmlToText(const QString &html)
@@ -372,7 +531,42 @@ void Tools::deleteRecursively(const QString &folderOrFile)
     } else
         // Delete the file:
         QFile::remove(folderOrFile);
+#ifdef HAVE_NEPOMUK
+    //The file/dir is deleted; now deleting the Metadata in Nepomuk
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukIntegration::deleteMetadata(folderOrFile);
+#endif
 }
+
+#include <kio/copyjob.h>
+void Tools::deleteMetadataRecursively(const QString &folderOrFile)
+{
+    QFileInfo fileInfo(folderOrFile);
+    if (fileInfo.isDir()) {
+        // Delete Metadata of the child files:
+        QDir dir(folderOrFile, QString::null, QDir::Name | QDir::IgnoreCase, QDir::TypeMask | QDir::Hidden);
+        QStringList list = dir.entryList();
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+            if (*it != "." && *it != "..")
+                deleteMetadataRecursively(folderOrFile + "/" + *it);
+    }
+    DEBUG_WIN << "NepomukIntegration: Deleting File[" + folderOrFile + "]:"; // <font color=red>Updating Metadata</font>!";
+    nepomukIntegration::deleteMetadata(folderOrFile);
+}
+
+void Tools::trashRecursively(const QString &folderOrFile)
+{
+    if (folderOrFile.isEmpty())
+        return;
+
+#ifdef HAVE_NEPOMUK
+    //First, deleting the Metadata in Nepomuk
+    deleteMetadataRecursively(folderOrFile);
+#endif
+
+    KIO::trash( KUrl(folderOrFile), KIO::HideProgressInfo );
+}
+
 
 QString Tools::fileNameForNewFile(const QString &wantedName, const QString &destFolder)
 {

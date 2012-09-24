@@ -93,8 +93,14 @@ public:
     void resizeEvent(QResizeEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
     Qt::DropActions supportedDropActions() const;
+
+    static QString TREE_ITEM_MIME_STRING;
 protected:
+    QStringList mimeTypes() const;
+    QMimeData* mimeData(const QList<QTreeWidgetItem *> items) const;
     bool event(QEvent *e);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     void focusInEvent(QFocusEvent*);
 private:
     QTimer         m_autoOpenTimer;
@@ -108,6 +114,7 @@ private slots:
 private:
     void setItemUnderDrag(BasketListViewItem* item);
     BasketListViewItem* m_itemUnderDrag;
+    QPoint m_dragStartPosition;
 };
 
 #endif // BASKETLISTVIEW_H

@@ -111,6 +111,7 @@ void HTMLExporter::prepareExport(BasketView *basket, const QString &fullPath)
     filePath = fullPath;
     fileName = KUrl(fullPath).fileName();
     exportedBasket = basket;
+    currentBasket = 0;
 
     BasketListViewItem *item = Global::bnpView->listViewItemForBasket(basket);
     withBasketTree = (item->childCount() >= 0);
@@ -137,6 +138,8 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     if (!basket->isLoaded()) {
         basket->load();
     }
+
+    currentBasket = basket;
 
     // Compute the absolute & relative paths for this basket:
     filesFolderPath   = i18nc("HTML export folder (files)", "%1_files", filePath) + "/";
@@ -260,6 +263,7 @@ void HTMLExporter::exportBasket(BasketView *basket, bool isSubBasket)
     << LinkLook::localLinkLook->toCSS("local", basket->textColor())
     << LinkLook::networkLinkLook->toCSS("network", basket->textColor())
     << LinkLook::launcherLook->toCSS("launcher", basket->textColor())
+    << LinkLook::crossReferenceLook->toCSS("cross_reference", basket->textColor())
     <<
     "   .unknown { margin: 1px 2px; border: 1px solid " << borderColor << "; -moz-border-radius: 4px; }\n";
     QList<State*> states = basket->usedStates();
