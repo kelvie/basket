@@ -2726,9 +2726,7 @@ void BNPView::enableActions()
 
 void BNPView::showMainWindow()
 {
-    printf("Showing main window.  this=%d, hiddenMainWindow = %d\n", this, m_HiddenMainWindow);
     if (m_HiddenMainWindow) {
-        printf("Showing hidden main window.\n");
         m_HiddenMainWindow->show();
         m_HiddenMainWindow = NULL;
     } else {  
@@ -2739,16 +2737,6 @@ void BNPView::showMainWindow()
         }
     }
 
-/*
-    QWidgetList widgets = Global::allWidgets();
-    for (int i=0; i < widgets.size(); ++i) {
-        QWidget* widget = widgets.value(i);
-        printf("%s\n", widget->accessibleName().constData());
-        if (widget->isWindow() && widget->parentWidget() == 0) {
-            widget->show();
-        }
-    }
-*/
     setActive(true);
     emit showPart();
 }
