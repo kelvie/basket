@@ -1795,11 +1795,7 @@ void BNPView::updateNotesActions()
 void BNPView::slotColorFromScreen(bool global)
 {
     m_colorPickWasGlobal = global;
-    if (isMainWindowActive()) {
-        if (Global::mainWindow()) Global::mainWindow()->hide();
-        m_colorPickWasShown = true;
-    } else
-        m_colorPickWasShown = false;
+    hideMainWindow();
 
     currentBasket()->saveInsertionData();
     m_colorPicker->pickColor();
@@ -1954,16 +1950,24 @@ void BNPView::grabScreenshot(bool global)
     int delay = (isMainWindowActive() ? 500 : (global/*kapp->activePopupWidget()*/ ? 0 : 200));
 
     m_colorPickWasGlobal = global;
-    if (isMainWindowActive()) {
-        if (Global::mainWindow()) Global::mainWindow()->hide();
-        m_colorPickWasShown = true;
-    } else
-        m_colorPickWasShown = false;
+    hideMainWindow();
 
     currentBasket()->saveInsertionData();
     usleep(delay * 1000);
     m_regionGrabber = new RegionGrabber;
     connect(m_regionGrabber, SIGNAL(regionGrabbed(const QPixmap&)), this, SLOT(screenshotGrabbed(const QPixmap&)));
+}
+
+void BNPView::hideMainWindow() 
+{
+    if (isMainWindowActive()) {
+        if (Global::mainWindow()) {
+            m_HiddenMainWindow = Global::mainWindow();
+            m_HiddenMainWindow->hide();
+        }
+        m_colorPickWasShown = true;
+    } else
+        m_colorPickWasShown = false;
 }
 
 void BNPView::grabScreenshotGlobal()
@@ -2722,11 +2726,17 @@ void BNPView::enableActions()
 
 void BNPView::showMainWindow()
 {
-    KMainWindow *win = Global::mainWindow();
+    if (m_HiddenMainWindow) {
+        m_HiddenMainWindow->show();
+        m_HiddenMainWindow = NULL;
+    } else {  
+        KMainWindow *win = Global::mainWindow();
 
-    if (win) {
-        win->show();
+        if (win) {
+            win->show();
+        }
     }
+
     setActive(true);
     emit showPart();
 }
