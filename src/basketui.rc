@@ -41,6 +41,8 @@
    </Menu>
    <Action name="basket_backup_restore" />
    <Separator/>
+   <Action name="check_cleanup" />
+   <Separator/>
    <Action name="window_hide" />
    <Action name="file_quit" />
   </Menu>
@@ -206,6 +208,8 @@
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />
+  <Separator/>
+  <Action name="check_cleanup" />
  </Menu>
  <Menu name="tab_bar_popup" >
   <Action name="basket_new" />
@@ -225,6 +229,8 @@
    <Action name="basket_import_text_file" />
   </Menu>
   <Action name="basket_backup_restore" />
+  <Separator/>
+  <Action name="check_cleanup" />
  </Menu>
  <Menu noMerge="1" name="note_popup" >
   <Action name="note_edit" />

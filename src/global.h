@@ -21,18 +21,21 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <QString>
-
-#include "aboutdata.h"
 #include "basket_export.h"
+#include <KDE/KSharedConfig>
 
+class QString;
+
+class KMainWindow;
+class KAboutData;
+
+class AboutData;
 class LikeBack;
 class DebugWindow;
 class BackgroundManager;
 class SystemTray;
 class BNPView;
-class KMainWindow;
-class KAboutData;
+
 
 /** Handle all global variables of the application.
   * This file only declare classes : developer should include
@@ -65,9 +68,7 @@ public:
     static QString openNoteIcon();      /// << @return the icon used for the "Open" action on notes.
     static KMainWindow* mainWindow();
     static KConfig* config();
-    static KAboutData* about() {
-        return &basketAbout;
-    };
+    static KAboutData* about();
 };
 
 #endif // GLOBAL_H

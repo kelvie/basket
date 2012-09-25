@@ -18,19 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KParts/StatusBarExtension>
-#include <KDE/KStatusBar>
-#include <KDE/KLocale>
-#include <KDE/KDebug>
-#include <QLabel>
-#include <QObject>
 #include "basketstatusbar.h"
+
+#include <KDE/KLocale>
+#include <KDE/KStatusBar>
+#include <KParts/StatusBarExtension>
+
+#include <QtCore/QObject>
+#include <QtGui/QLabel>
+#include <QtGui/QPixmap>
+#include <QtGui/QMouseEvent>
+
 #include "global.h"
 #include "bnpview.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "tools.h"
-#include <KDE/KIconLoader>
-#include <QToolTip>
 
 BasketStatusBar::BasketStatusBar(KStatusBar *bar)
         : m_bar(bar), m_extension(0), m_selectionStatus(0), m_lockStatus(0), m_basketStatus(0), m_savedStatus(0)
@@ -151,12 +153,10 @@ void BasketStatusBar::setLockStatus(bool isLocked)
         m_lockStatus->setPixmap(SmallIcon("encrypted.png"));
         m_lockStatus->setToolTip(i18n(
                                      "<p>This basket is <b>locked</b>.<br>Click to unlock it.</p>").replace(" ", "&nbsp;"));
-//      QToolTip::add(m_lockStatus, i18n("This basket is locked.\nClick to unlock it."));
     } else {
         m_lockStatus->clear();
         m_lockStatus->setToolTip(i18n(
                                      "<p>This basket is <b>unlocked</b>.<br>Click to lock it.</p>").replace(" ", "&nbsp;"));
-//      QToolTip::add(m_lockStatus, i18n("This basket is unlocked.\nClick to lock it."));
     }
 }
 

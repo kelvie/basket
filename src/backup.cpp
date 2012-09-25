@@ -26,16 +26,18 @@
 #include "tools.h"
 #include "formatimporter.h" // To move a folder
 
-#include <QLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QTextStream>
-#include <QHBoxLayout>
+#include <QtCore/QDir>
+#include <QtCore/QTextStream>
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QProgressBar>
+
 #include <KDE/KLocale>
-#include <QDir>
 #include <KDE/KApplication>
 #include <KDE/KAboutData>
-#include <QGroupBox>
 #include <KDE/KDirSelectDialog>
 #include <KDE/KRun>
 #include <KDE/KConfig>
@@ -43,10 +45,10 @@
 #include <KDE/KFileDialog>
 #include <KDE/KProgressDialog>
 #include <KDE/KMessageBox>
-#include <QProgressBar>
+#include <KDE/KVBox>
+
 #include <unistd.h> // usleep()
 
-#include <KVBox>
 
 /**
  * Backups are wrapped in a .tar.gz, inside that folder name.
@@ -189,7 +191,7 @@ void BackupDialog::backup()
     KConfig *config = KGlobal::config().data();
     KConfigGroup configGroup(config, "Backups");
     QString folder = configGroup.readEntry("lastFolder", QDir::homePath()) + "/";
-    QString fileName = i18np("Backup filename (without extension), %1 is the date", "Baskets_%1", QDate::currentDate().toString(Qt::ISODate));
+    QString fileName = i18nc("Backup filename (without extension), %1 is the date", "Baskets_%1", QDate::currentDate().toString(Qt::ISODate));
     QString url = folder + fileName;
 
     // Ask a file name & path to the user:
@@ -312,7 +314,7 @@ void BackupDialog::restore()
     }
 
     // Note: The safety backup is not removed now because the code can has been wrong, somehow, or the user perhapse restored an older backup by error...
-    //       The restore process will not be called very often (it is possible it will only be called once or twice arround the world during the next years).
+    //       The restore process will not be called very often (it is possible it will only be called once or twice around the world during the next years).
     //       So it is rare enough to force the user to remove the safety folder, but keep him in control and let him safely recover from restoration errors.
 
     Backup::setFolderAndRestart(Global::savesFolder()/*No change*/, i18n("Your backup has been successfuly restored to <b>%1</b>. %2 is going to be restarted to take this change into account."));
@@ -328,7 +330,7 @@ void Backup::figureOutBinaryPath(const char *argv0, QApplication &app)
 {
     /*
        The application can be launched by two ways:
-       - Globaly (app.applicationFilePath() is good)
+       - Globally (app.applicationFilePath() is good)
        - In KDevelop or with an absolute path (app.applicationFilePath() is wrong)
        This function is called at the very start of main() so that the current directory has not been changed yet.
 
@@ -354,7 +356,7 @@ void Backup::setFolderAndRestart(const QString &folder, const QString &message)
     KMessageBox::information(
         0,
         "<qt>" + message.arg(
-            (folder.endsWith("/") ? folder.left(folder.length() - 1) : folder),
+            (folder.endsWith('/') ? folder.left(folder.length() - 1) : folder),
             KGlobal::mainComponent().aboutData()->programName()),
         i18n("Restart")
     );

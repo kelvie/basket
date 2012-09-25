@@ -26,12 +26,11 @@
 class QString;
 class QGroupBox;
 class QDomElement;
-class KTextEdit;
 class QRadioButton;
-class QTextEdit;
+class KTextEdit;
 class QVBoxLayout;
 
-class BasketView;
+class BasketScene;
 class Note;
 
 /** The dialog to ask how to import hierarchical data.
@@ -73,7 +72,7 @@ private:
     QRadioButton  *m_star_choice;
     QRadioButton  *m_all_in_one_choice;
     QRadioButton  *m_anotherSeparator;
-    QTextEdit     *m_customSeparator;
+    KTextEdit     *m_customSeparator;
 };
 
 /** Functions that import data from other softwares.
@@ -84,8 +83,8 @@ namespace SoftwareImporters
 // Useful methods to design importers:
 QString fromICS(const QString &ics);
 QString fromTomboy(QString tomboy);
-Note* insertTitledNote(BasketView *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
-void finishImport(BasketView *basket);
+Note* insertTitledNote(BasketScene *parent, const QString &title, const QString &content, Qt::TextFormat format = Qt::PlainText, Note *parentNote = 0);
+void finishImport(BasketScene *basket);
 
 // The importers in themselves:
 void importKNotes();
@@ -98,7 +97,7 @@ void importJreepadFile();
 void importTextFile();
 
 //
-void importTuxCardsNode(const QDomElement &element, BasketView *parentBasket, Note *parentNote, int remainingHierarchy);
+void importTuxCardsNode(const QDomElement &element, BasketScene *parentBasket, Note *parentNote, int remainingHierarchy);
 }
 
 #endif // SOFTWAREIMPORTERS_H

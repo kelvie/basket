@@ -24,12 +24,6 @@
 #include "basket_part.h"
 
 #include <KontactInterface/Core>
-#include <KontactInterface/Plugin>
-
-#include <KDE/KActionCollection>
-#include <KDE/KGenericFactory>
-#include <KDE/KIcon>
-#include <KDE/KParts/ComponentFactory>
 
 EXPORT_KONTACT_PLUGIN(BasketPlugin, basket)
 
@@ -71,5 +65,3 @@ void BasketPlugin::showPart()
 {
     core()->selectPlugin(this);
 }
-
-#include "basket_plugin.moc"

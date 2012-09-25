@@ -21,9 +21,10 @@
 #ifndef BASKETFACTORY_H
 #define BASKETFACTORY_H
 
+class QColor;
 class QString;
 
-class BasketView;
+class BasketScene;
 
 /** Methods to create various baskets (mkdir, init the properties and load it).
   * @author Sébastien Laoût
@@ -37,7 +38,7 @@ void newBasket(const QString &icon,
                const QColor  &backgroundColor,
                const QColor  &textColor,
                const QString &templateName,
-               BasketView *parent);
+               BasketScene *parent);
 /** Internal tool methods to process the method above: */
 QString newFolderName();
 QString unpackTemplate(const QString &templateName);

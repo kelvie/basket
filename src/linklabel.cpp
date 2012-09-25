@@ -18,32 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QFrame>
-#include <QEvent>
-#include <QVBoxLayout>
-#include <QBoxLayout>
-#include <KDE/KUrl>
-#include <QLayout>
-#include <KDE/KIconLoader>
-#include <QCursor>
-#include <KDE/KLocale>
-#include <QPushButton>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QPainter>
-#include <QStyle>
-#include <KDE/KApplication>
-#include <KDialog>
-#include <KDE/KCModule>
-#include <KDE/KDebug>
-#include <KDE/KColorScheme>
-#include <QGroupBox>
-
 #include "linklabel.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QFrame>
+#include <QtGui/QCursor>
+#include <QtGui/QCheckBox>
+#include <QtGui/QPainter>
+#include <QtGui/QStyle>
+#include <QtGui/QGroupBox>
+
+#include <KDE/KApplication>
+#include <KDE/KAboutData>
+#include <KDE/KComboBox>
+#include <KDE/KLocale>
+#include <KDE/KIconLoader>
+#include <KDE/KUrl>
+#include <KDE/KCModule>
+
 #include "variouswidgets.h"
 #include "tools.h"
 #include "global.h"
@@ -421,7 +420,7 @@ void LinkDisplay::setLink(const QString &title, const QString &icon, const QPixm
     m_height = heightForWidth(m_width);
 }
 
-void LinkDisplay::setWidth(int width)
+void LinkDisplay::setWidth(qreal width)
 {
     if (width < m_minWidth)
         width = m_minWidth;
@@ -439,11 +438,11 @@ void LinkDisplay::setWidth(int width)
   *       unless [the LinkLook !color.isValid() and it does not useLinkColor()] or [@p isDefaultColor is false]: in this case it will use @p palette's active text color.
   *       It will draw the button if @p isIconButtonHovered.
   */
-void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, const QPalette &palette,
+void LinkDisplay::paint(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QPalette &palette,
                         bool isDefaultColor, bool isSelected, bool isHovered, bool isIconButtonHovered) const
 {
-    int BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
-    int LINK_MARGIN   = BUTTON_MARGIN + 2;
+    qreal BUTTON_MARGIN = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+    qreal LINK_MARGIN   = BUTTON_MARGIN + 2;
 
     QPixmap pixmap;
     // Load the preview...:
@@ -451,7 +450,7 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
         pixmap  = m_preview;
     // ... Or the icon (if no preview or if the "Open" icon should be shown):
     else {
-        int           iconSize   = m_look->iconSize();
+        qreal           iconSize   = m_look->iconSize();
         QString       iconName   = (isHovered ? Global::openNoteIcon() : m_icon);
         KIconLoader::States iconState  = (isIconButtonHovered ? KIconLoader::ActiveState : KIconLoader::DefaultState);
         pixmap = KIconLoader::global()->loadIcon(
@@ -459,9 +458,9 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
                      0L, /*canReturnNull=*/false
                  );
     }
-    int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
-    int pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
-    int pixmapY = (height - pixmap.height()) / 2;
+    qreal iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+    qreal pixmapX = (iconPreviewWidth - pixmap.width()) / 2;
+    qreal pixmapY = (height - pixmap.height()) / 2;
     // Draw the button (if any) and the icon:
     if (isHovered) {
         QStyleOption opt;
@@ -486,10 +485,10 @@ void LinkDisplay::paint(QPainter *painter, int x, int y, int width, int height, 
                       Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, m_title);
 }
 
-QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &palette, bool isDefaultColor)
+QPixmap LinkDisplay::feedbackPixmap(qreal width, qreal height, const QPalette &palette, bool isDefaultColor)
 {
-    int theWidth  = qMin(width, maxWidth());
-    int theHeight = qMin(height, heightForWidth(theWidth));
+    qreal theWidth  = qMin(width, maxWidth());
+    qreal theHeight = qMin(height, heightForWidth(theWidth));
     QPixmap pixmap(theWidth, theHeight);
     pixmap.fill(palette.color(QPalette::Active, QPalette::Background));
     QPainter painter(&pixmap);
@@ -499,22 +498,22 @@ QPixmap LinkDisplay::feedbackPixmap(int width, int height, const QPalette &palet
     return pixmap;
 }
 
-bool LinkDisplay::iconButtonAt(const QPoint &pos) const
+bool LinkDisplay::iconButtonAt(const QPointF &pos) const
 {
-    int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+    qreal BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //  int LINK_MARGIN      = BUTTON_MARGIN + 2;
-    int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+    qreal iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
     return pos.x() <= BUTTON_MARGIN - 1 + iconPreviewWidth + BUTTON_MARGIN;
 }
 
-QRect LinkDisplay::iconButtonRect() const
+QRectF LinkDisplay::iconButtonRect() const
 {
-    int BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+    qreal BUTTON_MARGIN    = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
 //  int LINK_MARGIN      = BUTTON_MARGIN + 2;
-    int iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+    qreal iconPreviewWidth = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
 
-    return QRect(0, 0, BUTTON_MARGIN - 1 + iconPreviewWidth + BUTTON_MARGIN, m_height);
+    return QRectF(0, 0, BUTTON_MARGIN - 1 + iconPreviewWidth + BUTTON_MARGIN, m_height);
 }
 
 QFont LinkDisplay::labelFont(QFont font, bool isIconButtonHovered) const
@@ -533,14 +532,14 @@ QFont LinkDisplay::labelFont(QFont font, bool isIconButtonHovered) const
     return font;
 }
 
-int LinkDisplay::heightForWidth(int width) const
+qreal LinkDisplay::heightForWidth(qreal width) const
 {
-    int BUTTON_MARGIN     = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
-    int LINK_MARGIN       = BUTTON_MARGIN + 2;
-    int iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
-    int iconPreviewHeight = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
+    qreal BUTTON_MARGIN     = kapp->style()->pixelMetric(QStyle::PM_ButtonMargin);
+    qreal LINK_MARGIN       = BUTTON_MARGIN + 2;
+    qreal iconPreviewWidth  = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.width()  : 0));
+    qreal iconPreviewHeight = qMax(m_look->iconSize(), (m_look->previewEnabled() ? m_preview.height() : 0));
 
-    QRect textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_title);
+    QRectF textRect = QFontMetrics(labelFont(m_font, false)).boundingRect(0, 0, width - BUTTON_MARGIN + 1 - iconPreviewWidth - LINK_MARGIN, 500000, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, m_title);
     return qMax(textRect.height(), iconPreviewHeight + 2*BUTTON_MARGIN - 2);
 }
 
@@ -589,7 +588,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
     layout->addLayout(gl);
     gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 1, /*2*/3);
 
-    m_underlining = new QComboBox(this);
+    m_underlining = new KComboBox(this);
     m_underlining->addItem(i18n("Always"));
     m_underlining->addItem(i18n("Never"));
     m_underlining->addItem(i18n("On mouse hovering"));
@@ -623,7 +622,7 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
     gl->addWidget(label,  3, 0);
     gl->addItem(icoLay, 3, 1);
 
-    m_preview = new QComboBox(this);
+    m_preview = new KComboBox(this);
     m_preview->addItem(i18n("None"));
     m_preview->addItem(i18n("Icon size"));
     m_preview->addItem(i18n("Twice the icon size"));
@@ -665,16 +664,16 @@ LinkLookEditWidget::LinkLookEditWidget(KCModule *module, const QString exTitle, 
     connect(m_italic,      SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()));
     connect(m_bold,        SIGNAL(stateChanged(int)),      this,   SLOT(slotChangeLook()));
     connect(m_underlining, SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()));
-    connect(m_color,       SIGNAL(activated(const QColor&)), this,   SLOT(slotChangeLook()));
-    connect(m_hoverColor,  SIGNAL(activated(const QColor&)), this,   SLOT(slotChangeLook()));
+    connect(m_color,       SIGNAL(activated(int)), this,   SLOT(slotChangeLook()));
+    connect(m_hoverColor,  SIGNAL(activated(int)), this,   SLOT(slotChangeLook()));
     connect(m_iconSize,    SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()));
     connect(m_preview,     SIGNAL(activated(int)),         this,   SLOT(slotChangeLook()));
 
     connect(m_italic,      SIGNAL(stateChanged(int)),      module, SLOT(changed()));
     connect(m_bold,        SIGNAL(stateChanged(int)),      module, SLOT(changed()));
     connect(m_underlining, SIGNAL(activated(int)),         module, SLOT(changed()));
-    connect(m_color,       SIGNAL(activated(const QColor&)), module, SLOT(changed()));
-    connect(m_hoverColor,  SIGNAL(activated(const QColor&)), module, SLOT(changed()));
+    connect(m_color,       SIGNAL(activated(int)), module, SLOT(changed()));
+    connect(m_hoverColor,  SIGNAL(activated(int)), module, SLOT(changed()));
     connect(m_iconSize,    SIGNAL(activated(int)),         module, SLOT(changed()));
     connect(m_preview,     SIGNAL(activated(int)),         module, SLOT(changed()));
 }

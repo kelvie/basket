@@ -21,15 +21,16 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <QString>
-#include <QColor>
-#include <QFont>
-#include <QList>
+#include <QtCore/QList>
 
 #include <KDE/KAction>
-#include <KDE/KShortcut>
 
+class QColor;
+class QFont;
 class QPainter;
+class QString;
+
+class KShortcut;
 
 class Tag;
 
@@ -44,7 +45,7 @@ public:
 
 public:
     /// CONSTRUCTOR AND DESTRUCTOR:
-    State(const QString &id = QString(), Tag *tag = 0);
+    explicit State(const QString &id = QString(), Tag *tag = 0);
     ~State();
     /// SET PROPERTIES:
     void setId(const QString &id)                {
@@ -85,6 +86,9 @@ public:
     }
     void setOnAllTextLines(bool yes)             {
         m_onAllTextLines  = yes;
+    }
+    void setAllowCrossReferences(bool yes)        {
+        m_allowCrossReferences = yes;
     }
     void setParentTag(Tag *tag)                  {
         m_parentTag       = tag;
@@ -129,6 +133,9 @@ public:
     bool    onAllTextLines()  const {
         return m_onAllTextLines;
     }
+    bool allowCrossReferences() const {
+        return m_allowCrossReferences;
+    }
     Tag*    parentTag()       const {
         return m_parentTag;
     }
@@ -154,6 +161,7 @@ private:
     QColor   m_backgroundColor;
     QString  m_textEquivalent;
     bool     m_onAllTextLines;
+    bool     m_allowCrossReferences;
     Tag     *m_parentTag;
 };
 

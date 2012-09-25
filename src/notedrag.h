@@ -21,30 +21,30 @@
 #ifndef NOTEDRAG_H
 #define NOTEDRAG_H
 
-#include <QString>
-#include <QDataStream>
-#include <QPixmap>
 #include <QList>
 #include <QDrag>
-#include <QDragEnterEvent>
+#include <QGraphicsSceneDragDropEvent>
 
 class QDataStream;
+class QDragEnterEvent;
+class QPixmap;
+class QString;
 
-class BasketView;
+class BasketScene;
 class Note;
 class NoteSelection;
 
 /** Dragging/Copying/Cutting Scenario:
   * - User select some notes and cut them;
-  * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see BasketView::toSelectionTree()):
+  * - NoteDrag::toMultipleDrag() is called with a tree of the selected notes (see BasketScene::toSelectionTree()):
   *   - This method create a new QDrag object, create a stream,
   *   - And then browse all notes and call the virtual Note::serialize() with the stream as parameter for them to serialize theire content in the "native format".
   *   - This give the MIME type "application/x-basket-note" that will be used by the application to paste the notes exactly as they were.
   *   - Then the method try to set alterante formats for the dragged objects:
   *   - It call successively toText() for each notes and stack up the result so theire is ONE big text flavour to add to the QDrag object
-  *   - It do the same with toHtml(), toImage() and toLink() to have those flavours as well, if possible...
+  *   - It do the same with toHtml(), toImage() and toLink() to have those flavors as well, if possible...
   *   - If there is only ONE copied note, addAlternateDragObjects() is called on it, so that Unknown objects can be dragged "as is".
-  *   - It's OK for the flavours. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
+  *   - It's OK for the flavors. The method finally set the drag feedback pixmap by asking every selected notes to draw the content to a small pixmap.
   *   - The pixmaps are joined to one big pixmap (but it should not exceed a defined size) and a border is drawn on this image.
   *
   * Pasting/Dropping Scenario:
@@ -60,14 +60,14 @@ protected:
     static void serializeImage(NoteSelection *noteList, QDrag *multipleDrag);
     static void serializeLinks(NoteSelection *noteList, QDrag *multipleDrag, bool cutting);
     static void setFeedbackPixmap(NoteSelection *noteList, QDrag *multipleDrag);
-    static Note* decodeHierarchy(QDataStream &stream, BasketView *parent, bool moveFiles, bool moveNotes, BasketView *originalBasket);
+    static Note* decodeHierarchy(QDataStream &stream, BasketScene *parent, bool moveFiles, bool moveNotes, BasketScene *originalBasket);
 public:
     static QPixmap feedbackPixmap(NoteSelection *noteList);
     static QDrag* dragObject(NoteSelection *noteList, bool cutting, QWidget *source = 0);
     static bool canDecode(const QMimeData *source);
-    static Note* decode(const QMimeData *source, BasketView *parent, bool moveFiles, bool moveNotes);
-    static BasketView* basketOf(const QMimeData *source);
-    static QList<Note*> notesOf(QDragEnterEvent *source);
+    static Note* decode(const QMimeData *source, BasketScene *parent, bool moveFiles, bool moveNotes);
+    static BasketScene* basketOf(const QMimeData *source);
+    static QList<Note*> notesOf(QGraphicsSceneDragDropEvent *source);
     static void createAndEmptyCuttingTmpFolder();
 
     static const char *NOTE_MIME_STRING;

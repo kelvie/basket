@@ -21,37 +21,15 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include <KDE/KMainWindow>
-#include <QTabBar>
-#include <QTabWidget>
-#include <QLabel>
-#include <QResizeEvent>
-#include <QVBoxLayout>
-#include <QMoveEvent>
-#include <QPoint>
-#include <QClipboard>
-#include <KDE/KAction>
-#include <QPixmap>
-#include <QDesktopWidget>
-#include <QTimer>
-#include <QSplitter>
-#include <KXmlGuiWindow>
+#include <KDE/KXmlGuiWindow>
 
+class QResizeEvent;
+class QVBoxLayout;
+class QMoveEvent;
 class QWidget;
-class QPoint;
 class KAction;
 class KToggleAction;
-class QSignalMapper;
-class QStringList;
-class QToolTipGroup;
-class KPassivePopup;
-class BasketView;
-class DecoratedBasket;
-class Container;
-class RegionGrabber;
-class NoteSelection;
 class BNPView;
-class KActionCollection;
 
 namespace KSettings
 {

@@ -1457,8 +1457,8 @@ msgstr ""
 "essayez de supprimer le fichier %5basketui.rc</p>"
 
 #: src/bnpview.cpp:1831
-msgid "Ressource not Found"
-msgstr "Ressource non trouvée"
+msgid "Resource not Found"
+msgstr "Resource non trouvée"
 
 #: src/bnpview.cpp:1855 src/bnpview.cpp:1864
 msgid "Cannot add note."

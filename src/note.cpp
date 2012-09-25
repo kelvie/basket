@@ -18,38 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPainter>
-#include <QPixmap>
-#include <QList>
-#include <QStyle>
-#include <KDE/KApplication>
-#include <KDE/KStyle>
-#include <QCursor>
-#include <KDE/KIconLoader>
+#include "note.h"
 
+#include <QtCore/QList>
+#include <QtGui/QGraphicsItemAnimation>
+#include <QtGui/QGraphicsView>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOption>
+#include <QtGui/QImage>
+
+#include <qimageblitz/qimageblitz.h>        //For Blitz::fade(...)
+
+#include <KDE/KDebug>
+#include <KDE/KApplication>
+#include <KDE/KIconLoader>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KUriFilter>
-#include <QFile>
+#include <KDE/KLocale>  //For KGLobal::locale(
 
 #include <stdlib.h> // rand() function
 #include <math.h> // sqrt() and pow() functions
 
-#ifdef None
-#undef None
-#endif
-
-#include "basketview.h"
+#include "basketscene.h"
+#include "filter.h"
 #include "tag.h"
-#include "note.h"
 #include "noteselection.h"
 #include "tools.h"
 #include "settings.h"
 #include "notefactory.h" // For NoteFactory::filteredURL()
-
-#include <KDE/KDebug>
-#include <QImage>
-#include <qimageblitz/qimageblitz.h>
 
 /** class Note: */
 
@@ -60,30 +57,27 @@ class NotePrivate
 {
 public:
     NotePrivate()
-        : prev(0), next(0), x(0), y(-1),
-          width(-1), height(Note::MIN_HEIGHT)
+        : prev(0), next(0), width(-1), height(Note::MIN_HEIGHT)
     {
     }
     Note* prev;
     Note* next;
-    int x;
-    int y;
-    int width;
-    int height;
+    qreal width;
+    qreal height;
 };
 
-int Note::NOTE_MARGIN      = 2;
-int Note::INSERTION_HEIGHT = 5;
-int Note::EXPANDER_WIDTH   = 9;
-int Note::EXPANDER_HEIGHT  = 9;
-int Note::GROUP_WIDTH      = 2 * NOTE_MARGIN + EXPANDER_WIDTH;
-int Note::HANDLE_WIDTH     = GROUP_WIDTH;
-int Note::RESIZER_WIDTH    = GROUP_WIDTH;
-int Note::TAG_ARROW_WIDTH  = 5;
-int Note::EMBLEM_SIZE      = 16;
-int Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
+qreal Note::NOTE_MARGIN      = 2;
+qreal Note::INSERTION_HEIGHT = 5;
+qreal Note::EXPANDER_WIDTH   = 9;
+qreal Note::EXPANDER_HEIGHT  = 9;
+qreal Note::GROUP_WIDTH      = 2 * NOTE_MARGIN + EXPANDER_WIDTH;
+qreal Note::HANDLE_WIDTH     = GROUP_WIDTH;
+qreal Note::RESIZER_WIDTH    = GROUP_WIDTH;
+qreal Note::TAG_ARROW_WIDTH  = 5;
+qreal Note::EMBLEM_SIZE      = 16;
+qreal Note::MIN_HEIGHT       = 2 * NOTE_MARGIN + EMBLEM_SIZE;
 
-Note::Note(BasketView *parent)
+Note::Note(BasketScene *parent)
         : d(new NotePrivate),
         m_groupWidth(250),
         m_isFolded(false),
@@ -95,11 +89,7 @@ Note::Note(BasketView *parent)
         m_lastModificationDate(QDateTime::currentDateTime()),
         m_computedAreas(false),
         m_onTop(false),
-        m_deltaX(0),
-        m_deltaY(0),
-        m_deltaHeight(0),
-        m_collapseFinished(true),
-        m_expandingFinished(true),
+        m_animation(0),
         m_hovered(false),
         m_hoveredZone(Note::None),
         m_focused(false),
@@ -110,11 +100,25 @@ Note::Note(BasketView *parent)
         m_haveInvisibleTags(false),
         m_matching(true)
 {
+	setHeight(MIN_HEIGHT);
+        if(m_basket)
+        {
+            m_basket->addItem(this);
+        }
 }
 
 Note::~Note()
 {
+    if(m_basket)
+    {
+        if(m_content && m_content->graphicsItem()) 
+        {
+            m_basket->removeItem(m_content->graphicsItem());
+        }
+        m_basket->removeItem(this);
+    }    
     delete m_content;
+    delete m_animation;
     deleteChilds();
 }
 
@@ -138,31 +142,18 @@ Note* Note::prev() const
     return d->prev;
 }
 
-int Note::y() const
+qreal Note::bottom() const
 {
-    return d->y;
+    return y() + height() - 1;
 }
 
-int Note::x() const
+void Note::setParentBasket(BasketScene *basket) 
 {
-    return d->x;
+    if(m_basket) m_basket->removeItem(this);
+    m_basket = basket;
+    if(m_basket) m_basket->addItem(this);
 }
-
-int Note::bottom() const
-{
-    return d->y + d->height - 1;
-}
-
-int Note::finalX() const
-{
-    return d->x + m_deltaX;
-}
-
-int Note::finalY() const
-{
-    return d->y + m_deltaY;
-}
-
+    
 QString Note::addedStringDate()
 {
     return KGlobal::locale()->formatDateTime(m_addedDate);
@@ -178,7 +169,7 @@ QString Note::toText(const QString &cuttedFullPath)
     if (content()) {
         // Convert note to text:
         QString text = content()->toText(cuttedFullPath);
-        // If we should not export tags with the text, return immediatly:
+        // If we should not export tags with the text, return immediately:
         if (!Settings::exportTextTags())
             return text;
         // Compute the text equivalent of the tag states:
@@ -199,10 +190,11 @@ QString Note::toText(const QString &cuttedFullPath)
         QStringList lines = text.split('\n');
         QString result = firstLine + lines[0] + (lines.count() > 1 ? "\n" : "");
         for (int i = 1/*Skip the first line*/; i < lines.count(); ++i)
-            result += otherLines + lines[i] + (i < lines.count() - 1 ? "\n" : "");
+            result += otherLines + lines[i] + (i < lines.count() - 1 ? "\n" : "");	
+
         return result;
     } else
-        return "";
+	return "";
 }
 
 bool Note::computeMatching(const FilterData &data)
@@ -239,7 +231,14 @@ int Note::newFilter(const FilterData &data)
     m_matching = computeMatching(data);
     setOnTop(wasMatching && matching());
     if (!matching())
-        setSelected(false);
+    {
+      setSelected(false);
+      hide();
+    }
+    else if(!wasMatching)
+    {
+      show();  
+    }
 
     int countMatches = (content() && matching() ? 1 : 0);
 
@@ -250,22 +249,40 @@ int Note::newFilter(const FilterData &data)
     return countMatches;
 }
 
-void Note::deleteSelectedNotes(bool deleteFilesToo)
+void Note::deleteSelectedNotes(bool deleteFilesToo, QSet<Note *> *notesToBeDeleted)
 {
-    if (content() && isSelected()) {
-        basket()->unplugNote(this);
-        if (deleteFilesToo && content() && content()->useFile())
-            Tools::deleteRecursively(fullPath());//basket()->deleteFiles(fullPath()); // Also delete the folder if it's a folder
-        //delete this;
+    if (content())
+    {
+        if(isSelected()) {
+            basket()->unplugNote(this);
+            if (deleteFilesToo && content()->useFile())
+            {
+                Tools::deleteRecursively(fullPath());//basket()->deleteFiles(fullPath()); // Also delete the folder if it's a folder
+            }
+            if(notesToBeDeleted)
+            {
+                notesToBeDeleted->insert(this);
+            }
+        }
         return;
     }
 
+    bool isColumn = this->isColumn();      
     Note *child = firstChild();
     Note *next;
     while (child) {
         next = child->next(); // If we delete 'child' on the next line, child->next() will be 0!
-        child->deleteSelectedNotes(deleteFilesToo);
+        child->deleteSelectedNotes(deleteFilesToo, notesToBeDeleted);
         child = next;
+    }
+    
+    // if it remains at least two notes, the group must not be deleted
+    if(!isColumn && !(firstChild() && firstChild()->next()))
+    {
+        if(notesToBeDeleted)
+        {
+            notesToBeDeleted->insert(this);
+        }
     }
 }
 
@@ -300,10 +317,10 @@ QString Note::fullPath()
         return "";
 }
 
-void Note::update()
+/*void Note::update()
 {
-    basket()->updateNote(this);
-}
+    update(0,0,boundingRect().width,boundingRect().height);
+}*/
 
 void Note::setFocused(bool focused)
 {
@@ -325,7 +342,7 @@ void Note::setSelected(bool selected)
 
     if (!selected && basket()->editedNote() == this) {
         basket()->closeEditor();
-        return; // To avoid a bug that would count 2 less selected notes instead of 1 less! Because m_selected is modified only below.
+	return; // To avoid a bug that would count 2 less selected notes instead of 1 less! Because m_selected is modified only below.
     }
 
     if (selected)
@@ -359,7 +376,7 @@ void Note::finishLazyLoad()
     }
 }
 
-void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers /*= true*/)
+void Note::selectIn(const QRectF &rect, bool invertSelection, bool unselectOthers /*= true*/)
 {
 //  QRect myRect(x(), y(), width(), height());
 
@@ -368,8 +385,8 @@ void Note::selectIn(const QRect &rect, bool invertSelection, bool unselectOthers
     // Only intersects with visible areas.
     // If the note is not visible, the user don't think it will be selected while selecting the note(s) that hide this, so act like the user think:
     bool intersects = false;
-    for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-        QRect &r = *it;
+    for (QList<QRectF>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+        QRectF &r = *it;
         if (r.intersects(rect)) {
             intersects = true;
             break;
@@ -536,7 +553,7 @@ bool Note::isAfter(Note *note)
     return true;
 }
 
-bool Note::contains(Note *note)
+bool Note::containsNote(Note *note)
 {
 //  if (this == note)
 //      return true;
@@ -548,7 +565,7 @@ bool Note::contains(Note *note)
             note = note->parentNote();
 
 //  FOR_EACH_CHILD (child)
-//      if (child->contains(note))
+//      if (child->containsNote(note))
 //          return true;
     return false;
 }
@@ -597,19 +614,19 @@ Note* Note::lastSibling()
     return last;
 }
 
-int Note::yExpander()
+qreal Note::yExpander()
 {
     Note *child = firstRealChild();
     if (child && !child->isShown())
         child = child->nextShownInStack(); // FIXME: Restrict scope to 'this'
 
     if (child)
-        return (child->height() - EXPANDER_HEIGHT) / 2 + !(child->height() % 2);
+        return (child->boundingRect().height() - EXPANDER_HEIGHT) / 2;
     else // Groups always have at least 2 notes, except for columns which can have no child (but should exists anyway):
         return 0;
 }
 
-bool Note::isFree()
+bool Note::isFree() const
 {
     return parentNote() == 0 && basket() && basket()->isFreeLayout();
 }
@@ -619,15 +636,15 @@ bool Note::isColumn() const
     return parentNote() == 0 && basket() && basket()->isColumnsLayout();
 }
 
-bool Note::hasResizer()
+bool Note::hasResizer() const
 {
-    // "isFree" || "isColmun but not the last"
+    // "isFree" || "isColumn but not the last"
     return parentNote() == 0 && ((basket() && basket()->isFreeLayout()) || d->next != 0L);
 }
 
-int Note::resizerHeight()
+qreal Note::resizerHeight() const
 {
-    return (isColumn() ? basket()->contentsHeight() : height());
+    return (isColumn() ? basket()->sceneRect().height() : d->height);
 }
 
 void Note::setHoveredZone(Zone zone) // TODO: Remove setHovered(bool) and assume it is hovered if zone != None !!!!!!!
@@ -640,15 +657,15 @@ void Note::setHoveredZone(Zone zone) // TODO: Remove setHovered(bool) and assume
     }
 }
 
-Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
+Note::Zone Note::zoneAt(const QPointF &pos, bool toAdd)
 {
     // Keep the resizer highlighted when resizong, even if the cursor is over another note:
     if (basket()->resizingNote() == this)
         return Resizer;
 
-    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it whith the whole column:
+    // When dropping/pasting something on a column resizer, add it at the bottom of the column, and don't group it with the whole column:
     if (toAdd && isColumn() && hasResizer()) {
-        int right = rightLimit() - x();
+        qreal right = rightLimit() - x();
         if ((pos.x() >= right) && (pos.x() < right + RESIZER_WIDTH) && (pos.y() >= 0) && (pos.y() < resizerHeight())) // Code copied from below
             return BottomColumn;
     }
@@ -663,7 +680,12 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
     // (by spanning those areas in 4 equal rectangles in the note):
     if (toAdd) {
         if (!isFree() && !Settings::groupOnInsertionLine())
-            return (pos.y() < height() / 2 ? TopInsert : BottomInsert);
+        {
+            if(pos.y() < height() / 2)
+                return TopInsert;
+            else
+                return BottomInsert;
+        }
         if (isColumn() && pos.y() >= height())
             return BottomGroup;
         if (pos.y() < height() / 2)
@@ -679,7 +701,7 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
 
     // If in the resizer:
     if (hasResizer()) {
-        int right = rightLimit() - x();
+        qreal right = rightLimit() - x();
         if ((pos.x() >= right) && (pos.x() < right + RESIZER_WIDTH) && (pos.y() >= 0) && (pos.y() < resizerHeight()))
             return Resizer;
     }
@@ -687,12 +709,21 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
     // If isGroup, return only Group, GroupExpander, TopInsert or BottomInsert:
     if (isGroup()) {
         if (pos.y() < INSERTION_HEIGHT)
-            return (isFree() ? TopGroup : TopInsert);
+        {
+             if(isFree())
+                 return TopGroup;
+             else
+                 return TopInsert;
+        }
         if (pos.y() >= height() - INSERTION_HEIGHT)
-            return (isFree() ? BottomGroup : BottomInsert);
-
+        {
+            if(isFree())
+                return BottomGroup;
+            else
+                return BottomInsert;
+        }
         if (pos.x() >= NOTE_MARGIN  &&  pos.x() < NOTE_MARGIN + EXPANDER_WIDTH) {
-            int yExp = yExpander();
+            qreal yExp = yExpander();
             if (pos.y() >= yExp  &&  pos.y() < yExp + EXPANDER_HEIGHT)
                 return GroupExpander;
         }
@@ -733,28 +764,28 @@ Note::Zone Note::zoneAt(const QPoint &pos, bool toAdd)
     if (!linkAt(pos).isEmpty())
         return Link;
 
-    int customZone = content()->zoneAt(pos - QPoint(contentX(), NOTE_MARGIN));
+    qreal customZone = content()->zoneAt(pos - QPointF(contentX(), NOTE_MARGIN));
     if (customZone)
         return (Note::Zone)customZone;
 
     return Content;
 }
 
-QString Note::linkAt(const QPoint &pos)
+QString Note::linkAt(const QPointF &pos)
 {
-    QString link = m_content->linkAt(pos - QPoint(contentX(), NOTE_MARGIN));
-    if (link.isEmpty() || link.startsWith("basket://"))
+    QString link = m_content->linkAt(pos - QPointF(contentX(), NOTE_MARGIN));
+    if (link.isEmpty() || link.startsWith(QLatin1String("basket://")))
         return link;
     else
         return NoteFactory::filteredURL(KUrl(link)).prettyUrl();//KURIFilter::self()->filteredURI(link);
 }
 
-int Note::contentX()
+qreal Note::contentX() const
 {
     return HANDLE_WIDTH + NOTE_MARGIN + (EMBLEM_SIZE + NOTE_MARGIN)*m_emblemsCount + TAG_ARROW_WIDTH + NOTE_MARGIN;
 }
 
-QRect Note::zoneRect(Note::Zone zone, const QPoint &pos)
+QRectF Note::zoneRect(Note::Zone zone, const QPointF &pos)
 {
     if (zone >= Emblem0)
         return QRect(HANDLE_WIDTH + (NOTE_MARGIN + EMBLEM_SIZE)*(zone - Emblem0),
@@ -762,89 +793,93 @@ QRect Note::zoneRect(Note::Zone zone, const QPoint &pos)
                      NOTE_MARGIN + EMBLEM_SIZE,
                      height() - 2*INSERTION_HEIGHT);
 
-    int yExp;
-    int right;
-    int xGroup = (isFree() ? (isGroup() ? 0 : GROUP_WIDTH) : width() / 2);
-    QRect rect;
-    int insertSplit = (Settings::groupOnInsertionLine() ? 2 : 1);
+    qreal yExp;
+    qreal right;
+    qreal xGroup = (isFree() ? (isGroup() ? 0 : GROUP_WIDTH) : width() / 2);
+    QRectF rect;
+    qreal insertSplit = (Settings::groupOnInsertionLine() ? 2 : 1);
     switch (zone) {
     case Note::Handle:
-        return QRect(0, 0, HANDLE_WIDTH, height());
+        return QRectF(0, 0, HANDLE_WIDTH, d->height);
     case Note::Group:
         yExp = yExpander();
         if (pos.y() < yExp) {
-            return QRect(0, INSERTION_HEIGHT, width(), yExp - INSERTION_HEIGHT);
+            return QRectF(0, INSERTION_HEIGHT, d->width, yExp - INSERTION_HEIGHT);
         }
         if (pos.y() > yExp + EXPANDER_HEIGHT) {
-            return QRect(0, yExp + EXPANDER_HEIGHT, width(), height() - yExp - EXPANDER_HEIGHT - INSERTION_HEIGHT);
+            return QRectF(0, yExp + EXPANDER_HEIGHT, d->width, d->height - yExp - EXPANDER_HEIGHT - INSERTION_HEIGHT);
         }
         if (pos.x() < NOTE_MARGIN) {
-            return QRect(0, 0, NOTE_MARGIN, height());
+            return QRectF(0, 0, NOTE_MARGIN, d->height);
         }
         else {
-            return QRect(width() - NOTE_MARGIN, 0, NOTE_MARGIN, height());
+            return QRectF(d->width - NOTE_MARGIN, 0, NOTE_MARGIN, d->height);
         }
     case Note::TagsArrow:
-        return QRect(HANDLE_WIDTH + (NOTE_MARGIN + EMBLEM_SIZE) * m_emblemsCount,
+        return QRectF(HANDLE_WIDTH + (NOTE_MARGIN + EMBLEM_SIZE) * m_emblemsCount,
                      INSERTION_HEIGHT,
                      NOTE_MARGIN + TAG_ARROW_WIDTH + NOTE_MARGIN,
-                     height() - 2*INSERTION_HEIGHT);
+                     d->height - 2*INSERTION_HEIGHT);
     case Note::Custom0:
     case Note::Content:
-        rect = content()->zoneRect(zone, pos - QPoint(contentX(), NOTE_MARGIN));
+        rect = content()->zoneRect(zone, pos - QPointF(contentX(), NOTE_MARGIN));
         rect.translate(contentX(), NOTE_MARGIN);
-        return rect.intersect(QRect(contentX(), INSERTION_HEIGHT, width() - contentX(), height() - 2*INSERTION_HEIGHT));     // Only IN contentRect
+        return rect.intersect(QRectF(contentX(), INSERTION_HEIGHT, d->width - contentX(), d->height - 2*INSERTION_HEIGHT));     // Only IN contentRect
     case Note::GroupExpander:
-        return QRect(NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT);
+        return QRectF(NOTE_MARGIN, yExpander(), EXPANDER_WIDTH, EXPANDER_HEIGHT);
     case Note::Resizer:
         right = rightLimit();
-        return QRect(right - x(), 0, RESIZER_WIDTH, resizerHeight());
+        return QRectF(right - x(), 0, RESIZER_WIDTH, resizerHeight());
     case Note::Link:
     case Note::TopInsert:
-        if (isGroup()) return QRect(0,            0,                           width(),                              INSERTION_HEIGHT);
-        else           return QRect(HANDLE_WIDTH, 0,                           width() / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
+        if (isGroup()) return QRectF(0, 0, d->width, INSERTION_HEIGHT);
+        else           return QRectF(HANDLE_WIDTH, 0, d->width / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
     case Note::TopGroup:
-        return QRect(xGroup,       0,                           width() - xGroup,                     INSERTION_HEIGHT);
+        return QRectF(xGroup, 0, d->width - xGroup, INSERTION_HEIGHT);
     case Note::BottomInsert:
-        if (isGroup()) return QRect(0,            height() - INSERTION_HEIGHT, width(),                              INSERTION_HEIGHT);
-        else           return QRect(HANDLE_WIDTH, height() - INSERTION_HEIGHT, width() / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
+        if (isGroup()) return QRectF(0, d->height - INSERTION_HEIGHT, d->width, INSERTION_HEIGHT);
+        else           return QRectF(HANDLE_WIDTH, d->height - INSERTION_HEIGHT, d->width / insertSplit - HANDLE_WIDTH, INSERTION_HEIGHT);
     case Note::BottomGroup:
-        return QRect(xGroup,       height() - INSERTION_HEIGHT, width() - xGroup,                     INSERTION_HEIGHT);
+        return QRectF(xGroup, d->height - INSERTION_HEIGHT, d->width - xGroup, INSERTION_HEIGHT);
     case Note::BottomColumn:
-        return QRect(0, height(), rightLimit() - x(), basket()->contentsHeight() - height());
+        return QRectF(0, d->height, rightLimit() - x(), basket()->sceneRect().height() - d->height);
     case Note::None:
-        return QRect(/*0, 0, -1, -1*/);
+        return QRectF(/*0, 0, -1, -1*/);
     default:
-        return QRect(/*0, 0, -1, -1*/);
+        return QRectF(/*0, 0, -1, -1*/);
     }
 }
 
-void Note::setCursor(Zone zone)
+Qt::CursorShape Note::cursorFromZone(Zone zone) const
 {
     switch (zone) {
     case Note::Handle:
     case Note::Group:
-        basket()->viewport()->setCursor(Qt::SizeAllCursor);
+        return Qt::SizeAllCursor;
         break;
     case Note::Resizer:
         if (isColumn())
-            basket()->viewport()->setCursor(Qt::SplitHCursor);
+        {
+            return Qt::SplitHCursor;
+        }
         else
-            basket()->viewport()->setCursor(Qt::SizeHorCursor);
+        {
+            return Qt::SizeHorCursor;
+        }
         break;
 
     case Note::Custom0:
-        content()->setCursor(basket()->viewport(), zone);
+        return m_content->cursorFromZone(zone);
         break;
 
     case Note::Link:
     case Note::TagsArrow:
     case Note::GroupExpander:
-        basket()->viewport()->setCursor(Qt::PointingHandCursor);
+        return Qt::PointingHandCursor;
         break;
 
     case Note::Content: 
-        basket()->viewport()->setCursor(Qt::IBeamCursor);
+            return Qt::IBeamCursor;
         break;
 
     case Note::TopInsert:
@@ -852,141 +887,109 @@ void Note::setCursor(Zone zone)
     case Note::BottomInsert:
     case Note::BottomGroup:
     case Note::BottomColumn:  
-        basket()->viewport()->setCursor(Qt::CrossCursor);
+        return Qt::CrossCursor;
         break;
     case Note::None:
-        basket()->viewport()->unsetCursor();
+        return Qt::ArrowCursor;
         break;
     default:
         State *state = stateForEmblemNumber(zone - Emblem0);
         if (state && state->parentTag()->states().count() > 1)
-            basket()->viewport()->setCursor(Qt::PointingHandCursor);
+            return Qt::PointingHandCursor;
         else
-            basket()->viewport()->unsetCursor();
+            return Qt::ArrowCursor;
     }
 }
 
-void Note::addAnimation(int deltaX, int deltaY, int deltaHeight)
+bool Note::initAnimationLoad(QTimeLine *timeLine)
 {
-    // Don't process animation that make the note stay in place!
-    if (deltaX == 0 && deltaY == 0 && deltaHeight == 0)
-        return;
+    bool needAnimation = false;
+    
+    if( ! isColumn() )
+    {
+        qreal x, y;
+        switch (rand() % 4) {
+        case 0: // Put it on top:
+            x = basket()->sceneRect().x() + rand() % (int)basket()->sceneRect().width();
+            y = -height();
+            break;
+        case 1: // Put it on bottom:
+            x = basket()->sceneRect().x() + rand() % (int)basket()->sceneRect().width();
+            y = basket()->sceneRect().y() + basket()->graphicsView()->viewport()->height();
+            break;
+        case 2: // Put it on left:
+            x = -width() - (hasResizer() ? Note::RESIZER_WIDTH : 0);
+            y = basket()->sceneRect().y() + rand() % basket()->graphicsView()->viewport()->height();
+            break;
+        case 3: // Put it on right:
+        default: // In the case of...
+            x = basket()->sceneRect().x() + basket()->graphicsView()->viewport()->width();
+            y = basket()->sceneRect().y() + rand() % basket()->graphicsView()->viewport()->height();
+            break;
+        }
+    
+        m_animation = new QGraphicsItemAnimation;
+        m_animation->setItem(this);
+        m_animation->setTimeLine(timeLine);
 
-    // If it was not animated previsouly, make it animated:
-    if (m_deltaX == 0 && m_deltaY == 0 && m_deltaHeight == 0)
-        basket()->addAnimatedNote(this);
-
-    // Configure the animation:
-    m_deltaX      += deltaX;
-    m_deltaY      += deltaY;
-    m_deltaHeight += deltaHeight;
-}
-
-void Note::setFinalPosition(int x, int y)
-{
-    addAnimation(x - finalX(), y - finalY());
-}
-
-void Note::initAnimationLoad()
-{
-    int x, y;
-    switch (rand() % 4) {
-    case 0: // Put it on top:
-        x = basket()->contentsX() + rand() % basket()->contentsWidth();
-        y = -height();
-        break;
-    case 1: // Put it on bottom:
-        x = basket()->contentsX() + rand() % basket()->contentsWidth();
-        y = basket()->contentsY() + basket()->visibleHeight();
-        break;
-    case 2: // Put it on left:
-        x = -width() - (hasResizer() ? Note::RESIZER_WIDTH : 0);
-        y = basket()->contentsY() + rand() % basket()->visibleHeight();
-        break;
-    case 3: // Put it on right:
-    default: // In the case of...
-        x = basket()->contentsX() + basket()->visibleWidth();
-        y = basket()->contentsY() + rand() % basket()->visibleHeight();
-        break;
+        for (int i = 0; i <= 100; i++)
+        {
+            m_animation->setPosAt(i/100.0, QPointF(this->x()-x*(100-i)/100,this->y()-y*(100-i)/100));
+        }
+        
+        needAnimation = true;
     }
-    cancelAnimation();
-    addAnimation(finalX() - x, finalY() - y);
-    setX(x);
-    setY(y);
-
+    
     if (isGroup()) {
-        const int viewHeight = basket()->contentsY() + basket()->visibleHeight();
+        const qreal viewHeight = basket()->sceneRect().y() + basket()->graphicsView()->viewport()->height();
         Note *child = firstChild();
         bool first = true;
         while (child) {
-            if (child->finalY() < viewHeight) {
+            if (child->y() < viewHeight) {
                 if ((showSubNotes() || first) && child->matching())
-                    child->initAnimationLoad();
+                    needAnimation |= child->initAnimationLoad(timeLine);
             } else
                 break; // 'child' are not a free notes (because child of at least one note, 'this'), so 'child' is ordered vertically.
             child = child->next();
             first = false;
         }
     }
+    
+    return needAnimation;
 }
 
-
-bool Note::advance()
+void Note::animationFinished()
 {
-    // Animate X:
-    if (m_deltaX != 0) {
-        int deltaX = m_deltaX / 3;
-        if (deltaX == 0)
-            deltaX = (m_deltaX > 0 ? 1 : -1);
-        setX(d->x + deltaX);
-        m_deltaX -= deltaX;
+    unbufferize();
+    delete m_animation;
+    m_animation = 0;
+    Note *child = firstChild();
+    while (child) {
+        child->animationFinished();
+        child = child->next();
     }
-
-    // Animate Y:
-    if (m_deltaY != 0) {
-        int deltaY = m_deltaY / 3;
-        if (deltaY == 0)
-            deltaY = (m_deltaY > 0 ? 1 : -1);
-        setY(d->y + deltaY);
-        m_deltaY -= deltaY;
-    }
-
-    // Animate Height:
-    if (m_deltaHeight != 0) {
-        int deltaHeight = m_deltaHeight / 3;
-        if (deltaHeight == 0)
-            deltaHeight = (m_deltaHeight > 0 ? 1 : -1);
-        d->height += deltaHeight;
-        unbufferize();
-        m_deltaHeight -= deltaHeight;
-    }
-
-    if (m_deltaHeight == 0) {
-        m_collapseFinished  = true;
-        m_expandingFinished = true;
-    }
-
-    // Return true if the animation is finished:
-    return (m_deltaX == 0 && m_deltaY == 0 && m_deltaHeight == 0);
 }
 
-void Note::setHeight(int height)
-{
-    setInitialHeight(height);
-}
-
-void Note::setInitialHeight(int height)
-{
-    d->height = height;
-}
-
-int Note::height() const
+qreal Note::height() const
 {
     return d->height;
 }
 
+void Note::setHeight(qreal height)
+{
+    setInitialHeight(height);
+}
+
+void Note::setInitialHeight(qreal height)
+{
+    prepareGeometryChange();
+    d->height = height;
+}
+
 void Note::unsetWidth()
 {
+    prepareGeometryChange();
+    
     d->width = 0;
     unbufferize();
 
@@ -994,26 +997,29 @@ void Note::unsetWidth()
     child->unsetWidth();
 }
 
-int Note::width() const
+qreal Note::width() const
 {
     return (isGroup() ? (isColumn() ? 0 : GROUP_WIDTH) : d->width);
 }
 
 void Note::requestRelayout()
 {
+    prepareGeometryChange();
+    
     d->width = 0;
     unbufferize();
     basket()->relayoutNotes(true); // TODO: A signal that will relayout ONCE and DELAYED if called several times
 }
 
-void Note::setWidth(int width) // TODO: inline ?
+void Note::setWidth(qreal width) // TODO: inline ?
 {
     if (d->width != width)
         setWidthForceRelayout(width);
 }
 
-void Note::setWidthForceRelayout(int width)
+void Note::setWidthForceRelayout(qreal width)
 {
+    prepareGeometryChange();
     unbufferize();
     d->width = (width < minWidth() ? minWidth() : width);
     int contentWidth = width - contentX() - NOTE_MARGIN;
@@ -1022,13 +1028,13 @@ void Note::setWidthForceRelayout(int width)
             contentWidth = 1;
         if (contentWidth < m_content->minWidth())
             contentWidth = m_content->minWidth();
-        d->height = m_content->setWidthAndGetHeight(contentWidth/* < 1 ? 1 : contentWidth*/) + 2 * NOTE_MARGIN;
+        setHeight(m_content->setWidthAndGetHeight(contentWidth/* < 1 ? 1 : contentWidth*/) + 2 * NOTE_MARGIN);
         if (d->height < 3 * INSERTION_HEIGHT) // Assure a minimal size...
-            d->height = 3 * INSERTION_HEIGHT;
+            setHeight(3 * INSERTION_HEIGHT);
     }
 }
 
-int Note::minWidth()
+qreal Note::minWidth() const
 {
     if (m_content)
         return contentX() + m_content->minWidth() + NOTE_MARGIN;
@@ -1036,10 +1042,10 @@ int Note::minWidth()
         return GROUP_WIDTH; ///// FIXME: is this OK?
 }
 
-int Note::minRight()
+qreal Note::minRight()
 {
     if (isGroup()) {
-        int right = finalX() + width();
+        qreal right = x() + width();
         Note* child = firstChild();
         bool first = true;
         while (child) {
@@ -1049,147 +1055,55 @@ int Note::minRight()
             first = false;
         }
         if (isColumn()) {
-            int minColumnRight = finalX() + 2 * HANDLE_WIDTH;
+            qreal minColumnRight = x() + 2 * HANDLE_WIDTH;
             if (right < minColumnRight)
                 return minColumnRight;
         }
         return right;
     } else
-        return finalX() + minWidth();
+        return x() + minWidth();
 }
 
-void Note::setX(int x)
-{
-    if (d->x == x)
-        return;
-
-    if (isBufferized() && basket()->hasBackgroundImage()) {
-        // Unbufferize only if the background change:
-        if (basket()->isTiledBackground())
-            unbufferize();
-        else {
-            int bgw = basket()->backgroundPixmap()->width();
-            if (d->x >= bgw && x < bgw) // Was not in the background image and is now inside it:
-                unbufferize();
-            else if (d->x < bgw) // Was in the background image and is now at another position of the background image or is now outside:
-                unbufferize();
-        }
-    }
-
-    d->x = x;
-}
-
-void Note::setY(int y)
-{
-    if (d->y == y)
-        return;
-
-    if (isBufferized() && basket()->hasBackgroundImage()) {
-        // Unbufferize only if the background change:
-        if (basket()->isTiledBackground())
-            unbufferize();
-        else {
-            int bgh = basket()->backgroundPixmap()->height();
-            if (d->y >= bgh && y < bgh) // Was not in the background image and is now inside it:
-                unbufferize();
-            else if (d->y < bgh) // Was in the background image and is now at another position of the background image or is now outside:
-                unbufferize();
-        }
-    }
-
-    d->y = y;
-}
-
-
-void Note::toggleFolded(bool animate)
+bool Note::toggleFolded()
 {
     // Close the editor if it was editing a note that we are about to hide after collapsing:
     if (!m_isFolded && basket() && basket()->isDuringEdit()) {
-        if (contains(basket()->editedNote()) && firstRealChild() != basket()->editedNote())
+        if (containsNote(basket()->editedNote()) && firstRealChild() != basket()->editedNote())
             basket()->closeEditor();
     }
 
     // Important to close the editor FIRST, because else, the last edited note would not show during folding animation (don't ask me why ;-) ):
     m_isFolded = ! m_isFolded;
-
+    
     unbufferize();
 
-    if (animate) {
-        // We animate collapsing (so sub-notes fluidly go under the first note)
-        // We don't animate expanding: we place sub-notes directly under the first note (and the next relayout will animate the expanding)
-        // But if user quickly collapsed and then expand (while the collapsing animation isn't finished), we animate anyway
-        bool animateSetUnder = (m_isFolded || !m_collapseFinished);
-//      kDebug() << "fold:" << m_isFolded << " collapseFinished:"  << m_collapseFinished << " animateSetUnder:" << animateSetUnder;
-
-        if (m_isFolded)
-            m_collapseFinished = false;
-        else
-            m_expandingFinished = false;
-
-        Note* note = firstChild();
-        if (note) {
-            note->setOnTop(true);
-            while ((note = note->next())) {   // Don't process the first child: it is OK
-                note->setRecursivelyUnder(/*firstRealChild*/firstChild(), animateSetUnder);
-                note->setOnTop(false);
-            }
-        }
-    }
-
-    //if (basket()->focusedNote() && !basket()->focusedNote()->isShown()) {
-    if (basket()->isLoaded()) {
-        basket()->setFocusedNote(firstRealChild());
-        basket()->m_startOfShiftSelectionNote = firstRealChild();
-    }
-
-    if (basket()->isLoaded() && !m_isFolded) {
-        //basket()->setFocusedNote(this);
-        basket()->relayoutNotes(true);
-        basket()->ensureNoteVisible(this);
-    }
-
-    basket()->save(); // FIXME: SHOULD WE ALWAYS SAVE ????????
-}
-
-void Note::setRecursivelyUnder(Note *under, bool animate)
-{
-    int y = /*finalHeight() > under->finalHeight() ? under->finalY() :*/ under->finalBottom() - finalHeight() + 1;
-    if (animate)
-        setFinalPosition(finalX(), y);
-    else {
-        setY(y);
-        cancelAnimation();
-    }
-
-    if (isGroup())
-        FOR_EACH_CHILD(child)
-        child->setRecursivelyUnder(under, animate);
+    return true;
 }
 
 
-Note* Note::noteAt(int x, int y)
+Note* Note::noteAt(QPointF pos)
 {
     if (matching() && hasResizer()) {
         int right = rightLimit();
         // TODO: This code is dupliacted 3 times: !!!!
-        if ((x >= right) && (x < right + RESIZER_WIDTH) && (y >= d->y) && (y < d->y + resizerHeight())) {
+        if ((pos.x() >= right) && (pos.x() < right + RESIZER_WIDTH) && (pos.y() >= y()) && (pos.y() < y() + resizerHeight())) {
             if (! m_computedAreas)
                 recomputeAreas();
-            for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-                QRect &rect = *it;
-                if (rect.contains(x, y))
+            for (QList<QRectF>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+                QRectF &rect = *it;
+                if (rect.contains(pos.x(), pos.y()))
                     return this;
             }
         }
     }
 
     if (isGroup()) {
-      if ((x >= d->x) && (x < d->x + width()) && (y >= d->y) && (y < d->y + d->height)) {
+      if ((pos.x() >= x()) && (pos.x() < x() + width()) && (pos.y() >= y()) && (pos.y() < y() + d->height)) {
             if (! m_computedAreas)
                 recomputeAreas();
-            for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-                QRect &rect = *it;
-                if (rect.contains(x, y))
+            for (QList<QRectF>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+                QRectF &rect = *it;
+                if (rect.contains(pos.x(), pos.y()))
                     return this;
             }
             return NULL;
@@ -1199,19 +1113,19 @@ Note* Note::noteAt(int x, int y)
         bool first = true;
         while (child) {
             if ((showSubNotes() || first) && child->matching()) {
-                found = child->noteAt(x, y);
+                found = child->noteAt(pos);
                 if (found)
                     return found;
             }
             child = child->next();
             first = false;
         }
-    } else if (matching() && y >= d->y && y < d->y + d->height && x >= d->x && x < d->x + d->width) {
+    } else if (matching() && pos.y() >= y() && pos.y() < y() + d->height && pos.x() >= x() && pos.x() < x() + d->width) {
         if (! m_computedAreas)
             recomputeAreas();
-        for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-            QRect &rect = *it;
-            if (rect.contains(x, y))
+        for (QList<QRectF>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+            QRectF &rect = *it;
+            if (rect.contains(pos.x(), pos.y()))
                 return this;
         }
         return NULL;
@@ -1220,23 +1134,27 @@ Note* Note::noteAt(int x, int y)
     return NULL;
 }
 
-QRect Note::rect()
+QRectF Note::boundingRect() const
 {
-    return QRect(x(), y(), width(), height());
+    if(hasResizer())
+    {
+        return QRectF(0,0,rightLimit()-x()+RESIZER_WIDTH,resizerHeight());
+    }
+    return QRectF(0, 0, width(), height());
 }
 
-QRect Note::resizerRect()
+QRectF Note::resizerRect()
 {
-    return QRect(rightLimit(), y(), RESIZER_WIDTH, resizerHeight());
+    return QRectF(rightLimit(), y(), RESIZER_WIDTH, resizerHeight());
 }
 
 
 bool Note::showSubNotes()
 {
-    return !m_isFolded || !m_collapseFinished || basket()->isFiltering();
+    return !m_isFolded || basket()->isFiltering();
 }
 
-void Note::relayoutAt(int x, int y, bool animate)
+void Note::relayoutAt(qreal ax, qreal ay, bool animate)
 {
     if (!matching())
         return;
@@ -1246,98 +1164,100 @@ void Note::relayoutAt(int x, int y, bool animate)
 
     // Don't relayout free notes one under the other, because by definition they are freely positionned!
     if (isFree()) {
-        x = finalX();
-        y = finalY();
+        ax = x();
+        ay = y();
         // If it's a column, it always have the same "fixed" position (no animation):
     } else if (isColumn()) {
-        x = (prev() ? prev()->rightLimit() + RESIZER_WIDTH : 0);
-        y = 0;
-        cancelAnimation();
-        setX(x);
-        setY(y);
+        ax = (prev() ? prev()->rightLimit() + RESIZER_WIDTH : 0);
+        ay = 0;
+        setX(ax);
+        setY(ay);
         // But relayout others vertically if they are inside such primary groups or if it is a "normal" basket:
     } else {
-        if (animate)
-            setFinalPosition(x, y);
-        else {
-            cancelAnimation();
-            setX(x);
-            setY(y);
-        }
+            setX(ax);
+            setY(ay);
     }
 
     // Then, relayout sub-notes (only the first, if the group is folded) and so, assign an height to the group:
     if (isGroup()) {
-        int h = 0;
+        qreal h = 0;
         Note *child = firstChild();
         bool first = true;
         while (child) {
             if (child->matching() && (!m_isFolded || first || basket()->isFiltering())) { // Don't use showSubNotes() but use !m_isFolded because we don't want a relayout for the animated collapsing notes
-                child->relayoutAt(x + width(), y + h, animate);
-                h += child->finalHeight();
-            } else                                  // In case the user collapse a group, then move it and then expand it:
-                child->setXRecursively(x + width()); //  notes SHOULD have a good X coordonate, and not the old one!
+                child->relayoutAt(ax + width(), ay + h, animate);
+                h += child->height();
+                if(!child->isVisible()) child->show();
+            } else {                                 // In case the user collapse a group, then move it and then expand it:
+                child->setXRecursively(x() + width()); //  notes SHOULD have a good X coordonate, and not the old one!
+                if(child->isVisible()) child->hideRecursively();
+            }
             // For future animation when re-match, but on bottom of already matched notes!
             // Find parent primary note and set the Y to THAT y:
-            if (!child->matching())
-                child->setY(parentPrimaryNote()->y());
+            //if (!child->matching())
+            //    child->setY(parentPrimaryNote()->y());
             child = child->next();
             first = false;
         }
-        if (finalHeight() != h || d->height != h) {
+        if (height() != h || d->height != h) {
             unbufferize();
-            if (animate)
-                addAnimation(0, 0, h - finalHeight());
-            else {
-                d->height = h;
+            /*if (animate)
+                addAnimation(0, 0, h - height());
+            else {*/
+                setHeight(h);
                 unbufferize();
-            }
+            //}
         }
     } else {
-        setWidth(finalRightLimit() - x);
         // If rightLimit is excedded, set the top-level right limit!!!
         // and NEED RELAYOUT
+        setWidth(finalRightLimit() - x());            
     }
 
     // Set the basket area limits (but not for child notes: no need, because they will look for theire parent note):
     if (!parentNote()) {
         if (basket()->tmpWidth < finalRightLimit() + (hasResizer() ? RESIZER_WIDTH : 0))
             basket()->tmpWidth = finalRightLimit() + (hasResizer() ? RESIZER_WIDTH : 0);
-        if (basket()->tmpHeight < finalY() + finalHeight())
-            basket()->tmpHeight = finalY() + finalHeight();
+        if (basket()->tmpHeight < y() + height())
+            basket()->tmpHeight = y() + height();
         // However, if the note exceed the allowed size, let it! :
     } else if (!isGroup()) {
-        if (basket()->tmpWidth < finalX() + width())
-            basket()->tmpWidth = finalX() + width();
-        if (basket()->tmpHeight < finalY() + finalHeight())
-            basket()->tmpHeight = finalY() + finalHeight();
+        if (basket()->tmpWidth < x() + width() + (hasResizer() ? RESIZER_WIDTH : 0))
+            basket()->tmpWidth = x() + width() + (hasResizer() ? RESIZER_WIDTH : 0);
+        if (basket()->tmpHeight < y() + height())
+            basket()->tmpHeight = y() + height();
     }
 }
 
-void Note::setXRecursively(int x)
+void Note::setXRecursively(qreal x)
 {
-    m_deltaX = 0;
     setX(x);
 
     FOR_EACH_CHILD(child)
     child->setXRecursively(x + width());
 }
 
-void Note::setYRecursively(int y)
+void Note::setYRecursively(qreal y)
 {
-    m_deltaY = 0;
     setY(y);
 
     FOR_EACH_CHILD(child)
     child->setYRecursively(y);
 }
 
-void Note::setGroupWidth(int width)
+void Note::hideRecursively()
+{
+    hide();
+
+    FOR_EACH_CHILD(child)
+    child->hideRecursively();
+}
+void Note::setGroupWidth(qreal width)
 {
     m_groupWidth = width;
 }
 
-int Note::groupWidth()
+qreal Note::groupWidth() const
 {
     if (hasResizer())
         return m_groupWidth;
@@ -1345,31 +1265,31 @@ int Note::groupWidth()
         return rightLimit() - x();
 }
 
-int Note::rightLimit()
+qreal Note::rightLimit() const
 {
     if (isColumn() && d->next == 0L) // The last column
-        return qMax(x() + minWidth(), basket()->visibleWidth());
+        return qMax((x() + minWidth()), (qreal)basket()->graphicsView()->viewport()->width());
     else if (parentNote())
         return parentNote()->rightLimit();
     else
-        return d->x + m_groupWidth;
+        return x() + m_groupWidth;
 }
 
-int Note::finalRightLimit()
+qreal Note::finalRightLimit() const
 {
     if (isColumn() && d->next == 0L) // The last column
-        return qMax(finalX() + minWidth(), basket()->visibleWidth());
+        return qMax(x() + minWidth(), (qreal)basket()->graphicsView()->viewport()->width());
     else if (parentNote())
         return parentNote()->finalRightLimit();
     else
-        return finalX() + m_groupWidth;
+        return x() + m_groupWidth;
 }
 
 /*
  * This code is derivated from drawMetalGradient() from the Qt documentation:
  */
 void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBottom,
-                  int x, int y, int w, int h,
+                  qreal x, qreal y, qreal w, qreal h,
                   bool sunken, bool horz, bool flat)   /*const*/
 {
     QColor highlight(colorBottom);
@@ -1425,9 +1345,9 @@ void drawGradient(QPainter *p, const QColor &colorTop, const QColor & colorBotto
     }
 }
 
-void Note::drawExpander(QPainter *painter, int x, int y,
+void Note::drawExpander(QPainter *painter, qreal x, qreal y,
                         const QColor &background, bool expand,
-                        BasketView *basket)
+                        BasketScene *basket)
 {
     QStyleOption opt;
     opt.state = (expand ? QStyle::State_On : QStyle::State_Off);
@@ -1440,17 +1360,17 @@ void Note::drawExpander(QPainter *painter, int x, int y,
     QStyle *style = basket->style();
     if (!expand){
     	style->drawPrimitive(QStyle::PE_IndicatorArrowDown, &opt, painter,
-        	                 basket->viewport());
+        	                 basket->graphicsView()->viewport());
     }
     else{
     	style->drawPrimitive(QStyle::PE_IndicatorArrowRight, &opt, painter,
-        	                 basket->viewport());
+        	                 basket->graphicsView()->viewport());
     }
 }
 
-QColor expanderBackground(int height, int y, const QColor &foreground)
+QColor expanderBackground(qreal height, qreal y, const QColor &foreground)
 {
-    // We will divide height per two, substract one and use that below a division bar:
+    // We will divide height per two, subtract one and use that below a division bar:
     // To avoid division by zero error, height should be bigger than 3.
     // And to avoid y errors or if y is on the borders, we return the border color: the background color.
     if (height <= 3 || y <= 0 || y >= height - 1)
@@ -1459,25 +1379,26 @@ QColor expanderBackground(int height, int y, const QColor &foreground)
     QColor dark     = foreground.dark(110);  // 1/1.1 of brightness
     QColor light    = foreground.light(150); // 50% brighter
 
-    int h1, h2, s1, s2, v1, v2;
+    qreal h1, h2, s1, s2, v1, v2;
     int ng;
     if (y <= (height - 2) / 2) {
-        light.getHsv(&h1, &s1, &v1);
-        dark.getHsv(&h2, &s2, &v2);
+        light.getHsvF(&h1, &s1, &v1);
+        dark.getHsvF(&h2, &s2, &v2);
         ng = (height - 2) / 2;
         y -= 1;
     } else {
-        dark.getHsv(&h1, &s1, &v1);
-        foreground.getHsv(&h2, &s2, &v2);
+        dark.getHsvF(&h1, &s1, &v1);
+        foreground.getHsvF(&h2, &s2, &v2);
         ng = (height - 2) - (height - 2) / 2;
         y -= 1 + (height - 2) / 2;
     }
-    return QColor::fromHsv(h1 + ((h2 - h1)*y) / (ng - 1),
+
+    return QColor::fromHsvF(h1 + ((h2 - h1)*y) / (ng - 1),
                            s1 + ((s2 - s1)*y) / (ng - 1),
                            v1 + ((v2 - v1)*y) / (ng - 1));
 }
 
-void Note::drawHandle(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground)
+void Note::drawHandle(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QColor &background, const QColor &foreground)
 {
     QPen backgroundPen(background);
     QPen foregroundPen(foreground);
@@ -1493,8 +1414,8 @@ void Note::drawHandle(QPainter *painter, int x, int y, int width, int height, co
     painter->drawLine(0,         height - 1, width - 1, height - 1);
 
     // Draw the gradients:
-    drawGradient(painter, light, dark,       1 + x, 1 + y,                width - 2, (height - 2) / 2,            /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-    drawGradient(painter, dark,  foreground, 1 + x, 1 + y + (height - 2) / 2, width - 2, (height - 2) - (height - 2) / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    drawGradient(painter, light, dark,       1 + x, 1 + y,                width - 2, (height - 1) / 2,            /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    drawGradient(painter, dark,  foreground, 1 + x, 1 + y + (height - 1) / 2, width - 2, (height - 1) - (height - 1) / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
 
     // Round the top corner with background color:
     painter->setPen(backgroundPen);
@@ -1523,12 +1444,12 @@ void Note::drawHandle(QPainter *painter, int x, int y, int width, int height, co
     painter->drawPoint(2, 2);
 
     // Draw the grips:
-    int xGrips             = 4;
-    int marginedHeight = (height * 80 / 100); // 10% empty on top, and 10% empty on bottom, so 20% of the height should be empty of any grip, and 80% should be in the grips
+    qreal xGrips             = 4;
+    qreal marginedHeight = (height * 80 / 100); // 10% empty on top, and 10% empty on bottom, so 20% of the height should be empty of any grip, and 80% should be in the grips
     int nbGrips            = (marginedHeight - 3) / 6;
     if (nbGrips < 2)
         nbGrips = 2;
-    int yGrips             = (height + 1 - nbGrips * 6 - 3) / 2; // +1 to avoid rounding errors, -nbGrips*6-3 the size of the grips
+    qreal yGrips             = (height + 1 - nbGrips * 6 - 3) / 2; // +1 to avoid rounding errors, -nbGrips*6-3 the size of the grips
     QColor darker  = foreground.dark(130);
     QColor lighter = foreground.light(130);
     for (int i = 0; i < nbGrips; ++i) {
@@ -1559,7 +1480,7 @@ void Note::drawHandle(QPainter *painter, int x, int y, int width, int height, co
     painter->drawPoint(xGrips + 1, yGrips + 1);
 }
 
-void Note::drawResizer(QPainter *painter, int x, int y, int width, int height, const QColor &background, const QColor &foreground, bool rounded)
+void Note::drawResizer(QPainter *painter, qreal x, qreal y, qreal width, qreal height, const QColor &background, const QColor &foreground, bool rounded)
 {
     QPen backgroundPen(background);
     QPen foregroundPen(foreground);
@@ -1570,7 +1491,7 @@ void Note::drawResizer(QPainter *painter, int x, int y, int width, int height, c
 
     // Draw the surrounding rectangle:
     painter->setPen(foregroundPen);
-    painter->drawRect(0, 0, width, height);
+    painter->fillRect(0, 0, width, height,foreground);
 
     // Draw the gradients:
     drawGradient(painter, light, dark,       1 + x, 1 + y,                width - 2, (height - 2) / 2,            /*sunken=*/false, /*horz=*/true, /*flat=*/false);
@@ -1605,13 +1526,13 @@ void Note::drawResizer(QPainter *painter, int x, int y, int width, int height, c
     }
 
     // Draw the arows:
-    int xArrow  = 2;
-    int hMargin = 9;
+    qreal xArrow  = 2;
+    qreal hMargin = 9;
     int countArrows = (height >= hMargin * 4 + 6 * 3 ? 3 : (height >= hMargin * 3 + 6 * 2 ? 2 : 1));
     QColor darker  = foreground.dark(130);
     QColor lighter = foreground.light(130);
     for (int i = 0; i < countArrows; ++i) {
-        int yArrow;
+        qreal yArrow;
         switch (countArrows) {
         default:
         case 1: yArrow = (height-6) / 2;                                                        break;
@@ -1637,12 +1558,12 @@ void Note::drawResizer(QPainter *painter, int x, int y, int width, int height, c
     }
 }
 
-void Note::drawInactiveResizer(QPainter *painter, int x, int y, int height, const QColor &background, bool column)
+void Note::drawInactiveResizer(QPainter *painter, qreal x, qreal y, qreal height, const QColor &background, bool column)
 {
     // If background color is too dark, we compute a lighter color instead of a darker:
     QColor darkBgColor = (Tools::tooDark(background) ? background.light(120) : background.dark(105));
     if (column) {
-        int halfWidth = RESIZER_WIDTH / 2;
+        qreal halfWidth = RESIZER_WIDTH / 2;
         drawGradient(painter, darkBgColor, background,  x,         y, halfWidth,                 height, /*sunken=*/false, /*horz=*/false, /*flat=*/false);
         drawGradient(painter, background,  darkBgColor, halfWidth, y, RESIZER_WIDTH - halfWidth, height, /*sunken=*/false, /*horz=*/false, /*flat=*/false);
     } else
@@ -1663,44 +1584,44 @@ QPalette Note::palette() const
  * (x,y) relate to the painter origin
  * (width,height) only used for 5:fourCorners type
  */
-void Note::drawRoundings(QPainter *painter, int x, int y, int type, int width, int height)
+void Note::drawRoundings(QPainter *painter, qreal x, qreal y, int type, qreal width, qreal height)
 {
-    int right;
+    qreal right;
 
     switch (type) {
     case 1:
         x += this->x();
         y += this->y();
-        basket()->blendBackground(*painter, QRect(x, y,     4, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y + 1, 2, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y + 2, 1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y + 3, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y,     4, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y + 1, 2, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y + 2, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y + 3, 1, 1), this->x(), this->y());
         break;
     case 2:
         x += this->x();
         y += this->y();
-        basket()->blendBackground(*painter, QRect(x, y - 1, 1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y,     1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y + 1, 2, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x, y + 2, 4, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y - 1, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y,     1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y + 1, 2, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x, y + 2, 4, 1), this->x(), this->y());
         break;
     case 3:
         right = rightLimit();
         x += right;
         y += this->y();
-        basket()->blendBackground(*painter, QRect(x - 1, y,     4, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x + 1, y + 1, 2, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x + 2, y + 2, 1, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x + 2, y + 3, 1, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x - 1, y,     4, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 1, y + 1, 2, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 2, y + 2, 1, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 2, y + 3, 1, 1), right, this->y());
         break;
     case 4:
         right = rightLimit();
         x += right;
         y += this->y();
-        basket()->blendBackground(*painter, QRect(x + 2, y - 1, 1, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x + 2, y,     1, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x + 1, y + 1, 2, 1), right, this->y());
-        basket()->blendBackground(*painter, QRect(x - 1, y + 2, 4, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 2, y - 1, 1, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 2, y,     1, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x + 1, y + 1, 2, 1), right, this->y());
+        basket()->blendBackground(*painter, QRectF(x - 1, y + 2, 4, 1), right, this->y());
         break;
     case 5:
         // First make sure the corners are white (depending on the widget style):
@@ -1712,29 +1633,29 @@ void Note::drawRoundings(QPainter *painter, int x, int y, int type, int width, i
         // And then blend corners:
         x += this->x();
         y += this->y();
-        basket()->blendBackground(*painter, QRect(x,             y,              1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 1, y,              1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 1, y + height - 1, 1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x,             y + height - 1, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x,             y,              1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 1, y,              1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 1, y + height - 1, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x,             y + height - 1, 1, 1), this->x(), this->y());
         break;
     case 6:
         x += this->x();
         y += this->y();
         //if (!isSelected()) {
         // Inside left corners:
-        basket()->blendBackground(*painter, QRect(x + HANDLE_WIDTH + 1, y + 1,          1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + HANDLE_WIDTH,     y + 2,          1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + HANDLE_WIDTH + 1, y + height - 2, 1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + HANDLE_WIDTH,     y + height - 3, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + HANDLE_WIDTH + 1, y + 1,          1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + HANDLE_WIDTH,     y + 2,          1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + HANDLE_WIDTH + 1, y + height - 2, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + HANDLE_WIDTH,     y + height - 3, 1, 1), this->x(), this->y());
         // Inside right corners:
-        basket()->blendBackground(*painter, QRect(x + width - 4,        y + 1,          1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 3,        y + 2,          1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 4,        y + height - 2, 1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 3,        y + height - 3, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 4,        y + 1,          1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 3,        y + 2,          1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 4,        y + height - 2, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 3,        y + height - 3, 1, 1), this->x(), this->y());
         //}
         // Outside right corners:
-        basket()->blendBackground(*painter, QRect(x + width - 1,        y,              1, 1), this->x(), this->y());
-        basket()->blendBackground(*painter, QRect(x + width - 1,        y + height - 1, 1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 1,        y,              1, 1), this->x(), this->y());
+        basket()->blendBackground(*painter, QRectF(x + width - 1,        y + height - 1, 1, 1), this->x(), this->y());
         break;
     }
 }
@@ -1743,6 +1664,7 @@ void Note::drawRoundings(QPainter *painter, int x, int y, int type, int width, i
 
 void Note::setOnTop(bool onTop)
 {
+    setZValue( onTop ? 100 : 0 );
     m_onTop = onTop;
 
     Note *note = firstChild();
@@ -1752,30 +1674,30 @@ void Note::setOnTop(bool onTop)
     }
 }
 
-void substractRectOnAreas(const QRect &rectToSubstract, QList<QRect> &areas, bool andRemove)
+void substractRectOnAreas(const QRectF &rectToSubstract, QList<QRectF> &areas, bool andRemove)
 {
     for (int i = 0; i < areas.size();) {
-        QRect &rect = areas[i];
+        QRectF &rect = areas[i];
         // Split the rectangle if it intersects with rectToSubstract:
         if (rect.intersects(rectToSubstract)) {
             // Create the top rectangle:
             if (rectToSubstract.top() > rect.top()) {
-                areas.insert(i++, QRect(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
+                areas.insert(i++, QRectF(rect.left(), rect.top(), rect.width(), rectToSubstract.top() - rect.top()));
                 rect.setTop(rectToSubstract.top());
             }
             // Create the bottom rectangle:
             if (rectToSubstract.bottom() < rect.bottom()) {
-                areas.insert(i++, QRect(rect.left(), rectToSubstract.bottom() + 1, rect.width(), rect.bottom() - rectToSubstract.bottom()));
+                areas.insert(i++, QRectF(rect.left(), rectToSubstract.bottom(), rect.width(), rect.bottom() - rectToSubstract.bottom()));
                 rect.setBottom(rectToSubstract.bottom());
             }
             // Create the left rectangle:
             if (rectToSubstract.left() > rect.left()) {
-                areas.insert(i++, QRect(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
+                areas.insert(i++, QRectF(rect.left(), rect.top(), rectToSubstract.left() - rect.left(), rect.height()));
                 rect.setLeft(rectToSubstract.left());
             }
             // Create the right rectangle:
             if (rectToSubstract.right() < rect.right()) {
-                areas.insert(i++, QRect(rectToSubstract.right() + 1, rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
+                areas.insert(i++, QRectF(rectToSubstract.right(), rect.top(), rect.right() - rectToSubstract.right(), rect.height()));
                 rect.setRight(rectToSubstract.right());
             }
             // Remove the rectangle if it's entirely contained:
@@ -1866,98 +1788,17 @@ void Note::getGradientColors(const QColor &originalBackground, QColor *colorTop,
  * - We keep bufferized note/group draws BUT NOT the resizer: such objects are
  *   small and fast to draw, so we don't complexify code for that
  */
-void Note::draw(QPainter *painter, const QRect &clipRect)
+
+void Note::draw(QPainter *painter, const QRectF &/*clipRect*/)
 {
     if (!matching())
-        return;
-
-    /** Paint childs: */
-    if (isGroup()) {
-        Note *child = firstChild();
-        bool first = true;
-        while (child) {
-            if ((showSubNotes() || first) && child->matching())
-                child->draw(painter, clipRect);
-            child = child->next();
-            first = false;
-        }
-    }
-
-    QRect myRect(x(), y(), width(), height());
-    /** Paint the resizer if needed: */
-    if (hasResizer()) {
-        int right = rightLimit();
-        QRect resizerRect(right, y(), RESIZER_WIDTH, resizerHeight());
-        if (resizerRect.intersects(clipRect)) {
-            // Prepare to draw the resizer:
-            QPixmap pixmap(RESIZER_WIDTH, resizerHeight());
-            QPainter painter2(&pixmap);
-            // Draw gradient or resizer:
-            if (m_hovered && m_hoveredZone == Resizer) {
-                QColor baseColor(basket()->backgroundColor());
-                QColor highColor(palette().color(QPalette::Highlight));
-                drawResizer(&painter2, 0, 0, RESIZER_WIDTH, resizerHeight(), baseColor, highColor, /*rounded=*/!isColumn());
-                if (!isColumn()) {
-                    drawRoundings(&painter2, RESIZER_WIDTH - 3, 0,                   /*type=*/3);
-                    drawRoundings(&painter2, RESIZER_WIDTH - 3, resizerHeight() - 3, /*type=*/4);
-                }
-            } else {
-                drawInactiveResizer(&painter2, /*x=*/0, /*y=*/0, /*height=*/resizerHeight(), basket()->backgroundColor(), isColumn());
-                basket()->blendBackground(painter2, resizerRect);
-            }
-            // Draw inserter:
-            if (basket()->inserterShown() && resizerRect.intersects(basket()->inserterRect()))
-                basket()->drawInserter(painter2, right, y());
-            // Draw selection rect:
-            if (basket()->isSelecting() && resizerRect.intersects(basket()->selectionRect())) {
-                QRect selectionRect = basket()->selectionRect();
-                selectionRect.translate(-right, -y());
-                QRect selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
-                if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
-                    QColor insideColor = basket()->selectionRectInsideColor();
-                    QColor darkInsideColor(insideColor.dark(105));
-                    painter2.setClipRect(selectionRectInside);
-                    if (isColumn()) {
-                        int halfWidth = RESIZER_WIDTH / 2;
-                        drawGradient(&painter2, darkInsideColor, insideColor,     0,         0, halfWidth,               resizerHeight(), /*sunken=*/false, /*horz=*/false, /*flat=*/false);
-                        drawGradient(&painter2, insideColor,     darkInsideColor, halfWidth, 0, RESIZER_WIDTH - halfWidth, resizerHeight(), /*sunken=*/false, /*horz=*/false, /*flat=*/false);
-                    } else
-                        drawGradient(&painter2, darkInsideColor, insideColor, 0, 0, RESIZER_WIDTH, resizerHeight(), /*sunken=*/false, /*horz=*/false, /*flat=*/false);
-                    painter2.setClipping(false);
-                    selectionRectInside.translate(right, y());
-                    basket()->blendBackground(painter2, selectionRectInside, right, y(), false);
-                }
-                painter2.setPen(palette().color(QPalette::Highlight).darker());
-                painter2.drawRect(selectionRect);
-                painter2.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
-                painter2.drawPoint(selectionRect.topLeft());
-                painter2.drawPoint(selectionRect.topRight());
-                painter2.drawPoint(selectionRect.bottomLeft());
-                painter2.drawPoint(selectionRect.bottomRight());
-            }
-            // Draw on screen:
-            painter2.end();
-            /** Compute visible areas: */
-            if (! m_computedAreas)
-                recomputeAreas();
-            if (m_areas.isEmpty())
-                return;
-            for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-                QRect &rect = *it;
-                painter->drawPixmap(rect.x(), rect.y(), pixmap, rect.x() - right, rect.y() - y(), rect.width(), rect.height());
-            }
-        }
-    }
-
-    /** Then, draw the note/group ONLY if needed: */
-    if (! myRect.intersects(clipRect))
         return;
 
     /** Compute visible areas: */
     if (! m_computedAreas)
         recomputeAreas();
     if (m_areas.isEmpty())
-        return;
+	return;
 
     /** Directly draw pixmap on screen if it is already buffered: */
     if (isBufferized()) {
@@ -1967,7 +1808,7 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
     /** If pixmap is Null (size 0), no point in painting: **/
     if (!width() || !height())
-	    return;
+        return;
 
     /** Initialise buffer painter: */
     m_bufferedPixmap = QPixmap(width(), height());
@@ -1991,18 +1832,18 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
 
     /** And then draw the group: */
     if (isGroup()) {
-        // Draw background or handle:
+        //Draw background or handle:
         if (hovered) {
             drawHandle(&painter2, 0, 0, width(), height(), baseColor, highColor);
             drawRoundings(&painter2, 0, 0,            /*type=*/1);
             drawRoundings(&painter2, 0, height() - 3, /*type=*/2);
         } else {
             painter2.fillRect(0, 0, width(), height(), baseBrush);
-            basket()->blendBackground(painter2, myRect, -1, -1, /*opaque=*/true);
+            basket()->blendBackground(painter2, boundingRect().translated(x(), y()), -1, -1, /*opaque=*/true);
         }
 
         // Draw expander:
-        int yExp = yExpander();
+        qreal yExp = yExpander();
         drawExpander(&painter2, NOTE_MARGIN, yExp, (hovered ? expanderBackground(height(), yExp + EXPANDER_HEIGHT / 2, highColor) : baseColor), m_isFolded, basket());
         // Draw expander rounded edges:
         if (hovered) {
@@ -2016,35 +1857,47 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
             painter2.drawPoint(NOTE_MARGIN + 9 - 1, yExp + 9 - 1);
         } else
             drawRoundings(&painter2, NOTE_MARGIN, yExp, /*type=*/5, 9, 9);
-
         // Draw on screen:
         painter2.end();
         drawBufferOnScreen(painter, m_bufferedPixmap);
+
         return;
     }
 
+    
     /** Or draw the note: */
     // What are the background colors:
     QColor background = basket()->backgroundColor();
     if (isSelected())
+    {
         if (m_computedState.backgroundColor().isValid())
+        {
             background = Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight));
+        }
         else
+        {
             background = palette().color(QPalette::Highlight);
+        }
+    }
     else if (m_computedState.backgroundColor().isValid())
+    {
         background = m_computedState.backgroundColor();
+    }
+    
     QColor bgColor;
     QColor darkBgColor;
     getGradientColors(background, &darkBgColor, &bgColor);
     // Draw background (color, gradient and pixmap):
     drawGradient(&painter2, bgColor, darkBgColor, 0, 0, width(), height(), /*sunken=*/!hovered, /*horz=*/true, /*flat=*/false);
-    if (!hovered) {
+    basket()->blendBackground(painter2, boundingRect().translated(x(),y()));
+
+    if (!hovered) 
+    {
         painter2.setPen(Tools::mixColor(bgColor, darkBgColor));
         painter2.drawLine(0, height() - 1, width(), height() - 1);
     }
-    basket()->blendBackground(painter2, myRect);
-
-    if (hovered) {
+    else 
+    {
         // Top/Bottom lines:
         painter2.setPen(highPen);
         painter2.drawLine(0, height() - 1, width(), height() - 1);
@@ -2086,21 +1939,9 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
         drawRoundings(&painter2, 0, 0, /*type=*/6, width(), height());
     }
 
-    if (isFocused()) {
-        QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1,
-                        width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
-
-        // TODO: make this look right/better
-        QStyleOptionFocusRect opt;
-        opt.initFrom(m_basket);
-        opt.rect = focusRect;
-        kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
-                                     &painter2);
-    }
-
     // Draw the Emblems:
-    int yIcon = (height() - EMBLEM_SIZE) / 2;
-    int xIcon = HANDLE_WIDTH + NOTE_MARGIN;
+    qreal yIcon = (height() - EMBLEM_SIZE) / 2;
+    qreal xIcon = HANDLE_WIDTH + NOTE_MARGIN;
     for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it) {
         if (!(*it)->emblem().isEmpty()) {
             QPixmap stateEmblem = KIconLoader::global()->loadIcon(
@@ -2138,12 +1979,19 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
         painter2.drawPoint(xIcon + 4, yIcon + 7);
     }
 
-    // Draw content:
-    // Optimization: do not draw text notes because it is time consuming and should be done nearly at each text modification.
-    if (basket()->editedNote() != this || basket()->editedNote()->content()->type() != NoteType::Html) {
-        painter2.translate(contentX(), NOTE_MARGIN);
-        painter2.setFont(m_computedState.font(painter2.font()));
-        m_content->paint(&painter2, width() - contentX() - NOTE_MARGIN, height() - 2*NOTE_MARGIN, notePalette, !m_computedState.textColor().isValid(), isSelected(), hovered);
+    if (isFocused()) {
+        QRect focusRect(HANDLE_WIDTH, NOTE_MARGIN - 1,
+                        width() - HANDLE_WIDTH - 2, height() - 2*NOTE_MARGIN + 2);
+
+        // TODO: make this look right/better
+        QStyleOptionFocusRect opt;
+        opt.initFrom(m_basket->graphicsView());
+        opt.rect = focusRect;
+        //Temporary change to see the focus rectangle 
+        painter2.setPen(Qt::red);
+        painter2.drawRect(focusRect);
+        //kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+        //                             &painter2);
     }
 
     // Draw on screen:
@@ -2151,60 +1999,57 @@ void Note::draw(QPainter *painter, const QRect &clipRect)
     drawBufferOnScreen(painter, m_bufferedPixmap);
 }
 
+void Note::paint(QPainter *painter,
+                           const QStyleOptionGraphicsItem */*option*/,
+                           QWidget */*widget*/)
+ {
+    if(!m_basket->isLoaded())
+        return;
+
+    if(boundingRect().width()<=0.1 || boundingRect().height()<=0.1)
+        return;
+    
+    draw(painter,boundingRect());
+
+    if (hasResizer()) 
+    {
+       qreal right = rightLimit()-x();
+       QRectF resizerRect(0, 0, RESIZER_WIDTH, resizerHeight());
+       // Prepare to draw the resizer:
+       QPixmap pixmap(RESIZER_WIDTH, resizerHeight());
+       QPainter painter2(&pixmap);
+       // Draw gradient or resizer:
+       if (m_hovered && m_hoveredZone == Resizer) 
+       {
+           QColor baseColor(basket()->backgroundColor());
+           QColor highColor(palette().color(QPalette::Highlight));
+           drawResizer(&painter2, 0, 0, RESIZER_WIDTH, resizerHeight(), baseColor, highColor, /*rounded=*/!isColumn());
+           if (!isColumn()) {
+               drawRoundings(&painter2, RESIZER_WIDTH - 3, 0,                   /*type=*/3);
+               drawRoundings(&painter2, RESIZER_WIDTH - 3, resizerHeight() - 3, /*type=*/4);
+           }
+       } 
+       else 
+       {
+           drawInactiveResizer(&painter2, /*x=*/0, /*y=*/0, /*height=*/resizerHeight(), basket()->backgroundColor(), isColumn());
+           resizerRect.translate(rightLimit(),y());
+           basket()->blendBackground(painter2, resizerRect);
+       }
+       // Draw on screen:
+       painter2.end();
+       painter->drawPixmap(right, 0, pixmap);
+    }
+}
+
 void Note::drawBufferOnScreen(QPainter *painter, const QPixmap &contentPixmap)
 {
-    for (QList<QRect>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
-        QRect &rect = *it;
-        if (rect.x() >= x() + width()) // It's a rect of the resizer, don't draw it!
+    for (QList<QRectF>::iterator it = m_areas.begin(); it != m_areas.end(); ++it) {
+        QRectF rect = (*it).translated(-x(),-y());
+        
+        if (rect.x() >= width()) // It's a rect of the resizer, don't draw it!
             continue;
-        // If the inserter is above the note, draw it, BUT NOT in the buffer pixmap,
-        // we copy the rectangle in a new pixmap, apply the inserter and then draw this new pixmap on screen:
-        if ((basket()->inserterShown() && rect.intersects(basket()->inserterRect()))  ||
-                (basket()->isSelecting()   && rect.intersects(basket()->selectionRect()))) {
-            QPixmap pixmap3(rect.width(), rect.height());
-            QPainter painter3(&pixmap3);
-            painter3.drawPixmap(0, 0, contentPixmap, rect.x() - x(), rect.y() - y(), rect.width(), rect.height());
-            // Draw inserter:
-            if (basket()->inserterShown() && rect.intersects(basket()->inserterRect()))
-                basket()->drawInserter(painter3, rect.x(), rect.y());
-            // Draw selection rect:
-            if (basket()->isSelecting() && rect.intersects(basket()->selectionRect())) {
-                QRect selectionRect = basket()->selectionRect();
-                selectionRect.translate(-rect.x(), -rect.y());
 
-                QRect selectionRectInside(selectionRect.x() + 1, selectionRect.y() + 1, selectionRect.width() - 2, selectionRect.height() - 2);
-                if (selectionRectInside.width() > 0 && selectionRectInside.height() > 0) {
-                    bufferizeSelectionPixmap();
-                    selectionRectInside.translate(rect.x(), rect.y());
-                    QRect rectToPaint = rect.intersect(selectionRectInside);
-                    rectToPaint.translate(-x(), -y());
-                    painter3.drawPixmap(rectToPaint.topLeft() + QPoint(x(), y()) - rect.topLeft(), m_bufferedSelectionPixmap, rectToPaint);
-                    //blendBackground(painter2, selectionRectInside, rect.x(), rect.y(), true, &m_selectedBackgroundPixmap);
-                }
-
-                painter3.setPen(palette().color(QPalette::Highlight).darker());
-                painter3.drawRect(selectionRect);
-                if (isGroup())
-                    painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), basket()->backgroundColor()));
-                else {
-                    // What are the background colors:
-                    QColor bgColor = basket()->backgroundColor();
-                    if (isSelected())
-                        bgColor = (m_computedState.backgroundColor().isValid() ? Tools::mixColor(Tools::mixColor(m_computedState.backgroundColor(), palette().color(QPalette::Highlight)), palette().color(QPalette::Highlight)) : palette().color(QPalette::Highlight));
-                    else if (m_computedState.backgroundColor().isValid())
-                        bgColor = m_computedState.backgroundColor();
-                    painter3.setPen(Tools::mixColor(palette().color(QPalette::Highlight).darker(), bgColor));
-                }
-                painter3.drawPoint(selectionRect.topLeft());
-                painter3.drawPoint(selectionRect.topRight());
-                painter3.drawPoint(selectionRect.bottomLeft());
-                painter3.drawPoint(selectionRect.bottomRight());
-            }
-            painter3.end();
-            painter->drawPixmap(rect.x(), rect.y(), pixmap3);
-            // Else, draw the rect pixmap directly on screen:
-        } else
-            painter->drawPixmap(rect.x(), rect.y(), contentPixmap, rect.x() - x(), rect.y() - y(), rect.width(), rect.height());
+        painter->drawPixmap(rect.x(), rect.y(), contentPixmap, rect.x(), rect.y(), rect.width(), rect.height());
     }
 }
 
@@ -2256,7 +2101,7 @@ void Note::addState(State *state, bool orReplace)
 
 QFont Note::font()
 {
-    return m_computedState.font(basket()->Q3ScrollView::font());
+    return m_computedState.font(basket()->QGraphicsScene::font());
 }
 
 QColor Note::backgroundColor()
@@ -2280,7 +2125,11 @@ void Note::recomputeStyle()
     State::merge(m_states, &m_computedState, &m_emblemsCount, &m_haveInvisibleTags, basket()->backgroundColor());
 //  unsetWidth();
     if (content())
+    {
+        if(content()->graphicsItem())
+            content()->graphicsItem()->setPos(contentX(),NOTE_MARGIN);
         content()->fontChanged();
+    }
 //  requestRelayout(); // TODO!
 }
 
@@ -2384,7 +2233,7 @@ void Note::addStateToSelectedNotes(State *state, bool orReplace)
         addState(state, orReplace);
 
     FOR_EACH_CHILD(child)
-    child->addStateToSelectedNotes(state, orReplace); // TODO: BasketView::addStateToSelectedNotes() does not have orReplace
+    child->addStateToSelectedNotes(state, orReplace); // TODO: BasketScene::addStateToSelectedNotes() does not have orReplace
 }
 
 void Note::changeStateOfSelectedNotes(State *state)
@@ -2431,10 +2280,18 @@ State* Note::stateOfTag(Tag *tag)
     return 0;
 }
 
-State* Note::stateForEmblemNumber(int number)
+bool Note::allowCrossReferences()
+{
+    for (State::List::iterator it = m_states.begin(); it != m_states.end(); ++it)
+        if (!(*it)->allowCrossReferences())
+            return false;
+    return true;
+}
+
+State* Note::stateForEmblemNumber(int number) const
 {
     int i = -1;
-    for (State::List::Iterator it = m_states.begin(); it != m_states.end(); ++it)
+    for (State::List::const_iterator it = m_states.begin(); it != m_states.end(); ++it)
         if (!(*it)->emblem().isEmpty()) {
             ++i;
             if (i == number)
@@ -2516,26 +2373,26 @@ void Note::bufferizeSelectionPixmap()
     }
 }
 
-QRect Note::visibleRect()
+QRectF Note::visibleRect()
 {
-    QList<QRect> areas;
-    areas.append(rect());
+    QList<QRectF> areas;
+    areas.append(QRectF(x(),y(),width(),height()));
 
     // When we are folding a parent group, if this note is bigger than the first real note of the group, cut the top of this:
-    Note *parent = parentNote();
+    /*Note *parent = parentNote();
     while (parent) {
         if (parent->expandingOrCollapsing())
             substractRectOnAreas(QRect(x(), parent->y() - height(), width(), height()), areas, true);
         parent = parent->parentNote();
-    }
+    }*/
 
     if (areas.count() > 0)
         return areas.first();
     else
-        return QRect();
+        return QRectF();
 }
 
-void Note::recomputeBlankRects(QList<QRect> &blankAreas)
+void Note::recomputeBlankRects(QList<QRectF> &blankAreas)
 {
     if (!matching())
         return;
@@ -2612,7 +2469,7 @@ void Note::usedStates(QList<State*> &states)
 
 Note* Note::nextInStack()
 {
-    // First, search in the childs:
+    // First, search in the children:
     if (firstChild()) {
         if (firstChild()->content())
             return firstChild();
@@ -2767,7 +2624,7 @@ void Note::groupIn(Note *group)
 
     if (allSelected() && !isColumn()) {
         basket()->unplugNote(this);
-        basket()->insertNote(this, group, Note::BottomColumn, QPoint(), /*animateNewPosition=*/true);
+        basket()->insertNote(this, group, Note::BottomColumn, QPointF(), /*animateNewPosition=*/true);
     } else {
         Note *next;
         Note *child = firstChild();
@@ -2789,7 +2646,7 @@ bool Note::tryExpandParent()
         if (parent->isColumn())
             return false;
         if (parent->isFolded()) {
-            parent->toggleFolded(true);
+            parent->toggleFolded();
             basket()->relayoutNotes(true);
             return true;
         }
@@ -2809,7 +2666,7 @@ bool Note::tryFoldParent()        // TODO: withCtrl  ? withShift  ?
         if (parent->isColumn())
             return false;
         if (!parent->isFolded()) {
-            parent->toggleFolded(true);
+            parent->toggleFolded();
             basket()->relayoutNotes(true);
             return true;
         }
@@ -2820,74 +2677,74 @@ bool Note::tryFoldParent()        // TODO: withCtrl  ? withShift  ?
 }
 
 
-int Note::distanceOnLeftRight(Note *note, int side)
+qreal Note::distanceOnLeftRight(Note *note, int side)
 {
-    if (side == BasketView::RIGHT_SIDE) {
+    if (side == BasketScene::RIGHT_SIDE) {
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
-        if (finalX() > note->finalX() || finalRightLimit() > note->finalRightLimit())
+        if (x() > note->x() || finalRightLimit() > note->finalRightLimit())
             return -1;
     } else { /*LEFT_SIDE:*/
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
-        if (finalX() < note->finalX() || finalRightLimit() < note->finalRightLimit())
+        if (x() < note->x() || finalRightLimit() < note->finalRightLimit())
             return -1;
     }
-    if (finalX() == note->finalX() && finalRightLimit() == note->finalRightLimit())
+    if (x() == note->x() && finalRightLimit() == note->finalRightLimit())
         return -1;
 
-    float thisCenterX = finalX() + (side == BasketView::LEFT_SIDE ? width() : /*RIGHT_SIDE:*/ 0);
-    float thisCenterY = finalY() + finalHeight() / 2;
-    float noteCenterX = note->finalX() + note->width() / 2;
-    float noteCenterY = note->finalY() + note->finalHeight() / 2;
+    qreal thisCenterX = x() + (side == BasketScene::LEFT_SIDE ? width() : /*RIGHT_SIDE:*/ 0);
+    qreal thisCenterY = y() + height() / 2;
+    qreal noteCenterX = note->x() + note->width() / 2;
+    qreal noteCenterY = note->y() + note->height() / 2;
 
-    if (thisCenterY > note->finalBottom())
-        noteCenterY = note->finalBottom();
-    else if (thisCenterY < note->finalY())
-        noteCenterY = note->finalY();
+    if (thisCenterY > note->bottom())
+        noteCenterY = note->bottom();
+    else if (thisCenterY < note->y())
+        noteCenterY = note->y();
     else
         noteCenterY = thisCenterY;
 
-    float angle = 0;
+    qreal angle = 0;
     if (noteCenterX - thisCenterX != 0)
         angle = 1000 * ((noteCenterY - thisCenterY) / (noteCenterX - thisCenterX));
     if (angle < 0)
         angle = -angle;
 
-    return int(sqrt(pow(noteCenterX - thisCenterX, 2) + pow(noteCenterY - thisCenterY, 2)) + angle);
+    return sqrt(pow(noteCenterX - thisCenterX, 2) + pow(noteCenterY - thisCenterY, 2)) + angle;
 }
 
-int Note::distanceOnTopBottom(Note *note, int side)
+qreal Note::distanceOnTopBottom(Note *note, int side)
 {
-    if (side == BasketView::BOTTOM_SIDE) {
+    if (side == BasketScene::BOTTOM_SIDE) {
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
-        if (finalY() > note->finalY() || finalBottom() > note->finalBottom())
+        if (y() > note->y() || bottom() > note->bottom())
             return -1;
     } else { /*TOP_SIDE:*/
         // If 'note' is on left of 'this': cannot switch from this to note by pressing Right key:
-        if (finalY() < note->finalY() || finalBottom() < note->finalBottom())
+        if (y() < note->y() || bottom() < note->bottom())
             return -1;
     }
-    if (finalY() == note->finalY() && finalBottom() == note->finalBottom())
+    if (y() == note->y() && bottom() == note->bottom())
         return -1;
 
-    float thisCenterX = finalX() + width() / 2;
-    float thisCenterY = finalY() + (side == BasketView::TOP_SIDE ? finalHeight() : /*BOTTOM_SIDE:*/ 0);
-    float noteCenterX = note->finalX() + note->width() / 2;
-    float noteCenterY = note->finalY() + note->finalHeight() / 2;
+    qreal thisCenterX = x() + width() / 2;
+    qreal thisCenterY = y() + (side == BasketScene::TOP_SIDE ? height() : /*BOTTOM_SIDE:*/ 0);
+    qreal noteCenterX = note->x() + note->width() / 2;
+    qreal noteCenterY = note->y() + note->height() / 2;
 
     if (thisCenterX > note->finalRightLimit())
         noteCenterX = note->finalRightLimit();
-    else if (thisCenterX < note->finalX())
-        noteCenterX = note->finalX();
+    else if (thisCenterX < note->x())
+        noteCenterX = note->x();
     else
         noteCenterX = thisCenterX;
 
-    float angle = 0;
+    qreal angle = 0;
     if (noteCenterX - thisCenterX != 0)
         angle = 1000 * ((noteCenterY - thisCenterY) / (noteCenterX - thisCenterX));
     if (angle < 0)
         angle = -angle;
 
-    return int(sqrt(pow(noteCenterX - thisCenterX, 2) + pow(noteCenterY - thisCenterY, 2)) + angle);
+    return sqrt(pow(noteCenterX - thisCenterX, 2) + pow(noteCenterY - thisCenterY, 2)) + angle;
 }
 
 Note* Note::parentPrimaryNote()

@@ -21,13 +21,13 @@
 #ifndef EXPORTERDIALOG_H
 #define EXPORTERDIALOG_H
 
-#include <KDialog>
+#include <KDE/KDialog>
 
 class KUrlRequester;
 class QCheckBox;
 class QString;
 
-class BasketView;
+class BasketScene;
 
 /**
   * @author Sébastien Laoût
@@ -36,7 +36,7 @@ class ExporterDialog : public KDialog
 {
     Q_OBJECT
 public:
-    ExporterDialog(BasketView *basket, QWidget *parent = 0, const char *name = 0);
+    explicit ExporterDialog(BasketScene *basket, QWidget *parent = 0, const char *name = 0);
     ~ExporterDialog();
     QString filePath();
     bool    embedLinkedFiles();
@@ -50,7 +50,7 @@ protected slots:
     void save();
     void accept();
 private:
-    BasketView    *m_basket;
+    BasketScene    *m_basket;
     KUrlRequester *m_url;
     QCheckBox     *m_embedLinkedFiles;
     QCheckBox     *m_embedLinkedFolders;

@@ -18,35 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <stdlib.h>
-
 #include <KDE/KCmdLineArgs>
-#include <KDE/KAboutData>
-#include <KDE/KIconLoader>
-#include <QPixmap>
-#include <KDE/KLocale>
-#include <KDE/KGlobalAccel>
-#include <KDE/KMessageBox>
-#include <KDE/KStandardDirs>
-#include <KDE/KDebug>
-#include <QFile>
-#include <QFileInfo>
 
 #include <kconfig.h> // TMP IN ALPHA 1
+#include <config.h>
+#include "basket_options.h"
 
 #include "application.h"
-#include "backgroundmanager.h"
 #include "mainwindow.h"
 #include "settings.h"
 #include "global.h"
-#include "debugwindow.h"
-#include "notedrag.h"
-#include "basketview.h"
-#include "aboutdata.h"
-#include "basket_options.h"
 #include "backup.h"
-
-#include <config.h>
 
 int main(int argc, char *argv[])
 {
@@ -81,7 +63,7 @@ int main(int argc, char *argv[])
                 if (!Settings::startDocked())
                         win->show();
         }
-        // Else, the application has been launched explicitely by the user (KMenu, keyboard shortcut...), so he need it, we show it:
+        // Else, the application has been launched explicitly by the user (KMenu, keyboard shortcut...), so he need it, we show it:
         else
             win->show();
     } else

@@ -18,39 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <config.h>
-#include <QLayout>
-#include <QLineEdit>
-#include <QTabWidget>
-#include <QGroupBox>
-#include <QLabel>
-#include <QPushButton>
-//Added by qt3to4:
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
+#include "settings.h"
+
+#include <QtGui/QCheckBox>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QGridLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtCore/QDate>
+
+#include <KDE/KLineEdit>
 #include <KDE/KNumInput>
-#include <KDE/KColorCombo>
-#include <KDE/KIconLoader>
 #include <KDE/KConfig>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
-#include <QWhatsThis>
-#include <QRadioButton>
-#include <KDE/KApplication>
 #include <KDE/KAboutData>
 #include <KDE/KMimeType>
-#include <KDE/KStandardDirs>
-#include <KDE/KDebug>
-#include <QDateTime>
+#include <KDE/KComponentData>
+#include <KDE/KTabWidget>
 
 #include "kgpgme.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "linklabel.h"
-#include "settings.h"
 #include "variouswidgets.h"
-#include "note.h"
 
 /** Settings */
 
@@ -369,7 +361,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
     gl->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 2);
 
     // Basket Tree Position:
-    m_treeOnLeft = new QComboBox(this);
+    m_treeOnLeft = new KComboBox(this);
     m_treeOnLeft->addItem(i18n("On left"));
     m_treeOnLeft->addItem(i18n("On right"));
 
@@ -382,7 +374,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
     connect(m_treeOnLeft, SIGNAL(activated(int)), this, SLOT(changed()));
 
     // Filter Bar Position:
-    m_filterOnTop = new QComboBox(this);
+    m_filterOnTop = new KComboBox(this);
     m_filterOnTop->addItem(i18n("On top"));
     m_filterOnTop->addItem(i18n("On bottom"));
 
@@ -394,7 +386,7 @@ GeneralPage::GeneralPage(QWidget * parent, const char * name)
     gl->addWidget(m_filterOnTop, 1, 1);
     connect(m_filterOnTop, SIGNAL(activated(int)), this, SLOT(changed()));
 
-    // Use Baloons to Report Results of Global Actions:
+    // Use balloons to Report Results of Global Actions:
     hLay = new QHBoxLayout(0);
     m_usePassivePopup = new QCheckBox(i18n("&Use balloons to report results of global actions"), this);
     connect(m_usePassivePopup, SIGNAL(stateChanged(int)), this, SLOT(changed()));
@@ -593,7 +585,7 @@ BasketsPage::BasketsPage(QWidget * parent, const char * name)
     QGridLayout *ga = new QGridLayout(widget);
     ga->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding), 0, 3);
 
-    m_middleAction = new QComboBox(widget);
+    m_middleAction = new KComboBox(widget);
     m_middleAction->addItem(i18n("Do nothing"));
     m_middleAction->addItem(i18n("Paste clipboard"));
     m_middleAction->addItem(i18n("Insert image note"));
@@ -718,7 +710,7 @@ NewNotesPage::NewNotesPage(QWidget * parent, const char * name)
     // Place of New Notes:
 
     hLay = new QHBoxLayout;
-    m_newNotesPlace = new QComboBox(this);
+    m_newNotesPlace = new KComboBox(this);
 
     label = new QLabel(this);
     label->setText(i18n("&Place of new notes:"));
@@ -829,10 +821,10 @@ void NewNotesPage::defaults()
 
 void NewNotesPage::visualize()
 {
-    ViewSizeDialog size(this, m_imgSizeX->value(), m_imgSizeY->value());
-    size.exec();
-    m_imgSizeX->setValue(size.width());
-    m_imgSizeY->setValue(size.height());
+    QPointer<ViewSizeDialog> size = new ViewSizeDialog(this, m_imgSizeX->value(), m_imgSizeY->value());
+    size->exec();
+    m_imgSizeX->setValue(size->width());
+    m_imgSizeY->setValue(size->height());
 }
 
 /** class NotesAppearancePage: */
@@ -841,7 +833,7 @@ NotesAppearancePage::NotesAppearancePage(QWidget * parent, const char * name)
         : KCModule(KComponentData(name), parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    QTabWidget *tabs = new QTabWidget(this);
+    KTabWidget *tabs = new KTabWidget(this);
     layout->addWidget(tabs);
 
     m_soundLook       = new LinkLookEditWidget(this, i18n("Conference audio record"),                         "folder-sound",       tabs);

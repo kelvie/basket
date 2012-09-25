@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "basketview.h"
 #include "decoratedbasket.h"
+
+#include <QtGui/QGraphicsView>
+#include <QtGui/QVBoxLayout>
+
+#include "basketscene.h"
 #include "filter.h"
 #include "settings.h"
-
-#include <QVBoxLayout>
 
 /** Class DecoratedBasket: */
 
@@ -32,8 +34,9 @@ DecoratedBasket::DecoratedBasket(QWidget *parent, const QString &folderName, Qt:
 {
     m_layout = new QVBoxLayout(this);
     m_filter = new FilterBar(this);
-    m_basket = new BasketView(this, folderName);
-    m_layout->addWidget(m_basket);
+    m_basket = new BasketScene(this, folderName);
+    m_basket->graphicsView()->setParent(this);
+    m_layout->addWidget(m_basket->graphicsView());
     setFilterBarPosition(Settings::filterOnTop());
 
     m_filter->hide();
@@ -56,12 +59,12 @@ void DecoratedBasket::setFilterBarPosition(bool onTop)
     if (onTop) {
         m_layout->insertWidget(0, m_filter);
         setTabOrder(this/*(QWidget*)parent()*/, m_filter);
-        setTabOrder(m_filter, m_basket);
-        setTabOrder(m_basket, (QWidget*)parent());
+        setTabOrder(m_filter, m_basket->graphicsView());
+        setTabOrder(m_basket->graphicsView(), (QWidget*)parent());
     } else {
         m_layout->addWidget(m_filter);
-        setTabOrder(this/*(QWidget*)parent()*/, m_basket);
-        setTabOrder(m_basket, m_filter);
+        setTabOrder(this/*(QWidget*)parent()*/, m_basket->graphicsView());
+        setTabOrder(m_basket->graphicsView(), m_filter);
         setTabOrder(m_filter, (QWidget*)parent());
     }
 }
@@ -85,4 +88,10 @@ void DecoratedBasket::setFilterBarVisible(bool show, bool switchFocus)
 void DecoratedBasket::resetFilter()
 {
     m_filter->reset();
+}
+
+void DecoratedBasket::resizeEvent(QResizeEvent *event)
+{
+	QWidget::resizeEvent(event);
+	m_basket->relayoutNotes(true);
 }

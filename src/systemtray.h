@@ -21,9 +21,7 @@
 #ifndef SYSTEMTRAY_H
 #define SYSTEMTRAY_H
 
-#include <KSystemTrayIcon>
-
-class MainWindow;
+#include <KDE/KSystemTrayIcon>
 
 /** A thin wrapper around KSystemTrayIcon until the old SystemTray is ported.
  * As things are ported, items should
@@ -59,7 +57,7 @@ class SystemTray2 : public SystemTray
 {
     Q_OBJECT
 public:
-    SystemTray2(QWidget *parent = 0, const char *name = 0);
+    explicit SystemTray2(QWidget *parent = 0, const char *name = 0);
     ~SystemTray2();
 protected:
     void mousePressEvent(QMouseEvent *event);

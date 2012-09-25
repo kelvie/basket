@@ -18,41 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QLayout>
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QGridLayout>
+#include "noteedit.h"
+
+#include <QtGui/QLabel>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QTextCharFormat>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QGraphicsProxyWidget>
+#include <QtGui/QGridLayout>
+#include <QtGui/QScrollBar>
+#include <QtGui/QFontComboBox>
+
+#include <KDE/KApplication>
 #include <KDE/KLineEdit>
 #include <KDE/KUrlRequester>
 #include <KDE/KColorDialog>
+#include <KDE/KColorCombo>
 #include <KDE/KService>
 #include <KDE/KConfig>
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
-#include <KDE/KMainWindow>
 #include <KDE/KToolBar>
 #include <KDE/KAction>
-#include <KDE/KUriFilter>
+#include <KDE/KActionCollection>
+#include <KDE/KIconButton>
+#include <KDE/KToggleAction>
+#include <KDE/KDesktopFile>
 #include <KDE/KDebug>
-#include <KDE/KStandardAction>
 
-#include "KDE/KIconDialog"
-#include "noteedit.h"
 #include "notecontent.h"
-// Use Tools::
 #include "notefactory.h"
 #include "note.h"
-#include "basketview.h"
+#include "basketscene.h"
+#include "basketlistview.h"
 #include "settings.h"
 #include "tools.h"
 #include "variouswidgets.h"
 #include "focusedwidgets.h"
-
-#include <KDE/KActionCollection>
-#include <KDE/KToggleAction>
-#include <KDE/KDesktopFile>
 
 /** class NoteEditor: */
 
@@ -66,9 +68,83 @@ NoteEditor::NoteEditor(NoteContent *noteContent)
     m_noteContent = noteContent;
 }
 
+NoteEditor::~NoteEditor()
+{
+  delete m_widget;
+}
+
 Note* NoteEditor::note()
 {
     return m_noteContent->note();
+}
+
+void NoteEditor::setCursorTo(const QPointF &pos)
+{
+  // clicked comes from the QMouseEvent, which is in item's coordinate system.
+  if(m_textEdit)
+  {
+    QPointF currentPos = note()->mapFromScene(pos);
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()));
+  }
+}
+
+void NoteEditor::startSelection(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    QPointF currentPos = note()->mapFromScene(pos);
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    m_textEdit->setTextCursor(m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint()));
+  }  
+}
+
+void NoteEditor::updateSelection(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    QPointF currentPos = note()->mapFromScene(pos);
+    QPointF deltaPos = m_textEdit->pos()-note()->pos();
+    
+    QTextCursor cursor = m_textEdit->cursorForPosition((currentPos-deltaPos).toPoint());
+    QTextCursor currentCursor = m_textEdit->textCursor();
+    //select the text 
+    currentCursor.setPosition(cursor.position(), QTextCursor::KeepAnchor);
+    //update the cursor
+    m_textEdit->setTextCursor(currentCursor);
+    //copy to clipboard
+    m_textEdit->copy();    
+  }
+}
+
+void NoteEditor::endSelection(const QPointF &/*pos*/)
+{
+    // nothing to do yet
+    // we could copy the selected text to the QClipboard with QClipboard::Selection mode
+}
+
+void NoteEditor::paste(const QPointF &pos)
+{
+  if(m_textEdit)
+  {
+    setCursorTo(pos);
+    m_textEdit->paste();
+  }
+}
+
+void NoteEditor::connectActions(BasketScene *scene)
+{
+    if (m_textEdit) {
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(selectionChangedInEditor()));
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(contentChangedInEditor()));
+      connect(m_textEdit, SIGNAL(textChanged()),      scene, SLOT(placeEditorAndEnsureVisible()));
+      connect(m_textEdit, SIGNAL(selectionChanged()), scene, SLOT(selectionChangedInEditor()));
+
+    } else if(m_lineEdit) {
+      connect(m_lineEdit, SIGNAL(textChanged(const QString&)), scene, SLOT(selectionChangedInEditor()));
+      connect(m_lineEdit, SIGNAL(textChanged(const QString&)), scene, SLOT(contentChangedInEditor()));
+      connect(m_lineEdit, SIGNAL(selectionChanged()), 	       scene, SLOT(selectionChangedInEditor()));
+    }    
 }
 
 NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *parent)
@@ -118,17 +194,29 @@ NoteEditor* NoteEditor::editNoteContent(NoteContent *noteContent, QWidget *paren
 
 void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 {
-    m_widget   = inlineEditor;
+    if(!m_widget)
+    {
+      m_widget   = new QGraphicsProxyWidget();
+    }
+    m_widget->setWidget(inlineEditor);
+    m_widget->setZValue(500);
+    //m_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    m_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     m_textEdit = 0;
     m_lineEdit = 0;
-
     KTextEdit *textEdit = dynamic_cast<KTextEdit*>(inlineEditor);
     if (textEdit)
+    {
         m_textEdit = textEdit;
-    else {
-        QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(inlineEditor);
+    }
+    else 
+    {
+        KLineEdit *lineEdit = dynamic_cast<KLineEdit*>(inlineEditor);
         if (lineEdit)
-            m_lineEdit = lineEdit;
+	{
+	  m_lineEdit = lineEdit;
+	}
     }
 }
 
@@ -137,7 +225,7 @@ void NoteEditor::setInlineEditor(QWidget *inlineEditor)
 TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
         : NoteEditor(textContent), m_textContent(textContent)
 {
-    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
+    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);
@@ -168,7 +256,7 @@ TextEditor::TextEditor(TextContent *textContent, QWidget *parent)
 
 TextEditor::~TextEditor()
 {
-    delete widget(); // TODO: delete that in validate(), so we can remove one method
+    delete graphicsWidget()->widget(); // TODO: delete that in validate(), so we can remove one method
 }
 
 void TextEditor::autoSave(bool toFileToo)
@@ -207,7 +295,7 @@ void TextEditor::validate()
     m_textContent->saveToFile();
     m_textContent->setEdited();
 
-//  delete widget();
+    note()->setWidth(0);
 }
 
 /** class HtmlEditor: */
@@ -215,7 +303,7 @@ void TextEditor::validate()
 HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
         : NoteEditor(htmlContent), m_htmlContent(htmlContent)
 {
-    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true, parent);
+    FocusedTextEdit *textEdit = new FocusedTextEdit(/*disableUpdatesOnKeyPress=*/true,parent);
     textEdit->setLineWidth(0);
     textEdit->setMidLineWidth(0);
     textEdit->setFrameStyle(QFrame::Box);
@@ -236,7 +324,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()));
     connect(textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()));
 
-    connect(InlineEditors::instance()->richTextFont,     SIGNAL(textChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
+    connect(InlineEditors::instance()->richTextFont,     SIGNAL(editTextChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(qreal)),            textEdit, SLOT(setFontPointSize(qreal)));
     connect(InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&)));
 
@@ -247,28 +335,28 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(activated(int)),   textEdit, SLOT(setFocus()));
 
     connect(textEdit,  SIGNAL(cursorPositionChanged()),  this, SLOT(cursorPositionChanged()));
-    connect(textEdit,  SIGNAL(currentFontChanged(const QFont&)), this, SLOT(fontChanged(const QFont&)));
+    connect(textEdit,  SIGNAL(currentCharFormatChanged(const QTextCharFormat&)), this, SLOT(charFormatChanged(const QTextCharFormat&)));
 //  connect( textEdit,  SIGNAL(currentVerticalAlignmentChanged(VerticalAlignment)), this, SLOT(slotVerticalAlignmentChanged()) );
 
-    connect(InlineEditors::instance()->richTextBold,      SIGNAL(toggled(bool)),    this, SLOT(setBold(bool)));
-    connect(InlineEditors::instance()->richTextItalic,    SIGNAL(toggled(bool)),    textEdit, SLOT(setFontItalic(bool)));
-    connect(InlineEditors::instance()->richTextUnderline, SIGNAL(toggled(bool)),    textEdit, SLOT(setFontUnderline(bool)));
-    connect(InlineEditors::instance()->richTextLeft,      SIGNAL(activated()), this, SLOT(setLeft()));
-    connect(InlineEditors::instance()->richTextCenter,    SIGNAL(activated()), this, SLOT(setCentered()));
-    connect(InlineEditors::instance()->richTextRight,     SIGNAL(activated()), this, SLOT(setRight()));
-    connect(InlineEditors::instance()->richTextJustified, SIGNAL(activated()), this, SLOT(setBlock()));
+    connect(InlineEditors::instance()->richTextBold,      SIGNAL(triggered(bool)),    this, SLOT(setBold(bool)));
+    connect(InlineEditors::instance()->richTextItalic,    SIGNAL(triggered(bool)),    textEdit, SLOT(setFontItalic(bool)));
+    connect(InlineEditors::instance()->richTextUnderline, SIGNAL(triggered(bool)),    textEdit, SLOT(setFontUnderline(bool)));
+    connect(InlineEditors::instance()->richTextLeft,      SIGNAL(triggered()), this, SLOT(setLeft()));
+    connect(InlineEditors::instance()->richTextCenter,    SIGNAL(triggered()), this, SLOT(setCentered()));
+    connect(InlineEditors::instance()->richTextRight,     SIGNAL(triggered()), this, SLOT(setRight()));
+    connect(InlineEditors::instance()->richTextJustified, SIGNAL(triggered()), this, SLOT(setBlock()));
 
 //  InlineEditors::instance()->richTextToolBar()->show();
     cursorPositionChanged();
-    fontChanged(textEdit->currentFont());
+    charFormatChanged(textEdit->currentCharFormat());
     //QTimer::singleShot( 0, this, SLOT(cursorPositionChanged()) );
     InlineEditors::instance()->enableRichTextToolBar();
 
-    connect(InlineEditors::instance()->richTextUndo,      SIGNAL(activated()), textEdit, SLOT(undo()));
-    connect(InlineEditors::instance()->richTextRedo,      SIGNAL(activated()), textEdit, SLOT(redo()));
+    connect(InlineEditors::instance()->richTextUndo,      SIGNAL(triggered()), textEdit, SLOT(undo()));
+    connect(InlineEditors::instance()->richTextRedo,      SIGNAL(triggered()), textEdit, SLOT(redo()));
     connect(textEdit, SIGNAL(undoAvailable(bool)), InlineEditors::instance()->richTextUndo, SLOT(setEnabled(bool)));
     connect(textEdit, SIGNAL(redoAvailable(bool)), InlineEditors::instance()->richTextRedo, SLOT(setEnabled(bool)));
-    connect(textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
     InlineEditors::instance()->richTextUndo->setEnabled(false);
     InlineEditors::instance()->richTextRedo->setEnabled(false);
 
@@ -295,7 +383,7 @@ void HtmlEditor::cursorPositionChanged()
     }
 }
 
-void HtmlEditor::textChanged()
+void HtmlEditor::editTextChanged()
 {
     // The following is a workaround for an apparent Qt bug.
     // When I start typing in a textEdit, the undo&redo actions are not enabled until I click
@@ -305,12 +393,12 @@ void HtmlEditor::textChanged()
     InlineEditors::instance()->richTextRedo->setEnabled(textEdit()->document()->isRedoAvailable());
 }
 
-void HtmlEditor::fontChanged(const QFont &font)
+void HtmlEditor::charFormatChanged(const QTextCharFormat &format)
 {
-    InlineEditors::instance()->richTextFontSize->setFontSize(font.pointSize());
+    InlineEditors::instance()->richTextFontSize->setFontSize(format.font().pointSize());
 }
 
-/*void HtmlEditor::slotVe<rticalAlignmentChanged(QTextEdit::VerticalAlignment align)
+/*void HtmlEditor::slotVerticalAlignmentChanged(QTextEdit::VerticalAlignment align)
 {
     QTextEdit::VerticalAlignment align = textEdit()
     switch (align) {
@@ -359,12 +447,13 @@ void HtmlEditor::setBlock()
 
 void HtmlEditor::setBold(bool isChecked)
 {
+    kWarning()<<"setBold "<<isChecked;
     textEdit()->setFontWeight(isChecked ? QFont::Bold : QFont::Normal);
 }
 
 HtmlEditor::~HtmlEditor()
 {
-    delete widget();
+    //delete graphicsWidget()->widget();
 }
 
 void HtmlEditor::autoSave(bool toFileToo)
@@ -380,19 +469,28 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    m_htmlContent->setHtml(Tools::tagCrossReferences(textEdit()->toHtml(), /*userLink=*/true));
+    QString convert = textEdit()->toHtml();
+    if(note()->allowCrossReferences())
+        convert = Tools::tagCrossReferences(convert, /*userLink=*/true);
+
+    m_htmlContent->setHtml(convert);
     m_htmlContent->saveToFile();
     m_htmlContent->setEdited();
 
     disconnect();
-    widget()->disconnect();
+    graphicsWidget()->disconnect();
     if (InlineEditors::instance()) {
         InlineEditors::instance()->disableRichTextToolBar();
 //      if (InlineEditors::instance()->richTextToolBar())
 //          InlineEditors::instance()->richTextToolBar()->hide();
     }
-    delete widget();
-    setInlineEditor(0);
+    
+    if( graphicsWidget() )
+    {
+      note()->setZValue(1);
+      delete graphicsWidget()->widget();
+      setInlineEditor(0);
+    }
 }
 
 /** class ImageEditor: */
@@ -454,7 +552,7 @@ FileEditor::FileEditor(FileContent *fileContent, QWidget *parent)
 
 FileEditor::~FileEditor()
 {
-    delete widget();
+    delete graphicsWidget()->widget();
 }
 
 void FileEditor::autoSave(bool toFileToo)
@@ -476,8 +574,8 @@ void FileEditor::validate()
 LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
         : NoteEditor(linkContent)
 {
-    LinkEditDialog dialog(linkContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<LinkEditDialog> dialog = new LinkEditDialog(linkContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (linkContent->url().isEmpty() && linkContent->title().isEmpty())
         setEmpty();
@@ -488,8 +586,8 @@ LinkEditor::LinkEditor(LinkContent *linkContent, QWidget *parent)
 CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReferenceContent, QWidget *parent)
         : NoteEditor(crossReferenceContent)
 {
-    CrossReferenceEditDialog dialog(crossReferenceContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<CrossReferenceEditDialog> dialog = new CrossReferenceEditDialog(crossReferenceContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (crossReferenceContent->url().isEmpty() && crossReferenceContent->title().isEmpty())
         setEmpty();
@@ -500,8 +598,8 @@ CrossReferenceEditor::CrossReferenceEditor(CrossReferenceContent *crossReference
 LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent)
         : NoteEditor(launcherContent)
 {
-    LauncherEditDialog dialog(launcherContent, parent);
-    if (dialog.exec() == QDialog::Rejected)
+    QPointer<LauncherEditDialog> dialog = new LauncherEditDialog(launcherContent, parent);
+    if (dialog->exec() == QDialog::Rejected)
         cancel();
     if (launcherContent->name().isEmpty() && launcherContent->exec().isEmpty())
         setEmpty();
@@ -512,13 +610,13 @@ LauncherEditor::LauncherEditor(LauncherContent *launcherContent, QWidget *parent
 ColorEditor::ColorEditor(ColorContent *colorContent, QWidget *parent)
         : NoteEditor(colorContent)
 {
-    KColorDialog dialog(parent);
-    dialog.setColor(colorContent->color());
-    dialog.setCaption(i18n("Edit Color Note"));
-    dialog.setButtons(KDialog::Ok | KDialog::Cancel);
-    if (dialog.exec() == QDialog::Accepted) {
-        if (dialog.color() != colorContent->color()) {
-            colorContent->setColor(dialog.color());
+    QPointer<KColorDialog> dialog = new KColorDialog(parent);
+    dialog->setColor(colorContent->color());
+    dialog->setCaption(i18n("Edit Color Note"));
+    dialog->setButtons(KDialog::Ok | KDialog::Cancel);
+    if (dialog->exec() == QDialog::Accepted) {
+        if (dialog->color() != colorContent->color()) {
+            colorContent->setColor(dialog->color());
             colorContent->setEdited();
         }
     } else
@@ -549,7 +647,7 @@ UnknownEditor::UnknownEditor(UnknownContent *unknownContent, QWidget *parent)
 /** class DebuggedLineEdit: */
 
 DebuggedLineEdit::DebuggedLineEdit(const QString &text, QWidget *parent)
-        : QLineEdit(text, parent)
+        : KLineEdit(text, parent)
 {
 }
 
@@ -560,7 +658,7 @@ DebuggedLineEdit::~DebuggedLineEdit()
 void DebuggedLineEdit::keyPressEvent(QKeyEvent *event)
 {
     QString oldText = text();
-    QLineEdit::keyPressEvent(event);
+    KLineEdit::keyPressEvent(event);
     if (oldText != text())
         emit textChanged(text());
 }
@@ -655,8 +753,8 @@ LinkEditDialog::LinkEditDialog(LinkContent *contentNote, QWidget *parent/*, QKey
     layout->addWidget(wid,     2, 1, Qt::AlignVCenter);
 
     m_isAutoModified = false;
-    connect(m_url,   SIGNAL(textChanged(const QString&)), this, SLOT(urlChanged(const QString&)));
-    connect(m_title, SIGNAL(textChanged(const QString&)), this, SLOT(doNotAutoTitle(const QString&)));
+    connect(m_url,   SIGNAL(editTextChanged(const QString&)), this, SLOT(urlChanged(const QString&)));
+    connect(m_title, SIGNAL(editTextChanged(const QString&)), this, SLOT(doNotAutoTitle(const QString&)));
     connect(m_icon,  SIGNAL(iconChanged(QString))       , this, SLOT(doNotAutoIcon(QString)));
     connect(m_autoTitle, SIGNAL(clicked()), this, SLOT(guessTitle()));
     connect(m_autoIcon,  SIGNAL(clicked()), this, SLOT(guessIcon()));
@@ -840,7 +938,7 @@ void CrossReferenceEditDialog::generateBasketList(KComboBox *targetList, BasketL
         for(int i = 0; i < Global::bnpView->topLevelItemCount(); ++i)
             this->generateBasketList(targetList, Global::bnpView->topLevelItem(i));
     } else {
-        BasketView* bv = item->basket();
+        BasketScene* bv = item->basket();
 
         //TODO: add some fancy deco stuff to make it look like a tree list.
         QString pad;
@@ -891,7 +989,7 @@ LauncherEditDialog::LauncherEditDialog(LauncherContent *contentNote, QWidget *pa
     KService service(contentNote->fullPath());
 
     m_command = new RunCommandRequester(service.exec(), i18n("Choose a command to run:"), page);
-    m_name    = new QLineEdit(service.name(), page);
+    m_name    = new KLineEdit(service.name(), page);
 
     QWidget *wid = new QWidget(page);
     QHBoxLayout *hLay = new QHBoxLayout(wid);

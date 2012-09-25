@@ -82,7 +82,7 @@ bool BasketThumbCreator::create(const QString &path, int /*width*/, int /*height
 					file.close();
 					return true;
 				}
-			} else if (key.endsWith("*")) {
+			} else if (key.endsWith('*')) {
 				// We do not know what it is, but we should read the embedded-file in order to discard it:
 				bool ok;
 				ulong size = value.toULong(&ok);

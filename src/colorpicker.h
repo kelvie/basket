@@ -21,9 +21,10 @@
 #ifndef COLORPICKER_H
 #define COLORPICKER_H
 
-#include <QDesktopWidget>
-#include <QKeyEvent>
-#include <QMouseEvent>
+#include <QtGui/QDesktopWidget>
+
+class QKeyEvent;
+class QMouseEvent;
 
 /** Class to pick a color on the screen
   * @author Sébastien Laoût
@@ -37,8 +38,8 @@ public:
     ~DesktopColorPicker();
 public slots:
     /** Begin color picking.
-      * This function returns immediatly, and pickedColor() is emitted if user has
-      * choosen a color, and not canceled the process (by pressing Escape).
+      * This function returns immediately, and pickedColor() is emitted if user has
+      * chozen a color, and not canceled the process (by pressing Escape).
       */
     void pickColor();
 signals:

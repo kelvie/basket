@@ -1436,7 +1436,7 @@ msgstr ""
 "dosyasını silmeyi deneyin.</p>"
 
 #: src/bnpview.cpp:1831
-msgid "Ressource not Found"
+msgid "Resource not Found"
 msgstr "Kaynak Bulunamadı"
 
 #: src/bnpview.cpp:1855 src/bnpview.cpp:1864

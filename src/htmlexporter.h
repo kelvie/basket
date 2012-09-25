@@ -21,12 +21,12 @@
 #ifndef HTMLEXPORTER_H
 #define HTMLEXPORTER_H
 
-#include <QString>
-#include <QTextStream>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
 
 class QProgressBar;
 
-class BasketView;
+class BasketScene;
 class Note;
 
 /**
@@ -35,21 +35,21 @@ class Note;
 class HTMLExporter
 {
 public:
-    HTMLExporter(BasketView *basket);
+    HTMLExporter(BasketScene *basket);
     ~HTMLExporter();
 private:
-    void prepareExport(BasketView *basket, const QString &fullPath);
-    void exportBasket(BasketView *basket, bool isSubBasket);
+    void prepareExport(BasketScene *basket, const QString &fullPath);
+    void exportBasket(BasketScene *basket, bool isSubBasket);
     void exportNote(Note *note, int indent);
-    void writeBasketTree(BasketView *currentBasket);
-    void writeBasketTree(BasketView *currentBasket, BasketView *basket, int indent);
+    void writeBasketTree(BasketScene *currentBasket);
+    void writeBasketTree(BasketScene *currentBasket, BasketScene *basket, int indent);
 
 public:
     QString copyIcon(const QString &iconName, int size);
     QString copyFile(const QString &srcPath, bool createIt);
 
 public:
-    // Absolute path of the file name the user choosen:
+    // Absolute path of the file name the user chozen:
     QString filePath;          // eg.: "/home/seb/foo.html"
     QString fileName;          // eg.: "foo.html"
 
@@ -71,8 +71,8 @@ public:
 
     // Variables used by every export methods:
     QTextStream stream;
-    BasketView *exportedBasket;
-    BasketView *currentBasket;
+    BasketScene *exportedBasket;
+    BasketScene *currentBasket;
     bool withBasketTree;
     QProgressBar *progress;
 };

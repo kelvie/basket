@@ -18,33 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLineEdit>
-#include <QHBoxLayout>
-#include <QPixmap>
-#include <QVBoxLayout>
-#include <QLabel>
+#include "newbasketdialog.h"
+
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPixmap>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPainter>
+
+#include <KDE/KComboBox>
 #include <KDE/KLocale>
 #include <KDE/KPushButton>
+#include <KDE/KLineEdit>
 #include <KDE/KGuiItem>
 #include <KDE/KMessageBox>
-#include <QSize>
-#include <QPainter>
-#include <KApplication>
 #include <KDE/KIconLoader>
-#include <KDE/KMainWindow>
+#include <KDE/KIconButton>
+#include <KDE/KMainWindow>      //For Global::mainWindow()
 
-#include <QComboBox>
-
-#include "kicondialog.h"
-#include "newbasketdialog.h"
 #include "basketfactory.h"
-#include "basketview.h"
+#include "basketscene.h"
 #include "basketlistview.h"
-#include "variouswidgets.h"
 #include "kcolorcombo2.h"
 #include "tools.h"
 #include "global.h"
 #include "bnpview.h"
+#include "variouswidgets.h"     //For HelpLabel
 
 /** class SingleSelectionKIconView: */
 
@@ -80,7 +79,7 @@ NewBasketDefaultProperties::NewBasketDefaultProperties()
 
 /** class NewBasketDialog: */
 
-NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
+NewBasketDialog::NewBasketDialog(BasketScene *parentBasket, const NewBasketDefaultProperties &defaultProperties, QWidget *parent)
         : KDialog(parent)
         , m_defaultProperties(defaultProperties)
 {
@@ -108,7 +107,7 @@ NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaul
     m_icon->setFixedSize(size, size); // Make it square!
 
     m_icon->setToolTip(i18n("Icon"));
-    m_name = new QLineEdit(/*i18n("Basket"), */page);
+    m_name = new KLineEdit(/*i18n("Basket"), */page);
     m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
     connect(m_name, SIGNAL(textChanged(const QString&)), this, SLOT(nameChanged(const QString&)));
     enableButtonOk(false);
@@ -209,7 +208,7 @@ NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaul
     topLayout->addWidget(m_templates);
 
     layout = new QHBoxLayout;
-    m_createIn = new QComboBox(page);
+    m_createIn = new KComboBox(page);
     m_createIn->addItem(i18n("(Baskets)"));
     label = new QLabel(page);
     label->setText(i18n("C&reate in:"));
@@ -242,7 +241,7 @@ NewBasketDialog::NewBasketDialog(BasketView *parentBasket, const NewBasketDefaul
     if (parentBasket) {
         int index = 0;
 
-        for (QMap<int, BasketView*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it) {
+        for (QMap<int, BasketScene*>::Iterator it = m_basketsMap.begin(); it != m_basketsMap.end(); ++it) {
             if (it.value() == parentBasket) {
                 index = it.key();
                 break;
@@ -268,7 +267,7 @@ int NewBasketDialog::populateBasketsList(QTreeWidgetItem *item, int indent, int 
 {
     static const int ICON_SIZE = 16;
     // Get the basket data:
-    BasketView* basket = ((BasketListViewItem *)item)->basket();
+    BasketScene* basket = ((BasketListViewItem *)item)->basket();
     QPixmap icon = KIconLoader::global()->loadIcon(
                        basket->icon(), KIconLoader::NoGroup, ICON_SIZE,
                        KIconLoader::DefaultState, QStringList(), 0L,

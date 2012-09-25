@@ -22,17 +22,12 @@
 
 #ifdef HAVE_LIBGPGME
 
-#include <QLayout>
-#include <QToolButton>
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QHBoxLayout>
+#include <QtGui/QHBoxLayout>
+
 #include <KDE/KLocale>
-#include <KDE/KIconLoader>
 #include <KDE/KMessageBox>
 
-
-#include "basketview.h"
+#include "basketscene.h"
 #include "kgpgme.h"
 
 PasswordDlg::PasswordDlg(QWidget *parent)
@@ -60,7 +55,7 @@ PasswordDlg::~PasswordDlg()
 void PasswordDlg::accept()
 {
     int n = type();
-    if (n == BasketView::PrivateKeyEncryption && key().isEmpty())
+    if (n == BasketScene::PrivateKeyEncryption && key().isEmpty())
         KMessageBox::error(w, i18n("No private key selected."));
     else
         KDialog::accept();
@@ -80,11 +75,11 @@ QString PasswordDlg::key() const
 int PasswordDlg::type() const
 {
     if (w->noPasswordRadioButton->isChecked())
-        return BasketView::NoEncryption;
+        return BasketScene::NoEncryption;
     else if (w->passwordRadioButton->isChecked())
-        return BasketView::PasswordEncryption;
+        return BasketScene::PasswordEncryption;
     else if (w->publicPrivateRadioButton->isChecked())
-        return BasketView::PrivateKeyEncryption;
+        return BasketScene::PrivateKeyEncryption;
     return -1;
 }
 
@@ -100,11 +95,11 @@ void PasswordDlg::setKey(const QString& key)
 
 void PasswordDlg::setType(int type)
 {
-    if (type == BasketView::NoEncryption)
+    if (type == BasketScene::NoEncryption)
         w->noPasswordRadioButton->setChecked(true);
-    else if (type == BasketView::PasswordEncryption)
+    else if (type == BasketScene::PasswordEncryption)
         w->passwordRadioButton->setChecked(true);
-    else if (type == BasketView::PrivateKeyEncryption)
+    else if (type == BasketScene::PrivateKeyEncryption)
         w->publicPrivateRadioButton->setChecked(true);
 }
 

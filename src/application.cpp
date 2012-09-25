@@ -18,13 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KCmdLineArgs>
-#include <QString>
-#include <QFile>
-#include <QFileInfo>
-#include <QTimer>
-
 #include "application.h"
+
+#include <KDE/KCmdLineArgs>
+#include <KDE/KDebug>
+
+#include <QtCore/QString>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
+
 #include "global.h"
 #include "bnpview.h"
 
@@ -45,9 +48,15 @@ int Application::newInstance()
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
     if (args && args->count() >= 1) {
         QString fileName = args->arg(args->count() - 1);
+
         if (QFile::exists(fileName)) {
             QFileInfo fileInfo(fileName);
-            if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
+            if (fileInfo.absoluteFilePath().contains(Global::basketsFolder())) {
+                QString folder = fileInfo.absolutePath().split("/").last();
+                folder.append("/");
+                BNPView::s_basketToOpen = folder;
+                QTimer::singleShot(100, Global::bnpView, SLOT(delayedOpenBasket()));
+            } else if (!fileInfo.isDir()) { // Do not mis-interpret data-folder param!
                 // Tags are not loaded until Global::bnpView::lateInit() is called.
                 // It is called 0ms after the application start.
                 BNPView::s_fileToOpen = fileName;

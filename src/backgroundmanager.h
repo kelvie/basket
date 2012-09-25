@@ -21,12 +21,13 @@
 #ifndef BACKGROUNDMANAGER_H
 #define BACKGROUNDMANAGER_H
 
-#include <qobject.h>
-#include <QList>
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qcolor.h>
-#include <qtimer.h>
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtGui/QColor>
+
+class QPixmap;
+class QString;
 
 /** A node in the list of background images of BackgroundManager.
   * It can only be used by BackgroundManager because it is an internal structure of this manager.
@@ -71,7 +72,7 @@ protected:
   *   It get all image names with imageNames() to put them in eg. a QComboBox and then,
   *   when it's time to get the preview of an image it call preview() with the image name to get it.
   *   Preview are only computed on demand and then cached to fast the next demands (only the pointer will have to be returned).
-  *   Previews are scalled to fit in a rectangle of 100 by 75 pixels, and with a white background color.
+  *   Previews are scaled to fit in a rectangle of 100 by 75 pixels, and with a white background color.
   *   They are also saved to files, so that the scalling/opaquification has not to be done later (they will be directly loaded from file).
   *   Previews are saved in Global::backgroundsFolder()+"previews/", so that emptying the folder is sufficient to remove them.
   * BASIC FUNCTIONNING OF AN IMAGE REQUESTER:

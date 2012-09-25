@@ -21,31 +21,31 @@
 #ifndef BASKETLISTVIEW_H
 #define BASKETLISTVIEW_H
 
-#include <QTreeWidget>
-#include <QTimer>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QDragMoveEvent>
-#include <QFocusEvent>
-#include <QDragLeaveEvent>
-#include <QItemDelegate>
+#include <QtCore/QTimer>
+#include <QtGui/QTreeWidget>
 
-class BasketView;
+class QPixmap;
+class QResizeEvent;
+class QDragEnterEvent;
+class QDropEvent;
+class QDragMoveEvent;
+class QFocusEvent;
+class QDragLeaveEvent;
+
+class BasketScene;
 
 
 class BasketListViewItem : public QTreeWidgetItem
 {
 public:
     /// CONSTRUCTOR AND DESTRUCTOR:
-    BasketListViewItem(QTreeWidget *parent, BasketView *basket);
-    BasketListViewItem(QTreeWidgetItem *parent, BasketView *basket);
-    BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketView *basket);
-    BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketView *basket);
+    BasketListViewItem(QTreeWidget *parent, BasketScene *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, BasketScene *basket);
+    BasketListViewItem(QTreeWidget *parent, QTreeWidgetItem *after, BasketScene *basket);
+    BasketListViewItem(QTreeWidgetItem *parent, QTreeWidgetItem *after, BasketScene *basket);
     ~BasketListViewItem();
 
-    BasketView *basket() {
+    BasketScene *basket() {
         return m_basket;
     }
     void setup();
@@ -59,7 +59,7 @@ public:
     QString escapedName(const QString &string);
 
     QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
-    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childsAreLoading, int countChildsFound, const QFont &font, int height);
+    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height);
     bool haveChildsLoading();
     bool haveHiddenChildsLoading();
     bool haveChildsLocked();
@@ -72,7 +72,7 @@ public:
     void setAbbreviated(bool b);
 
 private:
-    BasketView *m_basket;
+    BasketScene *m_basket;
     int     m_width;
     bool m_isUnderDrag;
     bool m_isAbbreviated;
@@ -106,8 +106,6 @@ private:
     QTimer         m_autoOpenTimer;
     QTreeWidgetItem *m_autoOpenItem;
 signals:
-    void itemActivated(QTreeWidgetItem *, int column);
-    void itemPressed(QTreeWidgetItem *, int column);
     void contextMenuRequested(const QPoint &);
 private slots:
     void autoOpen();

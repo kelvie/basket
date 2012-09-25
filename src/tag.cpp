@@ -18,32 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KDE/KApplication>
-#include <KDE/KStyle>
+#include "tag.h"
+
 #include <KDE/KIconLoader>
-#include <QPainter>
-#include <QFont>
-#include <QtXml>
-#include <QDir>
-#include <QTextStream>
-#include <QList>
-#include <QPixmap>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 
-#include "tag.h"
+#include <QtCore/QDir>
+#include <QtCore/QList>
+#include <QtCore/QTextStream>
+#include <QtGui/QFont>
+#include <QtXml/QDomDocument>
+
 #include "xmlwork.h"
 #include "global.h"
 #include "debugwindow.h"
 #include "bnpview.h"
 #include "tools.h"
-#include "basketview.h"
+#include "basketscene.h"
 
 /** class State: */
 
 State::State(const QString &id, Tag *tag)
-        : m_id(id), m_name(), m_emblem(), m_bold(false), m_italic(false), m_underline(false), m_strikeOut(false),
-        m_textColor(), m_fontName(), m_fontSize(-1), m_backgroundColor(), m_textEquivalent(), m_onAllTextLines(false), m_parentTag(tag)
+        : m_id(id), m_name(), m_emblem(), m_bold(false), m_italic(false), m_underline(false),
+        m_strikeOut(false), m_textColor(), m_fontName(), m_fontSize(-1), m_backgroundColor(),
+        m_textEquivalent(), m_onAllTextLines(false), m_allowCrossReferences(true), m_parentTag(tag)
 {
 }
 
@@ -126,7 +125,7 @@ QString State::toCSS(const QString &gradientFolderPath, const QString &gradientF
         QColor bottomBgColor;
         Note::getGradientColors(backgroundColor(), &topBgColor, &bottomBgColor);
         // Produce the CSS code:
-        QString gradientFileName = BasketView::saveGradientBackground(backgroundColor(), font(baseFont), gradientFolderPath);
+        QString gradientFileName = BasketScene::saveGradientBackground(backgroundColor(), font(baseFont), gradientFolderPath);
         css += " background: " + bottomBgColor.name() + " url('" + gradientFolderName + gradientFileName + "') repeat-x;";
         css += " border-top: solid " + topBgColor.name() + " 1px;";
         css += " border-bottom: solid " + Tools::mixColor(topBgColor, bottomBgColor).name() + " 1px;";
@@ -206,6 +205,7 @@ void State::copyTo(State *other)
     other->m_backgroundColor = m_backgroundColor;
     other->m_textEquivalent  = m_textEquivalent;
     other->m_onAllTextLines  = m_onAllTextLines; // TODO
+    other->m_allowCrossReferences = m_allowCrossReferences;
     //TODO: other->m_parentTag;
 }
 
@@ -327,6 +327,8 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
                     QDomElement textEquivalentElement = XMLWork::getElement(subElement, "textEquivalent");
                     state->setTextEquivalent(textEquivalentElement.attribute("string", ""));
                     state->setOnAllTextLines(XMLWork::trueOrFalse(textEquivalentElement.attribute("onAllTextLines", "false")));
+                    QString allowXRef = XMLWork::getElementText(subElement, "allowCrossReferences", "true");
+                    state->setAllowCrossReferences(XMLWork::trueOrFalse(allowXRef));
                     tag->appendState(state);
                 }
                 subNode = subNode.nextSibling();
@@ -381,8 +383,8 @@ QMap<QString, QString> Tag::loadTags(const QString &path/* = QString()*//*, bool
 Tag* Tag::tagSimilarTo(Tag *tagToTest)
 {
     // Tags are considered similar if they have the same name, the same number of states, in the same order, and the same look.
-    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparision.
-    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparision.
+    // Keyboard shortcut, text equivalent and onEveryLines are user settings, and thus not considered during the comparison.
+    // Default tags (To Do, Important, Idea...) do not take into account the name of the tag and states during the comparison.
     // Default tags are equal only if they have the same number of states, in the same order, and the same look.
     // This is because default tag names are translated differently in every countries, but they are essentialy the same!
     // User tags begins with "tag_state_" followed by a number. Default tags are the other ones.
@@ -402,7 +404,7 @@ Tag* Tag::tagSimilarTo(Tag *tagToTest)
         for (State::List::iterator it2 = (*it)->states().begin(); it2 != (*it)->states().end(); ++it2, ++itTest) {
             State *state       = *it2;
             State *stateToTest = *itTest;
-            if (state->id().startsWith("tag_state_") || stateToTest->id().startsWith("tag_state_")) {
+            if (state->id().startsWith(QLatin1String("tag_state_")) || stateToTest->id().startsWith(QLatin1String("tag_state_"))) {
                 defaultTag = false;
             }
             if (state->name()            != stateToTest->name())            {
@@ -498,11 +500,12 @@ void Tag::saveTagsTo(QList<Tag*> &list, const QString &fullPath)
             stateNode.appendChild(textEquivalentNode);
             textEquivalentNode.setAttribute("string",         state->textEquivalent());
             textEquivalentNode.setAttribute("onAllTextLines", XMLWork::trueOrFalse(state->onAllTextLines()));
+            XMLWork::addElement(document, stateNode, "allowCrossReferences", XMLWork::trueOrFalse(state->allowCrossReferences()));
         }
     }
 
     // Write to Disk:
-    if (!BasketView::safelySaveToFile(fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
+    if (!BasketScene::safelySaveToFile(fullPath, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + document.toString()))
         DEBUG_WIN << "<font color=red>FAILED to save tags</font>!";
 }
 
@@ -683,6 +686,7 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
                       "    <state id=\"code\">\n"
                       "      <font name=\"monospace\" />\n"
                       "      <textEquivalent string=\"|\" onAllTextLines=\"true\" />\n"
+                      "      <allowCrossReferences>false</allowCrossReferences>\n"
                       "    </state>\n"
                       "  </tag>\n"
                       "\n"
@@ -727,16 +731,6 @@ void Tag::createDefaultTagsSet(const QString &fullPath)
     } else
         DEBUG_WIN << "<font color=red>FAILED to create the tags file</font>!";
 }
-
-#include <kapplication.h>
-#include <qrect.h>
-#include <qstyle.h>
-#include <qcheckbox.h>
-#include <qbitmap.h>
-#include <qimage.h>
-#include <qradiobutton.h>
-#include <kiconeffect.h>
-
 
 // StateAction
 StateAction::StateAction(State *state, const KShortcut &shortcut, QWidget* parent, bool withTagName)

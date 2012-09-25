@@ -18,17 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "backgroundmanager.h"
+
 #include <KDE/KUrl>
 #include <KDE/KGlobal>
 #include <KDE/KStandardDirs>
 #include <KDE/KConfig>
 #include <KDE/KConfigGroup>
-#include <QPainter>
-#include <QDir>
-#include <QImage>
-#include <QPixmap>
 
-#include "backgroundmanager.h"
+#include <QtCore/QDir>
+#include <QtGui/QPainter>
+#include <QtGui/QImage>
+#include <QtGui/QPixmap>
 
 /** class BackgroundEntry: */
 

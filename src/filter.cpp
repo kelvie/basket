@@ -18,26 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QLayout>
-#include <QToolButton>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <KDE/KIconLoader>
-#include <KDE/KLocale>
-#include <KDE/KApplication>
-#include <QPixmap>
-#include <QImage>
-#include <QPainter>
-#include <QBitmap>
+#include "filter.h"
+
+#include <QtGui/QToolButton>
+#include <QtGui/QLabel>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPixmap>
+
 #include <KDE/KDialog>
 #include <KDE/KComboBox>
+#include <KDE/KIconLoader>
+#include <KDE/KLocale>
+#include <KDE/KLineEdit>
 
-#include "filter.h"
-//#include "settings.h"
 #include "global.h"
-#include "bnpview.h"
 #include "tools.h"
 #include "tag.h"
+#include "bnpview.h"
 #include "focusedwidgets.h"
 
 /** FilterBar */

@@ -18,23 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "exporterdialog.h"
+
 #include <KDE/KUrlRequester>
-#include <KDE/KLineEdit>
 #include <KDE/KFileDialog>
-#include <QCheckBox>
-#include <QDir>
-#include <QLayout>
-#include <QLabel>
-#include <QHBoxLayout>
+#include <KDE/KLineEdit>
 #include <KDE/KLocale>
 #include <KDE/KConfig>
 #include <KDE/KVBox>
 
-#include "exporterdialog.h"
-#include "basketview.h"
+#include <QtCore/QDir>
+#include <QtGui/QCheckBox>
+#include <QtGui/QLabel>
+#include <QtGui/QHBoxLayout>
+
+#include "basketscene.h"
 #include "global.h"
 
-ExporterDialog::ExporterDialog(BasketView *basket, QWidget *parent, const char *name)
+ExporterDialog::ExporterDialog(BasketScene *basket, QWidget *parent, const char *name)
         : KDialog(parent)
         , m_basket(basket)
 {

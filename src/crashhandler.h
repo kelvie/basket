@@ -13,8 +13,6 @@
 #ifndef CRASH_H
 #define CRASH_H
 
-#include <kcrash.h> //for main.cpp
-
 /**
  * @author Max Howell
  * @short The amaroK crash-handler

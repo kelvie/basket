@@ -20,23 +20,18 @@
 
 #include "basket_part.h"
 
-#include <KDE/KComponentData>
-#include <KDE/KAction>
-#include <KDE/KStandardAction>
-#include <KDE/KFileDialog>
-#include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KParts/GenericFactory>
+#include <KDE/KParts/Factory>
 #include <KDE/KParts/StatusBarExtension>
 #include <kdemacros.h>
+
 #include "aboutdata.h"
 #include "basketstatusbar.h"
 #include "bnpview.h"
 
-//typedef KParts::GenericFactory< BasketPart > BasketFactory;
+K_PLUGIN_FACTORY(BasketFactory, 
+                 registerPlugin<BasketPart>();
+                )
 
-//K_EXPORT_COMPONENT_FACTORY( libbasketpart, BasketFactory );
-K_PLUGIN_FACTORY(BasketFactory, registerPlugin<BasketPart>();)
 K_EXPORT_PLUGIN(BasketFactory("basket", "basket"))
 
 BasketPart::BasketPart(QWidget *parentWidget, QObject *parent, const QList<QVariant> &)

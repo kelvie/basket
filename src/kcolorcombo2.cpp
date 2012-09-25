@@ -22,35 +22,26 @@
 
 #ifndef USE_OLD_KCOLORCOMBO
 
-#include <qapplication.h>
-#include <qpixmap.h>
-#include <qbitmap.h>
-#include <qpainter.h>
-#include <QListWidget>
-//Added by qt3to4:
-#include <QDropEvent>
-#include <QPaintEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QDragEnterEvent>
-#include <QDebug>
-#include <klocale.h>
-#include <kcolordialog.h>
-#include <qclipboard.h>
-#include <kstdaccel.h>
-#include <kglobalsettings.h>
+#include <QtGui/QApplication>
+#include <QtGui/QPixmap>
+#include <QtGui/QBitmap>
+#include <QtGui/QPainter>
+
+#include <QtGui/QDropEvent>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QClipboard>
+
+#include <KDE/KDebug>
+#include <KDE/KLocale>
+#include <KDE/KColorDialog>
+#include <KDE/KStandardShortcut>
+#include <KDE/KGlobalSettings>
 
 //#define DEBUG_COLOR_ARRAY
 //#define OUTPUT_GIMP_PALETTE
-
-#ifdef DEBUG_COLOR_ARRAY
-#include <iomanip>
-#endif
-#ifdef OUTPUT_GIMP_PALETTE
-#include <iomanip>
-#endif
-
 
 /** class KColorPopup: */
 
@@ -329,7 +320,7 @@ class KColorCombo2::KColorCombo2Private
  */
 
 KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWidget *parent)
-        : QComboBox(parent),
+        : KComboBox(parent),
         m_color(color), m_defaultColor(defaultColor)
 {
     setEditable(false);
@@ -337,7 +328,7 @@ KColorCombo2::KColorCombo2(const QColor &color, const QColor &defaultColor, QWid
 }
 
 KColorCombo2::KColorCombo2(const QColor &color, QWidget *parent)
-        : QComboBox(parent),
+        : KComboBox(parent),
         m_color(color), m_defaultColor()
 {
     setEditable(false);
@@ -443,7 +434,7 @@ void KColorCombo2::setRainbowPreset(int colorColumnCount, int lightRowCount, int
     for (int j = 0; j < rowCount; ++j) {
         for (int i = 0; i < columnCount; ++i) {
             int h, s, v;
-            m_colorArray[i][j].getHsv(h, s, v);
+            m_colorArray[i][j].getHsv(&h, &s, &v);
             kDebug() << QString("(%1,%2,%3)").arg(h, 3).arg(s, 3).arg(v, 3);
             //kDebug() << colorArray[i][j].name() << " ";
         }
@@ -637,7 +628,7 @@ void KColorCombo2::updateComboBox()
     setItemIcon(/*index=*/0, pixmap);
     setItemText(/*index=*/0,
                 (m_color.isValid()
-                 ? QString(i18n("R:%1, G:%2, B:%3")).arg(m_color.red()).arg(m_color.green()).arg(m_color.blue())
+                 ? QString(i18n( "R:%1, G:%2, B:%3", m_color.red(), m_color.green(), m_color.blue() ))
                  : i18nc("color", "(Default)")));
 }
 
@@ -739,14 +730,14 @@ void KColorCombo2::keyPressEvent(QKeyEvent *event)
         color = qvariant_cast<QColor>(QApplication::clipboard()->mimeData(QClipboard::Clipboard)->colorData());
         setColor(color);
     } else
-        QComboBox::keyPressEvent(event);
+        KComboBox::keyPressEvent(event);
 }
 
 void KColorCombo2::fontChange(const QFont &oldFont)
 {
     // Since the color-rectangle is the same height of the text, we should resize it if the font change:
     updateComboBox();
-    QComboBox::fontChange(oldFont); // To update geometry.
+    KComboBox::fontChange(oldFont); // To update geometry.
 }
 
 void KColorCombo2::virtual_hook(int /*id*/, void */*data*/)

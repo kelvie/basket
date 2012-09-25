@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BasketPropertiesUi</class>
+ <widget class="QWidget" name="BasketPropertiesUi">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>568</width>
+    <height>310</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="KIconButton" name="icon"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="name"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="appearanceGroup">
+     <property name="title">
+      <string>Appearance</string>
+     </property>
+     <layout class="QGridLayout" name="appearanceLayout">
+      <property name="margin">
+       <number>4</number>
+      </property>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="backgroundImage"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Background &amp;image:</string>
+        </property>
+        <property name="buddy">
+         <cstring>backgroundImage</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="bgColorLbl">
+        <property name="text">
+         <string>&amp;Background color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="txtColorLbl">
+        <property name="text">
+         <string>&amp;Text color:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="dispositionGroup">
+     <property name="title">
+      <string>Disposition</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="columnForm">
+        <property name="text">
+         <string>Col&amp;umns:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="freeForm">
+        <property name="text">
+         <string>&amp;Free-form</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="KIntNumInput" name="columnCount"/>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="mindMap">
+        <property name="text">
+         <string>&amp;Mind map</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="shortcutGroup">
+     <property name="title">
+      <string>Keyboard Shortcut</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <property name="margin">
+       <number>4</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="shortcutLayout">
+        <item>
+         <widget class="KShortcutWidget" name="shortcut"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QRadioButton" name="showBasket">
+          <property name="text">
+           <string>S&amp;how this basket</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="globalButton">
+          <property name="text">
+           <string>Show this basket (&amp;global shortcut)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="switchButton">
+          <property name="text">
+           <string>S&amp;witch to this basket (global shortcut)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KIconButton</class>
+   <extends>QPushButton</extends>
+   <header>kicondialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KShortcutWidget</class>
+   <extends>QWidget</extends>
+   <header>kshortcutwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KIntNumInput</class>
+   <extends>QWidget</extends>
+   <header>knuminput.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>icon</tabstop>
+  <tabstop>name</tabstop>
+  <tabstop>backgroundImage</tabstop>
+  <tabstop>columnForm</tabstop>
+  <tabstop>freeForm</tabstop>
+  <tabstop>mindMap</tabstop>
+  <tabstop>columnCount</tabstop>
+  <tabstop>showBasket</tabstop>
+  <tabstop>globalButton</tabstop>
+  <tabstop>switchButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

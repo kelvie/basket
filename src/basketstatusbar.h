@@ -20,17 +20,17 @@
 #ifndef BASKETSTATUSBAR_H
 #define BASKETSTATUSBAR_H
 
-#include <QObject>
-#include <QPixmap>
-#include <QLabel>
+#include <QtCore/QObject>
+#include <QtGui/QPixmap>
 
 #include "basket_export.h"
 
 class KStatusBar;
 namespace KParts
 {
-class StatusBarExtension;
+    class StatusBarExtension;
 }
+
 class QWidget;
 class QLabel;
 

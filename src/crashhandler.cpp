@@ -10,46 +10,25 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include "amarok.h"
-//#include "amarokconfig.h"
 #include "crashhandler.h"
-//#include "debug.h"
 #include "config.h"
 
-#include <kapplication.h> //invokeMailer()
-#include <kaboutdata.h>
-#include <kdeversion.h>
-#include <klocale.h>
-#include <ktemporaryfile.h>
+#include <KDE/KAboutData>
+#include <KDE/KCmdLineArgs>
+#include <KDE/KComponentData>
+#include <KDE/KTemporaryFile>
+#include <KDE/KToolInvocation>
+#include <KDE/KDebug>
 
-#include <qfile.h>
-#include <qregexp.h>
-#include <QTextStream>
-//Added by qt3to4:
+#include <kdeversion.h>
+
+#include <QtCore/QRegExp>
 
 #include <cstdio>         //popen, fread
-#include <iostream>
 #include <sys/types.h>    //pid_t
 #include <sys/wait.h>     //waitpid
-//#include <taglib/taglib.h>
-#include <unistd.h>       //write, getpid
-#include <ktoolinvocation.h>
-#include <kdebug.h>
+#include <unistd.h>       //write, getppid
 
-
-//#ifndef TAGLIB_PATCH_VERSION
-//// seems to be wheel's style
-//#define TAGLIB_PATCH_VERSION 0
-//#endif
-
-
-#if 0
-class CrashHandlerWidget : public KDialog
-{
-public:
-    CrashHandlerWidget();
-};
-#endif
 
 static QString
 runCommand(const QByteArray &command)
@@ -69,6 +48,7 @@ runCommand(const QByteArray &command)
 void
 Crash::crashHandler(int /*signal*/)
 {
+#ifndef Q_WS_WIN 
     // we need to fork to be able to get a
     // semi-decent bt - I dunno why
     const pid_t pid = ::fork();
@@ -109,7 +89,8 @@ Crash::crashHandler(int /*signal*/)
 
         /// obtain the backtrace with gdb
 
-        KTemporaryFile temp;
+	KTemporaryFile temp;
+	temp.open();	
         temp.setAutoRemove(true);
 
         const int handle = temp.handle();
@@ -134,14 +115,16 @@ Crash::crashHandler(int /*signal*/)
         // so we can read stderr too
         ::dup2(fileno(stdout), fileno(stderr));
 
-
         QByteArray gdb;
         gdb  = "gdb --nw -n --batch -x ";
         gdb += temp.fileName().toLatin1();
-        gdb += " basket ";
+        gdb += " ";
+	gdb += KCmdLineArgs::qtArgv()[0];
+	gdb += " ";
         gdb += QByteArray().setNum(::getppid());
 
-        QString bt = runCommand(gdb);
+ 
+       QString bt = runCommand(gdb);
 
         /// clean up
         bt.remove("(no debugging symbols found)...");
@@ -179,7 +162,6 @@ Crash::crashHandler(int /*signal*/)
 
 //            debug() << subject << endl;
 
-
         //TODO -fomit-frame-pointer buggers up the backtrace, so detect it
         //TODO -O optimization can rearrange execution and stuff so show a warning for the developer
         //TODO pass the CXXFLAGS used with the email
@@ -216,11 +198,12 @@ Crash::crashHandler(int /*signal*/)
 
     else {
         // we are the process that crashed
-
+        
         ::alarm(0);
 
         // wait for child to exit
         ::waitpid(pid, NULL, 0);
         ::_exit(253);
     }
+#endif //#ifndef Q_WS_WIN 
 }

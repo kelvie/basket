@@ -19,12 +19,14 @@
  ***************************************************************************/
 
 #include "diskerrordialog.h"
-#include <QString>
-#include <QKeyEvent>
-#include <QCloseEvent>
-#include <QLabel>
-#include <QPixmap>
-#include <QHBoxLayout>
+
+#include <QtCore/QString>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QPixmap>
+#include <QtGui/QHBoxLayout>
+
 #include <KDE/KLocale>
 
 DiskErrorDialog::DiskErrorDialog(const QString &titleMessage, const QString &message, QWidget *parent)

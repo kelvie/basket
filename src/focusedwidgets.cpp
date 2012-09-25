@@ -18,19 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QWheelEvent>
-#include <QKeyEvent>
-#include <KDE/KLocale>
-
 #include "focusedwidgets.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QWheelEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QScrollBar>
+
 #include "bnpview.h"
+#include "basketscene.h"
 #include "global.h"
-#include "basketview.h"
 
 #ifdef KeyPress
 #undef KeyPress
 #endif
-#include <qevent.h>
+
 
 /** class FocusedTextEdit */
 
@@ -58,7 +60,7 @@ void FocusedTextEdit::keyPressEvent(QKeyEvent *event)
 
     KTextEdit::keyPressEvent(event);
 
-    // Workaround (for ensuring the cursor to be visible): signal not emited when pressing those keys:
+    // Workaround (for ensuring the cursor to be visible): signal not emitted when pressing those keys:
     if (event->key() == Qt::Key_Home
             || event->key() == Qt::Key_End
             || event->key() == Qt::Key_PageUp
@@ -81,8 +83,8 @@ void FocusedTextEdit::wheelEvent(QWheelEvent *event)
     if ((event->delta() > 0 && sb->value() > sb->minimum())
             || (event->delta() < 0 && sb->value() < sb->maximum()))
         KTextEdit::wheelEvent(event);
-    else
-        Global::bnpView->currentBasket()->wheelEvent(event);
+    //else
+    //    Global::bnpView->currentBasket()->graphicsView()->wheelEvent(event);
 }
 
 void FocusedTextEdit::enterEvent(QEvent *event)

@@ -20,36 +20,16 @@
 
 #include "ksystemtrayicon2.h"
 
-// To draw the systray screenshot image:
-#include <qmovie.h>
-#include <qvariant.h>
 //Added by qt3to4:
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QDragLeaveEvent>
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QDragEnterEvent>
+#include <QtGui/QPainter>
+#include <QtCore/QPoint>
+#include <QtGui/QPixmap>
 
-#include <qdesktopwidget.h>
-#include <qmime.h>
-#include <qpainter.h>
-#include <qpoint.h>
-#include <qpixmap.h>
-// To know the program name:
-#include <kglobal.h>
-#include <kcomponentdata.h>
-#include <kaboutdata.h>
-#include <kiconeffect.h>
-// Others:
-#include <kmessagebox.h>
-#include <kmanagerselection.h>
 #include <kdeversion.h>
-#include <kapplication.h>
-#include <kmenu.h>
-#include <kiconloader.h>
-#include <kdebug.h>
+
+#include <KDE/KApplication>
+#include <KDE/KGlobal>          // To know the program name:
+#include <KDE/KMessageBox>
 
 KSystemTray2::KSystemTray2(QWidget *parent, const char *name)
         : KSystemTray(parent, name)
@@ -152,7 +132,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
         if (x + w > desktopWidth)  x = desktopWidth - w;
         if (y + h > desktopHeight) y = desktopHeight - h;
 
-        // Grab the desktop and draw a circle arround the icon:
+        // Grab the desktop and draw a circle around the icon:
         QPixmap shot = QPixmap::grabWindow(QX11Info::appRootWindow(), x, y, w, h);
         QPainter painter(&shot);
         const int CIRCLE_MARGINS = 6;
@@ -172,7 +152,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 #endif
         painter.end();
 
-        // Then, we add a border arround the image to make it more visible:
+        // Then, we add a border around the image to make it more visible:
         QPixmap finalShot(w + 2*IMAGE_BORDER, h + 2*IMAGE_BORDER);
         finalShot.fill(KApplication::palette().active().foreground());
         painter.begin(&finalShot);

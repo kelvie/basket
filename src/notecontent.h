@@ -21,42 +21,65 @@
 #ifndef NOTECONTENT_H
 #define NOTECONTENT_H
 
-#include <QObject>
-#include <QString>
-#include <QTextDocument>
-#include <QPixmap>
-#include <QMovie>
-#include <QColor>
+#include <QtCore/QObject>
+#include <QtGui/QGraphicsItem>
+
 #include <KDE/KUrl>
-#include <QHttp>
+#include <KDE/KIO/AccessManager>
+
+#include <phonon/phononnamespace.h>
 
 #include "linklabel.h"
-#include <Phonon/AudioOutput>
-#include <Phonon/SeekSlider>
-#include <Phonon/MediaObject>
-#include <Phonon/VolumeSlider>
-#include <Phonon/BackendCapabilities>
+
 class QDomDocument;
 class QDomElement;
+
+class QBuffer;
+class QColor;
+class QMimeData;
+class QMovie;
 class QPainter;
-class QWidget;
+class QPixmap;
 class QPoint;
 class QRect;
+class QString;
 class QStringList;
-class QBuffer;
-
-class QMimeData;
+class QTextDocument;
+class QWidget;
 
 class KFileItem;
+class KUrl;
+
 namespace KIO
 {
-class PreviewJob;
+    class PreviewJob;
 }
 
-class Note;
-class BasketView;
+namespace Phonon
+{
+    class MediaObject;
+}
+
+class BasketScene;
 class FilterData;
-class HtmlExporter;
+class Note;
+
+/**
+ * LinkDisplayItem is a QGraphicsItem using a LinkDisplay
+ */
+class LinkDisplayItem : public QGraphicsItem
+{
+public:
+  LinkDisplayItem(Note *parent):m_note(parent) {}
+  virtual ~LinkDisplayItem() {}
+  virtual QRectF boundingRect() const;
+  virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+  
+  LinkDisplay &linkDisplay() { return m_linkDisplay; }
+private:
+  LinkDisplay m_linkDisplay;
+  Note *m_note;
+};
 
 /** A list of numeric identifier for each note type.
   * Declare a varible with the type NoteType::Id and assign a value like NoteType::Text...
@@ -75,14 +98,14 @@ class NoteContent
 {
 public:
     // Constructor and destructor:
-    NoteContent(Note *parent, const QString &fileName = "");              /// << Constructor. Inherited notes should call it to initialize the parent note.
+    explicit NoteContent(Note *parent, const QString &fileName = "");     /// << Constructor. Inherited notes should call it to initialize the parent note.
     virtual ~NoteContent()                                             {} /// << Virtual destructor. Reimplement it if you should destroy some data your custom types.
     // Simple Abstract Generic Methods:
     virtual NoteType::Id type() const                                = 0; /// << @return the internal number that identify that note type.
     virtual QString typeName() const                                 = 0; /// << @return the translated type name to display in the user interface.
     virtual QString lowerTypeName() const                            = 0; /// << @return the type name in lowercase without space, for eg. saving.
     virtual QString toText(const QString &cuttedFullPath);                /// << @return a plain text equivalent of the content.
-    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt ressource.
+    virtual QString toHtml(const QString &imageName, const QString &cuttedFullPath) = 0; /// << @return an HTML text equivalent of the content. @param imageName Save image in this Qt resource.
     virtual QPixmap toPixmap()                      {
         return QPixmap();
     } /// << @return an image equivalent of the content.
@@ -94,8 +117,7 @@ public:
     // Complexe Abstract Generic Methods:
     virtual void exportToHTML(HTMLExporter *exporter, int indent)    = 0; /// << Export the note in an HTML file.
     virtual QString cssClass() const                                 = 0; /// << @return the CSS class of the note when exported to HTML
-    virtual int     setWidthAndGetHeight(int width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
-    virtual void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered) = 0; /// << Paint the content on @p painter, at coordinate (0, 0) and with the size (@p width, @p height).
+    virtual qreal     setWidthAndGetHeight(qreal width)                  = 0; /// << Relayout content with @p width (never less than minWidth()). @return its new height.
     virtual bool    loadFromFile(bool /*lazyLoad*/)     {
         return false;
     } /// << Load the content from the file. The default implementation does nothing. @see fileName().
@@ -105,7 +127,7 @@ public:
     virtual bool    saveToFile()                        {
         return false;
     } /// << Save the content to the file. The default implementation does nothing. @see fileName().
-    virtual QString linkAt(const QPoint &/*pos*/)          {
+    virtual QString linkAt(const QPointF &/*pos*/)          {
         return "";
     } /// << @return the link anchor at position @p pos or "" if there is no link.
     virtual void    saveToNode(QDomDocument &doc, QDomElement &content);  /// << Save the note in the basket XML file. By default it store the filename if a file is used.
@@ -114,14 +136,14 @@ public:
     virtual QString editToolTipText() const                          = 0; /// << @return "Edit this [text|image|...]" to put in the tooltip for the note's content zone.
     virtual void    toolTipInfos(QStringList */*keys*/, QStringList */*values*/) {} /// << Get "key: value" couples to put in the tooltip for the note's content zone.
     // Custom Zones:                                                      ///    Implement this if you want to store custom data.
-    virtual int     zoneAt(const QPoint &/*pos*/)           {
+    virtual int	zoneAt(const QPointF &/*pos*/)           {
         return 0;
     } /// << If your note-type have custom zones, @return the zone at @p pos or 0 if it's not a custom zone!
-    virtual QRect   zoneRect(int zone, const QPoint &/*pos*/);            /// << Idem, @return the rect of the custom zone
+    virtual QRectF   zoneRect(int /*zone*/, const QPointF &/*pos*/);            /// << Idem, @return the rect of the custom zone
     virtual QString zoneTip(int /*zone*/)                  {
         return "";
     } /// << Idem, @return the toolTip of the custom zone
-    virtual void    setCursor(QWidget */*widget*/, int /*zone*/)       {} /// << Idem, set the mouse cursor for widget @p widget when it is over zone @p zone!
+    virtual Qt::CursorShape cursorFromZone(int /*zone*/) const   { return Qt::ArrowCursor; } /// << Idem, @return the mouse cursor when it is over zone @p zone!
     virtual void    setHoveredZone(int /*oldZone*/, int /*newZone*/)   {} /// << If your note type need some feedback, you get notified of hovering changes here.
     virtual QString statusBarMessage(int /*zone*/)         {
         return "";
@@ -132,12 +154,12 @@ public:
         return useFile();
     } /// << @return true if the dragging process should serialize the filename (and move the file if cutting).
     virtual void    addAlternateDragObjects(QMimeData */*dragObj*/) {} /// << If you offer more than toText/Html/Image/Link(), this will be called if this is the only selected.
-    virtual QPixmap feedbackPixmap(int width, int height)            = 0; /// << @return the pixmap to put under the cursor while dragging this object.
+    virtual QPixmap feedbackPixmap(qreal width, qreal height)            = 0; /// << @return the pixmap to put under the cursor while dragging this object.
     virtual bool    needSpaceForFeedbackPixmap()        {
         return false;
     } /// << @return true if a space must be inserted before and after the DND feedback pixmap.
     // Content Edition:
-    virtual int      xEditorIndent()                        {
+    virtual int xEditorIndent()                        {
         return 0;
     } /// << If the editor should be indented (eg. to not cover an icon), return the number of pixels.
     // Open Content or File:
@@ -156,28 +178,29 @@ public:
     virtual QString customOpenCommand() {
         return QString();
     }  /// << Reimplement this if your urlToOpen() should be opened with another application instead of the default KDE one. This choice should be left to the users in the setting (choice to use a custom app or not, and which app).
-    // Common File Management:                                            ///    (and do save changes) and optionnaly hide the toolbar.
+    // Common File Management:                                            ///    (and do save changes) and optionaly hide the toolbar.
     virtual void setFileName(const QString &fileName); /// << Set the filename. Reimplement it if you eg. want to update the view when the filename is changed.
     bool trySetFileName(const QString &fileName);      /// << Set the new filename and return true. Can fail and return false if a file with this fileName already exists.
     QString  fullPath();                               /// << Get the absolute path of the file where this content is stored on disk.
     QString  fileName() const {
         return m_fileName;
     }   /// << Get the file name where this content is stored (relative to the basket folder). @see fullPath().
-    int      minWidth() const {
+    qreal      minWidth() const {
         return m_minWidth;
     }    /// << Get the minimum width for this content.
     Note    *note()     {
         return m_note;
     }         /// << Get the note managing this content.
-    BasketView  *basket();                                 /// << Get the basket containing the note managing this content.
+    BasketScene  *basket();                                 /// << Get the basket containing the note managing this content.
+    virtual QGraphicsItem *graphicsItem() = 0;
 public:
     void setEdited(); /// << Mark the note as edited NOW: change the "last modification time and time" AND save the basket to XML file.
 protected:
-    void contentChanged(int newMinWidth); /// << When the content has changed, inherited classes should call this to specify its new minimum size and trigger a basket relayout.
+    void contentChanged(qreal newMinWidth); /// << When the content has changed, inherited classes should call this to specify its new minimum size and trigger a basket relayout.
 private:
     Note    *m_note;
     QString  m_fileName;
-    int      m_minWidth;
+    qreal    m_minWidth;
 public:
     static const int FEEDBACK_DARKING;
 };
@@ -204,32 +227,35 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool lazyLoad);
     bool    finishLazyLoad();
     bool    saveToFile();
-    QString linkAt(const QPoint &pos);
+    QString linkAt(const QPointF &pos);
     void    fontChanged();
     QString editToolTipText() const;
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Open Content or File:
     QString messageWhenOpening(OpenMessage where);
 //  QString customOpenCommand();
     // Content-Specific Methods:
     void    setText(const QString &text, bool lazyLoad = false); /// << Change the text note-content and relayout the note.
     QString text() {
-        return m_text;
+        return m_graphicsTextItem.text();
     }     /// << @return the text note-content.
     QByteArray data() {
         return text().toLocal8Bit();
     }
+    QGraphicsItem *graphicsItem() { return &m_graphicsTextItem; }
+    
 protected:
-    QString          m_text;
-    QTextDocument *m_simpleRichText;
+//     QString          m_text;
+    //QTextDocument *m_simpleRichText;
+    QGraphicsSimpleTextItem m_graphicsTextItem;
 };
 
+#include <QGraphicsTextItem>
 /** Real implementation of rich text (HTML) notes:
  * @author Sébastien Laoût
  */
@@ -252,16 +278,15 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool lazyLoad);
     bool    finishLazyLoad();
     bool    saveToFile();
-    QString linkAt(const QPoint &pos);
+    QString linkAt(const QPointF &pos);
     void    fontChanged();
     QString editToolTipText() const;
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Open Content or File:
     QString messageWhenOpening(OpenMessage where);
     QString customOpenCommand();
@@ -273,10 +298,12 @@ public:
     QByteArray data() {
         return html().toLocal8Bit();
     }
+    QGraphicsItem *graphicsItem() { return &m_graphicsTextItem; }
 protected:
     QString          m_html;
     QString          m_textEquivalent; //OPTIM_FILTER
     QTextDocument *m_simpleRichText;
+    QGraphicsTextItem m_graphicsTextItem;
 };
 
 /** Real implementation of image notes:
@@ -287,6 +314,7 @@ class ImageContent : public NoteContent
 public:
     // Constructor and destructor:
     ImageContent(Note *parent, const QString &fileName, bool lazyLoad = false);
+    ~ImageContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -300,8 +328,7 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool lazyLoad);
     bool    finishLazyLoad();
     bool    saveToFile();
@@ -309,7 +336,7 @@ public:
     QString editToolTipText() const;
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     bool    needSpaceForFeedbackPixmap() {
         return true;
     }
@@ -319,11 +346,12 @@ public:
     // Content-Specific Methods:
     void    setPixmap(const QPixmap &pixmap); /// << Change the pixmap note-content and relayout the note.
     QPixmap pixmap() {
-        return m_pixmap;
+        return m_pixmapItem.pixmap();
     }     /// << @return the pixmap note-content.
     QByteArray data();
+    QGraphicsItem *graphicsItem() { return &m_pixmapItem; }
 protected:
-    QPixmap  m_pixmap;
+    QGraphicsPixmapItem  m_pixmapItem;
     QByteArray m_format;
 };
 
@@ -336,6 +364,7 @@ class AnimationContent : public QObject, public NoteContent // QObject to be abl
 public:
     // Constructor and destructor:
     AnimationContent(Note *parent, const QString &fileName, bool lazyLoad = false);
+    ~AnimationContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -349,32 +378,35 @@ public:
     void    fontChanged();
     QString editToolTipText() const;
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     bool    needSpaceForFeedbackPixmap() {
         return true;
     }
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool lazyLoad);
     bool    finishLazyLoad();
     bool    saveToFile();
     // Open Content or File:
     QString messageWhenOpening(OpenMessage where);
     QString customOpenCommand();
+    QGraphicsItem *graphicsItem() { return &m_graphicsPixmap; }
 
     // Content-Specific Methods:
-    bool updateMovie();
+    bool startMovie();
 
 protected slots:
     void movieUpdated();
     void movieResized();
+    void movieFrameChanged();
 
 protected:
     QBuffer *m_buffer;
     QMovie  *m_movie;
+    qreal m_currentWidth;
+    QGraphicsPixmapItem m_graphicsPixmap;
 };
 
 /** Real implementation of file notes:
@@ -386,6 +418,7 @@ class FileContent : public QObject, public NoteContent
 public:
     // Constructor and destructor:
     FileContent(Note *parent, const QString &fileName);
+    ~FileContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -398,20 +431,19 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool /*lazyLoad*/);
     void    fontChanged();
     void    linkLookChanged();
     QString editToolTipText() const;
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Custom Zones:
-    int     zoneAt(const QPoint &pos);
-    QRect   zoneRect(int zone, const QPoint &/*pos*/);
+    int     zoneAt(const QPointF &pos);
+    QRectF   zoneRect(int zone, const QPointF &/*pos*/);
     QString zoneTip(int zone);
-    void    setCursor(QWidget *widget, int zone);
+    Qt::CursorShape cursorFromZone(int zone) const;
     // Content Edition:
     int      xEditorIndent();
     // Open Content or File:
@@ -421,8 +453,9 @@ public:
     virtual LinkLook* linkLook() {
         return LinkLook::fileLook;
     }
+    QGraphicsItem *graphicsItem() { return &m_linkDisplayItem; }
 protected:
-    LinkDisplay m_linkDisplay;
+    LinkDisplayItem m_linkDisplayItem;
     // File Preview Management:
 protected slots:
     void newPreview(const KFileItem&, const QPixmap &preview);
@@ -493,8 +526,7 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     void    saveToNode(QDomDocument &doc, QDomElement &content);
     void    fontChanged();
     void    linkLookChanged();
@@ -502,12 +534,12 @@ public:
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
     void    serialize(QDataStream &stream);
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Custom Zones:
-    int     zoneAt(const QPoint &pos);
-    QRect   zoneRect(int zone, const QPoint &/*pos*/);
+    int     zoneAt(const QPointF &pos);
+    QRectF   zoneRect(int zone, const QPointF &/*pos*/);
     QString zoneTip(int zone);
-    void    setCursor(QWidget *widget, int zone);
+    Qt::CursorShape cursorFromZone(int zone) const;
     QString statusBarMessage(int zone);
     // Open Content or File:
     KUrl urlToOpen(bool /*with*/);
@@ -530,19 +562,21 @@ public:
         return m_autoIcon;
     } /// << @return if the icon is auto-computed from the URL.
     void startFetchingLinkTitle();
+    QGraphicsItem *graphicsItem() { return &m_linkDisplayItem; }
 protected:
     KUrl        m_url;
     QString     m_title;
     QString     m_icon;
     bool        m_autoTitle;
     bool        m_autoIcon;
-    LinkDisplay m_linkDisplay;
-    QHttp*      m_http;
+    LinkDisplayItem m_linkDisplayItem;
+    KIO::Integration::AccessManager*      m_access_manager;
+    QNetworkReply*      m_reply;
     QString*    m_httpBuff;
     // File Preview Management:
 protected slots:
-    void httpDone(bool err);
     void httpReadyRead();
+    void httpDone(QNetworkReply* reply);
     void newPreview(const KFileItem&, const QPixmap &preview);
     void removePreview(const KFileItem&);
     void startFetchingUrlPreview();
@@ -575,8 +609,7 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal);
     void    saveToNode(QDomDocument &doc, QDomElement &content);
     void    fontChanged();
     void    linkLookChanged();
@@ -584,12 +617,12 @@ public:
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
     void    serialize(QDataStream &stream);
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Custom Zones:
-    int     zoneAt(const QPoint &pos);
-    QRect   zoneRect(int zone, const QPoint &/*pos*/);
+    int     zoneAt(const QPointF &pos);
+    QRectF   zoneRect(int zone, const QPointF &/*pos*/);
     QString zoneTip(int zone);
-    void    setCursor(QWidget *widget, int zone);
+    Qt::CursorShape cursorFromZone(int zone) const;
     QString statusBarMessage(int zone);
     // Open Content or File:
     KUrl urlToOpen(bool /*with*/);
@@ -607,11 +640,13 @@ public:
         return m_icon;
     } /// << @return the displayed icon of the link note-content.
 
+    QGraphicsItem *graphicsItem() { return &m_linkDisplayItem; }
+
 protected:
     KUrl        m_url;
     QString     m_title;
     QString     m_icon;
-    LinkDisplay m_linkDisplay;
+    LinkDisplayItem m_linkDisplayItem;
 };
 
 /** Real implementation of launcher notes:
@@ -622,6 +657,7 @@ class LauncherContent : public NoteContent
 public:
     // Constructor and destructor:
     LauncherContent(Note *parent, const QString &fileName);
+    ~LauncherContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -635,19 +671,18 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool /*lazyLoad*/);
     void    fontChanged();
     QString editToolTipText() const;
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     // Custom Zones:
-    int     zoneAt(const QPoint &pos);
-    QRect   zoneRect(int zone, const QPoint &/*pos*/);
+    int     zoneAt(const QPointF &pos);
+    QRectF   zoneRect(int zone, const QPointF &/*pos*/);
     QString zoneTip(int zone);
-    void    setCursor(QWidget *widget, int zone);
+    Qt::CursorShape cursorFromZone(int zone) const;
     // Open Content or File:
     KUrl urlToOpen(bool with);
     QString messageWhenOpening(OpenMessage where);
@@ -663,11 +698,36 @@ public:
         return m_exec;
     }                              /// << @return the execute command line of the launcher note-content.
     // TODO: KService *service() ??? And store everything in thta service ?
+    
+    QGraphicsItem *graphicsItem() { return &m_linkDisplayItem; }
+
 protected:
     QString     m_name; // TODO: Store them in linkDisplay to gain place (idem for Link notes)
     QString     m_icon;
     QString     m_exec;
-    LinkDisplay m_linkDisplay;
+    LinkDisplayItem m_linkDisplayItem;
+};
+
+/** 
+ * 
+ */
+class ColorItem : public QGraphicsItem
+{
+public:
+  ColorItem(Note *parent, const QColor &color);
+//   virtual ~ColorItem();
+  virtual QColor color() { return m_color; }
+  virtual void setColor(const QColor &color);
+  
+  virtual QRectF boundingRect() const;
+  virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+
+private:
+  Note *m_note;
+  QColor m_color;
+  QRectF m_textRect;
+  
+  static const int RECT_MARGIN;
 };
 
 /** Real implementation of color notes:
@@ -678,6 +738,7 @@ class ColorContent : public NoteContent
 public:
     // Constructor and destructor:
     ColorContent(Note *parent, const QColor &color);
+    virtual ~ColorContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -691,15 +752,14 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     void    saveToNode(QDomDocument &doc, QDomElement &content);
     void    fontChanged();
     QString editToolTipText() const;
     void    toolTipInfos(QStringList *keys, QStringList *values);
     // Drag and Drop Content:
     void    serialize(QDataStream &stream);
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     bool    needSpaceForFeedbackPixmap() {
         return true;
     }
@@ -707,11 +767,36 @@ public:
     // Content-Specific Methods:
     void    setColor(const QColor &color); /// << Change the color note-content and relayout the note.
     QColor  color() {
-        return m_color;
+        return m_colorItem.color();
     }    /// << @return the color note-content.
+    QGraphicsItem *graphicsItem() { return &m_colorItem; }
+    
 protected:
-    QColor  m_color;
-    static const int RECT_MARGIN;
+    ColorItem  m_colorItem;
+};
+
+/** 
+ * 
+ */
+class UnknownItem : public QGraphicsItem
+{
+public:
+  UnknownItem(Note *parent);
+  
+  virtual QRectF boundingRect() const;
+  virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+
+  virtual QString mimeTypes()
+    { return m_mimeTypes; }
+  virtual void setMimeTypes(QString mimeTypes);
+  virtual void setWidth(qreal width);
+
+private:
+  Note *m_note;
+  QString m_mimeTypes;
+  QRectF m_textRect;
+  
+  static const qreal DECORATION_MARGIN;
 };
 
 /** Real implementation of unknown MIME-types dropped notes:
@@ -722,6 +807,7 @@ class UnknownContent : public NoteContent
 public:
     // Constructor and destructor:
     UnknownContent(Note *parent, const QString &fileName);
+    ~UnknownContent();
     // Simple Generic Methods:
     NoteType::Id type() const;
     QString typeName() const;
@@ -736,8 +822,7 @@ public:
     // Complexe Generic Methods:
     void    exportToHTML(HTMLExporter *exporter, int indent);
     QString cssClass() const;
-    int     setWidthAndGetHeight(int width);
-    void    paint(QPainter *painter, int width, int height, const QPalette &palette, bool isDefaultColor, bool isSelected, bool isHovered);
+    qreal     setWidthAndGetHeight(qreal width);
     bool    loadFromFile(bool /*lazyLoad*/);
     void    fontChanged();
     QString editToolTipText() const;
@@ -746,7 +831,7 @@ public:
         return false;
     }
     void    addAlternateDragObjects(QMimeData *dragObject);
-    QPixmap feedbackPixmap(int width, int height);
+    QPixmap feedbackPixmap(qreal width, qreal height);
     bool    needSpaceForFeedbackPixmap() {
         return true;
     }
@@ -754,13 +839,15 @@ public:
     KUrl urlToOpen(bool /*with*/) {
         return KUrl();
     }
+    
+    QGraphicsItem *graphicsItem() { return &m_unknownItem; }
+    
     // Content-Specific Methods:
     QString mimeTypes() {
-        return m_mimeTypes;
+        return m_unknownItem.mimeTypes();
     } /// << @return the list of MIME types this note-content contains.
-protected:
-    QString m_mimeTypes;
-    static const int DECORATION_MARGIN;
+private:
+  UnknownItem m_unknownItem;
 };
 
 void NoteFactory__loadNode(const QDomElement &content, const QString &lowerTypeName, Note *parent, bool lazyLoad);

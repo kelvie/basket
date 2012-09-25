@@ -21,7 +21,7 @@
 #ifndef DISKERRORDIALOG_H
 #define DISKERRORDIALOG_H
 
-#include <KDialog>
+#include <KDE/KDialog>
 
 class QCloseEvent;
 class QKeyEvent;

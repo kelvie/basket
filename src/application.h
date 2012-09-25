@@ -22,7 +22,6 @@
 #define APPLICATION_H
 
 #include <KDE/KUniqueApplication>
-#include <QString>
 
 /**
  * @author Sébastien Laoût <slaout@linux62.org>

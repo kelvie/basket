@@ -21,52 +21,19 @@
 #ifndef KCOLORCOMBO2_H
 #define KCOLORCOMBO2_H
 
-#include <qcombobox.h>
-#include <qcolor.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QEvent>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QPaintEvent>
+#include <KDE/KComboBox>
+
+class QColor;
+class QPixmap;
+
+class QDragEnterEvent;
+class QDropEvent;
+class QMouseEvent;
+class QKeyEvent;
+class QPaintEvent;
 
 class KColorPopup;
 
-#ifdef USE_OLD_KCOLORCOMBO
-#include <KColorCombo>
-
-// A temporary class for backwards compatibiility until KColorCombo2 gets
-// ported.
-class KColorCombo2 : public KColorCombo
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(KColorCombo2);
-
-public:
-    KColorCombo2(const QColor &color,
-                 const QColor &defaultColor,
-                 QWidget *parent = 0)
-            : KColorCombo(parent) {
-        setColor(color);
-        setDefaultColor(defaultColor);
-    }
-
-    KColorCombo2(const QColor &color,
-                 QWidget *parent = 0)
-            : KColorCombo(parent) {
-        setColor(color);
-    }
-
-    KColorCombo2(QWidget *parent = 0)
-            : KColorCombo(parent) {}
-
-    void setDefaultColor(const QColor &) { /* noop */ }
-};
-
-
-#else /* USE_OLD_KCOLORCOMBO */
 /**
  * @short A combobox to display or allow user selection of a color in a user-friendly way.
  *
@@ -113,7 +80,7 @@ public:
  *
  * @image html commoncolorselector.png "Common Color Selector ComboBox"
  */
-class KColorCombo2 : public QComboBox
+class KColorCombo2 : public KComboBox
 {
     Q_OBJECT
     Q_PROPERTY(QColor color        READ color        WRITE setColor)
@@ -157,7 +124,7 @@ public:
      * The user is not allowed to choose a default color, unless you call setDefaultColor() later.
      * @param color         The initial selected color. If it is invalid, the result is undefined.
      */
-    KColorCombo2(const QColor& color, QWidget* parent = 0L);
+    explicit KColorCombo2(const QColor& color, QWidget* parent = 0L);
 
     /**
      * Destroys the combobox.
@@ -232,10 +199,10 @@ public:
      * Fill the array of colors (that will be shown to the user in the popup that appears when he/she click the arrow) with a rainbow of different luminosity.\n
      * This rainbow representation have the advantage of being natural and well structured for a human to be able to select reasonable colors.\n
      * This function will allocate a color array by itself depending on the parameters (no need to call newColorArray()).
-     * @param colorColumnCount The number of columns. The 360 possible colors of the rainbow will be splitted to take the wanted number of colors, equaly separated.
+     * @param colorColumnCount The number of columns. The 360 possible colors of the rainbow will be split to take the wanted number of colors, equaly separated.
      * @param lightRowCount    There is always at least 1 row of colors: the "pure" colors: pure red, pure blue, pure green, pure fushia...\n
-     *                         Additionnaly, you can add row on top: they will contain the same colors, but lighter.\n
-     *                         The parameter @p lightRowCount specify how many different lighting grades shoud be shown (from near to white, but not white, to "pure").
+     *                         Additionally, you can add row on top: they will contain the same colors, but lighter.\n
+     *                         The parameter @p lightRowCount specify how many different lighting grades should be shown (from near to white, but not white, to "pure").
      * @param darkRowCount     Finally, on bottom of the row of "pure colors", you can put any variety of dark colors (from "pure", to near to black, but not black).\n
      *                         So, the number of rows is equal to @p lightRowCount + 1 + @p darkRowCount. On top are light colors, gradually going to dark ones on bottom.
      * @param withGray         If true, another column (so there will be @p colorColumnCount+1 columns) is added on the very-right of the popup
@@ -301,7 +268,7 @@ protected:
 private:
     /**
      * Initialization routine common to every constructors.\n
-     * Constructors just have to initialize the QComboBox, m_color and m_defaultColor
+     * Constructors just have to initialize the KComboBox, m_color and m_defaultColor
      * and this function do the rest to complete the creation of this widget.
      */
     void init();
@@ -342,8 +309,6 @@ private:
     KColorCombo2Private *d;
 };
 
-
-
 // TODO: setColorArray(QColor **, int, int) and use signals/slots ??
 
 class KColorPopup : public QWidget
@@ -377,7 +342,5 @@ private:
     static const int MARGIN;
     static const int FRAME_WIDTH;
 };
-
-#endif // USE_OLD_KCOLORCOMBO
 
 #endif // KCOLORCOMBO2_H

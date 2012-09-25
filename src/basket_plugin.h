@@ -22,7 +22,10 @@
 #define BASKET_PLUGIN_H
 
 #include <KontactInterface/Plugin>
-#include <KDE/KParts/Part>
+
+namespace KParts {
+    class ReadOnlyPart;
+}
 
 class BasketPlugin : public KontactInterface::Plugin
 {
