@@ -90,7 +90,10 @@
 #include "notefactory.h"
 #include "history.h"
 
-#include "bnpviewadaptor.h"
+#include <qdbusconnection.h>
+#include <QResource>
+
+//#include "bnpviewadaptor.h"
 
 /** class BNPView: */
 
@@ -113,7 +116,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
         , m_hideTimer(0)
 {
 
-    new BNPViewAdaptor(this);
+    //new BNPViewAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject("/BNPView", this);
 

@@ -1,3 +1,5 @@
 .*.swp
 .kdev4
 qtcreator-build
+build/*
+*.user

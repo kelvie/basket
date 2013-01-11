@@ -65,16 +65,16 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
     setModal(true);
     showButtonSeparator(false);
 
-    icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
-    icon->setIconSize(16);
-    icon->setIcon(m_basket->icon());
+    m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
+    m_icon->setIconSize(16);
+    m_icon->setIcon(m_basket->icon());
 
-    int size = qMax(icon->sizeHint().width(), icon->sizeHint().height());
-    icon->setFixedSize(size, size); // Make it square!
-    icon->setToolTip(i18n("Icon"));
-    name->setText(m_basket->basketName());
-    name->setMinimumWidth(name->fontMetrics().maxWidth()*20);
-    name->setToolTip(i18n("Name"));
+    int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
+    m_icon->setFixedSize(size, size); // Make it square!
+    m_icon->setToolTip(i18n("Icon"));
+    m_name->setText(m_basket->basketName());
+    m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
+    m_name->setToolTip(i18n("Name"));
 
     // Appearance:
     m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceGroup);
@@ -173,7 +173,7 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 void BasketPropertiesDialog::ensurePolished()
 {
     ensurePolished();
-    name->setFocus();
+    m_name->setFocus();
 }
 
 void BasketPropertiesDialog::applyChanges()
@@ -195,7 +195,7 @@ void BasketPropertiesDialog::applyChanges()
     }
 
     // Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
-    m_basket->setAppearance(icon->icon(), name->text(), m_backgroundImagesMap[backgroundImage->currentIndex()], m_backgroundColor->color(), m_textColor->color());
+    m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[backgroundImage->currentIndex()], m_backgroundColor->color(), m_textColor->color());
     m_basket->save();
 }
 
