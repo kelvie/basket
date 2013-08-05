@@ -65,16 +65,17 @@ BasketPropertiesDialog::BasketPropertiesDialog(BasketScene *basket, QWidget *par
     setModal(true);
     showButtonSeparator(false);
 
-    m_icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
-    m_icon->setIconSize(16);
-    m_icon->setIcon(m_basket->icon());
+    Ui::BasketPropertiesUi* propsUi = dynamic_cast<Ui::BasketPropertiesUi*>(this); // cast to remove name ambiguity
+    propsUi->icon->setIconType(KIconLoader::NoGroup, KIconLoader::Action);
+    propsUi->icon->setIconSize(16);
+    propsUi->icon->setIcon(m_basket->icon());
 
-    int size = qMax(m_icon->sizeHint().width(), m_icon->sizeHint().height());
-    m_icon->setFixedSize(size, size); // Make it square!
-    m_icon->setToolTip(i18n("Icon"));
-    m_name->setText(m_basket->basketName());
-    m_name->setMinimumWidth(m_name->fontMetrics().maxWidth()*20);
-    m_name->setToolTip(i18n("Name"));
+    int size = qMax(propsUi->icon->sizeHint().width(), propsUi->icon->sizeHint().height());
+    propsUi->icon->setFixedSize(size, size); // Make it square!
+    propsUi->icon->setToolTip(i18n("Icon"));
+    propsUi->name->setText(m_basket->basketName());
+    propsUi->name->setMinimumWidth(propsUi->name->fontMetrics().maxWidth()*20);
+    propsUi->name->setToolTip(i18n("Name"));
 
     // Appearance:
     m_backgroundColor = new KColorCombo2(m_basket->backgroundColorSetting(), palette().color(QPalette::Base), appearanceGroup);
@@ -173,7 +174,8 @@ BasketPropertiesDialog::~BasketPropertiesDialog()
 void BasketPropertiesDialog::ensurePolished()
 {
     ensurePolished();
-    m_name->setFocus();
+    Ui::BasketPropertiesUi* propsUi = dynamic_cast<Ui::BasketPropertiesUi*>(this);
+    propsUi->name->setFocus();
 }
 
 void BasketPropertiesDialog::applyChanges()
@@ -194,8 +196,9 @@ void BasketPropertiesDialog::applyChanges()
         m_basket->setShortcut(shortcut->shortcut(), 2);
     }
 
+    Ui::BasketPropertiesUi* propsUi = dynamic_cast<Ui::BasketPropertiesUi*>(this);
     // Should be called LAST, because it will emit the propertiesChanged() signal and the tree will be able to show the newly set Alt+Letter shortcut:
-    m_basket->setAppearance(m_icon->icon(), m_name->text(), m_backgroundImagesMap[backgroundImage->currentIndex()], m_backgroundColor->color(), m_textColor->color());
+    m_basket->setAppearance(propsUi->icon->icon(), propsUi->name->text(), m_backgroundImagesMap[backgroundImage->currentIndex()], m_backgroundColor->color(), m_textColor->color());
     m_basket->save();
 }
 

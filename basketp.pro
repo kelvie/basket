@@ -126,6 +126,6 @@ FORMS += \
     src/basketproperties.ui
 
 INCLUDEPATH += /usr/include/KDE /usr/include/qt4/Qt /usr/include/phonon \
-/home/rrobot/basket/fresh/basket/src
+/home/user/basket/basket/src
 
 LIBS += -lkdecore -lX11 -lkparts -lkdeui -lkio -lQtDBus -lqimageblitz -lkontactinterface -lphonon -lkfile -lkcmutils
