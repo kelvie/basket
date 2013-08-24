@@ -389,6 +389,10 @@ QString Tools::htmlToText(const QString &html)
     text.replace("&nbsp;", " ");
     text.replace("&amp;",  "&"); // CONVERT IN LAST!!
 
+    // HtmlContent produces "\n" for empty note
+    if (text == "\n")
+        text = "";
+
     return text;
 }
 

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += gui xml network qt3support dbus
+QT       += gui xml network dbus
 
 TARGET = basket
 TEMPLATE = app

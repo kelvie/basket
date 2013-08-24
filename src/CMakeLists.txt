@@ -69,7 +69,6 @@ QT4_ADD_RESOURCES(basketcommon_LIB_SRCS ../basket.qrc)
 kde4_add_library(basketcommon SHARED ${basketcommon_LIB_SRCS})
 
 target_link_libraries(basketcommon
-  ${KDE4_KDE3SUPPORT_LIBS} # Remove me
   ${KDE4_KIO_LIBS}
   ${KDE4_KDEUI_LIBS}
   ${KDE4_KPARTS_LIBS}
@@ -97,7 +96,6 @@ set(basket_SRCS main.cpp mainwindow.cpp application.cpp)
 
 kde4_add_executable(basket ${basket_SRCS})
 target_link_libraries(basket
-  ${KDE4_KDE3SUPPORT_LIBS} # Remove me as well
   ${KDE4_KUTILS_LIBS}
   ${KDE4_KFILE_LIBS}
   ${KDE4_PHONON_LIBRARY}
@@ -111,7 +109,7 @@ set(kcm_basket_PART_SRCS kcm_basket.cpp)
 
 kde4_add_plugin(kcm_basket ${kcm_basket_PART_SRCS})
 
-target_link_libraries(kcm_basket ${QT_QT3SUPPORT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} basketcommon)
+target_link_libraries(kcm_basket ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} basketcommon)
 
 install(TARGETS kcm_basket DESTINATION ${PLUGIN_INSTALL_DIR})
 
@@ -123,7 +121,7 @@ set(basketpart_PART_SRCS basket_part.cpp)
 
 kde4_add_plugin(basketpart WITH_PREFIX ${basketpart_PART_SRCS})
 
-target_link_libraries(basketpart ${KDE4_KPARTS_LIBS} basketcommon kparts kdeui ${QT_QT3SUPPORT_LIBRARY})
+target_link_libraries(basketpart ${KDE4_KPARTS_LIBS} basketcommon kparts kdeui)
 
 install(TARGETS basketpart DESTINATION ${PLUGIN_INSTALL_DIR})
 

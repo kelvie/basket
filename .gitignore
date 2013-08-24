@@ -3,3 +3,4 @@
 qtcreator-build
 build/*
 *.user
+*~
