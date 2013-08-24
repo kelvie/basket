@@ -1101,6 +1101,7 @@ bool HtmlContent::finishLazyLoad()
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert);
     m_graphicsTextItem.setHtml(convert);
+    m_graphicsTextItem.setDefaultTextColor(basket()->textColor());
     m_graphicsTextItem.setFont(note()->font());
     m_graphicsTextItem.setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_graphicsTextItem.document()->idealWidth();

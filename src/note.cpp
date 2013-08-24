@@ -1987,11 +1987,8 @@ void Note::draw(QPainter *painter, const QRectF &/*clipRect*/)
         QStyleOptionFocusRect opt;
         opt.initFrom(m_basket->graphicsView());
         opt.rect = focusRect;
-        //Temporary change to see the focus rectangle 
-        painter2.setPen(Qt::red);
-        painter2.drawRect(focusRect);
-        //kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
-        //                             &painter2);
+        kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+                                     &painter2);
     }
 
     // Draw on screen:

@@ -31,8 +31,13 @@
 #include <KDE/KGlobal>          // To know the program name:
 #include <KDE/KMessageBox>
 
+#include <KLocalizedString>
+#include <qdesktopwidget.h>
+#include <kaboutdata.h>
+#include <QResource>
+
 KSystemTray2::KSystemTray2(QWidget *parent, const char *name)
-        : KSystemTray(parent, name)
+        : KSystemTrayIcon(parent), QWidget(parent)
 {
 }
 
@@ -74,13 +79,14 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
     //  we should not show that screenshot but only a text!
 
     // 1. Determine if the user use a system tray area or not:
-    QByteArray screenstr;
+    /*QByteArray screenstr;
     screenstr.setNum(qt_xscreen());
     QByteArrray trayatom = "_NET_SYSTEM_TRAY_S" + screenstr;
-    bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);
+    bool useSystray = (KSelectionWatcher(trayatom).owner() != 0L);*/
+    bool useSystray = true;
 
     // 2. And then if the icon is visible too (eg. this->show() has been called):
-    useSystray = useSystray && isVisible();
+    useSystray = useSystray && KSystemTrayIcon::isVisible();
 
     // 3. Kicker (or another systray manager) can be visible but masked out of
     //    the screen (ie. on right or on left of it). We check if the icon isn't
@@ -119,7 +125,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
     QString message = i18n(
                           "<p>Closing the main window will keep %1 running in the system tray. "
                           "Use <b>Quit</b> from the <b>Basket</b> menu to quit the application.</p>"
-                          , KGlobal::instance()->aboutData()->programName());
+                          , KGlobal::mainComponent().aboutData()->programName());
     // We are sure the systray icon is visible: ouf!
     if (useSystray) {
         // Compute size and position of the pixmap to be grabbed:
@@ -148,7 +154,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
         painter.drawArc(ax, ay, tw + 2*CIRCLE_MARGINS, th + 2*CIRCLE_MARGINS, 0, 16*360);
 #if 1
         // Draw the pixmap over the screenshot in case a window hide the icon:
-        painter.drawPixmap(g.x() - x, g.y() - y + 1, *pixmap());
+        painter.drawPixmap(g.x() - x, g.y() - y + 1, QSystemTrayIcon::icon().pixmap(0));
 #endif
         painter.end();
 
@@ -160,11 +166,11 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
         painter.end();
 
         // Associate source to image and show the dialog:
-        QResource::registerResource(finalShot, "systray_shot");
+        QResource::registerResource(finalShot.toImage().bits(), "systray_shot");
         KMessageBox::information(kapp->activeWindow(),
                                  message + "<p><center><img source=\":/systray_shot\"></center></p>",
                                  i18n("Docking in System Tray"), "hideOnCloseInfo");
-        QResource::unregisterResource(finalShot, "systray_shot");
+        QResource::unregisterResource(finalShot.toImage().bits(), "systray_shot");
     } else {
         KMessageBox::information(kapp->activeWindow(),
                                  message,
