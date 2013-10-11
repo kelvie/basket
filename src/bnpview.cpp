@@ -557,7 +557,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_import_tomboy", this, SLOT(importTomboy()));
     a->setText(i18n("&Tomboy"));
-    a->setIcon(KIcon("tintin"));
+    a->setIcon(KIcon(IconNames::TOMBOY));
     a->setShortcut(0);
 
     a = ac->addAction("basket_import_jreepad_file", this, SLOT(importJreepadFile()));

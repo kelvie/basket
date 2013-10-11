@@ -538,30 +538,53 @@ void FoundCountIcon::paint(QPainter *painter, const QStyleOptionViewItem &option
 
     // Draw the rounded rectangle:
     if (drawRoundRect) {
-        QPixmap roundRectBmp(option.rect.size());
-        roundRectBmp.fill(Qt::transparent);
-
-        QPainter brushPainter(&roundRectBmp);
-
-        int cornerR = option.rect.height()/2 - MARGIN;
-
+        QPixmap roundRectBmp;
+        QColor background = basket->backgroundColor();
         int textWidth = m_basketTree->fontMetrics().width(basketInTree->text(/*column=*/0));
         int iconTextMargin = m_basketTree->style()->pixelMetric(QStyle::PM_FocusFrameHMargin); ///< Space between icon and text
-        QRect roundRect(0, MARGIN,
-                        BASKET_ICON_SIZE + iconTextMargin + textWidth + 2*cornerR,
-                        option.rect.height() - 2*MARGIN);
 
 
-        QColor background = basket->backgroundColor();
-        brushPainter.setPen(background);
-        brushPainter.setBrush(background);
-        brushPainter.setRenderHint(QPainter::Antialiasing);
-        brushPainter.drawRoundedRect(roundRect, cornerR, cornerR);
+        // Don't forget to update the key computation if parameters
+        // affecting the rendering logic change
+        QString key = QString("BLIRR::%1.%2.%3.%4")
+                    .arg(option.rect.width())
+                    .arg(option.rect.size().height())
+                    .arg(textWidth)
+                    .arg(background.rgb());
+
+
+        if (QPixmap* cached = QPixmapCache::find(key)) {
+            // Qt's documentation recommends copying the pointer
+            // into a QPixmap immediately
+            roundRectBmp = *cached;
+        } else {
+            // Draw first time
+
+            roundRectBmp = QPixmap(option.rect.size());
+            roundRectBmp.fill(Qt::transparent);
+
+            QPainter brushPainter(&roundRectBmp);
+
+            int cornerR = option.rect.height()/2 - MARGIN;
+
+            QRect roundRect(0, MARGIN,
+                            BASKET_ICON_SIZE + iconTextMargin + textWidth + 2*cornerR,
+                            option.rect.height() - 2*MARGIN);
+
+
+            brushPainter.setPen(background);
+            brushPainter.setBrush(background);
+            brushPainter.setRenderHint(QPainter::Antialiasing);
+            brushPainter.drawRoundedRect(roundRect, cornerR, cornerR);
+
+            QPixmapCache::insert(key, roundRectBmp);
+        }
+
 
         basketInTree->setBackground(0, QBrush(roundRectBmp));
         basketInTree->setForeground(0, QBrush(basket->textColor()));
     }
-
+    //end if drawRoundRect
 
     // Render icons on the right
     int y = option.rect.center().y() - BASKET_ICON_SIZE/2;

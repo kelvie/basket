@@ -125,8 +125,8 @@ private:
 class FoundCountIcon : public QStyledItemDelegate
 {
 public:
-    FoundCountIcon(/*BasketListViewItem* basketInTree,*/BasketTreeListView* basketTree, QObject* parent = NULL) :
-        QStyledItemDelegate(parent), /*m_basketInTree(basketInTree),*/m_basketTree(basketTree) {}
+    FoundCountIcon(BasketTreeListView* basketTree, QObject* parent = NULL) :
+        QStyledItemDelegate(parent), m_basketTree(basketTree) {}
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
@@ -137,7 +137,6 @@ private:
                              const QFont& font, int height) const;
 
 
-    BasketListViewItem* m_basketInTree;
     BasketTreeListView* m_basketTree;
 };
 

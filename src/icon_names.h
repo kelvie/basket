@@ -19,6 +19,9 @@ StrRes  LAUNCH = "system-run";
 StrRes  KMENU = "kde";
 StrRes  ICONS = "preferences-desktop-icons";
 
+// Import from
+StrRes  TOMBOY = "tomboy";
+
 #undef StrRes
 }
 
