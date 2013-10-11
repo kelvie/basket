@@ -23,6 +23,7 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QTreeWidget>
+#include <QStyledItemDelegate>
 
 class QPixmap;
 class QResizeEvent;
@@ -58,8 +59,6 @@ public:
     bool isUnderDrag();
     QString escapedName(const QString &string);
 
-    QPixmap circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color);
-    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height);
     bool haveChildsLoading();
     bool haveHiddenChildsLoading();
     bool haveChildsLocked();
@@ -94,6 +93,11 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     Qt::DropActions supportedDropActions() const;
 
+    /*! Retrieve a basket from the tree
+     *  @see BasketListViewItem::basket() */
+    BasketListViewItem* getBasketInTree(const QModelIndex &index) const;
+
+
     static QString TREE_ITEM_MIME_STRING;
 protected:
     QStringList mimeTypes() const;
@@ -113,6 +117,28 @@ private:
     void setItemUnderDrag(BasketListViewItem* item);
     BasketListViewItem* m_itemUnderDrag;
     QPoint m_dragStartPosition;
+};
+
+
+/** @class FoundCountIcon
+ *  Custom-drawn "little numbers" shown on Filter all */
+class FoundCountIcon : public QStyledItemDelegate
+{
+public:
+    FoundCountIcon(/*BasketListViewItem* basketInTree,*/BasketTreeListView* basketTree, QObject* parent = NULL) :
+        QStyledItemDelegate(parent), /*m_basketInTree(basketInTree),*/m_basketTree(basketTree) {}
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+    QPixmap circledTextPixmap(const QString& text, int height, const QFont& font, const QColor &color) const;
+
+    //! @returns Rect-with-number, or null pixmap if nothing was found / basket is loading
+    QPixmap foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound,
+                             const QFont& font, int height) const;
+
+
+    BasketListViewItem* m_basketInTree;
+    BasketTreeListView* m_basketTree;
 };
 
 #endif // BASKETLISTVIEW_H

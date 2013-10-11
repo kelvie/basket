@@ -92,15 +92,13 @@ FilterBar::FilterBar(QWidget *parent)
     hBox->addSpacing(KDialog::spacingHint());
     hBox->addWidget(m_inAllBasketsButton);
 
-    m_data = new FilterData(); // TODO: Not a pointer! and return a const &  !!
-
 //  connect( &m_blinkTimer,         SIGNAL(timeout()),                   this, SLOT(blinkBar())                  );
     connect(m_resetButton,        SIGNAL(clicked()),                   this, SLOT(reset()));
     connect(m_lineEdit,           SIGNAL(textChanged(const QString&)), this, SLOT(changeFilter()));
     connect(m_tagsBox,            SIGNAL(activated(int)),              this, SLOT(tagChanged(int)));
 
 //  connect(  m_inAllBasketsButton, SIGNAL(clicked()),                   this, SLOT(inAllBaskets())              );
-    connect(m_inAllBasketsButton, SIGNAL(toggled(bool)), Global::bnpView, SLOT(toggleFilterAllBaskets(bool)));
+    m_inAllBasketsButton->setDefaultAction(Global::bnpView->m_actFilterAllBaskets);
 
     FocusWidgetFilter *lineEditF = new FocusWidgetFilter(m_lineEdit);
     m_tagsBox->installEventFilter(lineEditF);
@@ -110,11 +108,6 @@ FilterBar::FilterBar(QWidget *parent)
 
 FilterBar::~FilterBar()
 {
-}
-
-void FilterBar::setFilterAll(bool filterAll)
-{
-    m_inAllBasketsButton->setChecked(filterAll);
 }
 
 void FilterBar::setFilterData(const FilterData &data)
@@ -208,7 +201,7 @@ void FilterBar::reset()
         tagChanged(0);
     }
     hide();
-    emit newFilter(*m_data);
+    emit newFilter(m_data);
 }
 
 void FilterBar::filterTag(Tag *tag)
@@ -264,54 +257,54 @@ bool FilterBar::hasEditFocus()
 
 const FilterData& FilterBar::filterData()
 {
-    return *m_data;
+    return m_data;
 }
 
 void FilterBar::changeFilter()
 {
-    m_data->string = m_lineEdit->text();
-    m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
+    m_data.string = m_lineEdit->text();
+    m_data.isFiltering = (!m_data.string.isEmpty() || m_data.tagFilterType != FilterData::DontCareTagsFilter);
     if (hasEditFocus())
-        m_data->isFiltering = true;
-    emit newFilter(*m_data);
+        m_data.isFiltering = true;
+    emit newFilter(m_data);
 }
 
 void FilterBar::tagChanged(int index)
 {
-    m_data->tag   = 0;
-    m_data->state = 0;
+    m_data.tag   = 0;
+    m_data.state = 0;
     switch (index) {
     case 0:
-        m_data->tagFilterType = FilterData::DontCareTagsFilter;
+        m_data.tagFilterType = FilterData::DontCareTagsFilter;
         break;
     case 1:
-        m_data->tagFilterType = FilterData::NotTaggedFilter;
+        m_data.tagFilterType = FilterData::NotTaggedFilter;
         break;
     case 2:
-        m_data->tagFilterType = FilterData::TaggedFilter;
+        m_data.tagFilterType = FilterData::TaggedFilter;
         break;
     default:
         // Try to find if we are filtering a tag:
         QMap<int, Tag*>::iterator it = m_tagsMap.find(index);
         if (it != m_tagsMap.end()) {
-            m_data->tagFilterType = FilterData::TagFilter;
-            m_data->tag           = *it;
+            m_data.tagFilterType = FilterData::TagFilter;
+            m_data.tag           = *it;
         } else {
             // If not, try to find if we are filtering a state:
             QMap<int, State*>::iterator it2 = m_statesMap.find(index);
             if (it2 != m_statesMap.end()) {
-                m_data->tagFilterType = FilterData::StateFilter;
-                m_data->state         = *it2;
+                m_data.tagFilterType = FilterData::StateFilter;
+                m_data.state         = *it2;
             } else {
                 // If not (should never happens), do as if the tags filter was reseted:
-                m_data->tagFilterType = FilterData::DontCareTagsFilter;
+                m_data.tagFilterType = FilterData::DontCareTagsFilter;
             }
         }
         break;
     }
-    m_data->isFiltering = (!m_data->string.isEmpty() || m_data->tagFilterType != FilterData::DontCareTagsFilter);
+    m_data.isFiltering = (!m_data.string.isEmpty() || m_data.tagFilterType != FilterData::DontCareTagsFilter);
     if (hasEditFocus())
-        m_data->isFiltering = true;
-    emit newFilter(*m_data);
+        m_data.isFiltering = true;
+    emit newFilter(m_data);
 }
 

@@ -119,7 +119,8 @@ HEADERS += \
     src/aboutdata.h \
     config.h \
     src/basketscene.h \
-    src/history.h
+    src/history.h \
+    src/icon_names.h
 
 FORMS += \
     src/passwordlayout.ui \

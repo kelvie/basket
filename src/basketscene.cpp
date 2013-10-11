@@ -575,7 +575,7 @@ void BasketScene::loadNotes(const QDomElement &notes, Note *parent)
                 }
             }
         }
-//      kapp->processEvents();
+      kapp->processEvents();
     }
 }
 
