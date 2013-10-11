@@ -46,6 +46,8 @@
 #include "tools.h"
 #include "settings.h"
 #include "notedrag.h"
+#include "decoratedbasket.h"
+#include "icon_names.h"
 
 /** class BasketListViewItem: */
 
@@ -200,100 +202,6 @@ extern void drawGradient(QPainter *p, const QColor &colorTop, const QColor & col
                          qreal x, qreal y, qreal w, qreal h,
                          bool sunken, bool horz, bool flat);   /*const*/
 
-QPixmap BasketListViewItem::circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color)
-{
-    QString key = QString("BLI-%1.%2.%3.%4")
-                  .arg(text).arg(height).arg(font.toString()).arg(color.rgb());
-    if (QPixmap* cached = QPixmapCache::find(key)) {
-        return *cached;
-    }
-
-    // Compute the sizes of the image components:
-    QRectF textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
-    qreal xMargin = height / 6;
-    qreal width   = xMargin + textRect.width() + xMargin;
-
-    // Create the gradient image:
-    QPixmap gradient(3 * width, 3 * height); // We double the size to be able to smooth scale down it (== antialiased curves)
-    QPainter gradientPainter(&gradient);
-#if 1 // Enable the new look of the gradient:
-    QColor topColor       = treeWidget()->palette().color(QPalette::Highlight).lighter(130); //120
-    QColor topMidColor    = treeWidget()->palette().color(QPalette::Highlight).lighter(105); //105
-    QColor bottomMidColor = treeWidget()->palette().color(QPalette::Highlight).darker(130);  //120
-    QColor bottomColor    = treeWidget()->palette().color(QPalette::Highlight);
-    drawGradient(&gradientPainter, topColor, topMidColor,
-                 0, 0, gradient.width(), gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-    drawGradient(&gradientPainter, bottomMidColor, bottomColor,
-                 0, gradient.height() / 2, gradient.width(), gradient.height() - gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-    gradientPainter.fillRect(0, 0, gradient.width(), 3, treeWidget()->palette().color(QPalette::Highlight));
-#else
-    drawGradient(&gradientPainter, palette().color(QPalette::Highlight), palette().color(QPalette::Highlight).darker(),
-                 0, 0, gradient.width(), gradient.height(), /*sunken=*/false, /*horz=*/true, /*flat=*/false);
-#endif
-    gradientPainter.end();
-
-    // Draw the curved rectangle:
-    QBitmap curvedRectangle(3 * width, 3 * height);
-    curvedRectangle.fill(Qt::color0);
-    QPainter curvePainter(&curvedRectangle);
-    curvePainter.setPen(Qt::color1);
-    curvePainter.setBrush(Qt::color1);
-    curvePainter.setClipRect(0, 0, 3*(height / 5), 3*(height)); // If the width is small, don't fill the right part of the pixmap
-    curvePainter.drawEllipse(0, 3*(-height / 4), 3*(height), 3*(height * 3 / 2)); // Don't forget we double the sizes
-    curvePainter.setClipRect(3*(width - height / 5), 0, 3*(height / 5), 3*(height));
-    curvePainter.drawEllipse(3*(width - height), 3*(-height / 4), 3*(height), 3*(height * 3 / 2));
-    curvePainter.setClipping(false);
-    curvePainter.fillRect(3*(height / 6), 0, 3*(width - 2 * height / 6), 3*(height), curvePainter.brush());
-    curvePainter.end();
-
-    // Apply the curved rectangle as the mask of the gradient:
-    gradient.setMask(curvedRectangle);
-    QImage resultImage = gradient.toImage();
-
-    //resultImage.setAlphaBuffer(true);
-    resultImage.convertToFormat(QImage::Format_ARGB32);
-
-    // Scale down the image smoothly to get anti-aliasing:
-    QPixmap pmScaled = QPixmap::fromImage(resultImage.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-
-    // Draw the text, and return the result:
-    QPainter painter(&pmScaled);
-    painter.setPen(color);
-    painter.setFont(font);
-    painter.drawText(0 + 1, 0, width, height, Qt::AlignHCenter | Qt::AlignVCenter, text);
-    painter.end();
-
-    QPixmapCache::insert(key, pmScaled);
-
-    return pmScaled;
-}
-
-QPixmap BasketListViewItem::foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound, const QFont &font, int height)
-{
-    if (isLoading)
-        return QPixmap();
-
-    QFont boldFont(font);
-    boldFont.setBold(true);
-
-    QString text;
-    if (childrenAreLoading) {
-        if (countChildsFound > 0)
-            text = i18n("%1+%2+", QString::number(countFound), QString::number(countChildsFound));
-        else
-            text = i18n("%1+", QString::number(countFound));
-    } else {
-        if (countChildsFound > 0)
-            text = i18n("%1+%2", QString::number(countFound), QString::number(countChildsFound));
-        else if (countFound > 0)
-            text = QString::number(countFound);
-        else
-            return QPixmap();
-    }
-
-    return circledTextPixmap(text, height, boldFont, treeWidget()->palette().color(QPalette::HighlightedText));
-}
-
 bool BasketListViewItem::haveChildsLoading()
 {
     for (int i = 0; i < childCount(); i++) {
@@ -373,6 +281,7 @@ BasketTreeListView::BasketTreeListView(QWidget *parent)
         , m_itemUnderDrag(0)
 {
     connect(&m_autoOpenTimer, SIGNAL(timeout()), this, SLOT(autoOpen()));
+    setItemDelegate(new FoundCountIcon(this));
 }
 
 void BasketTreeListView::contextMenuEvent(QContextMenuEvent *e)
@@ -583,4 +492,210 @@ void BasketTreeListView::focusInEvent(QFocusEvent*)
 Qt::DropActions BasketTreeListView::supportedDropActions() const
 {
     return Qt::MoveAction | Qt::CopyAction;
+}
+
+BasketListViewItem* BasketTreeListView::getBasketInTree(const QModelIndex& index) const
+{
+    QTreeWidgetItem* item = itemFromIndex(index);
+    return dynamic_cast<BasketListViewItem*>(item);
+}
+
+void FoundCountIcon::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+
+    // Get access to basket pointer
+    BasketListViewItem* basketInTree = m_basketTree->getBasketInTree(index);
+    if (basketInTree == NULL)
+        return;
+
+    const int BASKET_ICON_SIZE = 16; // [replace with m_basketTree->iconSize()]
+    const int MARGIN = 1;
+
+    BasketScene* basket = basketInTree->basket();
+
+
+    // If we are filtering all baskets, and are effectively filtering on something:
+    bool showLoadingIcon = false;
+    bool showEncryptedIcon = false;
+    QPixmap countPixmap;
+    bool showCountPixmap = Global::bnpView->isFilteringAllBaskets() &&
+        Global::bnpView->currentBasket()->decoration()->filterBar()->filterData().isFiltering;
+    if (showCountPixmap) {
+        showLoadingIcon = (!basket->isLoaded() && !basket->isLocked()) || basketInTree->haveHiddenChildsLoading();
+        showEncryptedIcon = basket->isLocked() || basketInTree->haveHiddenChildsLocked();
+        bool childrenAreLoading = basketInTree->haveHiddenChildsLoading() || basketInTree->haveHiddenChildsLocked();
+
+        countPixmap = foundCountPixmap(!basket->isLoaded(), basket->countFounds(), childrenAreLoading,
+                                       basketInTree->countHiddenChildsFound(), m_basketTree->font(), option.rect.height() - 2 * MARGIN);
+    }
+    int effectiveWidth = option.rect.right() -
+        (countPixmap.isNull() ? 0 : countPixmap.width() + MARGIN) -
+        (showLoadingIcon || showEncryptedIcon ? BASKET_ICON_SIZE + MARGIN : 0);
+
+
+    bool drawRoundRect = basket->backgroundColorSetting().isValid() || basket->textColorSetting().isValid();
+
+    // Draw the rounded rectangle:
+    if (drawRoundRect) {
+        QPixmap roundRectBmp;
+        QColor background = basket->backgroundColor();
+        int textWidth = m_basketTree->fontMetrics().width(basketInTree->text(/*column=*/0));
+        int iconTextMargin = m_basketTree->style()->pixelMetric(QStyle::PM_FocusFrameHMargin); ///< Space between icon and text
+
+
+        // Don't forget to update the key computation if parameters
+        // affecting the rendering logic change
+        QString key = QString("BLIRR::%1.%2.%3.%4")
+                    .arg(option.rect.width())
+                    .arg(option.rect.size().height())
+                    .arg(textWidth)
+                    .arg(background.rgb());
+
+
+        if (QPixmap* cached = QPixmapCache::find(key)) {
+            // Qt's documentation recommends copying the pointer
+            // into a QPixmap immediately
+            roundRectBmp = *cached;
+        } else {
+            // Draw first time
+
+            roundRectBmp = QPixmap(option.rect.size());
+            roundRectBmp.fill(Qt::transparent);
+
+            QPainter brushPainter(&roundRectBmp);
+
+            int cornerR = option.rect.height()/2 - MARGIN;
+
+            QRect roundRect(0, MARGIN,
+                            BASKET_ICON_SIZE + iconTextMargin + textWidth + 2*cornerR,
+                            option.rect.height() - 2*MARGIN);
+
+
+            brushPainter.setPen(background);
+            brushPainter.setBrush(background);
+            brushPainter.setRenderHint(QPainter::Antialiasing);
+            brushPainter.drawRoundedRect(roundRect, cornerR, cornerR);
+
+            QPixmapCache::insert(key, roundRectBmp);
+        }
+
+
+        basketInTree->setBackground(0, QBrush(roundRectBmp));
+        basketInTree->setForeground(0, QBrush(basket->textColor()));
+    }
+    //end if drawRoundRect
+
+    // Render icons on the right
+    int y = option.rect.center().y() - BASKET_ICON_SIZE/2;
+
+    if (!countPixmap.isNull()) {
+        painter->drawPixmap(effectiveWidth, y, countPixmap);
+        effectiveWidth += countPixmap.width() + MARGIN;
+    }
+    if (showLoadingIcon) {
+        QPixmap icon = KIconLoader::global()->loadIcon(IconNames::LOADING, KIconLoader::NoGroup, BASKET_ICON_SIZE);
+        painter->drawPixmap(effectiveWidth, y, icon);
+        effectiveWidth += BASKET_ICON_SIZE + MARGIN;
+    }
+    if (showEncryptedIcon && !showLoadingIcon) {
+        QPixmap icon = KIconLoader::global()->loadIcon(IconNames::LOCKED, KIconLoader::NoGroup, BASKET_ICON_SIZE);
+        painter->drawPixmap(effectiveWidth, y, icon);
+    }
+}
+
+QPixmap FoundCountIcon::circledTextPixmap(const QString &text, int height, const QFont &font, const QColor &color) const
+{
+    QString key = QString("BLI-%1.%2.%3.%4")
+                  .arg(text).arg(height).arg(font.toString()).arg(color.rgb());
+    if (QPixmap* cached = QPixmapCache::find(key)) {
+        return *cached;
+    }
+
+    // Compute the sizes of the image components:
+    QRectF textRect = QFontMetrics(font).boundingRect(0, 0, /*width=*/1, height, Qt::AlignLeft | Qt::AlignTop, text);
+    qreal xMargin = height / 6;
+    qreal width   = xMargin + textRect.width() + xMargin;
+
+    // Create the gradient image:
+    QPixmap gradient(3 * width, 3 * height); // We double the size to be able to smooth scale down it (== antialiased curves)
+    QPainter gradientPainter(&gradient);
+#if 1 // Enable the new look of the gradient:
+    const QPalette& palette = m_basketTree->palette();
+    QColor topColor       = palette.color(QPalette::Highlight).lighter(130); //120
+    QColor topMidColor    = palette.color(QPalette::Highlight).lighter(105); //105
+    QColor bottomMidColor = palette.color(QPalette::Highlight).darker(130);  //120
+    QColor bottomColor    = palette.color(QPalette::Highlight);
+    drawGradient(&gradientPainter, topColor, topMidColor,
+                 0, 0, gradient.width(), gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    drawGradient(&gradientPainter, bottomMidColor, bottomColor,
+                 0, gradient.height() / 2, gradient.width(), gradient.height() - gradient.height() / 2, /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+    gradientPainter.fillRect(0, 0, gradient.width(), 3, palette.color(QPalette::Highlight));
+#else
+    drawGradient(&gradientPainter, palette().color(QPalette::Highlight), palette().color(QPalette::Highlight).darker(),
+                 0, 0, gradient.width(), gradient.height(), /*sunken=*/false, /*horz=*/true, /*flat=*/false);
+#endif
+    gradientPainter.end();
+
+    // Draw the curved rectangle:
+    QBitmap curvedRectangle(3 * width, 3 * height);
+    curvedRectangle.fill(Qt::color0);
+    QPainter curvePainter(&curvedRectangle);
+    curvePainter.setPen(Qt::color1);
+    curvePainter.setBrush(Qt::color1);
+    curvePainter.setClipRect(0, 0, 3*(height / 5), 3*(height)); // If the width is small, don't fill the right part of the pixmap
+    curvePainter.drawEllipse(0, 3*(-height / 4), 3*(height), 3*(height * 3 / 2)); // Don't forget we double the sizes
+    curvePainter.setClipRect(3*(width - height / 5), 0, 3*(height / 5), 3*(height));
+    curvePainter.drawEllipse(3*(width - height), 3*(-height / 4), 3*(height), 3*(height * 3 / 2));
+    curvePainter.setClipping(false);
+    curvePainter.fillRect(3*(height / 6), 0, 3*(width - 2 * height / 6), 3*(height), curvePainter.brush());
+    curvePainter.end();
+
+    // Apply the curved rectangle as the mask of the gradient:
+    gradient.setMask(curvedRectangle);
+    QImage resultImage = gradient.toImage();
+
+    //resultImage.setAlphaBuffer(true);
+    resultImage.convertToFormat(QImage::Format_ARGB32);
+
+    // Scale down the image smoothly to get anti-aliasing:
+    QPixmap pmScaled = QPixmap::fromImage(resultImage.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    // Draw the text, and return the result:
+    QPainter painter(&pmScaled);
+    painter.setPen(color);
+    painter.setFont(font);
+    painter.drawText(0 + 1, 0, width, height, Qt::AlignHCenter | Qt::AlignVCenter, text);
+    painter.end();
+
+    QPixmapCache::insert(key, pmScaled);
+
+    return pmScaled;
+}
+
+QPixmap FoundCountIcon::foundCountPixmap(bool isLoading, int countFound, bool childrenAreLoading, int countChildsFound,
+                                         const QFont &font, int height) const
+{
+    if (isLoading)
+        return QPixmap();
+
+    QFont boldFont(font);
+    boldFont.setBold(true);
+
+    QString text;
+    if (childrenAreLoading) {
+        if (countChildsFound > 0)
+            text = i18n("%1+%2+", QString::number(countFound), QString::number(countChildsFound));
+        else
+            text = i18n("%1+", QString::number(countFound));
+    } else {
+        if (countChildsFound > 0)
+            text = i18n("%1+%2", QString::number(countFound), QString::number(countChildsFound));
+        else if (countFound > 0)
+            text = QString::number(countFound);
+        else
+            return QPixmap();
+    }
+
+    return circledTextPixmap(text, height, boldFont, m_basketTree->palette().color(QPalette::HighlightedText));
 }

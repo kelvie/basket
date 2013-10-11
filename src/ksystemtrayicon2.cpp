@@ -147,7 +147,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
         const int IMAGE_BORDER   = 1;
         int ax = g.x() - x - CIRCLE_MARGINS - 1;
         int ay = g.y() - y - CIRCLE_MARGINS - 1;
-        painter.setPen(QPen(KApplication::palette().active().dark(), CIRCLE_WIDTH));
+        painter.setPen(QPen(KApplication::palette().dark(), CIRCLE_WIDTH));
         painter.drawArc(ax + SHADOW_OFFSET, ay + SHADOW_OFFSET,
                         tw + 2*CIRCLE_MARGINS, th + 2*CIRCLE_MARGINS, 0, 16*360);
         painter.setPen(QPen(Qt::red/*KApplication::palette().active().highlight()*/, CIRCLE_WIDTH));
@@ -160,7 +160,7 @@ void KSystemTray2::displayCloseMessage(QString fileMenu)
 
         // Then, we add a border around the image to make it more visible:
         QPixmap finalShot(w + 2*IMAGE_BORDER, h + 2*IMAGE_BORDER);
-        finalShot.fill(KApplication::palette().active().foreground());
+        finalShot.fill(KApplication::palette().foreground().color());
         painter.begin(&finalShot);
         painter.drawPixmap(IMAGE_BORDER, IMAGE_BORDER, shot);
         painter.end();

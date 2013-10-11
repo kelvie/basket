@@ -35,7 +35,7 @@ class State;
 /** The structure that contain all filter terms
   * @author Sébastien Laoût
   */
-class FilterData
+struct FilterData
 {
 public:
     // Useful Enum for tagFilterType:
@@ -72,7 +72,6 @@ public slots:
     void setEditFocus();
     void filterTag(Tag *tag);
     void filterState(State *state);
-    void setFilterAll(bool filterAll);
     void setFilterData(const FilterData &data);
 public:
     bool hasEditFocus();
@@ -83,7 +82,7 @@ private slots:
     void changeFilter();
     void tagChanged(int index);
 private:
-    FilterData      *m_data;
+    FilterData  m_data;
     KLineEdit *m_lineEdit;
     QToolButton     *m_resetButton;
     KComboBox *m_tagsBox;

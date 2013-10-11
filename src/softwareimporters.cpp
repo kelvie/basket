@@ -29,6 +29,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QRadioButton>
 #include <QtXml/QDomDocument>
+#include <QRegExp>
 
 #include <KDE/KStandardDirs>
 #include <KDE/KLocale>
@@ -43,6 +44,8 @@
 #include "bnpview.h"
 #include "xmlwork.h"
 #include "tools.h"
+#include "icon_names.h"
+#include "debugwindow.h"
 
 /** class TreeImportDialog: */
 
@@ -213,6 +216,7 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     tomboy.replace("</strikethrough>", "</span>");
 
     // Highlight not supported by KTextEdit:
+    //TODO: implement this marker-style yellow highlight?
     tomboy.replace("<highlight>",      "<span style='color:#ff0080'>");
     tomboy.replace("</highlight>",     "</span>");
 
@@ -228,11 +232,41 @@ QString SoftwareImporters::fromTomboy(QString tomboy)
     tomboy.replace("<link:internal>",  "");
     tomboy.replace("</link:internal>", "");
 
+    // Bullets
+    tomboy.replace("<list>",           "<ul>");
+    tomboy.replace("</list>",          "</ul>");
+
+    QRegExp tagRegex("<list-item.*>");
+    tagRegex.setMinimal(true); // non-greedy
+    tomboy.replace(QRegExp(tagRegex),  "<li>");
+    tomboy.replace("</list-item>",     "</li>");
+
     // In the Tomboy file, new lines are "\n" and not "<br>":
     tomboy.replace("\n", "<br>\n");
 
     // Preserve consecutive spaces:
     return "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + tomboy + "</body></html>";
+}
+
+QString SoftwareImporters::getFirstTomboyTag(const QDomElement& docElem)
+{
+    // Would be better to take the last tag (latest user choice), but that requires more DOM code
+
+   QString tag = XMLWork::getElementText(docElem, "tags/tag");
+   if (tag.length() > 0) {
+
+       // Carefully peel the markup
+       const QString SYSTEM_PREFIX = "system:";
+       const QString NOTEBOOK_PREFIX = "notebook:";
+
+       if (tag.startsWith(SYSTEM_PREFIX))
+           tag.remove(0, SYSTEM_PREFIX.length());
+
+       if (tag.startsWith(NOTEBOOK_PREFIX))
+           tag.remove(0, NOTEBOOK_PREFIX.length());
+   }
+
+   return tag;
 }
 
 Note* SoftwareImporters::insertTitledNote(BasketScene *parent, const QString &title, const QString &content, Qt::TextFormat format/* = Qt::PlainText*/, Note *parentNote/* = 0*/)
@@ -476,45 +510,75 @@ QString loadUtf8FileToString(const QString &fileName)
 
 void SoftwareImporters::importTomboy()
 {
-    QString dirPath = QDir::home().absolutePath() + "/.tomboy/"; // I thing the assumption is good
-    QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
+    /* A notebook becomes a basket.
+    What can be improved: separate big text into notes by "\n\n";
+    remove "\n" from lists - we don't need <br> between two <li>s */
 
-    BasketScene *basket = 0; // Create the basket ONLY if we found at least one note to add!
+    BasketScene *basketFromTomboy = 0; // Create the basket ONLY if we found at least one note to add!
+    BasketScene *subBasket; // Where are we adding current note? (can equal basketFromTomboy if the note is in generic notebook)
+    QMap<QString, BasketScene*> subBuskets; // "notebook name - basket" correspondence
 
-    QStringList list = dir.entryList();
-    for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
-        if (!(*it).endsWith(QLatin1String(".note")))
-            continue;
-        QDomDocument *doc = XMLWork::openFile("note", dirPath + *it);
-        if (doc == 0)
-            continue;
+    QString possibleLocations[2] = { "/.tomboy/", "/.local/share/tomboy/" };
+    for (int L=0; L<2; L++) {
 
-        if (basket == 0) {
-            // First create a basket for it:
-            BasketFactory::newBasket(/*icon=*/"tomboy", /*name=*/i18n("From Tomboy"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
-            basket = Global::bnpView->currentBasket();
-            basket->load();
+        QString dirPath = QDir::home().absolutePath() + possibleLocations[L];
+        QDir dir(dirPath, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Files | QDir::NoSymLinks);
+        DEBUG_WIN << "Tomboy import: Checking " + dirPath;
+
+        QStringList list = dir.entryList();
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it) {   // For each file
+            if (!(*it).endsWith(QLatin1String(".note")))
+                continue;
+            QDomDocument *doc = XMLWork::openFile("note", dirPath + *it);
+            if (doc == 0)
+                continue;
+
+            if (basketFromTomboy == 0) {
+                // First create a basket for it:
+                BasketFactory::newBasket(/*icon=*/IconNames::TOMBOY, /*name=*/i18n("From Tomboy"), /*backgroundImage=*/"", /*backgroundColor=*/QColor(), /*textColor=*/QColor(), /*templateName=*/"1column", /*createIn=*/0);
+                basketFromTomboy = Global::bnpView->currentBasket();
+                basketFromTomboy->load();
+            }
+
+            QDomElement docElem = doc->documentElement();
+            QString title = XMLWork::getElementText(docElem, "title");
+            QString notebook = getFirstTomboyTag(docElem); //!< Tomboy notebook name
+
+            // Find subbasket or create a new one
+            if (notebook.length() > 0) {
+                if (subBuskets.contains(notebook))
+                    subBasket = subBuskets[notebook]; else
+                {
+                    BasketFactory::newBasket(IconNames::TOMBOY, notebook, "", QColor(), QColor(), "1column", /*createIn=*/basketFromTomboy);
+                    subBasket = Global::bnpView->currentBasket(); //TODO: ? change newBasket() so that it returns pointer and we don't have to load it
+                    subBasket->load();
+
+                    subBuskets.insert(notebook, subBasket);
+                }
+            } else
+                subBasket = basketFromTomboy; // will insert to the root basket
+
+
+            // DOES NOT REALLY WORKS:
+            //QDomElement contentElement = XMLWork::getElement(docElem, "text/note-content");
+            //QString content = XMLWork::innerXml(contentElement);
+
+            // Isolate "<note-content version="0.1">CONTENT</note-content>"!
+            QString xml = loadUtf8FileToString(dirPath + *it);
+            xml = xml.mid(xml.indexOf("<note-content"));
+            xml = xml.mid(xml.indexOf(">") + 1);
+            xml = xml.mid(0, xml.indexOf("</note-content>"));
+
+            if (!title.isEmpty() && !/*content*/xml.isEmpty()) {
+                insertTitledNote(subBasket, title, fromTomboy(xml/*content*/), Qt::RichText);
+                DEBUG_WIN << QString("Tomboy import: Inserting note '%1' into '%2'").arg(title, notebook);
+            }
         }
 
-        QDomElement docElem = doc->documentElement();
-        QString title = XMLWork::getElementText(docElem, "title");
-
-        // DOES NOT REALLY WORKS:
-        //QDomElement contentElement = XMLWork::getElement(docElem, "text/note-content");
-        //QString content = XMLWork::innerXml(contentElement);
-
-        // Isolate "<note-content version="0.1">CONTENT</note-content>"!
-        QString xml = loadUtf8FileToString(dirPath + *it);
-        xml = xml.mid(xml.indexOf("<note-content "));
-        xml = xml.mid(xml.indexOf(">") + 1);
-        xml = xml.mid(0, xml.indexOf("</note-content>"));
-
-        if (!title.isEmpty() && !/*content*/xml.isEmpty())
-            insertTitledNote(basket, title, fromTomboy(xml/*content*/), Qt::RichText);
     }
 
-    if (basket)
-        finishImport(basket);
+    if (basketFromTomboy)
+        finishImport(basketFromTomboy);
 }
 
 void SoftwareImporters::importJreepadFile(){
