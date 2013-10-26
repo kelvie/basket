@@ -1138,10 +1138,12 @@ QString HtmlContent::messageWhenOpening(OpenMessage where)
 void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 {
     m_html = html;
+    /* The code was commented, so now non-Latin text is stored directly in Unicode.
+     * If testing doesn't show any bugs, this block should be deleted
     QRegExp rx("([^\\x00-\\x7f])");
     while (m_html.contains(rx)) {
         m_html.replace( rx.cap().unicode()[0], QString("&#%1;").arg(rx.cap().unicode()[0].unicode()) );
-    }
+    }*/
     m_textEquivalent = toText(""); //OPTIM_FILTER
     if (!lazyLoad)
         finishLazyLoad();
