@@ -458,7 +458,7 @@ HtmlEditor::~HtmlEditor()
 
 void HtmlEditor::autoSave(bool toFileToo)
 {
-    m_htmlContent->setHtml(textEdit()->toHtml());
+    m_htmlContent->setHtml(textEdit()->document()->toHtml("utf-8"));
     if (toFileToo) {
         m_htmlContent->saveToFile();
         m_htmlContent->setEdited();
@@ -469,7 +469,7 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    QString convert = textEdit()->toHtml();
+    QString convert = textEdit()->document()->toHtml("utf-8");
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert, /*userLink=*/true);
 

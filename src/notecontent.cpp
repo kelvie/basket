@@ -976,7 +976,7 @@ bool TextContent::loadFromFile(bool lazyLoad)
     DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
     QString content;
-    bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+    bool success = basket()->loadFromFile(fullPath(), &content);
 
     if (success)
         setText(content, lazyLoad);
@@ -998,7 +998,7 @@ bool TextContent::finishLazyLoad()
 
 bool TextContent::saveToFile()
 {
-    return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
+    return basket()->saveToFile(fullPath(), text());
 }
 
 QString TextContent::linkAt(const QPointF &/*pos*/)
@@ -1075,7 +1075,7 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
     DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
     QString content;
-    bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+    bool success = basket()->loadFromFile(fullPath(), &content);
 
     if (success)
         setHtml(content, lazyLoad);
@@ -1113,7 +1113,7 @@ bool HtmlContent::finishLazyLoad()
 
 bool HtmlContent::saveToFile()
 {
-    return basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
+    return basket()->saveToFile(fullPath(), html());
 }
 
 QString HtmlContent::linkAt(const QPointF &pos)
