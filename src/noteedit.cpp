@@ -467,7 +467,7 @@ void HtmlEditor::autoSave(bool toFileToo)
 
 void HtmlEditor::validate()
 {
-    if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
+    if (textEdit()->toPlainText().isEmpty())
         setEmpty();
     QString convert = textEdit()->toHtml();
     if(note()->allowCrossReferences())
