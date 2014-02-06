@@ -24,6 +24,7 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QGraphicsView>
 #include <QtXml/QDomElement>
+#include <QUuid>
 
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -44,13 +45,12 @@ QString BasketFactory::newFolderName()
     QString fullPath;
     QDir    dir;
 
-    for (int i = 1; ; ++i) {
-        folderName = "basket" + QString::number(i) + "/";
+    do {
+        QString id = QUuid::createUuid().toString().remove(QRegExp("[{}]")); // QTBUG-885
+        folderName = "basket-" + id + "/";
         fullPath   = Global::basketsFolder() + folderName;
         dir        = QDir(fullPath);
-        if (! dir.exists())   // OK : The folder do not yet exists :
-            break;            //  We've found one !
-    }
+    } while (dir.exists());   // Should run only once
 
     return folderName;
 }
