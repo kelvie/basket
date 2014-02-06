@@ -37,6 +37,7 @@
 #include <QtGui/QTextDocument> //For Qt::mightBeRichText(...)
 #include <QtGui/QBitmap> //For createHeuristicMask
 #include <QtCore/qnamespace.h>
+#include <QUuid>
 
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
@@ -864,20 +865,17 @@ QString NoteFactory::fileNameForNewNote(BasketScene *parent, const QString &want
 //  (extension willn't be used for that case)
 QString NoteFactory::createFileForNewNote(BasketScene *parent, const QString &extension, const QString &wantedName)
 {
-    static int nb = 1;
-
     QString fileName;
     QString fullName;
 
     if (wantedName.isEmpty()) { // TODO: fileNameForNewNote(parent, "note1."+extension);
-        QDir dir;
-        for (/*int nb = 1*/; ; ++nb) { // TODO: FIXME: If overflow ???
-            fileName = "note" + QString::number(nb)/*.rightJustified(5, '0')*/ + "." + extension;
+        QDir file;
+        do {
+	    QString id = QUuid::createUuid().toString().remove(QRegExp("[{}]")); // QTBUG-885
+            fileName = "note-" + id + "." + extension;
             fullName = parent->fullPath() + fileName;
-            dir = QDir(fullName);
-            if (! dir.exists(fullName))
-                break;
-        }
+            file = QDir(fullName);
+	} while (file.exists(fullName)); // should run only once
     } else {
         fileName = fileNameForNewNote(parent, wantedName);
         fullName = parent->fullPath() + fileName;
