@@ -244,9 +244,6 @@ public:
     QString text() {
         return m_graphicsTextItem.text();
     }     /// << @return the text note-content.
-    QByteArray data() {
-        return text().toLocal8Bit();
-    }
     QGraphicsItem *graphicsItem() { return &m_graphicsTextItem; }
     
 protected:
@@ -295,9 +292,6 @@ public:
     QString html() {
         return m_html;
     }     /// << @return the HTML note-content.
-    QByteArray data() {
-        return html().toLocal8Bit();
-    }
     QGraphicsItem *graphicsItem() { return &m_graphicsTextItem; }
 protected:
     QString          m_html;

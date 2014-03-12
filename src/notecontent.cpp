@@ -36,6 +36,7 @@
 #include <QtGui/QWidget>
 #include <QtXml/QDomDocument>
 #include <QtNetwork/QNetworkReply>
+#include <QTextBlock>
 #include <KDE/KIO/AccessManager>
 
 #include <KDE/KDebug>
@@ -356,7 +357,10 @@ QString TextContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
 
 QString HtmlContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
 {
-    return Tools::htmlToParagraph(html());
+    //return Tools::htmlToParagraph(html());
+    QTextDocument* simpleRichText = new QTextDocument();
+    simpleRichText->setHtml(html());
+    return Tools::textDocumentToMinimalHTML(simpleRichText);
 }
 
 QString ImageContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
@@ -721,7 +725,7 @@ void TextContent::fontChanged()
 }
 void HtmlContent::fontChanged()
 {
-    setHtml(html());
+    setHtml(Tools::textDocumentToMinimalHTML(m_graphicsTextItem.document()));
 }
 void ImageContent::fontChanged()
 {
@@ -976,7 +980,7 @@ bool TextContent::loadFromFile(bool lazyLoad)
     DEBUG_WIN << "Loading TextContent From " + basket()->folderName() + fileName();
 
     QString content;
-    bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+    bool success = basket()->loadFromFile(fullPath(), &content);
 
     if (success)
         setText(content, lazyLoad);
@@ -998,7 +1002,7 @@ bool TextContent::finishLazyLoad()
 
 bool TextContent::saveToFile()
 {
-    return basket()->saveToFile(fullPath(), text(), /*isLocalEncoding=*/true);
+    return basket()->saveToFile(fullPath(), text());
 }
 
 QString TextContent::linkAt(const QPointF &/*pos*/)
@@ -1075,7 +1079,7 @@ bool HtmlContent::loadFromFile(bool lazyLoad)
     DEBUG_WIN << "Loading HtmlContent From " + basket()->folderName() + fileName();
 
     QString content;
-    bool success = basket()->loadFromFile(fullPath(), &content, /*isLocalEncoding=*/true);
+    bool success = basket()->loadFromFile(fullPath(), &content);
 
     if (success)
         setHtml(content, lazyLoad);
@@ -1094,14 +1098,14 @@ bool HtmlContent::finishLazyLoad()
     m_graphicsTextItem.setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
     m_graphicsTextItem.setTextInteractionFlags(Qt::TextEditorInteraction);
     
-    QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
+    /*QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
        "a:hover.cross_reference { text-decoration: underline; color: #ff8000; }";
-    m_graphicsTextItem.document()->setDefaultStyleSheet(css);
+    m_graphicsTextItem.document()->setDefaultStyleSheet(css);*/
     QString convert = Tools::tagURLs(m_html);
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert);
     m_graphicsTextItem.setHtml(convert);
-    m_graphicsTextItem.setDefaultTextColor(basket()->textColor());
+    m_graphicsTextItem.setDefaultTextColor(note()->textColor());
     m_graphicsTextItem.setFont(note()->font());
     m_graphicsTextItem.setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_graphicsTextItem.document()->idealWidth();
@@ -1113,7 +1117,7 @@ bool HtmlContent::finishLazyLoad()
 
 bool HtmlContent::saveToFile()
 {
-    return basket()->saveToFile(fullPath(), html(), /*isLocalEncoding=*/true);
+    return basket()->saveToFile(fullPath(), html());
 }
 
 QString HtmlContent::linkAt(const QPointF &pos)
@@ -1138,10 +1142,12 @@ QString HtmlContent::messageWhenOpening(OpenMessage where)
 void HtmlContent::setHtml(const QString &html, bool lazyLoad)
 {
     m_html = html;
+    /* The code was commented, so now non-Latin text is stored directly in Unicode.
+     * If testing doesn't show any bugs, this block should be deleted
     QRegExp rx("([^\\x00-\\x7f])");
     while (m_html.contains(rx)) {
         m_html.replace( rx.cap().unicode()[0], QString("&#%1;").arg(rx.cap().unicode()[0].unicode()) );
-    }
+    }*/
     m_textEquivalent = toText(""); //OPTIM_FILTER
     if (!lazyLoad)
         finishLazyLoad();

@@ -1,5 +1,7 @@
 BasKet Note Pads
 ================
+Gleb Baryshev <gleb.baryshev@gmail.com>
+
 Kelvie Wong <kelvie@ieee.org>
 
 ////
@@ -16,11 +18,13 @@ various objects (text, URLs, images, sounds...)  into its.
 Objects can be edited, copied, dragged... So, you can arrange them as you want !
 
 It's a DropDrawers clone (http://www.sigsoftware.com/dropdrawers/index.html) for
-KDE 3 (soon to be 4, hopefully).
+KDE 4.
 
 Project Status
 --------------
-Currently, porting to KDE 4 is under way.  The KDE 3 version remains unmaintained.
+In the previous years, porting from KDE 3 to KDE 4 was generally finished.
+However, some features remained not ported or became broken. Currently bug
+fixing is under way.
 
 Developers
 -----------
@@ -31,7 +35,7 @@ user README after we're done porting.
 
 Git
 ~~~
-The porting effort will use Git.  The main reason for this is that right now, we
+At present BasKet project uses Git.  The main reason for this is that right now, we
 don't have much contact with the main developers, and a bunch of us do not have
 SVN access.  There are other people who wish to contribute and are in a similar
 situation, and so the easiest way to coordinate these efforts is through a
@@ -100,15 +104,19 @@ Contributing
 ~~~~~~~~~~~~
 The first step to contribute is to clone a source repository:
 
-  git clone git://gitorious.org/basket/basket.git
+----
+git clone https://github.com/gl-bars/basket.git
+cd ./basket
+git checkout remotes/origin/basket-gleb
+----
 
-You should do this through the Gitorious web interface.  When you have a series of
+You should add a new branch and make changes there.  When you have a series of
 patches ready to be merged with upstream, first make sure your master is up to
 date:
 
-  git pull git://gitorious.org/basket/basket.git master
+  git pull https://github.com/gl-bars/basket.git basket-gleb
 
-Then push your changes to your repository on Gitorious and then submit a merge
+Then push your changes to your repository on GitHub and then submit a merge
 request against the main repository.
 
 Contact
@@ -127,13 +135,17 @@ http://basket.kde.org/
 
 Building/Installation
 ----------------------
-It will be a while before the master branch is able to be built without errors,
-but to try and do so, follow these steps (this assumes you have the relevant
+To build and install BasKet, follow these steps (this assumes you have the relevant
 kde4 development libraries and CMake):
 
 ----
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` ..
 make
+# make install
 ----
+
+Or you can try your luck with the installer script:
+
+  ./installer

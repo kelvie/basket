@@ -324,7 +324,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()));
     connect(textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()));
 
-    connect(InlineEditors::instance()->richTextFont,     SIGNAL(editTextChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
+    connect(InlineEditors::instance()->richTextFont,     SIGNAL(currentFontChanged(const QFont&)),  this, SLOT(onFontSelectionChanged(const QFont&)));
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(qreal)),            textEdit, SLOT(setFontPointSize(qreal)));
     connect(InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&)));
 
@@ -445,6 +445,14 @@ void HtmlEditor::setBlock()
     textEdit()->setAlignment(Qt::AlignJustify);
 }
 
+void HtmlEditor::onFontSelectionChanged(const QFont& font)
+{
+    //Change font family only
+    textEdit()->setFontFamily(font.family());
+    InlineEditors::instance()->richTextFont->clearFocus();
+    //textEdit()->setFocus();
+}
+
 void HtmlEditor::setBold(bool isChecked)
 {
     kWarning()<<"setBold "<<isChecked;
@@ -458,7 +466,7 @@ HtmlEditor::~HtmlEditor()
 
 void HtmlEditor::autoSave(bool toFileToo)
 {
-    m_htmlContent->setHtml(textEdit()->toHtml());
+    m_htmlContent->setHtml(textEdit()->document()->toHtml("utf-8"));
     if (toFileToo) {
         m_htmlContent->saveToFile();
         m_htmlContent->setEdited();
@@ -469,7 +477,7 @@ void HtmlEditor::validate()
 {
     if (Tools::htmlToText(textEdit()->toHtml()).isEmpty())
         setEmpty();
-    QString convert = textEdit()->toHtml();
+    QString convert = textEdit()->document()->toHtml("utf-8");
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert, /*userLink=*/true);
 
