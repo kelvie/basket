@@ -209,9 +209,7 @@ private slots:
 
 /// TOOL TIPS:
 protected:
-    bool event(QEvent *event);
-    // TODO: replace with QGraphicsScene::helpEvent()
-    void tooltipEvent(QHelpEvent *event);
+    void helpEvent(QGraphicsSceneHelpEvent* event);
 
 /// ANIMATIONS:
 private:

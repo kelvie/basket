@@ -324,7 +324,7 @@ HtmlEditor::HtmlEditor(HtmlContent *htmlContent, QWidget *parent)
     connect(textEdit,                                    SIGNAL(mouseEntered()),  this, SIGNAL(mouseEnteredEditorWidget()));
     connect(textEdit,                                    SIGNAL(escapePressed()), this, SIGNAL(askValidation()));
 
-    connect(InlineEditors::instance()->richTextFont,     SIGNAL(editTextChanged(const QString&)), textEdit, SLOT(setFontFamily(const QString&)));
+    connect(InlineEditors::instance()->richTextFont,     SIGNAL(currentFontChanged(const QFont&)),  this, SLOT(onFontSelectionChanged(const QFont&)));
     connect(InlineEditors::instance()->richTextFontSize, SIGNAL(sizeChanged(qreal)),            textEdit, SLOT(setFontPointSize(qreal)));
     connect(InlineEditors::instance()->richTextColor,    SIGNAL(activated(const QColor&)),    textEdit, SLOT(setTextColor(const QColor&)));
 
@@ -443,6 +443,14 @@ void HtmlEditor::setCentered()
 void HtmlEditor::setBlock()
 {
     textEdit()->setAlignment(Qt::AlignJustify);
+}
+
+void HtmlEditor::onFontSelectionChanged(const QFont& font)
+{
+    //Change font family only
+    textEdit()->setFontFamily(font.family());
+    InlineEditors::instance()->richTextFont->clearFocus();
+    //textEdit()->setFocus();
 }
 
 void HtmlEditor::setBold(bool isChecked)

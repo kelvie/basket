@@ -36,6 +36,7 @@
 #include <QtGui/QWidget>
 #include <QtXml/QDomDocument>
 #include <QtNetwork/QNetworkReply>
+#include <QTextBlock>
 #include <KDE/KIO/AccessManager>
 
 #include <KDE/KDebug>
@@ -356,7 +357,10 @@ QString TextContent::toHtml(const QString &/*imageName*/, const QString &/*cutte
 
 QString HtmlContent::toHtml(const QString &/*imageName*/, const QString &/*cuttedFullPath*/)
 {
-    return Tools::htmlToParagraph(html());
+    //return Tools::htmlToParagraph(html());
+    QTextDocument* simpleRichText = new QTextDocument();
+    simpleRichText->setHtml(html());
+    return Tools::textDocumentToMinimalHTML(simpleRichText);
 }
 
 QString ImageContent::toHtml(const QString &/*imageName*/, const QString &cuttedFullPath)
@@ -721,7 +725,7 @@ void TextContent::fontChanged()
 }
 void HtmlContent::fontChanged()
 {
-    setHtml(html());
+    setHtml(Tools::textDocumentToMinimalHTML(m_graphicsTextItem.document()));
 }
 void ImageContent::fontChanged()
 {
@@ -1094,14 +1098,14 @@ bool HtmlContent::finishLazyLoad()
     m_graphicsTextItem.setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
     m_graphicsTextItem.setTextInteractionFlags(Qt::TextEditorInteraction);
     
-    QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
+    /*QString css = ".cross_reference { display: block; width: 100%; text-decoration: none; color: #336600; }"
        "a:hover.cross_reference { text-decoration: underline; color: #ff8000; }";
-    m_graphicsTextItem.document()->setDefaultStyleSheet(css);
+    m_graphicsTextItem.document()->setDefaultStyleSheet(css);*/
     QString convert = Tools::tagURLs(m_html);
     if(note()->allowCrossReferences())
         convert = Tools::tagCrossReferences(convert);
     m_graphicsTextItem.setHtml(convert);
-    m_graphicsTextItem.setDefaultTextColor(basket()->textColor());
+    m_graphicsTextItem.setDefaultTextColor(note()->textColor());
     m_graphicsTextItem.setFont(note()->font());
     m_graphicsTextItem.setTextWidth(1); // We put a width of 1 pixel, so usedWidth() is egual to the minimum width
     int minWidth = m_graphicsTextItem.document()->idealWidth();

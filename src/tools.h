@@ -31,6 +31,7 @@ class QPixmap;
 class QString;
 class QStringList;
 class QTime;
+class QTextDocument;
 
 class HTMLExporter;
 
@@ -55,6 +56,8 @@ QString textToHTML(const QString &text);
 QString textToHTMLWithoutP(const QString &text);
 QString htmlToParagraph(const QString &html);
 QString htmlToText(const QString &html);
+QString textDocumentToMinimalHTML(QTextDocument* document); //!< Avoid unneeded spans and style attributes
+
 QString tagURLs(const QString &test);
 QString cssFontDefinition(const QFont &font, bool onlyFontFamily = false);
 

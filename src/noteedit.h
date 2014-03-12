@@ -161,6 +161,7 @@ protected slots:
     void setCentered();
     void setRight();
     void setBlock();
+    void onFontSelectionChanged(const QFont& font); //!< When a font is selected from combo box
 };
 
 class ImageEditor : public NoteEditor

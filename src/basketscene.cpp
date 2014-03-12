@@ -2746,27 +2746,15 @@ void BasketScene::drawInserter(QPainter &painter, qreal xPainter, qreal yPainter
     }
 }
 
-bool BasketScene::event(QEvent *event)
+void BasketScene::helpEvent(QGraphicsSceneHelpEvent* event)
 {
-    // Only take the help events
-    if (event->type() == QEvent::ToolTip) {
-        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
-        tooltipEvent(helpEvent);
-        return true;
-    } else
-	return QGraphicsScene::event(event);
-}
-
-void BasketScene::tooltipEvent(QHelpEvent *event)
-{
-    QPoint pos = event->globalPos();
     if (!m_loaded || !Settings::showNotesToolTip())
 	return;
 
     QString message;
     QRectF   rect;
 
-    QPointF contentPos = m_view->mapToScene(event->pos());
+    QPointF contentPos = event->scenePos();
     Note *note = noteAt(contentPos);
 
     if (!note && isFreeLayout()) {
@@ -2786,6 +2774,7 @@ void BasketScene::tooltipEvent(QHelpEvent *event)
 	  return;
 
         Note::Zone zone = note->zoneAt(contentPos - QPointF(note->x(), note->y()));
+
         switch (zone) {
         case Note::Resizer:       message = (note->isColumn() ?
                                                  i18n("Resize those columns") :
@@ -2858,7 +2847,7 @@ void BasketScene::tooltipEvent(QHelpEvent *event)
         rect.moveTop(rect.top()  + note->y());
     }
 
-    QToolTip::showText(pos, message, m_view, rect.toRect());
+    QToolTip::showText(event->screenPos(), message, m_view, rect.toRect());
 }
 
 Note* BasketScene::lastNote()
