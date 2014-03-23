@@ -32,7 +32,9 @@
 #include <QtGui/QImage>
 #include <QtGui/QFont>
 #include <QtGui/QFontInfo>
-#include <QtGui/QTextDocument>  //For Qt::convertFromPlainText and Qt::WhiteSpaceNormal.
+
+#include <QtGui/QTextDocument>
+#include <QTextBlock>
 
 #include <KDE/KDebug>
 #include <KDE/KIO/CopyJob>      //For KIO::trash
@@ -77,6 +79,27 @@ void StopWatch::check(int id)
     totals[id] += time;
     counts[id]++;
     kDebug() << k_funcinfo << "Timer_" << id << ": " << time << " s    [" << counts[id] << " times, total: " << totals[id] << " s, average: " << totals[id] / counts[id] << " s]" <<  endl;
+}
+
+
+/** @namespace HTM
+ *  @brief HTML tags constants */
+namespace HTM {
+static const char* PAR = "<p>";
+static const char* _PAR = "</p>";
+
+//Styles
+static const char* FONT_FAMILY = "font-family: %1; ";
+static const char* FONT_STYLE = "font-style: %1; ";
+static const char* TEXT_DECORATION = "text-decoration: %1; ";
+
+static const char* ITALIC = "italic";
+static const char* UNDERLINE = "underline";
+static const char* LINE_THROUGH = "line-through";
+
+static const char* FONT_WEIGHT = "font-weight: %1; ";
+static const char* FONT_SIZE = "font-size: %1pt; ";
+static const char* COLOR = "color: %1; ";
 }
 
 QString Tools::textToHTML(const QString &text)
@@ -389,7 +412,73 @@ QString Tools::htmlToText(const QString &html)
     text.replace("&nbsp;", " ");
     text.replace("&amp;",  "&"); // CONVERT IN LAST!!
 
+    // HtmlContent produces "\n" for empty note
+    if (text == "\n")
+        text = "";
+
     return text;
+}
+
+QString Tools::textDocumentToMinimalHTML(QTextDocument* document) {
+
+    QString result =
+            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+            "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><style type=\"text/css\">\n"
+            "p, li { white-space: pre-wrap; }\n"
+            "</style></head><body>\n";
+    QFont defaultFont;
+
+    for (QTextBlock blockIt = document->begin(); blockIt != document->end(); blockIt = blockIt.next()) {
+
+        result += HTM::PAR;
+
+        for (QTextBlock::iterator subIt = blockIt.begin(); !(subIt.atEnd()); ++subIt) {
+            QTextFragment currentFragment = subIt.fragment();
+            if (currentFragment.isValid()) {
+                QTextCharFormat charFmt = currentFragment.charFormat();
+                const QColor& textColor = charFmt.foreground().color();
+                bool isTextBlack = (textColor == QColor() || textColor == QColor(Qt::black));
+
+                if (charFmt.font() == defaultFont && isTextBlack) {
+                    result += Qt::escape(currentFragment.text());
+                    continue;
+                }
+
+                //Compose style string (font and color)
+                result += "<span style=\"";
+
+                if (charFmt.fontFamily() != defaultFont.family() && !charFmt.fontFamily().isEmpty())
+                    result += QString(HTM::FONT_FAMILY).arg(charFmt.fontFamily());
+
+
+                if (charFmt.fontItalic())
+                    result += QString(HTM::FONT_STYLE).arg(HTM::ITALIC);
+                if (charFmt.fontUnderline())
+                    result += QString(HTM::TEXT_DECORATION).arg(HTM::UNDERLINE);
+                if (charFmt.fontStrikeOut())
+                    result += QString(HTM::TEXT_DECORATION).arg(HTM::LINE_THROUGH);
+
+
+                if (charFmt.fontWeight() != defaultFont.weight()) {
+                    QFont::Weight weight = (charFmt.fontWeight() >= QFont::Bold) ? QFont::Bold : QFont::Normal;
+                    result += QString(HTM::FONT_WEIGHT).arg(weight);
+                }
+
+                if (charFmt.fontPointSize() != defaultFont.pointSize() && charFmt.fontPointSize() != 0)
+                    result += QString(HTM::FONT_SIZE).arg(charFmt.fontPointSize());
+
+                if (!isTextBlack)
+                    result += QString(HTM::COLOR).arg(textColor.name());
+
+
+                result += "\">" + Qt::escape(currentFragment.text()) + "</span>";
+            }
+        }
+        result += HTM::_PAR;
+    }
+
+    result += "</body></html>";
+    return result;
 }
 
 QString Tools::cssFontDefinition(const QFont &font, bool onlyFontFamily)

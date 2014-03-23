@@ -575,7 +575,7 @@ void BasketScene::loadNotes(const QDomElement &notes, Note *parent)
                 }
             }
         }
-//      kapp->processEvents();
+      kapp->processEvents();
     }
 }
 
@@ -2746,27 +2746,15 @@ void BasketScene::drawInserter(QPainter &painter, qreal xPainter, qreal yPainter
     }
 }
 
-bool BasketScene::event(QEvent *event)
+void BasketScene::helpEvent(QGraphicsSceneHelpEvent* event)
 {
-    // Only take the help events
-    if (event->type() == QEvent::ToolTip) {
-        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
-        tooltipEvent(helpEvent);
-        return true;
-    } else
-	return QGraphicsScene::event(event);
-}
-
-void BasketScene::tooltipEvent(QHelpEvent *event)
-{
-    QPoint pos = event->globalPos();
     if (!m_loaded || !Settings::showNotesToolTip())
 	return;
 
     QString message;
     QRectF   rect;
 
-    QPointF contentPos = m_view->mapToScene(event->pos());
+    QPointF contentPos = event->scenePos();
     Note *note = noteAt(contentPos);
 
     if (!note && isFreeLayout()) {
@@ -2786,6 +2774,7 @@ void BasketScene::tooltipEvent(QHelpEvent *event)
 	  return;
 
         Note::Zone zone = note->zoneAt(contentPos - QPointF(note->x(), note->y()));
+
         switch (zone) {
         case Note::Resizer:       message = (note->isColumn() ?
                                                  i18n("Resize those columns") :
@@ -2858,7 +2847,7 @@ void BasketScene::tooltipEvent(QHelpEvent *event)
         rect.moveTop(rect.top()  + note->y());
     }
 
-    QToolTip::showText(pos, message, m_view, rect.toRect());
+    QToolTip::showText(event->screenPos(), message, m_view, rect.toRect());
 }
 
 Note* BasketScene::lastNote()
@@ -3984,6 +3973,9 @@ void BasketScene::noteEdit(Note *note, bool justAdded, const QPointF &clickedPoi
         filterAgain();
         unselectAll();
     }
+    // Must set focus to the editor, otherwise edit cursor is not seen and precomposed characters cannot be entered
+    m_editor->textEdit()->setFocus();
+
     Global::bnpView->m_actEditNote->setEnabled(false);
 }
 
@@ -5142,15 +5134,12 @@ bool BasketScene::saveAgain()
     return result;
 }
 
-bool BasketScene::loadFromFile(const QString &fullPath, QString *string, bool isLocalEncoding)
+bool BasketScene::loadFromFile(const QString &fullPath, QString *string)
 {
     QByteArray array;
 
     if (loadFromFile(fullPath, &array)) {
-        if (isLocalEncoding)
-            *string = QString::fromLocal8Bit(array.data(), array.size());
-        else
-            *string = QString::fromUtf8(array.data(), array.size());
+        *string = QString::fromUtf8(array.data(), array.size());
         return true;
     } else
         return false;
@@ -5215,19 +5204,11 @@ bool BasketScene::loadFromFile(const QString &fullPath, QByteArray *array)
         return false;
 }
 
-bool BasketScene::saveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
+bool BasketScene::saveToFile(const QString& fullPath, const QString& string)
 {
-    QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
-    return saveToFile(fullPath, bytes, bytes.length());
-}
+    QByteArray array = string.toUtf8();
+    ulong length = array.size();
 
-bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array)
-{
-    return saveToFile(fullPath, array, array.size());
-}
-
-bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array, unsigned long length)
-{
     bool success = true;
     QByteArray tmp;
 
@@ -5322,15 +5303,10 @@ bool BasketScene::saveToFile(const QString& fullPath, const QByteArray& array, u
     return true; // Guess we can't really return a fail
 }
 
-/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath, const QString& string, bool isLocalEncoding)
+/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath, const QString& string)
 {
-    QByteArray bytes = (isLocalEncoding ? string.toLocal8Bit() : string.toUtf8());
-    return safelySaveToFile(fullPath, bytes, bytes.length() - 1);
-}
-
-/*static*/ bool BasketScene::safelySaveToFile(const QString& fullPath, const QByteArray& array)
-{
-    return safelySaveToFile(fullPath, array, array.size());
+    QByteArray bytes = string.toUtf8();
+    return safelySaveToFile(fullPath, bytes, bytes.length());
 }
 
 void BasketScene::lock()

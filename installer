@@ -168,7 +168,11 @@ else
   echo "                        BasKet Note Pads on the system."
   echo ""
   echo 'Installing in "'$prefix'"...'
-  sudo make install || exit 1
+  if [ "$(type -p sudo)" ]; then
+    sudo make install || exit 1
+  else
+    su -c "make install" || exit 1
+  fi
   echo ""
   echo ""
 fi

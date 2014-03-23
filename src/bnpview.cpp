@@ -89,8 +89,12 @@
 #include "backup.h"
 #include "notefactory.h"
 #include "history.h"
+#include "icon_names.h"
 
-#include "bnpviewadaptor.h"
+#include <qdbusconnection.h>
+#include <QResource>
+
+//#include "bnpviewadaptor.h"
 
 /** class BNPView: */
 
@@ -113,7 +117,7 @@ BNPView::BNPView(QWidget *parent, const char *name, KXMLGUIClient *aGUIClient,
         , m_hideTimer(0)
 {
 
-    new BNPViewAdaptor(this);
+    //new BNPViewAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject("/BNPView", this);
 
@@ -553,7 +557,7 @@ void BNPView::setupActions()
 
     a = ac->addAction("basket_import_tomboy", this, SLOT(importTomboy()));
     a->setText(i18n("&Tomboy"));
-    a->setIcon(KIcon("tintin"));
+    a->setIcon(KIcon(IconNames::TOMBOY));
     a->setShortcut(0);
 
     a = ac->addAction("basket_import_jreepad_file", this, SLOT(importJreepadFile()));
@@ -693,38 +697,38 @@ void BNPView::setupActions()
 
     a = ac->addAction("insert_link");
     a->setText(i18n("&Link"));
-    a->setIcon(KIcon("link"));
+    a->setIcon(KIcon(IconNames::LINK));
     a->setShortcut(KShortcut("Ctrl+Y"));
     m_actInsertLink = a;
 
     a = ac->addAction("insert_cross_reference");
     a->setText(i18n("Cross &Reference"));
-    a->setIcon(KIcon("link"));
+    a->setIcon(KIcon(IconNames::CROSS_REF));
     m_actInsertCrossReference = a;
 
     a = ac->addAction("insert_image");
     a->setText(i18n("&Image"));
-    a->setIcon(KIcon("image-png"));
+    a->setIcon(KIcon(IconNames::IMAGE));
     m_actInsertImage = a;
 
     a = ac->addAction("insert_color");
     a->setText(i18n("&Color"));
-    a->setIcon(KIcon("colorset"));
+    a->setIcon(KIcon(IconNames::COLOR));
     m_actInsertColor = a;
 
     a = ac->addAction("insert_launcher");
     a->setText(i18n("L&auncher"));
-    a->setIcon(KIcon("launch"));
+    a->setIcon(KIcon(IconNames::LAUNCH));
     m_actInsertLauncher = a;
 
     a = ac->addAction("insert_kmenu");
     a->setText(i18n("Import Launcher from &KDE Menu..."));
-    a->setIcon(KIcon("kmenu"));
+    a->setIcon(KIcon(IconNames::KMENU));
     m_actImportKMenu = a;
 
     a = ac->addAction("insert_icon");
     a->setText(i18n("Im&port Icon..."));
-    a->setIcon(KIcon("icons"));
+    a->setIcon(KIcon(IconNames::ICONS));
     m_actImportIcon = a;
 
     a = ac->addAction("insert_from_file");
@@ -1266,22 +1270,12 @@ bool BNPView::convertTexts()
 
 void BNPView::toggleFilterAllBaskets(bool doFilter)
 {
-    // Set the state:
-    m_actFilterAllBaskets->setChecked(doFilter);
-
     // If the filter isn't already showing, we make sure it does.
     if (doFilter)
         m_actShowFilter->setChecked(true);
 
     //currentBasket()->decoration()->filterBar()->setFilterAll(doFilter);
 
-//  BasketScene *current = currentBasket();
-    QTreeWidgetItemIterator it(m_tree);
-    while (*it) {
-        BasketListViewItem *item = ((BasketListViewItem*) * it);
-        item->basket()->decoration()->filterBar()->setFilterAll(doFilter);
-        ++it;
-    }
 
     if (doFilter)
         currentBasket()->decoration()->filterBar()->setEditFocus();
@@ -1352,6 +1346,7 @@ void BNPView::newFilter()
     }
 
 //  kapp->processEvents();
+    m_tree->viewport()->update(); // to see the "little numbers"
 
     alreadyEntered = false;
     shouldRestart  = false;
@@ -2364,6 +2359,8 @@ void BNPView::slotBasketChanged()
 {
     m_actFoldBasket->setEnabled(canFold());
     m_actExpandBasket->setEnabled(canExpand());
+    if (currentBasket()->decoration()->filterData().isFiltering)
+        currentBasket()->decoration()->filterBar()->show(); // especially important for Filter all
 	setFiltering(currentBasket() && currentBasket()->decoration()->filterData().isFiltering);
     this->canUndoRedoChanged();
 }

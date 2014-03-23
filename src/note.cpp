@@ -1987,11 +1987,8 @@ void Note::draw(QPainter *painter, const QRectF &/*clipRect*/)
         QStyleOptionFocusRect opt;
         opt.initFrom(m_basket->graphicsView());
         opt.rect = focusRect;
-        //Temporary change to see the focus rectangle 
-        painter2.setPen(Qt::red);
-        painter2.drawRect(focusRect);
-        //kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
-        //                             &painter2);
+        kapp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &opt,
+                                     &painter2);
     }
 
     // Draw on screen:
@@ -2786,7 +2783,7 @@ bool Note::convertTexts()
     if (content() && content()->lowerTypeName() == "text") {
         QString text = ((TextContent*)content())->text();
         QString html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><meta name=\"qrichtext\" content=\"1\" /></head><body>" + Tools::textToHTMLWithoutP(text) + "</body></html>";
-        basket()->saveToFile(fullPath(), html, /*isLocalEncoding=*/true);
+        basket()->saveToFile(fullPath(), html);
         setContent(new HtmlContent(this, content()->fileName()));
         convertedNotes = true;
     }

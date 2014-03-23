@@ -13,6 +13,7 @@ Qt v4.4
 kdelibs v4.1
 qimageblitz
 kdepimlibs v4.1
+GnuPG 1.x (optional)
 
 If you get an error message about FindGPGMe.cmake not found, you are probably
 missing kdepimlibs.

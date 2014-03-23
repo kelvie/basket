@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.0//EN" "dtd/kdex.dtd" [
-  <!ENTITY kappname "&basket;">
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
   <!ENTITY basket "<application>BasKet</application>">
+  <!ENTITY kappname "&basket;">
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE" > <!-- change language only here -->
 ]>
@@ -10,27 +10,53 @@
      template.docbook gives you more information on what you can and
      should do.  Thanks. -->
 
-<book lang="&language;">
+<book id='basket' lang="&language;">
 
   <bookinfo>
-    <title>The BasKet Handbook</title>
+    <title>The &basket; Handbook</title>
     <authorgroup>
       <author>
-        <firstname>Sébastien</firstname>
-        <surname>Laoût</surname>
-        <affiliation><address><email>slaout@linux62.org</email></address></affiliation>
+        <personname>
+          <firstname>Gleb</firstname>
+          <surname>Baryshev</surname>
+        </personname>
+        <email>gleb.baryshev@gmail.com</email>
       </author>
     </authorgroup>
-    <date>01/18/2005</date>
+    <date>2013-10-21</date>
+    <releaseinfo>2.00 (&kde; 4.10)</releaseinfo>
+    
     <abstract>
       <para>Taking care of your ideas.</para>
     </abstract>
     <keywordset>
       <keyword>KDE</keyword>
       <keyword>BasKet</keyword>
+      <!--keyword>note pad</keyword-->
     </keywordset>
   </bookinfo>
 
+  <chapter id="notice">
+    <title>NOTICE: handbook not written yet</title>
+    <para>&basket; still does not have a handbook, so contributors are welcome!
+      Check the <ulink url='http://techbase.kde.org/Documentation_Primer/Manual/DocBook'>
+      KDE TechBase</ulink> for the hints on the DocBook format.</para>
+    <para>Meanwhile, you can look for help on the Internet. In particular,
+      look through the <ulink url='http://basket.kde.org/'>old website</ulink> or
+      check Linux magazines if you have access to them, for example:
+      <itemizedlist>
+	<listitem><para>
+	  <quote>Tutorial: Basket: Capture your thoughts.</quote> Linux Format 120
+	  (Andy Channelle)
+	</para></listitem>
+	<listitem><para>
+	  <quote>A Virtual Basket. Storing, sorting, and filing with KDE&apos;s
+	  Basket</quote> Linux Magazine 54 (Stefanie Teufel)
+	</para></listitem>
+      </itemizedlist>
+      </para>
+  </chapter>
+  
   <chapter id="introduction">
     <title>Introduction</title>
     <para>&basket; is mainly an all-purpose notes taker, but a particular one:</para>

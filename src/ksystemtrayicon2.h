@@ -21,11 +21,14 @@
 #ifndef K_SYSTEM_TRAY_ICON
 #define K_SYSTEM_TRAY_ICON
 
+#include <QWidget>
+#include <KSystemTrayIcon>
+
 /** Convenient class to develop the displayCloseMessage() dialog
   * hopefuly integrated in KDE 3.4
   * @author Sébastien Laoût
   */
-class KSystemTray2 : public KSystemTrayIcon
+class KSystemTray2 : public KSystemTrayIcon, public QWidget
 {
     Q_OBJECT
 public:
