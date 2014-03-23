@@ -864,15 +864,16 @@ QString NoteFactory::fileNameForNewNote(BasketScene *parent, const QString &want
 //  (extension willn't be used for that case)
 QString NoteFactory::createFileForNewNote(BasketScene *parent, const QString &extension, const QString &wantedName)
 {
-    static int nb = 1;
-
     QString fileName;
     QString fullName;
 
     if (wantedName.isEmpty()) { // TODO: fileNameForNewNote(parent, "note1."+extension);
         QDir dir;
-        for (/*int nb = 1*/; ; ++nb) { // TODO: FIXME: If overflow ???
-            fileName = "note" + QString::number(nb)/*.rightJustified(5, '0')*/ + "." + extension;
+        int nb = parent->count() + 1;
+        QString time = QTime::currentTime().toString("hhmmss");
+
+        for (; ; ++nb) {
+            fileName = QString("note%1-%2.%3").arg(nb).arg(time).arg(extension);
             fullName = parent->fullPath() + fileName;
             dir = QDir(fullName);
             if (! dir.exists(fullName))

@@ -1,6 +1,9 @@
 #ifndef ICON_NAMES_H
 #define ICON_NAMES_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 /** @namespace IconNames
  *  @brief Icon names for KIconLoader used by BasKet */
 namespace IconNames
@@ -25,5 +28,6 @@ StrRes  TOMBOY = "tomboy";
 #undef StrRes
 }
 
+#pragma GCC diagnostic pop
 
 #endif // ICON_NAMES_H

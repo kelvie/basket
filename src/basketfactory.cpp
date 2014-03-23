@@ -44,8 +44,12 @@ QString BasketFactory::newFolderName()
     QString fullPath;
     QDir    dir;
 
-    for (int i = 1; ; ++i) {
-        folderName = "basket" + QString::number(i) + "/";
+
+    int i = QDir(Global::basketsFolder()).count();
+    QString time = QTime::currentTime().toString("hhmmss");
+
+    for (; ; ++i) {
+        folderName = QString("basket%1-%2/").arg(i).arg(time);
         fullPath   = Global::basketsFolder() + folderName;
         dir        = QDir(fullPath);
         if (! dir.exists())   // OK : The folder do not yet exists :
